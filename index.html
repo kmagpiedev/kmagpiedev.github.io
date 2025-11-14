@@ -1,125 +1,523 @@
 <!DOCTYPE html>
-<html lang="en-US">
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <title>K-Magpie | 게임 & 앱</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="다양한 아이디어와 빠른 실행력으로 게임과 앱을 만드는 1인 개발자 K-Magpie의 공식 홈페이지입니다." />
 
-<!-- Begin Jekyll SEO tag v2.8.0 -->
-<title>K-Magpie · Solo Indie Game Developer</title>
-<meta name="generator" content="Jekyll v3.10.0" />
-<meta property="og:title" content="K-Magpie · Solo Indie Game Developer" />
-<meta property="og:locale" content="en_US" />
-<link rel="canonical" href="https://kmagpiedev.github.io/" />
-<meta property="og:url" content="https://kmagpiedev.github.io/" />
-<meta property="og:type" content="website" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="K-Magpie · Solo Indie Game Developer" />
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebSite","headline":"K-Magpie · Solo Indie Game Developer","name":"geonho","url":"https://kmagpiedev.github.io/"}</script>
-<!-- End Jekyll SEO tag -->
+    <!-- 기본 스타일 -->
+   <style>
+    :root {
+        --bg: #050507;
+        --bg-alt: #111111;
+        --accent: #d69c29;
+        --accent-soft: rgba(214, 156, 41, 0.12);
+        --text: #fefcf5;
+        --muted: #a3a3a3;
+        --border: #27272f;
+        --card-bg: #171717;
+        --max-width: 960px;
+    }
 
-    <link rel="stylesheet" href="/assets/css/style.css?v=366d0748d5ae42f99376e5964c78698024100ce8">
-    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
 
-<!-- Setup Google Analytics -->
+    body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: radial-gradient(
+            circle at top,
+            #27272f 0,
+            #050507 55%,
+            #000000 100%
+        );
+        color: var(--text);
+        line-height: 1.6;
+    }
 
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
 
+    .container {
+        max-width: var(--max-width);
+        margin: 0 auto;
+        padding: 0 16px;
+    }
 
-<!-- You can set your favicon here -->
-<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+    /* 헤더 */
+    .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: rgba(5, 5, 7, 0.92);
+        border-bottom: 1px solid var(--border);
+        backdrop-filter: blur(10px);
+    }
 
-<!-- end custom head snippets -->
+    .header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 0;
+    }
 
-  </head>
-  <body>
-    <div class="container-lg px-3 my-5 markdown-body">
-            
+    .logo-link {
+        display: inline-flex;
+        align-items: center;
+    }
 
-      <h1 id="k-magpie--solo-indie-game-developer">K-Magpie · Solo Indie Game Developer</h1>
+    .logo-image {
+        display: block;
+        height: 32px; /* 필요하면 28~40px 사이에서 취향대로 조절 */
+        width: auto;
+    }
 
-<p><a href="#한국어">한국어</a></p>
+    .nav {
+        display: flex;
+        gap: 16px;
+        font-size: 0.9rem;
+    }
 
-<hr />
+    .nav a {
+        color: var(--muted);
+        padding: 4px 0;
+        border-bottom: 1px solid transparent;
+    }
 
-<h2 id="english">English</h2>
-<p>Hello! I’m <strong>K-Magpie (kmagpiedev)</strong> 👋<br />
-A solo indie game developer focusing on <strong>casual, puzzle, and idle games</strong>.<br />
-My goal is to release quickly, update consistently, and create games that last.</p>
+    .nav a:hover {
+        color: var(--text);
+        border-color: var(--accent);
+    }
 
-<h3 id="-projects">🎮 Projects</h3>
-<p><strong>Seal the Rift!</strong></p>
-<ul>
-  <li>Genre: Casual · High Score</li>
-  <li>Description: Tap the screen to seal the rift and rack up points.</li>
-  <li>Platform: Android (Google Play release coming soon)</li>
-</ul>
+    /* 섹션 공통 */
+    main {
+        padding-bottom: 64px;
+    }
 
-<p><strong>Dragon Feeding (WIP)</strong></p>
-<ul>
-  <li>Genre: Arcade · Dodge</li>
-  <li>Description: Feed the dragon with food, avoid bombs! The speed increases with each stage.</li>
-  <li>Status: In development</li>
-</ul>
+    .section {
+        padding: 56px 0;
+    }
 
-<h3 id="-about-me">🛠 About Me</h3>
-<ul>
-  <li>Platform: Android (iOS planned)</li>
-  <li>Engine: Unity 6</li>
-  <li>Preferred Genres: Casual, Puzzle, Idle</li>
-  <li>Dev Style: Turning ideas into reality, we continue to make games that bring joy to players.</li>
-</ul>
+    .section-alt {
+        background: var(--bg-alt);
+        border-block: 1px solid var(--border);
+    }
 
-<h3 id="-contact">📫 Contact</h3>
-<ul>
-  <li>Email: <a href="mailto:kmagpiedev@gmail.com">kmagpiedev@gmail.com</a></li>
-  <li>GitHub: <a href="https://github.com/kmagpiedev">kmagpiedev</a></li>
-</ul>
+    .section h2 {
+        font-size: 1.5rem;
+        margin-bottom: 8px;
+    }
 
-<hr />
+    .section-desc {
+        color: var(--muted);
+        font-size: 0.95rem;
+        margin-bottom: 20px;
+    }
 
-<h2 id="한국어">한국어</h2>
-<p>안녕하세요! 저는 <strong>K-Magpie(kmagpiedev)</strong> 입니다 👋<br />
-1인 인디 게임 개발자로서 <strong>캐주얼, 퍼즐, 방치형 게임</strong>을 주로 제작합니다.<br />
-빠른 출시와 꾸준한 업데이트로 오래 즐길 수 있는 게임을 목표로 하고 있습니다.</p>
+    /* 히어로 영역 */
+    .hero {
+        padding: 40px 0 32px;
+    }
 
-<h3 id="-프로젝트">🎮 프로젝트</h3>
-<p><strong>Seal the Rift!</strong></p>
-<ul>
-  <li>장르: 캐주얼 · 하이스코어</li>
-  <li>설명: 화면을 터치해 균열을 봉인하며 점수를 올리는 한 손 플레이 게임.</li>
-  <li>플랫폼: Android</li>
-</ul>
+    .hero-inner {
+        display: grid;
+        gap: 24px;
+    }
 
-<p>**나는 드래곤 밥 줘! **</p>
-<ul>
-  <li>장르: 캐주얼 · 하이스코어</li>
-  <li>설명: 음식을 먹이고 폭탄은 피해라! 단계별로 속도가 빨라지는 클래식 아케이드.</li>
-  <li>상태: 개발 진행 중</li>
-</ul>
+    .hero-text h1 {
+        font-size: 2rem;
+        line-height: 1.3;
+        margin-bottom: 12px;
+    }
 
-<h3 id="-소개">🛠 소개</h3>
-<ul>
-  <li>플랫폼: Android (iOS 예정)</li>
-  <li>엔진: Unity 6</li>
-  <li>선호 장르: 캐주얼, 퍼즐, 방치형</li>
-  <li>특징: 아이디어를 실현해, 플레이어에게 즐거움을 주는 게임을 계속 제작합니다.</li>
-</ul>
+    .hero-text p {
+        color: var(--muted);
+        font-size: 0.98rem;
+        margin-bottom: 20px;
+    }
 
-<h3 id="-연락처">📫 연락처</h3>
-<ul>
-  <li>이메일: <a href="mailto:kmagpiedev@gmail.com">kmagpiedev@gmail.com</a></li>
-  <li>GitHub: <a href="https://github.com/kmagpiedev">kmagpiedev</a></li>
-</ul>
+    .hero-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
 
-<hr />
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 9px 16px;
+        font-size: 0.9rem;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        cursor: pointer;
+        transition: transform 0.12s ease, box-shadow 0.12s ease,
+            background 0.12s ease, border-color 0.12s ease;
+        white-space: nowrap;
+    }
 
-<p>© 2025 K-Magpie • Solo Indie Game Developer</p>
+    .btn.primary {
+        background: var(--accent);
+        color: #141414;
+        font-weight: 600;
+        box-shadow: 0 10px 25px rgba(214, 156, 41, 0.4);
+    }
 
+    .btn.primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 18px 35px rgba(214, 156, 41, 0.55);
+    }
 
-      
+    .btn.secondary {
+        border-color: var(--border);
+        background: rgba(15, 15, 15, 0.9);
+        color: var(--muted);
+    }
+
+    .btn.secondary:hover {
+        border-color: var(--accent);
+        color: var(--text);
+        background: rgba(23, 23, 23, 0.95);
+    }
+
+    .hero-side {
+        padding: 14px 14px 16px;
+        border-radius: 18px;
+        background:
+            radial-gradient(circle at top left, var(--accent-soft), transparent 60%),
+            var(--card-bg);
+        border: 1px solid rgba(82, 82, 91, 0.6);
+        font-size: 0.85rem;
+    }
+
+    .hero-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.75rem;
+        padding: 4px 9px;
+        border-radius: 999px;
+        background: rgba(15, 15, 15, 0.9);
+        border: 1px solid rgba(82, 82, 91, 0.8);
+        margin-bottom: 8px;
+    }
+
+    .hero-note {
+        color: var(--muted);
+        margin-bottom: 10px;
+    }
+
+    .hero-placeholder-box {
+        margin-top: 6px;
+        border-radius: 12px;
+        border: 1px dashed rgba(120, 120, 120, 0.9);
+        padding: 10px;
+        text-align: center;
+        font-size: 0.78rem;
+        color: var(--muted);
+    }
+
+    /* 카드 그리드 (게임/앱) */
+    .card-grid {
+        display: grid;
+        gap: 16px;
+    }
+
+    .card {
+        background: var(--card-bg);
+        border-radius: 18px;
+        border: 1px solid rgba(39, 39, 47, 0.9);
+        padding: 16px 14px 14px;
+        font-size: 0.9rem;
+    }
+
+    .card h3 {
+        font-size: 1rem;
+        margin-bottom: 6px;
+    }
+
+    .card-meta {
+        color: var(--muted);
+        font-size: 0.8rem;
+        margin-bottom: 8px;
+    }
+
+    .card-text {
+        color: var(--text);
+        font-size: 0.88rem;
+        margin-bottom: 10px;
+    }
+
+    .card-link {
+        font-size: 0.85rem;
+        color: var(--accent);
+    }
+
+    .card-link:hover {
+        text-decoration: underline;
+    }
+
+    /* 소개 섹션 */
+    .about-list {
+        list-style: none;
+        display: grid;
+        gap: 6px;
+        font-size: 0.9rem;
+        color: var(--muted);
+    }
+
+    /* 문의 섹션 */
+    .contact-box {
+        background: var(--card-bg);
+        border-radius: 16px;
+        border: 1px solid rgba(39, 39, 47, 0.9);
+        padding: 14px 14px 12px;
+        font-size: 0.9rem;
+    }
+
+    .contact-box p + p {
+        margin-top: 4px;
+    }
+
+    .contact-box a {
+        color: var(--accent);
+    }
+
+    /* 푸터 */
+    .site-footer {
+        border-top: 1px solid var(--border);
+        background: #050507;
+        padding: 18px 0 20px;
+        font-size: 0.78rem;
+        color: var(--muted);
+    }
+
+    .footer-inner {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .footer-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        font-size: 0.8rem;
+    }
+
+    .footer-links a {
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+
+    .footer-business p {
+        margin-bottom: 2px;
+    }
+
+    .footer-copy {
+        margin-top: 4px;
+        font-size: 0.75rem;
+    }
+
+    /* 반응형 */
+    @media (min-width: 768px) {
+        .hero-inner {
+            grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 2.3rem;
+        }
+
+        .card-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .footer-inner {
+            flex-direction: column;
+        }
+
+        .footer-business {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            column-gap: 18px;
+        }
+    }
+</style>
+
+</head>
+<body>
+    <header class="site-header">
+    <div class="container header-inner">
+        <a href="#top" class="logo-link" aria-label="K-Magpie 홈으로 이동">
+            <img src="images/logo2.svg" alt="K-Magpie 로고" class="logo-image" />
+        </a>
+
+        <nav class="nav">
+            <a href="#games">게임/앱</a>
+            <a href="#about">소개</a>
+            <a href="#contact">문의</a>
+        </nav>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
-    <script>anchors.add();</script>
-  </body>
+</header>
+
+    <main>
+        <!-- 히어로 섹션 -->
+        <section class="hero" id="top">
+            <div class="container hero-inner">
+                <div class="hero-text">
+                    <h1>다양한 아이디어로<br>게임과 앱을 만드는 1인 개발자</h1>
+                    <p>
+                        유저가 진짜 즐겁게 플레이하고, 편하게 사용할 수 있는 경험을 만드는 K-Magpie입니다.
+                        캐주얼 게임과 간단하지만 유용한 앱을 중심으로 개발하고 있습니다.
+                    </p>
+
+                    <div class="hero-buttons">
+                        <!-- TODO: 실제 스토어 / 채널 링크로 교체 -->
+                        <a class="btn primary" href="https://play.google.com/store/apps/dev?id=8843806174305755323" target="_blank" rel="noopener noreferrer">
+                            Google Play 채널 보기
+                        </a>
+                        <a class="btn secondary" href="https://www.youtube.com/@kmagpie_dev" target="_blank" rel="noopener noreferrer">
+                            YouTube 채널 보기
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hero-side">
+                    <div class="hero-tag">Solo Indie Dev · K-Magpie</div>
+                    <p class="hero-note">
+                        여기에 대표 게임 스크린샷, 로고, 홍보 이미지를 넣으면 좋습니다.
+                    </p>
+                    <div class="hero-placeholder-box">
+                        <strong>이미지 영역</strong><br />
+                        16:9 비율 이미지 1장 또는 GIF 등을 배치하세요.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 게임 / 앱 섹션 -->
+        <section id="games" class="section">
+            <div class="container">
+                <h2>게임 & 앱</h2>
+                <p class="section-desc">
+                    출시 및 개발 중인 프로젝트를 간단하게 소개합니다. 카드별로 스토어 링크를 연결해 두면 좋습니다.
+                </p>
+
+                <div class="card-grid">
+                    <!-- 카드 1 -->
+                    <article class="card">
+                        <h3>고양이 포춘쿠키</h3>
+                        <p class="card-meta">운세 · 모바일 앱</p>
+                        <p class="card-text">
+                            귀여운 고양이가 매일 운세를 뽑아주는 캐주얼 운세 앱입니다. 가볍게 열고 오늘의 메시지를 확인해보세요.
+                        </p>
+                        <!-- TODO: 실제 Google Play 링크로 변경 -->
+                        <a class="card-link" href="https://play.google.com/store/apps/details?id=com.kmagpie.dailyfortunecat" target="_blank" rel="noopener noreferrer">
+                            Google Play에서 보기 →
+                        </a>
+                    </article>
+
+                    <!-- 카드 2 -->
+                    <article class="card">
+                        <h3>Space Man</h3>
+                        <p class="card-meta">2D 탑뷰 슈팅 게임</p>
+                        <p class="card-text">
+                            끝없이 쏟아지는 적을 피해 우주를 탐색하는 탑뷰 슈팅 게임입니다. 한 손으로 조작 가능한 직관적인 컨트롤을 지향합니다.
+                        </p>
+                        <a class="card-link" href="#" target="_blank" rel="noopener noreferrer">
+                            출시 예정
+                        </a>
+                    </article>
+
+                    <!-- 카드 3 (샘플) -->
+                    <article class="card">
+                        <h3>나는 드래곤 밥 줘!</h3>
+                        <p class="card-meta">캐주얼 게임</p>
+                        <p class="card-text">
+                            먹이 버튼과 폭탄버튼 위치가 계속 바뀌는 게임입니다. 드래곤한테 먹이를 주세요.
+                        </p>
+                        <a class="card-link" href="https://play.google.com/store/apps/details?id=com.kmagpie.ImaDragonFoodPlease" target="_blank" rel="noopener noreferrer">
+                            Google Play에서 보기 →
+                        </a>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- 개발자 소개 -->
+        <section id="about" class="section section-alt">
+            <div class="container">
+                <h2>개발자 소개</h2>
+                <p class="section-desc">
+                    K-Magpie는 다양한 아이디어와 빠른 실행력으로 작은 실험부터 완성된 제품까지 꾸준히 만들어가는 1인 개발자입니다.
+                </p>
+
+                <ul class="about-list">
+                    <li>🎮 주요 분야: 모바일 캐주얼 게임, 간단한 유틸리티 앱</li>
+                    <li>📱 플랫폼: Android (Google Play) 중심, 추후 iOS / 웹도 확장 예정</li>
+                    <li>🧪 철학: “게임은 재미, 앱은 편리함”을 우선으로 개발합니다.</li>
+                    <li>🚀 작은 아이디어도 빠르게 실험하고, 데이터와 유저 피드백으로 개선합니다.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 문의 / 연락처 -->
+        <section id="contact" class="section">
+            <div class="container">
+                <h2>문의</h2>
+                <p class="section-desc">
+                    버그 신고, 앱/게임 관련 문의, 광고/프로모션 제안 등은 아래 연락처로 부탁드립니다.
+                </p>
+
+                <div class="contact-box">
+                    <!-- TODO: 실제 이메일/연락처로 수정 -->
+                    <p><strong>이메일</strong> : <a href="mailto:support@kmagpie.com">support@kmagpie.com</a></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 푸터: 개인정보 처리방침 링크 + 사업자 정보 -->
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div class="footer-links">
+                <!-- TODO: privacy-policy.html 파일 경로에 맞게 수정 -->
+                <a href="/privacy-policy.html">개인정보 처리방침</a>
+                <!-- 필요하면 약관도 나중에 추가
+                <a href="/terms.html">서비스 이용약관</a>
+                -->
+            </div>
+
+            <div class="footer-business">
+                <!-- TODO: 실제 사업자 정보로 교체 -->
+                <p><strong>상호</strong> : 케이맥파이(K-magpie)</p>
+                <p><strong>대표자</strong> : 이건호 </p>
+                <p><strong>사업자등록번호</strong> : 794-10-03019</p>
+                <p><strong>통신판매업 신고번호</strong> : 제 2025-경기안성-0719호</p>
+                <p><strong>주소</strong> : 경기도 안성시 중앙로 400번길 10, 201-36호(서인동)</p>
+                <p>
+                    <strong>연락처</strong> : 010-2340-6715 ·
+                    <strong>이메일</strong> :
+                    <a href="mailto:support@kmagpie.com">support@kmagpie.com</a>
+                </p>
+            </div>
+
+            <p class="footer-copy">
+                © <span id="year"></span> K-Magpie. All rights reserved.
+            </p>
+        </div>
+
+        <script>
+            // 연도 자동 업데이트
+            document.getElementById("year").textContent = new Date().getFullYear();
+        </script>
+    </footer>
+</body>
 </html>
