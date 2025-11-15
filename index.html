@@ -72,11 +72,25 @@
         align-items: center;
     }
 
-    .logo-image {
-        display: block;
-        height: 32px; /* 필요하면 28~40px 사이에서 취향대로 조절 */
-        width: auto;
-    }
+    .logo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px; /* 네 파비콘이 정사각형/라운드면 깔끔하게 맞음 */
+    flex-shrink: 0;
+}
+
+.logo-text {
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    font-size: 0.95rem;
+    text-transform: none;
+}
 
     .nav {
         display: flex;
@@ -368,8 +382,9 @@
     <header class="site-header">
     <div class="container header-inner">
         <a href="#top" class="logo-link" aria-label="K-magpie 홈으로 이동">
-            <img src="images/logo2.svg" alt="K-magpie 로고" class="logo-image" />
-        </a>
+    <img src="images/favicon.png" alt="K-magpie 아이콘" class="logo-icon" />
+    <span class="logo-text">K-magpie</span>
+</a>
 
         <nav class="nav">
             <a href="#games">게임/앱</a>
