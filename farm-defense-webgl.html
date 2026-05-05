@@ -97,18 +97,23 @@
   </main>
 
   <script>
-    const gameRoot = "/games/farm-defense";
-    const buildUrl = `${gameRoot}/Build`;
-    const loaderUrl = `${buildUrl}/Build.loader.js`;
-    const config = {
-      dataUrl: `${buildUrl}/Build.data`,
-      frameworkUrl: `${buildUrl}/Build.framework.js`,
-      codeUrl: `${buildUrl}/Build.wasm`,
-      streamingAssetsUrl: `${gameRoot}/StreamingAssets`,
-      companyName: "K-magpie",
-      productName: "농작물을 지켜라!",
-      productVersion: "1.0"
-    };
+    const roots = ["/games/farm-defense", "."];
+
+    function createConfig(gameRoot) {
+      const buildUrl = `${gameRoot}/Build`;
+      return {
+        loaderUrl: `${buildUrl}/Build.loader.js`,
+        config: {
+          dataUrl: `${buildUrl}/Build.data`,
+          frameworkUrl: `${buildUrl}/Build.framework.js`,
+          codeUrl: `${buildUrl}/Build.wasm`,
+          streamingAssetsUrl: `${gameRoot}/StreamingAssets`,
+          companyName: "K-magpie",
+          productName: "농작물을 지켜라!",
+          productVersion: "1.0"
+        }
+      };
+    }
 
     const canvas = document.querySelector("#unity-canvas");
     const status = document.querySelector("#unity-status");
@@ -118,25 +123,40 @@
       status.textContent = message;
     }
 
-    const script = document.createElement("script");
-    script.src = loaderUrl;
-    script.onload = () => {
-      createUnityInstance(canvas, config, (progress) => {
-        setStatus(`로딩 중... ${Math.round(progress * 100)}%`);
-      }).then((unityInstance) => {
-        setStatus("로딩 완료! 게임을 시작하세요.");
-        fullscreenBtn.addEventListener("click", (e) => {
-          e.preventDefault();
-          unityInstance.SetFullscreen(1);
+    function loadFromRoot(index = 0) {
+      if (index >= roots.length) {
+        setStatus("로더를 찾을 수 없습니다. /games/farm-defense 또는 페이지와 같은 경로의 Build 폴더를 확인해주세요.");
+        return;
+      }
+
+      const root = roots[index];
+      const { loaderUrl, config } = createConfig(root);
+      const script = document.createElement("script");
+      script.src = loaderUrl;
+
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          setStatus(`로딩 중... ${Math.round(progress * 100)}%`);
+        }).then((unityInstance) => {
+          setStatus(`로딩 완료! (${root} 경로)`);
+          fullscreenBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            unityInstance.SetFullscreen(1);
+          });
+        }).catch((message) => {
+          setStatus("게임 실행 실패: " + message);
         });
-      }).catch((message) => {
-        setStatus("게임 실행 실패: " + message);
-      });
-    };
-    script.onerror = () => {
-      setStatus("/games/farm-defense/Build 경로에서 로더를 찾을 수 없습니다. 폴더 구조를 확인해주세요.");
-    };
-    document.body.appendChild(script);
+      };
+
+      script.onerror = () => {
+        script.remove();
+        loadFromRoot(index + 1);
+      };
+
+      document.body.appendChild(script);
+    }
+
+    loadFromRoot();
   </script>
 </body>
 </html>
