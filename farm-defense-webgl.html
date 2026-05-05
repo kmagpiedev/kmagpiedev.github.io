@@ -92,8 +92,7 @@
       </div>
       <div class="hint" id="unity-status">게임 로더를 준비 중입니다...</div>
       <a class="btn" href="#" id="fullscreen-btn">전체화면</a>
-      <p class="footer-note">※ 권장 구조: <code>/games/farm-defense/Build</code>, <code>/games/farm-defense/StreamingAssets</code></p>
-      <p class="footer-note">※ WebGL 빌드 파일을 업로드하면 이 페이지에서 자동으로 실행됩니다.</p>
+      <p class="footer-note">※ 권장 구조는 <code>/games/farm-defense/*</code>이며, 기존 <code>./Build</code> 경로도 자동 탐색합니다.</p>
     </section>
   </main>
 
@@ -115,17 +114,6 @@
         }
       };
     }
-    const buildUrl = "Build";
-    const loaderUrl = `${buildUrl}/Build.loader.js`;
-    const config = {
-      dataUrl: `${buildUrl}/Build.data`,
-      frameworkUrl: `${buildUrl}/Build.framework.js`,
-      codeUrl: `${buildUrl}/Build.wasm`,
-      streamingAssetsUrl: "StreamingAssets",
-      companyName: "K-magpie",
-      productName: "농작물을 지켜라!",
-      productVersion: "1.0"
-    };
 
     const canvas = document.querySelector("#unity-canvas");
     const status = document.querySelector("#unity-status");
@@ -147,6 +135,11 @@
       script.src = loaderUrl;
 
       script.onload = () => {
+        if (typeof createUnityInstance !== "function") {
+          setStatus(`로더는 찾았지만 Unity 인스턴스 초기화에 실패했습니다. (${root} 경로)`);
+          return;
+        }
+
         createUnityInstance(canvas, config, (progress) => {
           setStatus(`로딩 중... ${Math.round(progress * 100)}%`);
         }).then((unityInstance) => {
@@ -161,6 +154,7 @@
       };
 
       script.onerror = () => {
+        setStatus(`로더 탐색 중... (${root} 경로 실패)`);
         script.remove();
         loadFromRoot(index + 1);
       };
@@ -169,25 +163,6 @@
     }
 
     loadFromRoot();
-    const script = document.createElement("script");
-    script.src = loaderUrl;
-    script.onload = () => {
-      createUnityInstance(canvas, config, (progress) => {
-        setStatus(`로딩 중... ${Math.round(progress * 100)}%`);
-      }).then((unityInstance) => {
-        setStatus("로딩 완료! 게임을 시작하세요.");
-        fullscreenBtn.addEventListener("click", (e) => {
-          e.preventDefault();
-          unityInstance.SetFullscreen(1);
-        });
-      }).catch((message) => {
-        setStatus("게임 실행 실패: " + message);
-      });
-    };
-    script.onerror = () => {
-      setStatus("Build 폴더에서 로더를 찾을 수 없습니다. Unity WebGL 빌드 파일을 업로드해주세요.");
-    };
-    document.body.appendChild(script);
   </script>
 </body>
 </html>
