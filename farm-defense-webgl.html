@@ -99,14 +99,29 @@
   <script>
     const roots = ["/games/farm-defense", "."];
 
-    function createConfig(gameRoot) {
+    const buildVariants = [
+      {
+        loader: "Build.loader.js",
+        data: "Build.data",
+        framework: "Build.framework.js",
+        code: "Build.wasm"
+      },
+      {
+        loader: "Build.loader.js.br",
+        data: "Build.data.br",
+        framework: "Build.framework.js.br",
+        code: "Build.wasm.br"
+      }
+    ];
+
+    function createConfig(gameRoot, variant) {
       const buildUrl = `${gameRoot}/Build`;
       return {
-        loaderUrl: `${buildUrl}/Build.loader.js`,
+        loaderUrl: `${buildUrl}/${variant.loader}`,
         config: {
-          dataUrl: `${buildUrl}/Build.data`,
-          frameworkUrl: `${buildUrl}/Build.framework.js`,
-          codeUrl: `${buildUrl}/Build.wasm`,
+          dataUrl: `${buildUrl}/${variant.data}`,
+          frameworkUrl: `${buildUrl}/${variant.framework}`,
+          codeUrl: `${buildUrl}/${variant.code}`,
           streamingAssetsUrl: `${gameRoot}/StreamingAssets`,
           companyName: "K-magpie",
           productName: "농작물을 지켜라!",
@@ -123,14 +138,20 @@
       status.textContent = message;
     }
 
-    function loadFromRoot(index = 0) {
+    function loadFromRoot(index = 0, variantIndex = 0) {
+      if (variantIndex >= buildVariants.length) {
+        setStatus("지원 가능한 Build 파일 형식을 모두 시도했지만 로더를 찾지 못했습니다.");
+        return;
+      }
+
       if (index >= roots.length) {
-        setStatus("로더를 찾을 수 없습니다. /games/farm-defense 또는 페이지와 같은 경로의 Build 폴더를 확인해주세요.");
+        loadFromRoot(0, variantIndex + 1);
         return;
       }
 
       const root = roots[index];
-      const { loaderUrl, config } = createConfig(root);
+      const variant = buildVariants[variantIndex];
+      const { loaderUrl, config } = createConfig(root, variant);
       const script = document.createElement("script");
       script.src = loaderUrl;
 
@@ -143,7 +164,7 @@
         createUnityInstance(canvas, config, (progress) => {
           setStatus(`로딩 중... ${Math.round(progress * 100)}%`);
         }).then((unityInstance) => {
-          setStatus(`로딩 완료! (${root} 경로)`);
+          setStatus(`로딩 완료! (${root} / ${variant.loader})`);
           fullscreenBtn.addEventListener("click", (e) => {
             e.preventDefault();
             unityInstance.SetFullscreen(1);
@@ -154,9 +175,9 @@
       };
 
       script.onerror = () => {
-        setStatus(`로더 탐색 중... (${root} 경로 실패)`);
+        setStatus(`로더 탐색 중... (${root} / ${variant.loader} 실패)`);
         script.remove();
-        loadFromRoot(index + 1);
+        loadFromRoot(index + 1, variantIndex);
       };
 
       document.body.appendChild(script);
