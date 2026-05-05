@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>농작물을 지켜라! | WebGL</title>
+  <meta name="description" content="유니티 WebGL 게임 '농작물을 지켜라!'를 브라우저에서 바로 플레이하세요." />
+  <link rel="icon" type="image/png" href="/images/favicon.png" />
+  <style>
+    :root {
+      --bg: #050507;
+      --panel: #171717;
+      --border: #2f2f36;
+      --text: #f8f8f8;
+      --muted: #a5a5a5;
+      --accent: #d69c29;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at top, #222 0%, #050507 52%, #000 100%);
+      min-height: 100vh;
+    }
+    .container {
+      width: min(1120px, 100% - 32px);
+      margin: 0 auto;
+      padding: 22px 0 40px;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .home-link {
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+    }
+    .home-link:hover { color: var(--text); border-bottom-color: var(--accent); }
+    h1 { margin: 6px 0 4px; font-size: clamp(1.4rem, 3vw, 2rem); }
+    .subtitle { color: var(--muted); margin: 0 0 16px; }
+    .game-shell {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+    }
+    #unity-container { width: 100%; }
+    #unity-canvas {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 10px;
+      background: #000;
+      border: 1px solid #333;
+      display: block;
+    }
+    .hint {
+      margin-top: 12px;
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .btn {
+      margin-top: 12px;
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+      color: #181818;
+      background: var(--accent);
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .footer-note { margin-top: 14px; color: var(--muted); font-size: 0.8rem; }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <div class="topbar">
+      <a class="home-link" href="/">← 메인으로 돌아가기</a>
+    </div>
+
+    <h1>농작물을 지켜라! (WebGL)</h1>
+    <p class="subtitle">브라우저에서 바로 플레이하는 유니티 WebGL 버전입니다.</p>
+
+    <section class="game-shell">
+      <div id="unity-container">
+        <canvas id="unity-canvas" tabindex="-1" aria-label="농작물을 지켜라! WebGL 게임 화면"></canvas>
+      </div>
+      <div class="hint" id="unity-status">게임 로더를 준비 중입니다...</div>
+      <a class="btn" href="#" id="fullscreen-btn">전체화면</a>
+      <p class="footer-note">※ WebGL 빌드 파일을 업로드하면 이 페이지에서 자동으로 실행됩니다.</p>
+    </section>
+  </main>
+
+  <script>
+    const buildUrl = "Build";
+    const loaderUrl = `${buildUrl}/Build.loader.js`;
+    const config = {
+      dataUrl: `${buildUrl}/Build.data`,
+      frameworkUrl: `${buildUrl}/Build.framework.js`,
+      codeUrl: `${buildUrl}/Build.wasm`,
+      streamingAssetsUrl: "StreamingAssets",
+      companyName: "K-magpie",
+      productName: "농작물을 지켜라!",
+      productVersion: "1.0"
+    };
+
+    const canvas = document.querySelector("#unity-canvas");
+    const status = document.querySelector("#unity-status");
+    const fullscreenBtn = document.querySelector("#fullscreen-btn");
+
+    function setStatus(message) {
+      status.textContent = message;
+    }
+
+    const script = document.createElement("script");
+    script.src = loaderUrl;
+    script.onload = () => {
+      createUnityInstance(canvas, config, (progress) => {
+        setStatus(`로딩 중... ${Math.round(progress * 100)}%`);
+      }).then((unityInstance) => {
+        setStatus("로딩 완료! 게임을 시작하세요.");
+        fullscreenBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          unityInstance.SetFullscreen(1);
+        });
+      }).catch((message) => {
+        setStatus("게임 실행 실패: " + message);
+      });
+    };
+    script.onerror = () => {
+      setStatus("Build 폴더에서 로더를 찾을 수 없습니다. Unity WebGL 빌드 파일을 업로드해주세요.");
+    };
+    document.body.appendChild(script);
+  </script>
+</body>
+</html>
