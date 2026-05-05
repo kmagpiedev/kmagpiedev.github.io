@@ -99,36 +99,32 @@
   <script>
     const roots = ["/games/farm-defense", "."];
 
-    const buildVariants = [
-      {
-        loader: "Build.loader.js",
-        data: "Build.data",
-        framework: "Build.framework.js",
-        code: "Build.wasm"
-      },
-      {
-        loader: "Build.loader.js",
-        data: "Build.data.br",
-        framework: "Build.framework.js.br",
-        code: "Build.wasm.br"
-      }
-    ];
+    const buildVersion = "20260506_1";
 
-    function createConfig(gameRoot, variant) {
-      const buildUrl = `${gameRoot}/Build`;
-      return {
-        loaderUrl: `${buildUrl}/${variant.loader}`,
-        config: {
-          dataUrl: `${buildUrl}/${variant.data}`,
-          frameworkUrl: `${buildUrl}/${variant.framework}`,
-          codeUrl: `${buildUrl}/${variant.code}`,
-          streamingAssetsUrl: `${gameRoot}/StreamingAssets`,
-          companyName: "K-magpie",
-          productName: "농작물을 지켜라!",
-          productVersion: "1.0"
-        }
-      };
+const buildVariants = [
+  {
+    loader: "Build.loader.js",
+    data: "Build.data.br",
+    framework: "Build.framework.js.br",
+    code: "Build.wasm.br"
+  }
+];
+
+function createConfig(gameRoot, variant) {
+  const buildUrl = `${gameRoot}/Build`;
+  return {
+    loaderUrl: `${buildUrl}/${variant.loader}?v=${buildVersion}`,
+    config: {
+      dataUrl: `${buildUrl}/${variant.data}?v=${buildVersion}`,
+      frameworkUrl: `${buildUrl}/${variant.framework}?v=${buildVersion}`,
+      codeUrl: `${buildUrl}/${variant.code}?v=${buildVersion}`,
+      streamingAssetsUrl: `${gameRoot}/StreamingAssets`,
+      companyName: "K-magpie",
+      productName: "농작물을 지켜라!",
+      productVersion: "1.0"
     }
+  };
+}
 
     const canvas = document.querySelector("#unity-canvas");
     const status = document.querySelector("#unity-status");
