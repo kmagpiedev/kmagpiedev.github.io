@@ -135,6 +135,23 @@
         border: 1px solid rgba(39, 39, 47, 0.9);
         padding: 16px 14px 14px;
         font-size: 0.9rem;
+        transition: transform 0.14s ease, border-color 0.14s ease, box-shadow 0.14s ease;
+    }
+    .card:hover {
+        transform: translateY(-2px);
+        border-color: rgba(214, 156, 41, 0.55);
+        box-shadow: 0 16px 36px rgba(0, 0, 0, 0.24);
+    }
+    .card-icon-link { display: inline-flex; margin-bottom: 12px; }
+    .card-icon {
+        width: 72px;
+        height: 72px;
+        border-radius: 18px;
+        object-fit: cover;
+        display: block;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
     }
     .card h3 { font-size: 1rem; margin-bottom: 6px; }
     .card-meta { color: var(--muted); font-size: 0.8rem; margin-bottom: 8px; }
@@ -174,6 +191,7 @@
         .header-actions { width: 100%; justify-content: space-between; gap: 10px; }
         .nav { gap: 12px; font-size: 0.85rem; }
         .lang-btn { padding: 4px 7px; }
+        .card-icon { width: 64px; height: 64px; border-radius: 16px; }
     }
 
     @media (min-width: 768px) {
@@ -237,6 +255,9 @@
 
                 <div class="card-grid">
                     <article class="card">
+                        <a class="card-icon-link" href="https://play.google.com/store/apps/details?id=com.kmagpie.MonBreak" target="_blank" rel="noopener noreferrer" aria-label="MonBreak Google Play" data-i18n-attr="aria-label:monbreakIconAria">
+                            <img class="card-icon" src="/images/icon_monbreak.png" alt="MonBreak icon" data-i18n-attr="alt:monbreakIconAlt" />
+                        </a>
                         <h3>MonBreak</h3>
                         <p class="card-meta" data-i18n="monbreakMeta">신작 · 모바일 게임</p>
                         <p class="card-text" data-i18n="monbreakText">
@@ -248,6 +269,9 @@
                     </article>
 
                     <article class="card">
+                        <a class="card-icon-link" href="https://play.google.com/store/apps/details?id=com.kmagpie.dailyfortunecat" target="_blank" rel="noopener noreferrer" aria-label="Cat Fortune Cookie Google Play" data-i18n-attr="aria-label:fortuneIconAria">
+                            <img class="card-icon" src="/images/icon_catfortunecookie.png" alt="Cat Fortune Cookie icon" data-i18n-attr="alt:fortuneIconAlt" />
+                        </a>
                         <h3 data-i18n="fortuneTitle">고양이 포춘쿠키</h3>
                         <p class="card-meta" data-i18n="fortuneMeta">운세 · 모바일 앱</p>
                         <p class="card-text" data-i18n="fortuneText">
@@ -259,6 +283,9 @@
                     </article>
 
                     <article class="card">
+                        <a class="card-icon-link" href="https://play.google.com/store/apps/details?id=com.kmagpie.ImaDragonFoodPlease" target="_blank" rel="noopener noreferrer" aria-label="I’m a Dragon, Feed Me Google Play" data-i18n-attr="aria-label:dragonIconAria">
+                            <img class="card-icon" src="/images/icon_imdragonfeedme.png" alt="I’m a Dragon, Feed Me icon" data-i18n-attr="alt:dragonIconAlt" />
+                        </a>
                         <h3 data-i18n="dragonTitle">나는 드래곤 밥 줘!</h3>
                         <p class="card-meta" data-i18n="dragonMeta">캐주얼 게임</p>
                         <p class="card-text" data-i18n="dragonText">
@@ -350,11 +377,17 @@
                 youtubeLink: "YouTube 채널 보기",
                 gamesTitle: "게임 & 앱",
                 gamesDesc: "출시 및 개발 중인 프로젝트들 입니다.",
+                monbreakIconAria: "MonBreak Google Play로 이동",
+                monbreakIconAlt: "MonBreak 아이콘",
                 monbreakMeta: "신작 · 모바일 게임",
                 monbreakText: "블록을 부수며 리듬감 있게 진행하는 캐주얼 액션 게임입니다. 짧은 플레이에서도 손맛을 느낄 수 있도록 설계했습니다.",
+                fortuneIconAria: "고양이 포춘쿠키 Google Play로 이동",
+                fortuneIconAlt: "고양이 포춘쿠키 아이콘",
                 fortuneTitle: "고양이 포춘쿠키",
                 fortuneMeta: "운세 · 모바일 앱",
                 fortuneText: "귀여운 고양이가 매일 운세를 뽑아주는 캐주얼 운세 앱입니다. 가볍게 열고 오늘의 메시지를 확인해보세요.",
+                dragonIconAria: "나는 드래곤 밥 줘! Google Play로 이동",
+                dragonIconAlt: "나는 드래곤 밥 줘! 아이콘",
                 dragonTitle: "나는 드래곤 밥 줘!",
                 dragonMeta: "캐주얼 게임",
                 dragonText: "먹이 버튼과 폭탄버튼 위치가 계속 바뀌는 게임입니다. 드래곤한테 먹이를 주세요.",
@@ -397,11 +430,17 @@
                 youtubeLink: "Visit YouTube Channel",
                 gamesTitle: "Games & Apps",
                 gamesDesc: "Released and in-development projects.",
+                monbreakIconAria: "Go to MonBreak on Google Play",
+                monbreakIconAlt: "MonBreak icon",
                 monbreakMeta: "New · Mobile Game",
                 monbreakText: "A casual action game built around breaking blocks with a satisfying rhythm. Designed to feel fun even in short play sessions.",
+                fortuneIconAria: "Go to Cat Fortune Cookie on Google Play",
+                fortuneIconAlt: "Cat Fortune Cookie icon",
                 fortuneTitle: "Cat Fortune Cookie",
                 fortuneMeta: "Fortune · Mobile App",
                 fortuneText: "A casual fortune app where a cute cat gives you a daily message. Open it lightly and check today’s fortune.",
+                dragonIconAria: "Go to I’m a Dragon, Feed Me! on Google Play",
+                dragonIconAlt: "I’m a Dragon, Feed Me! icon",
                 dragonTitle: "I’m a Dragon, Feed Me!",
                 dragonMeta: "Casual Game",
                 dragonText: "A game where the food and bomb buttons keep changing positions. Feed the dragon carefully.",
@@ -444,11 +483,17 @@
                 youtubeLink: "YouTubeチャンネルを見る",
                 gamesTitle: "ゲーム & アプリ",
                 gamesDesc: "リリース済み、または開発中のプロジェクトです。",
+                monbreakIconAria: "MonBreakのGoogle Playページへ移動",
+                monbreakIconAlt: "MonBreakアイコン",
                 monbreakMeta: "新作 · モバイルゲーム",
                 monbreakText: "ブロックを壊しながらテンポよく進むカジュアルアクションゲームです。短いプレイでも手応えを感じられるように設計しています。",
+                fortuneIconAria: "猫のフォーチュンクッキーのGoogle Playページへ移動",
+                fortuneIconAlt: "猫のフォーチュンクッキーアイコン",
                 fortuneTitle: "猫のフォーチュンクッキー",
                 fortuneMeta: "占い · モバイルアプリ",
                 fortuneText: "かわいい猫が毎日の運勢を届けてくれるカジュアル占いアプリです。気軽に開いて、今日のメッセージを確認してみてください。",
+                dragonIconAria: "私はドラゴン、ごはんちょうだい！のGoogle Playページへ移動",
+                dragonIconAlt: "私はドラゴン、ごはんちょうだい！アイコン",
                 dragonTitle: "私はドラゴン、ごはんちょうだい！",
                 dragonMeta: "カジュアルゲーム",
                 dragonText: "エサボタンと爆弾ボタンの位置が入れ替わり続けるゲームです。ドラゴンにうまくエサをあげてください。",
