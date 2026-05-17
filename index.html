@@ -7,8 +7,15 @@
     <meta name="description" content="신작 모바일 게임 MonBreak를 포함해 다양한 게임과 앱을 만드는 1인 개발자 K-magpie의 공식 홈페이지입니다." />
     <link rel="icon" type="image/png" href="/images/favicon.png">
     <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
-    <!-- 기본 스타일 -->
-   <style>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W19XLZW4MB"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-W19XLZW4MB');
+    </script>
+    <style>
     :root {
         --bg: #050507;
         --bg-alt: #111111;
@@ -21,36 +28,18 @@
         --max-width: 960px;
     }
 
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
         font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        background: radial-gradient(
-            circle at top,
-            #27272f 0,
-            #050507 55%,
-            #000000 100%
-        );
+        background: radial-gradient(circle at top, #27272f 0, #050507 55%, #000000 100%);
         color: var(--text);
         line-height: 1.6;
     }
 
-    a {
-        color: inherit;
-        text-decoration: none;
-    }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: var(--max-width); margin: 0 auto; padding: 0 16px; }
 
-    .container {
-        max-width: var(--max-width);
-        margin: 0 auto;
-        padding: 0 16px;
-    }
-
-    /* 헤더 */
     .site-header {
         position: sticky;
         top: 0;
@@ -64,103 +53,57 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        gap: 12px;
         padding: 12px 0;
     }
 
-    .logo-link {
+    .logo-link { display: inline-flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .logo-icon { width: 24px; height: 24px; border-radius: 4px; flex-shrink: 0; }
+    .logo-text { font-weight: 600; letter-spacing: 0.06em; font-size: 0.95rem; }
+
+    .header-actions { display: flex; align-items: center; gap: 14px; }
+
+    .nav { display: flex; gap: 16px; font-size: 0.9rem; }
+    .nav a { color: var(--muted); padding: 4px 0; border-bottom: 1px solid transparent; }
+    .nav a:hover { color: var(--text); border-color: var(--accent); }
+
+    .language-switcher {
         display: inline-flex;
         align-items: center;
+        gap: 4px;
+        padding: 3px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: rgba(15, 15, 15, 0.9);
     }
 
-    .logo-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.logo-icon {
-    width: 24px;
-    height: 24px;
-    border-radius: 4px; /* 네 파비콘이 정사각형/라운드면 깔끔하게 맞음 */
-    flex-shrink: 0;
-}
-
-.logo-text {
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    font-size: 0.95rem;
-    text-transform: none;
-}
-
-    .nav {
-        display: flex;
-        gap: 16px;
-        font-size: 0.9rem;
-    }
-
-    .nav a {
+    .lang-btn {
+        border: 0;
+        border-radius: 999px;
+        padding: 4px 8px;
+        background: transparent;
         color: var(--muted);
-        padding: 4px 0;
-        border-bottom: 1px solid transparent;
+        font-size: 0.78rem;
+        cursor: pointer;
     }
 
-    .nav a:hover {
-        color: var(--text);
-        border-color: var(--accent);
+    .lang-btn.active {
+        background: var(--accent);
+        color: #141414;
+        font-weight: 700;
     }
 
-    /* 섹션 공통 */
-    main {
-        padding-bottom: 64px;
-    }
+    main { padding-bottom: 64px; }
+    .section { padding: 56px 0; }
+    .section-alt { background: var(--bg-alt); border-block: 1px solid var(--border); }
+    .section h2 { font-size: 1.5rem; margin-bottom: 8px; }
+    .section-desc { color: var(--muted); font-size: 0.95rem; margin-bottom: 20px; }
 
-    .section {
-        padding: 56px 0;
-    }
-
-    .section-alt {
-        background: var(--bg-alt);
-        border-block: 1px solid var(--border);
-    }
-
-    .section h2 {
-        font-size: 1.5rem;
-        margin-bottom: 8px;
-    }
-
-    .section-desc {
-        color: var(--muted);
-        font-size: 0.95rem;
-        margin-bottom: 20px;
-    }
-
-    /* 히어로 영역 */
-    .hero {
-        padding: 40px 0 32px;
-    }
-
-    .hero-inner {
-        display: grid;
-        gap: 24px;
-    }
-
-    .hero-text h1 {
-        font-size: 2rem;
-        line-height: 1.3;
-        margin-bottom: 12px;
-    }
-
-    .hero-text p {
-        color: var(--muted);
-        font-size: 0.98rem;
-        margin-bottom: 20px;
-    }
-
-    .hero-buttons {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
+    .hero { padding: 40px 0 32px; }
+    .hero-inner { display: grid; gap: 24px; }
+    .hero-text h1 { font-size: 2rem; line-height: 1.3; margin-bottom: 12px; }
+    .hero-text p { color: var(--muted); font-size: 0.98rem; margin-bottom: 20px; }
+    .hero-buttons { display: flex; flex-wrap: wrap; gap: 10px; }
 
     .btn {
         display: inline-flex;
@@ -171,8 +114,7 @@
         border-radius: 999px;
         border: 1px solid transparent;
         cursor: pointer;
-        transition: transform 0.12s ease, box-shadow 0.12s ease,
-            background 0.12s ease, border-color 0.12s ease;
+        transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease, border-color 0.12s ease;
         white-space: nowrap;
     }
 
@@ -182,67 +124,11 @@
         font-weight: 600;
         box-shadow: 0 10px 25px rgba(214, 156, 41, 0.4);
     }
+    .btn.primary:hover { transform: translateY(-1px); box-shadow: 0 18px 35px rgba(214, 156, 41, 0.55); }
+    .btn.secondary { border-color: var(--border); background: rgba(15, 15, 15, 0.9); color: var(--muted); }
+    .btn.secondary:hover { border-color: var(--accent); color: var(--text); background: rgba(23, 23, 23, 0.95); }
 
-    .btn.primary:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 18px 35px rgba(214, 156, 41, 0.55);
-    }
-
-    .btn.secondary {
-        border-color: var(--border);
-        background: rgba(15, 15, 15, 0.9);
-        color: var(--muted);
-    }
-
-    .btn.secondary:hover {
-        border-color: var(--accent);
-        color: var(--text);
-        background: rgba(23, 23, 23, 0.95);
-    }
-
-    .hero-side {
-        padding: 14px 14px 16px;
-        border-radius: 18px;
-        background:
-            radial-gradient(circle at top left, var(--accent-soft), transparent 60%),
-            var(--card-bg);
-        border: 1px solid rgba(82, 82, 91, 0.6);
-        font-size: 0.85rem;
-    }
-
-    .hero-tag {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 0.75rem;
-        padding: 4px 9px;
-        border-radius: 999px;
-        background: rgba(15, 15, 15, 0.9);
-        border: 1px solid rgba(82, 82, 91, 0.8);
-        margin-bottom: 8px;
-    }
-
-    .hero-note {
-        color: var(--muted);
-        margin-bottom: 10px;
-    }
-
-    .hero-placeholder-box {
-        margin-top: 6px;
-        border-radius: 12px;
-        border: 1px dashed rgba(120, 120, 120, 0.9);
-        padding: 10px;
-        text-align: center;
-        font-size: 0.78rem;
-        color: var(--muted);
-    }
-
-    /* 카드 그리드 (게임/앱) */
-    .card-grid {
-        display: grid;
-        gap: 16px;
-    }
-
+    .card-grid { display: grid; gap: 16px; }
     .card {
         background: var(--card-bg);
         border-radius: 18px;
@@ -250,43 +136,14 @@
         padding: 16px 14px 14px;
         font-size: 0.9rem;
     }
+    .card h3 { font-size: 1rem; margin-bottom: 6px; }
+    .card-meta { color: var(--muted); font-size: 0.8rem; margin-bottom: 8px; }
+    .card-text { color: var(--text); font-size: 0.88rem; margin-bottom: 10px; }
+    .card-link { font-size: 0.85rem; color: var(--accent); }
+    .card-link:hover { text-decoration: underline; }
 
-    .card h3 {
-        font-size: 1rem;
-        margin-bottom: 6px;
-    }
+    .about-list { list-style: none; display: grid; gap: 6px; font-size: 0.9rem; color: var(--muted); }
 
-    .card-meta {
-        color: var(--muted);
-        font-size: 0.8rem;
-        margin-bottom: 8px;
-    }
-
-    .card-text {
-        color: var(--text);
-        font-size: 0.88rem;
-        margin-bottom: 10px;
-    }
-
-    .card-link {
-        font-size: 0.85rem;
-        color: var(--accent);
-    }
-
-    .card-link:hover {
-        text-decoration: underline;
-    }
-
-    /* 소개 섹션 */
-    .about-list {
-        list-style: none;
-        display: grid;
-        gap: 6px;
-        font-size: 0.9rem;
-        color: var(--muted);
-    }
-
-    /* 문의 섹션 */
     .contact-box {
         background: var(--card-bg);
         border-radius: 16px;
@@ -294,16 +151,9 @@
         padding: 14px 14px 12px;
         font-size: 0.9rem;
     }
+    .contact-box p + p { margin-top: 4px; }
+    .contact-box a { color: var(--accent); }
 
-    .contact-box p + p {
-        margin-top: 4px;
-    }
-
-    .contact-box a {
-        color: var(--accent);
-    }
-
-    /* 푸터 */
     .site-footer {
         border-top: 1px solid var(--border);
         background: #050507;
@@ -311,169 +161,110 @@
         font-size: 0.78rem;
         color: var(--muted);
     }
+    .footer-inner { display: flex; flex-direction: column; gap: 8px; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; }
+    .footer-links a { text-decoration: underline; text-underline-offset: 3px; }
+    .footer-business p { margin-bottom: 2px; }
+    .footer-copy { margin-top: 4px; font-size: 0.75rem; }
+    .footer-divider { font-size: 0.8rem; color: var(--muted); opacity: 0.8; margin: 0 6px; }
+    .footer-email-block { font-size: 0.8rem; color: var(--muted); }
 
-    .footer-inner {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
+    @media (max-width: 767px) {
+        .header-inner { align-items: flex-start; flex-direction: column; }
+        .header-actions { width: 100%; justify-content: space-between; gap: 10px; }
+        .nav { gap: 12px; font-size: 0.85rem; }
+        .lang-btn { padding: 4px 7px; }
     }
 
-    .footer-links {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        font-size: 0.8rem;
-    }
-
-    .footer-links a {
-        text-decoration: underline;
-        text-underline-offset: 3px;
-    }
-
-    .footer-business p {
-        margin-bottom: 2px;
-    }
-
-    .footer-copy {
-        margin-top: 4px;
-        font-size: 0.75rem;
-    }
-   .footer-divider {
-    font-size: 0.8rem;
-    color: var(--muted);
-    opacity: 0.8;
-    margin: 0 6px;
-}
-
-.footer-email-block {
-    font-size: 0.8rem;
-    color: var(--muted);
-}
-
-    /* 반응형 */
     @media (min-width: 768px) {
-        .hero-inner {
-            grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-            align-items: center;
-        }
-
-        .hero-text h1 {
-            font-size: 2.3rem;
-        }
-
-        .card-grid {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
-
-        .footer-inner {
-            flex-direction: column;
-        }
-
-        .footer-business {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            column-gap: 18px;
-        }
+        .hero-inner { grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); align-items: center; }
+        .hero-text h1 { font-size: 2.3rem; }
+        .card-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .footer-business { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 18px; }
     }
-</style>
-
+    </style>
 </head>
 <body>
     <header class="site-header">
-    <div class="container header-inner">
-        <a href="#top" class="logo-link" aria-label="K-magpie 홈으로 이동">
-    <img src="images/favicon.png" alt="K-magpie 아이콘" class="logo-icon" />
-    <span class="logo-text">K-magpie</span>
-</a>
+        <div class="container header-inner">
+            <a href="#top" class="logo-link" aria-label="K-magpie home" data-i18n-attr="aria-label:logoAria">
+                <img src="images/favicon.png" alt="K-magpie icon" class="logo-icon" data-i18n-attr="alt:logoAlt" />
+                <span class="logo-text">K-magpie</span>
+            </a>
 
-        <nav class="nav">
-            <a href="#games">게임/앱</a>
-            <a href="#about">소개</a>
-            <a href="#contact">문의</a>
-        </nav>
-    </div>
-</header>
+            <div class="header-actions">
+                <nav class="nav" aria-label="Main navigation" data-i18n-attr="aria-label:navAria">
+                    <a href="#games" data-i18n="navGames">게임/앱</a>
+                    <a href="#about" data-i18n="navAbout">소개</a>
+                    <a href="#contact" data-i18n="navContact">문의</a>
+                </nav>
+                <div class="language-switcher" aria-label="Language selector" data-i18n-attr="aria-label:langAria">
+                    <button type="button" class="lang-btn" data-lang="ko">KO</button>
+                    <button type="button" class="lang-btn" data-lang="en">EN</button>
+                    <button type="button" class="lang-btn" data-lang="ja">JA</button>
+                </div>
+            </div>
+        </div>
+    </header>
 
     <main>
-        <!-- 히어로 섹션 -->
         <section class="hero" id="top">
             <div class="container hero-inner">
                 <div class="hero-text">
-                    <h1>신작 MonBreak와 함께<br>게임과 앱을 만드는 1인 개발자</h1>
-                    <p>
+                    <h1 data-i18n="heroTitle">신작 MonBreak와 함께<br>게임과 앱을 만드는 1인 개발자</h1>
+                    <p data-i18n="heroDesc">
                         유저가 진짜 즐겁게 플레이하고, 편하게 사용할 수 있는 경험을 만드는 K-magpie입니다.
                         최근에는 Google Play에서 서비스 중인 신작 <strong>MonBreak</strong>를 메인 타이틀로 운영하며,
                         캐주얼 게임과 간단하지만 유용한 앱을 중심으로 개발하고 있습니다.
                     </p>
 
                     <div class="hero-buttons">
-                        <!-- TODO: 실제 스토어 / 채널 링크로 교체 -->
-                        <a class="btn primary" href="https://play.google.com/store/apps/details?id=com.kmagpie.MonBreak" target="_blank" rel="noopener noreferrer">
+                        <a class="btn primary" href="https://play.google.com/store/apps/details?id=com.kmagpie.MonBreak" target="_blank" rel="noopener noreferrer" data-i18n="playMonBreak">
                             MonBreak 플레이하러 가기
                         </a>
-                        <a class="btn secondary" href="https://www.youtube.com/@kmagpie_dev" target="_blank" rel="noopener noreferrer">
+                        <a class="btn secondary" href="https://www.youtube.com/@kmagpie_dev" target="_blank" rel="noopener noreferrer" data-i18n="youtubeLink">
                             YouTube 채널 보기
                         </a>
                     </div>
                 </div>
-                <!--
-                <div class="hero-side">
-                    <div class="hero-tag">Solo Indie Dev · K-magpie</div>
-                    <p class="hero-note">
-                        여기에 대표 게임 스크린샷, 로고, 홍보 이미지를 넣으면 좋습니다.
-                    </p>
-                    <div class="hero-placeholder-box">
-                        <strong>이미지 영역</strong><br />
-                        16:9 비율 이미지 1장 또는 GIF 등을 배치하세요.
-                    </div>
-                </div>
-                 -->
             </div>
-           
         </section>
 
-        <!-- 게임 / 앱 섹션 -->
         <section id="games" class="section">
             <div class="container">
-                <h2>게임 & 앱</h2>
-                <p class="section-desc">
-                    출시 및 개발 중인 프로젝트들 입니다.
-                </p>
+                <h2 data-i18n="gamesTitle">게임 & 앱</h2>
+                <p class="section-desc" data-i18n="gamesDesc">출시 및 개발 중인 프로젝트들 입니다.</p>
 
                 <div class="card-grid">
-                    <!-- 카드 1 -->
                     <article class="card">
                         <h3>MonBreak</h3>
-                        <p class="card-meta">신작 · 모바일 게임</p>
-                        <p class="card-text">
+                        <p class="card-meta" data-i18n="monbreakMeta">신작 · 모바일 게임</p>
+                        <p class="card-text" data-i18n="monbreakText">
                             블록을 부수며 리듬감 있게 진행하는 캐주얼 액션 게임입니다. 짧은 플레이에서도 손맛을 느낄 수 있도록 설계했습니다.
                         </p>
-                        <a class="card-link" href="https://play.google.com/store/apps/details?id=com.kmagpie.MonBreak" target="_blank" rel="noopener noreferrer">
+                        <a class="card-link" href="https://play.google.com/store/apps/details?id=com.kmagpie.MonBreak" target="_blank" rel="noopener noreferrer" data-i18n="googlePlayLink">
                             Google Play에서 보기 →
                         </a>
                     </article>
 
-                    <!-- 카드 2 -->
                     <article class="card">
-                        <h3>고양이 포춘쿠키</h3>
-                        <p class="card-meta">운세 · 모바일 앱</p>
-                        <p class="card-text">
+                        <h3 data-i18n="fortuneTitle">고양이 포춘쿠키</h3>
+                        <p class="card-meta" data-i18n="fortuneMeta">운세 · 모바일 앱</p>
+                        <p class="card-text" data-i18n="fortuneText">
                             귀여운 고양이가 매일 운세를 뽑아주는 캐주얼 운세 앱입니다. 가볍게 열고 오늘의 메시지를 확인해보세요.
                         </p>
-                        <a class="card-link" href="https://play.google.com/store/apps/details?id=com.kmagpie.dailyfortunecat" target="_blank" rel="noopener noreferrer">
+                        <a class="card-link" href="https://play.google.com/store/apps/details?id=com.kmagpie.dailyfortunecat" target="_blank" rel="noopener noreferrer" data-i18n="googlePlayLink">
                             Google Play에서 보기 →
                         </a>
                     </article>
 
-
-                    <!-- 카드 3 (샘플) -->
                     <article class="card">
-                        <h3>나는 드래곤 밥 줘!</h3>
-                        <p class="card-meta">캐주얼 게임</p>
-                        <p class="card-text">
+                        <h3 data-i18n="dragonTitle">나는 드래곤 밥 줘!</h3>
+                        <p class="card-meta" data-i18n="dragonMeta">캐주얼 게임</p>
+                        <p class="card-text" data-i18n="dragonText">
                             먹이 버튼과 폭탄버튼 위치가 계속 바뀌는 게임입니다. 드래곤한테 먹이를 주세요.
                         </p>
-                        <a class="card-link" href="https://play.google.com/store/apps/details?id=com.kmagpie.ImaDragonFoodPlease" target="_blank" rel="noopener noreferrer">
+                        <a class="card-link" href="https://play.google.com/store/apps/details?id=com.kmagpie.ImaDragonFoodPlease" target="_blank" rel="noopener noreferrer" data-i18n="googlePlayLink">
                             Google Play에서 보기 →
                         </a>
                     </article>
@@ -481,79 +272,260 @@
             </div>
         </section>
 
-        <!-- 개발자 소개 -->
         <section id="about" class="section section-alt">
             <div class="container">
-                <h2>개발자 소개</h2>
-                <p class="section-desc">
+                <h2 data-i18n="aboutTitle">개발자 소개</h2>
+                <p class="section-desc" data-i18n="aboutDesc">
                     K-magpie는 다양한 아이디어와 빠른 실행력으로 작은 실험부터 완성된 제품까지 꾸준히 만들어가는 1인 개발자입니다.
                 </p>
 
                 <ul class="about-list">
-                    <li>🎮 주요 분야: 모바일 캐주얼 게임, 간단한 유틸리티 앱</li>
-                    <li>📱 플랫폼: Android (Google Play) 중심, 추후 iOS / Windows도 확장 예정</li>
-                    <li>🧪 철학: “게임은 재미, 앱은 편리함”을 우선으로 개발합니다.</li>
-                    <li>🚀 작은 아이디어도 빠르게 실험하고, 데이터와 유저 피드백으로 개선합니다.</li>
+                    <li data-i18n="aboutItem1">🎮 주요 분야: 모바일 캐주얼 게임, 간단한 유틸리티 앱</li>
+                    <li data-i18n="aboutItem2">📱 플랫폼: Android (Google Play) 중심, 추후 iOS / Windows도 확장 예정</li>
+                    <li data-i18n="aboutItem3">🧪 철학: “게임은 재미, 앱은 편리함”을 우선으로 개발합니다.</li>
+                    <li data-i18n="aboutItem4">🚀 작은 아이디어도 빠르게 실험하고, 데이터와 유저 피드백으로 개선합니다.</li>
                 </ul>
             </div>
         </section>
 
-        <!-- 문의 / 연락처 -->
         <section id="contact" class="section">
             <div class="container">
-                <h2>문의</h2>
-                <p class="section-desc">
+                <h2 data-i18n="contactTitle">문의</h2>
+                <p class="section-desc" data-i18n="contactDesc">
                     버그 신고, 앱/게임 관련 문의, 광고/프로모션 제안 등은 아래 연락처로 부탁드립니다.
                 </p>
 
                 <div class="contact-box">
-                    <!-- TODO: 실제 이메일/연락처로 수정 -->
-                    <p><strong>이메일</strong> : <a href="mailto:support@kmagpie.com">support@kmagpie.com</a></p>
+                    <p><strong data-i18n="emailLabel">이메일</strong> : <a href="mailto:support@kmagpie.com">support@kmagpie.com</a></p>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- 푸터: 개인정보 처리방침 링크 + 사업자 정보 -->
     <footer class="site-footer">
         <div class="container footer-inner">
             <div class="footer-links">
-                <!-- TODO: privacy-policy.html 파일 경로에 맞게 수정 -->
-                <a href="/privacy-policy.html">개인정보 처리방침</a>
-                <!-- 필요하면 약관도 나중에 추가
-                <a href="/terms.html">서비스 이용약관</a>
-                -->
+                <a href="/privacy-policy.html" data-i18n="privacyLink">개인정보 처리방침</a>
                 <span class="footer-divider">|</span>
-                <span class="footer-email-block">이메일 무단 수집 거부</span>
+                <span class="footer-email-block" data-i18n="emailReject">이메일 무단 수집 거부</span>
             </div>
 
             <div class="footer-business">
-                <!-- TODO: 실제 사업자 정보로 교체 -->
-                <p><strong>상호</strong> : 케이맥파이(K-magpie)</p>
-                <p><strong>대표자</strong> : 이건호 </p>
-                <p><strong>사업자등록번호</strong> : 794-10-03019</p>
-                <p><strong>통신판매업 신고번호</strong> : 제 2025-경기안성-0719호</p>
-                <p><strong>주소</strong> : 경기도 안성시 중앙로 400번길 10, 201-36호(서인동)</p>
+                <p><strong data-i18n="businessNameLabel">상호</strong> : <span data-i18n="businessNameValue">케이맥파이(K-magpie)</span></p>
+                <p><strong data-i18n="representativeLabel">대표자</strong> : <span data-i18n="representativeValue">이건호</span></p>
+                <p><strong data-i18n="businessNumberLabel">사업자등록번호</strong> : 794-10-03019</p>
+                <p><strong data-i18n="mailOrderLabel">통신판매업 신고번호</strong> : 제 2025-경기안성-0719호</p>
+                <p><strong data-i18n="addressLabel">주소</strong> : <span data-i18n="addressValue">경기도 안성시 중앙로 400번길 10, 201-36호(서인동)</span></p>
                 <p>
-                    <strong>연락처</strong> : 010-2340-6715 ·
-                    <strong>이메일</strong> :
+                    <strong data-i18n="phoneLabel">연락처</strong> : 010-2340-6715 ·
+                    <strong data-i18n="emailLabel">이메일</strong> :
                     <a href="mailto:support@kmagpie.com">support@kmagpie.com</a>
                 </p>
             </div>
 
             <p class="footer-copy">
-    © <span id="year"></span> K-magpie. All rights reserved.<br>
-    <span class="footer-copy-note">
-        이 사이트에 게시된 모든 콘텐츠의 저작권은 K-magpie에 있으며,
-        사전 동의 없는 무단 복제·배포를 금지합니다.
-    </span>
-</p>
+                © <span id="year"></span> K-magpie. All rights reserved.<br>
+                <span class="footer-copy-note" data-i18n="copyrightNote">
+                    이 사이트에 게시된 모든 콘텐츠의 저작권은 K-magpie에 있으며, 사전 동의 없는 무단 복제·배포를 금지합니다.
+                </span>
+            </p>
         </div>
-
-        <script>
-            // 연도 자동 업데이트
-            document.getElementById("year").textContent = new Date().getFullYear();
-        </script>
     </footer>
+
+    <script>
+        const translations = {
+            ko: {
+                title: "K-magpie | 게임 & 앱",
+                description: "신작 모바일 게임 MonBreak를 포함해 다양한 게임과 앱을 만드는 1인 개발자 K-magpie의 공식 홈페이지입니다.",
+                logoAria: "K-magpie 홈으로 이동",
+                logoAlt: "K-magpie 아이콘",
+                navAria: "주요 메뉴",
+                langAria: "언어 선택",
+                navGames: "게임/앱",
+                navAbout: "소개",
+                navContact: "문의",
+                heroTitle: "신작 MonBreak와 함께<br>게임과 앱을 만드는 1인 개발자",
+                heroDesc: "유저가 진짜 즐겁게 플레이하고, 편하게 사용할 수 있는 경험을 만드는 K-magpie입니다. 최근에는 Google Play에서 서비스 중인 신작 <strong>MonBreak</strong>를 메인 타이틀로 운영하며, 캐주얼 게임과 간단하지만 유용한 앱을 중심으로 개발하고 있습니다.",
+                playMonBreak: "MonBreak 플레이하러 가기",
+                youtubeLink: "YouTube 채널 보기",
+                gamesTitle: "게임 & 앱",
+                gamesDesc: "출시 및 개발 중인 프로젝트들 입니다.",
+                monbreakMeta: "신작 · 모바일 게임",
+                monbreakText: "블록을 부수며 리듬감 있게 진행하는 캐주얼 액션 게임입니다. 짧은 플레이에서도 손맛을 느낄 수 있도록 설계했습니다.",
+                fortuneTitle: "고양이 포춘쿠키",
+                fortuneMeta: "운세 · 모바일 앱",
+                fortuneText: "귀여운 고양이가 매일 운세를 뽑아주는 캐주얼 운세 앱입니다. 가볍게 열고 오늘의 메시지를 확인해보세요.",
+                dragonTitle: "나는 드래곤 밥 줘!",
+                dragonMeta: "캐주얼 게임",
+                dragonText: "먹이 버튼과 폭탄버튼 위치가 계속 바뀌는 게임입니다. 드래곤한테 먹이를 주세요.",
+                googlePlayLink: "Google Play에서 보기 →",
+                aboutTitle: "개발자 소개",
+                aboutDesc: "K-magpie는 다양한 아이디어와 빠른 실행력으로 작은 실험부터 완성된 제품까지 꾸준히 만들어가는 1인 개발자입니다.",
+                aboutItem1: "🎮 주요 분야: 모바일 캐주얼 게임, 간단한 유틸리티 앱",
+                aboutItem2: "📱 플랫폼: Android (Google Play) 중심, 추후 iOS / Windows도 확장 예정",
+                aboutItem3: "🧪 철학: “게임은 재미, 앱은 편리함”을 우선으로 개발합니다.",
+                aboutItem4: "🚀 작은 아이디어도 빠르게 실험하고, 데이터와 유저 피드백으로 개선합니다.",
+                contactTitle: "문의",
+                contactDesc: "버그 신고, 앱/게임 관련 문의, 광고/프로모션 제안 등은 아래 연락처로 부탁드립니다.",
+                emailLabel: "이메일",
+                privacyLink: "개인정보 처리방침",
+                emailReject: "이메일 무단 수집 거부",
+                businessNameLabel: "상호",
+                businessNameValue: "케이맥파이(K-magpie)",
+                representativeLabel: "대표자",
+                representativeValue: "이건호",
+                businessNumberLabel: "사업자등록번호",
+                mailOrderLabel: "통신판매업 신고번호",
+                addressLabel: "주소",
+                addressValue: "경기도 안성시 중앙로 400번길 10, 201-36호(서인동)",
+                phoneLabel: "연락처",
+                copyrightNote: "이 사이트에 게시된 모든 콘텐츠의 저작권은 K-magpie에 있으며, 사전 동의 없는 무단 복제·배포를 금지합니다."
+            },
+            en: {
+                title: "K-magpie | Games & Apps",
+                description: "The official website of K-magpie, a solo developer creating games and apps including the mobile game MonBreak.",
+                logoAria: "Go to K-magpie home",
+                logoAlt: "K-magpie icon",
+                navAria: "Main navigation",
+                langAria: "Language selector",
+                navGames: "Games/Apps",
+                navAbout: "About",
+                navContact: "Contact",
+                heroTitle: "A solo developer creating<br>games and apps, starting with MonBreak",
+                heroDesc: "K-magpie creates experiences that are fun to play and easy to use. The current main title is <strong>MonBreak</strong>, available on Google Play, while continuing to build casual games and simple, useful apps.",
+                playMonBreak: "Play MonBreak",
+                youtubeLink: "Visit YouTube Channel",
+                gamesTitle: "Games & Apps",
+                gamesDesc: "Released and in-development projects.",
+                monbreakMeta: "New · Mobile Game",
+                monbreakText: "A casual action game built around breaking blocks with a satisfying rhythm. Designed to feel fun even in short play sessions.",
+                fortuneTitle: "Cat Fortune Cookie",
+                fortuneMeta: "Fortune · Mobile App",
+                fortuneText: "A casual fortune app where a cute cat gives you a daily message. Open it lightly and check today’s fortune.",
+                dragonTitle: "I’m a Dragon, Feed Me!",
+                dragonMeta: "Casual Game",
+                dragonText: "A game where the food and bomb buttons keep changing positions. Feed the dragon carefully.",
+                googlePlayLink: "View on Google Play →",
+                aboutTitle: "About the Developer",
+                aboutDesc: "K-magpie is a solo developer who turns small ideas into finished products through fast experiments and steady improvement.",
+                aboutItem1: "🎮 Focus: mobile casual games and simple utility apps",
+                aboutItem2: "📱 Platform: mainly Android on Google Play, with possible iOS and Windows expansion later",
+                aboutItem3: "🧪 Philosophy: games should be fun, and apps should be convenient.",
+                aboutItem4: "🚀 Small ideas are tested quickly and improved with data and user feedback.",
+                contactTitle: "Contact",
+                contactDesc: "For bug reports, app/game inquiries, advertising, or promotion proposals, please contact us below.",
+                emailLabel: "Email",
+                privacyLink: "Privacy Policy",
+                emailReject: "No unauthorized email collection",
+                businessNameLabel: "Business name",
+                businessNameValue: "K-magpie",
+                representativeLabel: "Representative",
+                representativeValue: "GeonHo Lee",
+                businessNumberLabel: "Business registration number",
+                mailOrderLabel: "Mail-order business registration",
+                addressLabel: "Address",
+                addressValue: "201-36, 10, Jungang-ro 400beon-gil, Anseong-si, Gyeonggi-do, Republic of Korea",
+                phoneLabel: "Phone",
+                copyrightNote: "All content on this website is owned by K-magpie. Unauthorized copying or distribution without prior consent is prohibited."
+            },
+            ja: {
+                title: "K-magpie | ゲーム & アプリ",
+                description: "モバイルゲーム『MonBreak』をはじめ、ゲームとアプリを制作する個人開発者 K-magpie の公式サイトです。",
+                logoAria: "K-magpie ホームへ移動",
+                logoAlt: "K-magpie アイコン",
+                navAria: "メインメニュー",
+                langAria: "言語選択",
+                navGames: "ゲーム/アプリ",
+                navAbout: "紹介",
+                navContact: "お問い合わせ",
+                heroTitle: "MonBreakを中心に<br>ゲームとアプリを制作する個人開発者",
+                heroDesc: "K-magpieは、ユーザーが楽しく遊べて、使いやすい体験を目指して制作しています。現在はGoogle Playで配信中の新作 <strong>MonBreak</strong> をメインタイトルとして運営しながら、カジュアルゲームやシンプルで役立つアプリを開発しています。",
+                playMonBreak: "MonBreakをプレイ",
+                youtubeLink: "YouTubeチャンネルを見る",
+                gamesTitle: "ゲーム & アプリ",
+                gamesDesc: "リリース済み、または開発中のプロジェクトです。",
+                monbreakMeta: "新作 · モバイルゲーム",
+                monbreakText: "ブロックを壊しながらテンポよく進むカジュアルアクションゲームです。短いプレイでも手応えを感じられるように設計しています。",
+                fortuneTitle: "猫のフォーチュンクッキー",
+                fortuneMeta: "占い · モバイルアプリ",
+                fortuneText: "かわいい猫が毎日の運勢を届けてくれるカジュアル占いアプリです。気軽に開いて、今日のメッセージを確認してみてください。",
+                dragonTitle: "私はドラゴン、ごはんちょうだい！",
+                dragonMeta: "カジュアルゲーム",
+                dragonText: "エサボタンと爆弾ボタンの位置が入れ替わり続けるゲームです。ドラゴンにうまくエサをあげてください。",
+                googlePlayLink: "Google Playで見る →",
+                aboutTitle: "開発者紹介",
+                aboutDesc: "K-magpieは、さまざまなアイデアを素早く試しながら、完成したゲームやアプリへと育てていく個人開発者です。",
+                aboutItem1: "🎮 主な分野：モバイル向けカジュアルゲーム、シンプルなユーティリティアプリ",
+                aboutItem2: "📱 プラットフォーム：Android（Google Play）を中心に、今後iOS / Windowsにも拡張予定",
+                aboutItem3: "🧪 方針：「ゲームは楽しさ、アプリは使いやすさ」を大切にしています。",
+                aboutItem4: "🚀 小さなアイデアも素早く試し、データとユーザーの声をもとに改善します。",
+                contactTitle: "お問い合わせ",
+                contactDesc: "バグ報告、アプリやゲームに関するお問い合わせ、広告・プロモーションのご提案などは下記までご連絡ください。",
+                emailLabel: "メール",
+                privacyLink: "プライバシーポリシー",
+                emailReject: "メールアドレスの無断収集を禁止します",
+                businessNameLabel: "事業者名",
+                businessNameValue: "K-magpie",
+                representativeLabel: "代表者",
+                representativeValue: "GeonHo Lee",
+                businessNumberLabel: "事業者登録番号",
+                mailOrderLabel: "通信販売業届出番号",
+                addressLabel: "住所",
+                addressValue: "大韓民国 京畿道 安城市 中央路400番ギル10, 201-36",
+                phoneLabel: "連絡先",
+                copyrightNote: "このサイトに掲載されているすべてのコンテンツの著作権はK-magpieに帰属し、事前の同意なく複製・配布することを禁止します。"
+            }
+        };
+
+        const supportedLanguages = ["ko", "en", "ja"];
+
+        function getInitialLanguage() {
+            const saved = localStorage.getItem("kmagpie_language");
+            if (supportedLanguages.includes(saved)) return saved;
+
+            const browserLanguage = (navigator.language || "ko").toLowerCase();
+            if (browserLanguage.startsWith("ja")) return "ja";
+            if (browserLanguage.startsWith("en")) return "en";
+            return "ko";
+        }
+
+        function setLanguage(lang) {
+            const dictionary = translations[lang] || translations.ko;
+            document.documentElement.lang = lang;
+            document.title = dictionary.title;
+
+            const metaDescription = document.querySelector('meta[name="description"]');
+            if (metaDescription) metaDescription.setAttribute("content", dictionary.description);
+
+            document.querySelectorAll("[data-i18n]").forEach((element) => {
+                const key = element.getAttribute("data-i18n");
+                if (dictionary[key]) element.innerHTML = dictionary[key];
+            });
+
+            document.querySelectorAll("[data-i18n-attr]").forEach((element) => {
+                const entries = element.getAttribute("data-i18n-attr").split(",");
+                entries.forEach((entry) => {
+                    const [attr, key] = entry.split(":").map((value) => value.trim());
+                    if (attr && key && dictionary[key]) element.setAttribute(attr, dictionary[key]);
+                });
+            });
+
+            document.querySelectorAll(".lang-btn").forEach((button) => {
+                const isActive = button.getAttribute("data-lang") === lang;
+                button.classList.toggle("active", isActive);
+                button.setAttribute("aria-pressed", String(isActive));
+            });
+
+            localStorage.setItem("kmagpie_language", lang);
+        }
+
+        document.getElementById("year").textContent = new Date().getFullYear();
+
+        document.querySelectorAll(".lang-btn").forEach((button) => {
+            button.addEventListener("click", () => setLanguage(button.getAttribute("data-lang")));
+        });
+
+        setLanguage(getInitialLanguage());
+    </script>
 </body>
 </html>
