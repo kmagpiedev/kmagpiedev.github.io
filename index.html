@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -181,7 +182,12 @@
     .footer-inner { display: flex; flex-direction: column; gap: 8px; }
     .footer-links { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; }
     .footer-links a { text-decoration: underline; text-underline-offset: 3px; }
-    .footer-business p { margin-bottom: 2px; }
+    .footer-info {
+        display: grid;
+        gap: 2px;
+        font-size: 0.8rem;
+    }
+    .footer-info a { color: var(--accent); }
     .footer-copy { margin-top: 4px; font-size: 0.75rem; }
     .footer-divider { font-size: 0.8rem; color: var(--muted); opacity: 0.8; margin: 0 6px; }
     .footer-email-block { font-size: 0.8rem; color: var(--muted); }
@@ -198,7 +204,6 @@
         .hero-inner { grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); align-items: center; }
         .hero-text h1 { font-size: 2.3rem; }
         .card-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-        .footer-business { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 18px; }
     }
     </style>
 </head>
@@ -337,14 +342,14 @@
                 <span class="footer-email-block" data-i18n="emailReject">이메일 무단 수집 거부</span>
             </div>
 
-            <div class="footer-business">
-                <p><strong data-i18n="businessNameLabel">상호</strong> : <span data-i18n="businessNameValue">케이맥파이(K-magpie)</span></p>
-                <p><strong data-i18n="representativeLabel">대표자</strong> : <span data-i18n="representativeValue">이건호</span></p>
-                <p><strong data-i18n="businessNumberLabel">사업자등록번호</strong> : 794-10-03019</p>
-                <p><strong data-i18n="mailOrderLabel">통신판매업 신고번호</strong> : 제 2025-경기안성-0719호</p>
-                <p><strong data-i18n="addressLabel">주소</strong> : <span data-i18n="addressValue">경기도 안성시 중앙로 400번길 10, 201-36호(서인동)</span></p>
+            <div class="footer-info">
+                <p data-i18n="portfolioNotice">
+                    K-magpie는 인디 게임 & 앱 포트폴리오 사이트입니다.
+                </p>
+                <p data-i18n="googlePlayNotice">
+                    앱은 Google Play를 통해 제공됩니다.
+                </p>
                 <p>
-                    <strong data-i18n="phoneLabel">연락처</strong> : 010-2340-6715 ·
                     <strong data-i18n="emailLabel">이메일</strong> :
                     <a href="mailto:support@kmagpie.com">support@kmagpie.com</a>
                 </p>
@@ -403,15 +408,8 @@
                 emailLabel: "이메일",
                 privacyLink: "개인정보 처리방침",
                 emailReject: "이메일 무단 수집 거부",
-                businessNameLabel: "상호",
-                businessNameValue: "케이맥파이(K-magpie)",
-                representativeLabel: "대표자",
-                representativeValue: "이건호",
-                businessNumberLabel: "사업자등록번호",
-                mailOrderLabel: "통신판매업 신고번호",
-                addressLabel: "주소",
-                addressValue: "경기도 안성시 중앙로 400번길 10, 201-36호(서인동)",
-                phoneLabel: "연락처",
+                portfolioNotice: "K-magpie는 인디 게임 & 앱 포트폴리오 사이트입니다.",
+                googlePlayNotice: "앱은 Google Play를 통해 제공됩니다.",
                 copyrightNote: "이 사이트에 게시된 모든 콘텐츠의 저작권은 K-magpie에 있으며, 사전 동의 없는 무단 복제·배포를 금지합니다."
             },
             en: {
@@ -456,15 +454,8 @@
                 emailLabel: "Email",
                 privacyLink: "Privacy Policy",
                 emailReject: "No unauthorized email collection",
-                businessNameLabel: "Business name",
-                businessNameValue: "K-magpie",
-                representativeLabel: "Representative",
-                representativeValue: "GeonHo Lee",
-                businessNumberLabel: "Business registration number",
-                mailOrderLabel: "Mail-order business registration",
-                addressLabel: "Address",
-                addressValue: "201-36, 10, Jungang-ro 400beon-gil, Anseong-si, Gyeonggi-do, Republic of Korea",
-                phoneLabel: "Phone",
+                portfolioNotice: "K-magpie is an indie game & app portfolio website.",
+                googlePlayNotice: "Apps are available through Google Play.",
                 copyrightNote: "All content on this website is owned by K-magpie. Unauthorized copying or distribution without prior consent is prohibited."
             },
             ja: {
@@ -509,15 +500,8 @@
                 emailLabel: "メール",
                 privacyLink: "プライバシーポリシー",
                 emailReject: "メールアドレスの無断収集を禁止します",
-                businessNameLabel: "事業者名",
-                businessNameValue: "K-magpie",
-                representativeLabel: "代表者",
-                representativeValue: "GeonHo Lee",
-                businessNumberLabel: "事業者登録番号",
-                mailOrderLabel: "通信販売業届出番号",
-                addressLabel: "住所",
-                addressValue: "大韓民国 京畿道 安城市 中央路400番ギル10, 201-36",
-                phoneLabel: "連絡先",
+                portfolioNotice: "K-magpieはインディーゲーム＆アプリのポートフォリオサイトです。",
+                googlePlayNotice: "アプリはGoogle Playを通じて提供されています。",
                 copyrightNote: "このサイトに掲載されているすべてのコンテンツの著作権はK-magpieに帰属し、事前の同意なく複製・配布することを禁止します。"
             }
         };
