@@ -5,7 +5,12 @@
     <meta charset="UTF-8" />
     <title>K-magpie | 게임 & 앱</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="신작 모바일 게임 MonBreak를 포함해 다양한 게임과 앱을 만드는 1인 개발자 K-magpie의 공식 홈페이지입니다." />
+    <meta name="description" content="K-magpie가 Google Play에서 제공하는 모바일 게임과 생활 앱을 한곳에서 둘러보고 바로 설치할 수 있는 공식 홈페이지입니다." />
+    <meta property="og:title" content="K-magpie | Google Play 게임 & 앱" />
+    <meta property="og:description" content="캐주얼 게임, 한식 추천, 할 일 관리, 운세 앱까지 K-magpie의 Android 앱을 바로 만나보세요." />
+    <meta property="og:image" content="https://www.kmagpie.com/images/icon_monbreak.png" />
+    <meta property="og:url" content="https://www.kmagpie.com/" />
+    <meta name="twitter:card" content="summary" />
     <link rel="icon" type="image/png" href="/images/favicon.png">
     <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
     <!-- Google tag (gtag.js) -->
@@ -26,7 +31,7 @@
         --muted: #a3a3a3;
         --border: #27272f;
         --card-bg: #171717;
-        --max-width: 960px;
+        --max-width: 1080px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -100,11 +105,50 @@
     .section h2 { font-size: 1.5rem; margin-bottom: 8px; }
     .section-desc { color: var(--muted); font-size: 0.95rem; margin-bottom: 20px; }
 
-    .hero { padding: 40px 0 32px; }
-    .hero-inner { display: grid; gap: 24px; }
-    .hero-text h1 { font-size: 2rem; line-height: 1.3; margin-bottom: 12px; }
+    .hero { padding: 54px 0 38px; }
+    .hero-inner { display: grid; gap: 28px; }
+    .hero-kicker {
+        color: var(--accent);
+        font-size: 0.82rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+    .hero-text h1 { font-size: 2.08rem; line-height: 1.26; margin-bottom: 12px; }
     .hero-text p { color: var(--muted); font-size: 0.98rem; margin-bottom: 20px; }
     .hero-buttons { display: flex; flex-wrap: wrap; gap: 10px; }
+    .hero-proof {
+        margin-top: 14px;
+        color: var(--muted);
+        font-size: 0.84rem;
+    }
+    .hero-apps {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 10px;
+        align-items: start;
+    }
+    .hero-app-link {
+        display: grid;
+        justify-items: center;
+        gap: 7px;
+        color: var(--muted);
+        font-size: 0.74rem;
+        text-align: center;
+    }
+    .hero-app-link:hover { color: var(--text); }
+    .hero-app-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 16px;
+        object-fit: cover;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 16px 34px rgba(0, 0, 0, 0.36);
+        transition: transform 0.14s ease, box-shadow 0.14s ease;
+    }
+    .hero-app-link:hover .hero-app-icon {
+        transform: translateY(-3px);
+        box-shadow: 0 22px 42px rgba(0, 0, 0, 0.44);
+    }
 
     .btn {
         display: inline-flex;
@@ -136,6 +180,8 @@
         border: 1px solid rgba(39, 39, 47, 0.9);
         padding: 16px 14px 14px;
         font-size: 0.9rem;
+        display: flex;
+        flex-direction: column;
         transition: transform 0.14s ease, border-color 0.14s ease, box-shadow 0.14s ease;
     }
     .card:hover {
@@ -156,9 +202,22 @@
     }
     .card h3 { font-size: 1rem; margin-bottom: 6px; }
     .card-meta { color: var(--muted); font-size: 0.8rem; margin-bottom: 8px; }
-    .card-text { color: var(--text); font-size: 0.88rem; margin-bottom: 10px; }
-    .card-link { font-size: 0.85rem; color: var(--accent); }
-    .card-link:hover { text-decoration: underline; }
+    .card-text { color: var(--text); font-size: 0.88rem; margin-bottom: 14px; }
+    .card-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        align-self: flex-start;
+        margin-top: auto;
+        min-height: 34px;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: var(--accent);
+        color: #141414;
+        font-size: 0.84rem;
+        font-weight: 700;
+    }
+    .card-link:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(214, 156, 41, 0.28); }
 
     .about-list { list-style: none; display: grid; gap: 6px; font-size: 0.9rem; color: var(--muted); }
 
@@ -197,12 +256,15 @@
         .header-actions { width: 100%; justify-content: space-between; gap: 10px; }
         .nav { gap: 12px; font-size: 0.85rem; }
         .lang-btn { padding: 4px 7px; }
+        .hero-apps { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 260px; }
+        .hero-app-icon { width: 58px; height: 58px; border-radius: 14px; }
         .card-icon { width: 64px; height: 64px; border-radius: 16px; }
     }
 
     @media (min-width: 768px) {
-        .hero-inner { grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); align-items: center; }
-        .hero-text h1 { font-size: 2.3rem; }
+        .hero-inner { grid-template-columns: minmax(0, 1.18fr) minmax(300px, 0.82fr); align-items: center; }
+        .hero-text h1 { font-size: 2.45rem; }
+        .hero-apps { justify-self: end; max-width: 390px; }
         .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
@@ -238,21 +300,45 @@
         <section class="hero" id="top">
             <div class="container hero-inner">
                 <div class="hero-text">
-                    <h1 data-i18n="heroTitle">신작 MonBreak와 함께<br>게임과 앱을 만드는 1인 개발자</h1>
+                    <p class="hero-kicker" data-i18n="heroKicker">Google Play에서 바로 만나는 K-magpie 앱</p>
+                    <h1 data-i18n="heroTitle">오늘 바로 설치할 수 있는<br>게임과 생활 앱 모음</h1>
                     <p data-i18n="heroDesc">
-                        유저가 진짜 즐겁게 플레이하고, 편하게 사용할 수 있는 경험을 만드는 K-magpie입니다.
-                        최근에는 Google Play에서 서비스 중인 신작 <strong>MonBreak</strong>를 메인 타이틀로 운영하며,
-                        캐주얼 게임과 간단하지만 유용한 앱을 중심으로 개발하고 있습니다.
+                        짧게 즐기는 게임부터 오늘의 운세, 한식 메뉴 추천, XP 기반 할 일 관리까지.
+                        K-magpie가 직접 만들고 업데이트하는 Android 앱을 한곳에서 둘러보고 바로 설치해보세요.
                     </p>
 
                     <div class="hero-buttons">
-                        <a class="btn primary" href="https://play.google.com/store/apps/details?id=com.kmagpie.MonBreak" target="_blank" rel="noopener noreferrer" data-i18n="playMonBreak">
-                            MonBreak 플레이하러 가기
+                        <a class="btn primary" href="#games" data-i18n="browseAppsCta">
+                            앱 둘러보고 설치하기
                         </a>
-                        <a class="btn secondary" href="https://www.youtube.com/@kmagpie_dev" target="_blank" rel="noopener noreferrer" data-i18n="youtubeLink">
-                            YouTube 채널 보기
+                        <a class="btn secondary" href="https://play.google.com/store/apps/details?id=com.kmagpie.MonBreak" target="_blank" rel="noopener noreferrer" data-i18n="heroMonBreakCta">
+                            MonBreak 설치하기
                         </a>
                     </div>
+                    <p class="hero-proof" data-i18n="heroProof">모든 앱은 Google Play에서 제공되며, 관심 있는 앱 카드에서 바로 설치 페이지로 이동할 수 있습니다.</p>
+                </div>
+
+                <div class="hero-apps" aria-label="K-magpie Google Play apps" data-i18n-attr="aria-label:heroAppsAria">
+                    <a class="hero-app-link" href="https://play.google.com/store/apps/details?id=com.kmagpie.MonBreak" target="_blank" rel="noopener noreferrer">
+                        <img class="hero-app-icon" src="/images/icon_monbreak.png" alt="MonBreak icon" />
+                        <span>MonBreak</span>
+                    </a>
+                    <a class="hero-app-link" href="https://play.google.com/store/apps/details?id=com.kmagpie.dailyxptodo" target="_blank" rel="noopener noreferrer">
+                        <img class="hero-app-icon" src="/images/icon_dailyxptodo.png" alt="Daily XP Todo icon" />
+                        <span>Daily XP Todo</span>
+                    </a>
+                    <a class="hero-app-link" href="https://play.google.com/store/apps/details?id=com.kmagpie.hansikpicker&pcampaignid=web_share" target="_blank" rel="noopener noreferrer">
+                        <img class="hero-app-icon" src="/images/icon_hansikpicker.png" alt="Korean Food Picker icon" />
+                        <span>K-Food</span>
+                    </a>
+                    <a class="hero-app-link" href="https://play.google.com/store/apps/details?id=com.kmagpie.dailyfortunecat" target="_blank" rel="noopener noreferrer">
+                        <img class="hero-app-icon" src="/images/icon_catfortunecookie.png" alt="Cat Fortune Cookie icon" />
+                        <span>Fortune Cat</span>
+                    </a>
+                    <a class="hero-app-link" href="https://play.google.com/store/apps/details?id=com.kmagpie.ImaDragonFoodPlease" target="_blank" rel="noopener noreferrer">
+                        <img class="hero-app-icon" src="/images/icon_imdragonfeedme.png" alt="I’m a Dragon, Feed Me icon" />
+                        <span>Dragon</span>
+                    </a>
                 </div>
             </div>
         </section>
@@ -260,7 +346,7 @@
         <section id="games" class="section">
             <div class="container">
                 <h2 data-i18n="gamesTitle">게임 & 앱</h2>
-                <p class="section-desc" data-i18n="gamesDesc">출시 및 개발 중인 프로젝트들 입니다.</p>
+                <p class="section-desc" data-i18n="gamesDesc">관심 있는 앱을 눌러 Google Play에서 바로 설치해보세요.</p>
 
                 <div class="card-grid">
                     <article class="card">
@@ -273,7 +359,7 @@
                             블록을 부수며 리듬감 있게 진행하는 캐주얼 액션 게임입니다. 짧은 플레이에서도 손맛을 느낄 수 있도록 설계했습니다.
                         </p>
                         <a class="card-link" href="https://play.google.com/store/apps/details?id=com.kmagpie.MonBreak" target="_blank" rel="noopener noreferrer" data-i18n="googlePlayLink">
-                            Google Play에서 보기 →
+                            Google Play에서 설치하기 →
                         </a>
                     </article>
 
@@ -287,7 +373,7 @@
                             귀여운 고양이가 매일 운세를 뽑아주는 캐주얼 운세 앱입니다. 가볍게 열고 오늘의 메시지를 확인해보세요.
                         </p>
                         <a class="card-link" href="https://play.google.com/store/apps/details?id=com.kmagpie.dailyfortunecat" target="_blank" rel="noopener noreferrer" data-i18n="googlePlayLink">
-                            Google Play에서 보기 →
+                            Google Play에서 설치하기 →
                         </a>
                     </article>
 
@@ -301,7 +387,7 @@
                             상황과 재료에 맞춰 한식 메뉴를 추천하고, 원하는 메뉴의 레시피 검색까지 이어주는 한식 추천 앱입니다.
                         </p>
                         <a class="card-link" href="https://play.google.com/store/apps/details?id=com.kmagpie.hansikpicker&pcampaignid=web_share" target="_blank" rel="noopener noreferrer" data-i18n="googlePlayLink">
-                            Google Play에서 보기 →
+                            Google Play에서 설치하기 →
                         </a>
                     </article>
 
@@ -315,7 +401,7 @@
                             할 일을 퀘스트처럼 완료하고 XP, 레벨, 연속 기록으로 루틴을 꾸준히 이어가게 돕는 생산성 앱입니다.
                         </p>
                         <a class="card-link" href="https://play.google.com/store/apps/details?id=com.kmagpie.dailyxptodo" target="_blank" rel="noopener noreferrer" data-i18n="googlePlayLink">
-                            Google Play에서 보기 →
+                            Google Play에서 설치하기 →
                         </a>
                     </article>
 
@@ -329,7 +415,7 @@
                             먹이 버튼과 폭탄버튼 위치가 계속 바뀌는 게임입니다. 드래곤한테 먹이를 주세요.
                         </p>
                         <a class="card-link" href="https://play.google.com/store/apps/details?id=com.kmagpie.ImaDragonFoodPlease" target="_blank" rel="noopener noreferrer" data-i18n="googlePlayLink">
-                            Google Play에서 보기 →
+                            Google Play에서 설치하기 →
                         </a>
                     </article>
                 </div>
@@ -400,7 +486,7 @@
         const translations = {
             ko: {
                 title: "K-magpie | 게임 & 앱",
-                description: "신작 모바일 게임 MonBreak를 포함해 다양한 게임과 앱을 만드는 1인 개발자 K-magpie의 공식 홈페이지입니다.",
+                description: "K-magpie가 Google Play에서 제공하는 모바일 게임과 생활 앱을 한곳에서 둘러보고 바로 설치할 수 있는 공식 홈페이지입니다.",
                 logoAria: "K-magpie 홈으로 이동",
                 logoAlt: "K-magpie 아이콘",
                 navAria: "주요 메뉴",
@@ -408,12 +494,15 @@
                 navGames: "게임/앱",
                 navAbout: "소개",
                 navContact: "문의",
-                heroTitle: "신작 MonBreak와 함께<br>게임과 앱을 만드는 1인 개발자",
-                heroDesc: "유저가 진짜 즐겁게 플레이하고, 편하게 사용할 수 있는 경험을 만드는 K-magpie입니다. 최근에는 Google Play에서 서비스 중인 신작 <strong>MonBreak</strong>를 메인 타이틀로 운영하며, 캐주얼 게임과 간단하지만 유용한 앱을 중심으로 개발하고 있습니다.",
-                playMonBreak: "MonBreak 플레이하러 가기",
-                youtubeLink: "YouTube 채널 보기",
+                heroKicker: "Google Play에서 바로 만나는 K-magpie 앱",
+                heroTitle: "오늘 바로 설치할 수 있는<br>게임과 생활 앱 모음",
+                heroDesc: "짧게 즐기는 게임부터 오늘의 운세, 한식 메뉴 추천, XP 기반 할 일 관리까지. K-magpie가 직접 만들고 업데이트하는 Android 앱을 한곳에서 둘러보고 바로 설치해보세요.",
+                browseAppsCta: "앱 둘러보고 설치하기",
+                heroMonBreakCta: "MonBreak 설치하기",
+                heroProof: "모든 앱은 Google Play에서 제공되며, 관심 있는 앱 카드에서 바로 설치 페이지로 이동할 수 있습니다.",
+                heroAppsAria: "K-magpie Google Play 앱 목록",
                 gamesTitle: "게임 & 앱",
-                gamesDesc: "출시 및 개발 중인 프로젝트들 입니다.",
+                gamesDesc: "관심 있는 앱을 눌러 Google Play에서 바로 설치해보세요.",
                 monbreakIconAria: "MonBreak Google Play로 이동",
                 monbreakIconAlt: "MonBreak 아이콘",
                 monbreakMeta: "신작 · 모바일 게임",
@@ -438,13 +527,13 @@
                 dragonTitle: "나는 드래곤 밥 줘!",
                 dragonMeta: "캐주얼 게임",
                 dragonText: "먹이 버튼과 폭탄버튼 위치가 계속 바뀌는 게임입니다. 드래곤한테 먹이를 주세요.",
-                googlePlayLink: "Google Play에서 보기 →",
+                googlePlayLink: "Google Play에서 설치하기 →",
                 aboutTitle: "개발자 소개",
-                aboutDesc: "K-magpie는 다양한 아이디어와 빠른 실행력으로 작은 실험부터 완성된 제품까지 꾸준히 만들어가는 1인 개발자입니다.",
-                aboutItem1: "🎮 주요 분야: 모바일 캐주얼 게임, 간단한 유틸리티 앱",
-                aboutItem2: "📱 플랫폼: Android (Google Play) 중심, 추후 iOS / Windows도 확장 예정",
-                aboutItem3: "🧪 철학: “게임은 재미, 앱은 편리함”을 우선으로 개발합니다.",
-                aboutItem4: "🚀 작은 아이디어도 빠르게 실험하고, 데이터와 유저 피드백으로 개선합니다.",
+                aboutDesc: "K-magpie는 작게 시작한 아이디어를 실제 앱으로 출시하고, 사용자의 반응을 보며 계속 개선하는 1인 개발자 브랜드입니다.",
+                aboutItem1: "Google Play에 실제 출시한 Android 앱을 꾸준히 업데이트합니다.",
+                aboutItem2: "짧게 써보고 바로 가치를 느낄 수 있는 캐주얼 게임과 생활 앱을 만듭니다.",
+                aboutItem3: "설치 전에도 앱의 목적을 빠르게 이해할 수 있도록 가볍고 명확한 경험을 지향합니다.",
+                aboutItem4: "버그 제보와 피드백은 다음 업데이트에 반영할 수 있도록 확인합니다.",
                 contactTitle: "문의",
                 contactDesc: "버그 신고, 앱/게임 관련 문의, 광고/프로모션 제안 등은 아래 연락처로 부탁드립니다.",
                 emailLabel: "이메일",
@@ -456,7 +545,7 @@
             },
             en: {
                 title: "K-magpie | Games & Apps",
-                description: "The official website of K-magpie, a solo developer creating games and apps including the mobile game MonBreak.",
+                description: "Browse and install K-magpie's mobile games and everyday Android apps from Google Play in one place.",
                 logoAria: "Go to K-magpie home",
                 logoAlt: "K-magpie icon",
                 navAria: "Main navigation",
@@ -464,12 +553,15 @@
                 navGames: "Games/Apps",
                 navAbout: "About",
                 navContact: "Contact",
-                heroTitle: "A solo developer creating<br>games and apps, starting with MonBreak",
-                heroDesc: "K-magpie creates experiences that are fun to play and easy to use. The current main title is <strong>MonBreak</strong>, available on Google Play, while continuing to build casual games and simple, useful apps.",
-                playMonBreak: "Play MonBreak",
-                youtubeLink: "Visit YouTube Channel",
+                heroKicker: "K-magpie apps, ready on Google Play",
+                heroTitle: "Games and everyday apps<br>you can install today",
+                heroDesc: "From quick games and daily fortunes to Korean food ideas and XP-based task tracking, explore Android apps built and updated by K-magpie in one place.",
+                browseAppsCta: "Browse apps and install",
+                heroMonBreakCta: "Install MonBreak",
+                heroProof: "All apps are available on Google Play. Pick a card below and jump straight to the install page.",
+                heroAppsAria: "K-magpie Google Play app list",
                 gamesTitle: "Games & Apps",
-                gamesDesc: "Released and in-development projects.",
+                gamesDesc: "Choose an app and open its Google Play install page.",
                 monbreakIconAria: "Go to MonBreak on Google Play",
                 monbreakIconAlt: "MonBreak icon",
                 monbreakMeta: "New · Mobile Game",
@@ -494,13 +586,13 @@
                 dragonTitle: "I’m a Dragon, Feed Me!",
                 dragonMeta: "Casual Game",
                 dragonText: "A game where the food and bomb buttons keep changing positions. Feed the dragon carefully.",
-                googlePlayLink: "View on Google Play →",
+                googlePlayLink: "Install on Google Play →",
                 aboutTitle: "About the Developer",
-                aboutDesc: "K-magpie is a solo developer who turns small ideas into finished products through fast experiments and steady improvement.",
-                aboutItem1: "🎮 Focus: mobile casual games and simple utility apps",
-                aboutItem2: "📱 Platform: mainly Android on Google Play, with possible iOS and Windows expansion later",
-                aboutItem3: "🧪 Philosophy: games should be fun, and apps should be convenient.",
-                aboutItem4: "🚀 Small ideas are tested quickly and improved with data and user feedback.",
+                aboutDesc: "K-magpie is a solo developer brand that ships real apps, watches how people use them, and keeps improving them.",
+                aboutItem1: "Published Android apps on Google Play are updated steadily.",
+                aboutItem2: "The focus is casual games and everyday apps that feel useful quickly.",
+                aboutItem3: "Each app is designed to make its purpose clear before you install.",
+                aboutItem4: "Bug reports and user feedback are reviewed for future updates.",
                 contactTitle: "Contact",
                 contactDesc: "For bug reports, app/game inquiries, advertising, or promotion proposals, please contact us below.",
                 emailLabel: "Email",
@@ -512,7 +604,7 @@
             },
             ja: {
                 title: "K-magpie | ゲーム & アプリ",
-                description: "モバイルゲーム『MonBreak』をはじめ、ゲームとアプリを制作する個人開発者 K-magpie の公式サイトです。",
+                description: "K-magpieがGoogle Playで提供しているモバイルゲームと生活アプリをまとめて確認し、すぐにインストールできる公式サイトです。",
                 logoAria: "K-magpie ホームへ移動",
                 logoAlt: "K-magpie アイコン",
                 navAria: "メインメニュー",
@@ -520,12 +612,15 @@
                 navGames: "ゲーム/アプリ",
                 navAbout: "紹介",
                 navContact: "お問い合わせ",
-                heroTitle: "MonBreakを中心に<br>ゲームとアプリを制作する個人開発者",
-                heroDesc: "K-magpieは、ユーザーが楽しく遊べて、使いやすい体験を目指して制作しています。現在はGoogle Playで配信中の新作 <strong>MonBreak</strong> をメインタイトルとして運営しながら、カジュアルゲームやシンプルで役立つアプリを開発しています。",
-                playMonBreak: "MonBreakをプレイ",
-                youtubeLink: "YouTubeチャンネルを見る",
+                heroKicker: "Google Playですぐ使えるK-magpieアプリ",
+                heroTitle: "今日インストールできる<br>ゲームと生活アプリ",
+                heroDesc: "短く遊べるゲーム、毎日の運勢、韓国料理のおすすめ、XPベースのタスク管理まで。K-magpieが制作・更新しているAndroidアプリをまとめて確認できます。",
+                browseAppsCta: "アプリを見てインストール",
+                heroMonBreakCta: "MonBreakをインストール",
+                heroProof: "すべてのアプリはGoogle Playで提供されています。気になるカードからインストールページへ移動できます。",
+                heroAppsAria: "K-magpie Google Playアプリ一覧",
                 gamesTitle: "ゲーム & アプリ",
-                gamesDesc: "リリース済み、または開発中のプロジェクトです。",
+                gamesDesc: "気になるアプリを選んで、Google Playのインストールページを開けます。",
                 monbreakIconAria: "MonBreakのGoogle Playページへ移動",
                 monbreakIconAlt: "MonBreakアイコン",
                 monbreakMeta: "新作 · モバイルゲーム",
@@ -550,13 +645,13 @@
                 dragonTitle: "私はドラゴン、ごはんちょうだい！",
                 dragonMeta: "カジュアルゲーム",
                 dragonText: "エサボタンと爆弾ボタンの位置が入れ替わり続けるゲームです。ドラゴンにうまくエサをあげてください。",
-                googlePlayLink: "Google Playで見る →",
+                googlePlayLink: "Google Playでインストール →",
                 aboutTitle: "開発者紹介",
-                aboutDesc: "K-magpieは、さまざまなアイデアを素早く試しながら、完成したゲームやアプリへと育てていく個人開発者です。",
-                aboutItem1: "🎮 主な分野：モバイル向けカジュアルゲーム、シンプルなユーティリティアプリ",
-                aboutItem2: "📱 プラットフォーム：Android（Google Play）を中心に、今後iOS / Windowsにも拡張予定",
-                aboutItem3: "🧪 方針：「ゲームは楽しさ、アプリは使いやすさ」を大切にしています。",
-                aboutItem4: "🚀 小さなアイデアも素早く試し、データとユーザーの声をもとに改善します。",
+                aboutDesc: "K-magpieは、小さなアイデアを実際のアプリとして公開し、ユーザーの反応を見ながら改善していく個人開発ブランドです。",
+                aboutItem1: "Google Playで公開中のAndroidアプリを継続的に更新しています。",
+                aboutItem2: "短時間で価値を感じられるカジュアルゲームと生活アプリを中心に制作しています。",
+                aboutItem3: "インストール前にも目的がすぐ伝わる、軽くて分かりやすい体験を目指しています。",
+                aboutItem4: "不具合報告やフィードバックは今後のアップデートの参考にしています。",
                 contactTitle: "お問い合わせ",
                 contactDesc: "バグ報告、アプリやゲームに関するお問い合わせ、広告・プロモーションのご提案などは下記までご連絡ください。",
                 emailLabel: "メール",
@@ -614,6 +709,24 @@
 
         document.querySelectorAll(".lang-btn").forEach((button) => {
             button.addEventListener("click", () => setLanguage(button.getAttribute("data-lang")));
+        });
+
+        document.querySelectorAll('a[href*="play.google.com/store/apps/details"]').forEach((link) => {
+            link.addEventListener("click", () => {
+                try {
+                    const url = new URL(link.href);
+                    const appId = url.searchParams.get("id") || "unknown";
+                    if (typeof gtag === "function") {
+                        gtag("event", "play_store_click", {
+                            app_id: appId,
+                            link_text: link.textContent.trim().slice(0, 80),
+                            link_url: link.href
+                        });
+                    }
+                } catch (error) {
+                    // Ignore tracking errors so navigation never breaks.
+                }
+            });
         });
 
         setLanguage(getInitialLanguage());
