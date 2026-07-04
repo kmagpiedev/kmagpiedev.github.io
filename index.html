@@ -218,6 +218,27 @@
         font-weight: 700;
     }
     .card-link:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(214, 156, 41, 0.28); }
+    .card-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: auto;
+    }
+    .card-actions .card-link { margin-top: 0; }
+    .card-detail-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 34px;
+        padding: 7px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.04);
+        font-size: 0.84rem;
+        font-weight: 700;
+    }
+    .card-detail-link:hover { border-color: var(--accent); color: var(--accent); }
 
     .about-list { list-style: none; display: grid; gap: 6px; font-size: 0.9rem; color: var(--muted); }
 
@@ -319,7 +340,7 @@
                 </div>
 
                 <div class="hero-apps" aria-label="K-magpie Google Play apps" data-i18n-attr="aria-label:heroAppsAria">
-                    <a class="hero-app-link" href="https://play.google.com/store/apps/details?id=com.kmagpie.MonBreak" target="_blank" rel="noopener noreferrer">
+                    <a class="hero-app-link" href="/apps/monbreak/">
                         <img class="hero-app-icon" src="/images/icon_monbreak.png" alt="MonBreak icon" />
                         <span>MonBreak</span>
                     </a>
@@ -350,17 +371,20 @@
 
                 <div class="card-grid">
                     <article class="card">
-                        <a class="card-icon-link" href="https://play.google.com/store/apps/details?id=com.kmagpie.MonBreak" target="_blank" rel="noopener noreferrer" aria-label="MonBreak Google Play" data-i18n-attr="aria-label:monbreakIconAria">
+                        <a class="card-icon-link" href="/apps/monbreak/" aria-label="MonBreak detail page" data-i18n-attr="aria-label:monbreakIconAria">
                             <img class="card-icon" src="/images/icon_monbreak.png" alt="MonBreak icon" data-i18n-attr="alt:monbreakIconAlt" />
                         </a>
                         <h3>MonBreak</h3>
                         <p class="card-meta" data-i18n="monbreakMeta">신작 · 모바일 게임</p>
                         <p class="card-text" data-i18n="monbreakText">
-                            블록을 부수며 리듬감 있게 진행하는 캐주얼 액션 게임입니다. 짧은 플레이에서도 손맛을 느낄 수 있도록 설계했습니다.
+                            폐허가 된 도시에서 기계 적과 장애물을 돌파하는 모바일 액션 게임입니다. 실제 플레이 영상과 스크린샷을 먼저 확인할 수 있습니다.
                         </p>
-                        <a class="card-link" href="https://play.google.com/store/apps/details?id=com.kmagpie.MonBreak" target="_blank" rel="noopener noreferrer" data-i18n="googlePlayLink">
-                            Google Play에서 설치하기 →
-                        </a>
+                        <div class="card-actions">
+                            <a class="card-detail-link" href="/apps/monbreak/" data-i18n="detailLink">게임 소개 보기</a>
+                            <a class="card-link" href="https://play.google.com/store/apps/details?id=com.kmagpie.MonBreak" target="_blank" rel="noopener noreferrer" data-i18n="googlePlayLink">
+                                Google Play에서 설치하기 →
+                            </a>
+                        </div>
                     </article>
 
                     <article class="card">
@@ -503,10 +527,10 @@
                 heroAppsAria: "K-magpie Google Play 앱 목록",
                 gamesTitle: "게임 & 앱",
                 gamesDesc: "관심 있는 앱을 눌러 Google Play에서 바로 설치해보세요.",
-                monbreakIconAria: "MonBreak Google Play로 이동",
+                monbreakIconAria: "MonBreak 게임 소개 페이지로 이동",
                 monbreakIconAlt: "MonBreak 아이콘",
                 monbreakMeta: "신작 · 모바일 게임",
-                monbreakText: "블록을 부수며 리듬감 있게 진행하는 캐주얼 액션 게임입니다. 짧은 플레이에서도 손맛을 느낄 수 있도록 설계했습니다.",
+                monbreakText: "폐허가 된 도시에서 기계 적과 장애물을 돌파하는 모바일 액션 게임입니다. 실제 플레이 영상과 스크린샷을 먼저 확인할 수 있습니다.",
                 fortuneIconAria: "고양이 포춘쿠키 Google Play로 이동",
                 fortuneIconAlt: "고양이 포춘쿠키 아이콘",
                 fortuneTitle: "고양이 포춘쿠키",
@@ -527,6 +551,7 @@
                 dragonTitle: "나는 드래곤 밥 줘!",
                 dragonMeta: "캐주얼 게임",
                 dragonText: "먹이 버튼과 폭탄버튼 위치가 계속 바뀌는 게임입니다. 드래곤한테 먹이를 주세요.",
+                detailLink: "게임 소개 보기",
                 googlePlayLink: "Google Play에서 설치하기 →",
                 aboutTitle: "개발자 소개",
                 aboutDesc: "K-magpie는 작게 시작한 아이디어를 실제 앱으로 출시하고, 사용자의 반응을 보며 계속 개선하는 1인 개발자 브랜드입니다.",
@@ -562,10 +587,10 @@
                 heroAppsAria: "K-magpie Google Play app list",
                 gamesTitle: "Games & Apps",
                 gamesDesc: "Choose an app and open its Google Play install page.",
-                monbreakIconAria: "Go to MonBreak on Google Play",
+                monbreakIconAria: "Go to the MonBreak detail page",
                 monbreakIconAlt: "MonBreak icon",
                 monbreakMeta: "New · Mobile Game",
-                monbreakText: "A casual action game built around breaking blocks with a satisfying rhythm. Designed to feel fun even in short play sessions.",
+                monbreakText: "A mobile action game where you break through machine enemies and hazards in a ruined city. Watch the real gameplay video and screenshots first.",
                 fortuneIconAria: "Go to Cat Fortune Cookie on Google Play",
                 fortuneIconAlt: "Cat Fortune Cookie icon",
                 fortuneTitle: "Cat Fortune Cookie",
@@ -586,6 +611,7 @@
                 dragonTitle: "I’m a Dragon, Feed Me!",
                 dragonMeta: "Casual Game",
                 dragonText: "A game where the food and bomb buttons keep changing positions. Feed the dragon carefully.",
+                detailLink: "View game page",
                 googlePlayLink: "Install on Google Play →",
                 aboutTitle: "About the Developer",
                 aboutDesc: "K-magpie is a solo developer brand that ships real apps, watches how people use them, and keeps improving them.",
@@ -621,10 +647,10 @@
                 heroAppsAria: "K-magpie Google Playアプリ一覧",
                 gamesTitle: "ゲーム & アプリ",
                 gamesDesc: "気になるアプリを選んで、Google Playのインストールページを開けます。",
-                monbreakIconAria: "MonBreakのGoogle Playページへ移動",
+                monbreakIconAria: "MonBreakの紹介ページへ移動",
                 monbreakIconAlt: "MonBreakアイコン",
                 monbreakMeta: "新作 · モバイルゲーム",
-                monbreakText: "ブロックを壊しながらテンポよく進むカジュアルアクションゲームです。短いプレイでも手応えを感じられるように設計しています。",
+                monbreakText: "荒廃した都市で機械の敵や障害物を突破していくモバイルアクションゲームです。実際のプレイ動画とスクリーンショットを確認できます。",
                 fortuneIconAria: "猫のフォーチュンクッキーのGoogle Playページへ移動",
                 fortuneIconAlt: "猫のフォーチュンクッキーアイコン",
                 fortuneTitle: "猫のフォーチュンクッキー",
@@ -645,6 +671,7 @@
                 dragonTitle: "私はドラゴン、ごはんちょうだい！",
                 dragonMeta: "カジュアルゲーム",
                 dragonText: "エサボタンと爆弾ボタンの位置が入れ替わり続けるゲームです。ドラゴンにうまくエサをあげてください。",
+                detailLink: "ゲーム紹介を見る",
                 googlePlayLink: "Google Playでインストール →",
                 aboutTitle: "開発者紹介",
                 aboutDesc: "K-magpieは、小さなアイデアを実際のアプリとして公開し、ユーザーの反応を見ながら改善していく個人開発ブランドです。",
