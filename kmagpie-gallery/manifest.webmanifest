@@ -1,0 +1,14 @@
+{
+  "id": "./",
+  "name": "KMagpie Gallery",
+  "short_name": "KMagpie",
+  "description": "KMagpie의 작품을 1인칭으로 거닐며 감상하는 디지털 갤러리",
+  "start_url": "./",
+  "scope": "./",
+  "display": "fullscreen",
+  "display_override": ["fullscreen", "standalone"],
+  "orientation": "landscape",
+  "background_color": "#211f1b",
+  "theme_color": "#211f1b",
+  "prefer_related_applications": false
+}
