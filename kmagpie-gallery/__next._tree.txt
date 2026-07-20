@@ -1,2 +1,2 @@
 :HL["/kmagpie-gallery/_next/static/chunks/0.pkh6dv2av9q.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}},"staleTime":300,"buildId":"RIm0ayrz4sAZ_C5LL-DTu"}
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}},"staleTime":300,"buildId":"Bsie9S_2gkfm-JiqryJiU"}
