@@ -173,6 +173,19 @@
     .btn.primary:hover { transform: translateY(-1px); box-shadow: 0 18px 35px rgba(214, 156, 41, 0.55); }
     .btn.secondary { border-color: var(--border); background: rgba(15, 15, 15, 0.9); color: var(--muted); }
     .btn.secondary:hover { border-color: var(--accent); color: var(--text); background: rgba(23, 23, 23, 0.95); }
+    .btn.gallery {
+        border-color: rgba(214, 156, 41, 0.65);
+        background: var(--accent-soft);
+        color: #f4c66a;
+        font-weight: 600;
+    }
+    .btn.gallery:hover {
+        transform: translateY(-1px);
+        border-color: var(--accent);
+        background: rgba(214, 156, 41, 0.2);
+        color: var(--text);
+        box-shadow: 0 12px 28px rgba(214, 156, 41, 0.18);
+    }
 
     .card-grid { display: grid; gap: 16px; }
     .card {
@@ -332,6 +345,9 @@
                     <div class="hero-buttons">
                         <a class="btn primary" href="#games" data-i18n="browseAppsCta">
                             앱 둘러보고 설치하기
+                        </a>
+                        <a class="btn gallery" href="/kmagpie-gallery/" data-i18n="galleryCta">
+                            3D 갤러리 입장하기
                         </a>
                         <a class="btn secondary" href="https://play.google.com/store/apps/details?id=com.kmagpie.MonBreak" target="_blank" rel="noopener noreferrer" data-i18n="heroMonBreakCta">
                             MonBreak 설치하기
@@ -523,6 +539,7 @@
                 heroTitle: "오늘 바로 설치할 수 있는<br>게임과 생활 앱 모음",
                 heroDesc: "짧게 즐기는 게임부터 오늘의 운세, 한식 메뉴 추천, XP 기반 할 일 관리까지. K-magpie가 직접 만들고 업데이트하는 Android 앱을 한곳에서 둘러보고 바로 설치해보세요.",
                 browseAppsCta: "앱 둘러보고 설치하기",
+                galleryCta: "3D 갤러리 입장하기",
                 heroMonBreakCta: "MonBreak 설치하기",
                 heroProof: "모든 앱은 Google Play에서 제공되며, 관심 있는 앱 카드에서 바로 설치 페이지로 이동할 수 있습니다.",
                 heroAppsAria: "K-magpie Google Play 앱 목록",
@@ -583,6 +600,7 @@
                 heroTitle: "Games and everyday apps<br>you can install today",
                 heroDesc: "From quick games and daily fortunes to Korean food ideas and XP-based task tracking, explore Android apps built and updated by K-magpie in one place.",
                 browseAppsCta: "Browse apps and install",
+                galleryCta: "Enter the 3D Gallery",
                 heroMonBreakCta: "Install MonBreak",
                 heroProof: "All apps are available on Google Play. Pick a card below and jump straight to the install page.",
                 heroAppsAria: "K-magpie Google Play app list",
@@ -643,6 +661,7 @@
                 heroTitle: "今日インストールできる<br>ゲームと生活アプリ",
                 heroDesc: "短く遊べるゲーム、毎日の運勢、韓国料理のおすすめ、XPベースのタスク管理まで。K-magpieが制作・更新しているAndroidアプリをまとめて確認できます。",
                 browseAppsCta: "アプリを見てインストール",
+                galleryCta: "3Dギャラリーに入る",
                 heroMonBreakCta: "MonBreakをインストール",
                 heroProof: "すべてのアプリはGoogle Playで提供されています。気になるカードからインストールページへ移動できます。",
                 heroAppsAria: "K-magpie Google Playアプリ一覧",
