@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>개발자 도구 모음 — 브라우저에서 바로 쓰는 무료 도구 | K-magpie</title>
+<meta name="description" content="앱 아이콘 생성, 이미지 최적화 등 앱 개발에 필요한 도구를 브라우저에서 무료로 사용하세요. 가입 없이, 파일 업로드 없이 바로 동작합니다.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/">
+<meta property="og:title" content="개발자 도구 모음 — K-magpie">
+<meta property="og:description" content="앱 개발에 필요한 도구를 브라우저에서 무료로. 가입도 업로드도 없습니다.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:860px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 34px;font-size:15.5px}
+  h2{font-size:19px;margin:44px 0 10px;letter-spacing:-.015em;font-weight:700}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin:18px 0}
+  .tool{display:block;background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    padding:20px 22px;text-decoration:none;color:inherit;transition:.14s}
+  .tool:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .tool .ic{font-size:22px;margin-bottom:8px;display:block}
+  .tool .nm{font-weight:700;font-size:16px;margin-bottom:5px;letter-spacing:-.01em}
+  .tool .ds{font-size:13.5px;color:var(--ink-2);line-height:1.6}
+  .soon{background:var(--surface);border:1px dashed var(--line);border-radius:14px;padding:20px 22px;opacity:.62}
+  .soon .nm{font-weight:700;font-size:16px;margin-bottom:5px}
+  .soon .ds{font-size:13.5px;color:var(--ink-3)}
+  .badge{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;
+    background:var(--accent-soft);color:var(--accent);padding:3px 8px;border-radius:999px;margin-left:6px;vertical-align:middle}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › 도구</p>
+
+<h1>개발자 도구 모음</h1>
+<p class="sub">앱을 만들면서 매번 필요했던 작업들을 도구로 만들었습니다. 가입도, 파일 업로드도 필요 없고 전부 브라우저 안에서 처리됩니다.</p>
+
+<div class="grid">
+  <a class="tool" href="/tools/app-icon/">
+    <span class="ic">🎨</span>
+    <div class="nm">앱 아이콘 사이즈 생성기</div>
+    <div class="ds">이미지 하나로 안드로이드 mipmap 전 해상도, 적응형 아이콘, Play 스토어 512px, iOS AppIcon, 파비콘까지 한 번에 만들어 ZIP으로 받습니다.</div>
+  </a>
+  <a class="tool" href="/tools/image-compress/">
+    <span class="ic">🗜️</span>
+    <div class="nm">이미지 용량 줄이기</div>
+    <div class="ds">여러 장을 한 번에 압축하고, 목표 용량을 정하면 품질을 자동으로 맞춰줍니다. WebP·JPEG 변환과 크기 축소를 지원합니다.</div>
+  </a>
+  <a class="tool" href="/tools/privacy-policy/">
+    <span class="ic">📄</span>
+    <div class="nm">개인정보처리방침 생성기</div>
+    <div class="ds">수집 항목과 사용 중인 SDK를 고르면 Play 스토어 심사용 개인정보처리방침을 한국어·영어로 만들어 HTML 파일로 받습니다.</div>
+  </a>
+  <div class="soon">
+    <div class="nm">스토어 스크린샷 만들기<span class="badge">준비 중</span></div>
+    <div class="ds">앱 화면 캡처에 기기 프레임과 문구를 얹어 등록용 이미지를 만듭니다.</div>
+  </div>
+</div>
+
+<h2>왜 브라우저에서 처리하나요</h2>
+<p>여기 있는 도구들은 파일을 서버로 보내지 않습니다. 이미지 처리는 전부 브라우저의 Canvas API로 이루어지고, 결과물도 브라우저에서 직접 만들어 내려받습니다. 그래서 출시 전 아이콘이나 스크린샷처럼 외부에 유출되면 곤란한 파일도 안심하고 쓰실 수 있고, 업로드와 다운로드를 기다릴 필요가 없어 처리 속도도 훨씬 빠릅니다.</p>
+<p>덕분에 서버 비용이 들지 않아 로그인이나 사용량 제한 없이 계속 무료로 제공할 수 있습니다. 한 번에 수십 장을 만들어도 제한이 없어요.</p>
+
+<h2>어떤 도구를 만드나요</h2>
+<p>K-magpie는 안드로이드 앱과 게임을 만드는 1인 개발 프로젝트입니다. 여기 있는 도구들은 전부 제가 앱을 만들면서 실제로 필요했던 작업을 자동화한 것들이에요. 아이콘을 다섯 가지 해상도로 매번 내보내는 일, 적응형 아이콘 세이프존을 계산하는 일처럼 반복적이고 실수하기 쉬운 작업을 대신합니다.</p>
+<p>필요한 도구가 있거나 사용 중 문제를 발견하시면 <a href="/">홈페이지</a>의 연락처로 알려주세요. 실제로 쓰이는 것부터 만들고 있습니다.</p>
+
+<footer>
+  <p>K-magpie · 안드로이드 앱과 게임을 만드는 1인 개발 프로젝트</p>
+  <p><a href="/">홈</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+</body>
+</html>

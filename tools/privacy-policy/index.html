@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>앱 개인정보처리방침 생성기 — Play 스토어 심사용 무료 작성 도구 | K-magpie Tools</title>
+<meta name="description" content="앱에서 수집하는 항목과 사용 중인 SDK를 선택하면 Google Play 심사에 필요한 개인정보처리방침을 한국어·영어로 만들어 드립니다. HTML 파일로 바로 받아 웹사이트에 올리세요.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/privacy-policy/">
+<meta property="og:title" content="앱 개인정보처리방침 생성기 — Play 스토어 심사용">
+<meta property="og:description" content="수집 항목과 SDK만 고르면 개인정보처리방침이 한국어·영어로 완성됩니다.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/privacy-policy/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:940px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  .panel>h4{margin:0 0 14px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px 22px}
+  .fld label{display:block;font-size:12.5px;letter-spacing:.04em;color:var(--ink-3);font-weight:600;margin-bottom:5px}
+  .fld input,.fld select{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:8px;
+    background:var(--bg);color:var(--ink);font-size:14.5px;font-family:inherit}
+  .fld input:focus,.fld select:focus{outline:0;border-color:var(--accent)}
+  .chk{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:9px 18px}
+  .opt{display:flex;align-items:flex-start;gap:9px;font-size:14.5px;cursor:pointer}
+  .opt input{margin-top:4px;width:17px;height:17px;accent-color:var(--accent);cursor:pointer;flex:none}
+  .opt .d{font-size:12px;color:var(--ink-3);display:block;line-height:1.45}
+
+  button.act{font-family:inherit;font-size:15px;font-weight:600;padding:12px 22px;border-radius:10px;border:1px solid transparent;cursor:pointer;transition:.12s}
+  .primary{background:var(--accent);color:#fff}
+  .primary:hover{filter:brightness(1.08)}
+  .ghost{background:transparent;color:var(--ink-2);border-color:var(--line)}
+  .ghost:hover{border-color:var(--ink-3);color:var(--ink)}
+
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;margin-bottom:12px}
+  .seg button{background:transparent;border:0;padding:8px 18px;font-size:13.5px;font-weight:600;
+    color:var(--ink-2);cursor:pointer;font-family:inherit}
+  .seg button.on{background:var(--accent);color:#fff}
+
+  #out{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:26px 30px;
+    max-height:560px;overflow-y:auto;font-size:14.5px;line-height:1.75}
+  #out h2{font-size:17px;margin:24px 0 8px;padding:0;border:0}
+  #out h1{font-size:21px;margin:0 0 6px}
+  #out ul{padding-left:20px;margin:8px 0}
+  #out li{margin-bottom:5px}
+  #out table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13.5px}
+  #out th,#out td{border:1px solid var(--line);padding:7px 9px;text-align:left}
+  #out th{background:var(--line-soft);font-weight:600}
+  #out .meta{color:var(--ink-3);font-size:13px}
+
+  .msg{font-size:14px;padding:12px 16px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .hidden{display:none}
+  code{background:var(--line-soft);padding:2px 6px;border-radius:5px;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .note{font-size:13.5px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:13px;margin:14px 0}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">도구</a> › 개인정보처리방침 생성기</p>
+
+<h1>앱 개인정보처리방침 생성기</h1>
+<p class="sub">수집 항목과 사용 중인 SDK만 고르면 Google Play 심사에 필요한 개인정보처리방침이 <strong>한국어와 영어로</strong> 완성됩니다. HTML 파일로 받아 웹사이트에 그대로 올리세요.</p>
+
+<div class="msg m-warn"><strong>법률 자문이 아닙니다.</strong> 이 도구는 일반적인 모바일 앱을 기준으로 한 서식을 만들어 줍니다. 실제 수집·이용 내용과 반드시 대조해 보시고, 민감정보나 결제·의료·금융 정보를 다루신다면 전문가 검토를 받으세요.</div>
+
+<div class="panel">
+  <h4>기본 정보</h4>
+  <div class="grid2">
+    <div class="fld"><label>앱 이름</label><input id="app" placeholder="예: 고양이 포춘쿠키"></div>
+    <div class="fld"><label>개발자 / 사업자명</label><input id="dev" placeholder="예: K-magpie"></div>
+    <div class="fld"><label>문의 이메일</label><input id="mail" type="email" placeholder="예: contact@example.com"></div>
+    <div class="fld"><label>시행일</label><input id="date" type="date"></div>
+    <div class="fld"><label>앱 패키지명 <span style="font-weight:400">(선택)</span></label><input id="pkg" placeholder="예: com.kmagpie.fortunecookie"></div>
+    <div class="fld"><label>보관 기간</label>
+      <select id="keep">
+        <option value="목적 달성 즉시">목적 달성 즉시 파기</option>
+        <option value="1년">1년</option>
+        <option value="3년" selected>3년</option>
+        <option value="회원 탈퇴 시">회원 탈퇴 시까지</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+  <h4>수집하는 정보</h4>
+  <div class="chk" id="collect"></div>
+</div>
+
+<div class="panel">
+  <h4>사용 중인 SDK · 서비스</h4>
+  <div class="chk" id="sdk"></div>
+</div>
+
+<div class="panel">
+  <h4>추가 사항</h4>
+  <div class="chk" id="extra"></div>
+</div>
+
+<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:20px 0 6px">
+  <button class="act primary" id="go">생성하기</button>
+  <button class="act ghost" id="dlHtml" disabled>HTML 파일 받기</button>
+  <button class="act ghost" id="copy" disabled>텍스트 복사</button>
+  <span id="stat" style="font-size:14px;color:var(--ink-3)"></span>
+</div>
+
+<div id="result" class="hidden">
+  <div class="seg" id="lang">
+    <button data-l="ko" class="on">한국어</button>
+    <button data-l="en">English</button>
+  </div>
+  <div id="out"></div>
+</div>
+
+<h2>사용법</h2>
+<p>기본 정보를 채우고, 앱이 실제로 수집하는 항목과 사용 중인 SDK를 체크한 뒤 생성하기를 누르면 됩니다. 결과는 한국어와 영어 두 벌로 만들어지고, HTML 파일로 받아 웹사이트에 올린 다음 그 주소를 Play Console의 개인정보처리방침 URL 칸에 넣으시면 됩니다. 앱 안에서도 접근할 수 있도록 설정 화면 등에 링크를 하나 걸어두세요.</p>
+<p>입력한 내용은 서버로 전송되지 않습니다. 전부 브라우저 안에서 문서를 조립하기 때문에 앱 정보나 이메일 주소가 외부로 나가지 않습니다.</p>
+
+<h2>Play 스토어가 요구하는 것</h2>
+<p>Google Play는 앱이 개인정보나 민감한 기기 정보에 접근하는 경우 개인정보처리방침을 요구합니다. 광고 SDK를 넣는 순간 광고 ID를 수집하게 되므로, <strong>사실상 거의 모든 앱이 대상</strong>이라고 보시면 됩니다. 방침에는 최소한 다음이 명확히 적혀 있어야 합니다.</p>
+<p>어떤 데이터를 수집하는지, 왜 수집하는지, 누구와 공유하는지, 얼마나 보관하고 어떻게 삭제하는지, 그리고 사용자가 문의할 연락처가 있어야 합니다. 여기에 더해 Play Console의 <strong>데이터 보안(Data safety)</strong> 양식에 적은 내용과 방침의 내용이 서로 어긋나면 심사에서 반려됩니다. 두 곳을 항상 같이 고치세요.</p>
+
+<h3>자주 놓치는 것</h3>
+<p>광고 SDK를 넣었다면 <strong>광고 ID(AAID) 수집</strong>을 반드시 명시해야 합니다. Firebase Analytics나 Crashlytics를 쓰면서 "아무것도 수집하지 않는다"고 적는 경우가 많은데, 이건 명백한 불일치라 반려 사유가 됩니다. 또 앱이 만 14세 미만을 대상으로 하거나 그럴 가능성이 있다면 Google Play의 가족 정책이 별도로 적용되므로, 아동 대상 항목을 체크해 관련 문구를 포함시키세요.</p>
+
+<h3>방침은 어디에 올리나요</h3>
+<p>공개된 URL이면 됩니다. 개인 웹사이트가 있으면 <code>/privacy-policy.html</code> 같은 경로에 올리는 게 가장 깔끔하고, 없다면 GitHub Pages나 블로그도 허용됩니다. 다만 로그인이 필요한 페이지, 다운로드만 되는 파일, 접근이 제한된 문서는 인정되지 않습니다. 앱을 업데이트할 때 수집 항목이 바뀌면 방침의 시행일도 함께 갱신하세요.</p>
+
+<footer>
+  <p>K-magpie 도구 모음 · 입력 내용은 브라우저에서만 처리되며 전송되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+  const COLLECT=[
+    {id:'aaid',ko:'광고 식별자(AAID)',en:'Advertising ID (AAID)',d:'광고 SDK를 쓰면 자동 수집됩니다',on:true},
+    {id:'device',ko:'기기 정보',en:'Device information',d:'모델, OS 버전, 언어, 국가',on:true},
+    {id:'usage',ko:'앱 이용 기록',en:'App usage data',d:'실행 횟수, 화면 이동, 기능 사용',on:true},
+    {id:'crash',ko:'오류 및 진단 정보',en:'Crash and diagnostic data',d:'비정상 종료 로그, 성능 지표',on:true},
+    {id:'ip',ko:'IP 주소',en:'IP address',d:'대략적 위치 추정에 사용될 수 있음',on:true},
+    {id:'account',ko:'계정 정보',en:'Account information',d:'이메일, 닉네임, 프로필'},
+    {id:'gps',ko:'정밀 위치',en:'Precise location',d:'GPS 좌표'},
+    {id:'photo',ko:'사진 및 미디어',en:'Photos and media',d:'갤러리 접근, 카메라'},
+    {id:'contact',ko:'연락처',en:'Contacts'},
+    {id:'purchase',ko:'구매 내역',en:'Purchase history',d:'인앱 결제 기록'},
+    {id:'health',ko:'건강·운동 정보',en:'Health and fitness data'},
+    {id:'usercontent',ko:'이용자 생성 콘텐츠',en:'User-generated content',d:'작성한 글, 업로드 파일'}
+  ];
+  const SDKS=[
+    {id:'admob',n:'Google AdMob',ko:'광고 게재',en:'Ad serving',url:'https://policies.google.com/privacy',on:true},
+    {id:'gfa',n:'Firebase Analytics',ko:'이용 통계 분석',en:'Usage analytics',url:'https://policies.google.com/privacy'},
+    {id:'crashlytics',n:'Firebase Crashlytics',ko:'오류 수집',en:'Crash reporting',url:'https://policies.google.com/privacy'},
+    {id:'gps2',n:'Google Play 서비스',ko:'기본 기능 제공',en:'Core platform services',url:'https://policies.google.com/privacy'},
+    {id:'unity',n:'Unity Ads / Analytics',ko:'광고 및 분석',en:'Ads and analytics',url:'https://unity.com/legal/privacy-policy'},
+    {id:'billing',n:'Google Play 결제',ko:'인앱 결제 처리',en:'In-app billing',url:'https://policies.google.com/privacy'},
+    {id:'applovin',n:'AppLovin MAX',ko:'광고 미디에이션',en:'Ad mediation',url:'https://www.applovin.com/privacy/'},
+    {id:'meta',n:'Meta Audience Network',ko:'광고 게재',en:'Ad serving',url:'https://www.facebook.com/about/privacy'}
+  ];
+  const EXTRA=[
+    {id:'child',ko:'만 14세 미만 아동도 이용 가능',en:'Directed to children',d:'Google Play 가족 정책 문구가 추가됩니다'},
+    {id:'eea',ko:'유럽(EEA·영국) 이용자 있음',en:'EEA/UK users',d:'GDPR 동의 및 권리 문구가 추가됩니다',on:true},
+    {id:'del',ko:'계정·데이터 삭제 요청 처리',en:'Account deletion supported',d:'Play 정책상 계정 기능이 있으면 필수입니다'},
+    {id:'noserver',ko:'자체 서버 없음 (기기에만 저장)',en:'No own server',d:'데이터를 직접 보관하지 않는 경우'}
+  ];
+
+  function build(list,box,labelKey){
+    box.innerHTML='';
+    list.forEach(o=>{
+      const l=document.createElement('label'); l.className='opt';
+      l.innerHTML=`<input type="checkbox" id="c_${o.id}"${o.on?' checked':''}>
+        <span>${esc(o[labelKey]||o.n)}${o.d?`<span class="d">${esc(o.d)}</span>`:''}</span>`;
+      box.appendChild(l);
+    });
+  }
+  build(COLLECT,$('collect'),'ko');
+  build(SDKS,$('sdk'),'n');
+  build(EXTRA,$('extra'),'ko');
+  $('date').value=new Date().toISOString().slice(0,10);
+
+  const on=id=>{const e=$('c_'+id);return e&&e.checked;};
+  let docs={ko:'',en:''}, cur='ko';
+
+  function gen(){
+    const app=$('app').value.trim()||'본 앱';
+    const appEn=$('app').value.trim()||'the App';
+    const dev=$('dev').value.trim()||'(개발자명)';
+    const mail=$('mail').value.trim()||'(이메일)';
+    const date=$('date').value||new Date().toISOString().slice(0,10);
+    const pkg=$('pkg').value.trim();
+    const keep=$('keep').value;
+    const keepEn={'목적 달성 즉시':'immediately after the purpose is fulfilled','1년':'1 year','3년':'3 years','회원 탈퇴 시':'until the account is deleted'}[keep];
+
+    const items=COLLECT.filter(o=>on(o.id));
+    const sdks=SDKS.filter(o=>on(o.id));
+    const noServer=on('noserver');
+
+    const li=(a)=>a.map(x=>`<li>${x}</li>`).join('');
+    const sdkRows=(k)=>sdks.map(s=>
+      `<tr><td>${esc(s.n)}</td><td>${esc(k==='ko'?s.ko:s.en)}</td><td><a href="${s.url}" target="_blank" rel="noopener">${k==='ko'?'정책 보기':'Policy'}</a></td></tr>`).join('');
+
+    /* ---------- 한국어 ---------- */
+    let ko=`<h1>${esc(app)} 개인정보처리방침</h1>
+<p class="meta">시행일: ${esc(date)}${pkg?` · 패키지명: ${esc(pkg)}`:''}</p>
+<p>${esc(dev)}(이하 "개발자")는 이용자의 개인정보를 중요하게 생각하며, 「개인정보 보호법」 등 관련 법령을 준수합니다. 본 방침은 ${esc(app)}(이하 "본 앱")에서 수집하는 정보와 그 이용에 관한 사항을 안내합니다.</p>
+
+<h2>1. 수집하는 정보</h2>
+<p>본 앱은 서비스 제공을 위해 다음 정보를 수집합니다. 대부분 앱 이용 과정에서 자동으로 생성·수집됩니다.</p>
+<ul>${li(items.map(o=>esc(o.ko)+(o.d?` — ${esc(o.d)}`:'')))}</ul>
+${items.length?'':'<p>별도로 수집하는 개인정보가 없습니다.</p>'}
+
+<h2>2. 이용 목적</h2>
+<ul>
+<li>서비스 제공 및 기능 개선</li>
+<li>오류 진단과 안정성 확보</li>
+${sdks.some(s=>['admob','unity','applovin','meta'].includes(s.id))?'<li>광고 게재 및 광고 성과 측정</li>':''}
+${on('purchase')?'<li>결제 처리 및 구매 내역 확인</li>':''}
+<li>이용자 문의 대응</li>
+</ul>
+
+<h2>3. 보유 및 이용 기간</h2>
+<p>수집한 정보는 이용 목적을 달성한 후 ${esc(keep)} 이내에 파기합니다. 다만 관계 법령에 따라 보존이 필요한 경우 해당 기간 동안 보관합니다.</p>
+${noServer?'<p>본 앱은 개발자가 운영하는 별도의 서버에 이용자의 개인정보를 저장하지 않습니다. 설정 및 이용 기록은 이용자의 기기 내에 저장되며, 앱을 삭제하면 함께 삭제됩니다.</p>':''}
+
+<h2>4. 제3자 제공 및 처리위탁</h2>
+<p>개발자는 이용자의 개인정보를 제3자에게 판매하지 않습니다. 다만 서비스 운영을 위해 아래 사업자의 SDK를 이용하며, 이 과정에서 일부 정보가 해당 사업자에게 전달될 수 있습니다.</p>
+${sdks.length?`<table><thead><tr><th>서비스</th><th>목적</th><th>개인정보처리방침</th></tr></thead><tbody>${sdkRows('ko')}</tbody></table>`:'<p>현재 이용 중인 제3자 서비스가 없습니다.</p>'}
+
+<h2>5. 이용자의 권리</h2>
+<p>이용자는 언제든지 본인의 개인정보에 대한 열람, 정정, 삭제, 처리정지를 요구할 수 있습니다. 요청은 아래 연락처로 보내주시면 지체 없이 처리합니다.</p>
+<ul>
+<li>광고 식별자 초기화 및 맞춤형 광고 거부: <strong>기기 설정 → Google → 광고</strong>에서 변경할 수 있습니다.</li>
+${on('gps')?'<li>위치 정보 제공 중단: 기기 설정의 앱 권한에서 위치 권한을 해제할 수 있습니다.</li>':''}
+${on('del')?'<li>계정 및 데이터 삭제: 앱 내 설정 화면 또는 아래 이메일로 요청하실 수 있으며, 요청 확인 후 30일 이내에 처리합니다.</li>':''}
+</ul>
+
+<h2>6. 안전성 확보 조치</h2>
+<p>개발자는 개인정보의 안전한 처리를 위해 전송 구간 암호화(TLS), 접근 권한 최소화, 불필요한 정보의 수집 제한 등의 조치를 취하고 있습니다.</p>
+${on('child')?`
+<h2>7. 아동의 개인정보 보호</h2>
+<p>본 앱은 만 14세 미만 아동도 이용할 수 있으며, Google Play의 가족 정책을 준수합니다. 아동 이용자에게는 맞춤형 광고를 게재하지 않으며, 아동으로부터 개인식별정보를 고의로 수집하지 않습니다. 보호자께서 아동의 정보가 수집되었다고 판단하시는 경우 아래 연락처로 알려주시면 즉시 삭제합니다.</p>`:''}
+${on('eea')?`
+<h2>${on('child')?8:7}. 유럽 지역 이용자 안내</h2>
+<p>유럽경제지역(EEA), 영국, 스위스 이용자에게는 GDPR이 적용됩니다. 해당 지역 이용자에게는 앱 최초 실행 시 맞춤형 광고에 대한 동의를 요청하며, 동의는 언제든지 앱 내 설정에서 변경할 수 있습니다. 이용자는 자신의 개인정보에 대한 접근, 정정, 삭제, 처리 제한, 이동을 요구할 권리가 있습니다.</p>`:''}
+
+<h2>${7+(on('child')?1:0)+(on('eea')?1:0)}. 방침의 변경</h2>
+<p>본 방침이 변경되는 경우 앱 내 공지 또는 본 페이지를 통해 변경 내용과 시행일을 알립니다.</p>
+
+<h2>${8+(on('child')?1:0)+(on('eea')?1:0)}. 문의처</h2>
+<p>개인정보 관련 문의는 아래로 연락해 주세요.</p>
+<ul><li>${esc(dev)}</li><li>이메일: <a href="mailto:${esc(mail)}">${esc(mail)}</a></li></ul>`;
+
+    /* ---------- English ---------- */
+    let en=`<h1>Privacy Policy for ${esc(appEn)}</h1>
+<p class="meta">Effective date: ${esc(date)}${pkg?` · Package: ${esc(pkg)}`:''}</p>
+<p>${esc(dev)} ("we", "us") respects your privacy. This policy explains what information ${esc(appEn)} (the "App") collects and how it is used.</p>
+
+<h2>1. Information We Collect</h2>
+<p>The App collects the following information, most of which is generated automatically while you use the App.</p>
+<ul>${li(items.map(o=>esc(o.en)))}</ul>
+${items.length?'':'<p>We do not collect personal information.</p>'}
+
+<h2>2. How We Use It</h2>
+<ul>
+<li>To provide and improve the App's features</li>
+<li>To diagnose errors and maintain stability</li>
+${sdks.some(s=>['admob','unity','applovin','meta'].includes(s.id))?'<li>To serve advertisements and measure their performance</li>':''}
+${on('purchase')?'<li>To process purchases and verify transactions</li>':''}
+<li>To respond to your inquiries</li>
+</ul>
+
+<h2>3. Retention</h2>
+<p>We delete collected information within ${esc(keepEn)} after the purpose of collection has been fulfilled, unless a longer retention period is required by law.</p>
+${noServer?'<p>We do not store your personal information on any server we operate. Settings and usage records remain on your device and are removed when you uninstall the App.</p>':''}
+
+<h2>4. Third Parties</h2>
+<p>We do not sell your personal information. The App uses the following third-party SDKs, which may receive some of the information described above.</p>
+${sdks.length?`<table><thead><tr><th>Service</th><th>Purpose</th><th>Privacy Policy</th></tr></thead><tbody>${sdkRows('en')}</tbody></table>`:'<p>No third-party services are currently in use.</p>'}
+
+<h2>5. Your Rights</h2>
+<p>You may request access to, correction of, or deletion of your personal information at any time using the contact below.</p>
+<ul>
+<li>Reset your advertising ID or opt out of personalized ads: <strong>Device Settings → Google → Ads</strong></li>
+${on('gps')?'<li>Stop sharing location: revoke the location permission in your device settings</li>':''}
+${on('del')?'<li>Account and data deletion: request in-app or by email; we process requests within 30 days</li>':''}
+</ul>
+
+<h2>6. Security</h2>
+<p>We protect your information using encryption in transit (TLS), minimal access privileges, and by limiting collection to what is necessary.</p>
+${on('child')?`
+<h2>7. Children's Privacy</h2>
+<p>The App may be used by children and complies with Google Play's Families Policy. We do not serve personalized advertising to children and do not knowingly collect personally identifiable information from them. If you believe a child's information has been collected, please contact us and we will delete it promptly.</p>`:''}
+${on('eea')?`
+<h2>${on('child')?8:7}. Users in the EEA, UK and Switzerland</h2>
+<p>If you are located in the EEA, the UK, or Switzerland, the GDPR applies to you. We request your consent for personalized advertising when you first launch the App, and you may change your choice at any time in the App's settings. You have the right to access, rectify, erase, restrict, and port your personal data.</p>`:''}
+
+<h2>${7+(on('child')?1:0)+(on('eea')?1:0)}. Changes to This Policy</h2>
+<p>If this policy changes, we will post the updated version and its effective date on this page.</p>
+
+<h2>${8+(on('child')?1:0)+(on('eea')?1:0)}. Contact</h2>
+<ul><li>${esc(dev)}</li><li>Email: <a href="mailto:${esc(mail)}">${esc(mail)}</a></li></ul>`;
+
+    docs={ko,en};
+    $('result').classList.remove('hidden');
+    show(cur);
+    $('dlHtml').disabled=false; $('copy').disabled=false;
+    $('stat').textContent='생성 완료';
+  }
+
+  function show(l){cur=l;$('out').innerHTML=docs[l];
+    document.querySelectorAll('#lang button').forEach(b=>b.classList.toggle('on',b.dataset.l===l));}
+  document.querySelectorAll('#lang button').forEach(b=>b.addEventListener('click',()=>show(b.dataset.l)));
+
+  $('go').addEventListener('click',gen);
+
+  $('dlHtml').addEventListener('click',()=>{
+    const app=$('app').value.trim()||'App';
+    const page=`<!DOCTYPE html>
+<html lang="${cur}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${esc(app)} ${cur==='ko'?'개인정보처리방침':'Privacy Policy'}</title>
+<meta name="robots" content="index,follow">
+<style>
+body{max-width:760px;margin:0 auto;padding:40px 20px 80px;
+ font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+ line-height:1.75;color:#222;background:#fff}
+h1{font-size:24px;margin:0 0 6px}h2{font-size:18px;margin:30px 0 8px}
+.meta{color:#777;font-size:14px}ul{padding-left:20px}li{margin-bottom:5px}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+th,td{border:1px solid #ddd;padding:8px 10px;text-align:left}th{background:#f6f6f6}
+a{color:#b45309}
+@media(prefers-color-scheme:dark){body{background:#151515;color:#e8e8e8}
+ th,td{border-color:#333}th{background:#222}.meta{color:#999}}
+</style>
+</head>
+<body>
+${docs[cur]}
+</body>
+</html>`;
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([page],{type:'text/html;charset=utf-8'}));
+    a.download=cur==='ko'?'privacy-policy.html':'privacy-policy-en.html';
+    a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+  });
+
+  $('copy').addEventListener('click',async()=>{
+    const t=$('out').innerText;
+    try{ await navigator.clipboard.writeText(t); $('stat').textContent='복사했습니다'; }
+    catch(e){ $('stat').textContent='복사에 실패했습니다. 본문을 직접 선택해 주세요.'; }
+  });
+})();
+</script>
+</body>
+</html>

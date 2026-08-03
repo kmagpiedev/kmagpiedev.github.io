@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>앱 아이콘 사이즈 생성기 — 안드로이드·iOS 전체 규격 한 번에 | K-magpie Tools</title>
+<meta name="description" content="이미지 하나로 안드로이드 mipmap 전 해상도, 적응형 아이콘, Play 스토어 512px, iOS AppIcon, 파비콘까지 한 번에 만들어 ZIP으로 받으세요. 업로드 없이 브라우저에서 처리됩니다.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/app-icon/">
+<meta property="og:title" content="앱 아이콘 사이즈 생성기 — 안드로이드·iOS 전체 규격 한 번에">
+<meta property="og:description" content="이미지 하나로 모든 앱 아이콘 규격을 생성합니다. 서버 업로드 없이 브라우저에서 처리.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/app-icon/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:940px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 30px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  /* dropzone */
+  #drop{border:2px dashed var(--line);border-radius:16px;padding:44px 24px;text-align:center;
+    background:var(--surface);cursor:pointer;transition:.15s}
+  #drop:hover,#drop.over{border-color:var(--accent);background:var(--accent-soft)}
+  #drop .big{font-size:17px;font-weight:600;margin-bottom:6px}
+  #drop .small{font-size:13.5px;color:var(--ink-3)}
+  #file{display:none}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:18px 0}
+  .row{display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start}
+  .col{flex:1;min-width:230px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin-bottom:7px}
+  .opts{display:flex;flex-direction:column;gap:9px}
+  .opt{display:flex;align-items:flex-start;gap:9px;font-size:14.5px;cursor:pointer}
+  .opt input{margin-top:4px;width:17px;height:17px;accent-color:var(--accent);cursor:pointer;flex:none}
+  .opt .d{font-size:12.5px;color:var(--ink-3);display:block;line-height:1.5}
+  input[type=range]{width:100%;accent-color:var(--accent)}
+  input[type=color]{width:44px;height:32px;padding:2px;border:1px solid var(--line);border-radius:7px;background:var(--surface);cursor:pointer;vertical-align:middle}
+  .inline{display:flex;align-items:center;gap:10px;font-size:14px}
+  .val{font-variant-numeric:tabular-nums;font-weight:600;color:var(--accent);min-width:42px;display:inline-block}
+
+  button{font-family:inherit;font-size:15px;font-weight:600;padding:12px 22px;border-radius:10px;border:1px solid transparent;cursor:pointer;transition:.12s}
+  .primary{background:var(--accent);color:#fff}
+  .primary:hover{filter:brightness(1.08)}
+  .primary:disabled{opacity:.45;cursor:not-allowed;filter:none}
+  .ghost{background:transparent;color:var(--ink-2);border-color:var(--line)}
+  .ghost:hover{border-color:var(--ink-3);color:var(--ink)}
+
+  .preview{display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap;margin-top:6px}
+  .pv{text-align:center}
+  .pv canvas{border-radius:8px;background:
+    conic-gradient(#0000 90deg,#8883 0 180deg,#0000 0 270deg,#8883 0) 0 0/14px 14px;
+    border:1px solid var(--line);display:block}
+  .pv .cap{font-size:11.5px;color:var(--ink-3);margin-top:5px;font-variant-numeric:tabular-nums}
+
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .m-good{background:var(--good-soft);border-color:var(--good)}
+  .hidden{display:none}
+
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line-soft)}
+  th{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;border-bottom:1px solid var(--line)}
+  td.n{text-align:right;font-variant-numeric:tabular-nums}
+  code{background:var(--line-soft);padding:2px 6px;border-radius:5px;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  pre{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:13px 15px;overflow-x:auto;font-size:12.5px;line-height:1.65;margin:12px 0}
+  pre code{background:none;padding:0}
+  .note{font-size:13.5px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:13px;margin:14px 0}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  .bar{height:5px;background:var(--line-soft);border-radius:99px;overflow:hidden;margin-top:12px}
+  .bar>i{display:block;height:100%;width:0;background:var(--accent);transition:width .18s}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">도구</a> › 앱 아이콘 생성기</p>
+
+<h1>앱 아이콘 사이즈 생성기</h1>
+<p class="sub">이미지 하나로 안드로이드 mipmap 전 해상도, 적응형 아이콘, Play 스토어 512px, iOS AppIcon, 파비콘까지 만들어 ZIP으로 받습니다. <strong>파일이 서버로 전송되지 않고 브라우저 안에서만 처리</strong>됩니다.</p>
+
+<div id="drop">
+  <div class="big">이미지를 여기에 끌어다 놓거나 클릭해서 선택하세요</div>
+  <div class="small">PNG 권장 · 1024×1024 정사각형이 가장 좋습니다</div>
+  <input type="file" id="file" accept="image/png,image/jpeg,image/webp,image/svg+xml">
+</div>
+
+<div id="warn" class="hidden"></div>
+
+<div id="editor" class="hidden">
+
+  <div class="panel">
+    <div class="row">
+      <div class="col">
+        <label class="f">생성할 규격</label>
+        <div class="opts">
+          <label class="opt"><input type="checkbox" id="pAnd" checked><span>안드로이드 런처 아이콘<span class="d">mipmap-mdpi ~ xxxhdpi (48·72·96·144·192px)</span></span></label>
+          <label class="opt"><input type="checkbox" id="pAdapt" checked><span>안드로이드 적응형 아이콘<span class="d">전경·배경 레이어 108dp 기준, 세이프존 자동 적용</span></span></label>
+          <label class="opt"><input type="checkbox" id="pPlay" checked><span>Play 스토어 등록용 512px<span class="d">32비트 PNG</span></span></label>
+          <label class="opt"><input type="checkbox" id="pIos"><span>iOS AppIcon 세트<span class="d">20~1024px 13종 + Contents.json</span></span></label>
+          <label class="opt"><input type="checkbox" id="pWeb"><span>웹 파비콘<span class="d">16·32·48·96·180·192·512px + manifest 예시</span></span></label>
+        </div>
+      </div>
+      <div class="col">
+        <label class="f">여백 <span class="val" id="padV">0%</span></label>
+        <input type="range" id="pad" min="0" max="30" value="0">
+        <p class="note" style="margin-top:8px">아이콘이 꽉 차 보이면 여백을 주세요. 적응형 아이콘에는 세이프존 여백이 <strong>따로 자동 적용</strong>되니 여기서 또 줄 필요 없습니다.</p>
+
+        <label class="f" style="margin-top:20px">배경</label>
+        <div class="inline">
+          <label class="opt" style="margin:0"><input type="checkbox" id="bgOn"><span>단색 배경 채우기</span></label>
+          <input type="color" id="bgColor" value="#ffffff">
+        </div>
+        <p class="note" style="margin-top:8px">iOS App Store 아이콘(1024px)은 <strong>투명도를 허용하지 않습니다.</strong> 원본에 투명 영역이 있으면 배경을 켜세요.</p>
+
+        <label class="f" style="margin-top:20px">모서리</label>
+        <label class="opt"><input type="checkbox" id="round"><span>둥글게 깎기<span class="d">기본은 꺼두세요. 안드로이드와 iOS 모두 시스템이 알아서 마스킹합니다</span></span></label>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <label class="f">미리보기</label>
+    <div class="preview" id="pv"></div>
+  </div>
+
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+    <button class="primary" id="go">ZIP으로 내려받기</button>
+    <button class="ghost" id="reset">다른 이미지 선택</button>
+    <span id="stat" style="font-size:14px;color:var(--ink-3)"></span>
+  </div>
+  <div class="bar hidden" id="barWrap"><i id="bar"></i></div>
+</div>
+
+<h2>사용법</h2>
+<p>1024×1024 크기의 정사각형 PNG를 준비해 위에 올리세요. 원본이 클수록 축소 품질이 좋아지므로, 가능하면 벡터에서 1024px로 내보낸 파일을 쓰시는 게 가장 깔끔합니다. 생성할 규격을 고르고 내려받기를 누르면 폴더 구조가 갖춰진 ZIP이 만들어집니다. 안드로이드 파일은 압축을 풀어 <code>app/src/main/res/</code> 아래에 그대로 덮어쓰면 되고, iOS는 <code>AppIcon.appiconset</code> 폴더를 통째로 교체하면 됩니다.</p>
+<p>이 도구는 이미지를 서버로 보내지 않습니다. 브라우저의 Canvas API로 처리하기 때문에 인터넷 연결이 끊겨도 동작하고, 출시 전 아이콘이 외부로 유출될 걱정이 없습니다.</p>
+
+<h2>안드로이드 아이콘 규격 정리</h2>
+<p>안드로이드는 화면 밀도별로 아이콘을 따로 넣습니다. 기준은 48dp이고 밀도 배율에 따라 실제 픽셀 크기가 달라집니다.</p>
+<table>
+  <thead><tr><th>폴더</th><th class="n">배율</th><th class="n">런처 아이콘</th><th class="n">적응형 레이어</th></tr></thead>
+  <tbody>
+    <tr><td><code>mipmap-mdpi</code></td><td class="n">1.0×</td><td class="n">48px</td><td class="n">108px</td></tr>
+    <tr><td><code>mipmap-hdpi</code></td><td class="n">1.5×</td><td class="n">72px</td><td class="n">162px</td></tr>
+    <tr><td><code>mipmap-xhdpi</code></td><td class="n">2.0×</td><td class="n">96px</td><td class="n">216px</td></tr>
+    <tr><td><code>mipmap-xxhdpi</code></td><td class="n">3.0×</td><td class="n">144px</td><td class="n">324px</td></tr>
+    <tr><td><code>mipmap-xxxhdpi</code></td><td class="n">4.0×</td><td class="n">192px</td><td class="n">432px</td></tr>
+    <tr><td>Play 스토어 등록정보</td><td class="n">—</td><td class="n">512px</td><td class="n">—</td></tr>
+  </tbody>
+</table>
+
+<h3>적응형 아이콘의 세이프존</h3>
+<p>안드로이드 8.0부터는 제조사마다 아이콘을 원형, 스퀘어클, 물방울 등 다른 모양으로 잘라냅니다. 그래서 전체 108dp 중 <strong>가운데 66dp 안에만 실제 로고가 들어가야</strong> 어떤 모양으로 잘려도 잘리지 않습니다. 바깥 영역은 잘려나갈 수 있다는 전제로 배경만 채워두는 자리예요.</p>
+<p>많은 개발자가 이걸 모르고 108px 캔버스에 로고를 꽉 채워 넣었다가, 갤럭시에서는 멀쩡한데 픽셀 기기에서 로고 가장자리가 잘리는 문제를 겪습니다. 이 도구는 적응형 레이어를 만들 때 <strong>세이프존 비율(66/108 ≈ 61%)을 자동으로 적용</strong>하므로 따로 계산하지 않으셔도 됩니다.</p>
+
+<h3>적응형 아이콘 XML</h3>
+<p>ZIP에 아래 파일이 <code>mipmap-anydpi-v26/ic_launcher.xml</code>로 함께 들어갑니다. 배경을 단색으로 쓰시려면 <code>colors.xml</code>에 색을 정의하고 <code>@color/ic_launcher_background</code>로 바꿔 쓰셔도 됩니다.</p>
+<pre><code>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android"&gt;
+    &lt;background android:drawable="@mipmap/ic_launcher_background" /&gt;
+    &lt;foreground android:drawable="@mipmap/ic_launcher_foreground" /&gt;
+&lt;/adaptive-icon&gt;</code></pre>
+
+<h2>자주 겪는 문제</h2>
+<h3>Play 스토어에서 아이콘이 거부돼요</h3>
+<p>등록정보용 아이콘은 512×512, 32비트 PNG여야 하고 <strong>모서리를 직접 둥글게 깎으면 안 됩니다.</strong> 스토어가 알아서 마스킹하기 때문에, 미리 깎아두면 이중으로 잘려서 어색해집니다. 이 도구의 모서리 옵션을 꺼둔 채로 쓰시면 됩니다.</p>
+<h3>아이콘이 다른 앱보다 작아 보여요</h3>
+<p>적응형 아이콘 세이프존 때문에 시각적으로 작아 보이는 건 정상입니다. 그래도 작다면 로고 자체를 키워서 원본을 다시 내보내세요. 여백 값을 음수로 줄 수는 없습니다.</p>
+<h3>iOS 아이콘이 검게 나와요</h3>
+<p>App Store용 1024px 아이콘에 알파 채널이 있으면 심사에서 거부되거나 검은 배경으로 합성됩니다. 위의 배경 채우기를 켜고 브랜드 색을 지정하세요.</p>
+
+<footer>
+  <p>K-magpie 도구 모음 · 모든 처리는 브라우저에서 이루어지며 파일은 업로드되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  /* ---------- 내장 ZIP (store 방식, 외부 라이브러리 없음) ---------- */
+  const CRC=(()=>{const t=new Uint32Array(256);
+    for(let i=0;i<256;i++){let c=i;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[i]=c>>>0;}
+    return t;})();
+  function crc32(u8){let c=0xFFFFFFFF;for(let i=0;i<u8.length;i++)c=CRC[(c^u8[i])&0xFF]^(c>>>8);return (c^0xFFFFFFFF)>>>0;}
+  function dosTime(d){return ((d.getHours()<<11)|(d.getMinutes()<<5)|(d.getSeconds()>>1))&0xFFFF;}
+  function dosDate(d){return (((d.getFullYear()-1980)<<9)|((d.getMonth()+1)<<5)|d.getDate())&0xFFFF;}
+  function zipStore(entries){
+    const enc=new TextEncoder(), now=new Date();
+    const T=dosTime(now), D=dosDate(now);
+    const locals=[], centrals=[]; let offset=0;
+    for(const e of entries){
+      const name=enc.encode(e.name), data=e.data, crc=crc32(data);
+      const lh=new Uint8Array(30+name.length), lv=new DataView(lh.buffer);
+      lv.setUint32(0,0x04034b50,true); lv.setUint16(4,20,true); lv.setUint16(6,0x0800,true);
+      lv.setUint16(8,0,true); lv.setUint16(10,T,true); lv.setUint16(12,D,true);
+      lv.setUint32(14,crc,true); lv.setUint32(18,data.length,true); lv.setUint32(22,data.length,true);
+      lv.setUint16(26,name.length,true); lv.setUint16(28,0,true);
+      lh.set(name,30);
+      locals.push(lh,data);
+
+      const ch=new Uint8Array(46+name.length), cv=new DataView(ch.buffer);
+      cv.setUint32(0,0x02014b50,true); cv.setUint16(4,20,true); cv.setUint16(6,20,true);
+      cv.setUint16(8,0x0800,true); cv.setUint16(10,0,true); cv.setUint16(12,T,true); cv.setUint16(14,D,true);
+      cv.setUint32(16,crc,true); cv.setUint32(20,data.length,true); cv.setUint32(24,data.length,true);
+      cv.setUint16(28,name.length,true); cv.setUint32(42,offset,true);
+      ch.set(name,46);
+      centrals.push(ch);
+      offset += lh.length + data.length;
+    }
+    const cdSize=centrals.reduce((a,c)=>a+c.length,0);
+    const eo=new Uint8Array(22), ev=new DataView(eo.buffer);
+    ev.setUint32(0,0x06054b50,true);
+    ev.setUint16(8,entries.length,true); ev.setUint16(10,entries.length,true);
+    ev.setUint32(12,cdSize,true); ev.setUint32(16,offset,true);
+    return new Blob([...locals,...centrals,eo],{type:'application/zip'});
+  }
+  const enc8 = s => new TextEncoder().encode(s);
+
+  const $ = id => document.getElementById(id);
+  const drop=$('drop'), file=$('file'), editor=$('editor'), warn=$('warn'), pv=$('pv');
+  let srcCanvas=null, srcHasAlpha=false, baseName='icon';
+
+  const ANDROID=[['mdpi',48],['hdpi',72],['xhdpi',96],['xxhdpi',144],['xxxhdpi',192]];
+  const ADAPTIVE=[['mdpi',108],['hdpi',162],['xhdpi',216],['xxhdpi',324],['xxxhdpi',432]];
+  const IOS=[20,29,40,58,60,76,80,87,120,152,167,180,1024];
+  const WEB=[16,32,48,96,180,192,512];
+  const SAFE=66/108;
+
+  /* ---------- load ---------- */
+  drop.addEventListener('click',()=>file.click());
+  drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('over')});
+  drop.addEventListener('dragleave',()=>drop.classList.remove('over'));
+  drop.addEventListener('drop',e=>{
+    e.preventDefault();drop.classList.remove('over');
+    if(e.dataTransfer.files[0]) load(e.dataTransfer.files[0]);
+  });
+  file.addEventListener('change',e=>{ if(e.target.files[0]) load(e.target.files[0]); });
+
+  function msg(kind,html){ warn.className='msg m-'+kind; warn.innerHTML=html; warn.classList.remove('hidden'); }
+
+  function load(f){
+    if(!f.type.startsWith('image/')){ msg('bad','이미지 파일이 아닙니다.'); return; }
+    baseName = (f.name.replace(/\.[^.]+$/,'') || 'icon').replace(/[^\w\-가-힣]/g,'_');
+    const img=new Image();
+    img.onload=()=>{
+      const w=img.naturalWidth||1024, h=img.naturalHeight||1024;
+      const side=Math.max(w,h);
+      const c=document.createElement('canvas'); c.width=side; c.height=side;
+      const cx=c.getContext('2d',{willReadFrequently:true});
+      cx.drawImage(img,(side-w)/2,(side-h)/2,w,h);
+      srcCanvas=c;
+      srcHasAlpha=detectAlpha(c);
+
+      const notes=[];
+      if(w!==h) notes.push(`원본이 정사각형이 아니라서(${w}×${h}) 가운데 정렬 후 여백을 채웠습니다.`);
+      if(side<1024) notes.push(`원본이 ${side}px입니다. 512·1024px 아이콘이 흐릿해질 수 있으니 가능하면 1024px 이상을 쓰세요.`);
+      if(notes.length) msg('warn', notes.join('<br>')); else { warn.classList.add('hidden'); }
+
+      if(srcHasAlpha){ $('bgOn').checked=false; }
+      editor.classList.remove('hidden');
+      render();
+      editor.scrollIntoView({behavior:'smooth',block:'nearest'});
+    };
+    img.onerror=()=>msg('bad','이미지를 읽지 못했습니다. PNG나 JPG로 다시 시도해 주세요.');
+    img.src=URL.createObjectURL(f);
+  }
+
+  function detectAlpha(c){
+    try{
+      const n=Math.min(c.width,64);
+      const t=document.createElement('canvas'); t.width=t.height=n;
+      t.getContext('2d').drawImage(c,0,0,n,n);
+      const d=t.getContext('2d').getImageData(0,0,n,n).data;
+      for(let i=3;i<d.length;i+=4){ if(d[i]<250) return true; }
+    }catch(e){}
+    return false;
+  }
+
+  /* ---------- draw ---------- */
+  function stepDown(src,tw,th){
+    let cur=src,w=cur.width,h=cur.height;
+    while(w>=tw*2 && h>=th*2){
+      w=Math.max(tw,Math.floor(w/2)); h=Math.max(th,Math.floor(h/2));
+      const c=document.createElement('canvas'); c.width=w; c.height=h;
+      const x=c.getContext('2d'); x.imageSmoothingEnabled=true; x.imageSmoothingQuality='high';
+      x.drawImage(cur,0,0,w,h); cur=c;
+    }
+    const out=document.createElement('canvas'); out.width=tw; out.height=th;
+    const ox=out.getContext('2d'); ox.imageSmoothingEnabled=true; ox.imageSmoothingQuality='high';
+    ox.drawImage(cur,0,0,tw,th);
+    return out;
+  }
+
+  function make(size,opt){
+    opt=opt||{};
+    const c=document.createElement('canvas'); c.width=c.height=size;
+    const x=c.getContext('2d');
+    const forceBg = opt.forceBg || $('bgOn').checked;
+    const bg=$('bgColor').value;
+
+    if(opt.bgOnly){ x.fillStyle=bg; x.fillRect(0,0,size,size); return c; }
+
+    if(forceBg){ x.fillStyle=bg; x.fillRect(0,0,size,size); }
+
+    const scale = opt.scale!=null ? opt.scale : (1 - $('pad').value/100);
+    const inner = Math.max(1, Math.round(size*scale));
+    const off = Math.round((size-inner)/2);
+    const small = stepDown(srcCanvas, inner, inner);
+    x.drawImage(small, off, off);
+
+    if($('round').checked && !opt.noRound){
+      const r=size*0.2237;
+      const o=document.createElement('canvas'); o.width=o.height=size;
+      const ox=o.getContext('2d');
+      ox.beginPath();
+      if(ox.roundRect) ox.roundRect(0,0,size,size,r);
+      else { ox.moveTo(r,0);ox.arcTo(size,0,size,size,r);ox.arcTo(size,size,0,size,r);ox.arcTo(0,size,0,0,r);ox.arcTo(0,0,size,0,r);ox.closePath(); }
+      ox.clip(); ox.drawImage(c,0,0);
+      return o;
+    }
+    return c;
+  }
+
+  /* ---------- preview ---------- */
+  function render(){
+    if(!srcCanvas) return;
+    $('padV').textContent=$('pad').value+'%';
+    pv.innerHTML='';
+    [[192,'런처 192px'],[108,'적응형 전경'],[64,'64px'],[32,'32px']].forEach(([s,cap],i)=>{
+      const box=document.createElement('div'); box.className='pv';
+      const c = i===1 ? make(s,{scale:SAFE*(1-$('pad').value/100)*1.0, noRound:true}) : make(s);
+      const d=document.createElement('canvas'); d.width=d.height=Math.min(s,192);
+      d.getContext('2d').drawImage(c,0,0,d.width,d.height);
+      d.style.width=Math.min(s,192)+'px';
+      box.appendChild(d);
+      const p=document.createElement('div'); p.className='cap'; p.textContent=cap;
+      box.appendChild(p); pv.appendChild(box);
+    });
+  }
+  ['pad','bgOn','bgColor','round'].forEach(id=>{
+    $(id).addEventListener('input',render); $(id).addEventListener('change',render);
+  });
+
+  $('reset').addEventListener('click',()=>{
+    srcCanvas=null; file.value=''; editor.classList.add('hidden'); warn.classList.add('hidden');
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+
+  /* ---------- export ---------- */
+  const toU8 = c => new Promise(r=>c.toBlob(async b=>r(new Uint8Array(await b.arrayBuffer())),'image/png'));
+
+  $('go').addEventListener('click',async()=>{
+    if(!srcCanvas) return;
+    const btn=$('go'); btn.disabled=true;
+    $('barWrap').classList.remove('hidden');
+    const entries=[];
+    const zip={ file:(name,text)=>entries.push({name,data:enc8(text)}) };
+    const jobs=[];
+
+    if($('pAnd').checked)   ANDROID.forEach(([d,s])=>jobs.push({p:`android/res/mipmap-${d}/ic_launcher.png`,s,o:{}}));
+    if($('pAdapt').checked){
+      ADAPTIVE.forEach(([d,s])=>{
+        jobs.push({p:`android/res/mipmap-${d}/ic_launcher_foreground.png`,s,o:{scale:SAFE*(1-$('pad').value/100),noRound:true}});
+        jobs.push({p:`android/res/mipmap-${d}/ic_launcher_background.png`,s,o:{bgOnly:true}});
+      });
+      zip.file('android/res/mipmap-anydpi-v26/ic_launcher.xml',
+`<?xml version="1.0" encoding="utf-8"?>
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@mipmap/ic_launcher_background" />
+    <foreground android:drawable="@mipmap/ic_launcher_foreground" />
+</adaptive-icon>
+`);
+      zip.file('android/res/mipmap-anydpi-v26/ic_launcher_round.xml',
+`<?xml version="1.0" encoding="utf-8"?>
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@mipmap/ic_launcher_background" />
+    <foreground android:drawable="@mipmap/ic_launcher_foreground" />
+</adaptive-icon>
+`);
+    }
+    if($('pPlay').checked) jobs.push({p:'android/playstore/ic_launcher-512.png',s:512,o:{noRound:true}});
+
+    if($('pIos').checked){
+      IOS.forEach(s=>jobs.push({p:`ios/AppIcon.appiconset/icon-${s}.png`,s,o:{forceBg:true,noRound:true}}));
+      zip.file('ios/AppIcon.appiconset/Contents.json', iosContents());
+    }
+    if($('pWeb').checked){
+      WEB.forEach(s=>jobs.push({p:`web/favicon-${s}.png`,s,o:{}}));
+      zip.file('web/site.webmanifest', JSON.stringify({
+        name:baseName, short_name:baseName, icons:[
+          {src:'/favicon-192.png',sizes:'192x192',type:'image/png'},
+          {src:'/favicon-512.png',sizes:'512x512',type:'image/png'}
+        ], theme_color:$('bgColor').value, background_color:$('bgColor').value, display:'standalone'
+      },null,2));
+      zip.file('web/head-snippet.html',
+`<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png">
+<link rel="manifest" href="/site.webmanifest">
+`);
+    }
+
+    if(!jobs.length){ msg('warn','생성할 규격을 하나 이상 선택하세요.'); btn.disabled=false; $('barWrap').classList.add('hidden'); return; }
+
+    for(let i=0;i<jobs.length;i++){
+      const j=jobs[i];
+      entries.push({name:j.p, data: await toU8(make(j.s,j.o))});
+      $('bar').style.width=Math.round((i+1)/jobs.length*100)+'%';
+      $('stat').textContent=`생성 중 ${i+1}/${jobs.length}`;
+      if(i%4===0) await new Promise(r=>setTimeout(r));
+    }
+
+    zip.file('README.txt',
+`앱 아이콘 세트 — kmagpie.com/tools/app-icon/
+
+[안드로이드]
+android/res/ 안의 폴더를 app/src/main/res/ 에 그대로 덮어쓰세요.
+적응형 아이콘을 쓰신다면 mipmap-anydpi-v26/ 도 함께 복사해야 합니다.
+적응형 전경 레이어에는 세이프존(66/108)이 이미 적용되어 있습니다.
+
+[Play 스토어]
+android/playstore/ic_launcher-512.png 를 스토어 등록정보에 올리세요.
+모서리는 직접 깎지 마세요. 스토어가 자동으로 마스킹합니다.
+
+[iOS]
+ios/AppIcon.appiconset 폴더를 Assets.xcassets 안의 같은 이름 폴더와 교체하세요.
+
+[웹]
+web/ 안의 파일을 사이트 루트에 올리고 head-snippet.html 내용을 <head>에 넣으세요.
+`);
+
+    $('stat').textContent='압축 중…';
+    await new Promise(r=>setTimeout(r,10));
+    const out=zipStore(entries);
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(out);
+    a.download=`${baseName}-icons.zip`;
+    a.click();
+    setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+
+    $('stat').textContent=`완료 — 파일 ${jobs.length}개`;
+    $('barWrap').classList.add('hidden'); $('bar').style.width='0';
+    btn.disabled=false;
+  });
+
+  function iosContents(){
+    const map=[
+      [20,'2x','iphone',40],[20,'3x','iphone',60],[29,'2x','iphone',58],[29,'3x','iphone',87],
+      [40,'2x','iphone',80],[40,'3x','iphone',120],[60,'2x','iphone',120],[60,'3x','iphone',180],
+      [20,'1x','ipad',20],[20,'2x','ipad',40],[29,'1x','ipad',29],[29,'2x','ipad',58],
+      [40,'1x','ipad',40],[40,'2x','ipad',80],[76,'2x','ipad',152],[83.5,'2x','ipad',167],
+      [1024,'1x','ios-marketing',1024]
+    ];
+    return JSON.stringify({
+      images: map.map(([pt,sc,idiom,px])=>({size:`${pt}x${pt}`,idiom,filename:`icon-${px}.png`,scale:sc})),
+      info:{version:1,author:'kmagpie-tools'}
+    },null,2);
+  }
+})();
+</script>
+</body>
+</html>

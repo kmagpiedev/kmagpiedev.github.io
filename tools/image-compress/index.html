@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>이미지 용량 줄이기 — 목표 용량에 맞춰 자동 압축 | K-magpie Tools</title>
+<meta name="description" content="여러 장을 한 번에 압축하고 목표 용량(예: 500KB 이하)에 맞춰 자동으로 품질을 조절합니다. WebP·JPEG 변환과 크기 축소 지원. 업로드 없이 브라우저에서 처리됩니다.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/image-compress/">
+<meta property="og:title" content="이미지 용량 줄이기 — 목표 용량에 맞춰 자동 압축">
+<meta property="og:description" content="여러 장 일괄 압축, 목표 용량 자동 맞추기. 서버 업로드 없이 브라우저에서 처리.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/image-compress/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:940px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 30px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  #drop{border:2px dashed var(--line);border-radius:16px;padding:42px 24px;text-align:center;
+    background:var(--surface);cursor:pointer;transition:.15s}
+  #drop:hover,#drop.over{border-color:var(--accent);background:var(--accent-soft)}
+  #drop .big{font-size:17px;font-weight:600;margin-bottom:6px}
+  #drop .small{font-size:13.5px;color:var(--ink-3)}
+  #file{display:none}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:18px 0}
+  .row{display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start}
+  .col{flex:1;min-width:225px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin-bottom:8px}
+  .seg{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+  .seg button{flex:1;background:transparent;border:0;padding:9px 6px;font-size:13.5px;font-weight:600;
+    color:var(--ink-2);cursor:pointer;font-family:inherit;transition:.12s}
+  .seg button.on{background:var(--accent);color:#fff}
+  .opt{display:flex;align-items:flex-start;gap:9px;font-size:14.5px;cursor:pointer;margin-bottom:8px}
+  .opt input{margin-top:4px;width:17px;height:17px;accent-color:var(--accent);cursor:pointer;flex:none}
+  .opt .d{font-size:12.5px;color:var(--ink-3);display:block;line-height:1.5}
+  input[type=range]{width:100%;accent-color:var(--accent)}
+  input[type=number],select{padding:7px 9px;border:1px solid var(--line);border-radius:7px;
+    background:var(--surface);color:var(--ink);font-size:14px;font-family:inherit}
+  input[type=number]{width:92px;text-align:right}
+  select{width:100%}
+  .inline{display:flex;align-items:center;gap:9px;font-size:14px;flex-wrap:wrap}
+  .val{font-variant-numeric:tabular-nums;font-weight:700;color:var(--accent)}
+
+  button.act{font-family:inherit;font-size:15px;font-weight:600;padding:12px 22px;border-radius:10px;border:1px solid transparent;cursor:pointer;transition:.12s}
+  .primary{background:var(--accent);color:#fff}
+  .primary:hover{filter:brightness(1.08)}
+  .primary:disabled{opacity:.45;cursor:not-allowed;filter:none}
+  .ghost{background:transparent;color:var(--ink-2);border-color:var(--line)}
+  .ghost:hover{border-color:var(--ink-3);color:var(--ink)}
+
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+  th,td{text-align:left;padding:10px 9px;border-bottom:1px solid var(--line-soft);vertical-align:middle}
+  th{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;border-bottom:1px solid var(--line)}
+  td.n{text-align:right;font-variant-numeric:tabular-nums}
+  .thumb{width:40px;height:40px;object-fit:cover;border-radius:7px;border:1px solid var(--line);display:block}
+  .fname{font-size:13.5px;word-break:break-all;line-height:1.4}
+  .save{font-weight:700;font-variant-numeric:tabular-nums}
+  .save.g{color:var(--good)} .save.b{color:var(--bad)}
+  .dl{font-size:12.5px;padding:5px 11px;border-radius:7px;border:1px solid var(--line);
+    background:transparent;color:var(--ink-2);cursor:pointer;font-family:inherit;font-weight:600}
+  .dl:hover{border-color:var(--accent);color:var(--accent)}
+
+  .totals{background:var(--good-soft);border:1px solid var(--good);border-radius:12px;padding:16px 20px;margin:16px 0;
+    display:flex;gap:28px;flex-wrap:wrap;align-items:baseline}
+  .totals .k{font-size:12.5px;color:var(--ink-2);display:block}
+  .totals .v{font-size:19px;font-weight:700;font-variant-numeric:tabular-nums}
+
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .hidden{display:none}
+  .bar{height:5px;background:var(--line-soft);border-radius:99px;overflow:hidden;margin-top:12px}
+  .bar>i{display:block;height:100%;width:0;background:var(--accent);transition:width .18s}
+  code{background:var(--line-soft);padding:2px 6px;border-radius:5px;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .note{font-size:13.5px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:13px;margin:14px 0}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">도구</a> › 이미지 용량 줄이기</p>
+
+<h1>이미지 용량 줄이기</h1>
+<p class="sub">여러 장을 한 번에 압축하고, <strong>목표 용량을 정하면 품질을 자동으로 맞춰줍니다.</strong> 파일이 서버로 전송되지 않고 브라우저 안에서만 처리됩니다.</p>
+
+<div id="drop">
+  <div class="big">이미지를 여기에 끌어다 놓거나 클릭해서 선택하세요</div>
+  <div class="small">여러 장을 한꺼번에 선택할 수 있습니다 · PNG · JPG · WebP</div>
+  <input type="file" id="file" accept="image/*" multiple>
+</div>
+
+<div id="warn" class="hidden"></div>
+
+<div id="editor" class="hidden">
+  <div class="panel">
+    <div class="row">
+      <div class="col">
+        <label class="f">압축 방식</label>
+        <div class="seg" id="mode">
+          <button data-m="q" class="on">품질 지정</button>
+          <button data-m="t">목표 용량</button>
+        </div>
+
+        <div id="paneQ" style="margin-top:16px">
+          <label class="f">품질 <span class="val" id="qv">80</span></label>
+          <input type="range" id="q" min="30" max="95" value="80">
+          <p class="note" style="margin-top:6px">80 근처가 대부분의 사진에서 눈에 띄는 손실 없이 용량이 가장 많이 줄어드는 구간입니다.</p>
+        </div>
+
+        <div id="paneT" class="hidden" style="margin-top:16px">
+          <label class="f">목표 용량</label>
+          <div class="inline">
+            <input type="number" id="target" value="500" min="10" step="50"> <span>KB 이하</span>
+          </div>
+          <p class="note" style="margin-top:6px">품질을 자동으로 조절해 목표 용량에 최대한 가깝게 맞춥니다. 목표가 너무 작으면 최저 품질로도 못 맞출 수 있어요.</p>
+        </div>
+      </div>
+
+      <div class="col">
+        <label class="f">출력 형식</label>
+        <select id="fmt">
+          <option value="webp">WebP — 용량이 가장 작음 (권장)</option>
+          <option value="jpeg">JPEG — 호환성이 가장 좋음</option>
+          <option value="png">PNG — 투명도 유지</option>
+          <option value="keep">원본 형식 유지</option>
+        </select>
+        <p class="note" style="margin-top:6px">WebP는 같은 화질에서 JPEG보다 25~35% 작습니다. 요즘 브라우저는 모두 지원해요. <strong>투명 배경이 필요하면 WebP나 PNG</strong>를 쓰세요.</p>
+
+        <label class="f" style="margin-top:20px">크기 제한</label>
+        <label class="opt"><input type="checkbox" id="resizeOn"><span>긴 변을 이 크기로 줄이기</span></label>
+        <div class="inline">
+          <input type="number" id="maxSide" value="1920" min="100" step="100"> <span>px</span>
+        </div>
+        <p class="note" style="margin-top:6px">용량을 줄이는 가장 확실한 방법입니다. 웹에 올릴 사진이면 1920px, 썸네일이면 800px 정도면 충분해요.</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+    <button class="act primary" id="go">압축하기</button>
+    <button class="act ghost" id="zipAll" disabled>ZIP으로 모두 받기</button>
+    <button class="act ghost" id="reset">파일 다시 선택</button>
+    <span id="stat" style="font-size:14px;color:var(--ink-3)"></span>
+  </div>
+  <div class="bar hidden" id="barWrap"><i id="bar"></i></div>
+
+  <div id="totals" class="totals hidden"></div>
+
+  <table id="tbl" class="hidden">
+    <thead><tr>
+      <th style="width:56px"></th><th>파일</th>
+      <th class="n">이전</th><th class="n">이후</th><th class="n">절감</th><th style="width:90px"></th>
+    </tr></thead>
+    <tbody id="tb"></tbody>
+  </table>
+</div>
+
+<h2>사용법</h2>
+<p>이미지를 여러 장 올린 뒤 압축 방식을 고르고 압축하기를 누르면 됩니다. 결과는 파일별로 이전·이후 용량과 절감률이 표시되고, 하나씩 받거나 ZIP으로 한 번에 받을 수 있습니다. 원본은 그대로 두고 새 파일이 만들어지므로 마음에 안 들면 설정을 바꿔 다시 누르면 됩니다.</p>
+<p>모든 처리는 브라우저의 Canvas API로 이루어집니다. 파일이 서버로 올라가지 않기 때문에 개인 사진이나 공개 전 자료도 안심하고 쓰실 수 있고, 업로드·다운로드 대기 시간이 없어 수십 장도 금방 끝납니다.</p>
+
+<h2>목표 용량 맞추기는 어떻게 동작하나요</h2>
+<p>"500KB 이하"처럼 상한이 정해진 경우가 많습니다. 게시판 첨부 제한, 이메일 용량, 스토어 등록 규격 같은 것들이죠. 품질을 손으로 바꿔가며 여러 번 시도하는 대신, 이 도구는 <strong>이진 탐색으로 품질을 8단계까지 좁혀가며</strong> 목표 용량 아래에서 가능한 가장 높은 품질을 찾아냅니다.</p>
+<p>목표가 지나치게 작으면 최저 품질로도 맞추지 못할 수 있습니다. 그럴 때는 크기 제한을 함께 켜세요. 해상도를 줄이는 쪽이 품질을 낮추는 것보다 훨씬 효율적이고, 결과물도 덜 뭉개집니다.</p>
+
+<h2>어떤 형식을 골라야 하나요</h2>
+<h3>WebP</h3>
+<p>같은 화질 기준으로 JPEG보다 25~35% 작습니다. 투명도도 지원하고 주요 브라우저가 모두 읽을 수 있어서, 웹에 올릴 이미지라면 대부분 이게 정답입니다. 다만 오래된 프로그램이나 일부 문서 편집기에서는 열리지 않을 수 있어요.</p>
+<h3>JPEG</h3>
+<p>어디서나 열립니다. 첨부 파일로 보내거나 상대방 환경을 모를 때 안전한 선택이에요. 대신 투명 배경을 지원하지 않아서, 투명한 PNG를 JPEG로 바꾸면 투명한 부분이 흰색으로 채워집니다.</p>
+<h3>PNG</h3>
+<p>로고나 아이콘처럼 색 수가 적고 경계가 또렷한 이미지, 그리고 투명 배경이 꼭 필요한 경우에 쓰세요. 다만 PNG는 무손실 방식이라 품질 조절로 줄어드는 폭이 크지 않습니다. <strong>PNG 용량을 크게 줄이고 싶으면 크기를 줄이거나 WebP로 바꾸는 편이 훨씬 효과적입니다.</strong></p>
+
+<h2>자주 겪는 문제</h2>
+<h3>PNG를 압축했는데 용량이 그대로예요</h3>
+<p>PNG는 무손실 형식이라 품질 슬라이더가 사실상 영향을 주지 않습니다. 위에 적은 대로 크기를 줄이거나 WebP로 변환하세요. 투명도가 필요 없다면 JPEG도 좋은 선택입니다.</p>
+<h3>압축했더니 오히려 용량이 커졌어요</h3>
+<p>이미 강하게 압축된 이미지를 다시 인코딩하면 그럴 수 있습니다. 이 경우 표에 절감률이 빨간색으로 표시되니, 그 파일은 원본을 그대로 쓰시면 됩니다.</p>
+<h3>투명 배경이 흰색으로 바뀌었어요</h3>
+<p>JPEG로 변환하셨을 가능성이 높습니다. JPEG는 투명도를 지원하지 않아요. WebP나 PNG로 다시 시도하세요.</p>
+
+<footer>
+  <p>K-magpie 도구 모음 · 모든 처리는 브라우저에서 이루어지며 파일은 업로드되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+
+  /* ---------- 내장 ZIP (store) ---------- */
+  const CRC=(()=>{const t=new Uint32Array(256);
+    for(let i=0;i<256;i++){let c=i;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[i]=c>>>0;}return t;})();
+  function crc32(u8){let c=0xFFFFFFFF;for(let i=0;i<u8.length;i++)c=CRC[(c^u8[i])&0xFF]^(c>>>8);return (c^0xFFFFFFFF)>>>0;}
+  function zipStore(entries){
+    const enc=new TextEncoder(), d=new Date();
+    const T=((d.getHours()<<11)|(d.getMinutes()<<5)|(d.getSeconds()>>1))&0xFFFF;
+    const D=(((d.getFullYear()-1980)<<9)|((d.getMonth()+1)<<5)|d.getDate())&0xFFFF;
+    const locals=[],centrals=[];let off=0;
+    for(const e of entries){
+      const nm=enc.encode(e.name),da=e.data,crc=crc32(da);
+      const lh=new Uint8Array(30+nm.length),lv=new DataView(lh.buffer);
+      lv.setUint32(0,0x04034b50,true);lv.setUint16(4,20,true);lv.setUint16(6,0x0800,true);
+      lv.setUint16(10,T,true);lv.setUint16(12,D,true);lv.setUint32(14,crc,true);
+      lv.setUint32(18,da.length,true);lv.setUint32(22,da.length,true);lv.setUint16(26,nm.length,true);
+      lh.set(nm,30);locals.push(lh,da);
+      const ch=new Uint8Array(46+nm.length),cv=new DataView(ch.buffer);
+      cv.setUint32(0,0x02014b50,true);cv.setUint16(4,20,true);cv.setUint16(6,20,true);
+      cv.setUint16(8,0x0800,true);cv.setUint16(12,T,true);cv.setUint16(14,D,true);
+      cv.setUint32(16,crc,true);cv.setUint32(20,da.length,true);cv.setUint32(24,da.length,true);
+      cv.setUint16(28,nm.length,true);cv.setUint32(42,off,true);
+      ch.set(nm,46);centrals.push(ch);off+=lh.length+da.length;
+    }
+    const cd=centrals.reduce((a,c)=>a+c.length,0);
+    const eo=new Uint8Array(22),ev=new DataView(eo.buffer);
+    ev.setUint32(0,0x06054b50,true);ev.setUint16(8,entries.length,true);ev.setUint16(10,entries.length,true);
+    ev.setUint32(12,cd,true);ev.setUint32(16,off,true);
+    return new Blob([...locals,...centrals,eo],{type:'application/zip'});
+  }
+
+  /* ---------- state ---------- */
+  let items=[];               // {file,name,img,orig,blob,url,w,h}
+  const drop=$('drop'),file=$('file'),warn=$('warn');
+  const fmtExt={webp:'webp',jpeg:'jpg',png:'png'};
+
+  const kb=n=>n>=1048576?(n/1048576).toFixed(2)+' MB':(n/1024).toFixed(0)+' KB';
+  function msg(k,h){warn.className='msg m-'+k;warn.innerHTML=h;warn.classList.remove('hidden');}
+
+  drop.addEventListener('click',()=>file.click());
+  drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('over')});
+  drop.addEventListener('dragleave',()=>drop.classList.remove('over'));
+  drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('over');add(e.dataTransfer.files)});
+  file.addEventListener('change',e=>add(e.target.files));
+
+  async function add(list){
+    const fs=[...list].filter(f=>f.type.startsWith('image/'));
+    if(!fs.length){msg('bad','이미지 파일이 없습니다.');return;}
+    warn.classList.add('hidden');
+    for(const f of fs){
+      const img=await new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=URL.createObjectURL(f);}).catch(()=>null);
+      if(!img) continue;
+      items.push({file:f,name:f.name,img,orig:f.size,w:img.naturalWidth,h:img.naturalHeight,blob:null});
+    }
+    $('editor').classList.remove('hidden');
+    draw();
+    $('stat').textContent=`${items.length}장 대기 중`;
+  }
+
+  /* ---------- mode toggle ---------- */
+  document.querySelectorAll('#mode button').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('#mode button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    const t=b.dataset.m==='t';
+    $('paneT').classList.toggle('hidden',!t);
+    $('paneQ').classList.toggle('hidden',t);
+  }));
+  $('q').addEventListener('input',()=>$('qv').textContent=$('q').value);
+
+  /* ---------- render table ---------- */
+  function draw(){
+    const tb=$('tb'); tb.innerHTML='';
+    $('tbl').classList.toggle('hidden',!items.length);
+    items.forEach((it,i)=>{
+      const tr=document.createElement('tr');
+      const cut = it.blob ? (1-it.blob.size/it.orig)*100 : null;
+      tr.innerHTML=`
+        <td><img class="thumb" src="${it.img.src}" alt=""></td>
+        <td><div class="fname">${it.name}</div>
+            <div style="font-size:12px;color:var(--ink-3)">${it.w}×${it.h}${it.outW?` → ${it.outW}×${it.outH}`:''}</div></td>
+        <td class="n">${kb(it.orig)}</td>
+        <td class="n">${it.blob?kb(it.blob.size):'–'}</td>
+        <td class="n"><span class="save ${cut===null?'':(cut>0?'g':'b')}">${cut===null?'–':(cut>0?'−':'+')+Math.abs(cut).toFixed(0)+'%'}</span></td>
+        <td>${it.blob?`<button class="dl" data-i="${i}">받기</button>`:''}</td>`;
+      tb.appendChild(tr);
+    });
+    tb.querySelectorAll('.dl').forEach(b=>b.addEventListener('click',()=>{
+      const it=items[b.dataset.i];
+      const a=document.createElement('a');a.href=URL.createObjectURL(it.blob);a.download=it.outName;a.click();
+      setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+    }));
+  }
+
+  /* ---------- encode ---------- */
+  function stepDown(src,tw,th){
+    let cur=src,w=cur.width,h=cur.height;
+    while(w>=tw*2&&h>=th*2){
+      w=Math.max(tw,Math.floor(w/2));h=Math.max(th,Math.floor(h/2));
+      const c=document.createElement('canvas');c.width=w;c.height=h;
+      const x=c.getContext('2d');x.imageSmoothingEnabled=true;x.imageSmoothingQuality='high';
+      x.drawImage(cur,0,0,w,h);cur=c;
+    }
+    const o=document.createElement('canvas');o.width=tw;o.height=th;
+    const ox=o.getContext('2d');ox.imageSmoothingEnabled=true;ox.imageSmoothingQuality='high';
+    ox.drawImage(cur,0,0,tw,th);return o;
+  }
+  function toCanvas(it,mime){
+    let w=it.w,h=it.h;
+    if($('resizeOn').checked){
+      const m=Math.max(100,+$('maxSide').value||1920);
+      if(Math.max(w,h)>m){const s=m/Math.max(w,h);w=Math.round(w*s);h=Math.round(h*s);}
+    }
+    const base=document.createElement('canvas');base.width=it.w;base.height=it.h;
+    base.getContext('2d').drawImage(it.img,0,0);
+    const c=(w!==it.w||h!==it.h)?stepDown(base,w,h):base;
+    if(mime==='image/jpeg'){
+      const o=document.createElement('canvas');o.width=c.width;o.height=c.height;
+      const x=o.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,o.width,o.height);x.drawImage(c,0,0);
+      return o;
+    }
+    return c;
+  }
+  const enc=(c,mime,q)=>new Promise(r=>c.toBlob(r,mime,q));
+
+  async function encodeTarget(c,mime,bytes){
+    let lo=.05,hi=.96,best=null;
+    for(let i=0;i<8;i++){
+      const q=(lo+hi)/2, b=await enc(c,mime,q);
+      if(b && b.size<=bytes){best=b;lo=q;} else hi=q;
+    }
+    return best||await enc(c,mime,.05);
+  }
+
+  $('go').addEventListener('click',async()=>{
+    if(!items.length)return;
+    const btn=$('go');btn.disabled=true;$('barWrap').classList.remove('hidden');
+    const sel=$('fmt').value;
+    const isTarget=document.querySelector('#mode button.on').dataset.m==='t';
+    const q=+$('q').value/100, target=Math.max(10,+$('target').value||500)*1024;
+    let missed=0;
+
+    for(let i=0;i<items.length;i++){
+      const it=items[i];
+      let mime = sel==='keep' ? (it.file.type||'image/jpeg') : 'image/'+sel;
+      if(!['image/jpeg','image/png','image/webp'].includes(mime)) mime='image/webp';
+      const c=toCanvas(it,mime);
+      it.outW=c.width;it.outH=c.height;
+      const lossless = mime==='image/png';
+      it.blob = (isTarget && !lossless) ? await encodeTarget(c,mime,target)
+              : await enc(c,mime,lossless?undefined:q);
+      if(isTarget && it.blob && it.blob.size>target) missed++;
+      const base=it.name.replace(/\.[^.]+$/,'');
+      it.outName=base+'.'+(fmtExt[mime.split('/')[1]]||'img');
+      $('bar').style.width=Math.round((i+1)/items.length*100)+'%';
+      $('stat').textContent=`처리 중 ${i+1}/${items.length}`;
+      await new Promise(r=>setTimeout(r));
+    }
+
+    const oT=items.reduce((a,i)=>a+i.orig,0), nT=items.reduce((a,i)=>a+(i.blob?i.blob.size:i.orig),0);
+    $('totals').className='totals';
+    $('totals').innerHTML=
+      `<div><span class="k">이전 합계</span><span class="v">${kb(oT)}</span></div>
+       <div><span class="k">이후 합계</span><span class="v">${kb(nT)}</span></div>
+       <div><span class="k">절감</span><span class="v">${kb(Math.max(0,oT-nT))} (${((1-nT/oT)*100).toFixed(0)}%)</span></div>`;
+
+    if(missed) msg('warn',`${missed}장은 최저 품질로도 목표 용량을 맞추지 못했습니다. <strong>크기 제한</strong>을 함께 켜고 다시 시도해 보세요.`);
+    else if($('fmt').value==='png') msg('warn','PNG는 무손실 형식이라 품질 조절 효과가 거의 없습니다. 크기 제한을 켜거나 WebP로 바꾸면 훨씬 많이 줄어듭니다.');
+    else warn.classList.add('hidden');
+
+    draw();
+    $('stat').textContent=`완료 — ${items.length}장`;
+    $('barWrap').classList.add('hidden');$('bar').style.width='0';
+    btn.disabled=false;$('zipAll').disabled=false;
+  });
+
+  $('zipAll').addEventListener('click',async()=>{
+    const done=items.filter(i=>i.blob);if(!done.length)return;
+    const seen={},entries=[];
+    for(const it of done){
+      let n=it.outName;
+      if(seen[n]){n=n.replace(/(\.[^.]+)$/,`_${seen[it.outName]}$1`);}
+      seen[it.outName]=(seen[it.outName]||0)+1;
+      entries.push({name:n,data:new Uint8Array(await it.blob.arrayBuffer())});
+    }
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(zipStore(entries));a.download='compressed-images.zip';a.click();
+    setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+  });
+
+  $('reset').addEventListener('click',()=>{
+    items=[];file.value='';$('editor').classList.add('hidden');
+    warn.classList.add('hidden');$('totals').className='totals hidden';
+    $('zipAll').disabled=true;$('stat').textContent='';
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+})();
+</script>
+</body>
+</html>
