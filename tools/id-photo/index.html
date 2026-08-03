@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>증명사진 만들기 — 여권·반명함 규격 무료 편집 | 까치툴</title>
+<meta name="description" content="사진을 여권 35×45mm, 반명함 30×40mm 규격에 맞게 자르고 AI로 배경을 지워 300dpi로 저장하세요. 인화용 4×6인치 배치 시트도 만들어 드립니다. 사진을 서버로 보내지 않고 브라우저에서 처리합니다.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/id-photo/">
+<meta property="og:title" content="증명사진 만들기 — 여권·반명함 규격 무료 편집">
+<meta property="og:description" content="규격에 맞게 자르고 배경 바꾸고 인화용 시트까지. 서버 업로드 없이 브라우저에서.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/id-photo/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  #drop{border:2px dashed var(--line);border-radius:16px;padding:40px 24px;text-align:center;
+    background:var(--surface);cursor:pointer;transition:.15s}
+  #drop:hover,#drop.over{border-color:var(--accent);background:var(--accent-soft)}
+  #drop .big{font-size:17px;font-weight:600;margin-bottom:6px}
+  #drop .small{font-size:13.5px;color:var(--ink-3)}
+  #file{display:none}
+
+  .stage{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start;margin-top:18px}
+  .side{flex:1;min-width:290px}
+  .editor{width:300px;flex:none}
+  .cvwrap{position:relative;background:var(--surface);border:1px solid var(--line);
+    border-radius:12px;overflow:hidden;touch-action:none;cursor:grab}
+  .cvwrap.drag{cursor:grabbing}
+  .cvwrap canvas{display:block;width:100%;height:auto}
+  .hint{font-size:12px;color:var(--ink-3);text-align:center;margin-top:8px}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:14px}
+  .panel h4{margin:0 0 13px;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+  .fld{margin-bottom:12px}
+  .fld:last-child{margin-bottom:0}
+  .fld label{display:block;font-size:12.5px;color:var(--ink-3);font-weight:600;margin-bottom:5px}
+  .fld select,.fld input[type=number]{width:100%;padding:9px 11px;border:1px solid var(--line);
+    border-radius:8px;background:var(--bg);color:var(--ink);font-size:14.5px;font-family:inherit}
+  .fld select:focus,.fld input:focus{outline:0;border-color:var(--accent)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  .inline{display:flex;align-items:center;gap:9px;flex-wrap:wrap;font-size:14px}
+  input[type=range]{flex:1;min-width:100px;accent-color:var(--accent)}
+  .val{font-variant-numeric:tabular-nums;font-weight:700;color:var(--accent);min-width:44px;text-align:right}
+  .opt{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+  .opt input{width:16px;height:16px;accent-color:var(--accent);cursor:pointer}
+  .swatch{display:flex;gap:7px;flex-wrap:wrap}
+  .swatch button{width:34px;height:34px;border-radius:8px;border:2px solid var(--line);cursor:pointer;padding:0}
+  .swatch button.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+  .swatch button.keep{background:var(--line-soft);font-size:10px;color:var(--ink-3);width:auto;padding:0 10px;font-family:inherit;font-weight:600}
+  .seg3{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .seg3 button{flex:1;background:transparent;border:0;padding:8px 4px;font-size:13px;font-weight:600;
+    color:var(--ink-2);cursor:pointer;font-family:inherit;transition:.12s}
+  .seg3 button.on{background:var(--accent);color:#fff}
+  .cvwrap.erase{cursor:crosshair}
+  .soon{border-style:dashed;opacity:.8}
+  .soon:hover{opacity:1}
+  .badge{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.03em;
+    background:var(--accent-soft);color:var(--accent);padding:2px 7px;border-radius:999px;
+    margin-left:5px;vertical-align:middle}
+
+  button.act{font-family:inherit;font-size:15px;font-weight:600;padding:12px 22px;border-radius:10px;border:1px solid transparent;cursor:pointer;transition:.12s}
+  .primary{background:var(--accent);color:#fff}
+  .primary:hover{filter:brightness(1.08)}
+  .ghost{background:transparent;color:var(--ink-2);border-color:var(--line)}
+  .ghost:hover{border-color:var(--ink-3);color:var(--ink)}
+
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .m-good{background:var(--good-soft);border-color:var(--good)}
+  .hidden{display:none}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line-soft)}
+  th{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;border-bottom:1px solid var(--line)}
+  td.n{text-align:right;font-variant-numeric:tabular-nums}
+  code{background:var(--line-soft);padding:2px 6px;border-radius:5px;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .note{font-size:13.5px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:13px;margin:14px 0}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> &rsaquo; <a href="/tools/">까치툴</a> &rsaquo; 증명사진 만들기</p>
+
+<h1>증명사진 만들기</h1>
+<p class="sub">사진을 규격에 맞게 자르고 <strong>AI로 배경을 지워</strong> 300dpi 인쇄 품질로 저장합니다. 사진관 인화용 4×6인치 배치 시트도 함께 만들어 드려요. 파일이 서버로 전송되지 않습니다.</p>
+
+<div id="drop">
+  <div class="big">사진을 끌어다 놓거나 클릭해서 선택하세요</div>
+  <div class="small">정면을 보고 찍은 밝은 사진일수록 결과가 좋습니다</div>
+  <input type="file" id="file" accept="image/*">
+</div>
+
+<div id="warn" class="hidden"></div>
+
+<div id="editor" class="hidden">
+  <div class="stage">
+    <div class="editor">
+      <div class="cvwrap" id="cvwrap"><canvas id="pv"></canvas></div>
+      <div class="hint">드래그로 위치 이동 · 휠 또는 아래 슬라이더로 확대</div>
+      <div class="fld" style="margin-top:12px">
+        <label>확대 <span class="val" id="zV">100%</span></label>
+        <input type="range" id="zoom" min="50" max="400" value="100">
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="act ghost" id="fit" style="flex:1;padding:8px 0;font-size:13px">맞춤</button>
+        <button class="act ghost" id="reset" style="flex:1;padding:8px 0;font-size:13px">다시 선택</button>
+      </div>
+    </div>
+
+    <div class="side">
+      <div class="panel">
+        <h4>규격</h4>
+        <div class="fld">
+          <select id="preset">
+            <option value="35,45,32,36">여권 · 운전면허 — 35 × 45mm</option>
+            <option value="30,40,25,30" selected>반명함 (이력서·원서) — 30 × 40mm</option>
+            <option value="25,30,20,24">명함판 — 25 × 30mm</option>
+            <option value="50,70,40,50">대형 — 50 × 70mm</option>
+            <option value="51,51,25,35">미국 비자 — 51 × 51mm (2×2인치)</option>
+            <option value="custom">직접 입력</option>
+          </select>
+        </div>
+        <div class="two hidden" id="customBox">
+          <div class="fld"><label>가로 (mm)</label><input type="number" id="cw" value="35" min="10" max="150"></div>
+          <div class="fld"><label>세로 (mm)</label><input type="number" id="ch" value="45" min="10" max="150"></div>
+        </div>
+        <label class="opt"><input type="checkbox" id="guide" checked>얼굴 가이드선 표시</label>
+      </div>
+
+      <div class="panel">
+        <h4>배경</h4>
+        <div class="swatch" id="bgsw">
+          <button class="keep on" data-bg="keep">원본 유지</button>
+          <button data-bg="#ffffff" style="background:#fff"></button>
+          <button data-bg="#f2f4f7" style="background:#f2f4f7"></button>
+          <button data-bg="#cfe3f7" style="background:#cfe3f7"></button>
+          <button data-bg="#d9d9d9" style="background:#d9d9d9"></button>
+        </div>
+        <div class="fld" style="margin-top:13px">
+          <label>자동 인식 범위 <span class="val" id="tV">28</span></label>
+          <input type="range" id="tol" min="0" max="70" value="28">
+        </div>
+        <p class="note" style="margin:0 0 14px">자동 인식은 <strong>단색 벽처럼 균일한 배경</strong>에서만 동작합니다. 배경이 복잡하면 0으로 내리고 아래 지우개로 직접 칠하세요.</p>
+
+        <button class="act primary" id="aiBtn" style="width:100%;padding:11px 0;font-size:14px;margin-bottom:10px">
+          ✨ AI로 배경 지우기
+        </button>
+        <div class="fld hidden" id="aiTune">
+          <label>인물 인식 강도 <span class="val" id="thV">50</span></label>
+          <input type="range" id="thresh" min="10" max="90" value="50">
+        </div>
+        <button class="act ghost hidden" id="aiClear" style="padding:7px 14px;font-size:13px;margin-bottom:14px">AI 결과 지우기</button>
+        <p class="note" id="aiNote" style="margin:0 0 14px">처음 누르면 인식 모델을 내려받느라 <strong>약 12MB</strong>가 필요합니다. 사진은 서버로 전송되지 않고 브라우저 안에서 계산됩니다.</p>
+
+        <h4 style="margin-top:4px">지우개</h4>
+        <div class="fld">
+          <div class="seg3" id="tool">
+            <button data-m="move" class="on">이동</button>
+            <button data-m="erase">지우기</button>
+            <button data-m="restore">되살리기</button>
+          </div>
+        </div>
+        <div class="fld"><label>붓 크기 <span class="val" id="bsV">40</span></label>
+          <input type="range" id="brush" min="8" max="140" value="40"></div>
+        <button class="act ghost" id="clearPaint" style="padding:7px 14px;font-size:13px">칠한 것 지우기</button>
+        <p class="note" style="margin:12px 0 0">지우기로 배경을 칠하고, 실수로 얼굴을 지웠으면 되살리기로 복구하세요. 사진 위치를 다시 잡으려면 이동으로 바꾸시면 됩니다.</p>
+      </div>
+
+      <div class="panel">
+        <h4>보정</h4>
+        <div class="fld"><label>밝기 <span class="val" id="brV">0</span></label><input type="range" id="bright" min="-40" max="40" value="0"></div>
+        <div class="fld"><label>대비 <span class="val" id="coV">0</span></label><input type="range" id="contrast" min="-30" max="30" value="0"></div>
+      </div>
+
+      <div class="panel">
+        <h4>저장</h4>
+        <div class="fld"><label>인화 시트 배치</label>
+          <select id="sheet">
+            <option value="0">한 장만 저장</option>
+            <option value="1" selected>4×6인치 인화용 시트 (여러 장)</option>
+          </select>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="act primary" id="save" style="flex:1">저장하기</button>
+        </div>
+        <p class="note" style="margin:10px 0 0" id="info"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2>사용법</h2>
+<p>사진을 올리고 규격을 고른 뒤, 미리보기에서 드래그와 확대로 얼굴 위치를 맞추면 됩니다. 가이드선이 보이는데 <strong>위쪽 선에 정수리, 아래쪽 선에 턱 끝</strong>을 맞추시면 규격에 맞는 얼굴 비율이 됩니다. 세로 중앙선에는 코가 오도록 좌우를 맞추세요.</p>
+<p>배경을 바꾸실 거면 <strong>AI로 배경 지우기</strong>를 누르는 게 가장 빠릅니다. 배경이 복잡해도 인물만 남기고 지워줘요. 결과가 어색하면 인식 강도를 조절하거나 지우개·되살리기 브러시로 다듬으시면 됩니다. 저장할 때 인화용 시트를 선택하면 4×6인치 용지에 여러 장이 배치된 이미지가 만들어집니다. 그 파일을 사진관에 맡기거나 무인 인화기에 넣으면 한 장 값으로 여러 장을 뽑을 수 있어요.</p>
+<p>사진은 서버로 올라가지 않습니다. 얼굴 사진처럼 민감한 파일이 외부로 나가지 않으니 안심하고 쓰셔도 됩니다.</p>
+
+<h2>규격 정리</h2>
+<table>
+  <thead><tr><th>용도</th><th class="n">크기</th><th>비고</th></tr></thead>
+  <tbody>
+    <tr><td>여권 · 운전면허</td><td class="n">35 × 45mm</td><td>정수리~턱 32~36mm, 머리 위 여백 3~5mm</td></tr>
+    <tr><td>반명함 (이력서·원서)</td><td class="n">30 × 40mm</td><td>가장 널리 쓰이는 증명사진 크기</td></tr>
+    <tr><td>명함판</td><td class="n">25 × 30mm</td><td>학생증, 소형 서류용</td></tr>
+    <tr><td>미국 비자</td><td class="n">51 × 51mm</td><td>정사각형, 머리 25~35mm</td></tr>
+  </tbody>
+</table>
+<p class="note">기관마다 세부 요구사항이 다를 수 있습니다. 여권처럼 반려되면 곤란한 서류는 제출 전에 해당 기관의 최신 안내를 꼭 확인하세요. 특히 여권사진은 규정이 까다로워 <strong>탈락 위험을 감수하기 어렵다면 사진관 촬영을 권합니다.</strong></p>
+
+<h2>반려되지 않는 사진 만들기</h2>
+<h3>정면, 무표정, 눈을 뜬 상태</h3>
+<p>고개를 기울이거나 옆으로 돌리면 안 됩니다. 입은 다물고 이가 보이지 않게, 눈은 크게 뜨고 머리카락이 눈을 가리지 않아야 합니다. 웃는 사진은 대부분의 신분증용으로 반려됩니다.</p>
+<h3>배경은 균일한 밝은 무채색</h3>
+<p>흰색이나 아주 옅은 회색이 안전합니다. 그림자가 배경에 지면 안 되므로, 직접 찍으실 때는 <strong>벽에서 한 걸음 떨어져</strong> 서고 정면에서 고르게 빛이 오도록 하세요. 이 도구의 배경 교체 기능은 원래 배경이 단색일 때 잘 동작하니, 촬영 단계에서 깔끔하게 찍는 게 가장 좋습니다.</p>
+<h3>안경과 액세서리</h3>
+<p>여권사진은 원칙적으로 안경을 벗어야 합니다. 모자나 머리 장식도 안 되고, 종교적 이유가 있는 경우에만 얼굴 윤곽이 다 드러나는 조건으로 허용됩니다.</p>
+<h3>최근에 찍은 사진으로</h3>
+<p>보통 6개월 이내 촬영본을 요구합니다. 오래된 사진은 본인 확인이 안 된다는 이유로 반려될 수 있어요.</p>
+
+<h2>자주 겪는 문제</h2>
+<h3>배경을 바꿨더니 머리카락이 뜯겨요</h3>
+<p>자동 인식은 배경과 머리카락 색이 비슷하면 경계를 구분하지 못합니다. 인식 범위를 낮춘 뒤 <strong>되살리기 브러시로 뜯긴 부분을 복구</strong>하세요. 붓 크기를 작게 잡으면 머리카락 경계도 세밀하게 다듬을 수 있습니다.</p>
+<h3>AI 배경 제거는 사진을 어디로 보내나요</h3>
+<p><strong>아무 데도 보내지 않습니다.</strong> 인물 분리 모델을 이 사이트에 함께 올려두고 브라우저 안에서 계산합니다. 처음 누를 때 모델 파일 약 12MB를 내려받는 통신만 있고, <strong>사진이 밖으로 나가는 통신은 없습니다.</strong> 개발자 도구의 네트워크 탭을 열어두고 눌러보시면 확인하실 수 있어요. 모델은 브라우저가 캐시하므로 두 번째부터는 바로 동작합니다.</p>
+<h3>AI 결과가 어색해요</h3>
+<p><strong>인물 인식 강도</strong>를 조절해 보세요. 배경이 남으면 올리고, 얼굴이나 어깨가 잘려나가면 내리시면 됩니다. 그래도 경계가 지저분하면 <strong>되살리기 브러시로 잘린 부분을 복구</strong>하고 <strong>지우기 브러시로 남은 배경을 정리</strong>하세요. AI로 큰 덩어리를 처리하고 브러시로 다듬는 조합이 가장 빠릅니다.</p>
+<h3>배경이 복잡한데 지울 수 있나요</h3>
+<p>자동 인식은 단색 배경에서만 동작하지만, <strong>지우개 브러시는 배경이 어떻든 쓸 수 있습니다.</strong> 자동 인식 범위를 0으로 내리고 지우기 브러시로 배경을 직접 칠해 지우세요. 큰 붓으로 넓은 곳을 지운 뒤 작은 붓으로 얼굴 주변을 정리하는 순서가 편합니다. 손이 좀 가지만 사진이 밖으로 나가지 않는다는 게 이 방식의 장점이에요.</p>
+<h3>인쇄했더니 크기가 안 맞아요</h3>
+<p>저장 파일에는 300dpi 정보가 들어 있지만, 인쇄할 때 <strong>"용지에 맞춤"이나 "자동 크기 조정"을 끄고 100%로</strong> 출력해야 실제 규격이 나옵니다. 사진관 인화라면 4×6인치 시트를 그대로 맡기시면 됩니다.</p>
+<h3>사진이 흐릿해요</h3>
+<p>원본 해상도가 낮으면 300dpi로 키울 때 뭉개집니다. 35×45mm를 300dpi로 뽑으려면 세로 약 530픽셀이 필요하니, 얼굴 부분이 그보다 크게 찍힌 원본을 쓰세요.</p>
+
+<footer>
+  <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 사진은 업로드되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const DPI=300, MM=DPI/25.4;            // 1mm 당 픽셀
+  let img=null, ox=0, oy=0, zoom=1, bgMode='keep';
+  const warn=$('warn');
+  function msg(k,h){warn.className='msg m-'+k;warn.innerHTML=h;warn.classList.remove('hidden')}
+
+  /* ---------- 파일 ---------- */
+  const drop=$('drop'),file=$('file');
+  drop.addEventListener('click',()=>file.click());
+  drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('over')});
+  drop.addEventListener('dragleave',()=>drop.classList.remove('over'));
+  drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('over');load(e.dataTransfer.files[0])});
+  file.addEventListener('change',e=>load(e.target.files[0]));
+
+  function load(f){
+    if(!f||!f.type.startsWith('image/')){msg('bad','이미지 파일이 아닙니다.');return}
+    const im=new Image();
+    im.onload=()=>{
+      img=im; paint=null; aiMask=null; aiConf=null;
+      $('aiTune').classList.add('hidden'); $('aiClear').classList.add('hidden');
+      warn.classList.add('hidden');
+      $('editor').classList.remove('hidden');
+      fit();
+      const [w,h]=spec();
+      const needH=Math.round(h*MM);
+      if(im.naturalHeight < needH*0.8)
+        msg('warn',`원본 세로 해상도가 ${im.naturalHeight}px입니다. 이 규격을 300dpi로 인쇄하려면 <strong>약 ${needH}px</strong>이 필요해서 다소 흐릿할 수 있습니다.`);
+      draw();
+    };
+    im.onerror=()=>msg('bad','이미지를 읽지 못했습니다.');
+    im.src=URL.createObjectURL(f);
+  }
+
+  function spec(){
+    const v=$('preset').value;
+    if(v==='custom') return [+$('cw').value||35, +$('ch').value||45, null, null];
+    const [w,h,a,b]=v.split(',').map(Number);
+    return [w,h,a,b];
+  }
+  $('preset').addEventListener('change',()=>{
+    $('customBox').classList.toggle('hidden',$('preset').value!=='custom');
+    paint=null; fit(); draw();
+  });
+
+  /* ---------- 미리보기 ---------- */
+  const PVW=300;
+  function fit(){
+    if(!img) return;
+    const [w,h]=spec();
+    const outW=w*MM, outH=h*MM;
+    zoom=Math.max(outW/img.naturalWidth, outH/img.naturalHeight);
+    $('zoom').value=100;
+    ox=(outW-img.naturalWidth*zoom)/2; oy=(outH-img.naturalHeight*zoom)/2;
+    baseZoom=zoom;
+  }
+  let baseZoom=1;
+
+  function renderTo(canvas, showGuide){
+    const [w,h,hMin,hMax]=spec();
+    const outW=Math.round(w*MM), outH=Math.round(h*MM);
+    canvas.width=outW; canvas.height=outH;
+    const x=canvas.getContext('2d');
+    x.fillStyle = bgMode==='keep' ? '#ffffff' : bgMode;
+    x.fillRect(0,0,outW,outH);
+    if(!img) return;
+    x.imageSmoothingQuality='high';
+    x.drawImage(img, ox, oy, img.naturalWidth*zoom, img.naturalHeight*zoom);
+    if(bgMode!=='keep' && +$('tol').value>0) replaceBg(x,outW,outH,bgMode);
+    if(aiMask && bgMode!=='keep'){
+      const t=document.createElement('canvas'); t.width=outW; t.height=outH;
+      const tx=t.getContext('2d');
+      tx.fillStyle=bgMode; tx.fillRect(0,0,outW,outH);
+      tx.globalCompositeOperation='destination-in';
+      tx.drawImage(aiMask, ox, oy, img.naturalWidth*zoom, img.naturalHeight*zoom);
+      x.drawImage(t,0,0);
+    }
+    if(paint && bgMode!=='keep'){
+      const t=document.createElement('canvas'); t.width=outW; t.height=outH;
+      const tx=t.getContext('2d');
+      tx.fillStyle=bgMode; tx.fillRect(0,0,outW,outH);
+      tx.globalCompositeOperation='destination-in';
+      tx.drawImage(paint,0,0,outW,outH);
+      x.drawImage(t,0,0);
+    }
+    adjust(x,outW,outH);
+    if(showGuide && $('guide').checked && hMin){
+      const headTop=outH*0.09, headBot=outH*(0.09+hMin/h*1.02);
+      x.save();
+      x.strokeStyle='rgba(180,83,9,.85)'; x.lineWidth=Math.max(1,outW/150); x.setLineDash([6,5]);
+      x.beginPath(); x.moveTo(0,headTop); x.lineTo(outW,headTop);
+      x.moveTo(0,headBot); x.lineTo(outW,headBot);
+      x.moveTo(outW/2,0); x.lineTo(outW/2,outH); x.stroke();
+      x.setLineDash([]); x.fillStyle='rgba(180,83,9,.9)';
+      x.font=`600 ${outW*0.045}px -apple-system,"Apple SD Gothic Neo",sans-serif`;
+      x.fillText('정수리', 6, headTop-5);
+      x.fillText('턱 끝', 6, headBot+outW*0.055);
+      x.restore();
+    }
+  }
+
+  /* 모서리에서 번져나가는 단순 배경 치환 */
+  function replaceBg(ctx,W,H,color){
+    const tol=+$('tol').value;
+    const d=ctx.getImageData(0,0,W,H), p=d.data;
+    const seen=new Uint8Array(W*H);
+    const stack=[];
+    const corners=[[0,0],[W-1,0],[0,H-1],[W-1,H-1]];
+    const ref=[];
+    for(const [cx,cy] of corners){ const i=(cy*W+cx)*4; ref.push([p[i],p[i+1],p[i+2]]); }
+    for(let i=0;i<W;i++){ stack.push(i, (H-1)*W+i); }
+    for(let j=0;j<H;j++){ stack.push(j*W, j*W+W-1); }
+    const near=(r,g,b)=>ref.some(c=>Math.abs(c[0]-r)+Math.abs(c[1]-g)+Math.abs(c[2]-b) < tol*3);
+    while(stack.length){
+      const idx=stack.pop();
+      if(seen[idx]) continue;
+      const i4=idx*4;
+      if(!near(p[i4],p[i4+1],p[i4+2])) continue;
+      seen[idx]=1;
+      const cx=idx%W, cy=(idx/W)|0;
+      if(cx>0) stack.push(idx-1);
+      if(cx<W-1) stack.push(idx+1);
+      if(cy>0) stack.push(idx-W);
+      if(cy<H-1) stack.push(idx+W);
+    }
+    /* 경계 부드럽게 */
+    const a=parseInt(color.slice(1,3),16), b2=parseInt(color.slice(3,5),16), c2=parseInt(color.slice(5,7),16);
+    const soft=new Float32Array(W*H);
+    for(let i=0;i<W*H;i++) soft[i]=seen[i];
+    for(let pass=0;pass<2;pass++){
+      const t=Float32Array.from(soft);
+      for(let y=1;y<H-1;y++) for(let x2=1;x2<W-1;x2++){
+        const i=y*W+x2;
+        soft[i]=(t[i]*4+t[i-1]+t[i+1]+t[i-W]+t[i+W])/8;
+      }
+    }
+    for(let i=0;i<W*H;i++){
+      const m=Math.min(1,soft[i]); if(m<=0.01) continue;
+      const i4=i*4;
+      p[i4]  =p[i4]  *(1-m)+a*m;
+      p[i4+1]=p[i4+1]*(1-m)+b2*m;
+      p[i4+2]=p[i4+2]*(1-m)+c2*m;
+    }
+    ctx.putImageData(d,0,0);
+  }
+
+  function adjust(ctx,W,H){
+    const br=+$('bright').value, co=+$('contrast').value;
+    if(!br && !co) return;
+    const d=ctx.getImageData(0,0,W,H), p=d.data;
+    const f=(259*(co+255))/(255*(259-co));
+    for(let i=0;i<p.length;i+=4){
+      for(let k=0;k<3;k++){
+        let v=p[i+k]+br;
+        v=f*(v-128)+128;
+        p[i+k]=v<0?0:v>255?255:v;
+      }
+    }
+    ctx.putImageData(d,0,0);
+  }
+
+  function draw(){
+    if(!img) return;
+    $('zV').textContent=$('zoom').value+'%';
+    $('tV').textContent=$('tol').value;
+    $('bsV').textContent=$('brush').value;
+    $('brV').textContent=$('bright').value;
+    $('coV').textContent=$('contrast').value;
+    const full=document.createElement('canvas');
+    renderTo(full,true);
+    const c=$('pv'); const ratio=full.height/full.width;
+    c.width=PVW; c.height=Math.round(PVW*ratio);
+    const x=c.getContext('2d'); x.imageSmoothingQuality='high';
+    x.drawImage(full,0,0,c.width,c.height);
+    const [w,h]=spec();
+    const sheet=+$('sheet').value;
+    if(sheet){
+      const n=sheetCount(w,h);
+      $('info').innerHTML=`4×6인치 시트에 <strong>${n}장</strong>이 배치됩니다 · 개별 크기 ${w}×${h}mm · 300dpi`;
+    } else {
+      $('info').innerHTML=`${w}×${h}mm · ${Math.round(w*MM)}×${Math.round(h*MM)}px · 300dpi`;
+    }
+  }
+  function sheetCount(w,h){
+    const SW=6*25.4, SH=4*25.4, gap=2;
+    const cols=Math.floor((SW+gap)/(w+gap)), rows=Math.floor((SH+gap)/(h+gap));
+    return cols*rows;
+  }
+
+  /* ---------- 지우개 마스크 ---------- */
+  let paint=null, tool='move';
+  function ensurePaint(){
+    const [w,h]=spec();
+    const W=Math.round(w*MM), H=Math.round(h*MM);
+    if(!paint){ const c=document.createElement('canvas'); c.width=W; c.height=H; paint=c; }
+    else if(paint.width!==W || paint.height!==H){
+      const c=document.createElement('canvas'); c.width=W; c.height=H;
+      c.getContext('2d').drawImage(paint,0,0,W,H); paint=c;
+    }
+    return paint;
+  }
+  function stroke(cx,cy,erasing){
+    const p=ensurePaint(), x=p.getContext('2d');
+    const [w]=spec();
+    const r=(+$('brush').value/2)*((w*MM)/wrap.clientWidth);
+    x.globalCompositeOperation = erasing ? 'source-over' : 'destination-out';
+    const g=x.createRadialGradient(cx,cy,r*0.55,cx,cy,r);
+    g.addColorStop(0,'rgba(0,0,0,1)'); g.addColorStop(1,'rgba(0,0,0,0)');
+    x.fillStyle=g; x.beginPath(); x.arc(cx,cy,r,0,Math.PI*2); x.fill();
+    x.globalCompositeOperation='source-over';
+  }
+  function toOut(e){
+    const r=$('pv').getBoundingClientRect(), [w,h]=spec();
+    return [ (e.clientX-r.left)/r.width*(w*MM), (e.clientY-r.top)/r.height*(h*MM) ];
+  }
+  document.querySelectorAll('#tool button').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('#tool button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); tool=b.dataset.m;
+    wrap.classList.toggle('erase', tool!=='move');
+    if(tool!=='move' && bgMode==='keep'){
+      document.querySelectorAll('#bgsw button').forEach(x=>x.classList.remove('on'));
+      const wb=document.querySelector('#bgsw button[data-bg="#ffffff"]');
+      wb.classList.add('on'); bgMode='#ffffff';
+      msg('warn','지우개는 배경색을 채우는 방식이라 <strong>흰색 배경</strong>으로 자동 전환했습니다. 다른 색을 원하시면 위에서 고르세요.');
+      draw();
+    }
+  }));
+  $('clearPaint').addEventListener('click',()=>{ paint=null; draw(); });
+
+  /* ---------- AI 배경 제거 (MediaPipe · 브라우저 내 처리) ---------- */
+  let segmenter=null, aiConf=null, aiW=0, aiH=0, aiMask=null;
+
+  async function getSegmenter(){
+    if(segmenter) return segmenter;
+    const vision=await import('/tools/lib/mediapipe/vision_bundle.mjs');
+    const fileset=await vision.FilesetResolver.forVisionTasks('/tools/lib/mediapipe/wasm');
+    segmenter=await vision.ImageSegmenter.createFromOptions(fileset,{
+      baseOptions:{modelAssetPath:'/tools/lib/mediapipe/selfie_segmenter.tflite'},
+      runningMode:'IMAGE', outputCategoryMask:false, outputConfidenceMasks:true
+    });
+    return segmenter;
+  }
+
+  function buildAiMask(){
+    if(!aiConf) return;
+    const th=+$('thresh').value/100;
+    const c=document.createElement('canvas'); c.width=aiW; c.height=aiH;
+    const x=c.getContext('2d');
+    const d=x.createImageData(aiW,aiH), p=d.data;
+    // 인물 확률(conf)이 낮을수록 배경 → 알파를 높여 배경색으로 덮는다
+    const soft=0.18;
+    for(let i=0;i<aiConf.length;i++){
+      let a=(th-aiConf[i])/soft+0.5;          // 임계값 부근을 부드럽게
+      a=a<0?0:a>1?1:a;
+      p[i*4+3]=Math.round(a*255);
+    }
+    x.putImageData(d,0,0);
+    aiMask=c;
+  }
+
+  $('aiBtn').addEventListener('click',async()=>{
+    if(!img) return;
+    const btn=$('aiBtn'); const label=btn.textContent;
+    btn.disabled=true; btn.textContent='모델 불러오는 중…';
+    try{
+      const seg=await getSegmenter();
+      btn.textContent='분석 중…';
+      await new Promise(r=>setTimeout(r,20));
+      // 큰 사진은 축소해서 추론 (모델 내부 해상도가 낮아 손해가 없음)
+      const MAXS=1024;
+      const s=Math.min(1, MAXS/Math.max(img.naturalWidth,img.naturalHeight));
+      const iw=Math.round(img.naturalWidth*s), ih=Math.round(img.naturalHeight*s);
+      const src=document.createElement('canvas'); src.width=iw; src.height=ih;
+      src.getContext('2d').drawImage(img,0,0,iw,ih);
+      const res=seg.segment(src);
+      const m=res.confidenceMasks && res.confidenceMasks[0];
+      if(!m) throw new Error('마스크를 얻지 못했습니다');
+      aiConf=Float32Array.from(m.getAsFloat32Array());
+      aiW=m.width; aiH=m.height;
+      res.close && res.close();
+      if(bgMode==='keep'){
+        document.querySelectorAll('#bgsw button').forEach(x=>x.classList.remove('on'));
+        const wb=document.querySelector('#bgsw button[data-bg="#ffffff"]');
+        wb.classList.add('on'); bgMode='#ffffff';
+      }
+      buildAiMask();
+      $('aiTune').classList.remove('hidden');
+      $('aiClear').classList.remove('hidden');
+      $('aiNote').innerHTML='배경이 지워졌습니다. 결과가 어색하면 <strong>인식 강도</strong>를 조절하거나 아래 <strong>지우개·되살리기 브러시</strong>로 다듬으세요.';
+      warn.classList.add('hidden');
+      draw();
+    }catch(e){
+      msg('bad',`AI 배경 제거에 실패했습니다 (${e.message}). 기기 사양이나 브라우저 문제일 수 있으니 <strong>아래 지우개 브러시</strong>를 이용해 주세요.`);
+    }
+    btn.disabled=false; btn.textContent=label;
+  });
+
+  $('thresh').addEventListener('input',()=>{ $('thV').textContent=$('thresh').value; buildAiMask(); draw(); });
+  $('aiClear').addEventListener('click',()=>{
+    aiMask=null; aiConf=null;
+    $('aiTune').classList.add('hidden'); $('aiClear').classList.add('hidden');
+    $('aiNote').innerHTML='처음 누르면 인식 모델을 내려받느라 <strong>약 12MB</strong>가 필요합니다. 사진은 서버로 전송되지 않고 브라우저 안에서 계산됩니다.';
+    draw();
+  });
+
+  /* ---------- 조작 ---------- */
+  const wrap=$('cvwrap');
+  let dragging=false,lx=0,ly=0;
+  wrap.addEventListener('pointerdown',e=>{
+    wrap.setPointerCapture(e.pointerId);
+    if(tool==='move'){ dragging=true;lx=e.clientX;ly=e.clientY; wrap.classList.add('drag'); }
+    else { dragging=true; const [px,py]=toOut(e); stroke(px,py,tool==='erase'); draw(); }
+  });
+  wrap.addEventListener('pointermove',e=>{
+    if(!dragging)return;
+    if(tool==='move'){
+      const k=(spec()[0]*MM)/wrap.clientWidth;
+      ox+=(e.clientX-lx)*k; oy+=(e.clientY-ly)*k;
+      lx=e.clientX; ly=e.clientY;
+    } else { const [px,py]=toOut(e); stroke(px,py,tool==='erase'); }
+    draw();
+  });
+  ['pointerup','pointercancel'].forEach(ev=>wrap.addEventListener(ev,()=>{
+    dragging=false;wrap.classList.remove('drag')}));
+  wrap.addEventListener('wheel',e=>{
+    e.preventDefault();
+    const z=+$('zoom').value + (e.deltaY<0?6:-6);
+    $('zoom').value=Math.max(50,Math.min(400,z));
+    applyZoom();
+  },{passive:false});
+
+  function applyZoom(){
+    const [w,h]=spec(); const outW=w*MM, outH=h*MM;
+    const nz=baseZoom*(+$('zoom').value/100);
+    const cx=outW/2, cy=outH/2;
+    ox=cx-(cx-ox)*(nz/zoom); oy=cy-(cy-oy)*(nz/zoom);
+    zoom=nz; draw();
+  }
+  $('zoom').addEventListener('input',applyZoom);
+  $('fit').addEventListener('click',()=>{fit();draw()});
+  $('reset').addEventListener('click',()=>{img=null;file.value='';
+    $('editor').classList.add('hidden');warn.classList.add('hidden');
+    window.scrollTo({top:0,behavior:'smooth'})});
+
+  document.querySelectorAll('#bgsw button').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('#bgsw button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); bgMode=b.dataset.bg; draw();
+  }));
+  ['tol','bright','contrast','guide','sheet','cw','ch','brush'].forEach(id=>{
+    $(id).addEventListener('input',draw); $(id).addEventListener('change',draw);
+  });
+
+  /* ---------- PNG에 300dpi 기록 ---------- */
+  function withDpi(buf,dpi){
+    const u=new Uint8Array(buf);
+    const ppm=Math.round(dpi/0.0254);
+    const chunk=new Uint8Array(21);
+    const dv=new DataView(chunk.buffer);
+    dv.setUint32(0,9);
+    chunk.set([0x70,0x48,0x59,0x73],4);      // pHYs
+    dv.setUint32(8,ppm); dv.setUint32(12,ppm); chunk[16]=1;
+    // CRC (type+data)
+    let c=0xFFFFFFFF;
+    for(let i=4;i<17;i++){ c^=chunk[i];
+      for(let k=0;k<8;k++) c = (c>>>1) ^ (0xEDB88320 & -(c&1)); }
+    dv.setUint32(17,(c^0xFFFFFFFF)>>>0);
+    const pos=33;                             // 서명8 + IHDR(25)
+    const out=new Uint8Array(u.length+21);
+    out.set(u.subarray(0,pos),0);
+    out.set(chunk,pos);
+    out.set(u.subarray(pos),pos+21);
+    return out;
+  }
+
+  $('save').addEventListener('click',async()=>{
+    if(!img) return;
+    const one=document.createElement('canvas');
+    renderTo(one,false);
+    let canvas=one;
+    const [w,h]=spec();
+    if(+$('sheet').value){
+      const SW=Math.round(6*25.4*MM), SH=Math.round(4*25.4*MM), gap=Math.round(2*MM);
+      const iw=one.width, ih=one.height;
+      const cols=Math.floor((SW+gap)/(iw+gap)), rows=Math.floor((SH+gap)/(ih+gap));
+      const s=document.createElement('canvas'); s.width=SW; s.height=SH;
+      const sx=s.getContext('2d'); sx.fillStyle='#fff'; sx.fillRect(0,0,SW,SH);
+      const totalW=cols*iw+(cols-1)*gap, totalH=rows*ih+(rows-1)*gap;
+      const offX=(SW-totalW)/2, offY=(SH-totalH)/2;
+      sx.strokeStyle='#d0d0d0'; sx.lineWidth=1;
+      for(let r=0;r<rows;r++) for(let c=0;c<cols;c++){
+        const px=offX+c*(iw+gap), py=offY+r*(ih+gap);
+        sx.drawImage(one,px,py);
+        sx.strokeRect(px+.5,py+.5,iw-1,ih-1);
+      }
+      canvas=s;
+    }
+    canvas.toBlob(async b=>{
+      const out=withDpi(await b.arrayBuffer(),DPI);
+      const a=document.createElement('a');
+      a.href=URL.createObjectURL(new Blob([out],{type:'image/png'}));
+      a.download = +$('sheet').value ? `id-photo-sheet-${w}x${h}mm.png` : `id-photo-${w}x${h}mm.png`;
+      a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+    },'image/png');
+  });
+})();
+</script>
+</body>
+</html>
