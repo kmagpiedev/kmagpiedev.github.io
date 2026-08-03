@@ -15,6 +15,9 @@
    - 라이선스: Apache License 2.0
    - 전문: mediapipe/LICENSE.txt
    - 용도: 증명사진 도구의 AI 배경 제거 (브라우저 내 추론)
+   - 모델: selfie_multiclass_256x256.tflite (16MB) 를 우선 사용합니다.
+           배경/머리카락/피부/옷 등을 따로 구분해 정확도가 높습니다.
+           불러오지 못하면 selfie_segmenter.tflite (250KB) 로 대체됩니다.
 
 모든 라이선스가 저작권 고지를 함께 배포할 것을 요구하므로
 LICENSE 파일들을 삭제하지 말고 그대로 두세요.

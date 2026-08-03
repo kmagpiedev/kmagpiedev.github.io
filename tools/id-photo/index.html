@@ -180,11 +180,12 @@
           ✨ AI로 배경 지우기
         </button>
         <div class="fld hidden" id="aiTune">
-          <label>인물 인식 강도 <span class="val" id="thV">50</span></label>
-          <input type="range" id="thresh" min="10" max="90" value="50">
+          <label>인물 영역 <span class="val" id="thV">기본</span></label>
+          <input type="range" id="thresh" min="-12" max="12" value="0">
+          <p class="note" style="margin:6px 0 0">왼쪽으로 옮기면 인물 영역을 <strong>넓게</strong> 잡고(옷이 지워질 때), 오른쪽으로 옮기면 <strong>좁게</strong> 잡습니다(배경이 남을 때).</p>
         </div>
         <button class="act ghost hidden" id="aiClear" style="padding:7px 14px;font-size:13px;margin-bottom:14px">AI 결과 지우기</button>
-        <p class="note" id="aiNote" style="margin:0 0 14px">처음 누르면 인식 모델을 내려받느라 <strong>약 12MB</strong>가 필요합니다. 사진은 서버로 전송되지 않고 브라우저 안에서 계산됩니다.</p>
+        <p class="note" id="aiNote" style="margin:0 0 14px">처음 누르면 인식 모델을 내려받느라 <strong>약 28MB</strong>가 필요합니다. 사진은 서버로 전송되지 않고 브라우저 안에서 계산됩니다.</p>
 
         <h4 style="margin-top:4px">지우개</h4>
         <div class="fld">
@@ -291,7 +292,7 @@
     if(!f||!f.type.startsWith('image/')){msg('bad','이미지 파일이 아닙니다.');return}
     const im=new Image();
     im.onload=()=>{
-      img=im; paint=null; aiMask=null; aiConf=null;
+      img=im; paint=null; aiMask=null; aiPerson=null;
       $('aiTune').classList.add('hidden'); $('aiClear').classList.add('hidden');
       warn.classList.add('hidden');
       $('editor').classList.remove('hidden');
@@ -502,31 +503,39 @@
   $('clearPaint').addEventListener('click',()=>{ paint=null; draw(); });
 
   /* ---------- AI 배경 제거 (MediaPipe · 브라우저 내 처리) ---------- */
-  let segmenter=null, aiConf=null, aiW=0, aiH=0, aiMask=null;
+  let segmenter=null, aiMulti=false, aiPerson=null, aiW=0, aiH=0, aiMask=null;
 
   async function getSegmenter(){
     if(segmenter) return segmenter;
     const vision=await import('/tools/lib/mediapipe/vision_bundle.mjs');
     const fileset=await vision.FilesetResolver.forVisionTasks('/tools/lib/mediapipe/wasm');
-    segmenter=await vision.ImageSegmenter.createFromOptions(fileset,{
-      baseOptions:{modelAssetPath:'/tools/lib/mediapipe/selfie_segmenter.tflite'},
-      runningMode:'IMAGE', outputCategoryMask:false, outputConfidenceMasks:true
+    const make=path=>vision.ImageSegmenter.createFromOptions(fileset,{
+      baseOptions:{modelAssetPath:path},
+      runningMode:'IMAGE', outputCategoryMask:true, outputConfidenceMasks:true
     });
+    try{
+      segmenter=await make('/tools/lib/mediapipe/selfie_multiclass_256x256.tflite');
+      aiMulti=true;
+    }catch(e){
+      segmenter=await make('/tools/lib/mediapipe/selfie_segmenter.tflite');
+      aiMulti=false;
+    }
     return segmenter;
   }
 
   function buildAiMask(){
-    if(!aiConf) return;
-    const th=+$('thresh').value/100;
+    if(!aiPerson) return;
+    const th=0.5 - (+$('thresh').value/100);   // 왼쪽(음수)일수록 인물을 넓게
+    const soft=0.16;
     const c=document.createElement('canvas'); c.width=aiW; c.height=aiH;
     const x=c.getContext('2d');
     const d=x.createImageData(aiW,aiH), p=d.data;
-    // 인물 확률(conf)이 낮을수록 배경 → 알파를 높여 배경색으로 덮는다
-    const soft=0.18;
-    for(let i=0;i<aiConf.length;i++){
-      let a=(th-aiConf[i])/soft+0.5;          // 임계값 부근을 부드럽게
-      a=a<0?0:a>1?1:a;
-      p[i*4+3]=Math.round(a*255);
+    const lo=th-soft, span=soft*2;
+    for(let i=0;i<aiPerson.length;i++){
+      let t=(aiPerson[i]-lo)/span;
+      t=t<0?0:t>1?1:t;
+      const person=t*t*(3-2*t);              // 부드러운 경계
+      p[i*4+3]=Math.round((1-person)*255);   // 인물이 아닐수록 배경색으로 덮음
     }
     x.putImageData(d,0,0);
     aiMask=c;
@@ -540,18 +549,40 @@
       const seg=await getSegmenter();
       btn.textContent='분석 중…';
       await new Promise(r=>setTimeout(r,20));
-      // 큰 사진은 축소해서 추론 (모델 내부 해상도가 낮아 손해가 없음)
       const MAXS=1024;
       const s=Math.min(1, MAXS/Math.max(img.naturalWidth,img.naturalHeight));
       const iw=Math.round(img.naturalWidth*s), ih=Math.round(img.naturalHeight*s);
       const src=document.createElement('canvas'); src.width=iw; src.height=ih;
       src.getContext('2d').drawImage(img,0,0,iw,ih);
       const res=seg.segment(src);
-      const m=res.confidenceMasks && res.confidenceMasks[0];
-      if(!m) throw new Error('마스크를 얻지 못했습니다');
-      aiConf=Float32Array.from(m.getAsFloat32Array());
-      aiW=m.width; aiH=m.height;
+
+      const masks=res.confidenceMasks||[];
+      const multi = masks.length>2;
+      const m0=masks[0];
+      if(!m0) throw new Error('마스크를 얻지 못했습니다');
+      aiW=m0.width; aiH=m0.height;
+      const n=aiW*aiH;
+      aiPerson=new Float32Array(n);
+      if(multi){
+        /* 다중 분류: 0번이 배경, 나머지(머리카락·피부·옷 등)는 전부 인물 */
+        const bg=m0.getAsFloat32Array();
+        for(let i=0;i<n;i++) aiPerson[i]=1-bg[i];
+      }else{
+        const person=m0.getAsFloat32Array();
+        for(let i=0;i<n;i++) aiPerson[i]=person[i];
+      }
+      /* 모델이 확정한 영역은 확률과 무관하게 인물로 고정 */
+      if(res.categoryMask){
+        const cat=res.categoryMask.getAsUint8Array();
+        if(cat.length===n){
+          for(let i=0;i<n;i++){
+            const isPerson = multi ? (cat[i]!==0) : (cat[i]===0);
+            if(isPerson && aiPerson[i]<0.75) aiPerson[i]=0.75;
+          }
+        }
+      }
       res.close && res.close();
+
       if(bgMode==='keep'){
         document.querySelectorAll('#bgsw button').forEach(x=>x.classList.remove('on'));
         const wb=document.querySelector('#bgsw button[data-bg="#ffffff"]');
@@ -560,20 +591,24 @@
       buildAiMask();
       $('aiTune').classList.remove('hidden');
       $('aiClear').classList.remove('hidden');
-      $('aiNote').innerHTML='배경이 지워졌습니다. 결과가 어색하면 <strong>인식 강도</strong>를 조절하거나 아래 <strong>지우개·되살리기 브러시</strong>로 다듬으세요.';
+      $('aiNote').innerHTML='배경이 지워졌습니다. 옷이나 어깨가 잘렸으면 <strong>인물 영역</strong>을 왼쪽으로, 배경이 남았으면 오른쪽으로 옮기세요. 세밀한 부분은 아래 <strong>브러시</strong>로 다듬으시면 됩니다.';
       warn.classList.add('hidden');
       draw();
     }catch(e){
-      msg('bad',`AI 배경 제거에 실패했습니다 (${e.message}). 기기 사양이나 브라우저 문제일 수 있으니 <strong>아래 지우개 브러시</strong>를 이용해 주세요.`);
+      msg('bad',`AI 배경 제거에 실패했습니다 (${e.message}). 기기나 브라우저 문제일 수 있으니 <strong>아래 지우개 브러시</strong>를 이용해 주세요.`);
     }
     btn.disabled=false; btn.textContent=label;
   });
 
-  $('thresh').addEventListener('input',()=>{ $('thV').textContent=$('thresh').value; buildAiMask(); draw(); });
+  $('thresh').addEventListener('input',()=>{
+    const v=+$('thresh').value;
+    $('thV').textContent = v>0? '좁게 '+v : v<0? '넓게 '+(-v) : '기본';
+    buildAiMask(); draw();
+  });
   $('aiClear').addEventListener('click',()=>{
-    aiMask=null; aiConf=null;
+    aiMask=null; aiPerson=null;
     $('aiTune').classList.add('hidden'); $('aiClear').classList.add('hidden');
-    $('aiNote').innerHTML='처음 누르면 인식 모델을 내려받느라 <strong>약 12MB</strong>가 필요합니다. 사진은 서버로 전송되지 않고 브라우저 안에서 계산됩니다.';
+    $('aiNote').innerHTML='처음 누르면 인식 모델을 내려받느라 <strong>약 28MB</strong>가 필요합니다. 사진은 서버로 전송되지 않고 브라우저 안에서 계산됩니다.';
     draw();
   });
 
