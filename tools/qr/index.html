@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QR코드 만들기 — 무료 생성기, 로고 삽입·고화질 저장 | 까치툴</title>
+<meta name="description" content="링크·와이파이·연락처·문자 QR코드를 무료로 만듭니다. 색상과 로고를 넣고 인쇄용 SVG나 고화질 PNG로 받으세요. 서버 전송 없이 브라우저에서 생성되며 유효기간이나 추적이 없습니다.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/qr/">
+<meta property="og:title" content="QR코드 만들기 — 무료 생성기">
+<meta property="og:description" content="링크·와이파이·연락처 QR을 로고까지 넣어 무료로. 유효기간도 추적도 없습니다.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/qr/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:960px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .stage{display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start}
+  .side{flex:1;min-width:300px}
+  .pvbox{width:280px;flex:none}
+  .pvbox .frame{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;
+    display:flex;align-items:center;justify-content:center}
+  .pvbox canvas{width:100%;height:auto;display:block;image-rendering:pixelated}
+  .pvcap{font-size:12px;color:var(--ink-3);text-align:center;margin-top:8px;font-variant-numeric:tabular-nums}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:14px}
+  .panel h4{margin:0 0 13px;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+  .tabs button{font-family:inherit;font-size:13px;font-weight:600;padding:7px 13px;border-radius:99px;
+    border:1px solid var(--line);background:transparent;color:var(--ink-2);cursor:pointer;transition:.12s}
+  .tabs button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .fld{margin-bottom:11px}
+  .fld:last-child{margin-bottom:0}
+  .fld label{display:block;font-size:12.5px;color:var(--ink-3);font-weight:600;margin-bottom:5px}
+  .fld input[type=text],.fld input[type=url],.fld select,.fld textarea{width:100%;padding:9px 11px;
+    border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);
+    font-size:14.5px;font-family:inherit}
+  .fld textarea{resize:vertical;min-height:78px;line-height:1.5}
+  .fld input:focus,.fld select:focus,.fld textarea:focus{outline:0;border-color:var(--accent)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  .inline{display:flex;align-items:center;gap:9px;flex-wrap:wrap;font-size:14px}
+  input[type=color]{width:42px;height:31px;padding:2px;border:1px solid var(--line);border-radius:7px;background:var(--surface);cursor:pointer}
+  input[type=range]{flex:1;min-width:100px;accent-color:var(--accent)}
+  .val{font-variant-numeric:tabular-nums;font-weight:700;color:var(--accent);min-width:46px;text-align:right}
+  .opt{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+  .opt input{width:16px;height:16px;accent-color:var(--accent);cursor:pointer}
+
+  button.act{font-family:inherit;font-size:15px;font-weight:600;padding:12px 22px;border-radius:10px;border:1px solid transparent;cursor:pointer;transition:.12s}
+  .primary{background:var(--accent);color:#fff}
+  .primary:hover{filter:brightness(1.08)}
+  .ghost{background:transparent;color:var(--ink-2);border-color:var(--line)}
+  .ghost:hover{border-color:var(--ink-3);color:var(--ink)}
+
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .m-good{background:var(--good-soft);border-color:var(--good)}
+  .hidden{display:none}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line-soft)}
+  th{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;border-bottom:1px solid var(--line)}
+  code{background:var(--line-soft);padding:2px 6px;border-radius:5px;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .note{font-size:13.5px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:13px;margin:14px 0}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> &rsaquo; <a href="/tools/">까치툴</a> &rsaquo; QR코드 만들기</p>
+
+<h1>QR코드 만들기</h1>
+<p class="sub">링크, 와이파이, 연락처, 문자 QR을 무료로 만듭니다. 로고를 넣고 인쇄용 SVG로 받을 수 있어요. <strong>유효기간도, 사용 횟수 제한도, 스캔 추적도 없습니다.</strong></p>
+
+<div class="stage">
+  <div class="pvbox">
+    <div class="frame"><canvas id="pv" width="280" height="280"></canvas></div>
+    <div class="pvcap" id="cap">내용을 입력하세요</div>
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <button class="act primary" id="dlPng" style="flex:1;padding:10px 0;font-size:14px">PNG</button>
+      <button class="act ghost" id="dlSvg" style="flex:1;padding:10px 0;font-size:14px">SVG</button>
+    </div>
+  </div>
+
+  <div class="side">
+    <div class="tabs" id="tabs">
+      <button data-t="url" class="on">링크 / 텍스트</button>
+      <button data-t="wifi">와이파이</button>
+      <button data-t="card">연락처</button>
+      <button data-t="sms">문자</button>
+      <button data-t="mail">이메일</button>
+    </div>
+
+    <div class="panel">
+      <div id="pane-url">
+        <div class="fld"><label>주소 또는 텍스트</label><textarea id="u_text" placeholder="https://www.kmagpie.com/"></textarea></div>
+      </div>
+      <div id="pane-wifi" class="hidden">
+        <div class="fld"><label>네트워크 이름 (SSID)</label><input type="text" id="w_ssid" placeholder="MyWiFi"></div>
+        <div class="two">
+          <div class="fld"><label>비밀번호</label><input type="text" id="w_pw" placeholder="비밀번호"></div>
+          <div class="fld"><label>보안 방식</label>
+            <select id="w_enc"><option value="WPA">WPA / WPA2 / WPA3</option><option value="WEP">WEP</option><option value="nopass">비밀번호 없음</option></select>
+          </div>
+        </div>
+        <label class="opt"><input type="checkbox" id="w_hidden">숨겨진 네트워크</label>
+      </div>
+      <div id="pane-card" class="hidden">
+        <div class="two">
+          <div class="fld"><label>이름</label><input type="text" id="c_name" placeholder="홍길동"></div>
+          <div class="fld"><label>휴대전화</label><input type="text" id="c_tel" placeholder="010-1234-5678"></div>
+        </div>
+        <div class="two">
+          <div class="fld"><label>이메일</label><input type="text" id="c_mail" placeholder="hong@example.com"></div>
+          <div class="fld"><label>회사 / 소속</label><input type="text" id="c_org" placeholder="까치소프트"></div>
+        </div>
+        <div class="fld"><label>웹사이트</label><input type="text" id="c_url" placeholder="https://example.com"></div>
+      </div>
+      <div id="pane-sms" class="hidden">
+        <div class="fld"><label>받는 번호</label><input type="text" id="s_tel" placeholder="010-1234-5678"></div>
+        <div class="fld"><label>메시지 내용</label><textarea id="s_msg" placeholder="미리 채워질 문자 내용"></textarea></div>
+      </div>
+      <div id="pane-mail" class="hidden">
+        <div class="fld"><label>받는 주소</label><input type="text" id="m_to" placeholder="hello@example.com"></div>
+        <div class="fld"><label>제목</label><input type="text" id="m_sub" placeholder="문의드립니다"></div>
+        <div class="fld"><label>본문</label><textarea id="m_body" placeholder="미리 채워질 본문"></textarea></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h4>모양</h4>
+      <div class="fld inline">
+        <input type="color" id="fg" value="#101828"><span style="font-size:13.5px;color:var(--ink-3)">코드색</span>
+        <input type="color" id="bg" value="#ffffff" style="margin-left:12px"><span style="font-size:13.5px;color:var(--ink-3)">배경색</span>
+      </div>
+      <div class="fld"><label>여백 <span class="val" id="qV">4</span></label>
+        <input type="range" id="quiet" min="1" max="8" value="4"></div>
+      <div class="fld"><label>저장 크기 <span class="val" id="szV">1024px</span></label>
+        <input type="range" id="size" min="256" max="2048" step="128" value="1024"></div>
+      <div class="fld"><label>오류 정정 수준</label>
+        <select id="ecl">
+          <option value="L">L — 약 7% 복원 (가장 작음)</option>
+          <option value="M" selected>M — 약 15% 복원 (기본)</option>
+          <option value="Q">Q — 약 25% 복원</option>
+          <option value="H">H — 약 30% 복원 (로고 삽입 시 권장)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h4>가운데 로고 (선택)</h4>
+      <div class="fld"><input type="file" id="logo" accept="image/*" style="font-size:13.5px"></div>
+      <div class="fld"><label>로고 크기 <span class="val" id="lV">20%</span></label>
+        <input type="range" id="lsize" min="10" max="30" value="20"></div>
+      <label class="opt"><input type="checkbox" id="lpad" checked>로고 뒤에 흰 여백 넣기</label>
+      <button class="act ghost" id="lclear" style="margin-top:10px;padding:7px 14px;font-size:13px">로고 제거</button>
+    </div>
+  </div>
+</div>
+
+<div id="warn" class="hidden"></div>
+
+<h2>사용법</h2>
+<p>왼쪽 탭에서 만들 종류를 고르고 내용을 입력하면 미리보기가 바로 갱신됩니다. 색상과 여백을 맞춘 뒤 PNG나 SVG로 받으세요. 인쇄물에 넣으실 거면 <strong>SVG를 권합니다.</strong> 벡터라서 아무리 키워도 깨지지 않아요. 화면이나 웹에 쓰실 거면 PNG로 충분합니다.</p>
+<p>여기서 만든 QR은 입력한 내용이 코드 자체에 그대로 담깁니다. 중간에 단축 주소나 추적 서버를 끼우지 않기 때문에 <strong>유효기간이 없고, 서비스가 사라져도 계속 동작하며, 누가 언제 스캔했는지 저장되지 않습니다.</strong> 무료 QR 서비스 중에는 자사 도메인을 경유시켜 나중에 유료로 전환하거나 링크를 죽이는 곳이 있으니 인쇄물에 쓰실 때는 특히 주의하세요.</p>
+
+<h2>오류 정정 수준은 뭘 고르나요</h2>
+<p>QR은 일부가 가려지거나 훼손돼도 읽히도록 여분 데이터를 담습니다. 그 비율이 오류 정정 수준이에요. 높일수록 잘 읽히지만 코드가 촘촘해집니다.</p>
+<table>
+  <thead><tr><th>수준</th><th>복원 가능</th><th>이럴 때 쓰세요</th></tr></thead>
+  <tbody>
+    <tr><td>L</td><td>약 7%</td><td>화면 표시용, 내용이 길어 코드를 작게 유지해야 할 때</td></tr>
+    <tr><td>M</td><td>약 15%</td><td>대부분의 경우. 기본값으로 두시면 됩니다</td></tr>
+    <tr><td>Q</td><td>약 25%</td><td>명함·전단처럼 접히거나 더러워질 수 있는 인쇄물</td></tr>
+    <tr><td>H</td><td>약 30%</td><td><strong>가운데 로고를 넣을 때</strong>, 야외 스티커처럼 훼손이 잦은 곳</td></tr>
+  </tbody>
+</table>
+<p>로고를 넣으면 그만큼 코드가 가려지므로 오류 정정으로 메워야 합니다. 로고 크기를 20% 이상 키우실 거면 수준을 H로 올리고, 만든 뒤 <strong>반드시 실제 휴대전화로 스캔해 보세요.</strong></p>
+
+<h2>잘 읽히는 QR 만들기</h2>
+<h3>충분히 크게 인쇄하세요</h3>
+<p>일반적인 기준은 <strong>스캔 거리의 10분의 1</strong>입니다. 30cm 거리에서 찍는다면 3cm, 3m 떨어진 포스터라면 30cm는 되어야 안정적으로 읽힙니다. 전단이나 명함이라면 최소 2cm는 확보하세요.</p>
+<h3>명암 대비를 지키세요</h3>
+<p>코드색은 어둡게, 배경은 밝게가 원칙입니다. 반대로 뒤집으면 인식하지 못하는 기기가 많습니다. 파스텔톤끼리 조합하거나 배경 사진 위에 얹는 것도 실패 원인이에요.</p>
+<h3>여백을 없애지 마세요</h3>
+<p>코드 주변의 흰 여백은 장식이 아니라 규격의 일부입니다. 최소 4모듈이 필요해서 기본값을 4로 두었습니다. 디자인상 답답해 보여도 줄이지 마세요.</p>
+<h3>만들고 나면 꼭 테스트하세요</h3>
+<p>인쇄를 넘기기 전에 <strong>안드로이드와 아이폰 양쪽에서, 실제 인쇄될 크기로 출력해</strong> 스캔해 보세요. 화면에서 잘 읽히는 코드가 종이에서 안 읽히는 경우가 생각보다 많습니다.</p>
+
+<h2>자주 겪는 문제</h2>
+<h3>와이파이 QR이 아이폰에서 안 돼요</h3>
+<p>아이폰은 카메라로 와이파이 QR을 인식합니다. 비밀번호에 세미콜론이나 역슬래시 같은 특수문자가 있으면 문제가 생길 수 있으니, 그럴 때는 비밀번호를 바꾸거나 직접 입력하도록 안내하세요.</p>
+<h3>내용을 길게 넣었더니 너무 촘촘해요</h3>
+<p>QR은 담는 내용이 길수록 격자가 조밀해집니다. 주소가 길다면 짧은 경로로 바꾸시고, 연락처는 꼭 필요한 항목만 넣으세요. 오류 정정 수준을 L로 낮추는 것도 방법입니다.</p>
+
+<footer>
+  <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 입력한 내용은 전송되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+/* 최소 구현 QR 인코더 (ISO/IEC 18004) — 외부 의존 없음 */
+const ECL = { L:0, M:1, Q:2, H:3 };
+const FORMAT_BITS = [1, 0, 3, 2];               // L,M,Q,H → 형식정보용 2비트
+
+const ECC_PER_BLOCK = [
+ [-1,7,10,15,20,26,18,20,24,30,18,20,24,26,30,22,24,28,30,28,28,28,28,30,30,26,28,30,30,30,30,30,30,30,30,30,30,30,30,30,30],
+ [-1,10,16,26,18,24,16,18,22,22,26,30,22,22,24,24,28,28,26,26,26,26,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28],
+ [-1,13,22,18,26,18,24,18,22,20,24,28,26,24,20,30,24,28,28,26,30,28,30,30,30,30,28,30,30,30,30,30,30,30,30,30,30,30,30,30,30],
+ [-1,17,28,22,16,22,28,26,26,24,28,24,28,22,24,24,30,28,28,26,28,30,24,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30],
+];
+const NUM_BLOCKS = [
+ [-1,1,1,1,1,1,2,2,2,2,4,4,4,4,4,6,6,6,6,7,8,8,9,9,10,12,12,12,13,14,15,16,17,18,19,19,20,21,22,24,25],
+ [-1,1,1,1,2,2,4,4,4,5,5,5,8,9,9,10,10,11,13,14,16,17,17,18,20,21,23,25,26,28,29,31,33,35,37,38,40,43,45,47,49],
+ [-1,1,1,2,2,4,4,6,6,8,8,8,10,12,16,12,17,16,18,21,20,23,23,25,27,29,34,34,35,38,40,43,45,48,51,53,56,59,62,65,68],
+ [-1,1,1,2,4,4,4,5,6,8,8,11,11,16,16,18,16,19,21,25,25,25,34,30,32,35,37,40,42,45,48,51,54,57,60,63,66,70,74,77,81],
+];
+
+const ALNUM = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:';
+
+function rawDataModules(v){
+  let r = (16*v + 128)*v + 64;
+  if (v >= 2){ const n = Math.floor(v/7) + 2; r -= (25*n - 10)*n - 55; if (v >= 7) r -= 36; }
+  return r;
+}
+const dataCodewords = (v,e) => Math.floor(rawDataModules(v)/8) - ECC_PER_BLOCK[e][v]*NUM_BLOCKS[e][v];
+
+function alignPositions(v){
+  if (v === 1) return [];
+  const n = Math.floor(v/7) + 2, size = v*4 + 17;
+  const step = (v === 32) ? 26 : Math.ceil((v*4 + 4)/(n*2 - 2))*2;
+  const out = [];
+  for (let i = 0, pos = size - 7; i < n - 1; i++, pos -= step) out.unshift(pos);
+  out.unshift(6);
+  return out;
+}
+
+/* ---- GF(256) ---- */
+const EXP = new Uint8Array(512), LOG = new Uint8Array(256);
+(function(){ let x = 1;
+  for (let i = 0; i < 255; i++){ EXP[i] = x; LOG[x] = i; x <<= 1; if (x & 0x100) x ^= 0x11D; }
+  for (let i = 255; i < 512; i++) EXP[i] = EXP[i-255];
+})();
+const gmul = (a,b) => (a === 0 || b === 0) ? 0 : EXP[LOG[a] + LOG[b]];
+
+/* 생성다항식의 나눗셈용 계수(선두 1 제외, 차수 내림차순) */
+function rsGenerator(deg){
+  const g = new Uint8Array(deg); g[deg-1] = 1;
+  let root = 1;
+  for (let i = 0; i < deg; i++){
+    for (let j = 0; j < deg; j++){
+      g[j] = gmul(g[j], root);
+      if (j + 1 < deg) g[j] ^= g[j+1];
+    }
+    root = gmul(root, 2);
+  }
+  return g;
+}
+function rsEncode(data, deg){
+  const gen = rsGenerator(deg), res = new Uint8Array(deg);
+  for (const b of data){
+    const f = b ^ res[0];
+    res.copyWithin(0,1); res[deg-1] = 0;
+    for (let i = 0; i < deg; i++) res[i] ^= gmul(gen[i], f);
+  }
+  return res;
+}
+
+/* ---- 비트 버퍼 ---- */
+class Bits {
+  constructor(){ this.a = []; }
+  push(val, len){ for (let i = len-1; i >= 0; i--) this.a.push((val >>> i) & 1); }
+  get length(){ return this.a.length; }
+}
+
+/* ---- 모드 판정 ---- */
+const isNum = s => /^[0-9]*$/.test(s);
+const isAlnum = s => [...s].every(c => ALNUM.indexOf(c) >= 0);
+function utf8(s){ return new TextEncoder().encode(s); }
+
+function charCountBits(mode, v){
+  const i = v <= 9 ? 0 : v <= 26 ? 1 : 2;
+  return { num:[10,12,14], alnum:[9,11,13], byte:[8,16,16] }[mode][i];
+}
+
+function encodeSegment(bits, text, mode, v){
+  if (mode === 'num'){
+    bits.push(1,4); bits.push(text.length, charCountBits('num',v));
+    for (let i = 0; i < text.length; i += 3){
+      const c = text.substr(i,3);
+      bits.push(parseInt(c,10), c.length*3 + 1);
+    }
+  } else if (mode === 'alnum'){
+    bits.push(2,4); bits.push(text.length, charCountBits('alnum',v));
+    for (let i = 0; i < text.length; i += 2){
+      if (i+1 < text.length) bits.push(ALNUM.indexOf(text[i])*45 + ALNUM.indexOf(text[i+1]), 11);
+      else bits.push(ALNUM.indexOf(text[i]), 6);
+    }
+  } else {
+    const b = utf8(text);
+    bits.push(4,4); bits.push(b.length, charCountBits('byte',v));
+    for (const x of b) bits.push(x,8);
+  }
+}
+function segmentBitLength(text, mode, v){
+  const b = new Bits(); encodeSegment(b, text, mode, v); return b.length;
+}
+
+/* ---- 메인 ---- */
+function encode(text, eclName='M', minVersion=1){
+  const e = ECL[eclName];
+  const mode = isNum(text) ? 'num' : isAlnum(text) ? 'alnum' : 'byte';
+
+  let version = -1;
+  for (let v = Math.max(1,minVersion); v <= 40; v++){
+    if (segmentBitLength(text, mode, v) <= dataCodewords(v,e)*8){ version = v; break; }
+  }
+  if (version < 0) throw new Error('내용이 너무 깁니다. 오류 정정 수준을 낮추거나 글자 수를 줄이세요.');
+
+  const cap = dataCodewords(version, e) * 8;
+  const bits = new Bits();
+  encodeSegment(bits, text, mode, version);
+  for (let i = 0; i < Math.min(4, cap - bits.length); i++) bits.a.push(0);
+  while (bits.length % 8 !== 0) bits.a.push(0);
+  const pad = [0xEC, 0x11];
+  for (let i = 0; bits.length < cap; i++) bits.push(pad[i % 2], 8);
+
+  const dat = new Uint8Array(bits.length/8);
+  bits.a.forEach((b,i) => { if (b) dat[i>>3] |= 0x80 >>> (i & 7); });
+
+  /* 블록 분할 + RS + 인터리브 */
+  const nBlocks = NUM_BLOCKS[e][version], eccLen = ECC_PER_BLOCK[e][version];
+  const rawCw = Math.floor(rawDataModules(version)/8);
+  const shortCount = nBlocks - (rawCw % nBlocks);
+  const shortLen = Math.floor(rawCw / nBlocks) - eccLen;
+
+  const blocks = [];
+  for (let i = 0, k = 0; i < nBlocks; i++){
+    const len = shortLen + (i < shortCount ? 0 : 1);
+    const d = dat.slice(k, k+len); k += len;
+    blocks.push({ d, ec: rsEncode(d, eccLen) });
+  }
+  const out = [];
+  for (let i = 0; i < shortLen + 1; i++)
+    for (let b = 0; b < nBlocks; b++)
+      if (i < blocks[b].d.length) out.push(blocks[b].d[i]);
+  for (let i = 0; i < eccLen; i++)
+    for (let b = 0; b < nBlocks; b++) out.push(blocks[b].ec[i]);
+
+  return buildMatrix(out, version, e);
+}
+
+function buildMatrix(codewords, version, e){
+  const size = version*4 + 17;
+  const m = Array.from({length:size}, () => new Int8Array(size).fill(-1)); // -1 = 미할당
+
+  const setF = (x,y,v) => { if (x>=0 && x<size && y>=0 && y<size) m[y][x] = v; };
+  // 파인더 + 분리자
+  const finder = (cx,cy) => {
+    for (let dy = -4; dy <= 4; dy++) for (let dx = -4; dx <= 4; dx++){
+      const d = Math.max(Math.abs(dx), Math.abs(dy));
+      setF(cx+dx, cy+dy, (d !== 2 && d !== 4) ? 1 : 0);
+    }
+  };
+  finder(3,3); finder(size-4,3); finder(3,size-4);
+  // 타이밍
+  for (let i = 0; i < size; i++){ if (m[6][i] < 0) m[6][i] = (i%2===0)?1:0; if (m[i][6] < 0) m[i][6] = (i%2===0)?1:0; }
+  // 정렬 패턴
+  const ap = alignPositions(version);
+  for (const ay of ap) for (const ax of ap){
+    if ((ax===6&&ay===6)||(ax===6&&ay===size-7)||(ax===size-7&&ay===6)) continue;
+    for (let dy=-2; dy<=2; dy++) for (let dx=-2; dx<=2; dx++)
+      m[ay+dy][ax+dx] = (Math.max(Math.abs(dx),Math.abs(dy)) !== 1) ? 1 : 0;
+  }
+  // 형식정보 자리 예약(임시 0) + 다크모듈
+  const fmtCells = [];
+  for (let i = 0; i <= 5; i++) fmtCells.push([8,i]);
+  fmtCells.push([8,7],[8,8],[7,8]);
+  for (let i = 9; i <= 14; i++) fmtCells.push([14-i,8]);
+  const fmtCells2 = [];
+  for (let i = 0; i <= 7; i++) fmtCells2.push([size-1-i,8]);
+  for (let i = 8; i <= 14; i++) fmtCells2.push([8,size-15+i]);
+  fmtCells.concat(fmtCells2).forEach(([x,y]) => { if (m[y][x] < 0) m[y][x] = 0; });
+  m[size-8][8] = 1;
+  // 버전정보(v>=7)
+  if (version >= 7){
+    let rem = version;
+    for (let i = 0; i < 12; i++) rem = (rem << 1) ^ ((rem >>> 11) * 0x1F25);
+    const bits = version << 12 | rem;
+    for (let i = 0; i < 18; i++){
+      const b = (bits >>> i) & 1, a = size - 11 + i%3, bpos = Math.floor(i/3);
+      m[a][bpos] = b; m[bpos][a] = b;
+    }
+  }
+
+  const reserved = m.map(r => Array.from(r, v => v >= 0));
+
+  /* 데이터 배치 */
+  let idx = 0, up = true;
+  for (let right = size - 1; right >= 1; right -= 2){
+    if (right === 6) right = 5;
+    for (let vert = 0; vert < size; vert++){
+      for (let j = 0; j < 2; j++){
+        const x = right - j, y = up ? size-1-vert : vert;
+        if (!reserved[y][x]){
+          let bit = 0;
+          if (idx < codewords.length*8) bit = (codewords[idx>>3] >>> (7 - (idx & 7))) & 1;
+          m[y][x] = bit; idx++;
+        }
+      }
+    }
+    up = !up;
+  }
+
+  /* 마스크 선택 */
+  const maskFns = [
+    (x,y)=>(x+y)%2===0, (x,y)=>y%2===0, (x,y)=>x%3===0, (x,y)=>(x+y)%3===0,
+    (x,y)=>(Math.floor(y/2)+Math.floor(x/3))%2===0, (x,y)=>((x*y)%2)+((x*y)%3)===0,
+    (x,y)=>((((x*y)%2)+((x*y)%3))%2)===0, (x,y)=>((((x+y)%2)+((x*y)%3))%2)===0,
+  ];
+  let best = null, bestPen = Infinity;
+  for (let k = 0; k < 8; k++){
+    const t = m.map(r => Int8Array.from(r));
+    for (let y = 0; y < size; y++) for (let x = 0; x < size; x++)
+      if (!reserved[y][x] && maskFns[k](x,y)) t[y][x] ^= 1;
+    applyFormat(t, size, e, k);
+    const p = penalty(t, size);
+    if (p < bestPen){ bestPen = p; best = t; }
+  }
+  return { size, modules: best.map(r => Array.from(r, v => v === 1)) };
+}
+
+function applyFormat(m, size, e, mask){
+  const data = (FORMAT_BITS[e] << 3) | mask;
+  let rem = data;
+  for (let i = 0; i < 10; i++) rem = (rem << 1) ^ ((rem >>> 9) * 0x537);
+  const bits = ((data << 10) | rem) ^ 0x5412;
+  const get = i => (bits >>> i) & 1;
+  for (let i = 0; i <= 5; i++) m[i][8] = get(i);
+  m[7][8] = get(6); m[8][8] = get(7); m[8][7] = get(8);
+  for (let i = 9; i < 15; i++) m[8][14-i] = get(i);
+  for (let i = 0; i < 8; i++) m[8][size-1-i] = get(i);
+  for (let i = 8; i < 15; i++) m[size-15+i][8] = get(i);
+  m[size-8][8] = 1;
+}
+
+function penalty(m, size){
+  let p = 0;
+  const run = (get) => {
+    for (let a = 0; a < size; a++){
+      let cnt = 1, prev = get(a,0);
+      for (let b = 1; b < size; b++){
+        const c = get(a,b);
+        if (c === prev) { cnt++; if (cnt === 5) p += 3; else if (cnt > 5) p += 1; }
+        else { prev = c; cnt = 1; }
+      }
+    }
+  };
+  run((y,x)=>m[y][x]); run((x,y)=>m[y][x]);
+  for (let y = 0; y < size-1; y++) for (let x = 0; x < size-1; x++){
+    const v = m[y][x];
+    if (v === m[y][x+1] && v === m[y+1][x] && v === m[y+1][x+1]) p += 3;
+  }
+  const pat1 = [1,0,1,1,1,0,1,0,0,0,0], pat2 = [0,0,0,0,1,0,1,1,1,0,1];
+  const check = (get) => {
+    for (let a = 0; a < size; a++) for (let b = 0; b + 11 <= size; b++){
+      let ok1 = true, ok2 = true;
+      for (let i = 0; i < 11; i++){
+        const v = get(a,b+i) ? 1 : 0;
+        if (v !== pat1[i]) ok1 = false;
+        if (v !== pat2[i]) ok2 = false;
+      }
+      if (ok1) p += 40; if (ok2) p += 40;
+    }
+  };
+  check((y,x)=>m[y][x]); check((x,y)=>m[y][x]);
+  let dark = 0;
+  for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) if (m[y][x]) dark++;
+  p += Math.floor(Math.abs(dark*100/(size*size) - 50)/5)*10;
+  return p;
+}
+
+/* ================= UI ================= */
+(function(){
+  const $=id=>document.getElementById(id);
+  let mode='url', logoImg=null, current=null;
+  const warn=$('warn');
+
+  document.querySelectorAll('#tabs button').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('#tabs button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); mode=b.dataset.t;
+    ['url','wifi','card','sms','mail'].forEach(t=>$('pane-'+t).classList.toggle('hidden',t!==mode));
+    draw();
+  }));
+
+  const esc = s => String(s||'').replace(/([\\;,:"])/g,'\\$1');
+
+  function payload(){
+    if(mode==='url') return $('u_text').value.trim();
+    if(mode==='wifi'){
+      const s=$('w_ssid').value.trim(); if(!s) return '';
+      const enc=$('w_enc').value;
+      let p=`WIFI:T:${enc};S:${esc(s)};`;
+      if(enc!=='nopass') p+=`P:${esc($('w_pw').value)};`;
+      if($('w_hidden').checked) p+='H:true;';
+      return p+';';
+    }
+    if(mode==='card'){
+      const n=$('c_name').value.trim(); if(!n && !$('c_tel').value.trim()) return '';
+      const L=['BEGIN:VCARD','VERSION:3.0'];
+      if(n) L.push('N:'+esc(n),'FN:'+esc(n));
+      if($('c_org').value.trim()) L.push('ORG:'+esc($('c_org').value.trim()));
+      if($('c_tel').value.trim()) L.push('TEL;TYPE=CELL:'+$('c_tel').value.trim());
+      if($('c_mail').value.trim()) L.push('EMAIL:'+$('c_mail').value.trim());
+      if($('c_url').value.trim()) L.push('URL:'+$('c_url').value.trim());
+      L.push('END:VCARD');
+      return L.join('\n');
+    }
+    if(mode==='sms'){
+      const t=$('s_tel').value.trim(); if(!t) return '';
+      return `SMSTO:${t}:${$('s_msg').value}`;
+    }
+    if(mode==='mail'){
+      const t=$('m_to').value.trim(); if(!t) return '';
+      const q=[];
+      if($('m_sub').value.trim()) q.push('subject='+encodeURIComponent($('m_sub').value.trim()));
+      if($('m_body').value.trim()) q.push('body='+encodeURIComponent($('m_body').value.trim()));
+      return 'mailto:'+t+(q.length?'?'+q.join('&'):'');
+    }
+    return '';
+  }
+
+  function draw(){
+    $('qV').textContent=$('quiet').value;
+    $('szV').textContent=$('size').value+'px';
+    $('lV').textContent=$('lsize').value+'%';
+    const text=payload();
+    const c=$('pv'), x=c.getContext('2d');
+    if(!text){ current=null; x.clearRect(0,0,c.width,c.height);
+      x.fillStyle='#f2f0ec'; x.fillRect(0,0,c.width,c.height);
+      $('cap').textContent='내용을 입력하세요'; warn.classList.add('hidden'); return; }
+    let qr;
+    try{ qr=encode(text,$('ecl').value); }
+    catch(e){ warn.className='msg m-bad'; warn.textContent=e.message; warn.classList.remove('hidden');
+      $('cap').textContent='—'; current=null; return; }
+    warn.classList.add('hidden');
+    current={qr,text};
+    render(c, qr, 280);
+    const ver=(qr.size-17)/4;
+    $('cap').textContent=`버전 ${ver} · ${qr.size}×${qr.size} 모듈 · ${new TextEncoder().encode(text).length}바이트`;
+  }
+
+  function render(canvas, qr, px){
+    const q=+$('quiet').value, total=qr.size+q*2;
+    const scale=Math.max(1,Math.floor(px/total)), size=scale*total;
+    canvas.width=size; canvas.height=size;
+    const x=canvas.getContext('2d');
+    x.fillStyle=$('bg').value; x.fillRect(0,0,size,size);
+    x.fillStyle=$('fg').value;
+    for(let r=0;r<qr.size;r++) for(let cc=0;cc<qr.size;cc++)
+      if(qr.modules[r][cc]) x.fillRect((cc+q)*scale,(r+q)*scale,scale,scale);
+    if(logoImg){
+      const f=+$('lsize').value/100, lw=size*f, lh=lw*logoImg.naturalHeight/logoImg.naturalWidth;
+      const lx=(size-lw)/2, ly=(size-lh)/2;
+      if($('lpad').checked){
+        const pad=size*0.018;
+        x.fillStyle=$('bg').value;
+        x.fillRect(lx-pad,ly-pad,lw+pad*2,lh+pad*2);
+      }
+      x.drawImage(logoImg,lx,ly,lw,lh);
+    }
+  }
+
+  function svg(qr){
+    const q=+$('quiet').value, total=qr.size+q*2;
+    let d='';
+    for(let r=0;r<qr.size;r++) for(let c=0;c<qr.size;c++)
+      if(qr.modules[r][c]) d+=`M${c+q} ${r+q}h1v1h-1z`;
+    return `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${total} ${total}" width="${total*10}" height="${total*10}" shape-rendering="crispEdges">
+<rect width="${total}" height="${total}" fill="${$('bg').value}"/>
+<path d="${d}" fill="${$('fg').value}"/>
+</svg>`;
+  }
+
+  ['u_text','w_ssid','w_pw','w_enc','w_hidden','c_name','c_tel','c_mail','c_org','c_url',
+   's_tel','s_msg','m_to','m_sub','m_body','fg','bg','quiet','size','ecl','lsize','lpad']
+   .forEach(id=>{ const e=$(id); if(e){e.addEventListener('input',draw); e.addEventListener('change',draw);} });
+
+  $('logo').addEventListener('change',e=>{
+    const f=e.target.files[0]; if(!f) return;
+    const im=new Image(); im.onload=()=>{ logoImg=im;
+      if($('ecl').value!=='H'){ warn.className='msg m-warn';
+        warn.innerHTML='로고를 넣으셨네요. <strong>오류 정정 수준을 H로 올리는 것</strong>을 권합니다. 그리고 만든 뒤 실제 휴대전화로 꼭 스캔해 보세요.';
+        warn.classList.remove('hidden'); }
+      draw(); };
+    im.src=URL.createObjectURL(f);
+  });
+  $('lclear').addEventListener('click',()=>{ logoImg=null; $('logo').value=''; draw(); });
+
+  $('dlPng').addEventListener('click',()=>{
+    if(!current) return;
+    const tmp=document.createElement('canvas');
+    render(tmp,current.qr,+$('size').value);
+    tmp.toBlob(b=>{ const a=document.createElement('a');
+      a.href=URL.createObjectURL(b); a.download='qrcode.png'; a.click();
+      setTimeout(()=>URL.revokeObjectURL(a.href),3000); },'image/png');
+  });
+  $('dlSvg').addEventListener('click',()=>{
+    if(!current) return;
+    if(logoImg){ warn.className='msg m-warn';
+      warn.textContent='SVG에는 로고가 포함되지 않습니다. 로고가 필요하시면 PNG로 받으세요.';
+      warn.classList.remove('hidden'); }
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([svg(current.qr)],{type:'image/svg+xml'}));
+    a.download='qrcode.svg'; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+  });
+
+  $('u_text').value='https://www.kmagpie.com/';
+  draw();
+})();
+</script>
+</body>
+</html>
