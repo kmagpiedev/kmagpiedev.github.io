@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>스토어 스크린샷 생성기 — 앱 캡처에 프레임과 문구 얹기 | K-magpie Tools</title>
+<meta name="description" content="앱 화면 캡처를 올리면 배경과 기기 프레임, 홍보 문구를 얹어 Google Play·App Store 등록용 스크린샷을 만들어 ZIP으로 받습니다. 업로드 없이 브라우저에서 처리됩니다.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/screenshot/">
+<meta property="og:title" content="스토어 스크린샷 생성기 — 앱 캡처에 프레임과 문구 얹기">
+<meta property="og:description" content="Play 스토어 등록용 스크린샷을 브라우저에서 바로 만듭니다.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/screenshot/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 28px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  #drop{border:2px dashed var(--line);border-radius:16px;padding:40px 24px;text-align:center;
+    background:var(--surface);cursor:pointer;transition:.15s}
+  #drop:hover,#drop.over{border-color:var(--accent);background:var(--accent-soft)}
+  #drop .big{font-size:17px;font-weight:600;margin-bottom:6px}
+  #drop .small{font-size:13.5px;color:var(--ink-3)}
+  #file{display:none}
+
+  .stage{display:flex;gap:22px;flex-wrap:wrap;margin-top:18px}
+  .side{flex:1;min-width:290px}
+  .pvbox{width:270px;flex:none}
+  .pvbox canvas{width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;background:var(--surface)}
+  .pvcap{font-size:12px;color:var(--ink-3);text-align:center;margin-top:7px;font-variant-numeric:tabular-nums}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:14px}
+  .panel h4{margin:0 0 13px;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+  .fld{margin-bottom:12px}
+  .fld:last-child{margin-bottom:0}
+  .fld label{display:block;font-size:12.5px;color:var(--ink-3);font-weight:600;margin-bottom:5px}
+  .fld input[type=text],.fld select,.fld textarea{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;
+    background:var(--bg);color:var(--ink);font-size:14px;font-family:inherit}
+  .fld textarea{resize:vertical;min-height:52px;line-height:1.5}
+  .fld input:focus,.fld select:focus,.fld textarea:focus{outline:0;border-color:var(--accent)}
+  .inline{display:flex;align-items:center;gap:9px;flex-wrap:wrap;font-size:14px}
+  input[type=color]{width:40px;height:30px;padding:2px;border:1px solid var(--line);border-radius:6px;background:var(--surface);cursor:pointer}
+  input[type=range]{flex:1;min-width:110px;accent-color:var(--accent)}
+  .val{font-variant-numeric:tabular-nums;font-weight:700;color:var(--accent);min-width:40px;text-align:right}
+  .opt{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+  .opt input{width:16px;height:16px;accent-color:var(--accent);cursor:pointer}
+  .seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .seg button{flex:1;background:transparent;border:0;padding:7px 4px;font-size:13px;font-weight:600;
+    color:var(--ink-2);cursor:pointer;font-family:inherit}
+  .seg button.on{background:var(--accent);color:#fff}
+
+  .strip{display:flex;gap:8px;overflow-x:auto;padding:4px 0 8px}
+  .strip .th{flex:none;width:54px;cursor:pointer;border:2px solid transparent;border-radius:8px;padding:2px;position:relative}
+  .strip .th.on{border-color:var(--accent)}
+  .strip .th img{width:100%;height:78px;object-fit:cover;border-radius:5px;display:block}
+  .strip .th b{position:absolute;top:4px;left:4px;background:#0009;color:#fff;font-size:10px;
+    padding:1px 5px;border-radius:99px;font-variant-numeric:tabular-nums}
+  .strip .th .x{position:absolute;top:2px;right:2px;background:#0009;color:#fff;border:0;
+    width:17px;height:17px;border-radius:99px;font-size:11px;cursor:pointer;line-height:1;padding:0}
+
+  button.act{font-family:inherit;font-size:15px;font-weight:600;padding:12px 22px;border-radius:10px;border:1px solid transparent;cursor:pointer;transition:.12s}
+  .primary{background:var(--accent);color:#fff}
+  .primary:hover{filter:brightness(1.08)}
+  .primary:disabled{opacity:.45;cursor:not-allowed}
+  .ghost{background:transparent;color:var(--ink-2);border-color:var(--line)}
+  .ghost:hover{border-color:var(--ink-3);color:var(--ink)}
+
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .hidden{display:none}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line-soft)}
+  th{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;border-bottom:1px solid var(--line)}
+  td.n{text-align:right;font-variant-numeric:tabular-nums}
+  code{background:var(--line-soft);padding:2px 6px;border-radius:5px;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .note{font-size:13.5px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:13px;margin:14px 0}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">도구</a> › 스토어 스크린샷 생성기</p>
+
+<h1>스토어 스크린샷 생성기</h1>
+<p class="sub">앱 화면 캡처를 올리면 배경과 기기 프레임, 홍보 문구를 얹어 <strong>Play 스토어 등록 규격에 맞는 이미지</strong>로 만들어 드립니다. 파일이 서버로 전송되지 않고 브라우저 안에서만 처리됩니다.</p>
+
+<div id="drop">
+  <div class="big">앱 화면 캡처를 끌어다 놓거나 클릭해서 선택하세요</div>
+  <div class="small">여러 장을 한꺼번에 올릴 수 있습니다 · 장마다 다른 문구를 넣을 수 있어요</div>
+  <input type="file" id="file" accept="image/*" multiple>
+</div>
+
+<div id="warn" class="hidden"></div>
+
+<div id="editor" class="hidden">
+  <div class="strip" id="strip"></div>
+
+  <div class="stage">
+    <div class="pvbox">
+      <canvas id="pv"></canvas>
+      <div class="pvcap" id="pvcap"></div>
+    </div>
+
+    <div class="side">
+      <div class="panel">
+        <h4>이 장의 문구</h4>
+        <div class="fld"><label>큰 문구</label><textarea id="head" placeholder="예: 하루 한 번, 고양이가 뽑아주는 오늘의 운세"></textarea></div>
+        <div class="fld"><label>작은 문구 (선택)</label><input type="text" id="subt" placeholder="예: 매일 아침 새로운 메시지"></div>
+      </div>
+
+      <div class="panel">
+        <h4>출력 규격</h4>
+        <div class="fld">
+          <select id="preset">
+            <option value="1080x1920">Play 스토어 휴대전화 · 1080 × 1920 (권장)</option>
+            <option value="1080x2340">휴대전화 길쭉한 화면 · 1080 × 2340</option>
+            <option value="1242x2208">App Store 5.5" · 1242 × 2208</option>
+            <option value="1284x2778">App Store 6.5" · 1284 × 2778</option>
+            <option value="1600x2560">태블릿 10" · 1600 × 2560</option>
+            <option value="1024x500">Play 피처 그래픽 · 1024 × 500</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h4>배경</h4>
+        <div class="fld">
+          <div class="seg" id="bgmode">
+            <button data-m="grad" class="on">그라데이션</button>
+            <button data-m="solid">단색</button>
+          </div>
+        </div>
+        <div class="fld inline">
+          <input type="color" id="c1" value="#1f6feb">
+          <input type="color" id="c2" value="#7c3aed">
+          <label class="opt" style="margin-left:auto"><input type="checkbox" id="diag" checked>대각선</label>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h4>기기 프레임</h4>
+        <label class="opt" style="margin-bottom:11px"><input type="checkbox" id="frame" checked>프레임 씌우기</label>
+        <div class="fld"><label>모서리 둥글기 <span class="val" id="radV">7%</span></label>
+          <input type="range" id="rad" min="0" max="14" value="7"></div>
+        <div class="fld"><label>화면 크기 <span class="val" id="scaleV">78%</span></label>
+          <input type="range" id="scale" min="45" max="95" value="78"></div>
+        <label class="opt"><input type="checkbox" id="shadow" checked>그림자</label>
+      </div>
+
+      <div class="panel">
+        <h4>문구 스타일</h4>
+        <div class="fld inline">
+          <input type="color" id="tc" value="#ffffff">
+          <span style="font-size:13.5px;color:var(--ink-3)">글자색</span>
+        </div>
+        <div class="fld"><label>위치</label>
+          <div class="seg" id="tpos"><button data-p="top" class="on">위</button><button data-p="bottom">아래</button></div>
+        </div>
+        <div class="fld"><label>글자 크기 <span class="val" id="tsV">100%</span></label>
+          <input type="range" id="ts" min="60" max="150" value="100"></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px">
+    <button class="act primary" id="zip">전체 ZIP으로 받기</button>
+    <button class="act ghost" id="one">이 장만 받기</button>
+    <button class="act ghost" id="reset">처음부터</button>
+    <span id="stat" style="font-size:14px;color:var(--ink-3)"></span>
+  </div>
+</div>
+
+<h2>사용법</h2>
+<p>앱에서 찍은 화면 캡처를 여러 장 올리고, 위쪽 썸네일에서 한 장씩 골라가며 문구를 적어 넣으면 됩니다. 배경과 프레임 설정은 전체 장에 공통으로 적용되므로 한 번만 맞추면 되고, 문구만 장마다 다르게 쓰시면 됩니다. 다 되면 전체를 ZIP으로 받아 Play Console의 그래픽 자료 항목에 순서대로 올리세요.</p>
+<p>모든 처리는 브라우저 안에서 이루어집니다. 출시 전 앱 화면이 외부 서버로 올라가지 않으므로 공개 전 자료도 안심하고 쓰실 수 있습니다.</p>
+
+<h2>Play 스토어 스크린샷 규격</h2>
+<p>Google Play는 휴대전화 스크린샷을 <strong>최소 2장, 최대 8장</strong> 요구합니다. 각 이미지는 JPEG 또는 24비트 PNG여야 하고, 가로세로 중 짧은 변이 320px 이상, 긴 변이 3840px 이하여야 하며 <strong>가로세로 비율이 2:1을 넘으면 안 됩니다.</strong> 이 도구의 기본값인 1080 × 1920은 이 조건을 모두 만족하는 가장 무난한 규격입니다.</p>
+
+<table>
+  <thead><tr><th>용도</th><th class="n">크기</th><th>비고</th></tr></thead>
+  <tbody>
+    <tr><td>휴대전화 스크린샷</td><td class="n">1080 × 1920</td><td>가장 널리 쓰이는 권장 규격</td></tr>
+    <tr><td>길쭉한 화면 대응</td><td class="n">1080 × 2340</td><td>요즘 기기 비율에 가까움</td></tr>
+    <tr><td>7인치 태블릿</td><td class="n">1200 × 1920</td><td>태블릿 지원 시 별도 등록</td></tr>
+    <tr><td>10인치 태블릿</td><td class="n">1600 × 2560</td><td>태블릿 지원 시 별도 등록</td></tr>
+    <tr><td>피처 그래픽</td><td class="n">1024 × 500</td><td>필수 항목, 문구 위주로 구성</td></tr>
+  </tbody>
+</table>
+
+<h3>피처 그래픽은 다르게 만드세요</h3>
+<p>1024 × 500은 가로로 긴 배너라 세로 화면 캡처를 그대로 넣으면 거의 보이지 않습니다. 이 규격을 고르시면 도구가 자동으로 가로 배치로 바꿔서 왼쪽에 문구, 오른쪽에 화면을 놓습니다. 피처 그래픽은 <strong>앱 이름과 한 줄 소개만 크게</strong> 보이는 편이 효과적이고, 스토어 목록에서 잘려 보일 수 있으니 가장자리 가까이에 중요한 내용을 두지 마세요.</p>
+
+<h2>스크린샷을 잘 만드는 법</h2>
+<h3>첫 두 장이 전부입니다</h3>
+<p>스토어 목록에서 사용자가 스크롤 없이 보는 건 보통 앞의 두 장뿐입니다. 앱의 가장 큰 매력을 1번과 2번에 배치하고, 설정 화면이나 부가 기능은 뒤로 미루세요.</p>
+<h3>문구는 짧게</h3>
+<p>화면에서 실제로 읽히는 크기는 생각보다 작습니다. 한 장에 한 문장, 길어도 열 몇 글자 정도로 끊는 게 좋습니다. 기능을 나열하지 말고 <strong>사용자가 얻는 것</strong>을 쓰세요. "위젯 지원"보다 "잠금화면에서 바로 확인"이 잘 먹힙니다.</p>
+<h3>캡처는 상태표시줄을 정리하고</h3>
+<p>배터리가 15%거나 알림이 잔뜩 쌓인 캡처는 완성도가 떨어져 보입니다. 안드로이드 개발자 옵션에는 상태표시줄을 깔끔하게 고정해주는 데모 모드가 있으니 캡처 전에 켜두시면 좋습니다.</p>
+<h3>배경색은 앱 아이콘과 맞추세요</h3>
+<p>스토어 목록에서는 아이콘과 스크린샷이 나란히 보입니다. 배경 그라데이션을 아이콘의 주요 색상에서 가져오면 전체가 한 벌처럼 보여 신뢰감이 올라갑니다.</p>
+
+<h2>자주 겪는 문제</h2>
+<h3>업로드했더니 비율이 맞지 않다고 나와요</h3>
+<p>가로세로 비율이 2:1을 넘으면 거부됩니다. 이 도구의 프리셋은 모두 이 조건 안에 들어가니 프리셋을 그대로 쓰시면 됩니다.</p>
+<h3>글자가 잘려요</h3>
+<p>문구가 길면 자동으로 줄바꿈되지만 영역을 넘어서면 잘릴 수 있습니다. 글자 크기를 줄이거나 문구를 짧게 나누세요. 미리보기에 보이는 그대로 출력됩니다.</p>
+
+<footer>
+  <p>K-magpie 도구 모음 · 모든 처리는 브라우저에서 이루어지며 파일은 업로드되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+
+  /* ---------- 내장 ZIP (store) ---------- */
+  const CRC=(()=>{const t=new Uint32Array(256);
+    for(let i=0;i<256;i++){let c=i;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[i]=c>>>0;}return t;})();
+  function crc32(u8){let c=0xFFFFFFFF;for(let i=0;i<u8.length;i++)c=CRC[(c^u8[i])&0xFF]^(c>>>8);return (c^0xFFFFFFFF)>>>0;}
+  function zipStore(entries){
+    const enc=new TextEncoder(),d=new Date();
+    const T=((d.getHours()<<11)|(d.getMinutes()<<5)|(d.getSeconds()>>1))&0xFFFF;
+    const D=(((d.getFullYear()-1980)<<9)|((d.getMonth()+1)<<5)|d.getDate())&0xFFFF;
+    const L=[],C=[];let off=0;
+    for(const e of entries){
+      const nm=enc.encode(e.name),da=e.data,crc=crc32(da);
+      const lh=new Uint8Array(30+nm.length),lv=new DataView(lh.buffer);
+      lv.setUint32(0,0x04034b50,true);lv.setUint16(4,20,true);lv.setUint16(6,0x0800,true);
+      lv.setUint16(10,T,true);lv.setUint16(12,D,true);lv.setUint32(14,crc,true);
+      lv.setUint32(18,da.length,true);lv.setUint32(22,da.length,true);lv.setUint16(26,nm.length,true);
+      lh.set(nm,30);L.push(lh,da);
+      const ch=new Uint8Array(46+nm.length),cv=new DataView(ch.buffer);
+      cv.setUint32(0,0x02014b50,true);cv.setUint16(4,20,true);cv.setUint16(6,20,true);
+      cv.setUint16(8,0x0800,true);cv.setUint16(12,T,true);cv.setUint16(14,D,true);
+      cv.setUint32(16,crc,true);cv.setUint32(20,da.length,true);cv.setUint32(24,da.length,true);
+      cv.setUint16(28,nm.length,true);cv.setUint32(42,off,true);
+      ch.set(nm,46);C.push(ch);off+=lh.length+da.length;
+    }
+    const cd=C.reduce((a,c)=>a+c.length,0);
+    const eo=new Uint8Array(22),ev=new DataView(eo.buffer);
+    ev.setUint32(0,0x06054b50,true);ev.setUint16(8,entries.length,true);ev.setUint16(10,entries.length,true);
+    ev.setUint32(12,cd,true);ev.setUint32(16,off,true);
+    return new Blob([...L,...C,eo],{type:'application/zip'});
+  }
+
+  const FONT='"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",-apple-system,sans-serif';
+  let items=[],cur=0;
+  const drop=$('drop'),file=$('file'),warn=$('warn');
+
+  drop.addEventListener('click',()=>file.click());
+  drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('over')});
+  drop.addEventListener('dragleave',()=>drop.classList.remove('over'));
+  drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('over');add(e.dataTransfer.files)});
+  file.addEventListener('change',e=>add(e.target.files));
+  function msg(k,h){warn.className='msg m-'+k;warn.innerHTML=h;warn.classList.remove('hidden')}
+
+  async function add(list){
+    const fs=[...list].filter(f=>f.type.startsWith('image/'));
+    if(!fs.length){msg('bad','이미지 파일이 없습니다.');return}
+    warn.classList.add('hidden');
+    for(const f of fs){
+      const img=await new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src=URL.createObjectURL(f)});
+      if(img) items.push({img,head:'',sub:'',name:f.name});
+    }
+    if(items.length>8) msg('warn','Play 스토어 휴대전화 스크린샷은 <strong>최대 8장</strong>까지 등록할 수 있습니다. 현재 '+items.length+'장이니 앞의 8장만 쓰시는 걸 권합니다.');
+    $('editor').classList.remove('hidden');
+    cur=Math.min(cur,items.length-1);
+    strip();loadFields();render();
+  }
+
+  function strip(){
+    const s=$('strip');s.innerHTML='';
+    items.forEach((it,i)=>{
+      const d=document.createElement('div');d.className='th'+(i===cur?' on':'');
+      d.innerHTML=`<img src="${it.img.src}" alt=""><b>${i+1}</b><button class="x" title="삭제">×</button>`;
+      d.addEventListener('click',e=>{
+        if(e.target.classList.contains('x')){
+          e.stopPropagation();items.splice(i,1);
+          if(!items.length){$('editor').classList.add('hidden');return}
+          cur=Math.max(0,Math.min(cur,items.length-1));strip();loadFields();render();return;
+        }
+        saveFields();cur=i;strip();loadFields();render();
+      });
+      s.appendChild(d);
+    });
+  }
+  function loadFields(){$('head').value=items[cur]?.head||'';$('subt').value=items[cur]?.sub||''}
+  function saveFields(){if(items[cur]){items[cur].head=$('head').value;items[cur].sub=$('subt').value}}
+
+  /* ---------- helpers ---------- */
+  function rr(x,cx,cy,w,h,r){
+    r=Math.min(r,w/2,h/2);
+    x.beginPath();
+    if(x.roundRect) x.roundRect(cx,cy,w,h,r);
+    else{x.moveTo(cx+r,cy);x.arcTo(cx+w,cy,cx+w,cy+h,r);x.arcTo(cx+w,cy+h,cx,cy+h,r);
+         x.arcTo(cx,cy+h,cx,cy,r);x.arcTo(cx,cy,cx+w,cy,r);x.closePath()}
+  }
+  function wrap(x,text,maxW){
+    const out=[];
+    for(const para of String(text).split('\n')){
+      if(!para.trim()){out.push('');continue}
+      let line='';
+      for(const ch of para){
+        if(x.measureText(line+ch).width>maxW && line){out.push(line);line=ch}
+        else line+=ch;
+      }
+      if(line) out.push(line);
+    }
+    return out;
+  }
+
+  /* ---------- render ---------- */
+  function draw(c,it){
+    const [W,H]=$('preset').value.split('x').map(Number);
+    c.width=W;c.height=H;
+    const x=c.getContext('2d');
+    const wide = W>H;
+    const c1=$('c1').value,c2=$('c2').value;
+    const solid=document.querySelector('#bgmode button.on').dataset.m==='solid';
+
+    if(solid){x.fillStyle=c1}
+    else{
+      const g=$('diag').checked?x.createLinearGradient(0,0,W,H):x.createLinearGradient(0,0,0,H);
+      g.addColorStop(0,c1);g.addColorStop(1,c2);x.fillStyle=g;
+    }
+    x.fillRect(0,0,W,H);
+
+    const head=(it.head||'').trim(), sub=(it.sub||'').trim();
+    const tscale=+$('ts').value/100;
+    const topText=document.querySelector('#tpos button.on').dataset.p==='top';
+    x.fillStyle=$('tc').value;
+    x.textAlign=wide?'left':'center';
+
+    const base=wide?W*0.042:W*0.072;
+    const hSize=base*tscale, sSize=hSize*0.52;
+    const pad=wide?W*0.045:W*0.08;
+    const textMaxW=wide?W*0.50:W-pad*2;
+
+    x.font=`700 ${hSize}px ${FONT}`;
+    const hLines=head?wrap(x,head,textMaxW):[];
+    x.font=`400 ${sSize}px ${FONT}`;
+    const sLines=sub?wrap(x,sub,textMaxW):[];
+    const blockH=hLines.length*hSize*1.28 + (sLines.length?sLines.length*sSize*1.4+hSize*0.4:0);
+
+    let textTop, shotBox;
+    if(wide){
+      textTop=(H-blockH)/2;
+      shotBox={x:W*0.58,y:H*0.05,w:W*0.38,h:H*0.90};
+    }else if(topText){
+      textTop=H*0.075;
+      const used=Math.max(blockH+H*0.075, H*0.16);
+      shotBox={x:0,y:used+H*0.03,w:W,h:H-used-H*0.06};
+    }else{
+      shotBox={x:0,y:H*0.045,w:W,h:H-blockH-H*0.16};
+      textTop=shotBox.y+shotBox.h+H*0.045;
+    }
+
+    /* screenshot + frame */
+    const sc=+$('scale').value/100;
+    const img=it.img, ar=img.naturalWidth/img.naturalHeight;
+    let sw=shotBox.w*sc, sh=sw/ar;
+    if(sh>shotBox.h*sc){sh=shotBox.h*sc;sw=sh*ar}
+    const sx=wide?shotBox.x+(shotBox.w-sw)/2:(W-sw)/2;
+    const sy=shotBox.y+(shotBox.h-sh)/2;
+    const radius=sw*(+$('rad').value/100);
+    const useFrame=$('frame').checked;
+    const bezel=useFrame?Math.max(2,sw*0.022):0;
+
+    x.save();
+    if($('shadow').checked){x.shadowColor='rgba(0,0,0,.34)';x.shadowBlur=sw*0.09;x.shadowOffsetY=sw*0.035}
+    if(useFrame){
+      x.fillStyle='#12141a';
+      rr(x,sx-bezel,sy-bezel,sw+bezel*2,sh+bezel*2,radius+bezel);
+      x.fill();
+    }else{
+      x.fillStyle='#0000';
+      rr(x,sx,sy,sw,sh,radius);x.fill();
+    }
+    x.restore();
+
+    x.save();
+    rr(x,sx,sy,sw,sh,radius);x.clip();
+    x.drawImage(img,sx,sy,sw,sh);
+    x.restore();
+
+    /* text */
+    x.fillStyle=$('tc').value;
+    let ty=textTop;
+    const tx=wide?pad:W/2;
+    x.font=`700 ${hSize}px ${FONT}`;
+    x.textBaseline='top';
+    for(const l of hLines){x.fillText(l,tx,ty);ty+=hSize*1.28}
+    if(sLines.length){
+      ty+=hSize*0.28;
+      x.font=`400 ${sSize}px ${FONT}`;
+      x.globalAlpha=.86;
+      for(const l of sLines){x.fillText(l,tx,ty);ty+=sSize*1.4}
+      x.globalAlpha=1;
+    }
+    return c;
+  }
+
+  function render(){
+    if(!items.length)return;
+    saveFields();
+    const [W,H]=$('preset').value.split('x').map(Number);
+    const full=document.createElement('canvas');
+    draw(full,items[cur]);
+    const pv=$('pv');
+    const pw=270, ph=Math.round(pw*H/W);
+    pv.width=pw;pv.height=ph;
+    const px=pv.getContext('2d');
+    px.imageSmoothingQuality='high';
+    px.drawImage(full,0,0,pw,ph);
+    $('pvcap').textContent=`${cur+1} / ${items.length} · ${W} × ${H}`;
+    $('radV').textContent=$('rad').value+'%';
+    $('scaleV').textContent=$('scale').value+'%';
+    $('tsV').textContent=$('ts').value+'%';
+  }
+
+  ['head','subt','preset','c1','c2','diag','frame','rad','scale','shadow','tc','ts']
+    .forEach(id=>{$(id).addEventListener('input',render);$(id).addEventListener('change',render)});
+  document.querySelectorAll('#bgmode button,#tpos button').forEach(b=>b.addEventListener('click',()=>{
+    b.parentElement.querySelectorAll('button').forEach(o=>o.classList.remove('on'));
+    b.classList.add('on');render();
+  }));
+
+  const toU8=c=>new Promise(r=>c.toBlob(async b=>r(new Uint8Array(await b.arrayBuffer())),'image/png'));
+
+  $('one').addEventListener('click',async()=>{
+    saveFields();
+    const c=document.createElement('canvas');draw(c,items[cur]);
+    c.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);
+      a.download=String(cur+1).padStart(2,'0')+'.png';a.click();
+      setTimeout(()=>URL.revokeObjectURL(a.href),3000)},'image/png');
+  });
+
+  $('zip').addEventListener('click',async()=>{
+    saveFields();
+    const btn=$('zip');btn.disabled=true;
+    const entries=[];
+    for(let i=0;i<items.length;i++){
+      const c=document.createElement('canvas');draw(c,items[i]);
+      entries.push({name:String(i+1).padStart(2,'0')+'.png',data:await toU8(c)});
+      $('stat').textContent=`생성 중 ${i+1}/${items.length}`;
+      await new Promise(r=>setTimeout(r));
+    }
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(zipStore(entries));a.download='store-screenshots.zip';a.click();
+    setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+    $('stat').textContent=`완료 — ${items.length}장`;btn.disabled=false;
+  });
+
+  $('reset').addEventListener('click',()=>{
+    items=[];cur=0;file.value='';$('editor').classList.add('hidden');
+    warn.classList.add('hidden');$('stat').textContent='';
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+})();
+</script>
+</body>
+</html>
