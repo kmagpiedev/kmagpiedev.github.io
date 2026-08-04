@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>연봉 실수령액 계산기 2026 — 국세청 간이세액표 그대로 | 까치툴</title>
+<meta name="description" content="2026년 4대보험 요율과 국세청 근로소득 간이세액표를 그대로 적용해 월 실수령액을 계산합니다. 국민연금 9.5% 인상 반영. 공제 항목별 금액을 전부 보여주고 가입도 업로드도 없습니다.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/salary/">
+<meta property="og:title" content="연봉 실수령액 계산기 2026 — 국세청 간이세액표 그대로">
+<meta property="og:description" content="2026년 국민연금 9.5% 인상 반영. 공제 항목별 내역까지 전부 표시.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/salary/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  .row{display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start}
+  .col{flex:1;min-width:230px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
+  .seg{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;margin-bottom:12px}
+  .seg button{flex:1;background:transparent;border:0;padding:9px 6px;font-size:13.5px;font-weight:600;
+    color:var(--ink-2);cursor:pointer;font-family:inherit;transition:.12s}
+  .seg button.on{background:var(--accent);color:#fff}
+  .amt{display:flex;align-items:center;gap:8px}
+  input[type=text],input[type=number]{padding:11px 12px;border:1px solid var(--line);border-radius:9px;
+    background:var(--surface);color:var(--ink);font-size:17px;font-family:inherit;width:100%;
+    text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+  input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .unit{font-size:14px;color:var(--ink-2);flex:none}
+  .mini{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .mini button{font-family:inherit;font-size:12.5px;padding:5px 10px;border-radius:7px;border:1px solid var(--line);
+    background:transparent;color:var(--ink-2);cursor:pointer}
+  .mini button:hover{border-color:var(--accent);color:var(--accent)}
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .g2 input{font-size:15px;padding:9px 11px}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:12px 0 0}
+
+  .result{background:var(--surface);border:1px solid var(--accent);border-radius:16px;padding:26px 24px;margin:18px 0}
+  .big{font-size:13px;color:var(--ink-2);margin:0 0 4px}
+  .money{font-size:38px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.2;color:var(--accent)}
+  .money small{font-size:18px;font-weight:700;margin-left:3px}
+  .yearly{font-size:14px;color:var(--ink-2);margin-top:6px;font-variant-numeric:tabular-nums}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px}
+  th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line-soft)}
+  th{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;border-bottom:1px solid var(--line)}
+  td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  tr.sum td{border-top:2px solid var(--line);border-bottom:0;font-weight:700;padding-top:11px}
+  tr.take td{border-bottom:0;font-weight:800;color:var(--accent);font-size:16px}
+  .pct{font-size:12.5px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+  details{margin:14px 0;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:0 16px}
+  details[open]{padding-bottom:8px}
+  summary{cursor:pointer;padding:12px 0;font-size:14.5px;font-weight:600;color:var(--ink-2)}
+  summary:hover{color:var(--accent)}
+  details .in{font-size:14px;color:var(--ink-2)}
+  details code{background:var(--line-soft);padding:1px 5px;border-radius:4px;font-size:12.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .hidden{display:none}
+  .src{font-size:12.5px;color:var(--ink-3);margin-top:14px;padding-top:12px;border-top:1px solid var(--line-soft)}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .money{font-size:31px}
+    table{font-size:13.5px}
+    th,td{padding:8px 4px}
+  }
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › 연봉 실수령액 계산기</p>
+
+<h1>연봉 실수령액 계산기</h1>
+<p class="sub">2026년 4대보험 요율과 <strong>국세청 근로소득 간이세액표를 그대로</strong> 적용합니다. 근사식이 아니라 원본 표를 담고 있어서 회사가 실제로 떼는 금액과 같습니다.</p>
+
+<div class="panel">
+  <div class="row">
+    <div class="col">
+      <div class="seg" id="mode">
+        <button data-m="y" class="on">연봉으로 입력</button>
+        <button data-m="m">월급으로 입력</button>
+      </div>
+      <label class="f" id="amtLabel">연봉 (세전)</label>
+      <div class="amt">
+        <input type="text" id="amt" inputmode="numeric" value="4,000">
+        <span class="unit" id="amtUnit">만원</span>
+      </div>
+      <div class="mini" id="quick"></div>
+
+      <label class="f" style="margin-top:20px">퇴직금</label>
+      <div class="seg" id="sev">
+        <button data-s="12" class="on">별도 (연봉 ÷ 12)</button>
+        <button data-s="13">포함 (연봉 ÷ 13)</button>
+      </div>
+      <p class="note">계약서에 "퇴직금 포함"이라고 적혀 있으면 연봉을 13으로 나눕니다. 대부분은 별도예요.</p>
+    </div>
+
+    <div class="col">
+      <label class="f">비과세액 (월)</label>
+      <div class="amt">
+        <input type="text" id="tax0" inputmode="numeric" value="200,000">
+        <span class="unit">원</span>
+      </div>
+      <p class="note">식대는 월 20만원까지 비과세입니다. 자가운전보조금(월 20만원), 출산·보육수당(월 20만원) 등이 있으면 더하세요. 비과세액은 세금과 4대보험 계산에서 모두 빠집니다.</p>
+
+      <div class="g2" style="margin-top:20px">
+        <div>
+          <label class="f">부양가족 수</label>
+          <input type="number" id="fam" min="1" max="20" value="1">
+        </div>
+        <div>
+          <label class="f">8~20세 자녀</label>
+          <input type="number" id="kid" min="0" max="10" value="0">
+        </div>
+      </div>
+      <p class="note"><strong>본인을 포함한</strong> 인원입니다. 혼자면 1, 배우자가 있으면 2, 배우자와 자녀 하나면 3이에요. 자녀 칸은 그중 8세 이상 20세 이하만 세면 됩니다.</p>
+    </div>
+  </div>
+</div>
+
+<div id="warn" class="hidden"></div>
+
+<div class="result">
+  <p class="big">월 실수령액</p>
+  <div class="money" id="net">0<small>원</small></div>
+  <div class="yearly" id="year"></div>
+
+  <table>
+    <thead><tr><th>항목</th><th class="n">금액</th><th class="n">비율</th></tr></thead>
+    <tbody id="tb"></tbody>
+  </table>
+
+  <details>
+    <summary>계산 과정 자세히 보기</summary>
+    <div class="in" id="detail"></div>
+  </details>
+
+  <p class="src" id="src"></p>
+</div>
+
+<h2>연봉별 실수령액 표 (2026년 기준)</h2>
+<p>혼자 사는 직장인(부양가족 본인 1명)이 식대 20만원을 비과세로 받고 퇴직금이 연봉과 별도인 경우입니다. 줄을 누르면 위 계산기에 그 연봉이 들어갑니다.</p>
+<table>
+  <thead><tr><th>연봉</th><th class="n">세전 월급여</th><th class="n">공제 합계</th><th class="n">월 실수령액</th></tr></thead>
+  <tbody id="chart"></tbody>
+</table>
+<p class="note">부양가족이 늘거나 비과세 항목이 다르면 실수령액이 달라집니다. 본인 조건을 위 계산기에 넣어 확인하세요.</p>
+
+<h2>어떻게 계산하나요</h2>
+<p>먼저 연봉을 12(퇴직금 별도) 또는 13(퇴직금 포함)으로 나눠 월 급여를 구합니다. 여기서 식대 같은 비과세액을 빼면 <strong>과세 대상 월급여</strong>가 되고, 4대보험과 소득세는 모두 이 금액을 기준으로 계산됩니다. 비과세액을 제대로 넣는 것만으로 결과가 꽤 달라지는 이유가 이거예요.</p>
+<p>소득세는 계산식으로 구하는 게 아니라 <strong>국세청이 정해놓은 표에서 찾아옵니다.</strong> 회사가 매달 떼는 세금은 소득세법 시행령 별표2의 「근로소득 간이세액표」에 월급여 구간과 부양가족 수로 정해져 있거든요. 이 페이지에는 그 표 588개 구간 × 11개 열이 그대로 들어 있습니다. 인터넷에 도는 근사 계산식을 쓰지 않기 때문에 회사 급여 시스템과 같은 값이 나옵니다.</p>
+
+<h2>2026년에 무엇이 바뀌었나요</h2>
+<p>가장 큰 변화는 <strong>국민연금 보험료율이 9%에서 9.5%로 오른 것</strong>입니다. 1998년 이후 28년 만의 인상이고, 2033년까지 매년 0.5%p씩 올라 13%가 됩니다. 근로자와 회사가 절반씩 부담하므로 본인 부담은 4.75%예요. 월 300만원을 받는 사람이면 매달 7,500원쯤 더 나갑니다.</p>
+<p>건강보험료율도 7.09%에서 7.19%로 올랐고, 장기요양보험료율은 0.9182%에서 0.9448%가 됐습니다. 국민연금 기준소득월액 상한액은 2026년 7월부터 659만원으로 올라서, 월 659만원을 넘게 버는 사람은 그 위로는 연금 보험료가 늘지 않습니다.</p>
+
+<h2>왜 실제 급여명세서와 다를 수 있나요</h2>
+<p>이 계산기는 표준적인 경우를 계산합니다. 실제 명세서가 다르게 나오는 이유는 대개 아래 중 하나예요.</p>
+<h3>상여금이 있는 경우</h3>
+<p>명절 상여나 성과급이 특정 달에 몰리면 그달의 소득세가 크게 오릅니다. 간이세액표는 매달 같은 금액을 받는다고 가정하기 때문에, 상여가 있는 회사라면 월별로 편차가 생깁니다.</p>
+<h3>원천징수 비율을 조정한 경우</h3>
+<p>근로자는 회사에 신청해서 간이세액표 금액의 80% 또는 120%로 떼도록 바꿀 수 있습니다. 덜 떼면 매달 손에 쥐는 돈은 늘지만 연말정산 때 더 내게 되고, 많이 떼면 반대가 됩니다. 신청하지 않으면 100%입니다.</p>
+<h3>비과세 항목이 다른 경우</h3>
+<p>식대를 아예 안 주는 회사도 있고, 차량유지비나 연구보조비 같은 다른 비과세 항목이 있는 회사도 있습니다. 명세서의 비과세 합계를 확인해서 위 칸에 넣으면 정확해집니다.</p>
+<h3>입사·퇴사한 달</h3>
+<p>중간에 입사하거나 퇴사하면 근무 일수만큼 일할 계산되고, 건강보험은 자격 취득일에 따라 그달 보험료가 아예 안 붙기도 합니다.</p>
+
+<h2>연말정산은 어떻게 되나요</h2>
+<p>매달 떼는 소득세는 <strong>임시로 걷어두는 금액</strong>입니다. 신용카드 사용액, 의료비, 보험료, 기부금, 연금저축 같은 실제 공제 내역은 반영되어 있지 않아요. 그래서 이듬해 2월 연말정산에서 정확한 1년치 세금을 다시 계산해 더 냈으면 돌려받고 덜 냈으면 더 냅니다. 이 계산기의 소득세는 어디까지나 매달 떼이는 금액이라고 보시면 됩니다.</p>
+
+<h2>계산기가 하지 않는 것</h2>
+<p>모든 계산은 브라우저 안에서만 이루어집니다. 입력한 연봉이 서버로 전송되지 않고, 저장되지도 않으며, 새로고침하면 사라집니다. 연봉은 민감한 정보라서 처음부터 아무것도 받지 않도록 만들었습니다. 가입이나 로그인도 없습니다.</p>
+
+<footer>
+  <p>까치툴 · 모든 계산은 브라우저에서 이루어지며 입력값은 전송·저장되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+
+/* ===== 국세청 근로소득 간이세액표 (소득세법 시행령 별표2, 개정 2024. 2. 29.) =====
+   형식: 시작월급여(천원) | 구간폭배수:1명세액.열간차이×10 ; ... | 1,000만원 정확행
+   값은 모두 10원 단위이며 36진수로 담았습니다. 원본 588구간 × 11열 전체. */
+const TBL="1060|1:2w.2w.0.0.0.0.0.0.0.0.0;1:33.33.0.0.0.0.0.0.0.0.0;1:3a.3a.0.0.0.0.0.0.0.0.0;1:3h.3h.0.0.0.0.0.0.0.0.0;1:3o.3o.0.0.0.0.0.0.0.0.0;1:3v.3v.0.0.0.0.0.0.0.0.0;1:42.42.0.0.0.0.0.0.0.0.0;1:49.49.0.0.0.0.0.0.0.0.0;1:4g.4g.0.0.0.0.0.0.0.0.0;1:4n.4n.0.0.0.0.0.0.0.0.0;1:4u.4u.0.0.0.0.0.0.0.0.0;1:51.51.0.0.0.0.0.0.0.0.0;1:58.58.0.0.0.0.0.0.0.0.0;1:5f.5f.0.0.0.0.0.0.0.0.0;1:5m.5m.0.0.0.0.0.0.0.0.0;1:5t.5t.0.0.0.0.0.0.0.0.0;1:60.60.0.0.0.0.0.0.0.0.0;1:67.67.0.0.0.0.0.0.0.0.0;1:6e.6e.0.0.0.0.0.0.0.0.0;1:6l.6l.0.0.0.0.0.0.0.0.0;1:6s.6s.0.0.0.0.0.0.0.0.0;1:6y.6y.0.0.0.0.0.0.0.0.0;1:75.75.0.0.0.0.0.0.0.0.0;1:7c.7c.0.0.0.0.0.0.0.0.0;1:7j.7j.0.0.0.0.0.0.0.0.0;1:7q.7q.0.0.0.0.0.0.0.0.0;1:7x.7x.0.0.0.0.0.0.0.0.0;1:84.84.0.0.0.0.0.0.0.0.0;1:8b.8b.0.0.0.0.0.0.0.0.0;1:8i.8i.0.0.0.0.0.0.0.0.0;1:8p.8p.0.0.0.0.0.0.0.0.0;1:8w.8w.0.0.0.0.0.0.0.0.0;1:93.93.0.0.0.0.0.0.0.0.0;1:9a.9a.0.0.0.0.0.0.0.0.0;1:9h.9h.0.0.0.0.0.0.0.0.0;1:9o.9o.0.0.0.0.0.0.0.0.0;1:9v.9v.0.0.0.0.0.0.0.0.0;1:a2.a2.0.0.0.0.0.0.0.0.0;1:aa.aa.0.0.0.0.0.0.0.0.0;1:al.al.0.0.0.0.0.0.0.0.0;1:av.av.0.0.0.0.0.0.0.0.0;1:b5.b5.0.0.0.0.0.0.0.0.0;1:bg.bg.0.0.0.0.0.0.0.0.0;1:bq.bq.0.0.0.0.0.0.0.0.0;1:c0.c0.0.0.0.0.0.0.0.0.0;1:cb.cb.0.0.0.0.0.0.0.0.0;1:cl.cl.0.0.0.0.0.0.0.0.0;1:cv.cv.0.0.0.0.0.0.0.0.0;1:d6.d6.0.0.0.0.0.0.0.0.0;1:dg.dg.0.0.0.0.0.0.0.0.0;1:dq.dq.0.0.0.0.0.0.0.0.0;1:e1.e1.0.0.0.0.0.0.0.0.0;1:eb.eb.0.0.0.0.0.0.0.0.0;1:el.el.0.0.0.0.0.0.0.0.0;1:ew.ew.0.0.0.0.0.0.0.0.0;1:f6.f6.0.0.0.0.0.0.0.0.0;1:fg.ci.2y.0.0.0.0.0.0.0.0;1:fr.ci.39.0.0.0.0.0.0.0.0;1:g1.ci.3j.0.0.0.0.0.0.0.0;1:gb.ci.3t.0.0.0.0.0.0.0.0;1:gm.ci.44.0.0.0.0.0.0.0.0;1:gw.ci.4e.0.0.0.0.0.0.0.0;1:h6.ci.4o.0.0.0.0.0.0.0.0;1:hh.ci.4z.0.0.0.0.0.0.0.0;1:hr.ci.59.0.0.0.0.0.0.0.0;1:i1.ci.5j.0.0.0.0.0.0.0.0;1:ic.ci.5u.0.0.0.0.0.0.0.0;1:im.ci.64.0.0.0.0.0.0.0.0;1:iw.ci.6e.0.0.0.0.0.0.0.0;1:j7.ci.6p.0.0.0.0.0.0.0.0;1:jh.ci.6z.0.0.0.0.0.0.0.0;1:jr.ci.79.0.0.0.0.0.0.0.0;1:k1.ci.7j.0.0.0.0.0.0.0.0;1:kc.ci.7u.0.0.0.0.0.0.0.0;1:km.ci.84.0.0.0.0.0.0.0.0;1:kw.ci.8e.0.0.0.0.0.0.0.0;1:l7.ci.8p.0.0.0.0.0.0.0.0;1:lh.ci.8z.0.0.0.0.0.0.0.0;1:lr.ci.99.0.0.0.0.0.0.0.0;1:m2.ci.9k.0.0.0.0.0.0.0.0;1:mc.ci.9u.0.0.0.0.0.0.0.0;1:mm.ci.a4.0.0.0.0.0.0.0.0;1:mx.ci.af.0.0.0.0.0.0.0.0;1:n7.ci.ap.0.0.0.0.0.0.0.0;1:nh.ci.az.0.0.0.0.0.0.0.0;1:ns.ci.ba.0.0.0.0.0.0.0.0;1:o2.ci.bk.0.0.0.0.0.0.0.0;1:oc.ci.bu.0.0.0.0.0.0.0.0;2:os.ci.ca.0.0.0.0.0.0.0.0;2:pc.ci.cu.0.0.0.0.0.0.0.0;2:px.ci.df.0.0.0.0.0.0.0.0;2:qi.ci.e0.0.0.0.0.0.0.0.0;2:r2.ci.ek.0.0.0.0.0.0.0.0;2:rn.ci.f5.0.0.0.0.0.0.0.0;2:s8.ci.fq.0.0.0.0.0.0.0.0;2:ss.ci.ga.0.0.0.0.0.0.0.0;2:td.ci.gv.0.0.0.0.0.0.0.0;2:ty.ci.hg.0.0.0.0.0.0.0.0;2:ui.ci.i0.0.0.0.0.0.0.0.0;2:v3.ci.il.0.0.0.0.0.0.0.0;2:vo.ci.j6.0.0.0.0.0.0.0.0;2:w8.ci.jq.0.0.0.0.0.0.0.0;2:wt.ci.kb.0.0.0.0.0.0.0.0;2:xe.ci.kw.0.0.0.0.0.0.0.0;2:xy.ci.lg.0.0.0.0.0.0.0.0;2:yj.ci.m1.0.0.0.0.0.0.0.0;2:z4.ci.mm.0.0.0.0.0.0.0.0;2:zo.ci.n6.0.0.0.0.0.0.0.0;2:109.ci.nr.0.0.0.0.0.0.0.0;2:10u.ci.oc.0.0.0.0.0.0.0.0;2:11e.ci.m0.2w.0.0.0.0.0.0.0;2:11z.ci.m1.3g.0.0.0.0.0.0.0;2:12k.ci.m2.40.0.0.0.0.0.0.0;2:134.ci.m2.4k.0.0.0.0.0.0.0;2:13p.ci.m4.53.0.0.0.0.0.0.0;2:14a.ci.m5.5n.0.0.0.0.0.0.0;2:14u.ci.m5.67.0.0.0.0.0.0.0;2:15f.ci.m6.6r.0.0.0.0.0.0.0;2:15z.ci.m6.7b.0.0.0.0.0.0.0;2:16k.ci.m7.7v.0.0.0.0.0.0.0;2:175.ci.m9.8e.0.0.0.0.0.0.0;2:17p.ci.m9.8y.0.0.0.0.0.0.0;2:18a.ci.ma.9i.0.0.0.0.0.0.0;2:18v.ci.mb.a2.0.0.0.0.0.0.0;2:19f.ci.mb.am.0.0.0.0.0.0.0;2:1a0.ci.mc.b6.0.0.0.0.0.0.0;2:1al.ci.md.bq.0.0.0.0.0.0.0;2:1b5.ci.me.9d.2w.0.0.0.0.0.0;2:1bq.ci.mf.9d.3g.0.0.0.0.0.0;2:1cb.ci.mg.9d.40.0.0.0.0.0.0;2:1cv.ci.mg.9e.4j.0.0.0.0.0.0;2:1dg.ci.mh.9e.53.0.0.0.0.0.0;2:1e1.ci.mi.9e.5n.0.0.0.0.0.0;2:1el.ci.mj.9d.67.0.0.0.0.0.0;2:1f6.ci.mk.9d.6r.0.0.0.0.0.0;2:1fr.ci.ml.9d.7b.0.0.0.0.0.0;2:1gg.cn.ml.9e.7u.0.0.0.0.0.0;2:1hc.cy.mm.9e.8e.0.0.0.0.0.0;2:1i8.d9.mn.9e.8y.0.0.0.0.0.0;2:1j5.dm.mn.9e.9i.0.0.0.0.0.0;2:1k1.dx.mp.9d.a2.0.0.0.0.0.0;2:1kx.e8.mq.9d.am.0.0.0.0.0.0;2:1lt.ek.mq.9d.b6.0.0.0.0.0.0;2:1mp.ev.mr.9e.bp.0.0.0.0.0.0;2:1nl.f6.ms.9e.9d.2w.0.0.0.0.0;2:1oh.fi.ms.9e.9d.3g.0.0.0.0.0;2:1pd.ft.mu.9d.9e.3z.0.0.0.0.0;2:1qa.g6.mu.9d.9e.4j.0.0.0.0.0;2:1r6.gh.mv.9d.9e.53.0.0.0.0.0;2:1s2.gs.mw.9e.9d.5n.0.0.0.0.0;2:1sy.h4.mw.9e.9d.67.0.0.0.0.0;2:1tu.hf.mx.9e.9d.6r.0.0.0.0.0;2:1uq.hq.my.9e.9d.7b.0.0.0.0.0;2:1vm.i2.mz.9d.9e.7u.0.0.0.0.0;2:1wi.id.n0.9d.9e.8e.0.0.0.0.0;2:1xf.ip.n1.9d.9e.8y.0.0.0.0.0;2:1yb.j1.n1.9e.9d.9i.0.0.0.0.0;2:1z7.jc.n2.9e.9d.a2.0.0.0.0.0;2:203.jg.na.9e.9d.am.0.0.0.0.0;2:20z.jg.nn.9d.9e.b5.0.0.0.0.0;2:21v.jg.nz.9d.9e.bp.0.0.0.0.0;2:22r.jg.ob.9d.9e.9d.2w.0.0.0.0;2:23o.jg.oo.9e.9d.9e.3f.0.0.0.0;2:24k.jg.p0.9e.9d.9e.3z.0.0.0.0;2:25g.jg.pc.9e.9d.9e.4j.0.0.0.0;2:26c.jg.po.9e.9d.9e.53.0.0.0.0;2:278.jg.q1.9d.9e.9d.5n.0.0.0.0;2:284.jg.qd.9d.9e.9d.67.0.0.0.0;2:290.jg.qp.9d.9e.9d.6r.0.0.0.0;2:29w.jg.r1.9e.9d.9e.7a.0.0.0.0;2:2at.jg.re.9e.9d.9e.7u.0.0.0.0;2:2bp.jg.rq.9e.9d.9e.8e.0.0.0.0;2:2cl.jg.s3.9d.9e.9d.8y.0.0.0.0;2:2dh.jg.sf.9d.9e.9d.9i.0.0.0.0;2:2ed.jg.sr.9d.9e.9d.a2.0.0.0.0;2:2f9.jg.t3.9e.9d.9e.al.0.0.0.0;2:2g5.jg.tf.9e.9d.9e.b5.0.0.0.0;2:2h1.jg.tr.9e.9d.9e.bp.0.0.0.0;2:2hy.jg.u5.9d.9e.9d.9e.2v.0.0.0;2:2iu.jg.uh.9d.9e.9d.9e.3f.0.0.0;2:2jq.jg.ut.9d.9e.9d.9e.3z.0.0.0;2:2km.jg.v5.9d.9e.9d.9e.4j.0.0.0;2:2li.jg.vh.9e.9d.9e.9d.53.0.0.0;2:2me.jg.vt.9e.9d.9e.9d.5n.0.0.0;2:2na.jg.w5.9e.9d.9e.9d.67.0.0.0;2:2o7.jg.wj.9d.9e.9d.9e.6q.0.0.0;2:2p3.jg.wv.9d.9e.9d.9e.7a.0.0.0;2:2pz.jg.x7.9d.9e.9d.9e.7u.0.0.0;2:2qw.jg.xj.9e.9d.9e.9d.8f.0.0.0;2:2ru.jg.xw.9e.9d.9e.9d.90.0.0.0;2:2ss.jg.y9.9d.9e.9d.9e.9l.0.0.0;2:2tr.jg.yn.9d.9e.9d.9e.a6.0.0.0;2:2up.jg.z0.9d.9e.9d.9e.ar.0.0.0;2:2vn.jg.zc.9e.9d.9e.9d.bd.0.0.0;2:2wl.jg.zp.9e.9d.9e.9d.by.0.0.0;2:2xk.jg.103.9e.9d.9e.9d.9e.35.0.0;2:2yi.jg.10g.9d.9e.9d.9e.9d.3r.0.0;2:2zv.jv.10t.9d.9e.9d.9e.9d.4c.0.0;2:329.lb.115.9e.9d.9e.9d.9e.4x.0.0;2:34m.mq.11c.9k.9d.9e.9d.9e.5i.0.0;2:370.o5.11e.9w.9d.9e.9d.9e.63.0.0;2:39e.pl.11f.a7.9e.9d.9e.9d.6p.0.0;2:3br.r0.11g.aj.9e.9d.9e.9d.7a.0.0;2:3e5.sg.11h.av.9d.9e.9d.9e.7v.0.0;2:3gi.tu.11j.b7.9d.9e.9d.9e.8g.0.0;2:3iw.va.11k.bj.9d.9e.9d.9e.91.0.0;2:3la.wq.11l.bu.9e.9d.9e.9d.9n.0.0;2:3nn.y5.11m.c6.9e.9d.9e.9d.a8.0.0;2:3q1.zk.11o.ci.9d.9e.9d.9e.at.0.0;2:3se.10z.11p.cu.9d.9e.9d.9e.be.0.0;2:3us.12f.11q.d6.9d.9e.9d.9e.bz.0.0;2:3x5.13u.11r.dh.9e.9d.9e.9d.9e.37.0;2:3zj.15a.11s.dt.9e.9d.9e.9d.9e.3s.0;2:41x.16p.11u.e5.9e.9d.9e.9d.9e.4d.0;2:44a.184.11v.eh.9d.9e.9d.9e.9d.4z.0;2:46o.19k.11w.el.9l.9e.9d.9e.9d.5k.0;2:491.1az.11y.el.9w.9d.9e.9d.9e.65.0;2:4bf.1ce.120.el.a8.9d.9e.9d.9e.6q.0;2:4ds.1cm.138.el.ak.9d.9e.9d.9e.7b.0;2:4g6.1cm.14p.el.av.9e.9d.9e.9d.7x.0;2:4ik.1cm.166.el.b7.9e.9d.9e.9d.8i.0;2:4kx.1cm.17m.el.bj.9d.9e.9d.9e.93.0;2:4nb.1cm.193.el.bv.9d.9e.9d.9e.9o.0;2:4po.1cm.1aj.el.c7.9d.9e.9d.9e.a9.0;2:4s2.1cm.1c0.el.ci.9e.9d.9e.9d.av.0;2:4uf.1cm.1dg.el.cu.9e.9d.9e.9d.bg.0;2:4wt.1cm.1ex.el.d6.9d.9e.9d.9e.c1.0;2:4z7.1cm.1ge.el.di.9d.9e.9d.9e.9d.39;2:51k.1cm.1hu.el.du.9d.9e.9d.9e.9d.3u;2:53y.1cm.1jb.el.e5.9e.9d.9e.9d.9e.4f;2:56b.1cm.1kr.el.eh.9e.9d.9e.9d.9e.50;2:58p.1cm.1m8.el.el.9m.9d.9e.9d.9e.5l;2:5b2.1cm.1no.el.el.9x.9e.9d.9e.9d.67;2:5dg.1cm.1p5.el.el.a9.9e.9d.9e.9d.6s;2:5fu.1cm.1qm.el.el.al.9d.9e.9d.9e.7d;2:5i7.1cm.1s2.el.el.ax.9d.9e.9d.9e.7y;2:5kl.1cm.1tj.el.el.b9.9d.9e.9d.9e.8j;2:5my.1cm.1uz.el.el.bk.9e.9d.9e.9d.95;4:5qj.1cm.1x7.el.el.c2.9d.9e.9d.9e.a0;4:5va.1cm.204.el.el.cp.9e.9d.9e.9d.b7;4:601.1cm.231.el.el.dd.9d.9e.9d.9e.9d;4:64s.1cm.25y.el.el.e0.9e.9d.9e.9d.9e;4:69j.1cm.28v.el.el.el.9g.9e.9d.9e.9d;4:6ea.1cm.2bs.el.el.el.a4.9e.9d.9e.9d;4:6j2.1cm.2eq.el.el.el.as.9d.9e.9d.9e;4:6nt.1cm.2hn.el.el.el.bf.9e.9d.9e.9d;4:6sk.1cm.2kk.el.el.el.c3.9d.9e.9d.9e;4:6xb.1cm.2nh.el.el.el.cr.9d.9e.9d.9e;4:722.1cm.2qe.el.el.el.de.9e.9d.9e.9d;4:76t.1cm.2qr.h5.el.el.e2.9d.9e.9d.9e;4:7d3.1e5.2qx.jw.el.el.el.9i.9d.9e.9d;4:7jw.1g6.2r4.mn.el.el.el.a5.9e.9d.9e;4:7qo.1i7.2ra.pf.el.el.el.as.9e.9d.9e;4:7xh.1k9.2rg.s6.el.el.el.bg.9d.9e.9d;4:849.1ma.2rm.ux.el.el.el.c3.9e.9d.9e;4:8b2.1oc.2s0.xj.el.el.el.cq.9d.9e.9d;4:8hu.1qd.2se.105.el.el.el.dc.9e.9d.9e;4:8on.1se.2su.10g.gv.el.el.dz.9e.9d.9e;4:8vf.1uf.2t8.10h.jh.el.el.el.9e.9d.9e;4:928.1wh.2tn.10g.m3.el.el.el.a0.9e.9d;4:990.1xg.2v3.10h.op.el.el.el.am.9e.9d;4:9ft.1xg.2xk.10g.rb.el.el.el.b9.9d.9e;4:9ml.1xg.2zz.10h.tw.el.el.el.bw.9d.9e;4:9te.1xg.32g.10g.wj.el.el.el.ch.9e.9d;4:a06.1xg.34v.10h.z4.el.el.el.d4.9e.9d;4:a6z.1xg.37c.10h.10g.fv.el.el.dq.9d.9e;4:adr.1xg.39s.10g.10h.ig.el.el.ed.9d.9e;4:akk.1xg.3c8.10h.10g.l3.el.el.el.9r.9d;4:arc.1xg.3eo.10g.10h.no.el.el.el.ae.9d;4:ay5.1xg.3h4.10h.10g.qa.el.el.el.b1.9d;4:b4x.1xg.3jk.10g.10h.sw.el.el.el.bm.9e;4:bbq.1xg.3m0.10h.10g.vi.el.el.el.c9.9e;4:bii.1xg.3og.10g.10h.y4.el.el.el.cv.9d;4:bpb.1xg.3qw.10h.10g.10h.eu.el.el.di.9d;4:bw3.1xg.3tc.10g.10h.10g.hg.el.el.e4.9e;4:c2w.1xg.3vt.10g.10h.10g.k2.el.el.el.9j;4:cnc.25b.3zz.10h.10g.10h.p3.el.el.el.aq;4:cur.25d.42l.10g.10h.10g.ry.el.el.el.bf;4:d26.25e.458.10g.10h.10g.ut.el.el.el.c3;4:d9l.25g.47u.10g.10h.10g.xo.el.el.el.cr;4:dh0.25h.4ah.10g.10h.10g.10h.em.el.el.dg;4:dof.25j.4d2.10h.10g.10h.10g.hi.el.el.e4;4:dvu.25k.4em.11k.10g.10h.10g.kc.el.el.el;4:e39.25m.4f6.13m.10g.10h.10g.n7.el.el.el;4:eao.25n.4fs.15m.10h.10g.10h.q1.el.el.el;4:ei3.25p.4gc.17o.10h.10g.10h.sw.el.el.el;4:epi.25q.4gy.19p.10h.10g.10h.vq.el.el.el;4:ewx.25s.4hi.1br.10g.10h.10g.ym.el.el.el;4:f4c.25t.4i4.1ds.10g.10h.10g.10h.fk.el.el;4:fbr.25v.4io.1fu.10g.10h.10g.10h.if.el.el;4:fj6.25w.4ja.1g3.128.10h.10g.10h.la.el.el;4:fql.25y.4ju.1g3.14a.10g.10h.10g.o5.el.el;4:fy0.25z.4kg.1g3.16b.10g.10h.10g.r0.el.el;4:g5f.261.4l0.1g3.18d.10g.10h.10g.tu.el.el;4:gcu.262.4lm.1g3.1ad.10h.10g.10h.wp.el.el;4:gk9.264.4m6.1g3.1cf.10h.10g.10h.zj.el.el;4:gro.265.4ms.1g3.1eg.10h.10g.10h.10g.gj.el;4:gz3.267.4nc.1g3.1g3.10v.10h.10g.10h.jd.el;4:h6i.268.4ny.1g3.1g3.12w.10h.10g.10h.m8.el;4:hdx.26a.4oi.1g3.1g3.14y.10h.10g.10h.p2.el;4:hlc.26b.4p4.1g3.1g3.16z.10h.10g.10h.rx.el;4:hsr.26d.4po.1g3.1g3.191.10g.10h.10g.us.el;4:i06.26e.4qa.1g3.1g3.1b2.10g.10h.10g.xn.el;4:i7l.26g.4qu.1g3.1g3.1d4.10g.10h.10g.10h.em;4:if0.26h.4rg.1g3.1g3.1f4.10h.10g.10h.10g.hh;4:imf.26j.4s0.1g3.1g3.1g3.11k.10g.10h.10g.kc;4:itu.26k.4sm.1g3.1g3.1g3.13l.10g.10h.10g.n6;4:j19.26m.4t6.1g3.1g3.1g3.15m.10h.10g.10h.q1;4:j8o.26n.4ts.1g3.1g3.1g3.17n.10h.10g.10h.sv;4:jg3.26p.4uc.1g3.1g3.1g3.19p.10h.10g.10h.vq;4:jni.26q.4uy.1g3.1g3.1g3.1bq.10h.10g.10h.yk;4:jux.26s.4vi.1g3.1g3.1g3.1ds.10g.10h.10g.10h;4:k2c.26t.4w4.1g3.1g3.1g3.1ft.10g.10h.10g.10h;4:ka4.26u.4wp.1g3.1g3.1g3.1g3.12c.10g.10h.10g;4:khx.26w.4xa.1g3.1g3.1g3.1g3.14h.10h.10g.10h;4:kpp.26x.4xv.1g3.1g3.1g3.1g3.16m.10h.10g.10h;4:kxi.26z.4yg.1g3.1g3.1g3.1g3.18s.10g.10h.10g;4:lc8.270.4z1.1g3.1g3.1g3.1g3.1g3.129.10g.10h;4:lk1.272.4zm.1g3.1g3.1g3.1g3.1g3.14e.10h.10g;4:lrt.273.507.1g3.1g3.1g3.1g3.1g3.16k.10g.10h;4:lzm.275.50s.1g3.1g3.1g3.1g3.1g3.18p.10g.10h;4:m7e.276.51d.1g3.1g3.1g3.1g3.1g3.1au.10h.10g;4:mf7.278.51y.1g3.1g3.1g3.1g3.1g3.1d0.10g.10h;4:mmz.279.52j.1g3.1g3.1g3.1g3.1g3.1f5.10h.10g;4:mus.27b.534.1g3.1g3.1g3.1g3.1g3.1g3.11o.10h;4:n2k.27c.53p.1g3.1g3.1g3.1g3.1g3.1g3.13t.10h;4:nad.27e.54a.1g3.1g3.1g3.1g3.1g3.1g3.15z.10g;4:ni5.27f.54v.1g3.1g3.1g3.1g3.1g3.1g3.184.10h;4:npy.27h.55g.1g3.1g3.1g3.1g3.1g3.1g3.1aa.10g;4:nxq.27i.561.1g3.1g3.1g3.1g3.1g3.1g3.1cf.10h;4:o5j.27k.56m.1g3.1g3.1g3.1g3.1g3.1g3.1ek.10h;4:odb.27l.577.1g3.1g3.1g3.1g3.1g3.1g3.1g3.113;4:ol4.27n.57s.1g3.1g3.1g3.1g3.1g3.1g3.1g3.139;4:osw.27o.58d.1g3.1g3.1g3.1g3.1g3.1g3.1g3.15e;4:p0p.27q.58y.1g3.1g3.1g3.1g3.1g3.1g3.1g3.17k;4:p8h.27r.59j.1g3.1g3.1g3.1g3.1g3.1g3.1g3.19p;4:pga.27t.5a4.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1bu;4:po2.27u.5ap.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1e0;4:pvv.27w.5ba.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:q3n.27x.5bv.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:qbg.27z.5cg.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:qj8.280.5d1.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:qr1.282.5dm.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:qyt.283.5e7.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:r6m.285.5es.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:ree.286.5fd.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:rm7.288.5fy.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:rtz.289.5gj.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:s1s.28b.5h4.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:s9k.28c.5hp.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:shd.28e.5ia.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:sp5.28f.5iv.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:swy.28h.5jg.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:t4q.28i.5k1.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:tcj.28k.5km.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:tkb.28l.5l7.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:ts4.28n.5ls.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:tzw.28o.5md.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:u7p.28q.5my.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:ufh.28r.5nj.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:una.28t.5o4.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:uv2.28u.5op.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:v2v.28w.5pa.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:van.28x.5pv.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:vig.28z.5qg.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:vq8.290.5r1.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:vy1.292.5rm.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:w5t.293.5s7.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:wdm.295.5ss.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:wle.296.5td.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:wt7.298.5ty.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:x0z.299.5uj.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:x8s.29b.5v4.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:xgk.29c.5vp.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:xod.29e.5wa.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:xw5.29f.5wv.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:y3y.29h.5xg.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:ybq.29i.5y1.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:yjj.29k.5ym.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:yrb.29l.5z7.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:10am.29m.5be.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:10pg.29o.5bw.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:10xp.2a3.5ce.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:11aa.2eu.5cw.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:11mw.2jm.5de.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:11zi.2oe.5dw.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:12c3.2t5.5ee.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:12op.2xx.5ew.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:131a.32o.5fe.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:13dw.37g.5fw.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:13qi.3c8.5ge.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:1433.3gz.5gw.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:14fp.3lr.5he.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:14sa.3nh.5kx.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:154w.3nk.5q4.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:15hi.3nm.5vc.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:15u3.3no.60j.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:166p.3nr.65q.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:16ja.3nt.6ax.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:16vw.3nw.6g4.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:178i.3ny.6lc.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:17l3.3o0.6qj.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:17xp.3o3.6vq.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:18aa.3o5.70x.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:18mw.3o8.764.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:18zi.3oa.7bc.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:19c3.3oc.7gj.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:19op.3of.7lq.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:1a1a.3oh.7qx.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:1adw.3ok.7w4.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:1aqi.3om.81c.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:1b33.3oo.86j.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:1bfp.3or.8bq.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:1bsa.3ot.8gx.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:1c4w.3ow.8m4.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:1chi.3oy.8rc.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:1cu3.3p0.8wj.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:1d6p.3p3.91q.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:1dja.3p5.96x.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:1dvw.3p8.9c4.1g3.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:1e8i.3pa.9e8.1j7.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:1el3.3pc.9f1.1nl.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:1exp.3pf.9fu.1rz.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:1faa.3ph.9gm.1we.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:1fmw.3pk.9hf.20s.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:1fzi.3pm.9i8.257.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:1gc3.3po.9j1.29l.1g3.1g3.1g3.1g3.1g3.1g3.1g3;4:1gop.3pr.9ju.2bc.1iq.1g3.1g3.1g3.1g3.1g3.1g3;4:1h1a.3pt.9km.2bc.1n5.1g3.1g3.1g3.1g3.1g3.1g3;4:1hdw.3pw.9lf.2bc.1rj.1g3.1g3.1g3.1g3.1g3.1g3;4:1hqi.3py.9m8.2bc.1vy.1g3.1g3.1g3.1g3.1g3.1g3;4:1i33.3q0.9n1.2bc.20c.1g3.1g3.1g3.1g3.1g3.1g3;4:1ifp.3q3.9nu.2bc.24q.1g3.1g3.1g3.1g3.1g3.1g3;4:1isa.3q5.9om.2bc.295.1g3.1g3.1g3.1g3.1g3.1g3;4:1j4w.3q8.9pf.2bc.2bc.1ia.1g3.1g3.1g3.1g3.1g3;4:1jhi.3qa.9q8.2bc.2bc.1mp.1g3.1g3.1g3.1g3.1g3;4:1ju3.3qc.9r1.2bc.2bc.1r3.1g3.1g3.1g3.1g3.1g3;4:1k6p.3qf.9ru.2bc.2bc.1vh.1g3.1g3.1g3.1g3.1g3;4:1kja.3qh.9sm.2bc.2bc.1zw.1g3.1g3.1g3.1g3.1g3;4:1kvw.3qk.9tf.2bc.2bc.24a.1g3.1g3.1g3.1g3.1g3;4:1l8i.3qm.9u8.2bc.2bc.28p.1g3.1g3.1g3.1g3.1g3;4:1ll3.3qo.9v1.2bc.2bc.2bc.1hu.1g3.1g3.1g3.1g3;4:1lxp.3qr.9vu.2bc.2bc.2bc.1m8.1g3.1g3.1g3.1g3;4:1maa.3qt.9wm.2bc.2bc.2bc.1qn.1g3.1g3.1g3.1g3;4:1mmw.3qw.9xf.2bc.2bc.2bc.1v1.1g3.1g3.1g3.1g3;4:1mzi.3qy.9y8.2bc.2bc.2bc.1zg.1g3.1g3.1g3.1g3;4:1nc3.3r0.9z1.2bc.2bc.2bc.23u.1g3.1g3.1g3.1g3;4:1nop.3r3.9zu.2bc.2bc.2bc.288.1g3.1g3.1g3.1g3;4:1o1a.3r5.a0m.2bc.2bc.2bc.2bc.1he.1g3.1g3.1g3;4:1odw.3r8.a1f.2bc.2bc.2bc.2bc.1ls.1g3.1g3.1g3;4:1oqi.3ra.a28.2bc.2bc.2bc.2bc.1q7.1g3.1g3.1g3;4:1p33.3rc.a31.2bc.2bc.2bc.2bc.1ul.1g3.1g3.1g3;4:1pfp.3rf.a3u.2bc.2bc.2bc.2bc.1yz.1g3.1g3.1g3;4:1psa.3rh.a4m.2bc.2bc.2bc.2bc.23e.1g3.1g3.1g3;4:1q4w.3rk.a5f.2bc.2bc.2bc.2bc.27s.1g3.1g3.1g3;4:1qhi.3rm.a68.2bc.2bc.2bc.2bc.2bc.1gy.1g3.1g3;4:1qu3.3ro.a71.2bc.2bc.2bc.2bc.2bc.1lc.1g3.1g3;4:1r6p.3rr.a7u.2bc.2bc.2bc.2bc.2bc.1pq.1g3.1g3;4:1rja.3rt.a8m.2bc.2bc.2bc.2bc.2bc.1u5.1g3.1g3;4:1rvw.3rw.a9f.2bc.2bc.2bc.2bc.2bc.1yj.1g3.1g3;4:1s8i.3ry.aa8.2bc.2bc.2bc.2bc.2bc.22y.1g3.1g3;4:1sl3.3s0.ab1.2bc.2bc.2bc.2bc.2bc.27c.1g3.1g3;4:1sxp.3s3.abu.2bc.2bc.2bc.2bc.2bc.2bc.1gh.1g3;4:1taa.3s5.acm.2bc.2bc.2bc.2bc.2bc.2bc.1kw.1g3;4:1tmw.3s8.adf.2bc.2bc.2bc.2bc.2bc.2bc.1pa.1g3;4:1tzi.3sa.ae8.2bc.2bc.2bc.2bc.2bc.2bc.1tp.1g3;4:1uc3.3sc.af1.2bc.2bc.2bc.2bc.2bc.2bc.1y3.1g3;4:1uop.3sf.afu.2bc.2bc.2bc.2bc.2bc.2bc.22h.1g3;4:1v1a.3sh.agm.2bc.2bc.2bc.2bc.2bc.2bc.26w.1g3;4:1vdw.3sk.ahf.2bc.2bc.2bc.2bc.2bc.2bc.2ba.1g3;4:1vqi.3sm.ai8.2bc.2bc.2bc.2bc.2bc.2bc.2bc.1kg;4:1w33.3so.aj1.2bc.2bc.2bc.2bc.2bc.2bc.2bc.1ou;4:1wfp.3sr.aju.2bc.2bc.2bc.2bc.2bc.2bc.2bc.1t8;4:1wsa.3st.akm.2bc.2bc.2bc.2bc.2bc.2bc.2bc.1xn;4:1x4w.3sw.alf.2bc.2bc.2bc.2bc.2bc.2bc.2bc.221;4:1xhi.3sy.am8.2bc.2bc.2bc.2bc.2bc.2bc.2bc.26g;4:1xu3.3t0.an1.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2au;4:1y6p.3t3.anu.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:1yja.3t5.aom.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:1yvw.3t8.apf.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:1z8i.3ta.aq8.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:1zl3.3tc.ar1.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:1zxp.3tf.aru.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:20aa.3th.asm.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:20mw.3tk.atf.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:20zi.3tm.au8.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:21c3.3to.av1.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:21op.3tr.avu.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:221a.3tt.awm.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:22dw.3tw.axf.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:22qi.3ty.ay8.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2333.3u0.az1.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:23fp.3u3.azu.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:23sa.3u5.b0m.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:244w.3u8.b1f.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:24hi.3ua.b28.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:24u3.3uc.b31.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:256p.3uf.b3u.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:25ja.3uh.b4m.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:25vw.3uk.b5f.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:268i.3um.b68.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:26l3.3uo.b71.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:26xp.3ur.b7u.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:27aa.3ut.b8m.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:27mw.3uw.b9f.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:27zu.3uy.ba8.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:28cu.3v1.bb1.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:28pu.3v3.bbu.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:292u.3v6.bcm.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:29fu.3v8.bdf.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:29su.3va.be8.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2a5u.3vd.bf1.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2aiu.3vf.bfu.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2avu.3vi.bgm.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2b8u.3vk.bhf.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2blu.3vm.bi8.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2byu.3vp.bj1.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2cbu.3vr.bju.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2cou.3vu.bkm.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2d1u.3vw.blf.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2deu.3vy.bm8.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2dru.3w1.bn1.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2e4u.3w3.bnu.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2ehu.3w6.bom.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2euu.3w8.bpf.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2f7u.3wa.bq8.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2fku.3wd.br1.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2fxu.3wf.bru.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2gau.3wi.bsm.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2gnu.3wk.btf.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2h0u.3wm.bu8.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2hdu.3wp.bv1.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2hqu.3wr.bvu.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2i3u.3wu.bwm.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2igu.3ww.bxf.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2itu.3wy.by8.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2j6u.3x1.bz1.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2jju.3x3.bzu.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2jwu.3x6.c0m.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2k9u.3x8.c1f.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2kmu.3xa.c28.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2kzu.3xd.c31.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2lcu.3xf.c3u.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2lpu.3xi.c4m.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2m2u.3xk.c5f.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2mfu.3xm.c68.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2msu.3xp.c71.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2n5u.3xr.c7u.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2niu.3xu.c8m.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2o1c.43e.c9f.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2okb.49f.ca8.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2p39.4fg.cb1.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2pm8.4lh.cbu.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2q56.4ri.ccm.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2qo5.4xj.cdf.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2r73.53j.ce8.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2rq2.59l.cf1.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2s90.5fl.cfu.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2srz.5ln.cgm.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2tax.5rn.chf.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2ttw.5s0.cnw.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2ucu.5s3.cun.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2uvt.5s7.d1d.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2ver.5sa.d83.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2vxq.5se.det.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2wgo.5sh.dlj.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2wzn.5sl.dsa.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2xil.5so.dz0.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2y1k.5ss.e5q.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2yki.5sv.ecg.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2z3h.5sz.ej6.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:2zmf.5t2.epx.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:305e.5t6.ewn.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:30oc.5t9.f3d.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:317b.5td.fa3.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:31q9.5tg.fgt.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:3298.5tk.fnk.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:32s6.5tn.fua.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:33b5.5tr.g10.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:33u3.5tu.g7q.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:34d2.5ty.geg.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:34w0.5u1.gl7.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:35ez.5u5.grx.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:35xx.5u8.gyn.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:36gw.5uc.h5d.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:36zu.5uf.hc3.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:37it.5uj.hiu.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc;4:381r.5um.hpk.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc|38b8.5un.hsx.2bc.2bc.2bc.2bc.2bc.2bc.2bc.2bc";
+
+const T=(function(){
+  const [st,body,last]=TBL.split('|');
+  let k=+st; const rows=[];
+  for(const p of body.split(';')){
+    const i=p.indexOf(':'), w=+p.slice(0,i);
+    const n=p.slice(i+1).split('.').map(x=>parseInt(x,36)*10);
+    const v=[n[0]];
+    for(let j=0;j<10;j++) v.push(v[j]-n[j+1]);
+    rows.push({lo:k, hi:k+w*5, v}); k+=w*5;
+  }
+  const n=last.split('.').map(x=>parseInt(x,36)*10);
+  const top=[n[0]];
+  for(let j=0;j<10;j++) top.push(top[j]-n[j+1]);
+  return {rows, top, min:+st};
+})();
+
+/* 2026년 요율 */
+const R={
+  pension:0.0475, pensionMax:6590000, pensionMin:410000,   // 국민연금 9.5%의 절반
+  health:0.03595,                                          // 건강보험 7.19%의 절반
+  careOfHealth:0.9448/7.19,                                // 장기요양 (소득 대비 0.9448%)
+  employ:0.009                                             // 고용보험 실업급여
+};
+const KID=[0,20830,45830], KID_EXTRA=33330;                // 2026년 자녀세액공제 (별표2 제3호)
+
+/* 10원 미만 절사. 부동소수점 오차로 한 칸 아래로 떨어지는 것을 막기 위해 미세 보정 */
+const f10=n=>Math.floor(n/10+1e-6)*10;
+const won=n=>n.toLocaleString('ko-KR');
+
+/* 공제대상가족 수 col(1~) 에 대한 간이세액표 조회 */
+function pick(v,fam){
+  if(fam<=11) return v[fam-1];
+  return Math.max(0, v[10]-(v[9]-v[10])*(fam-11));   // 별표2 제4호
+}
+function incomeTax(monthly,fam,kids){
+  const k=monthly/1000;                               // 천원 단위
+  let t;
+  if(k<T.min) t=0;
+  else if(k<10000){
+    let row=null;
+    let lo=0,hi=T.rows.length-1;
+    while(lo<=hi){ const m=(lo+hi)>>1; const r=T.rows[m];
+      if(k<r.lo) hi=m-1; else if(k>=r.hi) lo=m+1; else {row=r;break;} }
+    t = row ? pick(row.v,fam) : 0;
+  }else if(k===10000){
+    t=pick(T.top,fam);            // 별표2에 따로 있는 "10,000천원" 행
+  }else{
+    const base=pick(T.top,fam), e=(k-10000)*1000;      // 별표2 제6호
+    if(k<=14000)      t=base+e*0.98*0.35+25000;
+    else if(k<=28000) t=base+1397000+(k-14000)*1000*0.98*0.38;
+    else if(k<=30000) t=base+6610600+(k-28000)*1000*0.98*0.40;
+    else if(k<=45000) t=base+7394600+(k-30000)*1000*0.40;
+    else if(k<=87000) t=base+13394600+(k-45000)*1000*0.42;
+    else              t=base+31034600+(k-87000)*1000*0.45;
+    t=f10(t);
+  }
+  const n=Math.max(0,Math.min(kids,fam));
+  let cut = n===0?0 : n<=2?KID[n] : KID[2]+(n-2)*KID_EXTRA;
+  return Math.max(0, t-cut);
+}
+
+/* ---------- 입력 ---------- */
+let mode='y', div=12;
+const num=s=>{const v=String(s).replace(/[^0-9]/g,'');return v?parseInt(v,10):0;};
+function fmt(el){ const v=num(el.value); el.value=v?won(v):''; }
+
+document.querySelectorAll('#mode button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('#mode button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');
+  const prev=mode; mode=b.dataset.m;
+  if(prev!==mode){
+    const v=num($('amt').value);
+    if(mode==='m'){ $('amtLabel').textContent='월급 (세전)'; $('amtUnit').textContent='원';
+      $('amt').value=won(Math.round(v*10000/div)); }
+    else{ $('amtLabel').textContent='연봉 (세전)'; $('amtUnit').textContent='만원';
+      $('amt').value=won(Math.round(v*div/10000)); }
+    quick();
+  }
+  calc();
+}));
+document.querySelectorAll('#sev button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('#sev button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); div=+b.dataset.s; calc();
+}));
+function quick(){
+  const list = mode==='y' ? [2500,3000,3600,4000,5000,6000,8000] : [2000000,2500000,3000000,3500000,4000000,5000000];
+  $('quick').innerHTML = list.map(v=>`<button data-v="${v}">${mode==='y'?won(v)+'만':won(v/10000)+'만원'}</button>`).join('');
+  $('quick').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+    $('amt').value=won(+b.dataset.v); calc();
+  }));
+}
+['amt','tax0'].forEach(id=>$(id).addEventListener('input',()=>{fmt($(id));calc();}));
+['fam','kid'].forEach(id=>$(id).addEventListener('input',calc));
+
+/* ---------- 계산 ---------- */
+function calc(){
+  const raw=num($('amt').value);
+  const gross = mode==='y' ? Math.round(raw*10000/div) : raw;
+  const free  = Math.min(num($('tax0').value), gross);
+  const fam   = Math.max(1, Math.min(20, +$('fam').value||1));
+  const kids  = Math.max(0, Math.min(fam, +$('kid').value||0));
+  const base  = Math.max(0, gross-free);              // 과세 대상 월급여
+
+  /* 국민연금 — 기준소득월액은 1,000원 미만 절사 후 상·하한 적용 */
+  const si = Math.min(R.pensionMax, Math.max(R.pensionMin, Math.floor(base/1000)*1000));
+  /* 요율은 소수 대신 정수비로 곱해 부동소수점 오차를 없앰 */
+  const pen = base>0 ? f10(si*475/10000) : 0;      // 4.75%
+  const hea = f10(base*3595/100000);               // 3.595%
+  const car = f10(hea*9448/71900);                 // 건강보험료 대비 13.1405%
+  const emp = f10(base*9/1000);                    // 0.9%
+  const tax = incomeTax(base, fam, kids);
+  const loc = f10(tax*0.1);
+
+  const cut = pen+hea+car+emp+tax+loc;
+  const net = gross-cut;
+
+  $('net').innerHTML = won(Math.max(0,net))+'<small>원</small>';
+  $('year').textContent = gross? `연 환산 ${won(net*12)}원 · 세전 월 ${won(gross)}원 중 ${won(cut)}원(${(cut/gross*100).toFixed(1)}%) 공제` : '';
+
+  const p=v=>gross?((v/gross*100).toFixed(2)+'%'):'–';
+  $('tb').innerHTML=`
+    <tr><td>세전 월급여</td><td class="n">${won(gross)}</td><td class="n pct">100%</td></tr>
+    ${free?`<tr><td style="padding-left:14px;color:var(--ink-3)">└ 비과세 (공제 대상 아님)</td><td class="n" style="color:var(--ink-3)">${won(free)}</td><td class="n pct">${p(free)}</td></tr>`:''}
+    <tr><td>국민연금</td><td class="n">−${won(pen)}</td><td class="n pct">${p(pen)}</td></tr>
+    <tr><td>건강보험</td><td class="n">−${won(hea)}</td><td class="n pct">${p(hea)}</td></tr>
+    <tr><td>장기요양보험</td><td class="n">−${won(car)}</td><td class="n pct">${p(car)}</td></tr>
+    <tr><td>고용보험</td><td class="n">−${won(emp)}</td><td class="n pct">${p(emp)}</td></tr>
+    <tr><td>소득세</td><td class="n">−${won(tax)}</td><td class="n pct">${p(tax)}</td></tr>
+    <tr><td>지방소득세</td><td class="n">−${won(loc)}</td><td class="n pct">${p(loc)}</td></tr>
+    <tr class="sum"><td>공제 합계</td><td class="n">−${won(cut)}</td><td class="n pct">${p(cut)}</td></tr>
+    <tr class="take"><td>실수령액</td><td class="n">${won(Math.max(0,net))}</td><td class="n pct">${p(net)}</td></tr>`;
+
+  const capped = base>R.pensionMax;
+  $('detail').innerHTML=`
+    <p>① 세전 월급여 <code>${won(gross)}원</code>${mode==='y'?` (연봉 ${won(raw)}만원 ÷ ${div})`:''}</p>
+    <p>② 과세 대상 <code>${won(base)}원</code> = 세전 월급여 − 비과세 ${won(free)}원</p>
+    <p>③ 국민연금 = 기준소득월액 <code>${won(si)}원</code>${capped?' <strong>(상한 659만원 적용)</strong>':''} × 4.75% = ${won(pen)}원</p>
+    <p>④ 건강보험 = ${won(base)} × 3.595% = ${won(hea)}원 · 장기요양 = 건강보험료 × 13.14% = ${won(car)}원</p>
+    <p>⑤ 고용보험 = ${won(base)} × 0.9% = ${won(emp)}원</p>
+    <p>⑥ 소득세 = 간이세액표에서 <strong>월급여 ${won(base)}원 · 부양가족 ${fam}명</strong> 칸의 값${kids?` − 8~20세 자녀 ${kids}명 공제`:''} = ${won(tax)}원</p>
+    <p>⑦ 지방소득세 = 소득세의 10% = ${won(loc)}원</p>
+    <p style="color:var(--ink-3);font-size:13px;margin-bottom:2px">보험료는 10원 미만을 버립니다. 국민연금 기준소득월액은 1,000원 미만을 버린 뒤 상한 659만원·하한 41만원을 적용합니다.</p>`;
+
+  const w=$('warn');
+  if(gross && base>0 && base/1000 < T.min){
+    w.className='msg m-warn';
+    w.innerHTML=`과세 대상 월급여가 ${won(T.min*1000)}원 미만이라 소득세가 붙지 않습니다. 간이세액표는 이 금액부터 시작합니다.`;
+  }else if(base>R.pensionMax){
+    w.className='msg m-warn';
+    w.innerHTML=`월급여가 국민연금 기준소득월액 상한(659만원)을 넘어서, 연봉이 더 올라도 국민연금 보험료는 <strong>${won(f10(R.pensionMax*R.pension))}원</strong>에서 더 늘지 않습니다.`;
+  }else w.className='hidden';
+}
+
+$('src').innerHTML='기준 · 국세청 근로소득 간이세액표(소득세법 시행령 별표2) · 2026년 국민연금 9.5%, 건강보험 7.19%, 장기요양 0.9448%, 고용보험 0.9%'
+ +'<br><strong>이 결과는 참고용 추정치입니다.</strong> 실제 급여명세서 금액은 회사의 급여 규정, 상여금 지급 방식, 비과세 항목 구성, 4대보험 취득·상실 시점 등에 따라 달라질 수 있습니다. 매달 떼는 소득세는 임시 금액이며 최종 세액은 연말정산으로 정산됩니다. 정확한 금액은 회사 담당자나 세무 전문가에게 확인하세요.';
+
+/* ---------- 연봉별 실수령액 표 (본인 1명 · 비과세 20만 · 퇴직금 별도) ---------- */
+(function(){
+  const list=[2000,2400,2800,3000,3200,3600,4000,4400,4800,5000,5500,6000,7000,8000,9000,10000];
+  $('chart').innerHTML=list.map(y=>{
+    const gross=Math.round(y*10000/12), free=Math.min(200000,gross), b=Math.max(0,gross-free);
+    const si=Math.min(R.pensionMax,Math.max(R.pensionMin,Math.floor(b/1000)*1000));
+    const pen=b>0?f10(si*475/10000):0, hea=f10(b*3595/100000);
+    const car=f10(hea*9448/71900), emp=f10(b*9/1000);
+    const tax=incomeTax(b,1,0), loc=f10(tax*0.1);
+    const cut=pen+hea+car+emp+tax+loc;
+    return `<tr data-y="${y}" style="cursor:pointer">
+      <td><strong>${won(y)}만원</strong></td>
+      <td class="n">${won(gross)}</td>
+      <td class="n">−${won(cut)}</td>
+      <td class="n" style="font-weight:700;color:var(--accent)">${won(gross-cut)}</td></tr>`;
+  }).join('');
+  $('chart').querySelectorAll('tr').forEach(tr=>tr.addEventListener('click',()=>{
+    document.querySelector('#mode button[data-m="y"]').click();
+    $('amt').value=won(+tr.dataset.y); $('tax0').value='200,000';
+    $('fam').value='1'; $('kid').value='0';
+    document.querySelector('#sev button[data-s="12"]').click();
+    document.querySelector('.result').scrollIntoView({behavior:'smooth',block:'center'});
+  }));
+})();
+
+quick(); calc();
+})();
+</script>
+</body>
+</html>
