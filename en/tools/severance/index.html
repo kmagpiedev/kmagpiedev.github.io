@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Korean Severance Pay Calculator — Retirement Allowance (퇴직금) 2026 | Kmagpie Tools</title>
+<meta name="description" content="Free Korea severance pay calculator. Enter your start and last working day to see how much severance you get, with average wage and ordinary wage compared.">
+<link rel="canonical" href="https://www.kmagpie.com/en/tools/severance/">
+<meta property="og:title" content="Korean Severance Pay Calculator — Average Wage vs Ordinary Wage">
+<meta property="og:description" content="Work out your Korean severance pay (퇴직금), including the 3/12 share of bonuses and unused annual leave pay. No sign-up, no upload.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/en/tools/severance/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  .row{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start}
+  .col{flex:1;min-width:220px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
+  input[type=date],input[type=text],input[type=number]{padding:10px 12px;border:1px solid var(--line);border-radius:9px;
+    background:var(--surface);color:var(--ink);font-size:15px;font-family:inherit;width:100%;
+    font-variant-numeric:tabular-nums}
+  input[type=text],input[type=number]{text-align:right;font-weight:600}
+  input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:12px 0 0}
+  .opt{display:flex;align-items:center;gap:9px;font-size:14.5px;cursor:pointer;margin:14px 0 0}
+  .opt input{width:17px;height:17px;accent-color:var(--accent);cursor:pointer;flex:none}
+
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14.5px}
+  th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line-soft)}
+  th{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;border-bottom:1px solid var(--line)}
+  td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  #per input{padding:7px 9px;font-size:14px}
+  #per td{padding:7px 5px}
+  #per .rng{font-size:13px;color:var(--ink-2);white-space:nowrap}
+  tr.sum td{border-top:2px solid var(--line);border-bottom:0;font-weight:700;padding-top:11px}
+
+  .result{background:var(--surface);border:1px solid var(--accent);border-radius:16px;padding:26px 24px;margin:18px 0}
+  .big{font-size:13px;color:var(--ink-2);margin:0 0 4px}
+  .money{font-size:38px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.2;color:var(--accent)}
+  .money small{font-size:18px;font-weight:700;margin-left:3px}
+  .yearly{font-size:14px;color:var(--ink-2);margin-top:6px;font-variant-numeric:tabular-nums}
+  details{margin:14px 0;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:0 16px}
+  details[open]{padding-bottom:8px}
+  summary{cursor:pointer;padding:12px 0;font-size:14.5px;font-weight:600;color:var(--ink-2)}
+  summary:hover{color:var(--accent)}
+  details .in{font-size:14px;color:var(--ink-2)}
+  details code{background:var(--line-soft);padding:1px 5px;border-radius:4px;font-size:12.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .m-ok{background:var(--good-soft);border-color:var(--good)}
+  .hidden{display:none}
+  .src{font-size:12.5px;color:var(--ink-3);margin-top:14px;padding-top:12px;border-top:1px solid var(--line-soft)}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .money{font-size:30px}
+    table{font-size:13.5px}
+    th,td{padding:8px 4px}
+    #per .rng{font-size:11.5px;white-space:normal}
+  }
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
+/*LANG:S*/
+  .langsw{font-size:13px;margin:-12px 0 20px}
+  .langsw a{color:var(--ink-3);text-decoration:none;border-bottom:1px solid var(--line)}
+  .langsw a:hover{color:var(--accent);border-color:var(--accent)}
+/*LANG:E*/
+</style>
+<!--ALT:S-->
+<link rel="alternate" hreflang="ko" href="https://www.kmagpie.com/tools/severance/">
+<link rel="alternate" hreflang="en" href="https://www.kmagpie.com/en/tools/severance/">
+<link rel="alternate" hreflang="x-default" href="https://www.kmagpie.com/tools/severance/">
+<!--ALT:E-->
+<!--HEAD:S-->
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
+<meta property="og:site_name" content="Kmagpie Tools">
+<!--HEAD:E-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/en/tools/">Kmagpie Tools</a> › Severance Pay Calculator</p>
+<!--LANG:S-->
+<p class="langsw"><a href="/tools/severance/" hreflang="ko" lang="ko">한국어로 보기</a></p>
+<!--LANG:E-->
+
+<h1>Korean Severance Pay Calculator</h1>
+<p class="sub">Enter your start date and your last working day, and the calculator <strong>works out your days of service and the correct averaging period for you.</strong> It counts 3/12 of your bonuses and annual leave pay, and if your average wage (평균임금) comes out lower than your ordinary wage (통상임금), it switches to the ordinary wage the way the law requires.</p>
+
+<div class="panel">
+  <div class="row">
+    <div class="col">
+      <label class="f">Start date</label>
+      <input type="date" id="join">
+    </div>
+    <div class="col">
+      <label class="f">Last working day</label>
+      <input type="date" id="last">
+    </div>
+  </div>
+  <p class="note">Enter the last day you actually worked, not your separation date (the day after). The averaging period for your average wage is calculated from this date.</p>
+</div>
+
+<div id="warn" class="hidden"></div>
+
+<div id="body" class="hidden">
+<div class="panel">
+  <label class="f">Pay for the 3 months before leaving</label>
+  <table id="per">
+    <thead><tr>
+      <th>Period</th><th style="width:60px" class="n">Days</th>
+      <th style="width:34%">Base pay</th><th style="width:34%">Other allowances</th>
+    </tr></thead>
+    <tbody id="perBody"></tbody>
+    <tfoot><tr class="sum"><td>Total</td><td class="n" id="sumDays">0</td><td colspan="2" class="n" id="sumPay">0 won</td></tr></tfoot>
+  </table>
+  <p class="note">Use gross figures, <strong>before</strong> tax and the four insurances. The total payable line on your payslip is what you want. Fixed allowances like meal and transport money go under other allowances. If you are not sure how your pay splits up, put the whole month's amount in the base pay box — the result comes out the same.</p>
+
+  <div class="row" style="margin-top:20px">
+    <div class="col">
+      <label class="f">Total bonuses for the year</label>
+      <input type="text" id="bonus" inputmode="numeric" value="0">
+      <p class="note">Every bonus and incentive payment you received in the <strong>12 months</strong> before you left, added together. Only 3/12 of it goes into the average wage.</p>
+    </div>
+    <div class="col">
+      <label class="f">Annual leave pay</label>
+      <input type="text" id="annual" inputmode="numeric" value="0">
+      <p class="note">Pay you received for leave that <strong>accrued the previous year</strong> and went unused. Only 3/12 of this counts too. Do not include the leave settlement paid out when you leave.</p>
+    </div>
+  </div>
+
+  <label class="opt"><input type="checkbox" id="useOrd"><span>Compare with ordinary wage (recommended)</span></label>
+  <div id="ordBox" class="hidden" style="margin-top:12px">
+    <div class="row">
+      <div class="col">
+        <label class="f">Monthly ordinary wage</label>
+        <input type="text" id="ordPay" inputmode="numeric" value="0">
+      </div>
+      <div class="col">
+        <label class="f">Contractual hours per month</label>
+        <input type="number" id="ordHours" value="209" min="1" max="400">
+      </div>
+    </div>
+    <p class="note">Your base pay plus the allowances that arrive every month at a fixed amount, such as meal money or a position allowance. On a 40-hour week, contractual monthly hours come to 209. Leave out anything that moves with performance.</p>
+  </div>
+</div>
+
+<div class="result">
+  <p class="big">Estimated severance pay (before tax)</p>
+  <div class="money" id="pay">0<small>won</small></div>
+  <div class="yearly" id="meta"></div>
+
+  <table>
+    <tbody id="tb"></tbody>
+  </table>
+
+  <details>
+    <summary>See the full calculation</summary>
+    <div class="in" id="detail"></div>
+  </details>
+
+  <p class="src" id="src"></p>
+</div>
+</div>
+
+<h2>Who gets severance pay</h2>
+<p>Article 4 of the Employee Retirement Benefit Security Act (근로자퇴직급여 보장법) sets two conditions, and you have to meet both. You need <strong>at least one year of continuous service</strong>, and your <strong>contractual hours must average 15 hours a week or more over any four-week period</strong>. Miss either one and no severance pay (퇴직금) arises.</p>
+<p>The part people usually get wrong is that <strong>workplaces with fewer than five employees owe severance pay too</strong>. Annual leave and overtime premiums do not apply at businesses that small, but severance sits in the Employee Retirement Benefit Security Act rather than the Labor Standards Act (근로기준법), so the size of the company makes no difference. Part-timers, fixed-term staff and hourly workers are all covered on the same two conditions.</p>
+
+<h2>How severance pay is calculated</h2>
+<p>The statutory floor is <strong>30 days' average wage for each year of continuous service</strong>. Written as a formula, that is:</p>
+<p><code>Severance pay = daily average wage × 30 days × (days of service ÷ 365)</code></p>
+<p>So everything hangs on <strong>what your daily average wage is taken to be</strong>. That is also where most people quietly lose money.</p>
+
+<h3>The average wage is divided by real days, not by 90</h3>
+<p>Your average wage is the total pay you received in the three months before the date you left, <strong>divided by the total number of days in that period</strong>. Total days here means calendar days, not days worked. So it is never a flat 90 — depending on which months you catch, it lands somewhere between 89 and 92. That is why someone whose period includes February ends up with a slightly different average wage from someone who leaves in the summer. This calculator reads your dates and uses the real day count.</p>
+
+<h3>Leaving out bonuses and annual leave pay costs you money</h3>
+<p>Plenty of people enter three months of salary and stop there, but bonuses and annual leave pay belong in the average wage as well. Not the full amount, though — only <strong>3/12 of it</strong>, meaning the share that corresponds to three months.</p>
+<p>For bonuses, add up everything you received in the <strong>12 months before you left</strong> and take 3/12 of that. Even if no bonus landed in your final three months, it still counts as long as it fell within the year. For annual leave, the figure is 3/12 of what you were paid for leave that <strong>accrued the previous year and went unused</strong>. The leave settlement you get on the way out is different — it only comes into being because you are leaving, so it stays out of the average wage.</p>
+
+<h3>If your average wage is lower than your ordinary wage, the ordinary wage is used</h3>
+<p>This is the safety net in Article 2(2) of the Labor Standards Act. If you took unpaid leave in your last few months, missed a lot of days, or your allowances happened to be unusually thin, your average wage comes out below normal. When that happens the <strong>ordinary wage acts as the floor</strong> and the calculation has to use it instead.</p>
+<p>It is worth turning the ordinary wage comparison on. The calculator then works out both figures, applies whichever is higher, and tells you in the results which one it used.</p>
+
+<h2>How to work out your ordinary wage</h2>
+<p>Your ordinary wage is the pay agreed for your contractual work, paid <strong>regularly and uniformly</strong>. In most cases that means your base pay plus the fixed monthly allowances such as meal money or a position allowance. Performance bonuses that move with results, and overtime pay that depends on hours actually worked, are not part of it.</p>
+<p>The hourly ordinary wage is your monthly ordinary wage divided by your <strong>contractual monthly hours</strong>. For a 40-hour week that is 209 hours. Here is where 209 comes from: an average month holds 365 ÷ 12 ÷ 7 = 4.345 weeks, and a paid week is 40 contractual hours plus 8 hours of weekly holiday allowance, so 48 × 4.345 = 208.6 hours, rounded up to 209. The 2026 minimum wage converts to 2,156,880 won a month for the same reason — 10,320 won × 209 hours.</p>
+<p>One development worth knowing about. A <strong>Supreme Court en banc decision on 19 December 2024</strong> changed how ordinary wage is judged. Regular bonuses used to fall outside the ordinary wage if they came with a condition like "paid only to people still employed on the payment date"; now such a condition no longer matters, as long as the bonus is paid regularly and uniformly. If you receive a regular bonus, it is worth checking whether your company has updated its figures. The decision applies to work performed from 19 December 2024 onwards.</p>
+
+<h2>What foreign workers in Korea should know</h2>
+<p>Severance pay is a legal entitlement, not something your employer chooses to give you. If you worked for the same employer for a year or more and averaged 15 hours a week or more, you are owed it, and your nationality and visa status make no difference — E-9, E-7, D-10, F-2, F-4, F-6, the rule is the same. The money must be paid within 14 days of your last day, unless you and your employer agree to extend that deadline.</p>
+<p>If your employer stalls or refuses, the usual route is a complaint to the regional Employment and Labor Office (고용노동부 지방고용노동관서) covering the district where you worked. The Ministry of Employment and Labor also runs a counselling line on 1350, dialled without an area code, and interpretation is available in several languages, though the hours and the languages on offer vary. It helps to have your contract, your payslips and anything that shows your start and end dates ready before you call.</p>
+<p>Two other things are worth checking. Some employers run a retirement pension (퇴직연금) scheme, either defined benefit (DB) or defined contribution (DC), instead of paying a lump sum themselves; in that case the money comes from the pension provider rather than the company, so find out which scheme you are in and who to contact. And leaving the country does not forfeit what you are owed — the entitlement survives your departure, so it is worth sorting out a bank account you can still reach from abroad. Separately from severance, if you are a national of a country that has a social security agreement with Korea or extends the same treatment to Koreans, you may be able to claim a lump-sum refund of your National Pension (국민연금) contributions when you leave, which is worth confirming directly with the National Pension Service. All of this is general information rather than legal advice, and your own contract and circumstances can change the answer.</p>
+
+<h2>Common problems</h2>
+<h3>My figure does not match what the company paid</h3>
+<p>The most common reason is that bonuses and annual leave pay were left out. The next is that no ordinary wage comparison was done. If you have entered both and the gap is still large, you can take your payslips to the company and ask for a written breakdown of how they calculated it.</p>
+<h3>I fell a few days short of a year</h3>
+<p>Under a year of continuous service means no severance pay arises. That said, a probation period counts towards continuous service, and a short break followed by a return can sometimes be treated as continuous depending on the circumstances. If you are only a few days off, it is worth asking a labour attorney or the Ministry of Employment and Labor counselling line on 1350.</p>
+<h3>I am enrolled in a DC retirement pension</h3>
+<p>Under a defined contribution (DC) plan the company pays in at least 1/12 of your annual wage each year and the final amount depends on how those contributions performed, so it will differ from what you see here. This calculator covers the <strong>lump-sum severance system</strong> and the statutory minimum for a defined benefit (DB) plan.</p>
+<h3>How much tax comes off</h3>
+<p>Retirement income tax runs on its own system, with a length-of-service deduction and a converted-income deduction, so it does not work like tax on your salary. The rate drops sharply the longer you stayed, so long-serving employees often pay less than they expect. This calculator shows the pre-tax amount.</p>
+
+<!--REL:S-->
+<h2>Related tools</h2>
+<div class="rel">
+  <a href="/en/tools/unemployment/"><strong>Unemployment Benefit Calculator</strong><span>Job seeker's allowance (실업급여)</span></a>
+  <a href="/en/tools/annual-leave/"><strong>Annual Leave Calculator</strong><span>Statutory paid leave (연차)</span></a>
+  <a href="/en/tools/salary/"><strong>Net Salary Calculator</strong><span>After-tax pay, 2026 rates</span></a>
+</div>
+<p class="rel-all"><a href="/en/tools/">See all 5 English tools →</a></p>
+<!--REL:E-->
+
+<footer>
+  <!--FOOTNOTE--><p>Results are estimates for reference only and carry no legal force. See the <a href="/en/disclaimer.html">disclaimer</a> for what they are based on and who to ask for a binding answer.</p>
+  <p>Kmagpie Tools · Everything is calculated in your browser. Nothing you type is sent anywhere or stored.</p>
+  <p><a href="/">Home</a> · <a href="/en/tools/">Other tools</a> · <a href="/en/disclaimer.html">Disclaimer</a> &middot; <a href="/privacy-policy.html">Privacy Policy</a> · <a href="/tools/severance/">한국어 페이지</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const won=n=>Math.round(n).toLocaleString('en-US');
+const num=s=>{const v=String(s).replace(/[^0-9]/g,'');return v?parseInt(v,10):0;};
+const D=s=>{const [y,m,d]=s.split('-').map(Number);return new Date(Date.UTC(y,m-1,d));};
+const fmtD=dt=>`${dt.getUTCFullYear()}-${String(dt.getUTCMonth()+1).padStart(2,'0')}-${String(dt.getUTCDate()).padStart(2,'0')}`;
+const days=(a,b)=>Math.round((b-a)/86400000)+1;      // both ends inclusive
+const addM=(dt,n)=>{                                  // add months (clamp to month end)
+  const y=dt.getUTCFullYear(), m=dt.getUTCMonth(), d=dt.getUTCDate();
+  const t=new Date(Date.UTC(y,m+n,1));
+  const lastDay=new Date(Date.UTC(t.getUTCFullYear(),t.getUTCMonth()+1,0)).getUTCDate();
+  return new Date(Date.UTC(t.getUTCFullYear(),t.getUTCMonth(),Math.min(d,lastDay)));
+};
+
+let periods=[];
+
+/* defaults: based on today */
+(function init(){
+  const t=new Date();
+  const last=new Date(Date.UTC(t.getFullYear(),t.getMonth(),0));      // last day of previous month
+  const join=new Date(Date.UTC(t.getFullYear()-3,t.getMonth(),1));
+  $('last').value=last.toISOString().slice(0,10);
+  $('join').value=join.toISOString().slice(0,10);
+})();
+
+/* split the averaging period at month boundaries */
+function buildPeriods(){
+  const last=D($('last').value);
+  const cause=new Date(last.getTime()+86400000);        // date of cause = day after last working day
+  const start=addM(cause,-3);                            // previous 3 months
+  const out=[];
+  let cur=start;
+  while(cur<=last){
+    const monthEnd=new Date(Date.UTC(cur.getUTCFullYear(),cur.getUTCMonth()+1,0));
+    const end=monthEnd<last?monthEnd:last;
+    out.push({s:cur,e:end,d:days(cur,end)});
+    cur=new Date(end.getTime()+86400000);
+  }
+  return out;
+}
+
+function drawPeriods(){
+  const old={};
+  periods.forEach((p,i)=>{ old[i]=[num(($('b'+i)||{}).value||0), num(($('e'+i)||{}).value||0)]; });
+  periods=buildPeriods();
+  $('perBody').innerHTML=periods.map((p,i)=>`
+    <tr>
+      <td class="rng">${fmtD(p.s)} ~ ${fmtD(p.e)}</td>
+      <td class="n">${p.d}</td>
+      <td><input type="text" id="b${i}" inputmode="numeric" value="${old[i]?won(old[i][0]):'0'}"></td>
+      <td><input type="text" id="e${i}" inputmode="numeric" value="${old[i]?won(old[i][1]):'0'}"></td>
+    </tr>`).join('');
+  periods.forEach((p,i)=>{
+    ['b'+i,'e'+i].forEach(id=>$(id).addEventListener('input',()=>{
+      const el=$(id); const v=num(el.value); el.value=v?won(v):''; calc();
+    }));
+  });
+}
+
+function calc(){
+  const w=$('warn');
+  const join=$('join').value, last=$('last').value;
+  if(!join||!last){ $('body').classList.add('hidden'); return; }
+  const jd=D(join), ld=D(last);
+  if(ld<=jd){ w.className='msg m-bad'; w.textContent='Your last working day falls before your start date.'; $('body').classList.add('hidden'); return; }
+
+  const total=days(jd,ld);                     // days of service
+  if(total<365){
+    w.className='msg m-bad';
+    w.innerHTML=`Your service comes to <strong>${won(total)} days</strong>, short of one year (365 days). Under the Employee Retirement Benefit Security Act, <strong>no severance pay arises.</strong> Do check your start date again, though — a probation period counts towards continuous service.`;
+    $('body').classList.add('hidden'); return;
+  }
+  $('body').classList.remove('hidden');
+
+  const sumDays=periods.reduce((a,p)=>a+p.d,0);
+  let sumPay=0;
+  periods.forEach((p,i)=>{ sumPay+=num(($('b'+i)||{}).value||0)+num(($('e'+i)||{}).value||0); });
+  $('sumDays').textContent=won(sumDays);
+  $('sumPay').textContent=won(sumPay)+' won';
+
+  const bonus=num($('bonus').value), annual=num($('annual').value);
+  const bonus3=bonus*3/12, annual3=annual*3/12;
+  const wageTotal=sumPay+bonus3+annual3;
+  const avg = sumDays? wageTotal/sumDays : 0;
+
+  const useOrd=$('useOrd').checked;
+  const ordMonth=num($('ordPay').value), ordHours=Math.max(1,+$('ordHours').value||209);
+  const ordHour = useOrd? ordMonth/ordHours : 0;
+  const ordDay  = useOrd? ordHour*8 : 0;
+
+  const applied=Math.max(avg, ordDay);
+  const usedOrd = useOrd && ordDay>avg;
+  const pay=applied*30*(total/365);
+
+  $('pay').innerHTML=won(pay)+'<small>won</small>';
+  const y=Math.floor(total/365), rest=total-y*365;
+  $('meta').textContent=`${won(total)} days of service (about ${y} yr ${Math.floor(rest/30)} mo) · averaging period ${sumDays} days`;
+
+  $('tb').innerHTML=`
+    <tr><td>Total pay over 3 months</td><td class="n">${won(sumPay)} won</td></tr>
+    ${bonus?`<tr><td>3/12 of ${won(bonus)} won in annual bonuses</td><td class="n">+${won(bonus3)} won</td></tr>`:''}
+    ${annual?`<tr><td>3/12 of ${won(annual)} won in annual leave pay</td><td class="n">+${won(annual3)} won</td></tr>`:''}
+    <tr class="sum"><td>Total wages for the average wage</td><td class="n">${won(wageTotal)} won</td></tr>
+    <tr><td>Daily average wage (÷ ${sumDays} days)</td><td class="n"${usedOrd?' style="color:var(--ink-3)"':''}>${won(avg)} won</td></tr>
+    ${useOrd?`<tr><td>Daily ordinary wage (${won(ordMonth)} ÷ ${ordHours}h × 8h)</td><td class="n"${usedOrd?' style="font-weight:700"':' style="color:var(--ink-3)"'}>${won(ordDay)} won</td></tr>`:''}
+    <tr class="sum"><td>Daily wage applied${usedOrd?' <span style="font-weight:400;color:var(--accent)">— ordinary wage used</span>':''}</td><td class="n">${won(applied)} won</td></tr>`;
+
+  $('detail').innerHTML=`
+    <p>① Days of service = ${fmtD(ld)} − ${fmtD(jd)} + 1 = <code>${won(total)} days</code></p>
+    <p>② Averaging period = the 3 months before the date of cause (${fmtD(new Date(ld.getTime()+86400000))}) = <code>${sumDays} days</code><br>
+       <span style="color:var(--ink-3);font-size:13px">Not a fixed 90 days but the real calendar count, which ranges from 89 to 92.</span></p>
+    <p>③ Total wages = ${won(sumPay)} ${bonus?`+ ${won(bonus)}×3/12`:''} ${annual?`+ ${won(annual)}×3/12`:''} = <code>${won(wageTotal)} won</code></p>
+    <p>④ Daily average wage = ${won(wageTotal)} ÷ ${sumDays} = <code>${won(avg)} won</code></p>
+    ${useOrd?`<p>⑤ Daily ordinary wage = ${won(ordMonth)} ÷ ${ordHours} hours × 8 hours = <code>${won(ordDay)} won</code><br>
+       <span style="color:var(--ink-3);font-size:13px">Labor Standards Act art. 2(2) — if the average wage is lower than the ordinary wage, the ordinary wage is treated as the average wage. ${usedOrd?'<strong>Here the ordinary wage is higher, so the ordinary wage was applied.</strong>':'Here the average wage is higher, so the average wage was used as it stands.'}</span></p>`:''}
+    <p>⑥ Severance pay = ${won(applied)} × 30 days × (${won(total)} ÷ 365) = <code>${won(pay)} won</code></p>`;
+
+  if(!useOrd && sumPay>0){
+    w.className='msg m-warn';
+    w.innerHTML='<strong>It is worth turning on the ordinary wage comparison.</strong> If you had unpaid leave or absences shortly before leaving, or your allowances were thinner than usual, your average wage comes out low — and the law says the ordinary wage should be used in that situation.';
+  } else if(usedOrd){
+    w.className='msg m-ok';
+    w.innerHTML='Your average wage is lower than your ordinary wage, so <strong>the ordinary wage was applied</strong>. This follows Article 2(2) of the Labor Standards Act.';
+  } else w.className='hidden';
+}
+
+$('useOrd').addEventListener('change',()=>{ $('ordBox').classList.toggle('hidden',!$('useOrd').checked); calc(); });
+['join','last'].forEach(id=>$(id).addEventListener('change',()=>{ drawPeriods(); calc(); }));
+['bonus','annual','ordPay'].forEach(id=>$(id).addEventListener('input',()=>{
+  const el=$(id); const v=num(el.value); el.value=v?won(v):''; calc();
+}));
+$('ordHours').addEventListener('input',calc);
+
+$('src').innerHTML='Based on · Employee Retirement Benefit Security Act arts. 4 and 8 · Labor Standards Act art. 2 · Enforcement Decree of the Labor Standards Act arts. 2 and 6'
+ +'<br><strong>This result is an estimate for reference only.</strong> Your actual severance pay can differ depending on your company\'s employment rules, how your pay is made up, and whether any periods are excluded from the average wage calculation (probation, parental leave, treatment for a work-related injury and so on). Defined contribution (DC) retirement pensions are calculated differently. If there is a dispute, speak to a labour attorney or the Ministry of Employment and Labor counselling centre on 1350.';
+
+drawPeriods(); calc();
+})();
+</script>
+</body>
+</html>

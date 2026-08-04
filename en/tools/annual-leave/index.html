@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Korean Annual Leave Calculator — Statutory Paid Leave (연차) Days 2026 | Kmagpie Tools</title>
+<meta name="description" content="Korea annual leave calculator: enter your hire date to see how many paid vacation days (연차) you have earned under the Labor Standards Act, on both bases.">
+<link rel="canonical" href="https://www.kmagpie.com/en/tools/annual-leave/">
+<meta property="og:title" content="Korean Annual Leave Calculator — Hire-Date and Fiscal-Year Basis Side by Side">
+<meta property="og:description" content="See how many paid leave days you have earned in Korea under both accrual methods, plus your unused-leave allowance.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/en/tools/annual-leave/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  .row{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start}
+  .col{flex:1;min-width:210px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
+  input[type=date],input[type=text],input[type=number]{padding:10px 12px;border:1px solid var(--line);border-radius:9px;
+    background:var(--surface);color:var(--ink);font-size:15px;font-family:inherit;width:100%;font-variant-numeric:tabular-nums}
+  input[type=text],input[type=number]{text-align:right;font-weight:600}
+  input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:12px 0 0}
+  .opt{display:flex;align-items:center;gap:9px;font-size:14.5px;cursor:pointer;margin:14px 0 0}
+  .opt input{width:17px;height:17px;accent-color:var(--accent);cursor:pointer;flex:none}
+
+  .cmp{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+  .cmp .c{border:1px solid var(--line);border-radius:13px;padding:16px 18px;background:var(--surface)}
+  .cmp .c.win{border-color:var(--accent);background:var(--accent-soft)}
+  .cmp .c .k{font-size:12.5px;color:var(--ink-3);font-weight:600}
+  .cmp .c .v{font-size:26px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em;margin-top:2px}
+  .cmp .c.win .v{color:var(--accent)}
+  .cmp .c .d{font-size:12.5px;color:var(--ink-3);margin-top:2px}
+
+  .result{background:var(--surface);border:1px solid var(--accent);border-radius:16px;padding:26px 24px;margin:18px 0}
+  .big{font-size:13px;color:var(--ink-2);margin:0 0 4px}
+  .money{font-size:38px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.2;color:var(--accent)}
+  .money small{font-size:18px;font-weight:700;margin-left:3px}
+  .yearly{font-size:14px;color:var(--ink-2);margin-top:6px}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14.5px}
+  th,td{text-align:left;padding:8px 8px;border-bottom:1px solid var(--line-soft)}
+  th{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;border-bottom:1px solid var(--line)}
+  td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  tr.sum td{border-top:2px solid var(--line);border-bottom:0;font-weight:700;padding-top:11px}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 7px;border-radius:5px;background:var(--line-soft);color:var(--ink-3)}
+  details{margin:14px 0;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:0 16px}
+  details[open]{padding-bottom:8px}
+  summary{cursor:pointer;padding:12px 0;font-size:14.5px;font-weight:600;color:var(--ink-2)}
+  summary:hover{color:var(--accent)}
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .m-ok{background:var(--good-soft);border-color:var(--good)}
+  .hidden{display:none}
+  .src{font-size:12.5px;color:var(--ink-3);margin-top:14px;padding-top:12px;border-top:1px solid var(--line-soft)}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .money{font-size:30px}
+    .cmp{grid-template-columns:1fr}
+    table{font-size:13.5px}
+    th,td{padding:7px 4px}
+  }
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
+/*LANG:S*/
+  .langsw{font-size:13px;margin:-12px 0 20px}
+  .langsw a{color:var(--ink-3);text-decoration:none;border-bottom:1px solid var(--line)}
+  .langsw a:hover{color:var(--accent);border-color:var(--accent)}
+/*LANG:E*/
+</style>
+<!--ALT:S-->
+<link rel="alternate" hreflang="ko" href="https://www.kmagpie.com/tools/annual-leave/">
+<link rel="alternate" hreflang="en" href="https://www.kmagpie.com/en/tools/annual-leave/">
+<link rel="alternate" hreflang="x-default" href="https://www.kmagpie.com/tools/annual-leave/">
+<!--ALT:E-->
+<!--HEAD:S-->
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
+<meta property="og:site_name" content="Kmagpie Tools">
+<!--HEAD:E-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/en/tools/">Kmagpie Tools</a> › Annual Leave Calculator</p>
+<!--LANG:S-->
+<p class="langsw"><a href="/tools/annual-leave/" hreflang="ko" lang="ko">한국어로 보기</a></p>
+<!--LANG:E-->
+
+<h1>Korean Annual Leave Calculator</h1>
+<p class="sub">Enter your hire date and see exactly when your annual paid leave (연차유급휴가) accrues, year by year. It <strong>runs the hire-date basis and the fiscal-year basis at the same time</strong> and tells you which one leaves you better off. Most calculators only do one of the two, and that gap is where people lose days when they resign.</p>
+
+<div class="panel">
+  <div class="row">
+    <div class="col">
+      <label class="f">Hire date</label>
+      <input type="date" id="join">
+    </div>
+    <div class="col">
+      <label class="f">As-of date</label>
+      <input type="date" id="until">
+      <p class="note" style="margin-top:8px">Leave accrued up to this date is counted. If you are leaving the company, enter your last working day.</p>
+    </div>
+  </div>
+
+  <label class="opt"><input type="checkbox" id="useWage"><span>Also calculate my unused-leave allowance</span></label>
+  <div id="wageBox" class="hidden" style="margin-top:12px">
+    <div class="row">
+      <div class="col">
+        <label class="f">Unused days</label>
+        <input type="number" id="unused" value="5" min="0" max="60" step="0.5">
+      </div>
+      <div class="col">
+        <label class="f">Monthly ordinary wage</label>
+        <input type="text" id="ordPay" inputmode="numeric" value="3,000,000">
+      </div>
+      <div class="col">
+        <label class="f">Contractual hours per month</label>
+        <input type="number" id="ordHours" value="209" min="1" max="400">
+      </div>
+    </div>
+    <p class="note">Your ordinary wage is base pay plus the allowances you receive at a fixed amount every month. A standard 40-hour week works out to 209 hours. Unused-leave allowance (연차수당) is calculated on the <strong>ordinary wage</strong> as a rule.</p>
+  </div>
+</div>
+
+<div id="warn" class="hidden"></div>
+
+<div id="out" class="hidden">
+<div class="result">
+  <p class="big">Total leave accrued as of that date</p>
+  <div class="money" id="total">0<small>days</small></div>
+  <div class="yearly" id="meta"></div>
+
+  <div class="cmp">
+    <div class="c" id="cJoin">
+      <div class="k">Hire-date basis</div>
+      <div class="v" id="vJoin">0 days</div>
+      <div class="d">Accrues on each work anniversary</div>
+    </div>
+    <div class="c" id="cFisc">
+      <div class="k">Fiscal-year basis (1 January)</div>
+      <div class="v" id="vFisc">0 days</div>
+      <div class="d">Accrues every 1 January</div>
+    </div>
+  </div>
+
+  <div id="wageOut" class="hidden"></div>
+
+  <details open>
+    <summary>Show the year-by-year breakdown</summary>
+    <div style="display:flex;gap:18px;flex-wrap:wrap">
+      <div style="flex:1;min-width:250px">
+        <p style="font-size:13px;color:var(--ink-3);margin:6px 0">Hire-date basis</p>
+        <table><tbody id="tJoin"></tbody></table>
+      </div>
+      <div style="flex:1;min-width:250px">
+        <p style="font-size:13px;color:var(--ink-3);margin:6px 0">Fiscal-year basis</p>
+        <table><tbody id="tFisc"></tbody></table>
+      </div>
+    </div>
+  </details>
+
+  <p class="src" id="src"></p>
+</div>
+</div>
+
+<h2>How annual leave builds up</h2>
+<p>Article 60 of the Labor Standards Act sets the rules. They are simple enough, except for the first year, which trips almost everyone up.</p>
+<p><strong>Before you complete one year</strong>, you earn one day for every full month worked without absence, up to 11 days. One day a month after you start, another day at two months, and so on.</p>
+<p><strong>Once you complete a full year</strong>, 15 days appear at once. That is on condition that you were present for at least 80% of working days over those twelve months. If you fall short, you stay on the one-day-per-month track.</p>
+<p><strong>From three years of service</strong>, you gain one extra day every two years. That means 16 days in year three, 17 in year five, 18 in year seven, and so on up to a ceiling of <strong>25 days</strong>. You reach 25 days at 21 years of service, and it stops there.</p>
+<p>There is one big exception. <strong>The annual leave rules do not apply to workplaces with fewer than five employees.</strong> Weekly holiday pay and severance pay do apply below that threshold, but annual leave does not. If your company has promised leave in its own rules or in your contract, though, it has to honour that promise.</p>
+
+<h2>Hire-date basis versus fiscal-year basis</h2>
+<p>Strictly speaking, the law grants leave <strong>on each employee's own hire anniversary</strong>. That is the hire-date basis (입사일 기준). Companies with a lot of staff find dozens of different anniversary dates hard to administer, so in practice many of them <strong>reset everyone on 1 January instead</strong>. That is the fiscal-year basis (회계연도 기준), and the Ministry of Employment and Labor accepts it as long as it does not leave the employee worse off.</p>
+<p>Because your first calendar year is not a full year, the fiscal-year basis gives you a <strong>prorated</strong> amount for it.</p>
+<p><code>First 1 January = 15 days × (days employed in hire year ÷ 365)</code></p>
+<p>Say you joined on 1 July. You were employed for 184 days that year, so on the following 1 January you get 15 × 184 ÷ 365, roughly 7.6 days. The under-one-year monthly days keep accruing alongside that, which is why the first year or two looks so tangled.</p>
+
+<h2>What to check before you resign</h2>
+<p>This is the part that matters. The fiscal-year basis is only an <strong>administrative convenience</strong>; what the law guarantees is the hire-date basis. So <strong>when you leave, the two have to be compared, and if the hire-date basis gives you more, the company must make up the difference.</strong> The Ministry's administrative interpretations have been consistent on this.</p>
+<p>The biggest shortfall hits <strong>someone who joined late in the year and resigns after their work anniversary</strong> has passed. The cause is that first prorated grant. Join on 1 July and your first 1 January brings 7.6 days instead of 15, and <strong>that 7.4-day gap follows you from then on.</strong></p>
+<p>It is not a loss all year round, though. Take that July joiner again. From January through June each year the fiscal-year basis has effectively handed over a full year's leave in advance, so it is actually the better deal. Then July arrives, the work anniversary passes, the hire-date basis pulls ahead, and the difference turns into a straight loss. <strong>Half the year you are ahead and half the year you are behind — and if you happen to resign during the unfavourable stretch, that is money you do not get.</strong></p>
+<p>People who joined early in the year see a much smaller gap. A 1 February start prorates to 13.7 days, so the shortfall is about 1.3 days. Join in October or November, on the other hand, and the first prorated grant is only three or four days, which can put the gap above 11 days.</p>
+<p>That is why this calculator shows both bases next to each other. When the fiscal-year figure comes out lower, it flags a warning and tells you by how many days. You should be paid unused-leave allowance for that difference.</p>
+
+<h2>How much is the unused-leave allowance</h2>
+<p>Leave you never got to use is paid out in cash. The calculation goes like this.</p>
+<p><code>Unused-leave allowance = one day's ordinary wage × unused days</code></p>
+<p>One day's ordinary wage is your monthly ordinary wage divided by your contractual monthly hours (209 for a 40-hour week), multiplied by the 8 hours in a standard working day. Article 60 says the employer pays either the ordinary wage or the average wage, whichever the rules of employment specify, but in practice the ordinary wage is the default.</p>
+<p>Which month's wage counts is settled too. The benchmark is <strong>your ordinary wage in the last month you could still have taken the leave</strong>. If a fiscal-year-basis company settles your unused 2025 days in January 2026, the figure comes from your December 2025 ordinary wage.</p>
+
+<h2>What foreign workers in Korea should know</h2>
+<p>Annual leave under the Labor Standards Act is not tied to nationality. If you are an employee at a workplace with five or more employees, the statutory minimum applies to you the same way it applies to your Korean colleagues, whatever visa you hold. The catch is the headcount. Workplaces with fewer than five employees are exempt from the annual leave provisions altogether, and that surprises a lot of people working at small hagwons, cafés and early-stage startups. It is worth finding out how many employees your workplace actually has before you assume anything about your entitlement. Note as well that these are minimums — a contract or a company handbook can always give you more, and quite a few do.</p>
+<p>Two more things that often cause confusion. Annual leave is separate from public holidays: since 2022, public holidays have been paid days off at workplaces with five or more employees, and taking them should not reduce your annual leave balance. And unused days are not automatically converted into cash. An employer may run a formal leave-use promotion procedure (연차사용촉진), and where it follows every step correctly, the obligation to pay out unused days can be extinguished. All of this is general information rather than legal advice, and the details depend on your contract and your company's rules of employment. If your employer disputes the numbers, the Ministry of Employment and Labor runs a counselling line on 1350 (국번없이 1350), dialled without an area code from anywhere in Korea.</p>
+
+<h2>Questions that come up a lot</h2>
+<h3>My company says it ran a leave-use promotion, so it will not pay out</h3>
+<p>A leave-use promotion only cancels the employer's duty to pay <strong>if the company followed the statutory procedure exactly</strong>. Six months before the leave period expires, it has to tell each employee in writing how many days they have left and ask them to nominate dates. If the employee does not nominate any, the company must then set the dates itself and notify the employee in writing again. Being told verbally to "use your leave" does not meet the requirement.</p>
+<h3>How many days do I have if I leave right at the one-year mark</h3>
+<p>Eleven monthly days plus the 15 that appear on completing the year, so 26 in total. The Supreme Court settled this in 2021: <strong>the 15 days only arise if the employment relationship survives into the day after you complete the year.</strong> Leave on day 365 exactly and you keep 11 days; stay through day 366 and you have 26. A single day decides 15 days of leave, so check it before you fix your resignation date.</p>
+<h3>What happens to parental leave</h3>
+<p>It counts as attendance. Article 60(7) treats parental leave, maternity leave and time off for a work-related injury as days worked, so your annual leave keeps accruing normally across those periods.</p>
+
+<!--REL:S-->
+<h2>Related tools</h2>
+<div class="rel">
+  <a href="/en/tools/severance/"><strong>Severance Pay Calculator</strong><span>Retirement allowance (퇴직금)</span></a>
+  <a href="/en/tools/holiday-pay/"><strong>Weekly Holiday Allowance</strong><span>The extra paid day (주휴수당)</span></a>
+  <a href="/en/tools/salary/"><strong>Net Salary Calculator</strong><span>After-tax pay, 2026 rates</span></a>
+</div>
+<p class="rel-all"><a href="/en/tools/">See all 5 English tools →</a></p>
+<!--REL:E-->
+
+<footer>
+  <!--FOOTNOTE--><p>Results are estimates for reference only and carry no legal force. See the <a href="/en/disclaimer.html">disclaimer</a> for what they are based on and who to ask for a binding answer.</p>
+  <p>Kmagpie Tools · Everything is calculated in your browser. Nothing you type is sent anywhere or stored.</p>
+  <p><a href="/">Home</a> · <a href="/en/tools/">Other tools</a> · <a href="/en/disclaimer.html">Disclaimer</a> &middot; <a href="/privacy-policy.html">Privacy Policy</a> · <a href="/tools/annual-leave/">한국어 페이지</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const won=n=>Math.round(n).toLocaleString('en-US');
+const num=s=>{const v=String(s).replace(/[^0-9]/g,'');return v?parseInt(v,10):0;};
+const D=s=>{const [y,m,d]=s.split('-').map(Number);return new Date(Date.UTC(y,m-1,d));};
+const fmtD=dt=>`${dt.getUTCFullYear()}.${String(dt.getUTCMonth()+1).padStart(2,'0')}.${String(dt.getUTCDate()).padStart(2,'0')}`;
+const dayCount=(a,b)=>Math.round((b-a)/86400000)+1;
+function addM(dt,n){
+  const t=new Date(Date.UTC(dt.getUTCFullYear(),dt.getUTCMonth()+n,1));
+  const lastDay=new Date(Date.UTC(t.getUTCFullYear(),t.getUTCMonth()+1,0)).getUTCDate();
+  return new Date(Date.UTC(t.getUTCFullYear(),t.getUTCMonth(),Math.min(dt.getUTCDate(),lastDay)));
+}
+const addY=(dt,n)=>addM(dt,n*12);
+const r1=n=>Math.round(n*10)/10;
+
+/* Leave days for year n of service — from year 3, one extra day every two years, capped at 25 */
+const grant=n=>Math.min(25, 15+Math.floor((n-1)/2));
+
+/* Under one year: one day per full month worked without absence, up to 11 */
+function monthly(join,until){
+  const out=[], oneY=addY(join,1);
+  for(let i=1;i<=11;i++){
+    const d=addM(join,i);
+    if(d>=oneY || d>until) break;
+    out.push({date:d, days:1, label:`Month ${i}`});
+  }
+  return out;
+}
+function fullYears(a,b){
+  let n=b.getUTCFullYear()-a.getUTCFullYear();
+  if(addY(a,n)>b) n--;
+  return n;
+}
+function byJoin(join,until){
+  const ev=monthly(join,until);
+  for(let n=1;n<=60;n++){
+    const d=addY(join,n);
+    if(d>until) break;
+    ev.push({date:d, days:grant(n), label:`Year ${n}`});
+  }
+  return ev.sort((a,b)=>a.date-b.date);
+}
+function byFiscal(join,until){
+  const ev=monthly(join,until);
+  const y0=join.getUTCFullYear();
+  for(let y=y0+1;y<=until.getUTCFullYear()+1;y++){
+    const d=new Date(Date.UTC(y,0,1));
+    if(d>until) break;
+    if(y===y0+1){
+      const inYear=dayCount(join,new Date(Date.UTC(y0,11,31)));
+      ev.push({date:d, days:r1(15*inYear/365), label:`${y} (prorated, ${inYear} days employed)`});
+    }else{
+      const n=Math.max(1,fullYears(join,d));
+      ev.push({date:d, days:grant(n), label:`${y} (year ${n} of service)`});
+    }
+  }
+  return ev.sort((a,b)=>a.date-b.date);
+}
+const sum=ev=>r1(ev.reduce((a,e)=>a+e.days,0));
+const rows=ev=>ev.length? ev.map(e=>
+  `<tr><td>${fmtD(e.date)}<div style="font-size:12px;color:var(--ink-3)">${e.label}</div></td>
+   <td class="n">+${e.days} days</td></tr>`).join('')+
+  `<tr class="sum"><td>Total</td><td class="n">${sum(ev)} days</td></tr>`
+  : '<tr><td colspan="2" style="color:var(--ink-3)">No leave has accrued yet.</td></tr>';
+
+(function init(){
+  const t=new Date();
+  $('until').value=t.toISOString().slice(0,10);
+  $('join').value=new Date(Date.UTC(t.getFullYear()-2,6,1)).toISOString().slice(0,10);
+})();
+
+function calc(){
+  const w=$('warn');
+  if(!$('join').value||!$('until').value){ $('out').classList.add('hidden'); return; }
+  const join=D($('join').value), until=D($('until').value);
+  if(until<join){ w.className='msg m-bad'; w.textContent='The as-of date falls before the hire date.'; $('out').classList.add('hidden'); return; }
+  $('out').classList.remove('hidden');
+
+  const evJ=byJoin(join,until), evF=byFiscal(join,until);
+  const sJ=sum(evJ), sF=sum(evF);
+  const best=Math.max(sJ,sF);
+
+  $('total').innerHTML=best+'<small>days</small>';
+  const n=fullYears(join,until);
+  $('meta').textContent=`Hired ${fmtD(join)} · as of ${fmtD(until)} · ${n} yr ${Math.max(0,Math.round((until-addY(join,n))/86400000/30))} mo of service`;
+  $('vJoin').textContent=sJ+' days'; $('vFisc').textContent=sF+' days';
+  $('cJoin').className='c'+(sJ>=sF?' win':''); $('cFisc').className='c'+(sF>sJ?' win':'');
+  $('tJoin').innerHTML=rows(evJ); $('tFisc').innerHTML=rows(evF);
+
+  if($('useWage').checked){
+    const unused=Math.max(0,+$('unused').value||0);
+    const m=num($('ordPay').value), h=Math.max(1,+$('ordHours').value||209);
+    const dayWage=m/h*8, total=dayWage*unused;
+    $('wageOut').className='';
+    $('wageOut').innerHTML=`<table>
+      <tr><td>One day's ordinary wage (${won(m)} ÷ ${h}h × 8h)</td><td class="n">${won(dayWage)} won</td></tr>
+      <tr><td>Unused days</td><td class="n">${unused} days</td></tr>
+      <tr class="sum"><td>Unused-leave allowance</td><td class="n" style="color:var(--accent)">${won(total)} won</td></tr></table>`;
+  } else $('wageOut').className='hidden';
+
+  const diff=r1(sJ-sF);
+  if(diff>0){
+    w.className='msg m-warn';
+    w.innerHTML=`The fiscal-year basis gives you <strong>${diff} days fewer</strong> than the hire-date basis. The fiscal-year basis is only an administrative convenience, so when you leave it <strong>must not leave you worse off than the hire-date basis</strong> — the difference has to be made up. If your company settles on the fiscal-year basis alone, you should be paid unused-leave allowance for those ${diff} days.`;
+  } else if(diff<0){
+    w.className='msg m-ok';
+    w.innerHTML=`The fiscal-year basis gives you <strong>${-diff} days more</strong> than the hire-date basis. That does not leave you worse off, so you can simply take the fiscal-year figure.`;
+  } else {
+    w.className='msg m-ok';
+    w.innerHTML='Both bases give the same result.';
+  }
+}
+
+['join','until'].forEach(id=>$(id).addEventListener('change',calc));
+$('useWage').addEventListener('change',()=>{ $('wageBox').classList.toggle('hidden',!$('useWage').checked); calc(); });
+['unused','ordHours'].forEach(id=>$(id).addEventListener('input',calc));
+$('ordPay').addEventListener('input',()=>{ const v=num($('ordPay').value); $('ordPay').value=v?won(v):''; calc(); });
+
+$('src').innerHTML='Sources · Labor Standards Act Article 60 (annual paid leave) · Enforcement Decree Article 7, Table 1 (workplaces with fewer than 5 employees excluded)'
+ +'<br><strong>These results are an estimate for reference only.</strong> Your actual leave days can differ depending on your company\'s rules of employment, whether you met the 80% attendance requirement, and whether a leave-use promotion procedure was in place. How the prorated fiscal-year figure is rounded (up or to the nearest) also varies from company to company. The annual leave provisions do not apply to workplaces that regularly employ fewer than 5 people. If there is a dispute, contact the Ministry of Employment and Labor counselling centre on 1350 (no area code needed).';
+
+calc();
+})();
+</script>
+</body>
+</html>

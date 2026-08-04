@@ -155,8 +155,46 @@ def patch(slug):
     else:
         s = r
 
+    s = patch_footer(s, 'ko', slug in CALC)
     open(p, 'w', encoding='utf-8', newline='').write(s)
     return len(s.encode())
+
+# 계산 결과를 내놓는 도구 — 푸터에 면책 안내 한 줄을 더 붙인다
+CALC = {'salary', 'severance', 'holiday-pay', 'annual-leave', 'unemployment',
+        'loan', 'acquisition-tax', 'broker-fee'}
+
+FOOT_NOTE = {
+ 'ko': '<p>계산 결과는 참고용 추정치이며 법적 효력이 없습니다. '
+       '정확한 금액과 문의처는 <a href="/disclaimer.html">면책조항</a>에서 확인하세요.</p>',
+ 'en': '<p>Results are estimates for reference only and carry no legal force. '
+       'See the <a href="/en/disclaimer.html">disclaimer</a> for what they are based on '
+       'and who to ask for a binding answer.</p>',
+}
+
+
+def patch_footer(s, lang, calc=False):
+    """푸터에 면책조항 링크(+계산기라면 안내 한 줄)를 넣는다. 몇 번 돌려도 결과가 같다."""
+    if lang == 'ko':
+        old = '<a href="/privacy-policy.html">개인정보처리방침</a>'
+        new = '<a href="/disclaimer.html">면책조항</a> · ' + old
+        anchor = '<footer>'
+    else:
+        old = '<a href="/privacy-policy.html">Privacy Policy</a>'
+        new = '<a href="/en/disclaimer.html">Disclaimer</a> &middot; ' + old
+        anchor = '<footer>'
+
+    if 'disclaimer' not in s.lower():
+        s = s.replace(old, new)
+
+    if calc and 'FOOTNOTE' not in s:
+        nl = '\r\n' if '\r\n' in s[:2000] else '\n'
+        i = s.find(anchor)
+        if i > 0:
+            j = i + len(anchor)
+            note = f'{nl}  <!--FOOTNOTE-->{FOOT_NOTE[lang]}'
+            s = s[:j] + note + s[j:]
+    return s
+
 
 def index_grid():
     out = []
@@ -203,11 +241,349 @@ def patch_index(path):
         s = r
 
     s = re.sub(r'도구 \d+개 전체', f'도구 {n}개 전체', s)
+
+    nl = '\r\n' if '\r\n' in s[:2000] else '\n'
+    blk = ('<!--LANG:S-->\n<p class="langsw">'
+           '<a href="/en/tools/" hreflang="en" lang="en">English version</a>'
+           '</p>\n<!--LANG:E-->').replace('\n', nl)
+    r = put(s, '<!--LANG:S-->', '<!--LANG:E-->', blk)
+    if r is None:
+        i = s.find('<p class="sub">')
+        j = s.find('</p>', i) + len('</p>')
+        s = s[:j] + nl + blk + s[j:]
+    else:
+        s = r
+    if '/*LANG:S*/' not in s:
+        k = s.find('</style>')
+        s = s[:k] + LANG_CSS.replace('\n', nl) + s[k:]
+    if 'hreflang="ko" href="https://www.kmagpie.com/tools/"' not in s:
+        i = s.find('<!--HEAD:S-->')
+        s = (s[:i]
+             + f'<link rel="alternate" hreflang="ko" href="https://www.kmagpie.com/tools/">{nl}'
+             + f'<link rel="alternate" hreflang="en" href="https://www.kmagpie.com/en/tools/">{nl}'
+             + f'<link rel="alternate" hreflang="x-default" href="https://www.kmagpie.com/tools/">{nl}'
+             + s[i:])
+
+    s = patch_footer(s, 'ko')
     open(p, 'w', encoding='utf-8', newline='').write(s)
     return len(s.encode())
+
+# ─────────────────────────────────────────────────────────────
+# 영문판 (/en/tools/) — 한국 특화 계산기만 번역해서 운영한다
+# ─────────────────────────────────────────────────────────────
+EN_ROOT = ROOT.parent / 'en' / 'tools'
+
+# slug: (아이콘, 영문 이름, 짧은 설명, 목록용 긴 설명)
+EN_TOOLS = {
+ 'salary':       ('💰','Net Salary Calculator','After-tax pay, 2026 rates',
+                  'Works out your monthly take-home pay from a gross annual salary using the official National Tax Service withholding table and 2026 rates for the four major insurances. Every deduction is itemised.'),
+ 'severance':    ('💼','Severance Pay Calculator','Retirement allowance (퇴직금)',
+                  'Enter your start and end dates and it works out the statutory severance your employer owes you. It builds the three-month average wage period automatically and compares it against ordinary wage, as the law requires.'),
+ 'unemployment': ('🧾','Unemployment Benefit Calculator',"Job seeker's allowance (실업급여)",
+                  'Estimates your daily benefit, how many days you can claim, and the total. Uses the 2026 daily cap and the minimum-wage-linked floor, and checks the basic eligibility conditions.'),
+ 'annual-leave': ('🗓️','Annual Leave Calculator','Statutory paid leave (연차)',
+                  'Enter your hire date and see how many paid leave days you have earned, year by year. Calculates both the hire-date basis and the fiscal-year basis so you can see which one your employer is using and what it costs you.'),
+ 'holiday-pay':  ('📅','Weekly Holiday Allowance','The extra paid day (주휴수당)',
+                  'Korea gives you an extra paid day each week if you work 15 hours or more. Enter your shifts and see what you are actually owed, checked against the 2026 minimum wage of 10,320 won.'),
+}
+
+EN_CATS = [
+ ('Pay and employment',
+  'Korean employment law gives you rights that may not exist back home — an extra paid day every week, statutory severance after one year, paid leave that accrues monthly. These tools apply the law and the official rate tables directly, and show you the working.',
+  ['salary','holiday-pay','severance','annual-leave','unemployment']),
+]
+
+EN_REL = {
+ 'salary':       ['severance','holiday-pay','annual-leave'],
+ 'severance':    ['unemployment','annual-leave','salary'],
+ 'unemployment': ['severance','annual-leave','salary'],
+ 'annual-leave': ['severance','holiday-pay','salary'],
+ 'holiday-pay':  ['salary','annual-leave','severance'],
+}
+
+EN_HEAD_BLOCK = """<!--HEAD:S-->
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
+<meta property="og:site_name" content="Kmagpie Tools">
+<!--HEAD:E-->"""
+
+LANG_CSS = """/*LANG:S*/
+  .langsw{font-size:13px;margin:-12px 0 20px}
+  .langsw a{color:var(--ink-3);text-decoration:none;border-bottom:1px solid var(--line)}
+  .langsw a:hover{color:var(--accent);border-color:var(--accent)}
+/*LANG:E*/
+"""
+
+ALT_RE = re.compile(r'[ \t]*<link rel="alternate" hreflang="[^"]*"[^>]*>\r?\n?')
+
+
+def alt_block(slug):
+    u = f'https://www.kmagpie.com/tools/{slug}/'
+    e = f'https://www.kmagpie.com/en/tools/{slug}/'
+    return ('<!--ALT:S-->\n'
+            f'<link rel="alternate" hreflang="ko" href="{u}">\n'
+            f'<link rel="alternate" hreflang="en" href="{e}">\n'
+            f'<link rel="alternate" hreflang="x-default" href="{u}">\n'
+            '<!--ALT:E-->')
+
+
+def lang_block(slug, lang):
+    if lang == 'ko':
+        a = f'<a href="/en/tools/{slug}/" hreflang="en" lang="en">English version</a>'
+    else:
+        a = f'<a href="/tools/{slug}/" hreflang="ko" lang="ko">한국어로 보기</a>'
+    return f'<!--LANG:S-->\n<p class="langsw">{a}</p>\n<!--LANG:E-->'
+
+
+def patch_alt(s, nl, slug):
+    """head 에 hreflang 3종을 마커로 넣는다 (마커 없는 기존 줄은 걷어낸다)"""
+    blk = alt_block(slug).replace('\n', nl)
+    r = put(s, '<!--ALT:S-->', '<!--ALT:E-->', blk)
+    if r is not None:
+        return r
+    s = ALT_RE.sub('', s)
+    i = s.find('<!--HEAD:S-->')
+    if i < 0:
+        i = s.find('<script async src="https://pagead2')
+    assert i > 0, f'{slug}: hreflang 삽입 위치를 못 찾음'
+    return s[:i] + blk + nl + s[i:]
+
+
+def patch_lang(s, nl, slug, lang):
+    """빵부스러기 바로 아래 언어 전환 링크"""
+    blk = lang_block(slug, lang).replace('\n', nl)
+    r = put(s, '<!--LANG:S-->', '<!--LANG:E-->', blk)
+    if r is not None:
+        s = r
+    else:
+        i = s.find('<p class="crumb">')
+        assert i > 0, f'{slug}: crumb 없음'
+        j = s.find('</p>', i) + len('</p>')
+        s = s[:j] + nl + blk + s[j:]
+    if '/*LANG:S*/' not in s:
+        k = s.find('</style>')
+        s = s[:k] + LANG_CSS.replace('\n', nl) + s[k:]
+    return s
+
+
+def en_block(slug):
+    n = len(EN_TOOLS)
+    cards = '\n'.join(
+        f'  <a href="/en/tools/{s}/"><strong>{EN_TOOLS[s][1]}</strong><span>{EN_TOOLS[s][2]}</span></a>'
+        for s in EN_REL[slug])
+    return (f'<!--REL:S-->\n<h2>Related tools</h2>\n<div class="rel">\n{cards}\n</div>\n'
+            f'<p class="rel-all"><a href="/en/tools/">See all {n} English tools →</a></p>\n<!--REL:E-->\n\n')
+
+
+def patch_en(slug):
+    p = EN_ROOT / slug / 'index.html'
+    s = open(p, encoding='utf-8', newline='').read()
+    nl = '\r\n' if '\r\n' in s[:2000] else '\n'
+    css = CSS.replace('\n', nl)
+    blk = en_block(slug).replace('\n', nl)
+
+    r = put(s, '/*REL:S*/', '/*REL:E*/', css.strip())
+    if r is None:
+        i = s.find('</style>')
+        assert i > 0, f'en/{slug}: </style> 없음'
+        s = s[:i] + css + s[i:]
+    else:
+        s = r
+
+    blkh = EN_HEAD_BLOCK.replace('\n', nl)
+    r = put(s, '<!--HEAD:S-->', '<!--HEAD:E-->', blkh)
+    if r is None:
+        i = s.find('<script async src="https://pagead2')
+        assert i > 0, f'en/{slug}: head 삽입 위치를 못 찾음'
+        s = s[:i] + blkh + nl + s[i:]
+    else:
+        s = r
+
+    s = patch_alt(s, nl, slug)
+    s = patch_lang(s, nl, slug, 'en')
+
+    r = put(s, '<!--REL:S-->', '<!--REL:E-->', blk.strip())
+    if r is None:
+        i = s.find('<footer>')
+        assert i > 0, f'en/{slug}: <footer> 없음'
+        s = s[:i] + blk + s[i:]
+    else:
+        s = r
+
+    s = patch_footer(s, 'en', slug in CALC)
+    open(p, 'w', encoding='utf-8', newline='').write(s)
+    return len(s.encode())
+
+
+EN_INDEX = """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kmagpie Tools — Free Korean Pay and Employment Calculators</title>
+<meta name="description" content="Free calculators for people working in Korea. Net salary after tax, severance pay, weekly holiday allowance, annual leave and unemployment benefit — using the official 2026 rates. No sign-up, nothing uploaded.">
+<link rel="canonical" href="https://www.kmagpie.com/en/tools/">
+<meta property="og:title" content="Kmagpie Tools — Korean Pay and Employment Calculators">
+<meta property="og:description" content="Net salary, severance, weekly holiday allowance, annual leave and unemployment benefit — official 2026 rates, calculated in your browser.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/en/tools/">
+<link rel="alternate" hreflang="ko" href="https://www.kmagpie.com/tools/">
+<link rel="alternate" hreflang="en" href="https://www.kmagpie.com/en/tools/">
+<link rel="alternate" hreflang="x-default" href="https://www.kmagpie.com/tools/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Pretendard","Noto Sans KR",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:30px;line-height:1.25;margin:0;letter-spacing:-.02em;font-weight:700}
+  .brand{display:flex;align-items:center;gap:14px;margin:0 0 10px}
+  .brand img{width:64px;height:64px;flex:none;display:block}
+  @media (prefers-color-scheme:dark){ .brand img.lt{display:none} }
+  @media not all and (prefers-color-scheme:dark){ .brand img.dk{display:none} }
+  .sub{color:var(--ink-2);margin:0 0 8px;font-size:15.5px}
+  .langsw{font-size:13px;margin:0 0 20px}
+  .langsw a{color:var(--ink-3);text-decoration:none;border-bottom:1px solid var(--line)}
+  .langsw a:hover{color:var(--accent);border-color:var(--accent)}
+  h2{font-size:19px;margin:44px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h2.cat{font-size:17px;margin:34px 0 4px;letter-spacing:-.01em}
+  h2.cat:first-of-type{margin-top:26px}
+  p.cat-d{font-size:13.5px;color:var(--ink-3);margin:0 0 12px;line-height:1.6}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:14px;margin:14px 0}
+  .tool{display:block;padding:18px 20px;border:1px solid var(--line);border-radius:14px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .tool:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .tool .ic{font-size:22px;display:block;margin-bottom:8px}
+  .tool .nm{font-size:16px;font-weight:700;letter-spacing:-.01em;margin-bottom:5px}
+  .tool .ds{font-size:13.5px;color:var(--ink-3);line-height:1.6}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  @media (max-width:560px){ .wrap{padding:32px 16px 70px} h1{font-size:24px} .brand img{width:52px;height:52px} }
+</style>
+<!--HEAD:S-->
+<!--HEAD:E-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> &rsaquo; Kmagpie Tools</p>
+
+<div class="brand"><img class="lt" src="/images/kmagpie-logo.png" alt="Kmagpie Tools logo, a magpie holding a wrench" width="64" height="64"><img class="dk" src="/images/kmagpie-logo-dark.png" alt="Kmagpie Tools logo, a magpie holding a wrench" width="64" height="64"><h1>Kmagpie Tools</h1></div>
+<p class="sub">Free calculators for people working in Korea. No sign-up, no uploads &mdash; everything runs inside your browser.</p>
+<p class="langsw"><a href="/tools/" hreflang="ko" lang="ko">&#54620;&#44397;&#50612;&#47196; &#48372;&#44592;</a></p>
+
+<!--CAT:S-->
+<!--CAT:E-->
+
+<h2>Why these numbers are hard to find in English</h2>
+<p>Korean payroll runs on rules that are published in Korean, updated every year, and rarely explained anywhere else. The withholding table that decides your income tax is a 588-row government document. The weekly holiday allowance has no equivalent in most countries, so nobody thinks to ask about it. Severance is a legal entitlement rather than a benefit your employer chooses to offer.</p>
+<p>These tools apply the actual rules rather than a rough approximation, and each page explains where the number came from. If your payslip disagrees with the result, that gap is worth asking your employer about.</p>
+
+<h2>Nothing leaves your browser</h2>
+<p>Every calculation happens on your own device. Your salary, your dates and your hours are never sent anywhere, never stored, and never logged. You can turn off your connection after the page loads and the tools keep working.</p>
+
+<footer>
+  <p>Kmagpie Tools &middot; All calculations run in your browser. Nothing you type is transmitted or stored.</p>
+  <p>These pages are general information, not legal or tax advice. For a binding answer, contact the relevant authority or a qualified professional.</p>
+  <p><a href="/">Home</a> &middot; <a href="/tools/">&#54620;&#44397;&#50612;</a> &middot; <a href="/privacy-policy.html">Privacy Policy</a></p>
+</footer>
+
+</div>
+</body>
+</html>
+"""
+
+
+def en_index_grid():
+    out = []
+    for title, desc, slugs in EN_CATS:
+        cards = '\n'.join(
+            f'  <a class="tool" href="/en/tools/{s}/">\n'
+            f'    <span class="ic">{EN_TOOLS[s][0]}</span>\n'
+            f'    <div class="nm">{EN_TOOLS[s][1]}</div>\n'
+            f'    <div class="ds">{EN_TOOLS[s][3]}</div>\n'
+            f'  </a>' for s in slugs)
+        out.append(f'<h2 class="cat">{title}</h2>\n<p class="cat-d">{desc}</p>\n'
+                   f'<div class="grid">\n{cards}\n</div>')
+    return '<!--CAT:S-->\n' + '\n\n'.join(out) + '\n<!--CAT:E-->'
+
+
+def patch_en_index():
+    p = EN_ROOT / 'index.html'
+    if p.exists():
+        s = open(p, encoding='utf-8', newline='').read()
+    else:
+        p.parent.mkdir(parents=True, exist_ok=True)
+        s = EN_INDEX
+    nl = '\r\n' if '\r\n' in s[:2000] else '\n'
+    s = put(s, '<!--CAT:S-->', '<!--CAT:E-->', en_index_grid().replace('\n', nl))
+    blkh = EN_HEAD_BLOCK.replace('\n', nl)
+    s = put(s, '<!--HEAD:S-->', '<!--HEAD:E-->', blkh)
+    s = patch_footer(s, 'en')
+    open(p, 'w', encoding='utf-8', newline='').write(s)
+    return len(s.encode())
+
+
+def patch_ko_lang(slug):
+    """한국어 페이지에 hreflang + 영문판 링크를 심는다"""
+    p = ROOT / slug / 'index.html'
+    s = open(p, encoding='utf-8', newline='').read()
+    nl = '\r\n' if '\r\n' in s[:2000] else '\n'
+    s = patch_alt(s, nl, slug)
+    s = patch_lang(s, nl, slug, 'ko')
+    open(p, 'w', encoding='utf-8', newline='').write(s)
+    return len(s.encode())
+
+
+# 독립 페이지 (도구가 아닌 정적 페이지)
+STANDALONE = [(ROOT.parent / 'disclaimer.html', 'ko'),
+              (ROOT.parent / 'en' / 'disclaimer.html', 'en')]
+
+
+def patch_standalone(path, lang):
+    p = pathlib.Path(path)
+    s = open(p, encoding='utf-8', newline='').read()
+    nl = '\r\n' if '\r\n' in s[:2000] else '\n'
+    blk = (HEAD_BLOCK if lang == 'ko' else EN_HEAD_BLOCK).replace('\n', nl)
+    r = put(s, '<!--HEAD:S-->', '<!--HEAD:E-->', blk)
+    if r is not None:
+        s = r
+    open(p, 'w', encoding='utf-8', newline='').write(s)
+    return len(s.encode())
+
 
 if __name__ == '__main__':
     for slug in TOOLS:
         print(f'  {slug:16} {patch(slug):>7,} bytes')
     idx = sys.argv[2] if len(sys.argv) > 2 else str(ROOT / 'index.html')
     print(f'  {"index":16} {patch_index(idx):>7,} bytes')
+
+    if EN_ROOT.is_dir():
+        print('  ── en ──')
+        for slug in EN_TOOLS:
+            print(f'  en/{slug:13} {patch_en(slug):>7,} bytes')
+            print(f'  ko/{slug:13} {patch_ko_lang(slug):>7,} bytes  (hreflang)')
+        print(f'  {"en/index":16} {patch_en_index():>7,} bytes')
+    for path, lang in STANDALONE:
+        if path.exists():
+            print(f'  {path.name+"("+lang+")":16} {patch_standalone(path, lang):>7,} bytes')

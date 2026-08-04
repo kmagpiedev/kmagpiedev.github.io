@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Korean Unemployment Benefit Calculator — Job Seeker's Allowance (실업급여) 2026 | Kmagpie Tools</title>
+<meta name="description" content="How much unemployment can I get in Korea? Work out your 2026 job seekers allowance (실업급여 english): daily rate, benefit days, total payout and who qualifies.">
+<link rel="canonical" href="https://www.kmagpie.com/en/tools/unemployment/">
+<meta property="og:title" content="Korean Unemployment Benefit Calculator 2026 — Job Seeker's Allowance">
+<meta property="og:description" content="Daily rate, prescribed benefit days and total payout in one go. Updated for the 2026 increase.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/en/tools/unemployment/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  .row{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start}
+  .col{flex:1;min-width:210px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
+  input[type=text],input[type=number]{padding:10px 12px;border:1px solid var(--line);border-radius:9px;
+    background:var(--surface);color:var(--ink);font-size:16px;font-family:inherit;width:100%;
+    text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+  input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .amt{display:flex;align-items:center;gap:8px}
+  .unit{font-size:14px;color:var(--ink-2);flex:none}
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .seg{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+  .seg button{flex:1;background:transparent;border:0;padding:9px 6px;font-size:13.5px;font-weight:600;
+    color:var(--ink-2);cursor:pointer;font-family:inherit;transition:.12s}
+  .seg button.on{background:var(--accent);color:#fff}
+  .mini{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .mini button{font-family:inherit;font-size:12.5px;padding:5px 10px;border-radius:7px;border:1px solid var(--line);
+    background:transparent;color:var(--ink-2);cursor:pointer}
+  .mini button:hover{border-color:var(--accent);color:var(--accent)}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:12px 0 0}
+
+  .result{background:var(--surface);border:1px solid var(--accent);border-radius:16px;padding:26px 24px;margin:18px 0}
+  .big{font-size:13px;color:var(--ink-2);margin:0 0 4px}
+  .money{font-size:38px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.2;color:var(--accent)}
+  .money small{font-size:18px;font-weight:700;margin-left:3px}
+  .yearly{font-size:14px;color:var(--ink-2);margin-top:6px;font-variant-numeric:tabular-nums}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px}
+  th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line-soft)}
+  th{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;border-bottom:1px solid var(--line)}
+  td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  tr.sum td{border-top:2px solid var(--line);border-bottom:0;font-weight:700;padding-top:11px}
+  tr.take td{border-bottom:0;font-weight:800;color:var(--accent);font-size:16px}
+  tr.hi td{background:var(--accent-soft);font-weight:700}
+  details{margin:14px 0;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:0 16px}
+  details[open]{padding-bottom:8px}
+  summary{cursor:pointer;padding:12px 0;font-size:14.5px;font-weight:600;color:var(--ink-2)}
+  summary:hover{color:var(--accent)}
+  details .in{font-size:14px;color:var(--ink-2)}
+  details code{background:var(--line-soft);padding:1px 5px;border-radius:4px;font-size:12.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .m-ok{background:var(--good-soft);border-color:var(--good)}
+  .hidden{display:none}
+  .src{font-size:12.5px;color:var(--ink-3);margin-top:14px;padding-top:12px;border-top:1px solid var(--line-soft)}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .money{font-size:29px}
+    table{font-size:13.5px}
+    th,td{padding:8px 4px}
+  }
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
+/*LANG:S*/
+  .langsw{font-size:13px;margin:-12px 0 20px}
+  .langsw a{color:var(--ink-3);text-decoration:none;border-bottom:1px solid var(--line)}
+  .langsw a:hover{color:var(--accent);border-color:var(--accent)}
+/*LANG:E*/
+</style>
+<!--ALT:S-->
+<link rel="alternate" hreflang="ko" href="https://www.kmagpie.com/tools/unemployment/">
+<link rel="alternate" hreflang="en" href="https://www.kmagpie.com/en/tools/unemployment/">
+<link rel="alternate" hreflang="x-default" href="https://www.kmagpie.com/tools/unemployment/">
+<!--ALT:E-->
+<!--HEAD:S-->
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
+<meta property="og:site_name" content="Kmagpie Tools">
+<!--HEAD:E-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/en/tools/">Kmagpie Tools</a> › Unemployment Benefit Calculator</p>
+<!--LANG:S-->
+<p class="langsw"><a href="/tools/unemployment/" hreflang="ko" lang="ko">한국어로 보기</a></p>
+<!--LANG:E-->
+
+<h1>Korean Unemployment Benefit Calculator</h1>
+<p class="sub"><strong>Updated for 2026.</strong> The daily cap has gone up from 66,000 won to 68,100 won, the first rise in seven years. Enter a few details and this works out what you get per day, for how many days, and how much in total.</p>
+
+<div class="panel">
+  <div class="row">
+    <div class="col">
+      <label class="f">Average monthly pay before leaving (gross)</label>
+      <div class="amt">
+        <input type="text" id="pay" inputmode="numeric" value="3,000,000">
+        <span class="unit">won</span>
+      </div>
+      <div class="mini">
+        <button data-v="2500000">2.5M</button>
+        <button data-v="3000000">3M</button>
+        <button data-v="4000000">4M</button>
+        <button data-v="6000000">6M</button>
+      </div>
+      <p class="note">The monthly average of what you were paid over your last three months. Use the figure before tax and the four major insurances come out, and include bonuses.</p>
+    </div>
+    <div class="col">
+      <label class="f">Employment insurance (고용보험) coverage</label>
+      <div class="g2">
+        <div class="amt"><input type="number" id="yy" value="3" min="0" max="50"><span class="unit">yrs</span></div>
+        <div class="amt"><input type="number" id="mm" value="0" min="0" max="11"><span class="unit">mos</span></div>
+      </div>
+      <p class="note">Not just your current job — <strong>time with previous employers counts too</strong>. But if you have drawn unemployment benefit before, everything up to that point is wiped. You can look up your exact record on the employment insurance website.</p>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top:20px">
+    <div class="col">
+      <label class="f">Age · disability</label>
+      <div class="seg" id="age">
+        <button data-a="0" class="on">Under 50</button>
+        <button data-a="1">50 or over, or disabled</button>
+      </div>
+      <p class="note">Your age on your last day of work. If you are 50 or over, or registered as disabled, you get up to 30 extra days.</p>
+    </div>
+    <div class="col">
+      <label class="f">Contracted hours per day</label>
+      <div class="amt">
+        <input type="number" id="hours" value="8" min="1" max="8" step="0.5">
+        <span class="unit">hrs</span>
+      </div>
+      <p class="note">Part-time workers on fewer than eight hours a day get a proportionally lower floor. Most people should leave this at 8.</p>
+    </div>
+  </div>
+</div>
+
+<div id="warn" class="hidden"></div>
+
+<div class="result">
+  <p class="big">Estimated total payout</p>
+  <div class="money" id="total">0<small>won</small></div>
+  <div class="yearly" id="meta"></div>
+
+  <table>
+    <tbody id="tb"></tbody>
+  </table>
+
+  <details>
+    <summary>See the full calculation</summary>
+    <div class="in" id="detail"></div>
+  </details>
+
+  <p class="src" id="src"></p>
+</div>
+
+<h2>The cap rose in 2026 for the first time in seven years</h2>
+<p>Job seeker's allowance (구직급여) has a daily cap and a daily floor. <strong>The floor is tied to the minimum wage</strong>: 80% of it, multiplied by eight hours. The 2026 minimum wage is 10,320 won an hour, so the floor works out at 10,320 × 80% × 8 = <strong>66,048 won</strong>.</p>
+<p>The cap, though, had been <strong>frozen at 66,000 won since 2019.</strong> The minimum wage kept climbing while the cap stood still, and by 2026 the floor was about to overtake the cap altogether. So the government lifted the cap to <strong>68,100 won</strong>.</p>
+<p>Here is the thing worth knowing. The gap between the cap and the floor is <strong>only 2,052 won a day.</strong> The benefit is meant to be 60% of your average wage before leaving, but that band is so narrow that almost everyone lands on one end or the other.</p>
+<p>In practice, if your <strong>average monthly pay was around 3.34 million won or less, you get the floor</strong>, and if it was <strong>around 3.45 million won or more, you get the cap</strong>. Only people in the roughly 100,000-won window between the two actually receive 60% of their wage. That is why someone earning 50 million won a year and someone earning 100 million both get the same 68,100 won a day, or about 2.04 million won a month.</p>
+
+<h2>How long the payments last</h2>
+<p>This is your prescribed benefit days (소정급여일수), and it depends on <strong>how long you were covered by employment insurance and how old you are</strong>. Your salary makes no difference to it.</p>
+<table>
+  <thead><tr><th>Employment insurance coverage</th><th class="n">Under 50</th><th class="n">50+ or disabled</th></tr></thead>
+  <tbody>
+    <tr><td>Under 1 year</td><td class="n">120 days</td><td class="n">120 days</td></tr>
+    <tr><td>1 to 3 years</td><td class="n">150 days</td><td class="n">180 days</td></tr>
+    <tr><td>3 to 5 years</td><td class="n">180 days</td><td class="n">210 days</td></tr>
+    <tr><td>5 to 10 years</td><td class="n">210 days</td><td class="n">240 days</td></tr>
+    <tr><td>10 years or more</td><td class="n">240 days</td><td class="n">270 days</td></tr>
+  </tbody>
+</table>
+<p>Coverage <strong>adds up across previous employers</strong>. Even if you changed jobs often, every stretch where you were enrolled in employment insurance counts. The one exception is that if you claimed unemployment benefit somewhere along the way, everything before that claim resets to zero.</p>
+
+<h2>Who qualifies</h2>
+<p>You need to meet all three of these.</p>
+<p>First, you must have <strong>at least 180 insured days in the 18 months before you left</strong>. Those 180 days are not six months on the calendar — they are <strong>the total number of days you were actually paid for</strong>. On a five-day week you also get credit for the weekly paid holiday, so about six days a week count, which means you usually need seven to eight months on the job to reach 180. This is why people who work exactly six months and then apply get turned down.</p>
+<p>Second, <strong>the separation must have been involuntary</strong>: you were asked to leave, your contract ran out, the business closed, or you were made redundant. If you quit of your own accord, as a rule you get nothing.</p>
+<p>Third, you must be <strong>able and willing to work but currently without a job</strong>, and you have to genuinely look for work while you are claiming.</p>
+
+<h3>Quitting does not always rule you out</h3>
+<p>If you resigned for a reason the system accepts as justified, you can still claim. That covers unpaid or late wages, pay below the minimum wage, unlawful treatment by your employer, workplace harassment, a commute that grew to three hours or more round trip, and needing to care for yourself or a family member when your employer refused to give you leave, among others. In these situations it matters enormously that you <strong>keep evidence</strong> — pay slips, emails giving you notice, records of your hours.</p>
+<p>The decisive document is the <strong>separation reason code on the 이직확인서</strong>, the leaving confirmation your employer files with employment insurance. If it does not match what actually happened, you can ask for it to be corrected.</p>
+
+<h2>How to apply</h2>
+<p>When you leave, your employer reports the end of your employment insurance coverage and files the leaving confirmation. Once that has gone through, you <strong>register as a job seeker on Work-Net</strong>, take the <strong>online orientation for claimants</strong> on the employment insurance website, then visit the employment center (고용센터) for your area to apply to have your eligibility recognised.</p>
+<p>Do not let the deadline slip. <strong>Twelve months after the day you left, the claim closes, even if you have days left unpaid.</strong> Unused prescribed benefit days simply disappear. Apply as soon as you can after leaving.</p>
+<p>Once you are approved, the first seven days are a waiting period with no payment. After that, money arrives as you check in for unemployment recognition, usually every one to four weeks.</p>
+
+<h2>What foreign workers should know</h2>
+<p>Eligibility here has nothing to do with your nationality. It rests entirely on whether you paid into employment insurance (고용보험). The catch is that <strong>whether enrolment is mandatory depends on your visa</strong>. For some statuses it is compulsory, for others it is optional or granted only on a reciprocity basis with your home country, which means plenty of foreign residents in Korea were never enrolled and only discover it when they try to claim. Check an old pay slip for a 고용보험 deduction, or confirm your enrolment on the employment insurance website or in person at a 고용센터. Do this before you count on the money.</p>
+<p>The rest works the same as it does for Korean nationals. Resigning generally disqualifies you, because this benefit exists for people who lost work involuntarily — though a contract simply reaching its end date does count as involuntary, which is how a lot of foreign workers on fixed-term contracts qualify. You file at your local employment center, register as a job seeker, and report your job-search activity every one to four weeks. First-time applicants have to complete an online orientation before the visit. Bring your ARC and be ready for the process to run mostly in Korean; some centers can help in other languages, but do not assume it.</p>
+<p>One more thing that is easy to miss. If your visa is sponsored by your employer, losing the job can affect your right to stay in Korea, and that is a separate question from the benefit. The immigration side and the employment-insurance side are handled by different offices and neither one resolves the other, so you need to deal with both, usually within a short window. For visa questions, call the Immigration Contact Center on <strong>1345</strong>, which offers help in several languages. For labor and unemployment benefit questions, call <strong>1350</strong>. This page is general information rather than legal advice, and individual cases turn on details, so confirm anything important with them directly.</p>
+
+<h2>Common questions</h2>
+<h3>The number here does not match what I actually received</h3>
+<p>This calculator covers the standard case. Your real average daily wage (평균임금) is the total pay from your last three months divided by the number of days in that period, and the way bonuses and unused-leave pay feed into it gets fiddly. That said, as explained above, most people land on either the cap or the floor, so even a fairly different average wage often produces the same result.</p>
+<h3>Can I work part-time while claiming?</h3>
+<p>Yes, but you must <strong>declare it on your unemployment recognition date</strong>. Earning money without declaring it counts as fraudulent receipt: you repay what you took, face an additional penalty on top, and can be prosecuted. If what you earn in a day passes a set threshold, that day is treated as employment and is not paid.</p>
+<h3>What is the early reemployment allowance?</h3>
+<p>If you find a new job with more than half of your prescribed benefit days still unused, and you stay in that job for at least 12 months, you can claim <strong>half of the remaining days</strong> as a bonus. So if you had 210 days and started work with 120 left, you get another 60 days' worth. The point is to make finding work quickly no worse for you than riding out the full claim.</p>
+<h3>Does severance pay or unused-leave pay reduce my benefit?</h3>
+<p>No. Severance and unused-leave pay are compensation for work you already did, and they sit entirely apart from unemployment benefit. They can, however, feed into the average wage calculation. Have a look at the <a href="/en/tools/severance/">severance pay calculator</a> and the <a href="/en/tools/annual-leave/">annual leave calculator</a> for those.</p>
+
+<!--REL:S-->
+<h2>Related tools</h2>
+<div class="rel">
+  <a href="/en/tools/severance/"><strong>Severance Pay Calculator</strong><span>Retirement allowance (퇴직금)</span></a>
+  <a href="/en/tools/annual-leave/"><strong>Annual Leave Calculator</strong><span>Statutory paid leave (연차)</span></a>
+  <a href="/en/tools/salary/"><strong>Net Salary Calculator</strong><span>After-tax pay, 2026 rates</span></a>
+</div>
+<p class="rel-all"><a href="/en/tools/">See all 5 English tools →</a></p>
+<!--REL:E-->
+
+<footer>
+  <!--FOOTNOTE--><p>Results are estimates for reference only and carry no legal force. See the <a href="/en/disclaimer.html">disclaimer</a> for what they are based on and who to ask for a binding answer.</p>
+  <p>Kmagpie Tools · Everything is calculated in your browser. Nothing you type is sent anywhere or stored.</p>
+  <p><a href="/">Home</a> · <a href="/en/tools/">Other tools</a> · <a href="/en/disclaimer.html">Disclaimer</a> &middot; <a href="/privacy-policy.html">Privacy Policy</a> · <a href="/tools/unemployment/">한국어 페이지</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const won=n=>Math.round(n).toLocaleString('en-US');
+const num=s=>{const v=String(s).replace(/[^0-9]/g,'');return v?parseInt(v,10):0;};
+
+/* 2026 figures */
+const CAP=68100;                 // daily cap
+const MINWAGE=10320;             // 2026 minimum wage
+const floorAt=h=>Math.round(MINWAGE*0.8*Math.min(8,Math.max(0,h)));   // daily floor
+const RATE=0.6;                  // 60% of average wage
+
+/* prescribed benefit days — Employment Insurance Act, Table 1 */
+const DAYS=[
+  {lim:12,   u50:120, o50:120, label:'under 1 year'},
+  {lim:36,   u50:150, o50:180, label:'1 to 3 years'},
+  {lim:60,   u50:180, o50:210, label:'3 to 5 years'},
+  {lim:120,  u50:210, o50:240, label:'5 to 10 years'},
+  {lim:1e9,  u50:240, o50:270, label:'10 years or more'},
+];
+let over50=0;
+document.querySelectorAll('#age button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('#age button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); over50=+b.dataset.a; calc();
+}));
+document.querySelectorAll('.mini button').forEach(b=>b.addEventListener('click',()=>{
+  $('pay').value=won(+b.dataset.v); calc();
+}));
+$('pay').addEventListener('input',()=>{ const v=num($('pay').value); $('pay').value=v?won(v):''; calc(); });
+['yy','mm','hours'].forEach(id=>$(id).addEventListener('input',calc));
+
+function calc(){
+  const pay=num($('pay').value);
+  const months=Math.max(0,(+$('yy').value||0)*12+(+$('mm').value||0));
+  const hours=Math.min(8,Math.max(0.5,+$('hours').value||8));
+  const FLOOR=floorAt(hours);
+
+  const daily=pay*3/91;                         // average daily wage (approx.)
+  const raw=daily*RATE;
+  const amount=Math.min(CAP,Math.max(FLOOR,Math.round(raw)));
+  const hitCap=raw>CAP, hitFloor=raw<FLOOR;
+
+  const band=DAYS.find(d=>months<d.lim)||DAYS[DAYS.length-1];
+  const days=over50?band.o50:band.u50;
+  const total=amount*days;
+
+  $('total').innerHTML=won(total)+'<small>won</small>';
+  $('meta').textContent=`${won(amount)} won a day × ${days} days · about ${won(amount*30)} won a month`;
+
+  $('tb').innerHTML=`
+    <tr><td>Average daily wage (monthly pay × 3 ÷ 91 days)</td><td class="n">${won(daily)} won</td></tr>
+    <tr><td>60% of average daily wage</td><td class="n"${hitCap||hitFloor?' style="color:var(--ink-3);text-decoration:line-through"':''}>${won(raw)} won</td></tr>
+    <tr${hitFloor?' class="hi"':''}><td>Daily floor${hours<8?` (pro-rated for ${hours} contracted hours)`:''}</td><td class="n">${won(FLOOR)} won</td></tr>
+    <tr${hitCap?' class="hi"':''}><td>Daily cap</td><td class="n">${won(CAP)} won</td></tr>
+    <tr class="sum"><td>Daily job seeker's allowance</td><td class="n">${won(amount)} won</td></tr>
+    <tr><td>Prescribed benefit days (${band.label}${over50?' · age 50+':''})</td><td class="n">${days} days</td></tr>
+    <tr class="take"><td>Estimated total payout</td><td class="n">${won(total)} won</td></tr>`;
+
+  $('detail').innerHTML=`
+    <p>① Average daily wage = ${won(pay)} × 3 ÷ 91 days = <code>${won(daily)} won</code><br>
+      <span style="color:var(--ink-3);font-size:13px">The real reference period runs 89 to 92 days depending on your leaving date. For an exact average wage, use the <a href="/en/tools/severance/">severance pay calculator</a>.</span></p>
+    <p>② 60% of average daily wage = <code>${won(raw)} won</code></p>
+    <p>③ Cap and floor applied — floor ${won(FLOOR)} won (minimum wage ${won(MINWAGE)} × 80% × ${hours} hours) / cap ${won(CAP)} won<br>
+      → <strong>daily allowance ${won(amount)} won</strong> ${hitFloor?'(floor applied)':hitCap?'(cap applied)':'(straight 60%)'}</p>
+    <p>④ Prescribed benefit days = ${Math.floor(months/12)} yrs ${months%12} mos of employment insurance · ${over50?'age 50+':'under 50'} → <code>${days} days</code></p>
+    <p>⑤ Total payout = ${won(amount)} × ${days} = <code>${won(total)} won</code></p>`;
+
+  const w=$('warn');
+  if(months<6){
+    w.className='msg m-bad';
+    w.innerHTML=`With <strong>${months} months</strong> of employment insurance, you are likely to fall short of the <strong>180 insured days</strong> the claim requires. Those 180 days are not six calendar months — they are <strong>the total days you were actually paid for</strong>, so on a five-day week it usually takes seven to eight months on the job. Coverage from previous employers is added in, so check your full record on the employment insurance website.`;
+  } else if(hitFloor){
+    w.className='msg m-ok';
+    w.innerHTML=`60% of your average wage comes to less than the floor, so the <strong>floor of ${won(FLOOR)} won</strong> applies instead. Most people earning around 3.34 million won a month or less end up here. A somewhat different salary would give you the same payment.`;
+  } else if(hitCap){
+    w.className='msg m-ok';
+    w.innerHTML=`60% of your average wage is above the cap, so the <strong>cap of ${won(CAP)} won</strong> applies. Once your average monthly pay is around 3.45 million won or more, this figure is fixed no matter what you earn.`;
+  } else {
+    w.className='msg m-warn';
+    w.innerHTML=`You sit between the cap and the floor, so you get a straight 60% of your average wage. That band is very narrow — roughly <strong>3.34 to 3.45 million won a month</strong>.`;
+  }
+}
+
+$('src').innerHTML=`Basis · Employment Insurance Act arts. 46 and 50 and Table 1 · 2026 job seeker's allowance daily cap ${won(CAP)} won · floor = 80% of the minimum wage (${won(MINWAGE)} won) × 8 hours = ${won(floorAt(8))} won`
+ +'<br><strong>This result is an estimate for reference only.</strong> The amount actually paid is set from the average daily wage and insured period that the employment center verifies. It can also change depending on whether your eligibility is recognised, how the reason for your separation is assessed, and the unemployment recognition process. For your own case, contact the Ministry of Employment and Labor counseling center on 1350 (no area code) or the employment center for the area where you live.';
+
+calc();
+})();
+</script>
+</body>
+</html>

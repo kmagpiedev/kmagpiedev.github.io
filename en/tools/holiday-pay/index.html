@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Weekly Holiday Allowance Calculator — Korea 주휴수당 &amp; 2026 Minimum Wage | Kmagpie Tools</title>
+<meta name="description" content="Korea weekly holiday allowance calculator in English. Enter your shifts for 주휴수당 plus weekly and monthly part time pay at the 2026 minimum wage of 10,320 won.">
+<link rel="canonical" href="https://www.kmagpie.com/en/tools/holiday-pay/">
+<meta property="og:title" content="Weekly Holiday Allowance (주휴수당) Calculator — Korea 2026">
+<meta property="og:description" content="Work 15 or more hours a week in Korea and your employer owes you an extra paid day. Check your pay against the 2026 minimum wage of 10,320 won.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/en/tools/holiday-pay/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
+  input[type=text],input[type=number]{padding:10px 12px;border:1px solid var(--line);border-radius:9px;
+    background:var(--surface);color:var(--ink);font-size:16px;font-family:inherit;width:100%;
+    text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+  input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .amt{display:flex;align-items:center;gap:8px}
+  .unit{font-size:14px;color:var(--ink-2);flex:none}
+  .mini{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .mini button{font-family:inherit;font-size:12.5px;padding:5px 10px;border-radius:7px;border:1px solid var(--line);
+    background:transparent;color:var(--ink-2);cursor:pointer}
+  .mini button:hover{border-color:var(--accent);color:var(--accent)}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:12px 0 0}
+
+  .seg{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;margin-bottom:14px}
+  .seg button{flex:1;background:transparent;border:0;padding:9px 6px;font-size:13.5px;font-weight:600;
+    color:var(--ink-2);cursor:pointer;font-family:inherit;transition:.12s}
+  .seg button.on{background:var(--accent);color:#fff}
+
+  .days{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin-top:6px}
+  .days div{text-align:center}
+  .days label{display:block;font-size:12.5px;color:var(--ink-3);margin-bottom:4px;font-weight:600}
+  .days input{text-align:center;padding:9px 2px;font-size:15px}
+  .days .we label{color:var(--accent)}
+
+  .result{background:var(--surface);border:1px solid var(--accent);border-radius:16px;padding:26px 24px;margin:18px 0}
+  .big{font-size:13px;color:var(--ink-2);margin:0 0 4px}
+  .money{font-size:38px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.2;color:var(--accent)}
+  .money small{font-size:18px;font-weight:700;margin-left:3px}
+  .yearly{font-size:14px;color:var(--ink-2);margin-top:6px;font-variant-numeric:tabular-nums}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px}
+  th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line-soft)}
+  th{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;border-bottom:1px solid var(--line)}
+  td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  tr.sum td{border-top:2px solid var(--line);border-bottom:0;font-weight:700;padding-top:11px}
+  tr.take td{border-bottom:0;font-weight:800;color:var(--accent);font-size:16px}
+  details{margin:14px 0;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:0 16px}
+  details[open]{padding-bottom:8px}
+  summary{cursor:pointer;padding:12px 0;font-size:14.5px;font-weight:600;color:var(--ink-2)}
+  summary:hover{color:var(--accent)}
+  details .in{font-size:14px;color:var(--ink-2)}
+  details code{background:var(--line-soft);padding:1px 5px;border-radius:4px;font-size:12.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .m-ok{background:var(--good-soft);border-color:var(--good)}
+  .hidden{display:none}
+  .src{font-size:12.5px;color:var(--ink-3);margin-top:14px;padding-top:12px;border-top:1px solid var(--line-soft)}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .money{font-size:30px}
+    .days{gap:4px}
+    .days input{padding:8px 0;font-size:14px}
+    .days label{font-size:11.5px}
+  }
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
+/*LANG:S*/
+  .langsw{font-size:13px;margin:-12px 0 20px}
+  .langsw a{color:var(--ink-3);text-decoration:none;border-bottom:1px solid var(--line)}
+  .langsw a:hover{color:var(--accent);border-color:var(--accent)}
+/*LANG:E*/
+</style>
+<!--ALT:S-->
+<link rel="alternate" hreflang="ko" href="https://www.kmagpie.com/tools/holiday-pay/">
+<link rel="alternate" hreflang="en" href="https://www.kmagpie.com/en/tools/holiday-pay/">
+<link rel="alternate" hreflang="x-default" href="https://www.kmagpie.com/tools/holiday-pay/">
+<!--ALT:E-->
+<!--HEAD:S-->
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
+<meta property="og:site_name" content="Kmagpie Tools">
+<!--HEAD:E-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/en/tools/">Kmagpie Tools</a> › Weekly Holiday Allowance Calculator</p>
+<!--LANG:S-->
+<p class="langsw"><a href="/tools/holiday-pay/" hreflang="ko" lang="ko">한국어로 보기</a></p>
+<!--LANG:E-->
+
+<h1>Weekly Holiday Allowance Calculator</h1>
+<p class="sub">Korea has a paid day off that most countries do not: the weekly holiday allowance (주휴수당). Work <strong>15 hours or more a week</strong> and show up for every shift, and your employer owes you one extra paid day on top of the hours you actually worked. Enter your hours below to see what you should be getting, based on the <strong>2026 minimum wage of 10,320 won</strong>.</p>
+
+<div class="panel">
+  <label class="f">Hourly wage</label>
+  <div class="amt">
+    <input type="text" id="wage" inputmode="numeric" value="10,320">
+    <span class="unit">won</span>
+  </div>
+  <div class="mini">
+    <button data-v="10320">2026 minimum wage</button>
+    <button data-v="11000">11,000 won</button>
+    <button data-v="12000">12,000 won</button>
+    <button data-v="15000">15,000 won</button>
+  </div>
+
+  <label class="f" style="margin-top:22px">Hours per week</label>
+  <div class="seg" id="mode">
+    <button data-m="d" class="on">Enter by day</button>
+    <button data-m="w">Enter weekly total</button>
+  </div>
+
+  <div id="paneD">
+    <div class="days" id="dayInputs"></div>
+    <p class="note">Leave days off at 0. Enter only the hours you actually work, not unpaid breaks such as meal times.</p>
+  </div>
+
+  <div id="paneW" class="hidden">
+    <div class="amt">
+      <input type="number" id="weekly" value="20" min="0" max="80" step="0.5">
+      <span class="unit">hours / week</span>
+    </div>
+    <p class="note">The total hours you are scheduled to work in a week. Do not count unpaid breaks.</p>
+  </div>
+
+  <label class="opt" style="display:flex;align-items:center;gap:9px;font-size:14.5px;cursor:pointer;margin-top:18px">
+    <input type="checkbox" id="full" checked style="width:17px;height:17px;accent-color:var(--accent);cursor:pointer;flex:none">
+    <span>I worked every shift I was scheduled for this week</span>
+  </label>
+  <p class="note">You only get the allowance if you work <strong>all</strong> of your scheduled days that week. Miss even one and you lose it for that week. Arriving late or leaving early does not count as an absence.</p>
+</div>
+
+<div id="warn" class="hidden"></div>
+
+<div class="result">
+  <p class="big">Weekly holiday allowance (per week)</p>
+  <div class="money" id="hp">0<small>won</small></div>
+  <div class="yearly" id="meta"></div>
+
+  <table>
+    <tbody id="tb"></tbody>
+  </table>
+
+  <details>
+    <summary>See the full calculation</summary>
+    <div class="in" id="detail"></div>
+  </details>
+
+  <p class="src" id="src"></p>
+</div>
+
+<h2>What the weekly holiday allowance is</h2>
+<p>Article 55 of the Labor Standards Act (근로기준법) requires employers to give workers <strong>at least one paid day off per week on average</strong>. Paid, meaning you are not working that day but you still get paid for it. That one day of pay is the weekly holiday allowance (주휴수당). Because it is money for hours you did not work, plenty of people never realize it exists.</p>
+<p>If you are on a monthly salary, it is usually baked into that salary already. The problem is hourly work. Many places still pay nothing but your hourly rate times the hours on the schedule, and <strong>if you meet the requirements, the weekly holiday allowance is owed on top of that.</strong></p>
+
+<h2>Who qualifies</h2>
+<p>You need to meet both conditions.</p>
+<p>First, your <strong>contracted hours must average 15 hours or more per week over four weeks</strong>. Article 18(3) of the Labor Standards Act says the weekly paid-holiday rule does not apply to very short-hours workers below that line. At 14 hours a week you get nothing; at 15 hours you get it. That one-hour gap matters enough that some employers deliberately schedule people at 14 hours.</p>
+<p>Second, you must <strong>work every scheduled day in that week</strong>. Skip one and you lose the allowance for that week. Showing up late or leaving early, though, still counts as full attendance.</p>
+<p>Here is the part that surprises people: <strong>workplaces with fewer than five employees have to pay it too.</strong> Annual leave and overtime premiums do not apply to workplaces that small, but the weekly holiday allowance does. Convenience stores, cafés and small restaurants are all covered.</p>
+
+<h2>How much you get</h2>
+<p>If you work 40 hours or more a week, it is <strong>eight hours of pay</strong>. Working beyond 40 hours does not increase it; eight hours is the ceiling.</p>
+<p>Below 40 hours a week, it shrinks in proportion to what you work.</p>
+<p><code>Weekly holiday allowance = (weekly contracted hours ÷ 40) × 8 × hourly wage</code></p>
+<p>So if you work 20 hours a week at 10,320 won an hour, that is (20 ÷ 40) × 8 × 10,320 = 41,280 won, or four hours of pay. Over a month it comes to roughly 180,000 won, which is not small money.</p>
+
+<h2>The 2026 minimum wage and this allowance</h2>
+<p>The 2026 minimum wage (최저임금) is <strong>10,320 won</strong> an hour, up 290 won (2.9%) from 10,030 won in 2025. The official monthly figure is 2,156,880 won, and that is based on 209 hours.</p>
+<p>The weekly holiday allowance is already inside that 209-hour number. Take 40 contracted hours a week, add the 8 holiday hours to get 48, multiply by 4.345 average weeks in a month, and you get 208.6 hours, rounded up to 209. In other words, <strong>the 2,156,880 won monthly minimum already includes the weekly holiday allowance</strong>. That is why salaried workers cannot claim it separately.</p>
+<p>Hourly work is the opposite: the wage and the allowance are calculated separately. If your hourly rate matches the minimum wage but you are not receiving the weekly holiday allowance, that is a minimum wage violation.</p>
+
+<h2>If you are a foreign worker in Korea</h2>
+<p>The rules here are about work, not nationality. Part-time jobs at cafés, convenience stores, restaurants and hagwons are covered whether you hold an E-2, F-series, D-2 or any other status, and an employer cannot decide the allowance does not apply to you because you are not Korean. One caution: working outside the terms of your visa, such as a D-2 student working without a part-time work permit, is a separate immigration problem that can affect your status. It does not erase what you are owed for hours already worked, but the two issues run on different tracks, so get advice on both before you act.</p>
+<p>The quickest way to spot underpayment is to divide your total pay for a period by the total hours you worked in it. If the answer lands right at the minimum wage, or barely above it, and you were working 15 or more hours a week, the weekly holiday allowance is probably missing. Done properly, a 20-hour week should work out to roughly ten percent more than your hourly rate times your hours.</p>
+<p>If the numbers look wrong, start by building your own record: photos of the schedule, your shift times, bank transfer records. Then ask for a written pay statement (임금명세서), which employers are legally required to provide and which has to show how each amount was worked out. If that does not resolve it, call the Ministry of Employment and Labor counselling line at 1350 (dial it without an area code; interpretation is available in several languages) or file a complaint with your regional labor office, in person or online. Unpaid wage claims have a three-year limitation period, so old shifts do eventually fall out of reach. This is general information rather than legal advice, and your own contract and schedule can change the picture, so treat the counselling line as the place to confirm your specific case.</p>
+
+<h2>Problems people run into</h2>
+<h3>My boss says there is no such thing</h3>
+<p>If you meet the requirements and are not paid, that is unpaid wages, and you can file a complaint with the Ministry of Employment and Labor. Call <strong>1350</strong> without an area code for counselling, or apply online through the ministry's website. Gather your employment contract, your bank records showing what was actually paid, and your work schedule before you start.</p>
+<h3>My boss says the allowance is already in my hourly rate</h3>
+<p>This is called an inclusive wage arrangement, and for it to hold up, the employment contract has to <strong>state clearly how much of the rate is the weekly holiday allowance</strong>, and the rate that remains after backing it out must still meet the minimum wage. For example, "12,000 won per hour (weekly holiday allowance included)" works out to a real hourly rate of 12,000 ÷ 1.2 = 10,000 won, which falls short of the 2026 minimum of 10,320 won. Read your contract carefully.</p>
+<h3>My hours change from week to week</h3>
+<p>What counts is the hours set in your employment contract. If your actual shifts jump around, eligibility is judged on a four-week average. For this calculator, enter the hours you normally work.</p>
+<h3>I work five days a week, three hours a day</h3>
+<p>That is exactly 15 hours a week, so you just clear the bar. The allowance is (15 ÷ 40) × 8 × your hourly wage, or three hours of pay. Cut one day and you drop to 12 hours a week and get nothing at all, so think twice before agreeing to a reduced schedule.</p>
+
+<!--REL:S-->
+<h2>Related tools</h2>
+<div class="rel">
+  <a href="/en/tools/salary/"><strong>Net Salary Calculator</strong><span>After-tax pay, 2026 rates</span></a>
+  <a href="/en/tools/annual-leave/"><strong>Annual Leave Calculator</strong><span>Statutory paid leave (연차)</span></a>
+  <a href="/en/tools/severance/"><strong>Severance Pay Calculator</strong><span>Retirement allowance (퇴직금)</span></a>
+</div>
+<p class="rel-all"><a href="/en/tools/">See all 5 English tools →</a></p>
+<!--REL:E-->
+
+<footer>
+  <!--FOOTNOTE--><p>Results are estimates for reference only and carry no legal force. See the <a href="/en/disclaimer.html">disclaimer</a> for what they are based on and who to ask for a binding answer.</p>
+  <p>Kmagpie Tools · Everything is calculated in your browser. Nothing you type is sent or stored.</p>
+  <p><a href="/">Home</a> · <a href="/en/tools/">Other tools</a> · <a href="/en/disclaimer.html">Disclaimer</a> &middot; <a href="/privacy-policy.html">Privacy Policy</a> · <a href="/tools/holiday-pay/">한국어 페이지</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const won=n=>Math.round(n).toLocaleString('en-US');
+const num=s=>{const v=String(s).replace(/[^0-9]/g,'');return v?parseInt(v,10):0;};
+const MIN2026=10320, WEEKS=365/12/7;   // 4.345 weeks
+
+const DAYS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+$('dayInputs').innerHTML=DAYS.map((d,i)=>
+  `<div class="${i>=5?'we':''}"><label>${d}</label>
+   <input type="number" id="d${i}" value="${i<5?4:0}" min="0" max="24" step="0.5"></div>`).join('');
+
+let mode='d';
+document.querySelectorAll('#mode button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('#mode button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); mode=b.dataset.m;
+  $('paneD').classList.toggle('hidden',mode!=='d');
+  $('paneW').classList.toggle('hidden',mode!=='w');
+  calc();
+}));
+$('quickWrap');
+document.querySelectorAll('.mini button').forEach(b=>b.addEventListener('click',()=>{
+  $('wage').value=won(+b.dataset.v); calc();
+}));
+$('wage').addEventListener('input',()=>{ const v=num($('wage').value); $('wage').value=v?won(v):''; calc(); });
+DAYS.forEach((_,i)=>$('d'+i).addEventListener('input',calc));
+$('weekly').addEventListener('input',calc);
+$('full').addEventListener('change',calc);
+
+function weekHours(){
+  if(mode==='w') return Math.max(0,+$('weekly').value||0);
+  return DAYS.reduce((a,_,i)=>a+Math.max(0,+$('d'+i).value||0),0);
+}
+
+function calc(){
+  const wage=num($('wage').value);
+  const h=weekHours();
+  const workDays = mode==='d' ? DAYS.filter((_,i)=>(+$('d'+i).value||0)>0).length : 0;
+  const ok = h>=15 && $('full').checked;
+  const hpHours = h>=40 ? 8 : h/40*8;
+  const hp = ok ? hpHours*wage : 0;
+
+  const workPay = h*wage;
+  const weekTotal = workPay+hp;
+  const monthTotal = weekTotal*WEEKS;
+
+  $('hp').innerHTML=won(hp)+'<small>won</small>';
+  $('meta').textContent = h ? `${h} hours/week${workDays?` · ${workDays} days/week`:''} · ${hpHours.toFixed(hpHours%1?1:0)} holiday hours` : '';
+
+  $('tb').innerHTML=`
+    <tr><td>Pay for hours worked (${h} hours × ${won(wage)} won)</td><td class="n">${won(workPay)} won</td></tr>
+    <tr><td>Weekly holiday allowance</td><td class="n">${ok?'+'+won(hp):'0'} won</td></tr>
+    <tr class="sum"><td>Weekly total</td><td class="n">${won(weekTotal)} won</td></tr>
+    <tr class="take"><td>Monthly equivalent (4.345 weeks)</td><td class="n">${won(monthTotal)} won</td></tr>`;
+
+  $('detail').innerHTML=`
+    <p>① Weekly contracted hours = <code>${h} hours</code>${mode==='d'&&workDays?` (${workDays} days a week)`:''}</p>
+    <p>② Eligibility — 15 hours or more per week: <strong>${h>=15?'met':'not met'}</strong> · full attendance: <strong>${$('full').checked?'met':'not met'}</strong></p>
+    <p>③ Holiday hours = ${h>=40?'40 hours or more per week, so <code>8 hours</code> (the cap)':`(${h} ÷ 40) × 8 = <code>${hpHours.toFixed(2)} hours</code>`}</p>
+    <p>④ Weekly holiday allowance = ${hpHours.toFixed(hpHours%1?2:0)} hours × ${won(wage)} won = <code>${won(hp)} won</code></p>
+    <p>⑤ Monthly equivalent = ${won(weekTotal)} won per week × 4.345 weeks = <code>${won(monthTotal)} won</code><br>
+      <span style="color:var(--ink-3);font-size:13px">4.345 is the average number of weeks in a month, from 365 ÷ 12 ÷ 7. It is the same figure behind the 209-hour number.
+      ${h>=40?`For reference, the official monthly minimum wage figure (${won(MIN2026*209)} won) <strong>rounds 208.6 hours up to 209</strong>, so it lands a few thousand won away from the number here. If your employer sets your salary on the 209-hour basis, that works slightly in your favor.`:''}</span></p>`;
+
+  const w=$('warn');
+  if(!h){ w.className='hidden'; }
+  else if(h<15){
+    w.className='msg m-bad';
+    w.innerHTML=`Your weekly contracted hours come to <strong>${h} hours</strong>, below the 15-hour line. Under Article 18(3) of the Labor Standards Act, <strong>no weekly holiday allowance is owed.</strong> Reach 15 hours and you would receive ${(15/40*8).toFixed(0)} hours of pay (${won(15/40*8*wage)} won).`;
+  } else if(!$('full').checked){
+    w.className='msg m-warn';
+    w.innerHTML='If you miss a scheduled day that week, no weekly holiday allowance is owed. Arriving late or leaving early, however, <strong>does not count as an absence</strong> and still qualifies as full attendance.';
+  } else if(wage<MIN2026){
+    w.className='msg m-bad';
+    w.innerHTML=`An hourly wage of ${won(wage)} won is <strong>below the 2026 minimum wage of ${won(MIN2026)} won</strong>. The minimum wage applies to every workplace, and paying less is a punishable offence. You can get advice by calling 1350 without an area code.`;
+  } else {
+    w.className='msg m-ok';
+    w.innerHTML=`You meet every requirement. You should be paid <strong>${won(hp)} won</strong> in weekly holiday allowance each week, which comes to about <strong>${won(hp*WEEKS)} won</strong> a month.`;
+  }
+}
+
+$('src').innerHTML='Sources · Labor Standards Act Articles 18 and 55, Enforcement Decree Article 30 · 2026 minimum wage of 10,320 won per hour (Ministry of Employment and Labor notice)'
+ +'<br><strong>This result is an estimate for reference only.</strong> What you are actually paid can differ depending on the contracted hours set in your employment contract and the way you work. Some roles, such as monitoring or intermittent work approved by the Ministry of Employment and Labor, are excluded from these rules. If you think wages are being withheld, contact the Ministry of Employment and Labor counselling centre at 1350, dialled without an area code.';
+
+calc();
+})();
+</script>
+</body>
+</html>
