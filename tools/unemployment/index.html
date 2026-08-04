@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>실업급여 계산기 2026 — 상한 68,100원 인상 반영 | 까치툴</title>
+<meta name="description" content="2026년 구직급여 상한액 68,100원·하한액 66,048원을 반영해 1일 지급액과 소정급여일수, 총 수급액을 계산합니다. 수급 요건 확인까지 한 번에.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/unemployment/">
+<meta property="og:title" content="실업급여 계산기 2026 — 상한 68,100원 인상 반영">
+<meta property="og:description" content="1일 지급액·소정급여일수·총 수급액을 한 번에. 2026년 인상분 반영.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/unemployment/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  .row{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start}
+  .col{flex:1;min-width:210px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
+  input[type=text],input[type=number]{padding:10px 12px;border:1px solid var(--line);border-radius:9px;
+    background:var(--surface);color:var(--ink);font-size:16px;font-family:inherit;width:100%;
+    text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+  input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .amt{display:flex;align-items:center;gap:8px}
+  .unit{font-size:14px;color:var(--ink-2);flex:none}
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .seg{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+  .seg button{flex:1;background:transparent;border:0;padding:9px 6px;font-size:13.5px;font-weight:600;
+    color:var(--ink-2);cursor:pointer;font-family:inherit;transition:.12s}
+  .seg button.on{background:var(--accent);color:#fff}
+  .mini{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .mini button{font-family:inherit;font-size:12.5px;padding:5px 10px;border-radius:7px;border:1px solid var(--line);
+    background:transparent;color:var(--ink-2);cursor:pointer}
+  .mini button:hover{border-color:var(--accent);color:var(--accent)}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:12px 0 0}
+
+  .result{background:var(--surface);border:1px solid var(--accent);border-radius:16px;padding:26px 24px;margin:18px 0}
+  .big{font-size:13px;color:var(--ink-2);margin:0 0 4px}
+  .money{font-size:38px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.2;color:var(--accent)}
+  .money small{font-size:18px;font-weight:700;margin-left:3px}
+  .yearly{font-size:14px;color:var(--ink-2);margin-top:6px;font-variant-numeric:tabular-nums}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px}
+  th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line-soft)}
+  th{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;border-bottom:1px solid var(--line)}
+  td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  tr.sum td{border-top:2px solid var(--line);border-bottom:0;font-weight:700;padding-top:11px}
+  tr.take td{border-bottom:0;font-weight:800;color:var(--accent);font-size:16px}
+  tr.hi td{background:var(--accent-soft);font-weight:700}
+  details{margin:14px 0;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:0 16px}
+  details[open]{padding-bottom:8px}
+  summary{cursor:pointer;padding:12px 0;font-size:14.5px;font-weight:600;color:var(--ink-2)}
+  summary:hover{color:var(--accent)}
+  details .in{font-size:14px;color:var(--ink-2)}
+  details code{background:var(--line-soft);padding:1px 5px;border-radius:4px;font-size:12.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .m-ok{background:var(--good-soft);border-color:var(--good)}
+  .hidden{display:none}
+  .src{font-size:12.5px;color:var(--ink-3);margin-top:14px;padding-top:12px;border-top:1px solid var(--line-soft)}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .money{font-size:29px}
+    table{font-size:13.5px}
+    th,td{padding:8px 4px}
+  }
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › 실업급여 계산기</p>
+
+<h1>실업급여 계산기</h1>
+<p class="sub"><strong>2026년 인상분이 반영된 계산기입니다.</strong> 상한액이 7년 만에 66,000원에서 68,100원으로 올랐어요. 1일 지급액과 며칠 동안 받는지, 총 얼마인지를 한 번에 계산합니다.</p>
+
+<div class="panel">
+  <div class="row">
+    <div class="col">
+      <label class="f">퇴직 전 월 평균 급여 (세전)</label>
+      <div class="amt">
+        <input type="text" id="pay" inputmode="numeric" value="3,000,000">
+        <span class="unit">원</span>
+      </div>
+      <div class="mini">
+        <button data-v="2500000">250만</button>
+        <button data-v="3000000">300만</button>
+        <button data-v="4000000">400만</button>
+        <button data-v="6000000">600만</button>
+      </div>
+      <p class="note">퇴직 직전 3개월간 받은 급여의 월평균입니다. 세금·4대보험을 떼기 전 금액이고 상여금도 포함해요.</p>
+    </div>
+    <div class="col">
+      <label class="f">고용보험 가입기간</label>
+      <div class="g2">
+        <div class="amt"><input type="number" id="yy" value="3" min="0" max="50"><span class="unit">년</span></div>
+        <div class="amt"><input type="number" id="mm" value="0" min="0" max="11"><span class="unit">개월</span></div>
+      </div>
+      <p class="note">지금 회사만이 아니라 <strong>이전 직장 가입 이력도 합산</strong>됩니다. 다만 실업급여를 받은 적이 있다면 그 이전 기간은 빠져요. 정확한 기간은 고용보험 홈페이지에서 확인할 수 있습니다.</p>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top:20px">
+    <div class="col">
+      <label class="f">나이 · 장애 여부</label>
+      <div class="seg" id="age">
+        <button data-a="0" class="on">50세 미만</button>
+        <button data-a="1">50세 이상 또는 장애인</button>
+      </div>
+      <p class="note">퇴사일 기준 만 나이입니다. 50세 이상이거나 장애인이면 받는 기간이 최대 30일 늘어납니다.</p>
+    </div>
+    <div class="col">
+      <label class="f">1일 소정근로시간</label>
+      <div class="amt">
+        <input type="number" id="hours" value="8" min="1" max="8" step="0.5">
+        <span class="unit">시간</span>
+      </div>
+      <p class="note">하루 8시간 미만으로 일한 단시간 근로자는 하한액이 그만큼 줄어듭니다. 보통은 8시간 그대로 두시면 돼요.</p>
+    </div>
+  </div>
+</div>
+
+<div id="warn" class="hidden"></div>
+
+<div class="result">
+  <p class="big">총 예상 수급액</p>
+  <div class="money" id="total">0<small>원</small></div>
+  <div class="yearly" id="meta"></div>
+
+  <table>
+    <tbody id="tb"></tbody>
+  </table>
+
+  <details>
+    <summary>계산 과정 자세히 보기</summary>
+    <div class="in" id="detail"></div>
+  </details>
+
+  <p class="src" id="src"></p>
+</div>
+
+<h2>2026년에 상한액이 7년 만에 올랐습니다</h2>
+<p>구직급여에는 하루에 받을 수 있는 상한과 하한이 있습니다. <strong>하한액은 최저임금과 연동</strong>돼요. 최저임금의 80%에 하루 8시간을 곱한 금액입니다. 2026년 최저임금이 10,320원이니 하한액은 10,320 × 80% × 8 = <strong>66,048원</strong>이 됩니다.</p>
+<p>그런데 상한액은 2019년부터 <strong>66,000원에 묶여 있었습니다.</strong> 최저임금은 매년 오르는데 상한액은 그대로였으니, 2026년에 결국 하한액이 상한액을 넘어서는 역전이 벌어질 상황이었어요. 그래서 정부가 상한액을 <strong>68,100원</strong>으로 올렸습니다.</p>
+<p>여기서 알아둘 게 있습니다. 상한과 하한의 차이가 <strong>하루 2,052원밖에 안 됩니다.</strong> 원래 실업급여는 퇴직 전 평균임금의 60%인데, 이 범위가 워낙 좁아서 대부분의 사람이 둘 중 하나에 걸립니다.</p>
+<p>구체적으로는 <strong>월 평균 급여가 약 334만원 이하면 전부 하한액</strong>, <strong>약 345만원 이상이면 전부 상한액</strong>입니다. 그 사이 10만원 남짓한 구간에 있는 사람만 60%가 그대로 적용돼요. 그래서 연봉이 5천만원이든 1억이든 실업급여는 똑같이 하루 68,100원, 한 달로 치면 약 204만원입니다.</p>
+
+<h2>얼마나 오래 받나요</h2>
+<p>소정급여일수라고 하고, <strong>고용보험 가입기간과 나이</strong>로 정해집니다. 급여 수준과는 상관없어요.</p>
+<table>
+  <thead><tr><th>고용보험 가입기간</th><th class="n">50세 미만</th><th class="n">50세 이상·장애인</th></tr></thead>
+  <tbody>
+    <tr><td>1년 미만</td><td class="n">120일</td><td class="n">120일</td></tr>
+    <tr><td>1년 이상 3년 미만</td><td class="n">150일</td><td class="n">180일</td></tr>
+    <tr><td>3년 이상 5년 미만</td><td class="n">180일</td><td class="n">210일</td></tr>
+    <tr><td>5년 이상 10년 미만</td><td class="n">210일</td><td class="n">240일</td></tr>
+    <tr><td>10년 이상</td><td class="n">240일</td><td class="n">270일</td></tr>
+  </tbody>
+</table>
+<p>가입기간은 <strong>이전 직장까지 합산</strong>됩니다. 이직이 잦았어도 고용보험에 가입돼 있었다면 다 더해져요. 다만 중간에 실업급여를 받은 적이 있다면 그 이전 기간은 초기화됩니다.</p>
+
+<h2>받을 수 있는 조건</h2>
+<p>세 가지를 모두 채워야 합니다.</p>
+<p>첫째, <strong>이직 전 18개월 동안 고용보험 피보험단위기간이 180일 이상</strong>이어야 합니다. 여기서 180일은 달력상 6개월이 아니라 <strong>보수를 받은 날의 합계</strong>예요. 주 5일제라면 주휴일을 포함해 주 6일이 잡히니, 대략 7~8개월은 다녀야 180일이 채워집니다. 딱 6개월 다니고 신청했다가 거절당하는 경우가 이래서 생깁니다.</p>
+<p>둘째, <strong>비자발적으로 그만뒀어야</strong> 합니다. 권고사직, 계약기간 만료, 폐업, 정리해고 같은 경우예요. 스스로 그만두면 원칙적으로 못 받습니다.</p>
+<p>셋째, <strong>일할 의사와 능력이 있는데 취업하지 못한 상태</strong>여야 하고, 실제로 재취업 활동을 해야 합니다.</p>
+
+<h3>자발적 퇴사인데 받는 경우도 있습니다</h3>
+<p>내가 그만뒀어도 정당한 사유가 인정되면 받을 수 있습니다. 임금이 체불됐거나, 최저임금에 미달했거나, 회사가 위법한 대우를 했거나, 직장 내 괴롭힘이 있었거나, 통근 시간이 왕복 3시간 이상으로 늘었거나, 본인이나 가족을 간호해야 하는데 회사가 휴가를 안 준 경우 등이 해당합니다. 이런 상황이라면 <strong>증거를 남겨두는 게 중요합니다.</strong> 급여명세서, 통보 메일, 근무 기록 같은 것들이요.</p>
+<p>퇴사할 때 회사가 고용보험에 신고하는 <strong>이직확인서의 이직사유 코드</strong>가 결정적입니다. 실제와 다르게 적혔다면 정정을 요구할 수 있어요.</p>
+
+<h2>신청은 어떻게 하나요</h2>
+<p>퇴사하면 회사가 고용보험 상실 신고와 이직확인서 제출을 합니다. 이게 처리된 뒤에 <strong>워크넷에 구직 등록</strong>을 하고, 고용보험 홈페이지에서 <strong>수급자격 신청자 온라인 교육</strong>을 들은 다음, 거주지 관할 고용센터를 방문해 수급자격 인정을 신청합니다.</p>
+<p>기한을 놓치지 마세요. <strong>퇴직 다음 날부터 12개월이 지나면 남은 일수가 있어도 받을 수 없습니다.</strong> 소정급여일수를 다 채우지 못했더라도 그렇습니다. 그래서 퇴사 후 바로 신청하는 게 좋습니다.</p>
+<p>인정되면 첫 7일은 대기기간이라 지급되지 않고, 이후 보통 1~4주 간격으로 실업인정을 받으면서 지급됩니다.</p>
+
+<h2>자주 겪는 문제</h2>
+<h3>계산 결과가 실제 받은 금액과 달라요</h3>
+<p>이 계산기는 표준적인 경우를 계산합니다. 실제 평균임금은 퇴직 전 3개월간 받은 임금 총액을 그 기간의 일수로 나눠 구하는데, 상여금이나 연차수당이 반영되는 방식이 조금 복잡합니다. 다만 앞에서 설명했듯 대부분의 사람이 상한액이나 하한액에 걸리기 때문에, 평균임금이 조금 달라도 결과는 같은 경우가 많습니다.</p>
+<h3>실업급여 받는 중에 아르바이트를 해도 되나요</h3>
+<p>가능하지만 반드시 <strong>실업인정일에 신고</strong>해야 합니다. 신고하지 않고 소득이 생기면 부정수급이 되고, 받은 금액을 반환하는 데 더해 추가 징수와 형사처벌까지 갈 수 있습니다. 하루 소득이 일정 기준을 넘으면 그날은 취업한 것으로 봐서 그만큼 지급되지 않습니다.</p>
+<h3>조기재취업수당이 뭔가요</h3>
+<p>소정급여일수의 절반 이상을 남기고 재취업해서 12개월 이상 계속 근무하면, <strong>남은 일수의 절반</strong>을 수당으로 받을 수 있습니다. 예를 들어 210일 중 120일을 남기고 취업했다면 60일분을 더 받는 셈이에요. 실업급여를 끝까지 받는 것보다 빨리 취업하는 쪽이 손해가 아니도록 만든 제도입니다.</p>
+<h3>퇴직금이나 연차수당을 받으면 실업급여가 줄어드나요</h3>
+<p>아닙니다. 퇴직금과 연차수당은 근로의 대가라 실업급여와 별개입니다. 다만 퇴직금이나 연차수당이 평균임금 계산에 영향을 줄 수는 있어요. <a href="/tools/severance/">퇴직금 계산기</a>와 <a href="/tools/annual-leave/">연차 계산기</a>에서 각각 확인해 보세요.</p>
+
+<!--REL:S-->
+<h2>함께 쓰면 좋은 도구</h2>
+<div class="rel">
+  <a href="/tools/severance/"><strong>퇴직금 계산기</strong><span>평균임금·통상임금 자동 비교</span></a>
+  <a href="/tools/annual-leave/"><strong>연차 계산기</strong><span>입사일·회계연도 기준 동시 비교</span></a>
+  <a href="/tools/salary/"><strong>연봉 실수령액 계산기</strong><span>2026년 요율·간이세액표 원본</span></a>
+</div>
+<p class="rel-all"><a href="/tools/">까치툴 도구 16개 전체 보기 →</a></p>
+<!--REL:E-->
+
+<footer>
+  <p>까치툴 · 모든 계산은 브라우저에서 이루어지며 입력값은 전송·저장되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const won=n=>Math.round(n).toLocaleString('ko-KR');
+const num=s=>{const v=String(s).replace(/[^0-9]/g,'');return v?parseInt(v,10):0;};
+
+/* 2026년 기준 */
+const CAP=68100;                 // 1일 상한액
+const MINWAGE=10320;             // 2026년 최저임금
+const floorAt=h=>Math.round(MINWAGE*0.8*Math.min(8,Math.max(0,h)));   // 1일 하한액
+const RATE=0.6;                  // 평균임금의 60%
+
+/* 소정급여일수 — 고용보험법 별표1 */
+const DAYS=[
+  {lim:12,   u50:120, o50:120, label:'1년 미만'},
+  {lim:36,   u50:150, o50:180, label:'1년 이상 3년 미만'},
+  {lim:60,   u50:180, o50:210, label:'3년 이상 5년 미만'},
+  {lim:120,  u50:210, o50:240, label:'5년 이상 10년 미만'},
+  {lim:1e9,  u50:240, o50:270, label:'10년 이상'},
+];
+let over50=0;
+document.querySelectorAll('#age button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('#age button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); over50=+b.dataset.a; calc();
+}));
+document.querySelectorAll('.mini button').forEach(b=>b.addEventListener('click',()=>{
+  $('pay').value=won(+b.dataset.v); calc();
+}));
+$('pay').addEventListener('input',()=>{ const v=num($('pay').value); $('pay').value=v?won(v):''; calc(); });
+['yy','mm','hours'].forEach(id=>$(id).addEventListener('input',calc));
+
+function calc(){
+  const pay=num($('pay').value);
+  const months=Math.max(0,(+$('yy').value||0)*12+(+$('mm').value||0));
+  const hours=Math.min(8,Math.max(0.5,+$('hours').value||8));
+  const FLOOR=floorAt(hours);
+
+  const daily=pay*3/91;                         // 1일 평균임금 (근사)
+  const raw=daily*RATE;
+  const amount=Math.min(CAP,Math.max(FLOOR,Math.round(raw)));
+  const hitCap=raw>CAP, hitFloor=raw<FLOOR;
+
+  const band=DAYS.find(d=>months<d.lim)||DAYS[DAYS.length-1];
+  const days=over50?band.o50:band.u50;
+  const total=amount*days;
+
+  $('total').innerHTML=won(total)+'<small>원</small>';
+  $('meta').textContent=`1일 ${won(amount)}원 × ${days}일 · 월 환산 약 ${won(amount*30)}원`;
+
+  $('tb').innerHTML=`
+    <tr><td>1일 평균임금 (월급 × 3 ÷ 91일)</td><td class="n">${won(daily)}원</td></tr>
+    <tr><td>평균임금의 60%</td><td class="n"${hitCap||hitFloor?' style="color:var(--ink-3);text-decoration:line-through"':''}>${won(raw)}원</td></tr>
+    <tr${hitFloor?' class="hi"':''}><td>1일 하한액${hours<8?` (소정근로 ${hours}시간 비례)`:''}</td><td class="n">${won(FLOOR)}원</td></tr>
+    <tr${hitCap?' class="hi"':''}><td>1일 상한액</td><td class="n">${won(CAP)}원</td></tr>
+    <tr class="sum"><td>1일 구직급여액</td><td class="n">${won(amount)}원</td></tr>
+    <tr><td>소정급여일수 (${band.label}${over50?' · 50세 이상':''})</td><td class="n">${days}일</td></tr>
+    <tr class="take"><td>총 예상 수급액</td><td class="n">${won(total)}원</td></tr>`;
+
+  $('detail').innerHTML=`
+    <p>① 1일 평균임금 = ${won(pay)} × 3 ÷ 91일 = <code>${won(daily)}원</code><br>
+      <span style="color:var(--ink-3);font-size:13px">실제 산정기간은 퇴사일에 따라 89~92일로 달라집니다. 정확한 평균임금은 <a href="/tools/severance/">퇴직금 계산기</a>에서 구할 수 있어요.</span></p>
+    <p>② 평균임금의 60% = <code>${won(raw)}원</code></p>
+    <p>③ 상·하한 적용 — 하한 ${won(FLOOR)}원 (최저임금 ${won(MINWAGE)} × 80% × ${hours}시간) / 상한 ${won(CAP)}원<br>
+      → <strong>1일 구직급여액 ${won(amount)}원</strong> ${hitFloor?'(하한액 적용)':hitCap?'(상한액 적용)':'(60% 그대로 적용)'}</p>
+    <p>④ 소정급여일수 = 고용보험 ${Math.floor(months/12)}년 ${months%12}개월 · ${over50?'50세 이상':'50세 미만'} → <code>${days}일</code></p>
+    <p>⑤ 총 수급액 = ${won(amount)} × ${days} = <code>${won(total)}원</code></p>`;
+
+  const w=$('warn');
+  if(months<6){
+    w.className='msg m-bad';
+    w.innerHTML=`고용보험 가입기간이 <strong>${months}개월</strong>이라 수급 요건인 <strong>피보험단위기간 180일</strong>에 미달할 가능성이 높습니다. 180일은 달력상 6개월이 아니라 <strong>보수를 받은 날의 합계</strong>라서, 주 5일제 기준 대략 7~8개월은 다녀야 채워집니다. 이전 직장 가입 이력이 있다면 합산되니 고용보험 홈페이지에서 확인해 보세요.`;
+  } else if(hitFloor){
+    w.className='msg m-ok';
+    w.innerHTML=`평균임금의 60%가 하한액보다 적어서 <strong>하한액 ${won(FLOOR)}원</strong>이 적용됐습니다. 월 평균 급여가 약 334만원 이하면 대부분 여기에 해당해요. 급여가 조금 달라도 받는 금액은 같습니다.`;
+  } else if(hitCap){
+    w.className='msg m-ok';
+    w.innerHTML=`평균임금의 60%가 상한액을 넘어서 <strong>상한액 ${won(CAP)}원</strong>이 적용됐습니다. 월 평균 급여가 약 345만원 이상이면 연봉이 얼마든 이 금액으로 고정됩니다.`;
+  } else {
+    w.className='msg m-warn';
+    w.innerHTML=`상한액과 하한액 사이 구간이라 평균임금의 60%가 그대로 적용됐습니다. 이 구간은 <strong>월 급여 334만~345만원</strong>으로 아주 좁아요.`;
+  }
+}
+
+$('src').innerHTML=`기준 · 고용보험법 제46조·제50조 및 별표1 · 2026년 구직급여 상한액 ${won(CAP)}원 · 하한액 최저임금(${won(MINWAGE)}원)의 80% × 8시간 = ${won(floorAt(8))}원`
+ +'<br><strong>이 결과는 참고용 추정치입니다.</strong> 실제 지급액은 고용센터가 확인한 평균임금과 피보험단위기간에 따라 정해집니다. 수급 자격 인정 여부, 이직사유 판단, 실업인정 절차에 따라 달라질 수 있으니 정확한 내용은 고용노동부 고객상담센터(국번 없이 1350)나 거주지 관할 고용센터에 문의하세요.';
+
+calc();
+})();
+</script>
+</body>
+</html>
