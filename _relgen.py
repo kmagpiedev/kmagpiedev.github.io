@@ -16,6 +16,8 @@ TOOLS = {
                    '입사일과 마지막 근무일만 넣으면 재직일수와 평균임금 산정기간을 자동으로 잡아줍니다. 상여금·연차수당 3/12를 반영하고 통상임금과 비교해 유리한 쪽으로 계산합니다.'),
  'holiday-pay':   ('📅','주휴수당 계산기','2026년 최저임금 10,320원 기준',
                    '요일별 근무시간을 넣으면 주휴수당과 주급·월급이 나옵니다. 주 15시간 요건과 최저임금 미달 여부까지 확인해 드립니다.'),
+ 'annual-leave':  ('🗓️','연차 계산기','입사일·회계연도 기준 동시 비교',
+                   '입사일만 넣으면 연차 발생 내역이 연도별로 나옵니다. 입사일 기준과 회계연도 기준을 동시에 계산해 어느 쪽이 유리한지 알려주고 미사용 연차수당까지 계산합니다.'),
  'pdf':           ('📑','PDF 편집기','합치기·나누기·페이지 삭제',
                    '여러 PDF를 합치고 페이지를 삭제·회전·순서 변경하고, 필요한 페이지만 뽑아냅니다. 이미지를 PDF로 만들 수도 있습니다.'),
  'pdf-sign':      ('✍️','PDF 서명·도장 넣기','인쇄 없이 계약서에 바로',
@@ -45,16 +47,17 @@ CATS = [
  ('PDF·문서',   '계약서나 제출 서류를 다룰 때 쓰는 도구입니다. 원본 문서의 글자를 그대로 살린 채 처리합니다.',
   ['pdf','pdf-sign']),
  ('계산·생활',  '법령과 공식 고시를 그대로 적용해 계산합니다. 근사식을 쓰지 않고 계산 과정을 전부 보여줍니다.',
-  ['salary','severance','holiday-pay','qr']),
+  ['salary','severance','annual-leave','holiday-pay','qr']),
  ('앱 개발',    '안드로이드 앱을 출시할 때 반복적으로 필요한 작업들입니다. 직접 앱을 만들며 필요해서 만든 도구예요.',
   ['app-icon','screenshot','privacy-policy']),
 ]
 
 # 각 도구 페이지 하단에 노출할 관련 도구 (맥락 흐름 순)
 REL = {
- 'salary':        ['severance','holiday-pay','pdf-sign'],
- 'severance':     ['holiday-pay','salary','pdf-sign'],
- 'holiday-pay':   ['severance','salary','qr'],
+ 'salary':        ['severance','annual-leave','holiday-pay'],
+ 'annual-leave':  ['severance','holiday-pay','salary'],
+ 'severance':     ['annual-leave','holiday-pay','salary'],
+ 'holiday-pay':   ['annual-leave','severance','salary'],
  'pdf':           ['pdf-sign','convert','image-compress'],
  'pdf-sign':      ['pdf','id-photo','salary'],
  'remove-bg':     ['id-photo','convert','image-compress'],

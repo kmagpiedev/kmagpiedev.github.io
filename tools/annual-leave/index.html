@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>연차 계산기 — 입사일·회계연도 기준 동시 비교 | 까치툴</title>
+<meta name="description" content="입사일만 넣으면 연차 발생 내역이 연도별로 나옵니다. 입사일 기준과 회계연도 기준을 동시에 계산해 어느 쪽이 유리한지 알려주고, 미사용 연차수당까지 계산합니다.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/annual-leave/">
+<meta property="og:title" content="연차 계산기 — 입사일·회계연도 기준 동시 비교">
+<meta property="og:description" content="두 기준을 한 번에 계산해 유리한 쪽을 알려드립니다. 연차수당까지.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/annual-leave/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  .row{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start}
+  .col{flex:1;min-width:210px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
+  input[type=date],input[type=text],input[type=number]{padding:10px 12px;border:1px solid var(--line);border-radius:9px;
+    background:var(--surface);color:var(--ink);font-size:15px;font-family:inherit;width:100%;font-variant-numeric:tabular-nums}
+  input[type=text],input[type=number]{text-align:right;font-weight:600}
+  input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:12px 0 0}
+  .opt{display:flex;align-items:center;gap:9px;font-size:14.5px;cursor:pointer;margin:14px 0 0}
+  .opt input{width:17px;height:17px;accent-color:var(--accent);cursor:pointer;flex:none}
+
+  .cmp{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+  .cmp .c{border:1px solid var(--line);border-radius:13px;padding:16px 18px;background:var(--surface)}
+  .cmp .c.win{border-color:var(--accent);background:var(--accent-soft)}
+  .cmp .c .k{font-size:12.5px;color:var(--ink-3);font-weight:600}
+  .cmp .c .v{font-size:26px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em;margin-top:2px}
+  .cmp .c.win .v{color:var(--accent)}
+  .cmp .c .d{font-size:12.5px;color:var(--ink-3);margin-top:2px}
+
+  .result{background:var(--surface);border:1px solid var(--accent);border-radius:16px;padding:26px 24px;margin:18px 0}
+  .big{font-size:13px;color:var(--ink-2);margin:0 0 4px}
+  .money{font-size:38px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.2;color:var(--accent)}
+  .money small{font-size:18px;font-weight:700;margin-left:3px}
+  .yearly{font-size:14px;color:var(--ink-2);margin-top:6px}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14.5px}
+  th,td{text-align:left;padding:8px 8px;border-bottom:1px solid var(--line-soft)}
+  th{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;border-bottom:1px solid var(--line)}
+  td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  tr.sum td{border-top:2px solid var(--line);border-bottom:0;font-weight:700;padding-top:11px}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 7px;border-radius:5px;background:var(--line-soft);color:var(--ink-3)}
+  details{margin:14px 0;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:0 16px}
+  details[open]{padding-bottom:8px}
+  summary{cursor:pointer;padding:12px 0;font-size:14.5px;font-weight:600;color:var(--ink-2)}
+  summary:hover{color:var(--accent)}
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .m-ok{background:var(--good-soft);border-color:var(--good)}
+  .hidden{display:none}
+  .src{font-size:12.5px;color:var(--ink-3);margin-top:14px;padding-top:12px;border-top:1px solid var(--line-soft)}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .money{font-size:30px}
+    .cmp{grid-template-columns:1fr}
+    table{font-size:13.5px}
+    th,td{padding:7px 4px}
+  }
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › 연차 계산기</p>
+
+<h1>연차 계산기</h1>
+<p class="sub">입사일만 넣으면 연차가 언제 몇 개 생기는지 연도별로 나옵니다. <strong>입사일 기준과 회계연도 기준을 동시에 계산</strong>해서 어느 쪽이 유리한지 알려드려요. 대부분의 계산기가 한쪽만 지원하는데, 퇴사할 때 손해를 보는 지점이 바로 여기입니다.</p>
+
+<div class="panel">
+  <div class="row">
+    <div class="col">
+      <label class="f">입사일</label>
+      <input type="date" id="join">
+    </div>
+    <div class="col">
+      <label class="f">기준일</label>
+      <input type="date" id="until">
+      <p class="note" style="margin-top:8px">이 날짜까지 발생한 연차를 계산합니다. 퇴사 예정이면 마지막 근무일을 넣으세요.</p>
+    </div>
+  </div>
+
+  <label class="opt"><input type="checkbox" id="useWage"><span>미사용 연차수당도 계산하기</span></label>
+  <div id="wageBox" class="hidden" style="margin-top:12px">
+    <div class="row">
+      <div class="col">
+        <label class="f">미사용 연차</label>
+        <input type="number" id="unused" value="5" min="0" max="60" step="0.5">
+      </div>
+      <div class="col">
+        <label class="f">월 통상임금</label>
+        <input type="text" id="ordPay" inputmode="numeric" value="3,000,000">
+      </div>
+      <div class="col">
+        <label class="f">월 소정근로시간</label>
+        <input type="number" id="ordHours" value="209" min="1" max="400">
+      </div>
+    </div>
+    <p class="note">기본급에 매달 고정으로 나오는 수당을 더한 금액입니다. 주 40시간 근무면 209시간이에요. 연차수당은 원칙적으로 <strong>통상임금</strong>을 기준으로 계산합니다.</p>
+  </div>
+</div>
+
+<div id="warn" class="hidden"></div>
+
+<div id="out" class="hidden">
+<div class="result">
+  <p class="big">기준일까지 발생한 총 연차</p>
+  <div class="money" id="total">0<small>일</small></div>
+  <div class="yearly" id="meta"></div>
+
+  <div class="cmp">
+    <div class="c" id="cJoin">
+      <div class="k">입사일 기준</div>
+      <div class="v" id="vJoin">0일</div>
+      <div class="d">입사일마다 새로 발생</div>
+    </div>
+    <div class="c" id="cFisc">
+      <div class="k">회계연도 기준 (1월 1일)</div>
+      <div class="v" id="vFisc">0일</div>
+      <div class="d">매년 1월 1일에 새로 발생</div>
+    </div>
+  </div>
+
+  <div id="wageOut" class="hidden"></div>
+
+  <details open>
+    <summary>연도별 발생 내역 보기</summary>
+    <div style="display:flex;gap:18px;flex-wrap:wrap">
+      <div style="flex:1;min-width:250px">
+        <p style="font-size:13px;color:var(--ink-3);margin:6px 0">입사일 기준</p>
+        <table><tbody id="tJoin"></tbody></table>
+      </div>
+      <div style="flex:1;min-width:250px">
+        <p style="font-size:13px;color:var(--ink-3);margin:6px 0">회계연도 기준</p>
+        <table><tbody id="tFisc"></tbody></table>
+      </div>
+    </div>
+  </details>
+
+  <p class="src" id="src"></p>
+</div>
+</div>
+
+<h2>연차는 어떻게 생기나요</h2>
+<p>근로기준법 제60조가 정하고 있습니다. 규칙 자체는 간단한데 첫해가 헷갈립니다.</p>
+<p><strong>입사 후 1년이 안 됐다면</strong> 한 달을 개근할 때마다 하루씩 생깁니다. 최대 11일이에요. 입사 한 달 뒤에 1일, 두 달 뒤에 또 1일, 이렇게 쌓입니다.</p>
+<p><strong>1년을 채우면</strong> 15일이 한꺼번에 생깁니다. 다만 그 1년 동안 80% 이상 출근해야 해요. 못 채우면 1개월 개근당 1일 방식이 이어집니다.</p>
+<p><strong>3년 이상 다니면</strong> 2년마다 하루씩 늘어납니다. 3년차에 16일, 5년차에 17일, 7년차에 18일 이런 식이고 <strong>최대 25일</strong>까지입니다. 21년을 다니면 25일에 도달하고 그 뒤로는 늘지 않아요.</p>
+<p>중요한 예외가 있습니다. <strong>5인 미만 사업장에는 연차휴가 규정이 적용되지 않습니다.</strong> 주휴수당이나 퇴직금은 5인 미만에도 적용되지만 연차는 다릅니다. 다만 회사가 자율적으로 주기로 정했다면 그 약속은 지켜야 합니다.</p>
+
+<h2>입사일 기준과 회계연도 기준</h2>
+<p>법대로라면 연차는 <strong>사람마다 입사일에 맞춰</strong> 생깁니다. 그런데 직원이 많은 회사는 사람마다 날짜가 달라 관리가 어려우니, 실무에서는 <strong>모두의 기준을 1월 1일로 통일</strong>하는 경우가 많습니다. 이걸 회계연도 기준이라고 해요. 고용노동부도 근로자에게 불리하지 않다면 이 방식을 인정합니다.</p>
+<p>회계연도 기준에서는 입사 첫해가 온전한 1년이 아니니 그만큼 <strong>비례해서</strong> 줍니다.</p>
+<p><code>첫 1월 1일 연차 = 15일 × (입사 연도 재직일수 ÷ 365)</code></p>
+<p>예를 들어 7월 1일에 입사했다면 그 해 재직일수가 184일이므로 다음 1월 1일에 15 × 184 ÷ 365 = 약 7.6일이 생깁니다. 여기에 1년 미만 월차가 따로 계속 발생하니 첫 1~2년은 두 가지가 섞여서 복잡해 보입니다.</p>
+
+<h2>퇴사할 때 반드시 확인해야 하는 것</h2>
+<p>여기가 핵심입니다. 회계연도 기준은 어디까지나 <strong>관리 편의를 위한 방식</strong>이고, 법이 보장하는 기준은 입사일입니다. 그래서 <strong>퇴사 시점에 두 방식을 비교해서 입사일 기준이 더 많다면 그 차액을 보전해 줘야 합니다.</strong> 고용노동부 행정해석이 일관되게 이 입장이에요.</p>
+<p>손해가 가장 크게 나는 건 <strong>연중 늦게 입사한 사람이 입사 기념일을 지나서 퇴사</strong>할 때입니다. 원인은 첫해 비례 부여예요. 7월 1일에 입사했다면 첫 1월 1일에 15일이 아니라 7.6일만 받는데, 이 <strong>7.4일의 차이가 그 뒤로 계속 따라다닙니다.</strong></p>
+<p>다만 언제나 손해인 건 아닙니다. 7월 입사자를 예로 들면, 매년 1월부터 6월 사이에는 회계연도 기준이 1년치를 미리 준 셈이라 오히려 유리합니다. 그러다 7월이 되어 입사 기념일이 지나면 입사일 기준이 앞서고, 그 차이가 그대로 손해가 됩니다. <strong>1년 중 절반은 유리하고 절반은 불리한데, 하필 불리한 구간에 퇴사하면 그만큼을 못 받는 것</strong>입니다.</p>
+<p>연초에 입사한 사람은 차이가 작습니다. 2월 1일 입사라면 첫해 비례가 13.7일이라 손해가 1.3일 정도예요. 반대로 10월이나 11월에 입사했다면 첫해 비례가 3~4일밖에 안 되어 차이가 11일을 넘기도 합니다.</p>
+<p>이 계산기가 두 기준을 나란히 보여주는 이유가 이겁니다. 회계연도 기준 쪽이 적게 나오면 경고를 띄우고 차이가 며칠인지 알려드립니다. 그 일수만큼 연차수당을 더 받아야 합니다.</p>
+
+<h2>연차수당은 얼마인가요</h2>
+<p>쓰지 못하고 남은 연차는 수당으로 받습니다. 계산은 이렇습니다.</p>
+<p><code>연차수당 = 1일 통상임금 × 미사용 일수</code></p>
+<p>1일 통상임금은 월 통상임금을 월 소정근로시간(주 40시간이면 209시간)으로 나눈 뒤 하루 소정근로시간 8시간을 곱해 구합니다. 근로기준법 제60조는 통상임금 또는 평균임금 중 취업규칙에서 정한 것을 지급하도록 하고 있는데, 실무에서는 통상임금이 원칙입니다.</p>
+<p>어느 시점의 통상임금이냐도 정해져 있습니다. <strong>휴가를 쓸 수 있는 마지막 달의 통상임금</strong>이 기준이에요. 회계연도 기준 회사에서 2025년치 미사용 연차를 2026년 1월에 정산한다면 2025년 12월의 통상임금으로 계산합니다.</p>
+
+<h2>자주 겪는 문제</h2>
+<h3>회사가 연차 촉진을 했다며 수당을 안 줍니다</h3>
+<p>연차사용촉진제도는 회사가 법이 정한 절차를 <strong>정확히 지켰을 때만</strong> 수당 지급 의무가 없어집니다. 사용 기간 만료 6개월 전에 근로자별 미사용 일수를 알리고 사용 시기를 정해 통보하도록 서면으로 촉구해야 하고, 근로자가 정하지 않으면 회사가 시기를 지정해 다시 서면 통보해야 합니다. 구두로 "연차 쓰세요"라고 한 정도로는 요건을 못 채웁니다.</p>
+<h3>1년 딱 채우고 퇴사하면 며칠인가요</h3>
+<p>1년 미만 월차 11일에 1년을 채운 시점의 15일을 더해 26일입니다. 대법원이 2021년에 이 쟁점을 정리했는데, <strong>15일이 생기려면 1년을 채운 다음 날까지 근로관계가 유지</strong>돼야 합니다. 즉 정확히 365일째에 퇴사하면 11일만, 366일째까지 다니면 26일이 됩니다. 하루 차이로 15일이 갈리니 퇴사일을 정할 때 확인하세요.</p>
+<h3>육아휴직 기간은 어떻게 되나요</h3>
+<p>출근한 것으로 봅니다. 근로기준법 제60조 제7항이 육아휴직, 출산전후휴가, 업무상 재해로 인한 휴업 기간을 출근으로 간주하도록 정하고 있어서, 이 기간이 있어도 연차는 정상적으로 발생합니다.</p>
+
+<!--REL:S-->
+<h2>함께 쓰면 좋은 도구</h2>
+<div class="rel">
+  <a href="/tools/severance/"><strong>퇴직금 계산기</strong><span>평균임금·통상임금 자동 비교</span></a>
+  <a href="/tools/holiday-pay/"><strong>주휴수당 계산기</strong><span>2026년 최저임금 10,320원 기준</span></a>
+  <a href="/tools/salary/"><strong>연봉 실수령액 계산기</strong><span>2026년 요율·간이세액표 원본</span></a>
+</div>
+<p class="rel-all"><a href="/tools/">까치툴 도구 14개 전체 보기 →</a></p>
+<!--REL:E-->
+
+<footer>
+  <p>까치툴 · 모든 계산은 브라우저에서 이루어지며 입력값은 전송·저장되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const won=n=>Math.round(n).toLocaleString('ko-KR');
+const num=s=>{const v=String(s).replace(/[^0-9]/g,'');return v?parseInt(v,10):0;};
+const D=s=>{const [y,m,d]=s.split('-').map(Number);return new Date(Date.UTC(y,m-1,d));};
+const fmtD=dt=>`${dt.getUTCFullYear()}.${String(dt.getUTCMonth()+1).padStart(2,'0')}.${String(dt.getUTCDate()).padStart(2,'0')}`;
+const dayCount=(a,b)=>Math.round((b-a)/86400000)+1;
+function addM(dt,n){
+  const t=new Date(Date.UTC(dt.getUTCFullYear(),dt.getUTCMonth()+n,1));
+  const lastDay=new Date(Date.UTC(t.getUTCFullYear(),t.getUTCMonth()+1,0)).getUTCDate();
+  return new Date(Date.UTC(t.getUTCFullYear(),t.getUTCMonth(),Math.min(dt.getUTCDate(),lastDay)));
+}
+const addY=(dt,n)=>addM(dt,n*12);
+const r1=n=>Math.round(n*10)/10;
+
+/* 근속 n년차의 연차일수 — 3년 이상부터 2년마다 1일 가산, 최대 25일 */
+const grant=n=>Math.min(25, 15+Math.floor((n-1)/2));
+
+/* 1년 미만 월차: 1개월 개근마다 1일, 최대 11일 */
+function monthly(join,until){
+  const out=[], oneY=addY(join,1);
+  for(let i=1;i<=11;i++){
+    const d=addM(join,i);
+    if(d>=oneY || d>until) break;
+    out.push({date:d, days:1, label:`입사 ${i}개월`});
+  }
+  return out;
+}
+function fullYears(a,b){
+  let n=b.getUTCFullYear()-a.getUTCFullYear();
+  if(addY(a,n)>b) n--;
+  return n;
+}
+function byJoin(join,until){
+  const ev=monthly(join,until);
+  for(let n=1;n<=60;n++){
+    const d=addY(join,n);
+    if(d>until) break;
+    ev.push({date:d, days:grant(n), label:`${n}년차`});
+  }
+  return ev.sort((a,b)=>a.date-b.date);
+}
+function byFiscal(join,until){
+  const ev=monthly(join,until);
+  const y0=join.getUTCFullYear();
+  for(let y=y0+1;y<=until.getUTCFullYear()+1;y++){
+    const d=new Date(Date.UTC(y,0,1));
+    if(d>until) break;
+    if(y===y0+1){
+      const inYear=dayCount(join,new Date(Date.UTC(y0,11,31)));
+      ev.push({date:d, days:r1(15*inYear/365), label:`${y}년 (비례 ${inYear}일)`});
+    }else{
+      const n=Math.max(1,fullYears(join,d));
+      ev.push({date:d, days:grant(n), label:`${y}년 (근속 ${n}년차)`});
+    }
+  }
+  return ev.sort((a,b)=>a.date-b.date);
+}
+const sum=ev=>r1(ev.reduce((a,e)=>a+e.days,0));
+const rows=ev=>ev.length? ev.map(e=>
+  `<tr><td>${fmtD(e.date)}<div style="font-size:12px;color:var(--ink-3)">${e.label}</div></td>
+   <td class="n">+${e.days}일</td></tr>`).join('')+
+  `<tr class="sum"><td>합계</td><td class="n">${sum(ev)}일</td></tr>`
+  : '<tr><td colspan="2" style="color:var(--ink-3)">아직 발생한 연차가 없습니다.</td></tr>';
+
+(function init(){
+  const t=new Date();
+  $('until').value=t.toISOString().slice(0,10);
+  $('join').value=new Date(Date.UTC(t.getFullYear()-2,6,1)).toISOString().slice(0,10);
+})();
+
+function calc(){
+  const w=$('warn');
+  if(!$('join').value||!$('until').value){ $('out').classList.add('hidden'); return; }
+  const join=D($('join').value), until=D($('until').value);
+  if(until<join){ w.className='msg m-bad'; w.textContent='기준일이 입사일보다 빠릅니다.'; $('out').classList.add('hidden'); return; }
+  $('out').classList.remove('hidden');
+
+  const evJ=byJoin(join,until), evF=byFiscal(join,until);
+  const sJ=sum(evJ), sF=sum(evF);
+  const best=Math.max(sJ,sF);
+
+  $('total').innerHTML=best+'<small>일</small>';
+  const n=fullYears(join,until);
+  $('meta').textContent=`입사 ${fmtD(join)} · 기준일 ${fmtD(until)} · 근속 ${n}년 ${Math.max(0,Math.round((until-addY(join,n))/86400000/30))}개월`;
+  $('vJoin').textContent=sJ+'일'; $('vFisc').textContent=sF+'일';
+  $('cJoin').className='c'+(sJ>=sF?' win':''); $('cFisc').className='c'+(sF>sJ?' win':'');
+  $('tJoin').innerHTML=rows(evJ); $('tFisc').innerHTML=rows(evF);
+
+  if($('useWage').checked){
+    const unused=Math.max(0,+$('unused').value||0);
+    const m=num($('ordPay').value), h=Math.max(1,+$('ordHours').value||209);
+    const dayWage=m/h*8, total=dayWage*unused;
+    $('wageOut').className='';
+    $('wageOut').innerHTML=`<table>
+      <tr><td>1일 통상임금 (${won(m)} ÷ ${h}h × 8h)</td><td class="n">${won(dayWage)}원</td></tr>
+      <tr><td>미사용 연차</td><td class="n">${unused}일</td></tr>
+      <tr class="sum"><td>연차수당</td><td class="n" style="color:var(--accent)">${won(total)}원</td></tr></table>`;
+  } else $('wageOut').className='hidden';
+
+  const diff=r1(sJ-sF);
+  if(diff>0){
+    w.className='msg m-warn';
+    w.innerHTML=`회계연도 기준이 입사일 기준보다 <strong>${diff}일 적습니다.</strong> 회계연도 기준은 관리 편의를 위한 방식일 뿐이라, 퇴사할 때는 입사일 기준과 비교해 <strong>불리하지 않게 보전해 줘야 합니다.</strong> 회사가 회계연도 기준으로만 정산한다면 ${diff}일분의 연차수당을 더 받아야 합니다.`;
+  } else if(diff<0){
+    w.className='msg m-ok';
+    w.innerHTML=`회계연도 기준이 입사일 기준보다 <strong>${-diff}일 많습니다.</strong> 이 경우는 근로자에게 불리하지 않으므로 회계연도 기준 그대로 받으면 됩니다.`;
+  } else {
+    w.className='msg m-ok';
+    w.innerHTML='두 기준의 결과가 같습니다.';
+  }
+}
+
+['join','until'].forEach(id=>$(id).addEventListener('change',calc));
+$('useWage').addEventListener('change',()=>{ $('wageBox').classList.toggle('hidden',!$('useWage').checked); calc(); });
+['unused','ordHours'].forEach(id=>$(id).addEventListener('input',calc));
+$('ordPay').addEventListener('input',()=>{ const v=num($('ordPay').value); $('ordPay').value=v?won(v):''; calc(); });
+
+$('src').innerHTML='기준 · 근로기준법 제60조 (연차 유급휴가) · 시행령 제7조 별표1 (5인 미만 사업장 적용 제외)'
+ +'<br><strong>이 결과는 참고용 추정치입니다.</strong> 실제 연차 일수는 회사의 취업규칙, 출근율 80% 충족 여부, 연차사용촉진제도 시행 여부에 따라 달라질 수 있습니다. 회계연도 기준의 비례 부여 소수점 처리(올림·반올림)도 회사마다 다릅니다. 상시 근로자 5인 미만 사업장에는 연차휴가 규정이 적용되지 않습니다. 분쟁이 있다면 고용노동부 상담센터(국번 없이 1350)에 문의하세요.';
+
+calc();
+})();
+</script>
+</body>
+</html>
