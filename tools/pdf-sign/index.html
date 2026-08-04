@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PDF 서명·도장 넣기 — 인쇄 없이 계약서에 바로 | 까치툴</title>
+<meta name="description" content="계약서 PDF에 서명을 직접 그려 넣고 도장 이미지를 얹습니다. 인쇄하고 다시 스캔할 필요가 없고, 파일이 서버로 전송되지 않아 계약서를 안심하고 다룰 수 있습니다.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/pdf-sign/">
+<meta property="og:title" content="PDF 서명·도장 넣기 — 인쇄 없이 계약서에 바로">
+<meta property="og:description" content="서명을 그려 넣고 도장을 얹어 그대로 저장. 서버 업로드 없이 브라우저에서 처리.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/pdf-sign/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:940px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 30px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  #drop{border:2px dashed var(--line);border-radius:16px;padding:42px 24px;text-align:center;
+    background:var(--surface);cursor:pointer;transition:.15s}
+  #drop:hover,#drop.over{border-color:var(--accent);background:var(--accent-soft)}
+  #drop .big{font-size:17px;font-weight:600;margin-bottom:6px}
+  #drop .small{font-size:13.5px;color:var(--ink-3)}
+  #file,#imgFile{display:none}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin:16px 0}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin-bottom:8px}
+  .tools{display:flex;gap:9px;flex-wrap:wrap}
+  button.act{font-family:inherit;font-size:15px;font-weight:600;padding:11px 20px;border-radius:10px;border:1px solid transparent;cursor:pointer;transition:.12s}
+  .primary{background:var(--accent);color:#fff}
+  .primary:hover{filter:brightness(1.08)}
+  .primary:disabled{opacity:.45;cursor:not-allowed;filter:none}
+  .ghost{background:transparent;color:var(--ink-2);border-color:var(--line)}
+  .ghost:hover{border-color:var(--ink-3);color:var(--ink)}
+  .ghost:disabled{opacity:.45;cursor:not-allowed}
+
+  .pager{display:flex;align-items:center;gap:12px;justify-content:center;margin:14px 0;font-size:14px}
+  .pager button{font-family:inherit;font-size:14px;padding:7px 14px;border-radius:8px;border:1px solid var(--line);
+    background:var(--surface);color:var(--ink-2);cursor:pointer}
+  .pager button:disabled{opacity:.35;cursor:not-allowed}
+  .pager .cur{font-variant-numeric:tabular-nums;font-weight:600}
+
+  #stage{position:relative;margin:0 auto;width:fit-content;max-width:100%;
+    box-shadow:0 4px 24px rgba(0,0,0,.13);border-radius:4px;overflow:hidden;background:#fff}
+  #stage canvas{display:block;max-width:100%}
+  .item{position:absolute;cursor:move;touch-action:none;outline:1.5px dashed rgba(180,83,9,.85);outline-offset:1px}
+  .item img{width:100%;height:100%;display:block;pointer-events:none;-webkit-user-drag:none}
+  .item.sel{outline:2px solid var(--accent)}
+  .item .hd{position:absolute;right:-9px;bottom:-9px;width:20px;height:20px;border-radius:50%;
+    background:var(--accent);border:2px solid #fff;cursor:nwse-resize;touch-action:none;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+  .item .rm{position:absolute;left:-9px;top:-9px;width:20px;height:20px;border-radius:50%;
+    background:#b91c1c;color:#fff;border:2px solid #fff;cursor:pointer;font-size:12px;line-height:16px;
+    text-align:center;font-weight:700;box-shadow:0 1px 4px rgba(0,0,0,.3);touch-action:none}
+
+  dialog{border:1px solid var(--line);border-radius:16px;background:var(--surface);color:var(--ink);
+    padding:0;max-width:min(660px,94vw)}
+  dialog::backdrop{background:rgba(0,0,0,.55)}
+  .dlg{padding:22px 24px}
+  .dlg h3{margin:0 0 4px;font-size:17px}
+  .dlg .d{font-size:13.5px;color:var(--ink-3);margin:0 0 14px}
+  #pad{border:1px solid var(--line);border-radius:12px;background:#fff;display:block;width:100%;
+    touch-action:none;cursor:crosshair}
+  .dlgbtns{display:flex;gap:9px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap}
+  .swatch{display:inline-flex;gap:7px;align-items:center;margin-right:14px;font-size:13.5px}
+  .swatch input[type=color]{width:38px;height:28px;padding:2px;border:1px solid var(--line);border-radius:6px;background:var(--surface);cursor:pointer}
+  input[type=text]{padding:9px 11px;border:1px solid var(--line);border-radius:8px;width:100%;
+    background:var(--surface);color:var(--ink);font-size:15px;font-family:inherit}
+  input[type=range]{accent-color:var(--accent);vertical-align:middle}
+  .prev{margin-top:12px;padding:14px;border:1px solid var(--line-soft);border-radius:10px;background:var(--bg);text-align:center;min-height:64px}
+  .prev img{max-width:100%;max-height:120px}
+
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .m-ok{background:var(--good-soft);border-color:var(--good)}
+  .hidden{display:none}
+  .note{font-size:13.5px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:13px;margin:14px 0}
+  code{background:var(--line-soft);padding:2px 6px;border-radius:5px;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:24px}
+    button.act{font-size:14px;padding:10px 15px}
+  }
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › PDF 서명·도장</p>
+
+<h1>PDF 서명·도장 넣기</h1>
+<p class="sub">계약서에 서명을 <strong>직접 그려 넣고</strong> 도장을 얹어 그대로 저장합니다. 인쇄해서 서명하고 다시 스캔할 필요가 없어요. 파일이 서버로 전송되지 않고 브라우저 안에서만 처리됩니다.</p>
+
+<div id="drop">
+  <div class="big">PDF를 여기에 끌어다 놓거나 클릭해서 선택하세요</div>
+  <div class="small">계약서 · 합의서 · 서약서 · 각종 제출 서류</div>
+  <input type="file" id="file" accept="application/pdf,.pdf">
+</div>
+
+<div id="warn" class="hidden"></div>
+
+<div id="editor" class="hidden">
+  <div class="panel">
+    <label class="f">넣을 것 고르기</label>
+    <div class="tools">
+      <button class="act primary" id="btnSign">✍️ 서명 그리기</button>
+      <button class="act ghost" id="btnImg">🔴 도장·서명 사진</button>
+      <button class="act ghost" id="btnText">🔤 글자 넣기</button>
+      <button class="act ghost" id="btnAll" disabled>선택한 것을 모든 페이지에</button>
+    </div>
+    <p class="note" style="margin-bottom:0">넣은 뒤에는 <strong>끌어서 위치를 옮기고</strong>, 오른쪽 아래 동그라미를 끌어 크기를 바꾸세요. 왼쪽 위 빨간 버튼을 누르면 지워집니다.</p>
+  </div>
+
+  <div class="pager">
+    <button id="prev">‹ 이전</button>
+    <span class="cur"><span id="pnum">1</span> / <span id="pcnt">1</span> 쪽</span>
+    <button id="next">다음 ›</button>
+  </div>
+
+  <div id="stage"></div>
+
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:18px">
+    <button class="act primary" id="save" disabled>서명된 PDF 저장</button>
+    <button class="act ghost" id="reset">다른 파일 열기</button>
+    <span id="stat" style="font-size:14px;color:var(--ink-3)"></span>
+  </div>
+</div>
+
+<!-- 서명 그리기 -->
+<dialog id="dSign"><div class="dlg">
+  <h3>서명 그리기</h3>
+  <p class="d">마우스로 끌거나, 휴대폰·태블릿이면 손가락이나 펜으로 그으세요. 여백은 저장할 때 자동으로 잘라냅니다.</p>
+  <canvas id="pad" width="1200" height="440" style="height:200px"></canvas>
+  <div style="margin-top:12px">
+    <span class="swatch">색 <input type="color" id="penColor" value="#101a3a"></span>
+    <span class="swatch">굵기 <input type="range" id="penSize" min="2" max="14" value="6"></span>
+  </div>
+  <div class="dlgbtns">
+    <button class="act ghost" id="padClear">지우기</button>
+    <button class="act ghost" id="padCancel">닫기</button>
+    <button class="act primary" id="padOk">넣기</button>
+  </div>
+</div></dialog>
+
+<!-- 도장·사진 -->
+<dialog id="dImg"><div class="dlg">
+  <h3>도장·서명 사진 넣기</h3>
+  <p class="d">흰 종이에 찍은 도장이나 서명을 사진으로 올리면 흰 배경을 지워 투명하게 만들어 줍니다.</p>
+  <button class="act ghost" id="pickImg">사진 고르기</button>
+  <input type="file" id="imgFile" accept="image/*">
+  <div style="margin-top:14px">
+    <label class="opt" style="display:flex;gap:8px;align-items:center;font-size:14.5px">
+      <input type="checkbox" id="rmBg" checked style="width:17px;height:17px;accent-color:var(--accent)">
+      <span>흰 배경 지우기</span>
+    </label>
+    <div style="margin-top:8px;font-size:13.5px">
+      지우는 정도 <input type="range" id="bgLevel" min="120" max="250" value="205" style="width:180px">
+      <span id="bgVal" style="font-variant-numeric:tabular-nums;font-weight:700;color:var(--accent)">205</span>
+    </div>
+  </div>
+  <div class="prev" id="imgPrev"><span style="color:var(--ink-3);font-size:13.5px">사진을 고르면 여기에 미리보기가 나옵니다</span></div>
+  <div class="dlgbtns">
+    <button class="act ghost" id="imgCancel">닫기</button>
+    <button class="act primary" id="imgOk" disabled>넣기</button>
+  </div>
+</div></dialog>
+
+<!-- 글자 -->
+<dialog id="dText"><div class="dlg">
+  <h3>글자 넣기</h3>
+  <p class="d">이름이나 날짜처럼 빈칸에 채워 넣을 글자입니다. 한글도 그대로 들어갑니다.</p>
+  <input type="text" id="txt" placeholder="예) 홍길동  또는  2026년 8월 4일">
+  <div style="margin-top:12px">
+    <span class="swatch">색 <input type="color" id="txtColor" value="#101a3a"></span>
+    <span class="swatch">크기 <input type="range" id="txtSize" min="20" max="90" value="46"></span>
+  </div>
+  <div class="prev" id="txtPrev"><span style="color:var(--ink-3);font-size:13.5px">입력하면 여기에 미리보기가 나옵니다</span></div>
+  <div class="dlgbtns">
+    <button class="act ghost" id="txtCancel">닫기</button>
+    <button class="act primary" id="txtOk" disabled>넣기</button>
+  </div>
+</div></dialog>
+
+<h2>사용법</h2>
+<p>PDF를 올리면 첫 쪽이 화면에 나타납니다. 서명 그리기를 눌러 서명을 그린 뒤 넣기를 누르면 페이지 가운데에 얹히고, 그때부터 끌어서 원하는 자리로 옮기면 됩니다. 오른쪽 아래 동그라미를 끌면 비율을 유지한 채 크기가 바뀌고, 왼쪽 위 빨간 버튼으로 지울 수 있습니다. 여러 쪽짜리 문서는 아래 쪽 번호로 이동해 각 쪽마다 따로 넣으면 됩니다.</p>
+<p>계약서처럼 모든 장에 간인을 찍어야 하는 경우에는 하나를 넣고 자리를 잡은 뒤 <strong>선택한 것을 모든 페이지에</strong>를 누르세요. 같은 위치·같은 크기로 전체 쪽에 복사됩니다.</p>
+<p>다 됐으면 서명된 PDF 저장을 누르세요. <strong>원본 문서의 글자는 그대로 살아 있고</strong> 서명만 그 위에 얹히기 때문에, 저장한 뒤에도 상대방이 문서 내용을 복사하거나 검색할 수 있습니다. 페이지를 이미지로 바꿔버리는 방식이 아니에요.</p>
+
+<h2>서명을 만드는 세 가지 방법</h2>
+<h3>직접 그리기</h3>
+<p>가장 간단합니다. 노트북 터치패드로 그리면 어색하게 나오니, 가능하면 휴대폰이나 태블릿으로 이 페이지를 열어 손가락이나 펜으로 그으세요. 훨씬 자연스럽게 나옵니다. 그린 뒤 주변 여백은 자동으로 잘라내기 때문에 화면 어디에 그리든 상관없습니다.</p>
+<h3>도장이나 서명 사진 올리기</h3>
+<p>흰 종이에 도장을 찍거나 서명을 한 뒤 밝은 곳에서 사진을 찍어 올리세요. 흰 배경을 지워 투명하게 만들어 주기 때문에 문서 위에 얹었을 때 네모난 사진 티가 나지 않습니다. 그림자가 져서 배경이 회색으로 나왔다면 <strong>지우는 정도</strong>를 오른쪽으로 옮기세요. 반대로 도장의 옅은 부분까지 같이 지워졌다면 왼쪽으로 옮기면 됩니다.</p>
+<h3>글자로 넣기</h3>
+<p>이름을 쓰는 칸이나 날짜 칸처럼 손글씨일 필요가 없는 곳에 씁니다. 한글이 그대로 들어가고, 색과 크기를 맞출 수 있습니다.</p>
+
+<h2>왜 서버에 올리지 않는 게 중요한가요</h2>
+<p>이 도구는 파일을 어디로도 전송하지 않습니다. PDF를 읽고 서명을 합치고 새 파일을 만드는 일이 전부 브라우저 안에서 일어나고, 인터넷 연결을 끊어도 똑같이 동작합니다.</p>
+<p>계약서에는 이름, 주소, 주민등록번호, 계좌번호, 거래 금액처럼 유출되면 곤란한 정보가 거의 항상 들어 있습니다. 그런데 흔히 쓰이는 무료 PDF 서명 사이트는 대부분 파일을 자기네 서버로 올린 뒤 처리해서 돌려주는 방식이라, 그 파일이 언제까지 어디에 남아 있는지 이용자가 알 방법이 없습니다. 업무용 계약서라면 회사 보안 정책에 걸리는 경우도 많고요. 브라우저 안에서 끝나면 그 걱정 자체가 없어집니다.</p>
+
+<h2>자주 겪는 문제</h2>
+<h3>파일이 열리지 않아요</h3>
+<p>암호가 걸린 PDF는 열 수 없습니다. 카드 명세서나 급여 명세서처럼 열 때 비밀번호를 묻는 파일이라면, 먼저 그 파일을 열어 <strong>인쇄 → PDF로 저장</strong>으로 암호 없는 사본을 만든 뒤 올려 주세요.</p>
+<h3>서명이 너무 크거나 작게 들어가요</h3>
+<p>넣을 때는 페이지 너비의 4분의 1 정도로 들어갑니다. 오른쪽 아래 동그라미를 끌어 조절하세요. 가로세로 비율은 자동으로 유지되기 때문에 서명이 찌그러지지 않습니다.</p>
+<h3>가로로 누운 페이지에 넣었더니 위치가 어긋나요</h3>
+<p>가로 문서나 회전된 페이지도 화면에 보이는 그대로 저장되도록 처리했습니다. 만약 어긋난다면 알려 주세요.</p>
+<h3>전자서명도 법적 효력이 있나요</h3>
+<p>전자문서 및 전자거래 기본법은 전자문서라는 이유만으로 문서의 효력을 부인할 수 없다고 정하고 있고, 전자서명법도 당사자가 합의한 방식의 전자서명에 서명으로서의 효력을 인정합니다. 실무에서도 이런 이미지 서명 방식이 널리 쓰입니다. 다만 부동산 거래처럼 법에서 서면이나 공증을 따로 요구하는 경우가 있고, 분쟁이 생겼을 때 본인이 서명했다는 점을 어떻게 증명할지는 별개의 문제입니다. 중요한 계약이라면 상대방과 서명 방식을 미리 합의해 두시고, 필요하면 전문가와 상의하세요. 이 설명은 일반적인 안내일 뿐 법률 자문이 아닙니다.</p>
+
+<footer>
+  <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 파일은 업로드되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/tools/pdf/">PDF 편집기</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script src="/tools/lib/pdf-lib.min.js"></script>
+<script type="module">
+import * as pdfjs from '/tools/lib/pdf.min.mjs';
+pdfjs.GlobalWorkerOptions.workerSrc='/tools/lib/pdf.worker.min.mjs';
+const {PDFDocument, degrees}=PDFLib;
+const $=id=>document.getElementById(id);
+
+let bytes=null, pdf=null, pageNum=1, pageCount=0, items=[], seq=0, sel=null;
+let viewW=0, viewH=0;   // 현재 렌더된 캔버스의 CSS 크기(px)
+
+const warn=$('warn');
+function msg(k,h){warn.className='msg m-'+k;warn.innerHTML=h;warn.classList.remove('hidden');}
+const hideMsg=()=>warn.classList.add('hidden');
+
+/* ---------- 파일 받기 ---------- */
+const drop=$('drop'), file=$('file');
+drop.addEventListener('click',()=>file.click());
+drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('over')});
+drop.addEventListener('dragleave',()=>drop.classList.remove('over'));
+drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('over');open(e.dataTransfer.files[0])});
+file.addEventListener('change',e=>open(e.target.files[0]));
+
+async function open(f){
+  if(!f) return;
+  if(f.type && f.type!=='application/pdf' && !/\.pdf$/i.test(f.name)){
+    msg('bad','PDF 파일만 열 수 있습니다.'); return;
+  }
+  try{
+    bytes=new Uint8Array(await f.arrayBuffer());
+    pdf=await pdfjs.getDocument({data:bytes.slice(0)}).promise;
+  }catch(err){
+    const enc=/password/i.test(String(err&&err.name)+String(err&&err.message));
+    msg('bad', enc
+      ? '암호가 걸린 PDF입니다. 해당 파일을 연 뒤 <strong>인쇄 → PDF로 저장</strong>으로 암호 없는 사본을 만들어 올려 주세요.'
+      : 'PDF를 읽지 못했습니다. 파일이 손상되었을 수 있습니다.');
+    return;
+  }
+  pageCount=pdf.numPages; pageNum=1; items=[]; sel=null;
+  $('pcnt').textContent=pageCount;
+  $('editor').classList.remove('hidden');
+  hideMsg();
+  $('stat').textContent=`${pageCount}쪽 문서`;
+  await render();
+}
+
+/* ---------- 페이지 렌더 ---------- */
+async function render(){
+  const page=await pdf.getPage(pageNum);
+  const base=page.getViewport({scale:1});
+  const maxW=Math.min(860, document.querySelector('.wrap').clientWidth-44);
+  const scale=maxW/base.width;
+  const vp=page.getViewport({scale});
+  const dpr=Math.min(window.devicePixelRatio||1, 2);
+  const c=document.createElement('canvas');
+  c.width=Math.round(vp.width*dpr); c.height=Math.round(vp.height*dpr);
+  c.style.width=vp.width+'px'; c.style.height=vp.height+'px';
+  const ctx=c.getContext('2d');
+  ctx.fillStyle='#fff'; ctx.fillRect(0,0,c.width,c.height);
+  ctx.scale(dpr,dpr);
+  await page.render({canvasContext:ctx, viewport:vp, canvas:c}).promise;
+  viewW=vp.width; viewH=vp.height;
+  const st=$('stage'); st.innerHTML=''; st.style.width=vp.width+'px'; st.appendChild(c);
+  $('pnum').textContent=pageNum;
+  $('prev').disabled=pageNum<=1; $('next').disabled=pageNum>=pageCount;
+  drawItems();
+}
+$('prev').addEventListener('click',async()=>{if(pageNum>1){pageNum--;sel=null;syncBtns();await render();}});
+$('next').addEventListener('click',async()=>{if(pageNum<pageCount){pageNum++;sel=null;syncBtns();await render();}});
+
+/* ---------- 항목 ---------- */
+function addItem(canvas,label){
+  const src=canvas.toDataURL('image/png');
+  const aspect=canvas.height/canvas.width;
+  const wu=0.25, hv=wu*viewW*aspect/viewH;
+  /* 여러 개를 겹쳐 놓지 않도록 조금씩 어긋나게 배치 */
+  const n=items.filter(i=>i.page===pageNum).length, off=(n%5)*0.045;
+  const u=Math.min(1-wu, 0.5-wu/2+off), v=Math.min(1-hv, 0.5-hv/2+off);
+  items.push({id:++seq, page:pageNum, src, aspect, u, v, wu, hv, label});
+  sel=seq; syncBtns(); drawItems();
+  $('save').disabled=false;
+  msg('ok','넣었습니다. 끌어서 자리를 옮기고 오른쪽 아래 동그라미로 크기를 맞추세요.');
+  $('stage').scrollIntoView({behavior:'smooth', block:'center'});
+}
+function syncBtns(){ $('btnAll').disabled = sel===null; }
+
+function drawItems(){
+  const st=$('stage');
+  st.querySelectorAll('.item').forEach(e=>e.remove());
+  items.filter(i=>i.page===pageNum).forEach(it=>{
+    const d=document.createElement('div');
+    d.className='item'+(it.id===sel?' sel':'');
+    d.style.left=(it.u*100)+'%'; d.style.top=(it.v*100)+'%';
+    d.style.width=(it.wu*100)+'%'; d.style.height=(it.hv*100)+'%';
+    d.innerHTML=`<img src="${it.src}" alt="${it.label}"><div class="rm" title="지우기">×</div><div class="hd" title="크기 조절"></div>`;
+    st.appendChild(d);
+
+    d.querySelector('.rm').addEventListener('pointerdown',e=>{
+      e.stopPropagation();
+      items=items.filter(x=>x.id!==it.id);
+      if(sel===it.id) sel=null;
+      syncBtns(); drawItems();
+      $('save').disabled=!items.length;
+    });
+
+    const startDrag=(e,mode)=>{
+      e.preventDefault(); e.stopPropagation();
+      sel=it.id; drawItems();
+      const el=st.querySelector('.item.sel');
+      const r=st.getBoundingClientRect();
+      const sx=e.clientX, sy=e.clientY, u0=it.u, v0=it.v, w0=it.wu;
+      const move=ev=>{
+        const dx=(ev.clientX-sx)/r.width, dy=(ev.clientY-sy)/r.height;
+        if(mode==='move'){
+          it.u=Math.min(1-it.wu, Math.max(0, u0+dx));
+          it.v=Math.min(1-it.hv, Math.max(0, v0+dy));
+          el.style.left=(it.u*100)+'%'; el.style.top=(it.v*100)+'%';
+        }else{
+          const wu=Math.min(1-it.u, Math.max(0.03, w0+dx));
+          it.wu=wu; it.hv=wu*viewW*it.aspect/viewH;
+          if(it.v+it.hv>1) it.hv=1-it.v;
+          el.style.width=(it.wu*100)+'%'; el.style.height=(it.hv*100)+'%';
+        }
+      };
+      const up=()=>{document.removeEventListener('pointermove',move);document.removeEventListener('pointerup',up);};
+      document.addEventListener('pointermove',move);
+      document.addEventListener('pointerup',up);
+    };
+    d.addEventListener('pointerdown',e=>startDrag(e,'move'));
+    d.querySelector('.hd').addEventListener('pointerdown',e=>startDrag(e,'resize'));
+  });
+}
+
+$('btnAll').addEventListener('click',()=>{
+  const it=items.find(x=>x.id===sel); if(!it) return;
+  let n=0;
+  for(let p=1;p<=pageCount;p++){
+    if(p===it.page) continue;
+    items.push({...it, id:++seq, page:p}); n++;
+  }
+  msg('ok',`${n}개 쪽에 같은 위치로 복사했습니다.`);
+  drawItems();
+});
+
+/* ---------- 여백 잘라내기 ---------- */
+function trim(c,pad){
+  const w=c.width,h=c.height,d=c.getContext('2d').getImageData(0,0,w,h).data;
+  let x0=w,y0=h,x1=-1,y1=-1;
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+    if(d[(y*w+x)*4+3]>8){ if(x<x0)x0=x; if(x>x1)x1=x; if(y<y0)y0=y; if(y>y1)y1=y; }
+  }
+  if(x1<0) return null;
+  pad=pad||0;
+  x0=Math.max(0,x0-pad); y0=Math.max(0,y0-pad);
+  x1=Math.min(w-1,x1+pad); y1=Math.min(h-1,y1+pad);
+  const o=document.createElement('canvas');
+  o.width=x1-x0+1; o.height=y1-y0+1;
+  o.getContext('2d').drawImage(c,x0,y0,o.width,o.height,0,0,o.width,o.height);
+  return o;
+}
+
+/* ---------- 서명 그리기 ---------- */
+const pad=$('pad'), pctx=pad.getContext('2d');
+let drawing=false, last=null, inked=false;
+function padPos(e){
+  const r=pad.getBoundingClientRect();
+  return {x:(e.clientX-r.left)*pad.width/r.width, y:(e.clientY-r.top)*pad.height/r.height};
+}
+pad.addEventListener('pointerdown',e=>{
+  e.preventDefault(); pad.setPointerCapture(e.pointerId);
+  drawing=true; last=padPos(e);
+  pctx.lineCap='round'; pctx.lineJoin='round';
+});
+pad.addEventListener('pointermove',e=>{
+  if(!drawing) return;
+  const p=padPos(e);
+  pctx.strokeStyle=$('penColor').value;
+  pctx.lineWidth=+$('penSize').value*2;
+  pctx.beginPath(); pctx.moveTo(last.x,last.y); pctx.lineTo(p.x,p.y); pctx.stroke();
+  last=p; inked=true;
+});
+['pointerup','pointercancel','pointerleave'].forEach(t=>pad.addEventListener(t,()=>{drawing=false}));
+$('padClear').addEventListener('click',()=>{pctx.clearRect(0,0,pad.width,pad.height);inked=false;});
+$('btnSign').addEventListener('click',()=>{pctx.clearRect(0,0,pad.width,pad.height);inked=false;$('dSign').showModal();});
+$('padCancel').addEventListener('click',()=>$('dSign').close());
+$('padOk').addEventListener('click',()=>{
+  if(!inked){ alert('서명을 먼저 그려 주세요.'); return; }
+  const t=trim(pad,12); if(!t) return;
+  $('dSign').close(); addItem(t,'서명');
+});
+
+/* ---------- 도장·사진 ---------- */
+let rawImg=null, stampCanvas=null;
+$('btnImg').addEventListener('click',()=>$('dImg').showModal());
+$('imgCancel').addEventListener('click',()=>$('dImg').close());
+$('pickImg').addEventListener('click',()=>$('imgFile').click());
+$('bgLevel').addEventListener('input',()=>{$('bgVal').textContent=$('bgLevel').value; buildStamp();});
+$('rmBg').addEventListener('change',buildStamp);
+$('imgFile').addEventListener('change',async e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const url=URL.createObjectURL(f);
+  rawImg=await new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src=url;});
+  if(!rawImg){ $('imgPrev').innerHTML='<span style="color:var(--bad)">이미지를 읽지 못했습니다.</span>'; return; }
+  buildStamp();
+});
+function buildStamp(){
+  if(!rawImg) return;
+  const max=900, s=Math.min(1, max/Math.max(rawImg.naturalWidth,rawImg.naturalHeight));
+  const c=document.createElement('canvas');
+  c.width=Math.max(1,Math.round(rawImg.naturalWidth*s));
+  c.height=Math.max(1,Math.round(rawImg.naturalHeight*s));
+  const x=c.getContext('2d');
+  x.imageSmoothingQuality='high';
+  x.drawImage(rawImg,0,0,c.width,c.height);
+  if($('rmBg').checked){
+    const t=+$('bgLevel').value, soft=Math.max(1,t*0.35);
+    const im=x.getImageData(0,0,c.width,c.height), d=im.data;
+    for(let i=0;i<d.length;i+=4){
+      const lum=0.299*d[i]+0.587*d[i+1]+0.114*d[i+2];
+      const a = lum>=t ? 0 : Math.min(255, Math.round((t-lum)/soft*255));
+      d[i+3]=Math.min(d[i+3],a);
+    }
+    x.putImageData(im,0,0);
+  }
+  stampCanvas=$('rmBg').checked ? (trim(c,4)||c) : c;
+  const p=$('imgPrev'); p.innerHTML='';
+  const img=new Image(); img.src=stampCanvas.toDataURL('image/png');
+  img.style.maxHeight='120px'; p.appendChild(img);
+  $('imgOk').disabled=false;
+}
+$('imgOk').addEventListener('click',()=>{
+  if(!stampCanvas) return;
+  $('dImg').close(); addItem(stampCanvas,'도장');
+});
+
+/* ---------- 글자 ---------- */
+function buildText(){
+  const s=$('txt').value.trim();
+  $('txtOk').disabled=!s;
+  const p=$('txtPrev');
+  if(!s){ p.innerHTML='<span style="color:var(--ink-3);font-size:13.5px">입력하면 여기에 미리보기가 나옵니다</span>'; return null; }
+  const size=+$('txtSize').value;
+  const f=`600 ${size}px -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif`;
+  const m=document.createElement('canvas').getContext('2d');
+  m.font=f;
+  const w=Math.ceil(m.measureText(s).width)+size, h=Math.ceil(size*1.7);
+  const c=document.createElement('canvas'); c.width=w; c.height=h;
+  const x=c.getContext('2d');
+  x.font=f; x.fillStyle=$('txtColor').value; x.textBaseline='middle';
+  x.fillText(s, size/2, h/2);
+  const t=trim(c,Math.round(size*0.15))||c;
+  p.innerHTML=''; const img=new Image(); img.src=t.toDataURL('image/png');
+  img.style.maxHeight='90px'; p.appendChild(img);
+  return t;
+}
+$('btnText').addEventListener('click',()=>{$('dText').showModal();buildText();});
+['input','change'].forEach(ev=>{
+  $('txt').addEventListener(ev,buildText);
+  $('txtSize').addEventListener(ev,buildText);
+  $('txtColor').addEventListener(ev,buildText);
+});
+$('txtCancel').addEventListener('click',()=>$('dText').close());
+$('txtOk').addEventListener('click',()=>{
+  const t=buildText(); if(!t) return;
+  $('dText').close(); addItem(t,'글자');
+});
+
+/* ---------- 저장 ---------- */
+/* 화면 좌표(정규화) -> pdf-lib drawImage 인자. 페이지 회전 0/90/180/270 대응 */
+function place(W,H,rot,u,v,wu,hv){
+  const Wr=(rot===90||rot===270)?H:W, Hr=(rot===90||rot===270)?W:H;
+  const px=u*Wr, py=v*Hr, wr=wu*Wr, hr=hv*Hr;
+  if(rot===90)  return {x:py+hr,   y:px,      width:wr, height:hr, rotate:degrees(90)};
+  if(rot===180) return {x:W-px,    y:py+hr,   width:wr, height:hr, rotate:degrees(180)};
+  if(rot===270) return {x:W-py-hr, y:H-px,    width:wr, height:hr, rotate:degrees(270)};
+  return              {x:px,       y:H-py-hr, width:wr, height:hr, rotate:degrees(0)};
+}
+
+$('save').addEventListener('click',async()=>{
+  if(!items.length) return;
+  const btn=$('save'); btn.disabled=true; $('stat').textContent='저장하는 중...';
+  try{
+    const doc=await PDFDocument.load(bytes.slice(0));
+    const cache=new Map();
+    for(const it of items){
+      if(!cache.has(it.src)) cache.set(it.src, await doc.embedPng(it.src));
+      const png=cache.get(it.src);
+      const page=doc.getPage(it.page-1);
+      const {width:W,height:H}=page.getSize();
+      const rot=((page.getRotation().angle%360)+360)%360;
+      page.drawImage(png, place(W,H,rot,it.u,it.v,it.wu,it.hv));
+    }
+    const out=await doc.save();
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([out],{type:'application/pdf'}));
+    a.download=(file.files[0]?file.files[0].name.replace(/\.pdf$/i,''):'document')+'_서명.pdf';
+    a.click();
+    setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+    msg('ok','저장했습니다. 원본 문서의 글자는 그대로 살아 있습니다.');
+    $('stat').textContent='완료';
+  }catch(err){
+    msg('bad','저장 중 문제가 생겼습니다. 다른 PDF로 시도해 보시거나 알려 주세요. ('+(err&&err.message||err)+')');
+    $('stat').textContent='';
+  }
+  btn.disabled=false;
+});
+
+$('reset').addEventListener('click',()=>{
+  bytes=null; pdf=null; items=[]; sel=null; file.value='';
+  $('editor').classList.add('hidden'); $('stage').innerHTML='';
+  $('save').disabled=true; $('btnAll').disabled=true; $('stat').textContent='';
+  hideMsg(); window.scrollTo({top:0,behavior:'smooth'});
+});
+
+window.addEventListener('resize',()=>{ if(pdf) render(); });
+</script>
+</body>
+</html>
