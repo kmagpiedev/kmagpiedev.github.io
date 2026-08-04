@@ -301,11 +301,24 @@
         .hero-text h1 { font-size: 2.45rem; }
         .hero-apps { justify-self: end; max-width: 390px; }
         .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .tool-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
     @media (min-width: 1040px) {
         .card-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .tool-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
+
+    .tool-grid { display: grid; gap: 12px; margin-bottom: 22px; }
+    .tool-chip {
+        display: block; padding: 14px 16px; border-radius: 14px;
+        background: var(--card-bg); border: 1px solid var(--border);
+        color: var(--text); text-decoration: none; font-weight: 600;
+        font-size: 0.95rem; line-height: 1.4; transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+    .tool-chip span { display: block; margin-top: 4px; font-size: 0.8rem; font-weight: 400; color: var(--muted); }
+    .tool-chip:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .tool-chip:hover span { color: var(--muted); }
     </style>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
 <link rel="canonical" href="https://www.kmagpie.com/" />
@@ -321,6 +334,7 @@
             <div class="header-actions">
                 <nav class="nav" aria-label="Main navigation" data-i18n-attr="aria-label:navAria">
                     <a href="#games" data-i18n="navGames">게임/앱</a>
+                    <a href="/tools/" data-i18n="navTools">까치툴</a>
                     <a href="#about" data-i18n="navAbout">소개</a>
                     <a href="#contact" data-i18n="navContact">문의</a>
                 </nav>
@@ -465,7 +479,28 @@
             </div>
         </section>
 
-        <section id="about" class="section section-alt">
+
+        <section id="tools" class="section section-alt">
+            <div class="container">
+                <h2 data-i18n="toolsTitle">까치툴 — 무료 온라인 도구</h2>
+                <p class="section-desc" data-i18n="toolsDesc">가입도 파일 업로드도 없이 브라우저 안에서 바로 처리됩니다. 사용 횟수 제한도 워터마크도 없습니다.</p>
+
+                <div class="tool-grid">
+                    <a class="tool-chip" href="/tools/pdf/">PDF 편집기<span>합치기 · 나누기 · 페이지 삭제</span></a>
+                    <a class="tool-chip" href="/tools/remove-bg/">배경 제거 (누끼)<span>인물만 남기고 투명 PNG</span></a>
+                    <a class="tool-chip" href="/tools/convert/">이미지 확장자 변환<span>PNG · JPG · WebP · BMP · ICO</span></a>
+                    <a class="tool-chip" href="/tools/id-photo/">증명사진 만들기<span>여권 · 반명함 300dpi</span></a>
+                    <a class="tool-chip" href="/tools/qr/">QR코드 만들기<span>링크 · 와이파이 · 연락처</span></a>
+                    <a class="tool-chip" href="/tools/app-icon/">앱 아이콘 사이즈 생성기<span>안드로이드 · iOS · 파비콘</span></a>
+                    <a class="tool-chip" href="/tools/image-compress/">이미지 용량 줄이기<span>목표 용량에 자동으로 맞춤</span></a>
+                    <a class="tool-chip" href="/tools/privacy-policy/">개인정보처리방침 생성기<span>Play 스토어 심사용</span></a>
+                    <a class="tool-chip" href="/tools/screenshot/">스토어 스크린샷 생성기<span>기기 프레임 · 피처 그래픽</span></a>
+                </div>
+
+                <a class="card-detail-link" href="/tools/" data-i18n="toolsAll">까치툴 전체 보기 →</a>
+            </div>
+        </section>
+        <section id="about" class="section">
             <div class="container">
                 <h2 data-i18n="aboutTitle">개발자 소개</h2>
                 <p class="section-desc" data-i18n="aboutDesc">
@@ -481,7 +516,7 @@
             </div>
         </section>
 
-        <section id="contact" class="section">
+        <section id="contact" class="section section-alt">
             <div class="container">
                 <h2 data-i18n="contactTitle">문의</h2>
                 <p class="section-desc" data-i18n="contactDesc">
@@ -535,8 +570,12 @@
                 navAria: "주요 메뉴",
                 langAria: "언어 선택",
                 navGames: "게임/앱",
+                navTools: "까치툴",
                 navAbout: "소개",
                 navContact: "문의",
+                toolsTitle: "까치툴 — 무료 온라인 도구",
+                toolsDesc: "가입도 파일 업로드도 없이 브라우저 안에서 바로 처리됩니다. 사용 횟수 제한도 워터마크도 없습니다.",
+                toolsAll: "까치툴 전체 보기 →",
                 heroKicker: "Google Play에서 바로 만나는 K-magpie 앱",
                 heroTitle: "오늘 바로 설치할 수 있는<br>게임과 생활 앱 모음",
                 heroDesc: "짧게 즐기는 게임부터 오늘의 운세, 한식 메뉴 추천, XP 기반 할 일 관리까지. K-magpie가 직접 만들고 업데이트하는 Android 앱을 한곳에서 둘러보고 바로 설치해보세요.",
@@ -596,8 +635,12 @@
                 navAria: "Main navigation",
                 langAria: "Language selector",
                 navGames: "Games/Apps",
+                navTools: "Tools",
                 navAbout: "About",
                 navContact: "Contact",
+                toolsTitle: "Tools — free browser utilities",
+                toolsDesc: "Korean-language tools that run entirely in your browser. No sign-up, no uploads, no usage limits.",
+                toolsAll: "See all tools →",
                 heroKicker: "K-magpie apps, ready on Google Play",
                 heroTitle: "Games and everyday apps<br>you can install today",
                 heroDesc: "From quick games and daily fortunes to Korean food ideas and XP-based task tracking, explore Android apps built and updated by K-magpie in one place.",
@@ -657,8 +700,12 @@
                 navAria: "メインメニュー",
                 langAria: "言語選択",
                 navGames: "ゲーム/アプリ",
+                navTools: "ツール",
                 navAbout: "紹介",
                 navContact: "お問い合わせ",
+                toolsTitle: "ツール — 無料オンラインツール",
+                toolsDesc: "韓国語のブラウザ完結型ツールです。登録もアップロードも不要で、利用回数の制限もありません。",
+                toolsAll: "すべてのツールを見る →",
                 heroKicker: "Google Playですぐ使えるK-magpieアプリ",
                 heroTitle: "今日インストールできる<br>ゲームと生活アプリ",
                 heroDesc: "短く遊べるゲーム、毎日の運勢、韓国料理のおすすめ、XPベースのタスク管理まで。K-magpieが制作・更新しているAndroidアプリをまとめて確認できます。",
