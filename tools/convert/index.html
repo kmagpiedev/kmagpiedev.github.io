@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>이미지 확장자 변환 — PNG·JPG·WebP·BMP·ICO 무료 변환 | 까치툴</title>
+<meta name="description" content="PNG, JPG, WebP, BMP, ICO를 서로 변환합니다. 여러 장 한꺼번에 바꾸고 ZIP으로 받으세요. 가입도 업로드도 없이 브라우저에서 바로 처리되고 워터마크나 횟수 제한이 없습니다.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/convert/">
+<meta property="og:title" content="이미지 확장자 변환 — PNG·JPG·WebP·BMP·ICO">
+<meta property="og:description" content="여러 장 일괄 변환, ZIP 다운로드. 서버 업로드 없이 브라우저에서 처리.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/convert/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:940px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 30px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  #drop{border:2px dashed var(--line);border-radius:16px;padding:42px 24px;text-align:center;
+    background:var(--surface);cursor:pointer;transition:.15s}
+  #drop:hover,#drop.over{border-color:var(--accent);background:var(--accent-soft)}
+  #drop .big{font-size:17px;font-weight:600;margin-bottom:6px}
+  #drop .small{font-size:13.5px;color:var(--ink-3)}
+  #file{display:none}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:18px 0}
+  .row{display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start}
+  .col{flex:1;min-width:225px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin-bottom:8px}
+  .fmts{display:grid;grid-template-columns:repeat(auto-fit,minmax(88px,1fr));gap:8px}
+  .fmts button{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:11px 4px;
+    font-family:inherit;font-size:14px;font-weight:700;color:var(--ink-2);cursor:pointer;transition:.12s;line-height:1.35}
+  .fmts button small{display:block;font-size:11px;font-weight:500;color:var(--ink-3);margin-top:2px}
+  .fmts button:hover{border-color:var(--accent)}
+  .fmts button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  .fmts button.on small{color:rgba(255,255,255,.82)}
+  .opt{display:flex;align-items:flex-start;gap:9px;font-size:14.5px;cursor:pointer;margin-bottom:8px}
+  .opt input{margin-top:4px;width:17px;height:17px;accent-color:var(--accent);cursor:pointer;flex:none}
+  input[type=range]{width:100%;accent-color:var(--accent)}
+  input[type=number]{padding:7px 9px;border:1px solid var(--line);border-radius:7px;width:92px;text-align:right;
+    background:var(--surface);color:var(--ink);font-size:14px;font-family:inherit}
+  input[type=color]{width:44px;height:32px;padding:2px;border:1px solid var(--line);border-radius:7px;
+    background:var(--surface);cursor:pointer;vertical-align:middle}
+  .inline{display:flex;align-items:center;gap:9px;font-size:14px;flex-wrap:wrap}
+  .val{font-variant-numeric:tabular-nums;font-weight:700;color:var(--accent)}
+  .sizes{display:flex;gap:7px;flex-wrap:wrap}
+  .sizes label{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:8px;
+    padding:6px 10px;font-size:13.5px;cursor:pointer;font-variant-numeric:tabular-nums}
+  .sizes label:has(input:checked){border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+  .sizes input{accent-color:var(--accent);cursor:pointer;width:15px;height:15px}
+
+  button.act{font-family:inherit;font-size:15px;font-weight:600;padding:12px 22px;border-radius:10px;border:1px solid transparent;cursor:pointer;transition:.12s}
+  .primary{background:var(--accent);color:#fff}
+  .primary:hover{filter:brightness(1.08)}
+  .primary:disabled{opacity:.45;cursor:not-allowed;filter:none}
+  .ghost{background:transparent;color:var(--ink-2);border-color:var(--line)}
+  .ghost:hover{border-color:var(--ink-3);color:var(--ink)}
+
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+  th,td{text-align:left;padding:10px 9px;border-bottom:1px solid var(--line-soft);vertical-align:middle}
+  th{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;border-bottom:1px solid var(--line)}
+  td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .thumb{width:40px;height:40px;object-fit:contain;border-radius:7px;border:1px solid var(--line);display:block;background:var(--line-soft)}
+  .fname{font-size:13.5px;word-break:break-all;line-height:1.4}
+  .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.03em;padding:2px 7px;border-radius:5px;
+    background:var(--line-soft);color:var(--ink-3);text-transform:uppercase}
+  .arw{color:var(--ink-3);margin:0 5px}
+  .dl{font-size:12.5px;padding:5px 11px;border-radius:7px;border:1px solid var(--line);
+    background:transparent;color:var(--ink-2);cursor:pointer;font-family:inherit;font-weight:600}
+  .dl:hover{border-color:var(--accent);color:var(--accent)}
+
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .m-ok{background:var(--good-soft);border-color:var(--good)}
+  .hidden{display:none}
+  .bar{height:5px;background:var(--line-soft);border-radius:99px;overflow:hidden;margin-top:12px}
+  .bar>i{display:block;height:100%;width:0;background:var(--accent);transition:width .18s}
+  code{background:var(--line-soft);padding:2px 6px;border-radius:5px;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .note{font-size:13.5px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:13px;margin:14px 0}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:24px}
+    table{font-size:13px}
+    th,td{padding:9px 5px}
+    td.n{font-size:12.5px}
+    .thumb{width:34px;height:34px}
+    .fname{font-size:12.5px}
+    .tag{font-size:10px;padding:1px 5px}
+    .arw{margin:0 3px}
+    .dl{padding:5px 9px;font-size:12px}
+    .fmts{grid-template-columns:repeat(3,1fr)}
+  }
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › 이미지 확장자 변환</p>
+
+<h1>이미지 확장자 변환</h1>
+<p class="sub">PNG · JPG · WebP · BMP · ICO를 서로 바꿉니다. <strong>여러 장을 한꺼번에 변환</strong>하고 ZIP으로 받으세요. 파일이 서버로 전송되지 않고 브라우저 안에서만 처리됩니다.</p>
+
+<div id="drop">
+  <div class="big">이미지를 여기에 끌어다 놓거나 클릭해서 선택하세요</div>
+  <div class="small">여러 장 동시 선택 가능 · PNG · JPG · WebP · AVIF · GIF · BMP · SVG · ICO</div>
+  <input type="file" id="file" accept="image/*,.svg,.bmp,.ico,.avif,.heic,.heif" multiple>
+</div>
+
+<div id="warn" class="hidden"></div>
+
+<div id="editor" class="hidden">
+  <div class="panel">
+    <label class="f">어떤 형식으로 바꿀까요</label>
+    <div class="fmts" id="fmts">
+      <button data-f="png" class="on">PNG<small>투명 지원</small></button>
+      <button data-f="jpeg">JPG<small>호환성 최고</small></button>
+      <button data-f="webp">WebP<small>용량 최소</small></button>
+      <button data-f="bmp">BMP<small>무압축</small></button>
+      <button data-f="ico">ICO<small>파비콘</small></button>
+    </div>
+
+    <div class="row" style="margin-top:22px">
+      <div class="col">
+        <div id="paneQ" class="hidden">
+          <label class="f">품질 <span class="val" id="qv">92</span></label>
+          <input type="range" id="q" min="40" max="100" value="92">
+          <p class="note" style="margin-top:6px">형식만 바꾸는 게 목적이라면 90 이상을 쓰세요. 용량을 줄이는 게 목적이면 <a href="/tools/image-compress/">이미지 용량 줄이기</a>가 목표 용량에 맞춰 자동으로 조절해 줍니다.</p>
+        </div>
+
+        <div id="paneBg" class="hidden">
+          <label class="f">투명한 부분을 채울 색</label>
+          <div class="inline">
+            <input type="color" id="bg" value="#ffffff">
+            <span id="bgName">흰색</span>
+          </div>
+          <p class="note" style="margin-top:6px">JPG와 BMP는 투명도를 저장하지 못합니다. 원본에 투명한 부분이 있으면 이 색으로 채워집니다.</p>
+        </div>
+
+        <div id="paneIco">
+          <label class="f">ICO에 담을 크기</label>
+          <div class="sizes" id="icoSizes">
+            <label><input type="checkbox" value="16" checked>16</label>
+            <label><input type="checkbox" value="32" checked>32</label>
+            <label><input type="checkbox" value="48" checked>48</label>
+            <label><input type="checkbox" value="64">64</label>
+            <label><input type="checkbox" value="128">128</label>
+            <label><input type="checkbox" value="256">256</label>
+          </div>
+          <p class="note" style="margin-top:6px">ICO 한 파일 안에 여러 해상도를 함께 담습니다. 웹사이트 파비콘이면 16·32·48로 충분해요.</p>
+        </div>
+      </div>
+
+      <div class="col">
+        <label class="f">크기 조절 <span style="text-transform:none;letter-spacing:0;font-weight:400">(선택)</span></label>
+        <label class="opt"><input type="checkbox" id="resizeOn"><span>긴 변을 이 크기로 맞추기</span></label>
+        <div class="inline">
+          <input type="number" id="maxSide" value="1920" min="16" step="100"> <span>px</span>
+        </div>
+        <p class="note" style="margin-top:6px">비율은 그대로 유지되고, 원본보다 커지지는 않습니다. 단계적으로 축소해서 계단 현상 없이 매끄럽게 줄입니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+    <button class="act primary" id="go">변환하기</button>
+    <button class="act ghost" id="zipAll" disabled>ZIP으로 모두 받기</button>
+    <button class="act ghost" id="reset">파일 다시 선택</button>
+    <span id="stat" style="font-size:14px;color:var(--ink-3)"></span>
+  </div>
+  <div class="bar hidden" id="barWrap"><i id="bar"></i></div>
+
+  <table id="tbl" class="hidden">
+    <thead><tr>
+      <th style="width:56px"></th><th>파일</th>
+      <th class="n">이전</th><th class="n">이후</th><th style="width:90px"></th>
+    </tr></thead>
+    <tbody id="tb"></tbody>
+  </table>
+</div>
+
+<h2>사용법</h2>
+<p>이미지를 여러 장 올린 뒤 바꿀 형식을 고르고 변환하기를 누르면 됩니다. 결과는 파일별로 표시되고 하나씩 받거나 ZIP으로 한 번에 받을 수 있습니다. 원본은 건드리지 않고 새 파일이 만들어지므로, 결과가 마음에 안 들면 설정을 바꿔 다시 누르면 됩니다.</p>
+<p>모든 변환은 브라우저의 Canvas API로 이루어집니다. 파일이 서버로 올라가지 않기 때문에 개인 사진이나 공개 전 자료도 안심하고 쓰실 수 있고, 업로드·다운로드를 기다릴 필요가 없어 수십 장도 금방 끝납니다. 사용 횟수 제한이나 워터마크도 없습니다.</p>
+
+<h2>어떤 형식으로 바꿔야 하나요</h2>
+<h3>PNG</h3>
+<p>투명 배경이 필요하거나, 로고·아이콘·스크린샷처럼 글자와 경계선이 또렷해야 하는 이미지에 씁니다. 무손실이라 몇 번을 다시 저장해도 화질이 나빠지지 않습니다. 대신 사진을 PNG로 저장하면 JPG보다 용량이 몇 배 커집니다.</p>
+<h3>JPG</h3>
+<p>사진에 가장 적합하고 어디서나 열립니다. 상대방 환경을 모를 때, 오래된 프로그램에 넣어야 할 때, 관공서나 학교 서식에 첨부할 때 안전한 선택입니다. 투명도를 지원하지 않아서 투명한 부분은 위에서 고른 색으로 채워집니다.</p>
+<h3>WebP</h3>
+<p>같은 화질 기준으로 JPG보다 25~35% 작으면서 투명도까지 지원합니다. 웹사이트에 올릴 이미지라면 대부분 이게 정답입니다. 다만 오래된 프로그램이나 일부 문서 편집기, 관공서 업로드 창에서는 안 열릴 수 있으니 제출용 파일은 JPG로 두세요.</p>
+<h3>BMP</h3>
+<p>압축을 전혀 하지 않는 형식이라 용량이 아주 큽니다. 일부 산업용 장비 소프트웨어나 오래된 프로그램이 BMP만 받는 경우에 쓰세요. 일반적인 용도로는 권장하지 않습니다.</p>
+<h3>ICO</h3>
+<p>웹사이트 파비콘과 윈도우 프로그램 아이콘에 쓰는 형식입니다. 한 파일 안에 여러 해상도를 함께 담을 수 있어서, 브라우저 탭에서는 16px을, 바탕화면 바로가기에서는 48px을 골라 쓰는 식으로 동작합니다. 정사각형이 아닌 이미지를 넣으면 비율을 유지한 채 가운데 정렬되고 남는 부분은 투명하게 채워집니다.</p>
+
+<h2>아이폰 HEIC 사진은요</h2>
+<p>아이폰이 기본으로 저장하는 HEIC은 <strong>브라우저가 아직 읽지 못해서 이 도구에서 변환할 수 없습니다.</strong> 사파리를 제외한 대부분의 브라우저가 마찬가지예요. 다만 아이폰 쪽 설정을 한 번만 바꿔두면 앞으로 찍는 사진이 JPG로 저장되니 이게 더 확실한 해결책입니다.</p>
+<p><strong>설정 → 카메라 → 포맷 → 높은 호환성</strong>을 고르세요. 이미 찍어둔 HEIC 사진은 <strong>설정 → 사진 → 맨 아래 "MAC 또는 PC로 전송" → 자동</strong>으로 바꾼 뒤 케이블로 옮기면 아이폰이 알아서 JPG로 변환해서 보내줍니다.</p>
+
+<h2>자주 겪는 문제</h2>
+<h3>투명 배경이 흰색으로 바뀌었어요</h3>
+<p>JPG나 BMP로 바꾸셨을 가능성이 높습니다. 두 형식은 투명도를 저장하지 못합니다. 투명 배경을 유지하려면 PNG나 WebP를 고르세요. 흰색 말고 다른 색으로 채우고 싶다면 색상 선택 상자에서 바꿀 수 있습니다.</p>
+<h3>GIF를 올렸더니 움직임이 사라졌어요</h3>
+<p>첫 번째 장면만 이미지로 가져옵니다. 움직이는 GIF를 그대로 유지하는 변환은 지원하지 않아요.</p>
+<h3>PNG로 바꿨더니 용량이 훨씬 커졌어요</h3>
+<p>정상입니다. PNG는 무손실이라 사진을 담으면 JPG보다 몇 배 커집니다. 사진은 JPG나 WebP로 두시고, PNG는 투명도가 필요하거나 글자·도형이 많은 이미지에만 쓰세요.</p>
+<h3>변환한 파일을 특정 사이트에 올렸더니 거부돼요</h3>
+<p>WebP나 BMP를 받지 않는 곳이 아직 많습니다. 업로드용이라면 JPG로 다시 변환해 보세요. 용량 상한 때문에 거부된 거라면 <a href="/tools/image-compress/">이미지 용량 줄이기</a>에서 목표 용량을 지정해 맞출 수 있습니다.</p>
+
+<footer>
+  <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 파일은 업로드되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+
+  /* ---------- 내장 ZIP (store) ---------- */
+  const CRC=(()=>{const t=new Uint32Array(256);
+    for(let i=0;i<256;i++){let c=i;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[i]=c>>>0;}return t;})();
+  function crc32(u8){let c=0xFFFFFFFF;for(let i=0;i<u8.length;i++)c=CRC[(c^u8[i])&0xFF]^(c>>>8);return (c^0xFFFFFFFF)>>>0;}
+  function zipStore(entries){
+    const enc=new TextEncoder(), d=new Date();
+    const T=((d.getHours()<<11)|(d.getMinutes()<<5)|(d.getSeconds()>>1))&0xFFFF;
+    const D=(((d.getFullYear()-1980)<<9)|((d.getMonth()+1)<<5)|d.getDate())&0xFFFF;
+    const locals=[],centrals=[];let off=0;
+    for(const e of entries){
+      const nm=enc.encode(e.name),da=e.data,crc=crc32(da);
+      const lh=new Uint8Array(30+nm.length),lv=new DataView(lh.buffer);
+      lv.setUint32(0,0x04034b50,true);lv.setUint16(4,20,true);lv.setUint16(6,0x0800,true);
+      lv.setUint16(10,T,true);lv.setUint16(12,D,true);lv.setUint32(14,crc,true);
+      lv.setUint32(18,da.length,true);lv.setUint32(22,da.length,true);lv.setUint16(26,nm.length,true);
+      lh.set(nm,30);locals.push(lh,da);
+      const ch=new Uint8Array(46+nm.length),cv=new DataView(ch.buffer);
+      cv.setUint32(0,0x02014b50,true);cv.setUint16(4,20,true);cv.setUint16(6,20,true);
+      cv.setUint16(8,0x0800,true);cv.setUint16(12,T,true);cv.setUint16(14,D,true);
+      cv.setUint32(16,crc,true);cv.setUint32(20,da.length,true);cv.setUint32(24,da.length,true);
+      cv.setUint16(28,nm.length,true);cv.setUint32(42,off,true);
+      ch.set(nm,46);centrals.push(ch);off+=lh.length+da.length;
+    }
+    const cd=centrals.reduce((a,c)=>a+c.length,0);
+    const eo=new Uint8Array(22),ev=new DataView(eo.buffer);
+    ev.setUint32(0,0x06054b50,true);ev.setUint16(8,entries.length,true);ev.setUint16(10,entries.length,true);
+    ev.setUint32(12,cd,true);ev.setUint32(16,off,true);
+    return new Blob([...locals,...centrals,eo],{type:'application/zip'});
+  }
+
+  /* ---------- BMP 인코더 (24비트, 하단부터 저장) ---------- */
+  function bmpBlob(canvas){
+    const w=canvas.width,h=canvas.height;
+    const px=canvas.getContext('2d').getImageData(0,0,w,h).data;
+    const rowRaw=w*3, pad=(4-(rowRaw%4))%4, rowSize=rowRaw+pad;
+    const dataSize=rowSize*h, fileSize=54+dataSize;
+    const out=new Uint8Array(fileSize), dv=new DataView(out.buffer);
+    out[0]=0x42; out[1]=0x4D;                 /* "BM" */
+    dv.setUint32(2,fileSize,true);
+    dv.setUint32(10,54,true);                 /* 픽셀 데이터 시작 위치 */
+    dv.setUint32(14,40,true);                 /* BITMAPINFOHEADER */
+    dv.setInt32(18,w,true);
+    dv.setInt32(22,h,true);                   /* 양수 = 아래에서 위로 */
+    dv.setUint16(26,1,true);                  /* planes */
+    dv.setUint16(28,24,true);                 /* bpp */
+    dv.setUint32(34,dataSize,true);
+    dv.setInt32(38,2835,true); dv.setInt32(42,2835,true);  /* 약 72dpi */
+    let p=54;
+    for(let y=h-1;y>=0;y--){
+      let s=y*w*4;
+      for(let x=0;x<w;x++,s+=4){
+        out[p++]=px[s+2]; out[p++]=px[s+1]; out[p++]=px[s];   /* BGR */
+      }
+      p+=pad;
+    }
+    return new Blob([out],{type:'image/bmp'});
+  }
+
+  /* ---------- ICO 인코더 (PNG를 담는 방식) ---------- */
+  async function icoBlob(img,sizes){
+    const pngs=[];
+    for(const s of sizes){
+      const c=document.createElement('canvas'); c.width=c.height=s;
+      const x=c.getContext('2d');
+      x.imageSmoothingEnabled=true; x.imageSmoothingQuality='high';
+      const r=Math.min(s/img.naturalWidth,s/img.naturalHeight);
+      const dw=Math.max(1,Math.round(img.naturalWidth*r)), dh=Math.max(1,Math.round(img.naturalHeight*r));
+      x.drawImage(img,Math.round((s-dw)/2),Math.round((s-dh)/2),dw,dh);
+      const b=await new Promise(r2=>c.toBlob(r2,'image/png'));
+      pngs.push({size:s,data:new Uint8Array(await b.arrayBuffer())});
+    }
+    const head=6+16*pngs.length;
+    let off=head;
+    const dir=new Uint8Array(head), dv=new DataView(dir.buffer);
+    dv.setUint16(0,0,true); dv.setUint16(2,1,true); dv.setUint16(4,pngs.length,true);
+    pngs.forEach((p,i)=>{
+      const o=6+16*i;
+      dir[o]=p.size>=256?0:p.size;      /* 256은 0으로 표기 */
+      dir[o+1]=p.size>=256?0:p.size;
+      dir[o+2]=0; dir[o+3]=0;
+      dv.setUint16(o+4,1,true);         /* planes */
+      dv.setUint16(o+6,32,true);        /* bpp */
+      dv.setUint32(o+8,p.data.length,true);
+      dv.setUint32(o+12,off,true);
+      off+=p.data.length;
+    });
+    return new Blob([dir,...pngs.map(p=>p.data)],{type:'image/x-icon'});
+  }
+
+  /* ---------- 상태 ---------- */
+  let items=[];
+  const drop=$('drop'),file=$('file'),warn=$('warn');
+  const EXT={png:'png',jpeg:'jpg',webp:'webp',bmp:'bmp',ico:'ico'};
+  const NEEDS_Q={jpeg:1,webp:1}, NEEDS_BG={jpeg:1,bmp:1};
+  const kb=n=>n>=1048576?(n/1048576).toFixed(2)+' MB':(n/1024).toFixed(1)+' KB';
+  const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  function msg(k,h){warn.className='msg m-'+k;warn.innerHTML=h;warn.classList.remove('hidden');}
+  const fmt=()=>document.querySelector('#fmts button.on').dataset.f;
+
+  /* ---------- 형식 선택 ---------- */
+  function syncPanes(){
+    const f=fmt();
+    $('paneQ').classList.toggle('hidden',!NEEDS_Q[f]);
+    $('paneBg').classList.toggle('hidden',!NEEDS_BG[f]);
+    $('paneIco').classList.toggle('hidden',f!=='ico');
+  }
+  document.querySelectorAll('#fmts button').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('#fmts button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); syncPanes();
+  }));
+  syncPanes();
+  $('q').addEventListener('input',()=>$('qv').textContent=$('q').value);
+  $('bg').addEventListener('input',()=>{
+    const v=$('bg').value.toLowerCase();
+    $('bgName').textContent = v==='#ffffff'?'흰색' : v==='#000000'?'검정' : v;
+  });
+
+  /* ---------- 파일 받기 ---------- */
+  drop.addEventListener('click',()=>file.click());
+  drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('over')});
+  drop.addEventListener('dragleave',()=>drop.classList.remove('over'));
+  drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('over');add(e.dataTransfer.files)});
+  file.addEventListener('change',e=>add(e.target.files));
+
+  /* HEIC 여부는 확장자와 ftyp 브랜드 둘 다로 확인 */
+  async function isHeic(f){
+    if(/\.(heic|heif)$/i.test(f.name)) return true;
+    try{
+      const b=new Uint8Array(await f.slice(0,32).arrayBuffer());
+      if(String.fromCharCode(b[4],b[5],b[6],b[7])!=='ftyp') return false;
+      const brand=String.fromCharCode(b[8],b[9],b[10],b[11]);
+      return ['heic','heix','hevc','heim','heis','hevm','mif1','msf1'].includes(brand);
+    }catch(e){ return false; }
+  }
+
+  function srcExt(name,type){
+    const m=/\.([a-z0-9]+)$/i.exec(name);
+    if(m) return m[1].toLowerCase()==='jpeg'?'jpg':m[1].toLowerCase();
+    return (type.split('/')[1]||'img').toLowerCase();
+  }
+
+  async function add(list){
+    const all=[...list];
+    if(!all.length) return;
+    const heic=[], bad=[];
+    for(const f of all){
+      if(await isHeic(f)){ heic.push(f.name); continue; }
+      const url=URL.createObjectURL(f);
+      const img=await new Promise(res=>{
+        const i=new Image();
+        i.onload=()=>res(i); i.onerror=()=>res(null);
+        i.src=url;
+      });
+      if(!img || !img.naturalWidth){ URL.revokeObjectURL(url); bad.push(f.name); continue; }
+      items.push({file:f,name:f.name,img,url,orig:f.size,
+                  w:img.naturalWidth,h:img.naturalHeight,
+                  from:srcExt(f.name,f.type||''),blob:null});
+    }
+    if(heic.length){
+      msg('warn',`<strong>${esc(heic[0])}</strong>${heic.length>1?` 외 ${heic.length-1}개`:''}는 아이폰 HEIC 형식이라 브라우저가 읽지 못합니다. 아이폰에서 <strong>설정 → 카메라 → 포맷 → 높은 호환성</strong>으로 바꾸면 앞으로는 JPG로 저장됩니다. 자세한 방법은 아래 <a href="#" onclick="document.querySelectorAll('h2')[2].scrollIntoView({behavior:'smooth'});return false">아이폰 HEIC 사진은요</a>를 봐주세요.`);
+    } else if(bad.length){
+      msg('bad',`<strong>${esc(bad[0])}</strong>${bad.length>1?` 외 ${bad.length-1}개`:''}는 이미지로 읽지 못했습니다. 파일이 손상되었거나 지원하지 않는 형식입니다.`);
+    } else {
+      warn.classList.add('hidden');
+    }
+    if(!items.length) return;
+    $('editor').classList.remove('hidden');
+    draw();
+    $('stat').textContent=`${items.length}장 대기 중`;
+  }
+
+  /* ---------- 표 ---------- */
+  function draw(){
+    const tb=$('tb'); tb.innerHTML='';
+    $('tbl').classList.toggle('hidden',!items.length);
+    items.forEach((it,i)=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML=`
+        <td><img class="thumb" src="${it.url}" alt=""></td>
+        <td><div class="fname">${esc(it.name)}</div>
+            <div style="font-size:12px;color:var(--ink-3);margin-top:3px">
+              <span class="tag">${esc(it.from)}</span>${it.to?`<span class="arw">→</span><span class="tag">${esc(it.to)}</span>`:''}
+              &nbsp;${it.w}×${it.h}${it.outW&&(it.outW!==it.w||it.outH!==it.h)?` → ${it.outW}×${it.outH}`:''}
+            </div></td>
+        <td class="n">${kb(it.orig)}</td>
+        <td class="n">${it.blob?kb(it.blob.size):'–'}</td>
+        <td>${it.blob?`<button class="dl" data-i="${i}">받기</button>`:''}</td>`;
+      tb.appendChild(tr);
+    });
+    tb.querySelectorAll('.dl').forEach(b=>b.addEventListener('click',()=>{
+      const it=items[b.dataset.i];
+      const a=document.createElement('a');
+      a.href=URL.createObjectURL(it.blob); a.download=it.outName; a.click();
+      setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+    }));
+  }
+
+  /* ---------- 캔버스 ---------- */
+  function stepDown(src,tw,th){
+    let cur=src,w=cur.width,h=cur.height;
+    while(w>=tw*2&&h>=th*2){
+      w=Math.max(tw,Math.floor(w/2));h=Math.max(th,Math.floor(h/2));
+      const c=document.createElement('canvas');c.width=w;c.height=h;
+      const x=c.getContext('2d');x.imageSmoothingEnabled=true;x.imageSmoothingQuality='high';
+      x.drawImage(cur,0,0,w,h);cur=c;
+    }
+    const o=document.createElement('canvas');o.width=tw;o.height=th;
+    const ox=o.getContext('2d');ox.imageSmoothingEnabled=true;ox.imageSmoothingQuality='high';
+    ox.drawImage(cur,0,0,tw,th);return o;
+  }
+  function toCanvas(it,f){
+    let w=it.w,h=it.h;
+    if($('resizeOn').checked){
+      const m=Math.max(16,+$('maxSide').value||1920);
+      if(Math.max(w,h)>m){const s=m/Math.max(w,h);w=Math.max(1,Math.round(w*s));h=Math.max(1,Math.round(h*s));}
+    }
+    const base=document.createElement('canvas');base.width=it.w;base.height=it.h;
+    base.getContext('2d').drawImage(it.img,0,0);
+    const c=(w!==it.w||h!==it.h)?stepDown(base,w,h):base;
+    if(NEEDS_BG[f]){
+      const o=document.createElement('canvas');o.width=c.width;o.height=c.height;
+      const x=o.getContext('2d');x.fillStyle=$('bg').value;x.fillRect(0,0,o.width,o.height);x.drawImage(c,0,0);
+      return o;
+    }
+    return c;
+  }
+
+  /* ---------- 변환 ---------- */
+  $('go').addEventListener('click',async()=>{
+    if(!items.length)return;
+    const f=fmt();
+    let sizes=[...document.querySelectorAll('#icoSizes input:checked')].map(i=>+i.value).sort((a,b)=>a-b);
+    if(f==='ico'&&!sizes.length){ msg('bad','ICO에 담을 크기를 하나 이상 골라주세요.'); return; }
+
+    const btn=$('go'); btn.disabled=true; $('barWrap').classList.remove('hidden');
+    const q=+$('q').value/100;
+    let grew=0;
+
+    for(let i=0;i<items.length;i++){
+      const it=items[i];
+      if(f==='ico'){
+        it.blob=await icoBlob(it.img,sizes);
+        it.outW=sizes[sizes.length-1]; it.outH=it.outW;
+      }else{
+        const c=toCanvas(it,f);
+        it.outW=c.width; it.outH=c.height;
+        it.blob = f==='bmp' ? bmpBlob(c)
+                : await new Promise(r=>c.toBlob(r,'image/'+f,NEEDS_Q[f]?q:undefined));
+      }
+      it.to=EXT[f];
+      it.outName=it.name.replace(/\.[^.]+$/,'')+'.'+EXT[f];
+      if(it.blob&&it.blob.size>it.orig*1.15) grew++;
+      $('bar').style.width=Math.round((i+1)/items.length*100)+'%';
+      $('stat').textContent=`변환 중 ${i+1}/${items.length}`;
+      await new Promise(r=>setTimeout(r));
+    }
+
+    if(f==='bmp') msg('warn','BMP는 압축을 하지 않는 형식이라 용량이 원본보다 훨씬 커집니다. 정상이며, BMP만 받는 프로그램에 넣을 때만 쓰세요.');
+    else if(grew&&f==='png') msg('warn',`${grew}장은 변환 후 용량이 커졌습니다. PNG는 무손실이라 사진을 담으면 원래 커집니다. 사진이라면 JPG나 WebP를 쓰세요.`);
+    else if(grew) msg('warn',`${grew}장은 변환 후 용량이 커졌습니다. 이미 압축된 이미지를 다시 인코딩하면 그럴 수 있습니다.`);
+    else msg('ok',`${items.length}장 변환을 마쳤습니다. 아래에서 하나씩 받거나 ZIP으로 한 번에 받으세요.`);
+
+    draw();
+    $('stat').textContent=`완료 — ${items.length}장`;
+    $('barWrap').classList.add('hidden'); $('bar').style.width='0';
+    btn.disabled=false; $('zipAll').disabled=false;
+  });
+
+  $('zipAll').addEventListener('click',async()=>{
+    const done=items.filter(i=>i.blob); if(!done.length)return;
+    const seen={},entries=[];
+    for(const it of done){
+      let n=it.outName;
+      if(seen[it.outName]) n=n.replace(/(\.[^.]+)$/,`_${seen[it.outName]}$1`);
+      seen[it.outName]=(seen[it.outName]||0)+1;
+      entries.push({name:n,data:new Uint8Array(await it.blob.arrayBuffer())});
+    }
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(zipStore(entries)); a.download='converted-images.zip'; a.click();
+    setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+  });
+
+  $('reset').addEventListener('click',()=>{
+    items.forEach(i=>URL.revokeObjectURL(i.url));
+    items=[]; file.value=''; $('editor').classList.add('hidden');
+    warn.classList.add('hidden'); $('zipAll').disabled=true; $('stat').textContent='';
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+})();
+</script>
+</body>
+</html>
