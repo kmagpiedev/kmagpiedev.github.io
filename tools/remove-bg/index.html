@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>배경 제거 — 누끼 따기 무료, 업로드 없이 브라우저에서 | 까치툴</title>
+<meta name="description" content="사진에서 인물만 남기고 배경을 지웁니다. 투명 PNG로 저장하거나 배경색을 바꾸거나 흐리게 처리하세요. 사진을 서버로 보내지 않고 브라우저 안에서 처리하며 워터마크도 없습니다.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/remove-bg/">
+<meta property="og:title" content="배경 제거 — 누끼 따기 무료">
+<meta property="og:description" content="사진을 서버에 올리지 않고 브라우저에서 배경을 지웁니다. 워터마크 없음.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/remove-bg/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  #drop{border:2px dashed var(--line);border-radius:16px;padding:40px 24px;text-align:center;
+    background:var(--surface);cursor:pointer;transition:.15s}
+  #drop:hover,#drop.over{border-color:var(--accent);background:var(--accent-soft)}
+  #drop .big{font-size:17px;font-weight:600;margin-bottom:6px}
+  #drop .small{font-size:13.5px;color:var(--ink-3)}
+  #file{display:none}
+
+  .stage{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start;margin-top:18px}
+  .side{flex:1;min-width:290px}
+  .view{flex:2;min-width:320px}
+  .cvwrap{position:relative;border:1px solid var(--line);border-radius:12px;overflow:hidden;
+    touch-action:none;cursor:crosshair;
+    background:conic-gradient(#0000 90deg,#8882 0 180deg,#0000 0 270deg,#8882 0) 0 0/18px 18px, var(--surface)}
+  .cvwrap canvas{display:block;width:100%;height:auto}
+  .hint{font-size:12px;color:var(--ink-3);text-align:center;margin-top:8px}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:14px}
+  .panel h4{margin:0 0 13px;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+  .fld{margin-bottom:12px}
+  .fld:last-child{margin-bottom:0}
+  .fld label{display:block;font-size:12.5px;color:var(--ink-3);font-weight:600;margin-bottom:5px}
+  input[type=range]{width:100%;accent-color:var(--accent)}
+  .val{font-variant-numeric:tabular-nums;font-weight:700;color:var(--accent);float:right}
+  .swatch{display:flex;gap:7px;flex-wrap:wrap}
+  .swatch button{width:34px;height:34px;border-radius:8px;border:2px solid var(--line);cursor:pointer;padding:0;
+    font-family:inherit;font-size:10px;font-weight:600;color:var(--ink-3)}
+  .swatch button.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+  .swatch button.wide{width:auto;padding:0 10px}
+  .swatch button.clear{background:conic-gradient(#0000 90deg,#8883 0 180deg,#0000 0 270deg,#8883 0) 0 0/9px 9px}
+  .seg3{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .seg3 button{flex:1;background:transparent;border:0;padding:8px 4px;font-size:13px;font-weight:600;
+    color:var(--ink-2);cursor:pointer;font-family:inherit;transition:.12s}
+  .seg3 button.on{background:var(--accent);color:#fff}
+
+  button.act{font-family:inherit;font-size:15px;font-weight:600;padding:12px 22px;border-radius:10px;border:1px solid transparent;cursor:pointer;transition:.12s}
+  .primary{background:var(--accent);color:#fff}
+  .primary:hover:not(:disabled){filter:brightness(1.08)}
+  .primary:disabled{opacity:.45;cursor:not-allowed}
+  .ghost{background:transparent;color:var(--ink-2);border-color:var(--line)}
+  .ghost:hover{border-color:var(--ink-3);color:var(--ink)}
+
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .m-good{background:var(--good-soft);border-color:var(--good)}
+  .hidden{display:none}
+  code{background:var(--line-soft);padding:2px 6px;border-radius:5px;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .note{font-size:13.5px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:13px;margin:14px 0}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> &rsaquo; <a href="/tools/">까치툴</a> &rsaquo; 배경 제거</p>
+
+<h1>배경 제거 (누끼 따기)</h1>
+<p class="sub">사진에서 인물만 남기고 배경을 지웁니다. 투명 PNG로 받거나 배경색을 바꾸거나 흐리게 처리하세요. <strong>사진이 서버로 전송되지 않고, 워터마크도 없고, 횟수 제한도 없습니다.</strong></p>
+
+<div id="drop">
+  <div class="big">사진을 끌어다 놓거나 클릭해서 선택하세요</div>
+  <div class="small">사람이 나온 사진에서 가장 잘 동작합니다 · JPG · PNG · WebP</div>
+  <input type="file" id="file" accept="image/*">
+</div>
+
+<div id="warn" class="hidden"></div>
+
+<div id="editor" class="hidden">
+  <div class="stage">
+    <div class="view">
+      <div class="cvwrap" id="cvwrap"><canvas id="pv"></canvas></div>
+      <div class="hint">브러시 모드에서 드래그하면 지우거나 되살릴 수 있습니다</div>
+    </div>
+
+    <div class="side">
+      <div class="panel">
+        <h4>1. 배경 지우기</h4>
+        <button class="act primary" id="aiBtn" style="width:100%;padding:11px 0;font-size:14px">✨ AI로 배경 지우기</button>
+        <div class="fld hidden" id="tune" style="margin-top:13px">
+          <label>인물 영역 <span class="val" id="thV">기본</span></label>
+          <input type="range" id="thresh" min="-12" max="12" value="0">
+          <p class="note" style="margin:6px 0 0">잘려나갔으면 왼쪽, 배경이 남았으면 오른쪽으로.</p>
+        </div>
+        <p class="note" id="aiNote" style="margin:10px 0 0">처음 누르면 인식 모델 <strong>약 28MB</strong>를 내려받습니다. 사진은 전송되지 않고 브라우저 안에서 계산됩니다.</p>
+      </div>
+
+      <div class="panel">
+        <h4>2. 손으로 다듬기</h4>
+        <div class="fld">
+          <div class="seg3" id="tool">
+            <button data-m="none" class="on">끄기</button>
+            <button data-m="erase">지우기</button>
+            <button data-m="restore">되살리기</button>
+          </div>
+        </div>
+        <div class="fld"><label>붓 크기 <span class="val" id="bsV">40</span></label>
+          <input type="range" id="brush" min="8" max="180" value="40"></div>
+        <button class="act ghost" id="clearPaint" style="padding:7px 14px;font-size:13px">칠한 것 되돌리기</button>
+      </div>
+
+      <div class="panel">
+        <h4>3. 배경 처리</h4>
+        <div class="swatch" id="bgsw">
+          <button class="wide clear on" data-bg="none">투명</button>
+          <button data-bg="#ffffff" style="background:#fff"></button>
+          <button data-bg="#101828" style="background:#101828"></button>
+          <button data-bg="#cfe3f7" style="background:#cfe3f7"></button>
+          <button data-bg="#f9d9e3" style="background:#f9d9e3"></button>
+          <button class="wide" data-bg="blur">흐림</button>
+        </div>
+        <div class="fld hidden" id="blurBox" style="margin-top:13px">
+          <label>흐림 정도 <span class="val" id="blV">14</span></label>
+          <input type="range" id="blur" min="2" max="40" value="14">
+        </div>
+      </div>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="act primary" id="save" style="flex:1">PNG로 저장</button>
+        <button class="act ghost" id="reset">다시</button>
+      </div>
+      <p class="note" style="margin:10px 0 0" id="info"></p>
+    </div>
+  </div>
+</div>
+
+<h2>사용법</h2>
+<p>사진을 올리고 <strong>AI로 배경 지우기</strong>를 누르면 인물만 남습니다. 결과가 어색하면 인물 영역 슬라이더를 조절하고, 그래도 남거나 잘린 부분은 지우기·되살리기 브러시로 다듬으세요. 마지막으로 배경을 투명으로 둘지 색을 채울지 흐리게 할지 고르고 PNG로 받으시면 됩니다.</p>
+<p>모든 처리는 브라우저 안에서 이루어집니다. 인식 모델을 이 사이트에 함께 올려두고 브라우저가 직접 계산하기 때문에 <strong>사진이 외부로 나가지 않습니다.</strong> 개발자 도구의 네트워크 탭을 열어두고 확인해 보셔도 됩니다.</p>
+
+<h2>다른 서비스와 뭐가 다른가요</h2>
+<p>배경 제거 서비스 대부분은 사진을 자사 서버로 업로드해 처리합니다. 편리하지만 얼굴 사진이나 업무 자료를 남의 서버에 올려야 하고, 무료로는 저해상도만 주거나 워터마크를 넣거나 하루 몇 장으로 제한하는 곳이 많습니다.</p>
+<p>여기서는 <strong>사진이 업로드되지 않고, 원본 해상도 그대로 저장되며, 워터마크가 없고, 횟수 제한도 없습니다.</strong> 대신 처음 한 번 모델을 내려받아야 하고, 계산을 본인 기기에서 하므로 사양에 따라 몇 초 걸립니다.</p>
+
+<h2>어떤 사진에서 잘 되나요</h2>
+<p>이 도구는 <strong>사람을 인식하도록 학습된 모델</strong>을 씁니다. 인물 사진, 특히 상반신이 크게 나온 사진에서 가장 정확합니다. 반대로 사물이나 동물, 제품 사진은 인식하지 못하니 그런 경우에는 AI를 쓰지 말고 <strong>지우기 브러시로 직접 칠해</strong> 지우세요. 브러시는 어떤 사진에서든 동작합니다.</p>
+<p>인물 사진이라도 결과가 아쉬울 수 있는 경우가 있습니다. 배경과 옷 색이 거의 같거나, 머리카락이 흩날리거나, 조명이 어두워 윤곽이 흐릿하면 경계가 뭉툭해집니다. 이럴 때는 슬라이더로 크게 맞춘 뒤 <strong>작은 붓으로 경계만 정리</strong>하는 게 가장 빠릅니다.</p>
+
+<h2>자주 겪는 문제</h2>
+<h3>투명 배경으로 저장했는데 흰색으로 보여요</h3>
+<p>PNG의 투명 영역을 지원하지 않는 프로그램에서 열면 흰색이나 검은색으로 채워져 보입니다. 카카오톡이나 일부 문서 편집기가 그렇습니다. 투명이 꼭 필요하면 PNG 그대로 쓰시고, 아니면 배경색을 지정해 저장하세요.</p>
+<h3>저장한 파일이 너무 커요</h3>
+<p>투명도를 지원하려면 PNG로 저장해야 하는데 PNG는 사진에서 용량이 큽니다. 투명이 필요 없다면 배경색을 채운 뒤 <a href="/tools/image-compress/">이미지 용량 줄이기</a>로 JPG나 WebP로 바꾸시면 크게 줄어듭니다.</p>
+<h3>모델을 불러오지 못했다고 나와요</h3>
+<p>기기 메모리가 부족하거나 오래된 브라우저일 수 있습니다. 이 경우에도 <strong>브러시는 정상 동작</strong>하니 직접 칠해서 지우실 수 있습니다.</p>
+
+<footer>
+  <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 사진은 업로드되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const warn=$('warn');
+  const msg=(k,h)=>{warn.className='msg m-'+k;warn.innerHTML=h;warn.classList.remove('hidden')};
+  let img=null, W=0, H=0;
+  let segmenter=null, aiPerson=null, aiW=0, aiH=0, aiMask=null;
+  let paint=null, tool='none', bgMode='none';
+  const MAXVIEW=760;
+
+  /* ---------- 로드 ---------- */
+  const drop=$('drop'), file=$('file');
+  drop.addEventListener('click',()=>file.click());
+  drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('over')});
+  drop.addEventListener('dragleave',()=>drop.classList.remove('over'));
+  drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('over');load(e.dataTransfer.files[0])});
+  file.addEventListener('change',e=>load(e.target.files[0]));
+
+  function load(f){
+    if(!f||!f.type.startsWith('image/')){msg('bad','이미지 파일이 아닙니다.');return}
+    const im=new Image();
+    im.onload=()=>{
+      img=im; W=im.naturalWidth; H=im.naturalHeight;
+      aiMask=null; aiPerson=null; paint=null;
+      $('tune').classList.add('hidden');
+      warn.classList.add('hidden');
+      $('editor').classList.remove('hidden');
+      draw();
+      $('editor').scrollIntoView({behavior:'smooth',block:'nearest'});
+    };
+    im.onerror=()=>msg('bad','이미지를 읽지 못했습니다.');
+    im.src=URL.createObjectURL(f);
+  }
+
+  /* ---------- 합성 ---------- */
+  function compose(scale){
+    const w=Math.round(W*scale), h=Math.round(H*scale);
+    const c=document.createElement('canvas'); c.width=w; c.height=h;
+    const x=c.getContext('2d');
+
+    /* 배경 레이어 */
+    if(bgMode==='blur'){
+      x.save(); x.filter=`blur(${Math.max(1,+$('blur').value*scale)}px)`;
+      x.drawImage(img,-8*scale,-8*scale,w+16*scale,h+16*scale); x.restore();
+    }else if(bgMode!=='none'){
+      x.fillStyle=bgMode; x.fillRect(0,0,w,h);
+    }
+
+    /* 인물 레이어 = 원본에 알파 마스크 적용 */
+    const fg=document.createElement('canvas'); fg.width=w; fg.height=h;
+    const fx=fg.getContext('2d');
+    fx.drawImage(img,0,0,w,h);
+    if(aiMask||paint){
+      const m=document.createElement('canvas'); m.width=w; m.height=h;
+      const mx=m.getContext('2d');
+      mx.fillStyle='#000'; mx.fillRect(0,0,w,h);           // 기본은 전부 보임
+      mx.globalCompositeOperation='destination-out';
+      if(aiMask) mx.drawImage(aiMask,0,0,w,h);             // AI가 지운 곳
+      if(paint)  mx.drawImage(paint,0,0,w,h);              // 손으로 지운 곳
+      fx.globalCompositeOperation='destination-in';
+      fx.drawImage(m,0,0);
+      fx.globalCompositeOperation='source-over';
+    }
+    x.drawImage(fg,0,0);
+    return c;
+  }
+
+  function draw(){
+    if(!img) return;
+    $('thV').textContent=(()=>{const v=+$('thresh').value;return v>0?'좁게 '+v:v<0?'넓게 '+(-v):'기본'})();
+    $('bsV').textContent=$('brush').value;
+    $('blV').textContent=$('blur').value;
+    const scale=Math.min(1, MAXVIEW/Math.max(W,H));
+    const c=compose(scale);
+    const pv=$('pv'); pv.width=c.width; pv.height=c.height;
+    pv.getContext('2d').drawImage(c,0,0);
+    $('info').textContent=`${W} × ${H}px · 원본 해상도로 저장됩니다`;
+  }
+
+  /* ---------- AI ---------- */
+  async function getSeg(){
+    if(segmenter) return segmenter;
+    const v=await import('/tools/lib/mediapipe/vision_bundle.mjs');
+    const fs=await v.FilesetResolver.forVisionTasks('/tools/lib/mediapipe/wasm');
+    const make=p=>v.ImageSegmenter.createFromOptions(fs,{baseOptions:{modelAssetPath:p},
+      runningMode:'IMAGE',outputCategoryMask:true,outputConfidenceMasks:true});
+    try{ segmenter=await make('/tools/lib/mediapipe/selfie_multiclass_256x256.tflite'); }
+    catch(e){ segmenter=await make('/tools/lib/mediapipe/selfie_segmenter.tflite'); }
+    return segmenter;
+  }
+  function buildMask(){
+    if(!aiPerson) return;
+    const th=0.5-(+$('thresh').value/100), soft=0.16, lo=th-soft, span=soft*2;
+    const c=document.createElement('canvas'); c.width=aiW; c.height=aiH;
+    const x=c.getContext('2d'), d=x.createImageData(aiW,aiH), p=d.data;
+    for(let i=0;i<aiPerson.length;i++){
+      let t=(aiPerson[i]-lo)/span; t=t<0?0:t>1?1:t;
+      p[i*4+3]=Math.round((1-(t*t*(3-2*t)))*255);
+    }
+    x.putImageData(d,0,0); aiMask=c;
+  }
+
+  $('aiBtn').addEventListener('click',async()=>{
+    if(!img) return;
+    const b=$('aiBtn'), label=b.textContent;
+    b.disabled=true; b.textContent='모델 불러오는 중…';
+    try{
+      const seg=await getSeg();
+      b.textContent='분석 중…'; await new Promise(r=>setTimeout(r,20));
+      const s=Math.min(1,1024/Math.max(W,H));
+      const iw=Math.round(W*s), ih=Math.round(H*s);
+      const src=document.createElement('canvas'); src.width=iw; src.height=ih;
+      src.getContext('2d').drawImage(img,0,0,iw,ih);
+      const res=seg.segment(src);
+      const masks=res.confidenceMasks||[], multi=masks.length>2, m0=masks[0];
+      if(!m0) throw new Error('마스크를 얻지 못했습니다');
+      aiW=m0.width; aiH=m0.height;
+      const n=aiW*aiH; aiPerson=new Float32Array(n);
+      const raw=m0.getAsFloat32Array();
+      for(let i=0;i<n;i++) aiPerson[i]= multi ? 1-raw[i] : raw[i];
+      if(res.categoryMask){
+        const cat=res.categoryMask.getAsUint8Array();
+        if(cat.length===n) for(let i=0;i<n;i++){
+          const isP = multi ? (cat[i]!==0) : (cat[i]===0);
+          if(isP && aiPerson[i]<0.75) aiPerson[i]=0.75;
+        }
+      }
+      res.close && res.close();
+      buildMask();
+      $('tune').classList.remove('hidden');
+      $('aiNote').innerHTML='배경을 지웠습니다. 어색하면 위 슬라이더나 아래 브러시로 다듬으세요.';
+      warn.classList.add('hidden');
+      draw();
+    }catch(e){
+      msg('bad',`AI 처리에 실패했습니다 (${e.message}). <strong>지우기 브러시</strong>로 직접 칠해서 지우실 수 있습니다.`);
+    }
+    b.disabled=false; b.textContent=label;
+  });
+  $('thresh').addEventListener('input',()=>{buildMask();draw()});
+
+  /* ---------- 브러시 ---------- */
+  const wrap=$('cvwrap');
+  let painting=false;
+  function ensurePaint(){
+    if(!paint||paint.width!==W||paint.height!==H){
+      const c=document.createElement('canvas'); c.width=W; c.height=H;
+      if(paint) c.getContext('2d').drawImage(paint,0,0,W,H);
+      paint=c;
+    }
+    return paint;
+  }
+  function stroke(e,erasing){
+    const r=$('pv').getBoundingClientRect();
+    const cx=(e.clientX-r.left)/r.width*W, cy=(e.clientY-r.top)/r.height*H;
+    const rad=(+$('brush').value/2)*(W/r.width);
+    const x=ensurePaint().getContext('2d');
+    x.globalCompositeOperation=erasing?'source-over':'destination-out';
+    const g=x.createRadialGradient(cx,cy,rad*0.6,cx,cy,rad);
+    g.addColorStop(0,'rgba(0,0,0,1)'); g.addColorStop(1,'rgba(0,0,0,0)');
+    x.fillStyle=g; x.beginPath(); x.arc(cx,cy,rad,0,Math.PI*2); x.fill();
+    x.globalCompositeOperation='source-over';
+  }
+  wrap.addEventListener('pointerdown',e=>{
+    if(tool==='none') return;
+    wrap.setPointerCapture(e.pointerId); painting=true; stroke(e,tool==='erase'); draw();
+  });
+  wrap.addEventListener('pointermove',e=>{ if(painting){ stroke(e,tool==='erase'); draw(); } });
+  ['pointerup','pointercancel'].forEach(ev=>wrap.addEventListener(ev,()=>painting=false));
+  document.querySelectorAll('#tool button').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('#tool button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); tool=b.dataset.m;
+    wrap.style.cursor = tool==='none' ? 'default' : 'crosshair';
+  }));
+  $('clearPaint').addEventListener('click',()=>{paint=null;draw()});
+  $('brush').addEventListener('input',draw);
+
+  /* ---------- 배경 ---------- */
+  document.querySelectorAll('#bgsw button').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('#bgsw button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); bgMode=b.dataset.bg;
+    $('blurBox').classList.toggle('hidden', bgMode!=='blur');
+    draw();
+  }));
+  $('blur').addEventListener('input',draw);
+
+  /* ---------- 저장 ---------- */
+  $('save').addEventListener('click',()=>{
+    if(!img) return;
+    compose(1).toBlob(b=>{
+      const a=document.createElement('a');
+      a.href=URL.createObjectURL(b); a.download='removed-bg.png'; a.click();
+      setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+    },'image/png');
+  });
+  $('reset').addEventListener('click',()=>{
+    img=null; file.value=''; aiMask=null; aiPerson=null; paint=null;
+    $('editor').classList.add('hidden'); warn.classList.add('hidden');
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+})();
+</script>
+</body>
+</html>

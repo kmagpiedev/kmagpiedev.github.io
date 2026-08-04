@@ -109,6 +109,7 @@
   footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
   footer a{color:var(--ink-3)}
 </style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="wrap">
@@ -134,6 +135,15 @@
       <div class="fld" style="margin-top:12px">
         <label>확대 <span class="val" id="zV">100%</span></label>
         <input type="range" id="zoom" min="50" max="400" value="100">
+      </div>
+      <div class="fld">
+        <label>회전 <span class="val" id="rV">0.0°</span></label>
+        <input type="range" id="rot" min="-200" max="200" value="0">
+        <div style="display:flex;gap:6px;margin-top:6px">
+          <button class="act ghost" id="rotM" style="flex:1;padding:5px 0;font-size:12px">−0.1°</button>
+          <button class="act ghost" id="rot0" style="flex:1;padding:5px 0;font-size:12px">수평</button>
+          <button class="act ghost" id="rotP" style="flex:1;padding:5px 0;font-size:12px">+0.1°</button>
+        </div>
       </div>
       <div style="display:flex;gap:8px">
         <button class="act ghost" id="fit" style="flex:1;padding:8px 0;font-size:13px">맞춤</button>
@@ -276,7 +286,7 @@
 (function(){
   const $=id=>document.getElementById(id);
   const DPI=300, MM=DPI/25.4;            // 1mm 당 픽셀
-  let img=null, ox=0, oy=0, zoom=1, bgMode='keep';
+  let img=null, ox=0, oy=0, zoom=1, rotDeg=0, bgMode='keep';
   const warn=$('warn');
   function msg(k,h){warn.className='msg m-'+k;warn.innerHTML=h;warn.classList.remove('hidden')}
 
@@ -293,6 +303,7 @@
     const im=new Image();
     im.onload=()=>{
       img=im; paint=null; aiMask=null; aiPerson=null;
+      rotDeg=0; $('rot').value=0;
       $('aiTune').classList.add('hidden'); $('aiClear').classList.add('hidden');
       warn.classList.add('hidden');
       $('editor').classList.remove('hidden');
@@ -340,14 +351,22 @@
     x.fillRect(0,0,outW,outH);
     if(!img) return;
     x.imageSmoothingQuality='high';
-    x.drawImage(img, ox, oy, img.naturalWidth*zoom, img.naturalHeight*zoom);
+    const rad=rotDeg*Math.PI/180;
+    const place=(ctx,src)=>{
+      ctx.save();
+      if(rad){ ctx.translate(outW/2,outH/2); ctx.rotate(rad); ctx.translate(-outW/2,-outH/2); }
+      ctx.imageSmoothingQuality='high';
+      ctx.drawImage(src, ox, oy, img.naturalWidth*zoom, img.naturalHeight*zoom);
+      ctx.restore();
+    };
+    place(x,img);
     if(bgMode!=='keep' && +$('tol').value>0) replaceBg(x,outW,outH,bgMode);
     if(aiMask && bgMode!=='keep'){
       const t=document.createElement('canvas'); t.width=outW; t.height=outH;
       const tx=t.getContext('2d');
       tx.fillStyle=bgMode; tx.fillRect(0,0,outW,outH);
       tx.globalCompositeOperation='destination-in';
-      tx.drawImage(aiMask, ox, oy, img.naturalWidth*zoom, img.naturalHeight*zoom);
+      place(tx,aiMask);
       x.drawImage(t,0,0);
     }
     if(paint && bgMode!=='keep'){
@@ -437,6 +456,7 @@
   function draw(){
     if(!img) return;
     $('zV').textContent=$('zoom').value+'%';
+    $('rV').textContent=(rotDeg>0?'+':'')+rotDeg.toFixed(1)+'°';
     $('tV').textContent=$('tol').value;
     $('bsV').textContent=$('brush').value;
     $('brV').textContent=$('bright').value;
@@ -624,7 +644,9 @@
     if(!dragging)return;
     if(tool==='move'){
       const k=(spec()[0]*MM)/wrap.clientWidth;
-      ox+=(e.clientX-lx)*k; oy+=(e.clientY-ly)*k;
+      const dx=(e.clientX-lx)*k, dy=(e.clientY-ly)*k;
+      const a=-rotDeg*Math.PI/180, cs=Math.cos(a), sn=Math.sin(a);
+      ox+=dx*cs-dy*sn; oy+=dx*sn+dy*cs;
       lx=e.clientX; ly=e.clientY;
     } else { const [px,py]=toOut(e); stroke(px,py,tool==='erase'); }
     draw();
@@ -646,6 +668,12 @@
     zoom=nz; draw();
   }
   $('zoom').addEventListener('input',applyZoom);
+  $('rot').addEventListener('input',()=>{ rotDeg=+$('rot').value/10; draw(); });
+  const nudge=d=>{ const v=Math.max(-20,Math.min(20, rotDeg+d));
+    rotDeg=Math.round(v*10)/10; $('rot').value=Math.round(rotDeg*10); draw(); };
+  $('rotM').addEventListener('click',()=>nudge(-0.1));
+  $('rotP').addEventListener('click',()=>nudge(0.1));
+  $('rot0').addEventListener('click',()=>{ rotDeg=0; $('rot').value=0; draw(); });
   $('fit').addEventListener('click',()=>{fit();draw()});
   $('reset').addEventListener('click',()=>{img=null;file.value='';
     $('editor').classList.add('hidden');warn.classList.add('hidden');
