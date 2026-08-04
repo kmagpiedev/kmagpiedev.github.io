@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>퇴직금 계산기 — 평균임금·통상임금 자동 비교 | 까치툴</title>
+<meta name="description" content="입사일과 퇴사일만 넣으면 재직일수와 평균임금 산정기간을 자동으로 잡아줍니다. 상여금·연차수당 3/12 반영, 평균임금이 통상임금보다 적으면 통상임금으로 자동 대체합니다.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/severance/">
+<meta property="og:title" content="퇴직금 계산기 — 평균임금·통상임금 자동 비교">
+<meta property="og:description" content="상여금·연차수당 3/12까지 반영한 정확한 퇴직금 계산. 가입도 업로드도 없습니다.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/severance/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  .row{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start}
+  .col{flex:1;min-width:220px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
+  input[type=date],input[type=text],input[type=number]{padding:10px 12px;border:1px solid var(--line);border-radius:9px;
+    background:var(--surface);color:var(--ink);font-size:15px;font-family:inherit;width:100%;
+    font-variant-numeric:tabular-nums}
+  input[type=text],input[type=number]{text-align:right;font-weight:600}
+  input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:12px 0 0}
+  .opt{display:flex;align-items:center;gap:9px;font-size:14.5px;cursor:pointer;margin:14px 0 0}
+  .opt input{width:17px;height:17px;accent-color:var(--accent);cursor:pointer;flex:none}
+
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14.5px}
+  th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line-soft)}
+  th{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;border-bottom:1px solid var(--line)}
+  td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  #per input{padding:7px 9px;font-size:14px}
+  #per td{padding:7px 5px}
+  #per .rng{font-size:13px;color:var(--ink-2);white-space:nowrap}
+  tr.sum td{border-top:2px solid var(--line);border-bottom:0;font-weight:700;padding-top:11px}
+
+  .result{background:var(--surface);border:1px solid var(--accent);border-radius:16px;padding:26px 24px;margin:18px 0}
+  .big{font-size:13px;color:var(--ink-2);margin:0 0 4px}
+  .money{font-size:38px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.2;color:var(--accent)}
+  .money small{font-size:18px;font-weight:700;margin-left:3px}
+  .yearly{font-size:14px;color:var(--ink-2);margin-top:6px;font-variant-numeric:tabular-nums}
+  details{margin:14px 0;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:0 16px}
+  details[open]{padding-bottom:8px}
+  summary{cursor:pointer;padding:12px 0;font-size:14.5px;font-weight:600;color:var(--ink-2)}
+  summary:hover{color:var(--accent)}
+  details .in{font-size:14px;color:var(--ink-2)}
+  details code{background:var(--line-soft);padding:1px 5px;border-radius:4px;font-size:12.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .m-ok{background:var(--good-soft);border-color:var(--good)}
+  .hidden{display:none}
+  .src{font-size:12.5px;color:var(--ink-3);margin-top:14px;padding-top:12px;border-top:1px solid var(--line-soft)}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .money{font-size:30px}
+    table{font-size:13.5px}
+    th,td{padding:8px 4px}
+    #per .rng{font-size:11.5px;white-space:normal}
+  }
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › 퇴직금 계산기</p>
+
+<h1>퇴직금 계산기</h1>
+<p class="sub">입사일과 마지막 근무일만 넣으면 <strong>재직일수와 평균임금 산정기간을 자동으로 잡아줍니다.</strong> 상여금·연차수당을 3/12로 반영하고, 평균임금이 통상임금보다 적으면 법에 따라 통상임금으로 바꿔 계산합니다.</p>
+
+<div class="panel">
+  <div class="row">
+    <div class="col">
+      <label class="f">입사일</label>
+      <input type="date" id="join">
+    </div>
+    <div class="col">
+      <label class="f">마지막 근무일</label>
+      <input type="date" id="last">
+    </div>
+  </div>
+  <p class="note">마지막으로 실제 근무한 날을 넣으세요. 퇴사일(마지막 근무일 다음 날)이 아닙니다. 평균임금 산정기간은 이 날짜를 기준으로 자동 계산됩니다.</p>
+</div>
+
+<div id="warn" class="hidden"></div>
+
+<div id="body" class="hidden">
+<div class="panel">
+  <label class="f">퇴직 전 3개월 급여</label>
+  <table id="per">
+    <thead><tr>
+      <th>기간</th><th style="width:60px" class="n">일수</th>
+      <th style="width:34%">기본급</th><th style="width:34%">기타수당</th>
+    </tr></thead>
+    <tbody id="perBody"></tbody>
+    <tfoot><tr class="sum"><td>합계</td><td class="n" id="sumDays">0</td><td colspan="2" class="n" id="sumPay">0원</td></tr></tfoot>
+  </table>
+  <p class="note">세금·4대보험을 떼기 <strong>전</strong> 금액입니다. 급여명세서의 지급 합계를 넣으면 돼요. 식대·교통비 같은 고정 수당도 기타수당에 포함합니다. 잘 모르겠으면 기본급 칸에 그달 받은 총액을 넣어도 결과는 같습니다.</p>
+
+  <div class="row" style="margin-top:20px">
+    <div class="col">
+      <label class="f">연간 상여금 총액</label>
+      <input type="text" id="bonus" inputmode="numeric" value="0">
+      <p class="note">퇴직일 이전 <strong>1년간</strong> 받은 상여금·성과급을 다 더한 금액입니다. 이 중 3/12만 평균임금에 들어갑니다.</p>
+    </div>
+    <div class="col">
+      <label class="f">연차수당</label>
+      <input type="text" id="annual" inputmode="numeric" value="0">
+      <p class="note">퇴직 <strong>전년도에 발생</strong>해서 못 쓰고 받은 연차수당입니다. 이것도 3/12만 반영돼요. 퇴사하면서 정산받는 연차수당은 넣지 마세요.</p>
+    </div>
+  </div>
+
+  <label class="opt"><input type="checkbox" id="useOrd"><span>통상임금과 비교하기 (권장)</span></label>
+  <div id="ordBox" class="hidden" style="margin-top:12px">
+    <div class="row">
+      <div class="col">
+        <label class="f">월 통상임금</label>
+        <input type="text" id="ordPay" inputmode="numeric" value="0">
+      </div>
+      <div class="col">
+        <label class="f">월 소정근로시간</label>
+        <input type="number" id="ordHours" value="209" min="1" max="400">
+      </div>
+    </div>
+    <p class="note">기본급에 매달 고정으로 나오는 수당(식대, 직책수당 등)을 더한 금액입니다. 주 40시간 근무면 월 소정근로시간은 209시간이에요. 성과급처럼 실적에 따라 달라지는 돈은 빼세요.</p>
+  </div>
+</div>
+
+<div class="result">
+  <p class="big">예상 퇴직금 (세전)</p>
+  <div class="money" id="pay">0<small>원</small></div>
+  <div class="yearly" id="meta"></div>
+
+  <table>
+    <tbody id="tb"></tbody>
+  </table>
+
+  <details>
+    <summary>계산 과정 자세히 보기</summary>
+    <div class="in" id="detail"></div>
+  </details>
+
+  <p class="src" id="src"></p>
+</div>
+</div>
+
+<h2>퇴직금은 누가 받나요</h2>
+<p>근로자퇴직급여 보장법 제4조는 두 가지를 모두 채운 사람에게 퇴직금을 주도록 정하고 있습니다. <strong>계속 근로한 기간이 1년 이상</strong>이어야 하고, <strong>4주를 평균해 1주 소정근로시간이 15시간 이상</strong>이어야 합니다. 둘 중 하나라도 못 채우면 퇴직금이 발생하지 않습니다.</p>
+<p>중요한 건 <strong>5인 미만 사업장도 퇴직금을 줘야 한다</strong>는 점입니다. 연차휴가나 연장근로 가산수당은 5인 미만 사업장에 적용되지 않지만, 퇴직금은 근로기준법이 아니라 근로자퇴직급여 보장법이 정하는 것이라 사업장 규모와 상관없이 적용됩니다. 아르바이트, 계약직, 단시간 근로자도 위 두 요건만 채우면 똑같이 받습니다.</p>
+
+<h2>퇴직금은 어떻게 계산하나요</h2>
+<p>법이 정한 기준은 <strong>계속근로기간 1년에 대하여 30일분 이상의 평균임금</strong>입니다. 이걸 계산식으로 옮기면 이렇게 됩니다.</p>
+<p><code>퇴직금 = 1일 평균임금 × 30일 × (재직일수 ÷ 365)</code></p>
+<p>그래서 결국 <strong>1일 평균임금을 얼마로 보느냐</strong>가 전부입니다. 그리고 여기서 사람들이 가장 많이 손해를 봅니다.</p>
+
+<h3>평균임금은 90일이 아니라 실제 일수로 나눕니다</h3>
+<p>평균임금은 퇴직 사유가 생긴 날 이전 3개월 동안 받은 임금 총액을 <strong>그 기간의 총일수로 나눈</strong> 금액입니다. 여기서 총일수는 근무한 날이 아니라 달력상의 날짜 수예요. 그래서 항상 90일이 아니라 어느 달이 끼느냐에 따라 89일에서 92일 사이로 달라집니다. 2월이 낀 사람과 여름에 퇴사한 사람의 평균임금이 미묘하게 다른 이유가 이겁니다. 이 계산기는 입력한 날짜를 보고 실제 일수를 잡습니다.</p>
+
+<h3>상여금과 연차수당을 빠뜨리면 손해입니다</h3>
+<p>퇴직 전 3개월 급여만 넣고 끝내는 사람이 많은데, 상여금과 연차수당도 평균임금에 들어갑니다. 다만 전액이 아니라 <strong>3/12만</strong> 반영됩니다. 3개월치에 해당하는 몫만 넣는다는 뜻이에요.</p>
+<p>상여금은 <strong>퇴직일 이전 1년간</strong> 받은 것을 전부 더한 금액의 3/12입니다. 직전 3개월에 상여금을 못 받았어도, 1년 안에 받았다면 들어갑니다. 연차수당은 <strong>퇴직 전년도에 발생해서 못 쓰고 받은</strong> 것의 3/12입니다. 퇴사하면서 정산받는 연차수당은 퇴직으로 비로소 생기는 것이라 평균임금에 넣지 않습니다.</p>
+
+<h3>평균임금이 통상임금보다 적으면 통상임금으로 계산합니다</h3>
+<p>근로기준법 제2조 제2항이 정한 안전장치입니다. 퇴직 직전 몇 달 동안 무급휴직을 했거나, 결근이 많았거나, 수당이 유난히 적었다면 평균임금이 평소보다 낮게 나옵니다. 이럴 때 <strong>통상임금이 하한선</strong>이 되어 그쪽으로 계산해야 합니다.</p>
+<p>계산기에서 통상임금 비교를 켜두는 걸 권합니다. 켜면 두 값을 다 계산해서 더 큰 쪽을 자동으로 적용하고, 어느 쪽이 적용됐는지 결과에 표시합니다.</p>
+
+<h2>통상임금은 어떻게 구하나요</h2>
+<p>통상임금은 소정근로의 대가로 <strong>정기적이고 일률적으로</strong> 지급하기로 정한 임금입니다. 기본급에 식대·직책수당처럼 매달 고정으로 나오는 수당을 더한 금액이라고 보면 대체로 맞습니다. 실적에 따라 달라지는 성과급, 연장근로수당처럼 실제 일한 만큼 나오는 돈은 빠집니다.</p>
+<p>시간당 통상임금은 월 통상임금을 <strong>월 소정근로시간</strong>으로 나눠 구합니다. 주 40시간 근무자는 209시간이에요. 209라는 숫자는 이렇게 나옵니다. 1개월 평균 주수가 365 ÷ 12 ÷ 7 = 4.345주이고, 1주 유급시간이 소정근로 40시간에 주휴 8시간을 더한 48시간이므로, 48 × 4.345 = 208.6시간을 올려 209시간이 됩니다. 2026년 최저임금 월 환산액 2,156,880원도 10,320원 × 209시간으로 나온 값입니다.</p>
+<p>여기서 하나 알아두면 좋은 게 있습니다. <strong>2024년 12월 19일 대법원 전원합의체 판결</strong>로 통상임금의 판단 기준이 바뀌었습니다. 예전에는 "재직 중인 사람에게만 준다"는 조건이 붙은 정기상여금은 통상임금에서 빠졌는데, 이제는 그런 조건이 있어도 정기적·일률적으로 지급된다면 통상임금에 들어갑니다. 정기상여금을 받고 있다면 회사가 통상임금을 제대로 잡고 있는지 확인해 볼 만합니다. 다만 이 판결은 2024년 12월 19일 이후 제공한 근로부터 적용됩니다.</p>
+
+<h2>자주 겪는 문제</h2>
+<h3>계산 결과가 회사가 준 금액과 달라요</h3>
+<p>가장 흔한 원인은 상여금과 연차수당이 빠진 경우입니다. 그다음이 통상임금 비교를 안 한 경우예요. 두 가지를 다 넣어 보고도 차이가 크면 급여명세서를 들고 회사에 산정 내역을 요청할 수 있습니다.</p>
+<h3>1년을 며칠 못 채웠어요</h3>
+<p>계속근로기간이 1년 미만이면 퇴직금이 발생하지 않습니다. 다만 계속근로기간에는 수습기간도 들어가고, 잠깐 쉬었다가 다시 들어온 경우에도 사정에 따라 이어서 볼 여지가 있습니다. 며칠 차이라면 노무사나 고용노동부 상담(국번 없이 1350)에 문의해 보세요.</p>
+<h3>퇴직연금(DC형)에 가입돼 있어요</h3>
+<p>확정기여형(DC) 퇴직연금은 회사가 매년 연간 임금총액의 1/12 이상을 적립하고 그 운용 실적에 따라 금액이 정해지므로, 이 계산기의 결과와 다릅니다. 이 계산기는 <strong>퇴직금 제도</strong>와 확정급여형(DB) 퇴직연금의 최소 기준을 계산합니다.</p>
+<h3>세금은 얼마나 떼나요</h3>
+<p>퇴직소득세는 근속연수공제와 환산급여공제를 거쳐 계산되는 별도 체계라 급여 소득세와 다릅니다. 근속연수가 길수록 세율이 크게 낮아져서, 오래 다닌 사람은 생각보다 적게 냅니다. 이 계산기는 세전 금액을 보여줍니다.</p>
+
+<!--REL:S-->
+<h2>함께 쓰면 좋은 도구</h2>
+<div class="rel">
+  <a href="/tools/holiday-pay/"><strong>주휴수당 계산기</strong><span>2026년 최저임금 10,320원 기준</span></a>
+  <a href="/tools/salary/"><strong>연봉 실수령액 계산기</strong><span>2026년 요율·간이세액표 원본</span></a>
+  <a href="/tools/pdf-sign/"><strong>PDF 서명·도장 넣기</strong><span>인쇄 없이 계약서에 바로</span></a>
+</div>
+<p class="rel-all"><a href="/tools/">까치툴 도구 13개 전체 보기 →</a></p>
+<!--REL:E-->
+
+<footer>
+  <p>까치툴 · 모든 계산은 브라우저에서 이루어지며 입력값은 전송·저장되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const won=n=>Math.round(n).toLocaleString('ko-KR');
+const num=s=>{const v=String(s).replace(/[^0-9]/g,'');return v?parseInt(v,10):0;};
+const D=s=>{const [y,m,d]=s.split('-').map(Number);return new Date(Date.UTC(y,m-1,d));};
+const fmtD=dt=>`${dt.getUTCFullYear()}.${String(dt.getUTCMonth()+1).padStart(2,'0')}.${String(dt.getUTCDate()).padStart(2,'0')}`;
+const days=(a,b)=>Math.round((b-a)/86400000)+1;      // 양끝 포함
+const addM=(dt,n)=>{                                  // 개월 더하기 (말일 보정)
+  const y=dt.getUTCFullYear(), m=dt.getUTCMonth(), d=dt.getUTCDate();
+  const t=new Date(Date.UTC(y,m+n,1));
+  const lastDay=new Date(Date.UTC(t.getUTCFullYear(),t.getUTCMonth()+1,0)).getUTCDate();
+  return new Date(Date.UTC(t.getUTCFullYear(),t.getUTCMonth(),Math.min(d,lastDay)));
+};
+
+let periods=[];
+
+/* 기본값: 오늘 기준 */
+(function init(){
+  const t=new Date();
+  const last=new Date(Date.UTC(t.getFullYear(),t.getMonth(),0));      // 지난달 말일
+  const join=new Date(Date.UTC(t.getFullYear()-3,t.getMonth(),1));
+  $('last').value=last.toISOString().slice(0,10);
+  $('join').value=join.toISOString().slice(0,10);
+})();
+
+/* 평균임금 산정기간을 달 경계로 쪼갠다 */
+function buildPeriods(){
+  const last=D($('last').value);
+  const cause=new Date(last.getTime()+86400000);        // 사유 발생일 = 마지막 근무일 다음 날
+  const start=addM(cause,-3);                            // 이전 3개월
+  const out=[];
+  let cur=start;
+  while(cur<=last){
+    const monthEnd=new Date(Date.UTC(cur.getUTCFullYear(),cur.getUTCMonth()+1,0));
+    const end=monthEnd<last?monthEnd:last;
+    out.push({s:cur,e:end,d:days(cur,end)});
+    cur=new Date(end.getTime()+86400000);
+  }
+  return out;
+}
+
+function drawPeriods(){
+  const old={};
+  periods.forEach((p,i)=>{ old[i]=[num(($('b'+i)||{}).value||0), num(($('e'+i)||{}).value||0)]; });
+  periods=buildPeriods();
+  $('perBody').innerHTML=periods.map((p,i)=>`
+    <tr>
+      <td class="rng">${fmtD(p.s)} ~ ${fmtD(p.e)}</td>
+      <td class="n">${p.d}</td>
+      <td><input type="text" id="b${i}" inputmode="numeric" value="${old[i]?won(old[i][0]):'0'}"></td>
+      <td><input type="text" id="e${i}" inputmode="numeric" value="${old[i]?won(old[i][1]):'0'}"></td>
+    </tr>`).join('');
+  periods.forEach((p,i)=>{
+    ['b'+i,'e'+i].forEach(id=>$(id).addEventListener('input',()=>{
+      const el=$(id); const v=num(el.value); el.value=v?won(v):''; calc();
+    }));
+  });
+}
+
+function calc(){
+  const w=$('warn');
+  const join=$('join').value, last=$('last').value;
+  if(!join||!last){ $('body').classList.add('hidden'); return; }
+  const jd=D(join), ld=D(last);
+  if(ld<=jd){ w.className='msg m-bad'; w.textContent='마지막 근무일이 입사일보다 빠릅니다.'; $('body').classList.add('hidden'); return; }
+
+  const total=days(jd,ld);                     // 재직일수
+  if(total<365){
+    w.className='msg m-bad';
+    w.innerHTML=`재직일수가 <strong>${won(total)}일</strong>이라 1년(365일)을 못 채웠습니다. 근로자퇴직급여 보장법상 <strong>퇴직금이 발생하지 않습니다.</strong> 다만 수습기간도 계속근로기간에 포함되니 입사일을 다시 확인해 보세요.`;
+    $('body').classList.add('hidden'); return;
+  }
+  $('body').classList.remove('hidden');
+
+  const sumDays=periods.reduce((a,p)=>a+p.d,0);
+  let sumPay=0;
+  periods.forEach((p,i)=>{ sumPay+=num(($('b'+i)||{}).value||0)+num(($('e'+i)||{}).value||0); });
+  $('sumDays').textContent=won(sumDays);
+  $('sumPay').textContent=won(sumPay)+'원';
+
+  const bonus=num($('bonus').value), annual=num($('annual').value);
+  const bonus3=bonus*3/12, annual3=annual*3/12;
+  const wageTotal=sumPay+bonus3+annual3;
+  const avg = sumDays? wageTotal/sumDays : 0;
+
+  const useOrd=$('useOrd').checked;
+  const ordMonth=num($('ordPay').value), ordHours=Math.max(1,+$('ordHours').value||209);
+  const ordHour = useOrd? ordMonth/ordHours : 0;
+  const ordDay  = useOrd? ordHour*8 : 0;
+
+  const applied=Math.max(avg, ordDay);
+  const usedOrd = useOrd && ordDay>avg;
+  const pay=applied*30*(total/365);
+
+  $('pay').innerHTML=won(pay)+'<small>원</small>';
+  const y=Math.floor(total/365), rest=total-y*365;
+  $('meta').textContent=`재직 ${won(total)}일 (약 ${y}년 ${Math.floor(rest/30)}개월) · 평균임금 산정기간 ${sumDays}일`;
+
+  $('tb').innerHTML=`
+    <tr><td>3개월 임금 총액</td><td class="n">${won(sumPay)}원</td></tr>
+    ${bonus?`<tr><td>연간 상여금 ${won(bonus)}원의 3/12</td><td class="n">+${won(bonus3)}원</td></tr>`:''}
+    ${annual?`<tr><td>연차수당 ${won(annual)}원의 3/12</td><td class="n">+${won(annual3)}원</td></tr>`:''}
+    <tr class="sum"><td>평균임금 산정 임금총액</td><td class="n">${won(wageTotal)}원</td></tr>
+    <tr><td>1일 평균임금 (÷ ${sumDays}일)</td><td class="n"${usedOrd?' style="color:var(--ink-3)"':''}>${won(avg)}원</td></tr>
+    ${useOrd?`<tr><td>1일 통상임금 (${won(ordMonth)} ÷ ${ordHours}h × 8h)</td><td class="n"${usedOrd?' style="font-weight:700"':' style="color:var(--ink-3)"'}>${won(ordDay)}원</td></tr>`:''}
+    <tr class="sum"><td>적용 1일 평균임금${usedOrd?' <span style="font-weight:400;color:var(--accent)">— 통상임금 적용</span>':''}</td><td class="n">${won(applied)}원</td></tr>`;
+
+  $('detail').innerHTML=`
+    <p>① 재직일수 = ${fmtD(ld)} − ${fmtD(jd)} + 1 = <code>${won(total)}일</code></p>
+    <p>② 평균임금 산정기간 = 사유발생일(${fmtD(new Date(ld.getTime()+86400000))}) 이전 3개월 = <code>${sumDays}일</code><br>
+       <span style="color:var(--ink-3);font-size:13px">90일 고정이 아니라 달력상 실제 일수입니다. 89~92일 사이로 달라집니다.</span></p>
+    <p>③ 임금총액 = ${won(sumPay)} ${bonus?`+ ${won(bonus)}×3/12`:''} ${annual?`+ ${won(annual)}×3/12`:''} = <code>${won(wageTotal)}원</code></p>
+    <p>④ 1일 평균임금 = ${won(wageTotal)} ÷ ${sumDays} = <code>${won(avg)}원</code></p>
+    ${useOrd?`<p>⑤ 1일 통상임금 = ${won(ordMonth)} ÷ ${ordHours}시간 × 8시간 = <code>${won(ordDay)}원</code><br>
+       <span style="color:var(--ink-3);font-size:13px">근로기준법 제2조 제2항 — 평균임금이 통상임금보다 적으면 통상임금을 평균임금으로 봅니다. ${usedOrd?'<strong>이 경우 통상임금이 더 커서 통상임금을 적용했습니다.</strong>':'이 경우 평균임금이 더 커서 평균임금을 그대로 적용했습니다.'}</span></p>`:''}
+    <p>⑥ 퇴직금 = ${won(applied)} × 30일 × (${won(total)} ÷ 365) = <code>${won(pay)}원</code></p>`;
+
+  if(!useOrd && sumPay>0){
+    w.className='msg m-warn';
+    w.innerHTML='<strong>통상임금 비교를 켜는 걸 권합니다.</strong> 퇴직 직전에 무급휴직·결근이 있었거나 수당이 평소보다 적었다면 평균임금이 낮게 나오는데, 법은 이럴 때 통상임금으로 계산하도록 정하고 있습니다.';
+  } else if(usedOrd){
+    w.className='msg m-ok';
+    w.innerHTML='평균임금이 통상임금보다 적어서 <strong>통상임금을 적용</strong>했습니다. 근로기준법 제2조 제2항에 따른 처리입니다.';
+  } else w.className='hidden';
+}
+
+$('useOrd').addEventListener('change',()=>{ $('ordBox').classList.toggle('hidden',!$('useOrd').checked); calc(); });
+['join','last'].forEach(id=>$(id).addEventListener('change',()=>{ drawPeriods(); calc(); }));
+['bonus','annual','ordPay'].forEach(id=>$(id).addEventListener('input',()=>{
+  const el=$(id); const v=num(el.value); el.value=v?won(v):''; calc();
+}));
+$('ordHours').addEventListener('input',calc);
+
+$('src').innerHTML='기준 · 근로자퇴직급여 보장법 제4조·제8조 · 근로기준법 제2조 · 근로기준법 시행령 제2조·제6조'
+ +'<br><strong>이 결과는 참고용 추정치입니다.</strong> 실제 퇴직금은 회사의 취업규칙과 임금 구성, 평균임금 산정에서 제외되는 기간(수습·육아휴직·업무상 재해 요양 등)의 유무에 따라 달라질 수 있습니다. 확정기여형(DC) 퇴직연금은 계산 방식이 다릅니다. 분쟁이 있다면 노무사나 고용노동부 상담센터(국번 없이 1350)에 문의하세요.';
+
+drawPeriods(); calc();
+})();
+</script>
+</body>
+</html>
