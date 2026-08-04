@@ -86,6 +86,15 @@
   .note{font-size:13.5px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:13px;margin:14px 0}
   footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
   footer a{color:var(--ink-3)}
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
 </style>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
 </head>
@@ -161,6 +170,16 @@
 
 <h3>방침은 어디에 올리나요</h3>
 <p>공개된 URL이면 됩니다. 개인 웹사이트가 있으면 <code>/privacy-policy.html</code> 같은 경로에 올리는 게 가장 깔끔하고, 없다면 GitHub Pages나 블로그도 허용됩니다. 다만 로그인이 필요한 페이지, 다운로드만 되는 파일, 접근이 제한된 문서는 인정되지 않습니다. 앱을 업데이트할 때 수집 항목이 바뀌면 방침의 시행일도 함께 갱신하세요.</p>
+
+<!--REL:S-->
+<h2>함께 쓰면 좋은 도구</h2>
+<div class="rel">
+  <a href="/tools/app-icon/"><strong>앱 아이콘 사이즈 생성기</strong><span>안드로이드·iOS·파비콘</span></a>
+  <a href="/tools/screenshot/"><strong>스토어 스크린샷 생성기</strong><span>기기 프레임·피처 그래픽</span></a>
+  <a href="/tools/pdf/"><strong>PDF 편집기</strong><span>합치기·나누기·페이지 삭제</span></a>
+</div>
+<p class="rel-all"><a href="/tools/">까치툴 도구 11개 전체 보기 →</a></p>
+<!--REL:E-->
 
 <footer>
   <p>까치툴 · 입력 내용은 브라우저에서만 처리되며 전송되지 않습니다.</p>

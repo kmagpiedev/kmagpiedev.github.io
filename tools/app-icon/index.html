@@ -97,6 +97,15 @@
   footer a{color:var(--ink-3)}
   .bar{height:5px;background:var(--line-soft);border-radius:99px;overflow:hidden;margin-top:12px}
   .bar>i{display:block;height:100%;width:0;background:var(--accent);transition:width .18s}
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
 </style>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
 </head>
@@ -198,6 +207,16 @@
 <p>적응형 아이콘 세이프존 때문에 시각적으로 작아 보이는 건 정상입니다. 그래도 작다면 로고 자체를 키워서 원본을 다시 내보내세요. 여백 값을 음수로 줄 수는 없습니다.</p>
 <h3>iOS 아이콘이 검게 나와요</h3>
 <p>App Store용 1024px 아이콘에 알파 채널이 있으면 심사에서 거부되거나 검은 배경으로 합성됩니다. 위의 배경 채우기를 켜고 브랜드 색을 지정하세요.</p>
+
+<!--REL:S-->
+<h2>함께 쓰면 좋은 도구</h2>
+<div class="rel">
+  <a href="/tools/screenshot/"><strong>스토어 스크린샷 생성기</strong><span>기기 프레임·피처 그래픽</span></a>
+  <a href="/tools/privacy-policy/"><strong>개인정보처리방침 생성기</strong><span>Play 스토어 심사용</span></a>
+  <a href="/tools/image-compress/"><strong>이미지 용량 줄이기</strong><span>목표 용량에 자동으로 맞춤</span></a>
+</div>
+<p class="rel-all"><a href="/tools/">까치툴 도구 11개 전체 보기 →</a></p>
+<!--REL:E-->
 
 <footer>
   <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 파일은 업로드되지 않습니다.</p>

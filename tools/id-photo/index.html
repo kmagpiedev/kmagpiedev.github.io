@@ -108,6 +108,15 @@
   .note{font-size:13.5px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:13px;margin:14px 0}
   footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
   footer a{color:var(--ink-3)}
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
 </style>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
 </head>
@@ -274,6 +283,16 @@
 <p>저장 파일에는 300dpi 정보가 들어 있지만, 인쇄할 때 <strong>"용지에 맞춤"이나 "자동 크기 조정"을 끄고 100%로</strong> 출력해야 실제 규격이 나옵니다. 사진관 인화라면 4×6인치 시트를 그대로 맡기시면 됩니다.</p>
 <h3>사진이 흐릿해요</h3>
 <p>원본 해상도가 낮으면 300dpi로 키울 때 뭉개집니다. 35×45mm를 300dpi로 뽑으려면 세로 약 530픽셀이 필요하니, 얼굴 부분이 그보다 크게 찍힌 원본을 쓰세요.</p>
+
+<!--REL:S-->
+<h2>함께 쓰면 좋은 도구</h2>
+<div class="rel">
+  <a href="/tools/remove-bg/"><strong>배경 제거 (누끼)</strong><span>인물만 남기고 투명 PNG</span></a>
+  <a href="/tools/convert/"><strong>이미지 확장자 변환</strong><span>PNG·JPG·WebP·BMP·ICO</span></a>
+  <a href="/tools/image-compress/"><strong>이미지 용량 줄이기</strong><span>목표 용량에 자동으로 맞춤</span></a>
+</div>
+<p class="rel-all"><a href="/tools/">까치툴 도구 11개 전체 보기 →</a></p>
+<!--REL:E-->
 
 <footer>
   <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 사진은 업로드되지 않습니다.</p>

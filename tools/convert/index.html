@@ -121,6 +121,15 @@
     .dl{padding:5px 9px;font-size:12px}
     .fmts{grid-template-columns:repeat(3,1fr)}
   }
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
 </style>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
 </head>
@@ -239,6 +248,16 @@
 <p>정상입니다. PNG는 무손실이라 사진을 담으면 JPG보다 몇 배 커집니다. 사진은 JPG나 WebP로 두시고, PNG는 투명도가 필요하거나 글자·도형이 많은 이미지에만 쓰세요.</p>
 <h3>변환한 파일을 특정 사이트에 올렸더니 거부돼요</h3>
 <p>WebP나 BMP를 받지 않는 곳이 아직 많습니다. 업로드용이라면 JPG로 다시 변환해 보세요. 용량 상한 때문에 거부된 거라면 <a href="/tools/image-compress/">이미지 용량 줄이기</a>에서 목표 용량을 지정해 맞출 수 있습니다.</p>
+
+<!--REL:S-->
+<h2>함께 쓰면 좋은 도구</h2>
+<div class="rel">
+  <a href="/tools/image-compress/"><strong>이미지 용량 줄이기</strong><span>목표 용량에 자동으로 맞춤</span></a>
+  <a href="/tools/remove-bg/"><strong>배경 제거 (누끼)</strong><span>인물만 남기고 투명 PNG</span></a>
+  <a href="/tools/id-photo/"><strong>증명사진 만들기</strong><span>여권·반명함 300dpi</span></a>
+</div>
+<p class="rel-all"><a href="/tools/">까치툴 도구 11개 전체 보기 →</a></p>
+<!--REL:E-->
 
 <footer>
   <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 파일은 업로드되지 않습니다.</p>

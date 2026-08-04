@@ -101,6 +101,15 @@
   .note{font-size:13.5px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:13px;margin:14px 0}
   footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
   footer a{color:var(--ink-3)}
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
 </style>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
 </head>
@@ -172,6 +181,16 @@
 <p>페이지 수가 아주 많은 문서는 미리보기를 만드는 데 시간이 걸립니다. 미리보기가 다 뜨기 전에도 편집과 저장은 정상 동작하니 잠시 기다려 주세요.</p>
 <h3>저장한 파일 용량이 원본보다 커요</h3>
 <p>페이지를 재조립하는 과정에서 일부 최적화가 풀릴 수 있습니다. 용량을 줄이셔야 한다면 <a href="/tools/image-compress/">이미지 용량 줄이기</a>로 사진을 먼저 줄인 뒤 PDF로 만드시는 편이 효과적입니다.</p>
+
+<!--REL:S-->
+<h2>함께 쓰면 좋은 도구</h2>
+<div class="rel">
+  <a href="/tools/pdf-sign/"><strong>PDF 서명·도장 넣기</strong><span>인쇄 없이 계약서에 바로</span></a>
+  <a href="/tools/convert/"><strong>이미지 확장자 변환</strong><span>PNG·JPG·WebP·BMP·ICO</span></a>
+  <a href="/tools/image-compress/"><strong>이미지 용량 줄이기</strong><span>목표 용량에 자동으로 맞춤</span></a>
+</div>
+<p class="rel-all"><a href="/tools/">까치툴 도구 11개 전체 보기 →</a></p>
+<!--REL:E-->
 
 <footer>
   <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 파일은 업로드되지 않습니다.</p>

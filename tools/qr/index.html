@@ -92,6 +92,15 @@
   .note{font-size:13.5px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:13px;margin:14px 0}
   footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
   footer a{color:var(--ink-3)}
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
 </style>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
 </head>
@@ -223,6 +232,16 @@
 <p>아이폰은 카메라로 와이파이 QR을 인식합니다. 비밀번호에 세미콜론이나 역슬래시 같은 특수문자가 있으면 문제가 생길 수 있으니, 그럴 때는 비밀번호를 바꾸거나 직접 입력하도록 안내하세요.</p>
 <h3>내용을 길게 넣었더니 너무 촘촘해요</h3>
 <p>QR은 담는 내용이 길수록 격자가 조밀해집니다. 주소가 길다면 짧은 경로로 바꾸시고, 연락처는 꼭 필요한 항목만 넣으세요. 오류 정정 수준을 L로 낮추는 것도 방법입니다.</p>
+
+<!--REL:S-->
+<h2>함께 쓰면 좋은 도구</h2>
+<div class="rel">
+  <a href="/tools/convert/"><strong>이미지 확장자 변환</strong><span>PNG·JPG·WebP·BMP·ICO</span></a>
+  <a href="/tools/image-compress/"><strong>이미지 용량 줄이기</strong><span>목표 용량에 자동으로 맞춤</span></a>
+  <a href="/tools/app-icon/"><strong>앱 아이콘 사이즈 생성기</strong><span>안드로이드·iOS·파비콘</span></a>
+</div>
+<p class="rel-all"><a href="/tools/">까치툴 도구 11개 전체 보기 →</a></p>
+<!--REL:E-->
 
 <footer>
   <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 입력한 내용은 전송되지 않습니다.</p>
