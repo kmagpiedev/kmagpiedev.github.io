@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>자동차세 계산기 — 배기량·차령 경감·연납 할인 2026 | 까치툴</title>
+<meta name="description" content="배기량과 최초 등록 연도만 넣으면 자동차세와 지방교육세가 나옵니다. 차령에 따른 경감을 반기 단위로 반영하고 1월·3월·6월·9월 연납 할인액을 한 화면에서 비교합니다.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/car-tax/">
+<meta property="og:title" content="자동차세 계산기 — 차령 경감·연납 할인 비교">
+<meta property="og:description" content="배기량과 등록 연도만 넣으면 끝. 연납 4개 시기 할인액을 나란히 보여줍니다.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/car-tax/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  .row{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start}
+  .col{flex:1;min-width:200px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
+  input[type=text],input[type=number],select{padding:10px 12px;border:1px solid var(--line);border-radius:9px;
+    background:var(--surface);color:var(--ink);font-size:16px;font-family:inherit;width:100%;
+    text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+  select{text-align:left}
+  input:focus,select:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .amt{display:flex;align-items:center;gap:8px}
+  .unit{font-size:14px;color:var(--ink-2);flex:none;white-space:nowrap}
+  .mini{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .mini button{font-family:inherit;font-size:12.5px;padding:5px 10px;border-radius:7px;border:1px solid var(--line);
+    background:transparent;color:var(--ink-2);cursor:pointer}
+  .mini button:hover{border-color:var(--accent);color:var(--accent)}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:12px 0 0}
+  .seg{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+  .seg button{flex:1;background:transparent;border:0;padding:10px 6px;font-size:13.5px;font-weight:600;
+    color:var(--ink-2);cursor:pointer;font-family:inherit;transition:.12s}
+  .seg button.on{background:var(--accent);color:#fff}
+  .seg.sm button{font-size:12.5px;padding:9px 4px}
+
+  .result{background:var(--surface);border:1px solid var(--accent);border-radius:16px;padding:26px 24px;margin:18px 0}
+  .big{font-size:13px;color:var(--ink-2);margin:0 0 4px}
+  .money{font-size:38px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.2;color:var(--accent)}
+  .money small{font-size:18px;font-weight:700;margin-left:3px}
+  .yearly{font-size:14px;color:var(--ink-2);margin-top:6px;font-variant-numeric:tabular-nums}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px}
+  th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line-soft)}
+  th{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;border-bottom:1px solid var(--line)}
+  td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  td.r{font-size:13px;color:var(--ink-3);text-align:right;font-variant-numeric:tabular-nums}
+  tr.sum td{border-top:2px solid var(--line);border-bottom:0;font-weight:700;padding-top:11px}
+  tr.take td{border-bottom:0;font-weight:800;color:var(--accent);font-size:16px}
+  tr.cut td{color:var(--good)}
+  tr.hi td{background:var(--accent-soft)}
+
+  .cmp{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0}
+  .cmp .c{border:1px solid var(--line);border-radius:13px;padding:13px 14px;background:var(--surface)}
+  .cmp .c.win{border-color:var(--accent);background:var(--accent-soft)}
+  .cmp .c .k{font-size:12.5px;color:var(--ink-3);font-weight:600}
+  .cmp .c .v{font-size:17px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em;margin-top:3px}
+  .cmp .c.win .v{color:var(--accent)}
+  .cmp .c .d{font-size:12px;color:var(--good);margin-top:2px;font-variant-numeric:tabular-nums}
+
+  details{margin:14px 0;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:0 16px}
+  details[open]{padding-bottom:8px}
+  summary{cursor:pointer;padding:12px 0;font-size:14.5px;font-weight:600;color:var(--ink-2)}
+  summary:hover{color:var(--accent)}
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .m-ok{background:var(--good-soft);border-color:var(--good)}
+  .hidden{display:none}
+  code{background:var(--line-soft);padding:1px 5px;border-radius:4px;font-size:12.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .src{font-size:12.5px;color:var(--ink-3);margin-top:14px;padding-top:12px;border-top:1px solid var(--line-soft)}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .money{font-size:29px}
+    .cmp{grid-template-columns:repeat(2,1fr)}
+    table{font-size:13px}
+    th,td{padding:7px 4px}
+    .seg button{font-size:12px;padding:9px 2px}
+  }
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
+</style>
+<!--HEAD:S-->
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
+<meta property="og:site_name" content="까치툴">
+<!--HEAD:E-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › 자동차세 계산기</p>
+
+<h1>자동차세 계산기</h1>
+<p class="sub">배기량과 최초 등록 연도만 넣으면 자동차세와 지방교육세가 나옵니다. <strong>차령에 따른 경감을 법 산식 그대로 반기 단위로</strong> 계산하고, 1월·3월·6월·9월 연납 할인액을 나란히 비교해 드립니다.</p>
+
+<div class="panel">
+  <label class="f">차종</label>
+  <div class="seg" id="kind">
+    <button data-v="car" class="on">승용차</button>
+    <button data-v="bus">승합차</button>
+    <button data-v="truck">화물차</button>
+    <button data-v="etc">특수·기타</button>
+  </div>
+
+  <label class="f" style="margin-top:20px">용도</label>
+  <div class="seg sm" id="use">
+    <button data-v="priv" class="on">비영업용 (자가용)</button>
+    <button data-v="biz">영업용 (택시·렌터카 등)</button>
+  </div>
+
+  <div id="carBox">
+    <label class="f" style="margin-top:20px">동력</label>
+    <div class="seg sm" id="fuel">
+      <button data-v="ice" class="on">휘발유·경유·LPG</button>
+      <button data-v="ev">전기·수소</button>
+    </div>
+
+    <div class="row" style="margin-top:20px">
+      <div class="col" id="ccBox">
+        <label class="f">배기량</label>
+        <div class="amt">
+          <input type="text" id="cc" inputmode="numeric" value="1,598">
+          <span class="unit">cc</span>
+        </div>
+        <div class="mini">
+          <button data-cc="998">경차 998</button>
+          <button data-cc="1598">1,598</button>
+          <button data-cc="1999">1,999</button>
+          <button data-cc="2497">2,497</button>
+          <button data-cc="3342">3,342</button>
+        </div>
+        <p class="note">차량등록증이나 보험 증권에 적힌 <strong>총배기량</strong>을 그대로 넣으세요. 구간 경계는 <strong>이하</strong> 기준이라 정확히 1,600cc면 140원이 적용됩니다.</p>
+      </div>
+      <div class="col">
+        <label class="f">최초 등록 연도</label>
+        <div class="amt">
+          <input type="number" id="year" value="2021" min="1960" max="2100">
+          <span class="unit">년</span>
+        </div>
+        <p class="note" id="ageNote"></p>
+      </div>
+    </div>
+  </div>
+
+  <div id="etcBox" class="hidden">
+    <label class="f" style="margin-top:20px">세부 차종</label>
+    <select id="sub"></select>
+    <p class="note">승합·화물·특수차는 배기량이 아니라 <strong>정액</strong>으로 과세하고, 차령에 따른 경감도 적용되지 않습니다.</p>
+  </div>
+
+  <div id="tonBox" class="hidden">
+    <label class="f" style="margin-top:20px">적재정량</label>
+    <div class="amt">
+      <input type="text" id="ton" inputmode="numeric" value="1,000">
+      <span class="unit">kg</span>
+    </div>
+    <p class="note">차량등록증의 <strong>최대적재량</strong>입니다. 10,000kg을 넘으면 1,000kg마다 가산됩니다.</p>
+  </div>
+</div>
+
+<div id="warn" class="hidden"></div>
+
+<div class="result">
+  <p class="big">연간 자동차세 (지방교육세 포함)</p>
+  <div class="money" id="total">0<small>원</small></div>
+  <div class="yearly" id="meta"></div>
+
+  <table><tbody id="tb"></tbody></table>
+
+  <div id="prepayBox">
+    <p class="big" style="margin-top:22px">연납(선납) 할인 비교</p>
+    <div class="cmp" id="cmp"></div>
+    <p style="font-size:13px;color:var(--ink-3);margin:0">연납은 <strong>남은 개월분에 대해서만</strong> 5%를 공제합니다. 1월에 내도 12개월이 아니라 2~12월분이 대상이라 실질 할인율이 4.58%예요.</p>
+  </div>
+
+  <details>
+    <summary>계산 과정 보기</summary>
+    <table><tbody id="detail"></tbody></table>
+  </details>
+
+  <p class="src" id="src"></p>
+</div>
+
+<h2>자동차세는 배기량으로 매깁니다</h2>
+<p>비영업용 승용차는 <strong>배기량 1cc당 정해진 금액</strong>을 곱해서 계산합니다. 1,000cc 이하는 80원, 1,600cc 이하는 140원, 1,600cc를 넘으면 200원이에요. 차 값이 아니라 배기량이 기준이라, 같은 2,000cc면 국산 소형차든 수입 스포츠카든 자동차세가 같습니다.</p>
+<p>여기에 <strong>지방교육세가 자동차세의 30%</strong>만큼 따라붙습니다. 그래서 1,600cc 차의 실제 부담은 cc당 140원이 아니라 182원인 셈이에요. 흔히 말하는 "자동차세 얼마"는 이 둘을 합친 금액입니다.</p>
+<p>전기차와 수소차는 배기량이 없어서 <strong>정액</strong>입니다. 비영업용 승용은 연 10만원이고 지방교육세 3만원을 더해 13만원이에요. 2,000cc 내연기관차가 지방교육세까지 52만원인 것과 비교하면 차이가 큽니다.</p>
+
+<h2>차가 오래될수록 세금이 줄어듭니다</h2>
+<p>비영업용 승용차는 <strong>3년째부터 매년 5%씩</strong> 자동차세가 깎이고, <strong>12년째에 50%까지</strong> 줄어든 뒤로는 그대로 유지됩니다. 법에 적힌 산식은 이렇습니다.</p>
+<p><code>각 기분세액 = A/2 − (A/2 × 5/100) × (n−2)</code></p>
+<p>A는 연세액, n은 차령이고 n은 2 이상 12 이하로 봅니다. 눈여겨볼 점은 이 계산이 <strong>연 단위가 아니라 반기(기분) 단위</strong>라는 겁니다. 자동차세는 6월과 12월에 반씩 나눠 내는데, 경감도 각 기분세액에 적용해요. 연세액에 경감률을 곱한 뒤 반으로 나누는 것과 순서가 달라서 결과가 미세하게 달라질 수 있습니다.</p>
+<p>차령은 <strong>연식이 아니라 최초 등록일</strong>을 기준으로 셉니다. 등록하고 2년까지는 그대로이고 3년이 되는 해부터 줄어들기 시작해요. 다만 등록한 달에 따라 지자체가 차령을 세는 방식에 차이가 있을 수 있어서, 이 계산기는 <strong>등록 연도만으로 차령을 셈했다는 가정</strong>을 결과 아래에 표시합니다.</p>
+
+<h2>연납은 언제 하는 게 이득인가</h2>
+<p>자동차세를 미리 몰아서 내면 할인을 받습니다. 여기서 많이 오해하는 게 <strong>"1월에 내면 5% 깎아준다"</strong>는 부분이에요. 정확히는 <strong>남은 기간에 대해서만</strong> 5%를 공제합니다. 1월에 신고납부하면 이미 1월이 지나가고 있으므로 2월부터 12월까지 334일분이 대상이고, 그래서 연세액 대비 실질 할인율은 <strong>약 4.58%</strong>가 됩니다.</p>
+<p>같은 이유로 3월 연납은 약 3.76%, 6월은 약 2.51%, 9월은 약 1.25%로 점점 줄어듭니다. <strong>일찍 낼수록 이득</strong>이지만, 2,000cc 차 기준으로 1월과 6월의 차이가 1만원 남짓이라 목돈 부담이 크다면 굳이 무리할 필요는 없어요. 위 비교표에서 내 차 기준 실제 금액 차이를 확인해 보세요.</p>
+<p>연납 신청 기간은 각 달 16일부터 말일까지인데, <strong>휴일 때문에 매년 조금씩 달라집니다.</strong> 2026년 1월 연납은 2월 2일까지 받았어요. 위택스나 지자체 공지에서 그해 기간을 확인하세요.</p>
+
+<h2>이 계산기가 다루지 않는 것</h2>
+<p>정확한 값을 확인하지 못한 항목은 계산에 넣지 않았습니다. 틀린 금액을 보여주는 것보다 안 보여주는 편이 낫다고 판단했어요.</p>
+<p><strong>이륜자동차</strong>는 세액 자료가 공식 출처마다 달라서 제외했습니다. <strong>전기 승합차와 전기 화물차</strong>는 배기량이 없는 승합·화물차에 어떤 규정이 적용되는지 확인하지 못해 제외했어요. 둘 다 관할 지자체 세무과나 위택스에서 확인하세요.</p>
+<p>또 자동차세에는 <strong>원 단위 절사 규칙</strong>과 소액 징수면제가 있는데, 정확한 기준을 확인하지 못했습니다. 그래서 실제 고지서와 <strong>수십 원에서 수백 원 차이</strong>가 날 수 있습니다. 소유권 이전이나 폐차로 소유 기간이 1년이 안 되면 일할 계산되는데 그것도 반영되지 않았어요.</p>
+
+<h2>자주 겪는 문제</h2>
+<h3>고지서 금액이 계산 결과와 조금 달라요</h3>
+<p>원 단위 절사 방식, 지자체별 처리, 소유 기간 일할 계산 때문입니다. 특히 <strong>연중에 차를 사고팔았다면</strong> 소유한 일수만큼만 부과되므로 금액이 크게 달라집니다. 정확한 금액은 위택스에서 조회하는 게 확실해요.</p>
+<h3>차를 팔았는데 자동차세가 나왔어요</h3>
+<p>자동차세는 <strong>과세기준일에 등록원부상 소유자</strong>에게 부과됩니다. 1기분은 6월 1일, 2기분은 12월 1일이 기준일이에요. 이전등록이 기준일을 넘겨 처리되면 그 기분은 이전 소유자에게 부과됩니다. 매매 시점에 일할 정산하는 게 일반적이니 계약서를 확인하세요.</p>
+<h3>연납했는데 중간에 차를 팔면 어떻게 되나요</h3>
+<p>미리 낸 세금 중 <strong>소유하지 않은 기간에 해당하는 금액은 환급</strong>됩니다. 자동으로 계좌로 들어오는 경우도 있고 신청해야 하는 경우도 있으니, 이전등록 후 한 달쯤 지나도 소식이 없으면 관할 구청 세무과에 문의하세요.</p>
+<h3>경차는 자동차세도 싼가요</h3>
+<p>따로 감면 제도가 있는 건 아니고, <strong>배기량이 1,000cc 이하라 cc당 80원 구간</strong>에 들어가서 결과적으로 쌉니다. 998cc 경차면 자동차세 79,840원에 지방교육세를 더해 연 10만원 정도예요. 취득세는 별도로 감면 제도가 있는데, 그건 <a href="/tools/car-acquisition/">자동차 취득세 계산기</a>에서 확인하세요.</p>
+<h3>승용차인데 왜 화물차로 등록되어 있나요</h3>
+<p>일부 밴이나 픽업은 화물차로 분류되어 <strong>정액 과세</strong>됩니다. 배기량과 무관하게 적재정량 기준이라 대형 엔진이어도 세금이 훨씬 적어요. 차량등록증의 차종 항목을 확인하고 위 계산기에서 화물차를 선택하세요.</p>
+
+<!--REL:S-->
+<h2>함께 쓰면 좋은 도구</h2>
+<div class="rel">
+  <a href="/tools/car-acquisition/"><strong>자동차 취득세 계산기</strong><span>경차 75만원·전기차 140만원 감면</span></a>
+  <a href="/tools/loan/"><strong>대출 이자 계산기</strong><span>원리금균등·원금균등·거치기간</span></a>
+  <a href="/tools/acquisition-tax/"><strong>취득세 계산기</strong><span>다주택 중과·생애최초 감면 반영</span></a>
+</div>
+<p class="rel-all"><a href="/tools/">까치툴 도구 23개 전체 보기 →</a></p>
+<!--REL:E-->
+
+<footer>
+  <!--FOOTNOTE--><p>계산 결과는 참고용 추정치이며 법적 효력이 없습니다. 정확한 금액과 문의처는 <a href="/disclaimer.html">면책조항</a>에서 확인하세요.</p>
+  <p>까치툴 · 모든 계산은 브라우저에서 이루어지며 입력값은 전송·저장되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const won=n=>Math.round(n).toLocaleString('ko-KR');
+const num=el=>parseInt(String($(el).value).replace(/[^0-9]/g,''),10)||0;
+
+let kind='car', use='priv', fuel='ice';
+
+/* ── 지방세법 제127조 제1항 제1호: 승용자동차 cc당 세액 ── */
+const CC_PRIV=[[1000,80],[1600,140],[Infinity,200]];
+const CC_BIZ =[[1000,18],[1600,18],[2000,19],[2500,19],[Infinity,24]];
+const EV={priv:100000, biz:20000};          // 그 밖의 승용자동차 (배기량 없음)
+
+/* ── 제2호: 그 밖의 자동차 정액 세액 ── */
+const BUS=[
+  ['고속버스',      null,   100000],
+  ['대형전세버스',  null,    70000],
+  ['소형전세버스',  null,    50000],
+  ['대형일반버스', 115000,   42000],
+  ['소형일반버스',  65000,   25000],
+];
+const TRUCK=[[1000,28500,6600],[2000,34500,9600],[3000,48000,13500],[4000,63000,18000],
+             [5000,79500,22500],[8000,130500,36000],[10000,157500,45000]];
+const ETC=[
+  ['대형특수자동차',      157500, 36000],
+  ['소형특수자동차',       58500, 13500],
+  ['삼륜 이하 소형자동차', 18000,  3300],
+];
+
+/* ── 연납 공제: 남은 기간분에 대해 5% ── */
+const RATE=0.05;
+const PREPAY=[
+  {k:'1월', label:'1월 16~31일', days:334, base:'year',  pct:'4.58%'},
+  {k:'3월', label:'3월 16~31일', days:275, base:'year',  pct:'3.76%'},
+  {k:'6월', label:'6월 16~30일', days:184, base:'year',  pct:'2.51%'},
+  {k:'9월', label:'9월 16~30일', days:92,  base:'half',  pct:'1.25%'},
+];
+
+function pick(table, v){ for(const r of table) if(v<=r[0]) return r; return table[table.length-1]; }
+
+/* ── 연세액 산출 (경감 전) ── */
+function baseYear(){
+  if(kind==='car'){
+    if(fuel==='ev') return {tax:EV[use], how:`전기·수소 승용 정액 ${won(EV[use])}원`};
+    const cc=num('cc');
+    const [,rate]=pick(use==='priv'?CC_PRIV:CC_BIZ, cc);
+    return {tax:cc*rate, how:`${won(cc)}cc × ${rate}원`};
+  }
+  if(kind==='truck'){
+    const t=num('ton');
+    if(t>10000){
+      const over=Math.ceil((t-10000)/1000);
+      const add=use==='priv'?30000:10000;
+      const base=use==='priv'?157500:45000;
+      return {tax:base+over*add, how:`10,000kg 초과 ${over}구간 가산`};
+    }
+    const r=pick(TRUCK,t);
+    return {tax:use==='priv'?r[1]:r[2], how:`적재정량 ${won(t)}kg 구간 정액`};
+  }
+  const list = kind==='bus'?BUS:ETC;
+  const i=parseInt($('sub').value,10)||0;
+  const r=list[i];
+  const v=use==='priv'?r[1]:r[2];
+  return {tax:v||0, how:`${r[0]} 정액`, none:v===null};
+}
+
+/* ── 차령 경감 (비영업용 승용차만) ── */
+function ageInfo(){
+  const now=new Date().getFullYear();
+  const y=parseInt($('year').value,10)||now;
+  const n=Math.min(12, Math.max(1, now-y+1));
+  const cut=Math.max(0, Math.min(0.5, 0.05*(n-2)));
+  return {now, y, n, cut};
+}
+
+function calc(){
+  const B=baseYear();
+  const canAge = kind==='car' && use==='priv';
+  const A=B.tax;
+  const AG=ageInfo();
+  const cut = canAge?AG.cut:0;
+
+  /* 법 산식: 각 기분세액 = A/2 − (A/2 × 5/100)(n−2)
+     경감이 없으면 산식이 관여하지 않으므로 연세액을 그대로 둔다 (절사로 1원이 사라지지 않게) */
+  const half = cut>0 ? Math.floor(A/2 - (A/2)*cut) : A/2;
+  const tax  = cut>0 ? half*2 : A;
+  const edu=(kind==='car'&&use==='priv')?Math.floor(tax*0.3):0;
+  const total=tax+edu;
+
+  $('total').innerHTML=won(total)+'<small>원</small>';
+
+  const parts=[B.how];
+  if(canAge) parts.push(`차령 ${AG.n}년차 · 경감 ${(cut*100).toFixed(0)}%`);
+  if(edu) parts.push(`지방교육세 30% 포함`);
+  $('meta').textContent=parts.join(' · ');
+
+  let html=`<tr><td>자동차세 (연세액)</td><td class="r">${B.how}</td><td class="n">${won(tax)}원</td></tr>`;
+  if(canAge&&cut>0) html+=`<tr class="cut"><td>차령 경감</td><td class="r">${(cut*100).toFixed(0)}% 경감 적용</td><td class="n">−${won(A-tax)}원</td></tr>`;
+  if(edu) html+=`<tr><td>지방교육세</td><td class="r">자동차세 × 30%</td><td class="n">${won(edu)}원</td></tr>`;
+  else html+=`<tr><td>지방교육세</td><td class="r">비영업용 승용차만 부과</td><td class="n">0원</td></tr>`;
+  html+=`<tr class="sum"><td>1기분 (6월)</td><td class="r"></td><td class="n">${won(Math.floor(total/2))}원</td></tr>`;
+  html+=`<tr><td>2기분 (12월)</td><td class="r"></td><td class="n">${won(total-Math.floor(total/2))}원</td></tr>`;
+  html+=`<tr class="take"><td>연간 합계</td><td class="r"></td><td class="n">${won(total)}원</td></tr>`;
+  $('tb').innerHTML=html;
+
+  /* 연납 비교 — 공제는 자동차세를 기준으로 계산 */
+  const rows=PREPAY.map(p=>{
+    const base = p.base==='year' ? tax : tax/2;
+    const denom = p.base==='year' ? 365 : 184;
+    const disc = Math.floor(base * p.days/denom * RATE);
+    return {...p, disc, pay: total-disc};
+  });
+  const best=Math.max(...rows.map(r=>r.disc));
+  $('cmp').innerHTML=rows.map(r=>
+    `<div class="c${r.disc===best&&r.disc>0?' win':''}">
+       <div class="k">${r.k} 연납</div>
+       <div class="v">${won(r.pay)}</div>
+       <div class="d">${r.disc>0?'−'+won(r.disc)+'원':'—'}</div>
+     </div>`).join('');
+  $('prepayBox').classList.toggle('hidden', total<=0);
+
+  /* 계산 과정 */
+  let d='';
+  if(kind==='car'&&fuel==='ice'){
+    const cc=num('cc');
+    const [,rate]=pick(use==='priv'?CC_PRIV:CC_BIZ, cc);
+    d+=`<tr><td>배기량</td><td class="n">${won(cc)}cc</td></tr>`;
+    d+=`<tr><td>cc당 세액</td><td class="n">${rate}원</td></tr>`;
+  }
+  d+=`<tr><td>경감 전 연세액 (A)</td><td class="n">${won(A)}원</td></tr>`;
+  if(canAge){
+    d+=`<tr><td>최초 등록 ${AG.y}년 → 차령 (n)</td><td class="n">${AG.n}</td></tr>`;
+    d+=`<tr><td>기분세액 = A/2 − (A/2 × 5%)(n−2)</td><td class="n">${won(half)}원</td></tr>`;
+  }else{
+    d+=`<tr><td>기분세액 = A/2</td><td class="n">${won(Math.floor(half))}원</td></tr>`;
+  }
+  d+=`<tr><td>자동차세 연세액 = 기분세액 × 2</td><td class="n">${won(tax)}원</td></tr>`;
+  if(edu) d+=`<tr><td>지방교육세 = 자동차세 × 30%</td><td class="n">${won(edu)}원</td></tr>`;
+  rows.forEach(r=>{
+    const base = r.base==='year' ? '연세액' : '2기분';
+    const denom = r.base==='year' ? 365 : 184;
+    d+=`<tr><td>${r.k} 연납 공제 = ${base} × ${r.days}/${denom} × 5%</td><td class="n">${won(r.disc)}원</td></tr>`;
+  });
+  $('detail').innerHTML=d;
+
+  /* 안내 */
+  const w=$('warn');
+  if(B.none){
+    w.className='msg m-bad';
+    w.innerHTML='이 차종은 <strong>영업용에만</strong> 해당합니다. 용도를 영업용으로 바꿔주세요.';
+  }else if(kind==='car'&&fuel==='ev'){
+    w.className='msg m-ok';
+    w.innerHTML=`전기·수소 승용차는 배기량이 없어 <strong>정액 ${won(EV[use])}원</strong>입니다. 같은 값이면 2,000cc 내연기관차(비영업용 40만원)보다 훨씬 적어요. 차령 경감은 적용되지 않습니다.`;
+  }else if(canAge&&AG.cut>=0.5){
+    w.className='msg m-ok';
+    w.innerHTML=`차령 ${AG.n}년차라 경감이 <strong>상한 50%</strong>에 도달했습니다. 앞으로는 더 줄어들지 않아요.`;
+  }else if(canAge&&AG.n>=3){
+    const next=Math.min(0.5, 0.05*(AG.n-1));
+    const nextTax=Math.floor(A/2-(A/2)*next)*2;
+    w.className='msg m-warn';
+    w.innerHTML=`내년이면 차령 ${AG.n+1}년차가 되어 경감이 <strong>${(next*100).toFixed(0)}%</strong>로 올라갑니다. 지방교육세까지 합친 총액이 ${won(nextTax+Math.floor(nextTax*0.3))}원까지 내려가요.`;
+  }else if(canAge){
+    w.className='msg m-warn';
+    w.innerHTML=`차령 ${AG.n}년차라 아직 경감이 없습니다. <strong>3년차부터</strong> 매년 5%씩 줄어들기 시작해요.`;
+  }else{
+    w.className='hidden';
+  }
+
+  $('ageNote').innerHTML = canAge
+    ? `<strong>${AG.now}년 − ${AG.y}년 + 1 = 차령 ${AG.n}년차</strong>로 계산했습니다. 등록한 달에 따라 지자체 산정과 다를 수 있어요.`
+    : `이 차종은 차령에 따른 경감이 적용되지 않습니다.`;
+
+  $('src').innerHTML='「지방세법」 제127조(자동차세 세율)·제150조(지방교육세), 서울특별시·서초구 공식 세무 안내 기준 · '
+   +'차령 경감 <code>기분세액 = A/2 − (A/2 × 5/100)(n−2)</code> (A = 연세액, 2 ≤ n ≤ 12)'
+   +'<br><strong>이 결과는 참고용 추정치입니다.</strong> 원 단위 절사 방식과 소액 징수면제, 연중 소유권 이전에 따른 일할 계산은 반영되지 않아 실제 고지세액과 차이가 날 수 있습니다. 이륜자동차와 전기 승합·화물차는 세액을 확인하지 못해 제외했습니다. 정확한 금액은 <a href="https://www.wetax.go.kr" rel="noopener">위택스</a> 또는 관할 시·군·구청 세무과에서 확인하세요.';
+}
+
+/* ── UI ── */
+function fillSub(){
+  const list = kind==='bus'?BUS:ETC;
+  $('sub').innerHTML=list.map((r,i)=>{
+    const v=use==='priv'?r[1]:r[2];
+    return `<option value="${i}"${v===null?' disabled':''}>${r[0]}${v===null?' (영업용 전용)':' — '+won(v)+'원'}</option>`;
+  }).join('');
+  const first=list.findIndex(r=>(use==='priv'?r[1]:r[2])!==null);
+  if($('sub').selectedIndex<0 || list[$('sub').value] && (use==='priv'?list[$('sub').value][1]:list[$('sub').value][2])===null)
+    $('sub').value=String(Math.max(0,first));
+}
+function sync(){
+  $('carBox').classList.toggle('hidden', kind!=='car');
+  $('etcBox').classList.toggle('hidden', kind!=='bus'&&kind!=='etc');
+  $('tonBox').classList.toggle('hidden', kind!=='truck');
+  $('ccBox').classList.toggle('hidden', kind==='car'&&fuel==='ev');
+  if(kind==='bus'||kind==='etc') fillSub();
+}
+function segWire(id, fn){
+  document.querySelectorAll('#'+id+' button').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('#'+id+' button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); fn(b.dataset.v); sync(); calc();
+  }));
+}
+segWire('kind',v=>kind=v);
+segWire('use', v=>use=v);
+segWire('fuel',v=>fuel=v);
+
+['cc','ton'].forEach(id=>$(id).addEventListener('input',e=>{
+  const raw=e.target.value.replace(/[^0-9]/g,'');
+  e.target.value=raw?parseInt(raw,10).toLocaleString('ko-KR'):'';
+  calc();
+}));
+$('year').addEventListener('input',calc);
+$('sub').addEventListener('change',calc);
+document.querySelectorAll('.mini button[data-cc]').forEach(b=>b.addEventListener('click',()=>{
+  $('cc').value=parseInt(b.dataset.cc,10).toLocaleString('ko-KR'); calc();
+}));
+
+sync(); calc();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>평수 계산기 — 평↔㎡ 변환, 전용면적·공급면적 | 까치툴</title>
+<meta name="description" content="평수 계산기로 평 제곱미터 변환을 양방향으로 합니다. 1평 = 400/121㎡ 정확한 값으로 계산해 84제곱미터 몇평인지 바로 나오고, 전용률을 넣으면 전용면적 공급면적을 함께 보여줍니다. 59·84·101㎡ 대표 평형은 버튼 하나로, 국민주택 규모 85㎡ 초과 여부까지 확인하세요.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/pyeong/">
+<meta property="og:title" content="평수 계산기 — 평↔㎡ 변환, 전용면적·공급면적">
+<meta property="og:description" content="1평 = 400/121㎡ 정확한 값으로 양방향 변환. 전용률을 넣으면 공급면적까지 함께 나옵니다.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/pyeong/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  .row{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start}
+  .col{flex:1;min-width:190px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
+  input[type=text],input[type=number]{padding:10px 12px;border:1px solid var(--line);border-radius:9px;
+    background:var(--surface);color:var(--ink);font-size:16px;font-family:inherit;width:100%;
+    text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+  input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .amt{display:flex;align-items:center;gap:8px}
+  .unit{font-size:14px;color:var(--ink-2);flex:none;white-space:nowrap}
+  .mini{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .mini button{font-family:inherit;font-size:12.5px;padding:5px 10px;border-radius:7px;border:1px solid var(--line);
+    background:transparent;color:var(--ink-2);cursor:pointer}
+  .mini button:hover{border-color:var(--accent);color:var(--accent)}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:12px 0 0}
+  .seg{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+  .seg button{flex:1;background:transparent;border:0;padding:10px 6px;font-size:13.5px;font-weight:600;
+    color:var(--ink-2);cursor:pointer;font-family:inherit;transition:.12s}
+  .seg button.on{background:var(--accent);color:#fff}
+  .seg.sm button{font-size:12.5px;padding:9px 4px}
+  .chk{display:flex;gap:9px;align-items:flex-start;margin:11px 0 0;font-size:14.5px;cursor:pointer;color:var(--ink-2)}
+  .chk input{margin:5px 0 0;flex:none;width:16px;height:16px;accent-color:var(--accent)}
+  .chk b{color:var(--ink);font-weight:600}
+  .chk em{display:block;font-style:normal;font-size:12.5px;color:var(--ink-3);line-height:1.5}
+
+  .result{background:var(--surface);border:1px solid var(--accent);border-radius:16px;padding:26px 24px;margin:18px 0}
+  .big{font-size:13px;color:var(--ink-2);margin:0 0 4px}
+  .money{font-size:38px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.2;color:var(--accent)}
+  .money small{font-size:18px;font-weight:700;margin-left:3px}
+  .yearly{font-size:14px;color:var(--ink-2);margin-top:6px;font-variant-numeric:tabular-nums}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px}
+  th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line-soft)}
+  th{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;border-bottom:1px solid var(--line)}
+  td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  td.r{font-size:13px;color:var(--ink-3);text-align:right;font-variant-numeric:tabular-nums}
+  tr.sum td{border-top:2px solid var(--line);border-bottom:0;font-weight:700;padding-top:11px}
+  tr.take td{border-bottom:0;font-weight:800;color:var(--accent);font-size:16px}
+  tr.hi td{background:var(--accent-soft)}
+  .rate-tbl td:first-child{white-space:nowrap}
+
+  details{margin:14px 0;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:0 16px}
+  details[open]{padding-bottom:8px}
+  summary{cursor:pointer;padding:12px 0;font-size:14.5px;font-weight:600;color:var(--ink-2)}
+  summary:hover{color:var(--accent)}
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .m-ok{background:var(--good-soft);border-color:var(--good)}
+  .hidden{display:none}
+  code{background:var(--line-soft);padding:1px 5px;border-radius:4px;font-size:12.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .src{font-size:12.5px;color:var(--ink-3);margin-top:14px;padding-top:12px;border-top:1px solid var(--line-soft)}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .money{font-size:29px}
+    table{font-size:13px}
+    th,td{padding:7px 4px}
+    .seg button{font-size:12px;padding:9px 2px}
+  }
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
+</style>
+<!--HEAD:S-->
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
+<meta property="og:site_name" content="까치툴">
+<!--HEAD:E-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › 평수 계산기</p>
+
+<h1>평수 계산기</h1>
+<p class="sub">평과 제곱미터를 <strong>양방향으로 바꿉니다.</strong> 한쪽에 숫자를 넣으면 반대쪽이 바로 따라옵니다. 어림값 3.3이 아니라 정확한 값 400/121로 계산하고, 전용률을 넣으면 전용면적과 공급면적을 함께 보여줍니다.</p>
+
+<div class="panel">
+  <div class="row">
+    <div class="col">
+      <label class="f">제곱미터</label>
+      <div class="amt">
+        <input type="text" id="sq" inputmode="decimal" value="84">
+        <span class="unit">㎡</span>
+      </div>
+      <div class="mini" id="qsq">
+        <button data-v="59">59㎡ (24평형)</button>
+        <button data-v="74">74㎡</button>
+        <button data-v="84">84㎡ (34평형)</button>
+        <button data-v="101">101㎡</button>
+        <button data-v="134">134㎡</button>
+      </div>
+    </div>
+    <div class="col">
+      <label class="f">평</label>
+      <div class="amt">
+        <input type="text" id="py" inputmode="decimal" value="25.41">
+        <span class="unit">평</span>
+      </div>
+      <div class="mini" id="qpy">
+        <button data-v="10">10평</button>
+        <button data-v="20">20평</button>
+        <button data-v="30">30평</button>
+        <button data-v="40">40평</button>
+      </div>
+    </div>
+  </div>
+
+  <label class="f" style="margin-top:20px">건물 종류 (전용률 기본값)</label>
+  <div class="seg sm" id="kind">
+    <button data-v="75" class="on">아파트 75%</button>
+    <button data-v="65">주상복합 65%</button>
+    <button data-v="50">오피스텔 50%</button>
+  </div>
+
+  <div class="row" style="margin-top:20px">
+    <div class="col" style="max-width:220px">
+      <label class="f">전용률</label>
+      <div class="amt">
+        <input type="text" id="rate" inputmode="decimal" value="75">
+        <span class="unit">%</span>
+      </div>
+    </div>
+  </div>
+  <div id="rateErr" class="hidden"></div>
+  <p class="note">전용률은 <strong>전용면적 ÷ 공급면적</strong>입니다. 단지마다 다르므로 정확한 값은 분양 공고나 건축물대장에서 확인하세요. 위 숫자는 흔한 수준의 예시입니다.</p>
+
+  <label class="chk"><input type="checkbox" id="prec">
+    <span><b>소수점 넷째 자리까지 보기</b><em>1평은 3.3058㎡라서 셋째 자리부터 차이가 벌어집니다. 등기 면적처럼 소수점이 중요한 값을 다룰 때 켜세요.</em></span></label>
+</div>
+
+<div class="result">
+  <p class="big" id="resLabel">84㎡는</p>
+  <div class="money" id="res">25.41<small>평</small></div>
+  <div class="yearly" id="meta"></div>
+
+  <table><tbody id="tb"></tbody></table>
+
+  <p class="src" id="src"></p>
+</div>
+
+<div id="warn" class="hidden"></div>
+
+<h2>평은 왜 아직 쓰이나</h2>
+<p>1961년 계량법이 미터법을 법정 계량 단위로 정했고, 2007년 7월부터는 부동산 거래와 광고에서 평을 쓰면 과태료를 부과하기 시작했습니다. 그래서 등기부등본, 건축물대장, 분양 공고, 실거래가 공개 자료는 전부 ㎡로만 적혀 있습니다.</p>
+<p>그런데 말은 바뀌지 않았습니다. 공인중개사도 "34평 매물"이라고 하고 이사업체도 "30평 견적"이라고 부릅니다. 서류는 ㎡, 대화는 평으로 굴러가는 상태가 20년 가까이 이어지고 있어요. 그래서 <strong>84㎡와 34평이 같은 집을 가리킨다</strong>는 걸 알아야 대화가 됩니다.</p>
+<p>다만 이 둘은 같은 숫자를 두 단위로 적은 게 아닙니다. 84㎡는 25.41평이지 34평이 아니에요. 84는 전용면적이고 34평은 공급면적이라, <strong>애초에 서로 다른 면적을 부르는 이름</strong>입니다. 이게 평수 계산에서 가장 많이 꼬이는 지점입니다.</p>
+
+<h2>전용면적, 공급면적, 계약면적</h2>
+<p><strong>전용면적</strong>은 현관문 안쪽 우리 집입니다. 방, 거실, 주방, 화장실을 합한 면적이고 등기부등본과 건축물대장에 올라가는 숫자도 이것입니다. 세금과 청약 기준도 전부 전용면적을 씁니다.</p>
+<p><strong>공급면적</strong>은 전용면적에 주거공용면적을 더한 것입니다. 주거공용면적은 계단, 복도, 엘리베이터처럼 같은 동 주민이 함께 쓰는 공간이에요. 분양가를 평당 얼마로 이야기할 때의 그 평이 보통 공급면적 기준입니다.</p>
+<p><strong>계약면적</strong>은 공급면적에 기타공용면적까지 더한 가장 큰 숫자입니다. 지하주차장, 관리사무소, 경비실, 노인정 같은 단지 전체의 공용 시설이 여기 들어갑니다. 분양 계약서에 적히는 면적이라 처음 보면 집이 갑자기 커진 것처럼 보이지만 실제로 쓰는 공간과는 거리가 멉니다.</p>
+<p>전용률은 전용면적을 공급면적으로 나눈 값입니다. 전용 84㎡에 공급 112㎡면 75%예요. 이 숫자가 높을수록 같은 평수에서 실제로 쓰는 공간이 넓습니다.</p>
+
+<h2>같은 84㎡인데 집이 달라 보이는 이유</h2>
+<p>전용면적이 똑같이 84㎡인 두 집을 보고 왔는데 한쪽이 확연히 넓게 느껴졌다면, 대개 이유는 셋 중 하나입니다.</p>
+<p>첫째는 <strong>발코니 확장</strong>입니다. 발코니는 서비스면적이라 전용면적에도 공급면적에도 들어가지 않습니다. 그래서 발코니를 확장한 집은 서류상 84㎡ 그대로인데 실제 사용 면적은 10㎡ 넘게 늘어납니다. 확장 전 집과 나란히 놓고 보면 방 하나가 더 있는 것처럼 느껴지는 이유예요.</p>
+<p>둘째는 <strong>구조</strong>입니다. 같은 84㎡라도 거실과 방을 한쪽 면에 나란히 배치하면 채광면이 넓어져 훨씬 시원해 보입니다. 복도와 죽은 공간이 적은 평면일수록 체감 면적이 커집니다.</p>
+<p>셋째는 <strong>전용률</strong>입니다. 전용률이 다르면 같은 전용 84㎡라도 공급면적이 112㎡일 수도, 120㎡일 수도 있습니다. 후자를 사면 안 쓰는 공용면적에 돈을 더 낸 셈이에요. 분양가는 공급면적 기준으로 매겨지므로 전용률이 낮을수록 손해입니다.</p>
+
+<h2>85㎡가 기준선인 이유</h2>
+<p>주택법은 주거전용면적 85㎡ 이하인 주택을 <strong>국민주택 규모</strong>로 정의합니다. 수도권이 아니면서 도시지역도 아닌 읍·면 지역은 100㎡ 이하입니다. 이 선이 세금과 청약 여러 곳에서 기준으로 쓰입니다.</p>
+<p>가장 체감되는 건 취득세입니다. 전용 85㎡ 이하 주택은 <strong>농어촌특별세가 비과세</strong>라 취득세와 지방교육세만 내면 됩니다. 85㎡를 넘으면 0.2%가 더 붙어요. 6억 아파트면 120만원 차이입니다. 자세한 금액은 <a href="/tools/acquisition-tax/">취득세 계산기</a>에서 확인할 수 있습니다.</p>
+<p>아파트 타입 이름이 84A, 84B처럼 84에 몰려 있고 실제 면적도 84.97㎡ 같은 값에서 멈추는 게 우연이 아닙니다. 85를 넘기지 않으면서 최대한 크게 뽑은 결과예요.</p>
+
+<h2>자주 겪는 문제</h2>
+<h3>84㎡가 왜 34평인가요</h3>
+<p>84를 3.3058로 나누면 25.41평입니다. 34평이 아니에요. <strong>34평은 84㎡를 바꾼 값이 아니라 공급면적을 바꾼 값</strong>입니다. 전용률이 75%면 공급면적은 84 ÷ 0.75 = 112㎡이고, 이걸 평으로 바꾸면 33.88평이라 반올림해서 34평이라고 부릅니다. 59㎡가 24평, 101㎡가 40평이라고 불리는 것도 같은 계산이에요.</p>
+<h3>3.3으로 계산하면 얼마나 틀리나요</h3>
+<p>1평은 정확히 400/121, 즉 3.3057851…㎡입니다. 3.3은 반올림한 값이에요. 84㎡를 3.3으로 나누면 25.45평, 정확히 계산하면 25.41평이라 0.04평 차이가 납니다. 작아 보이지만 100평을 넘어가면 0.18평, 즉 절반 평에 가까워집니다.</p>
+<p>평당가를 따질 때는 이 오차가 돈으로 바뀝니다. 분양가 6억에 공급 112㎡라면 정확히는 평당 1,771만원인데 3.3 기준으로는 1,768만원으로 나와요. 매물끼리 평당가를 비교할 때 어떤 계산을 썼는지 모르면 순위가 뒤집힐 수도 있습니다. 위 계산기는 400/121을 그대로 씁니다.</p>
+<h3>등기부와 분양 카탈로그의 면적이 다릅니다</h3>
+<p>둘 다 맞는 숫자입니다. 재는 대상이 다를 뿐이에요. 등기부등본과 건축물대장은 <strong>전용면적</strong>을 적고, 분양 카탈로그와 모델하우스 자료는 공급면적이나 계약면적을 씁니다. 같은 집인데 84㎡, 112㎡, 160㎡ 세 숫자가 전부 등장하는 게 정상입니다.</p>
+<p>세금 계산, 청약 자격, 임대차 관련 기준은 모두 전용면적으로 판단하므로 서류가 헷갈릴 때는 <strong>건축물대장의 전용면적</strong>을 기준으로 삼으면 됩니다.</p>
+<h3>오피스텔은 왜 전용률이 낮은가요</h3>
+<p>오피스텔은 건축법상 주택이 아니라 업무시설로 분류됩니다. 구조도 아파트와 달라서 한 층에 세대가 많고 긴 복도를 공유하는 형태가 흔해요. 그만큼 계단과 복도로 나가는 공용면적이 커지고 전용률이 내려갑니다.</p>
+<p>표기 방식도 다릅니다. 오피스텔은 분양면적을 계약면적 기준으로 적는 경우가 많은데, 계약면적에는 주차장까지 들어가므로 전용률이 40~50%대로 보이기도 합니다. 그래서 "30평 오피스텔"이 30평 아파트보다 훨씬 좁습니다. <strong>오피스텔은 평이 아니라 전용면적 ㎡로 비교해야</strong> 실수가 없습니다.</p>
+<h3>발코니 확장 면적은 어디에 들어가나요</h3>
+<p>어디에도 들어가지 않습니다. 발코니는 서비스면적이라 전용면적, 공급면적, 계약면적 어느 쪽에도 포함되지 않아요. 그래서 확장을 해도 서류상 면적은 그대로고 취득세나 국민주택 규모 판정에도 영향이 없습니다. 다만 확장 공사비는 분양가와 별도로 청구되는 것이 보통입니다.</p>
+
+<!--REL:S-->
+<h2>함께 쓰면 좋은 도구</h2>
+<div class="rel">
+  <a href="/tools/acquisition-tax/"><strong>취득세 계산기</strong><span>다주택 중과·생애최초 감면 반영</span></a>
+  <a href="/tools/broker-fee/"><strong>중개수수료 계산기</strong><span>매매·전세·월세 복비 상한</span></a>
+  <a href="/tools/date-calc/"><strong>날짜 계산기</strong><span>만나이·D-day·날짜 사이 일수</span></a>
+</div>
+<p class="rel-all"><a href="/tools/">까치툴 도구 23개 전체 보기 →</a></p>
+<!--REL:E-->
+
+<footer>
+  <p>까치툴 · 모든 계산은 브라우저에서 이루어지며 입력값은 전송·저장되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+
+/* 1평 = 사방 6자, 1자 = 10/33m → 36 × (10/33)² = 400/121 ㎡ */
+const PY=400/121;
+const NAT=85;          // 국민주택 규모 (주거전용면적 ㎡)
+
+function num(v){
+  const s=String(v).replace(/[^0-9.]/g,'');
+  if(!s||s==='.') return NaN;
+  const n=parseFloat(s);
+  return isFinite(n)?n:NaN;
+}
+function trim(s){
+  if(s.indexOf('.')<0) return s;
+  return s.replace(/0+$/,'').replace(/\.$/,'');
+}
+/* 2진 부동소수점 오차 보정 후 반올림.
+   84×121/400 = 22.385 같은 값이 22.38499…로 저장돼 22.38로 잘리는 걸 막는다. */
+function round(n,d){
+  if(!isFinite(n)) return NaN;
+  const s=n.toPrecision(12);
+  if(s.indexOf('e')>=0||s.indexOf('E')>=0){ const f=Math.pow(10,d); return Math.round(n*f)/f; }
+  return Number(Math.round(Number(s+'e'+d))+'e-'+d);
+}
+function plain(n,d){ return isFinite(n)?trim(round(n,d).toFixed(d)):''; }
+function fmt(n,d){
+  if(!isFinite(n)) return '—';
+  const p=trim(round(n,d).toFixed(d)).split('.');
+  p[0]=p[0].replace(/\B(?=(\d{3})+(?!\d))/g,',');
+  return p.join('.');
+}
+
+let src='sq';          // 사용자가 마지막으로 직접 입력한 칸
+let dec=2;
+
+function clean(el){
+  let s=el.value.replace(/[^0-9.]/g,'');
+  const i=s.indexOf('.');
+  if(i>=0) s=s.slice(0,i+1)+s.slice(i+1).replace(/\./g,'');
+  if(s!==el.value) el.value=s;
+}
+
+function calc(){
+  dec=$('prec').checked?4:2;
+  const sqEl=$('sq'), pyEl=$('py');
+  let sq=NaN, py=NaN;
+
+  if(src==='sq'){
+    sq=num(sqEl.value);
+    py=isFinite(sq)?sq/PY:NaN;
+    pyEl.value=plain(py,dec);            // 입력 중인 칸은 건드리지 않는다
+  }else{
+    py=num(pyEl.value);
+    sq=isFinite(py)?py*PY:NaN;
+    sqEl.value=plain(sq,dec);
+  }
+  render(sq,py);
+}
+
+function render(sq,py){
+  const label=$('resLabel'), money=$('res'), meta=$('meta'), w=$('warn');
+  const has=isFinite(sq)&&isFinite(py)&&sq>0;
+
+  if(!has){
+    const zero=(src==='sq'?isFinite(sq):isFinite(py));
+    label.textContent=zero?'입력한 면적이 0입니다':'면적을 입력하세요';
+    money.innerHTML='0<small>'+(src==='sq'?'평':'㎡')+'</small>';
+    meta.textContent='';
+    $('tb').innerHTML='';
+    $('src').innerHTML=srcText();
+    w.className='msg m-bad';
+    w.textContent='변환할 면적을 입력하세요. ㎡와 평 어느 쪽에 넣어도 반대쪽이 함께 바뀝니다.';
+    return;
+  }
+
+  if(src==='sq'){
+    label.textContent=fmt(sq,dec)+'㎡는';
+    money.innerHTML=fmt(py,dec)+'<small>평</small>';
+  }else{
+    label.textContent=fmt(py,dec)+'평은';
+    money.innerHTML=fmt(sq,dec)+'<small>㎡</small>';
+  }
+
+  const approx=sq/3.3, gap=Math.abs(approx-py);
+  let m='1평 = 400/121㎡ = 3.3057851㎡ 기준';
+  if(gap>=0.005) m+=' · 3.3으로 어림하면 '+fmt(approx,2)+'평이라 '+fmt(gap,2)+'평 차이';
+  meta.textContent=m;
+
+  /* 전용률 */
+  const r=num($('rate').value);
+  const rok=isFinite(r)&&r>0&&r<=100;
+  const re=$('rateErr');
+  if(rok){ re.className='hidden'; re.textContent=''; }
+  else{
+    re.className='msg m-warn';
+    re.textContent='전용률은 0보다 크고 100 이하인 값으로 넣어주세요. 아파트는 보통 70~80% 사이입니다.';
+  }
+
+  let rows='<tr class="hi"><td>입력한 면적</td><td class="n">'+fmt(sq,dec)+'㎡</td><td class="n">'+fmt(py,dec)+'평</td></tr>';
+  if(rok){
+    const sup=sq/(r/100), exc=sq*(r/100);
+    rows+='<tr><td>이 면적이 <strong>전용</strong>이라면 → 공급면적</td>'
+        + '<td class="n">'+fmt(sup,dec)+'㎡</td><td class="n">'+fmt(sup/PY,dec)+'평</td></tr>';
+    rows+='<tr><td>이 면적이 <strong>공급</strong>이라면 → 전용면적</td>'
+        + '<td class="n">'+fmt(exc,dec)+'㎡</td><td class="n">'+fmt(exc/PY,dec)+'평</td></tr>';
+  }
+  rows+='<tr class="sum"><td>국민주택 규모 (전용 기준)</td><td class="n">'+NAT+'㎡</td>'
+      + '<td class="n">'+fmt(NAT/PY,dec)+'평</td></tr>';
+  $('tb').innerHTML=rows;
+  $('src').innerHTML=srcText();
+
+  if(sq<=NAT){
+    w.className='msg m-ok';
+    w.innerHTML='이 면적이 <strong>전용면적</strong>이라면 국민주택 규모(85㎡ · '+fmt(NAT/PY,2)+'평) 이하입니다. '
+      +'취득세에 붙는 <strong>농어촌특별세가 비과세</strong>예요. '
+      +'<a href="/tools/acquisition-tax/">취득세 계산기</a>에서 실제 세액을 확인해 보세요.';
+  }else{
+    w.className='msg m-warn';
+    w.innerHTML='이 면적이 <strong>전용면적</strong>이라면 국민주택 규모를 <strong>'+fmt(sq-NAT,dec)+'㎡ 초과</strong>합니다. '
+      +'취득세와 지방교육세에 더해 <strong>농어촌특별세 0.2%</strong>가 붙어요. '
+      +'<a href="/tools/acquisition-tax/">취득세 계산기</a>에서 차이를 볼 수 있습니다.';
+  }
+}
+
+function srcText(){
+  return '1평 = <code>400/121</code>㎡ = 3.3057851239669…㎡ · 1㎡ = <code>121/400</code>평 = 0.3025평 · '
+    +'척관법의 1평은 사방 6자, 1자는 10/33m라서 나온 값입니다. 흔히 쓰는 3.3㎡는 반올림한 어림값이에요.'
+    +'<br>국민주택 규모는 「주택법」 제2조의 주거전용면적 85㎡ 이하 기준입니다. '
+    +'수도권이 아니면서 도시지역이 아닌 읍·면 지역은 100㎡ 이하입니다. '
+    +'<strong>전용률은 단지마다 달라 위 공급·전용면적은 추정치입니다.</strong> 실제 면적은 건축물대장이나 분양 공고에서 확인하세요.';
+}
+
+/* 입력 */
+['sq','py'].forEach(id=>$(id).addEventListener('input',()=>{
+  src=id; clean($(id)); calc();
+}));
+$('rate').addEventListener('input',()=>{
+  clean($('rate'));
+  document.querySelectorAll('#kind button').forEach(x=>x.classList.remove('on'));
+  calc();
+});
+$('prec').addEventListener('change',calc);
+
+/* 빠른 선택 */
+[['qsq','sq'],['qpy','py']].forEach(([box,id])=>{
+  document.querySelectorAll('#'+box+' button').forEach(b=>b.addEventListener('click',()=>{
+    $(id).value=b.dataset.v; src=id; calc();
+  }));
+});
+
+/* 건물 종류 → 전용률 기본값 */
+document.querySelectorAll('#kind button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('#kind button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');
+  $('rate').value=b.dataset.v;
+  calc();
+}));
+
+calc();
+})();
+</script>
+</body>
+</html>

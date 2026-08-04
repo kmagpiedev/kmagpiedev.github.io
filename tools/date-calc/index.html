@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>날짜 계산기 — 만나이·D-day·날짜 사이 일수 | 까치툴</title>
+<meta name="description" content="만나이 계산기와 D-day 계산기를 한 화면에서. 생년월일로 만 나이·연 나이·다음 생일까지 남은 날을 구하고, 두 날짜 사이 날짜 계산과 며칠 후 날짜, 100일·1000일 기념일, 주말을 뺀 영업일 수까지 바로 나옵니다. 만 나이 통일 이후 남은 연 나이 예외도 함께 정리했습니다.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/date-calc/">
+<meta property="og:title" content="날짜 계산기 — 만나이·D-day·날짜 사이 일수">
+<meta property="og:description" content="만 나이, D-day, 두 날짜 사이 일수와 며칠 후 날짜를 한 화면에서 계산합니다.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/date-calc/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  .row{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start}
+  .col{flex:1;min-width:190px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
+  input[type=date],input[type=text],input[type=number]{padding:10px 12px;border:1px solid var(--line);border-radius:9px;
+    background:var(--surface);color:var(--ink);font-size:15px;font-family:inherit;width:100%;font-variant-numeric:tabular-nums}
+  input[type=text],input[type=number]{text-align:right;font-weight:600;font-size:16px}
+  input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .mini{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .mini button{font-family:inherit;font-size:12.5px;padding:5px 10px;border-radius:7px;border:1px solid var(--line);
+    background:transparent;color:var(--ink-2);cursor:pointer}
+  .mini button:hover{border-color:var(--accent);color:var(--accent)}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:12px 0 0}
+  .seg{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+  .seg button{flex:1;background:transparent;border:0;padding:10px 6px;font-size:13.5px;font-weight:600;
+    color:var(--ink-2);cursor:pointer;font-family:inherit;transition:.12s}
+  .seg button.on{background:var(--accent);color:#fff}
+  .seg.sm button{font-size:12.5px;padding:9px 4px}
+  .chk{display:flex;gap:9px;align-items:flex-start;margin:11px 0 0;font-size:14.5px;cursor:pointer;color:var(--ink-2)}
+  .chk input{margin:5px 0 0;flex:none;width:16px;height:16px;accent-color:var(--accent)}
+  .chk b{color:var(--ink);font-weight:600}
+  .chk em{display:block;font-style:normal;font-size:12.5px;color:var(--ink-3);line-height:1.5}
+
+  .cmp{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:12px;margin:16px 0 4px}
+  .cmp .c{border:1px solid var(--line);border-radius:13px;padding:14px 16px;background:var(--surface)}
+  .cmp .c .k{font-size:12.5px;color:var(--ink-3);font-weight:600}
+  .cmp .c .v{font-size:24px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em;margin-top:2px;line-height:1.25}
+  .cmp .c .d{font-size:12.5px;color:var(--ink-3);margin-top:2px}
+
+  .result{background:var(--surface);border:1px solid var(--accent);border-radius:16px;padding:26px 24px;margin:18px 0}
+  .big{font-size:13px;color:var(--ink-2);margin:0 0 4px}
+  .money{font-size:38px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.2;color:var(--accent)}
+  .money small{font-size:18px;font-weight:700;margin-left:3px}
+  .money.sm{font-size:29px}
+  .yearly{font-size:14px;color:var(--ink-2);margin-top:6px;font-variant-numeric:tabular-nums}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px}
+  th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line-soft)}
+  th{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;border-bottom:1px solid var(--line)}
+  td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  td.r{font-size:13px;color:var(--ink-3);text-align:right;font-variant-numeric:tabular-nums}
+  tr.sum td{border-top:2px solid var(--line);border-bottom:0;font-weight:700;padding-top:11px}
+  tr.take td{border-bottom:0;font-weight:800;color:var(--accent);font-size:16px}
+  tr.hi td{background:var(--accent-soft)}
+
+  details{margin:14px 0;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:0 16px}
+  details[open]{padding-bottom:8px}
+  summary{cursor:pointer;padding:12px 0;font-size:14.5px;font-weight:600;color:var(--ink-2)}
+  summary:hover{color:var(--accent)}
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .m-ok{background:var(--good-soft);border-color:var(--good)}
+  .hidden{display:none}
+  code{background:var(--line-soft);padding:1px 5px;border-radius:4px;font-size:12.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .src{font-size:12.5px;color:var(--ink-3);margin-top:14px;padding-top:12px;border-top:1px solid var(--line-soft)}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .money{font-size:29px}
+    .money.sm{font-size:23px}
+    .cmp{grid-template-columns:1fr 1fr}
+    table{font-size:13px}
+    th,td{padding:7px 4px}
+    .seg button{font-size:12px;padding:9px 2px}
+  }
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
+</style>
+<!--HEAD:S-->
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
+<meta property="og:site_name" content="까치툴">
+<!--HEAD:E-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › 날짜 계산기</p>
+
+<h1>날짜 계산기</h1>
+<p class="sub">생년월일로 <strong>만 나이</strong>를, 목표일로 <strong>D-day</strong>를, 두 날짜로 <strong>사이 일수</strong>를 계산합니다. 100일·1000일 기념일과 며칠 후 날짜, 주말을 뺀 영업일까지 함께 나옵니다. 날짜는 시간대의 영향을 받지 않도록 자정 기준으로 맞춰 셉니다.</p>
+
+<div class="panel">
+  <div class="seg" id="tabs">
+    <button data-v="age" class="on">만 나이</button>
+    <button data-v="dday">D-day</button>
+    <button data-v="span">날짜 사이 · 며칠 후</button>
+  </div>
+
+  <div id="in-age" style="margin-top:20px">
+    <div class="row">
+      <div class="col">
+        <label class="f">생년월일</label>
+        <input type="date" id="bd">
+      </div>
+      <div class="col">
+        <label class="f">기준일 (보통 오늘)</label>
+        <input type="date" id="bt">
+        <div class="mini"><button id="btToday">오늘로</button></div>
+      </div>
+    </div>
+    <p class="note">만 나이는 생일이 지났으면 <strong>올해 − 출생연도</strong>, 아직 안 지났으면 <strong>올해 − 출생연도 − 1</strong>입니다. 연 나이는 생일과 상관없이 올해에서 출생연도를 뺀 값이에요.</p>
+  </div>
+
+  <div id="in-dday" class="hidden" style="margin-top:20px">
+    <div class="row">
+      <div class="col">
+        <label class="f">기준 날짜 (목표일 · 시작일)</label>
+        <input type="date" id="dd">
+      </div>
+      <div class="col">
+        <label class="f">오늘 날짜</label>
+        <input type="date" id="dt">
+        <div class="mini"><button id="dtToday">오늘로</button></div>
+      </div>
+    </div>
+    <p class="note">앞으로 남은 날은 <strong>D-30</strong>, 이미 지난 날은 <strong>D+120</strong>으로 표시합니다. 기념일 표는 이 날짜를 <strong>시작일</strong>로 보고 계산해요.</p>
+  </div>
+
+  <div id="in-span" class="hidden" style="margin-top:20px">
+    <div class="row">
+      <div class="col">
+        <label class="f">시작일</label>
+        <input type="date" id="s1">
+      </div>
+      <div class="col">
+        <label class="f">종료일</label>
+        <input type="date" id="s2">
+      </div>
+    </div>
+    <p class="note">두 날짜의 <strong>차이</strong>와, 시작일과 종료일을 모두 하루로 세는 <strong>초일 산입</strong> 일수를 함께 보여줍니다. 계약 기간이나 입원 일수처럼 양 끝을 세야 하는 경우에는 아래쪽 값을 쓰세요.</p>
+  </div>
+</div>
+
+<div id="warn" class="hidden"></div>
+
+<div class="result hidden" id="res">
+  <p class="big" id="lab">만 나이</p>
+  <div class="money" id="val">0</div>
+  <div class="yearly" id="meta"></div>
+  <div class="cmp" id="cmp"></div>
+  <table><tbody id="tb"></tbody></table>
+  <div id="extra"></div>
+  <p class="src" id="src"></p>
+</div>
+
+<div class="panel hidden" id="p2">
+  <label class="f">며칠 후 · 며칠 전 날짜</label>
+  <div class="row">
+    <div class="col">
+      <label class="f" style="font-size:11.5px">기준 날짜</label>
+      <input type="date" id="bs">
+    </div>
+    <div class="col">
+      <label class="f" style="font-size:11.5px">일수</label>
+      <input type="number" id="nd" value="100" min="0" max="100000" step="1">
+    </div>
+    <div class="col" style="min-width:150px">
+      <label class="f" style="font-size:11.5px">방향</label>
+      <div class="seg sm" id="dir">
+        <button data-v="1" class="on">후</button>
+        <button data-v="-1">전</button>
+      </div>
+    </div>
+  </div>
+  <p class="note">달력 그대로 세는 값과, 토·일을 건너뛰고 세는 <strong>영업일 기준</strong> 값을 같이 보여줍니다. <strong>공휴일은 빼지 않습니다.</strong></p>
+</div>
+
+<div class="result hidden" id="res2">
+  <p class="big" id="lab2">100일 후</p>
+  <div class="money sm" id="val2">—</div>
+  <div class="yearly" id="meta2"></div>
+  <table><tbody id="tb2"></tbody></table>
+</div>
+
+<h2>만 나이로 통일됐지만 예외가 남아 있습니다</h2>
+<p>2023년 6월 28일부터 행정·민사상 나이는 <strong>만 나이</strong>로 통일됐습니다. 법령이나 계약서, 공문서에 그냥 "나이"라고 적혀 있고 따로 정한 바가 없으면 만 나이로 읽습니다. 세는나이는 일상 대화에 남아 있을 뿐 법적인 기준은 아니에요.</p>
+<p>다만 통일됐다는 말이 모든 나이가 만 나이가 됐다는 뜻은 아닙니다. 개별 법률이 나이 기준을 따로 정해둔 영역은 그대로 남았습니다. 대표적인 게 <strong>취학 연령</strong>입니다. 초등학교는 생일과 관계없이 같은 해에 태어난 아이들이 같은 해 3월에 함께 입학하므로, 사실상 출생연도로 묶입니다.</p>
+<p><strong>병역</strong>도 마찬가지입니다. 병역법은 나이를 그 나이에 도달하는 해의 1월 1일부터 12월 31일까지로 보기 때문에, 생일이 오기 전이라도 그 해가 되면 해당 연령으로 취급합니다. 병역판정검사 통지가 생일과 무관하게 나오는 이유예요.</p>
+<p><strong>술과 담배</strong>도 연 나이 기준입니다. 청소년보호법은 만 19세 미만을 청소년으로 보되, 만 19세가 되는 해의 1월 1일을 맞이한 사람은 제외합니다. 그래서 2007년생은 2026년 1월 1일이 되면 생일이 언제든 구매할 수 있습니다. 편의점에서 생년월일이 아니라 출생연도만 보고 판단하는 게 이 조항 때문입니다.</p>
+
+<h2>D-day를 세는 방식은 두 가지입니다</h2>
+<p>연인 사이의 100일과 수능 D-100은 세는 방법이 다릅니다. 한국에서 기념일을 셀 때는 <strong>시작일을 1일로</strong> 칩니다. 만난 날이 1일이니까 100일은 시작일에 99일을 더한 날입니다. 3월 1일에 만났다면 100일은 6월 8일이에요.</p>
+<p>반면 D-day 표기는 <strong>기준일을 0으로</strong> 둡니다. 목표일 당일이 D-day, 그 하루 전이 D-1입니다. 같은 논리로 시작일에서 100일을 그대로 더하면 6월 9일이 나옵니다. 두 방식이 정확히 하루 차이 나는 이유가 이것이고, 위 계산기가 두 날짜를 나란히 보여주는 이유이기도 합니다.</p>
+<p>어느 쪽이 맞다고 할 수는 없습니다. 기념일은 관행상 1일부터 세는 쪽이 널리 쓰이고, 시험이나 전역처럼 남은 날을 세는 상황에서는 0부터 세는 쪽이 자연스럽습니다. 상대와 날짜가 어긋난다면 대개 이 차이입니다.</p>
+
+<h2>날짜 계산이 계산기마다 다른 이유</h2>
+<p>첫째는 <strong>시간대</strong>입니다. 컴퓨터는 날짜를 밀리초 숫자로 다루는데, 서머타임이 있는 지역에서는 하루가 23시간이나 25시간이 되는 날이 생깁니다. 이 상태로 두 날짜를 빼서 24시간으로 나누면 값이 어긋납니다. 한국은 서머타임을 쓰지 않지만 해외에서 접속하면 겪을 수 있어요. 이 계산기는 연·월·일만 뽑아 UTC 자정으로 맞춘 뒤 세기 때문에 이 문제가 생기지 않습니다.</p>
+<p>둘째는 <strong>윤년</strong>입니다. 4로 나뉘면 윤년이지만 100으로 나뉘면 평년, 그 중에서도 400으로 나뉘면 다시 윤년입니다. 2000년은 윤년이었고 1900년은 아니었습니다. 이걸 4년 규칙만으로 처리한 프로그램은 긴 기간에서 하루씩 틀립니다.</p>
+<p>셋째가 가장 흔한데, <strong>"1개월 후"의 정의</strong>가 제각각입니다. 1월 31일의 한 달 뒤는 언제일까요. 그 달의 말일로 보면 2월 28일이고, 31일을 그냥 더하면 3월 3일이며, 날짜를 넘겨버리면 3월 2일이나 3일이 됩니다. 민법은 해당 날짜가 없는 달이면 그 달의 말일로 기간이 끝나는 것으로 정하고 있고, 이 계산기도 같은 방식을 씁니다.</p>
+
+<h2>이 계산기가 쓰는 정의</h2>
+<p><strong>일수</strong>는 두 날짜의 차이입니다. 3월 1일과 3월 2일 사이는 1일이고, 양 끝을 모두 세는 초일 산입 값은 2일입니다. 두 값을 모두 보여주니 필요한 쪽을 고르면 됩니다.</p>
+<p><strong>개월수</strong>는 시작일과 같은 날짜가 돌아오는 것을 1개월로 셉니다. 1월 15일부터 3월 14일까지는 1개월 27일이고, 3월 15일이 되어야 2개월입니다. 시작일에 해당하는 날짜가 없는 달이면 그 달의 말일을 기준으로 삼습니다. 1월 31일에서 한 달 뒤는 2월 28일, 윤년이면 2월 29일입니다.</p>
+<p><strong>영업일</strong>은 토요일과 일요일만 제외한 값입니다. <strong>공휴일은 빼지 않습니다.</strong> 양 끝 날짜를 모두 포함해서 세므로, 월요일부터 금요일까지는 5영업일입니다.</p>
+
+<h2>자주 겪는 문제</h2>
+<h3>다른 계산기와 하루가 다릅니다</h3>
+<p>거의 대부분 <strong>초일 산입</strong> 여부 때문입니다. 시작일을 하루로 셀 것인지 아닌지에 따라 정확히 하루가 달라집니다. 근무 일수나 입원 일수, 여행 일수처럼 "며칠 있었나"를 세는 계산은 양 끝을 모두 포함하고, "며칠 남았나"를 세는 계산은 포함하지 않습니다. 위 결과에서 두 값을 모두 보여주니 어느 쪽인지 확인하고 쓰세요.</p>
+<h3>영업일에 공휴일이 안 빠집니다</h3>
+<p>일부러 빼지 않았습니다. 한국의 공휴일은 설과 추석이 음력을 따라 매년 움직이고, 대체공휴일이 요일에 따라 붙었다 떨어지며, 선거일이나 임시공휴일이 그때그때 지정됩니다. 미래 연도의 공휴일을 브라우저 안에서 확정할 방법이 없어요. 그래서 <strong>토·일만 제외한 값</strong>을 정확히 계산해 주고, 공휴일은 직접 빼도록 두었습니다. 관공서 민원 처리기간처럼 공휴일을 빼야 하는 계산이라면 해당 연도의 공휴일 수를 따로 확인하세요.</p>
+<h3>2월 29일에 태어났습니다</h3>
+<p>평년에는 생일이 없으니 나이가 언제 오르는지가 문제가 됩니다. 민법의 기간 계산 규정은 해당 날짜가 없는 달이면 그 달의 말일로 기간이 끝난다고 정합니다. 2월 28일이 끝나는 시점에 한 살이 차는 셈이라, 이 계산기는 <strong>평년에는 3월 1일부터</strong> 한 살을 더합니다. 2월 28일에 올린 것으로 보는 계산기도 있어서 그날 하루는 결과가 다를 수 있습니다. 윤년에는 당연히 2월 29일이 생일입니다.</p>
+<h3>계약 기간은 언제부터 세나요</h3>
+<p>민법은 기간을 일·주·월·연으로 정한 때 <strong>첫날은 세지 않는 것</strong>을 원칙으로 합니다. 다만 그 기간이 오전 0시부터 시작하면 첫날을 셉니다. 나이는 별도 규정이 있어서 출생일을 포함해 계산해요. 계약서에 "계약일로부터 30일 이내"라고 적혀 있다면 보통 계약일 다음 날부터 세는 것이고, "3월 1일부터 3월 31일까지"처럼 기간이 명시돼 있으면 양 끝을 모두 포함합니다. 다툼의 소지가 있으면 계약서에 기산일을 못 박아두는 게 안전합니다.</p>
+
+<!--REL:S-->
+<h2>함께 쓰면 좋은 도구</h2>
+<div class="rel">
+  <a href="/tools/char-count/"><strong>글자수 세기</strong><span>공백 포함·제외, 바이트, 원고지</span></a>
+  <a href="/tools/annual-leave/"><strong>연차 계산기</strong><span>입사일·회계연도 기준 동시 비교</span></a>
+  <a href="/tools/severance/"><strong>퇴직금 계산기</strong><span>평균임금·통상임금 자동 비교</span></a>
+</div>
+<p class="rel-all"><a href="/tools/">까치툴 도구 23개 전체 보기 →</a></p>
+<!--REL:E-->
+
+<footer>
+  <p>까치툴 · 모든 계산은 브라우저에서 이루어지며 입력값은 전송·저장되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const MS=86400000;
+const WD=['일','월','화','수','목','금','토'];
+const num=n=>n.toLocaleString('ko-KR');
+
+/* 모든 날짜는 UTC 자정으로 정규화한 타임스탬프로 다룬다 */
+function mk(y,m,d){                       // m은 0부터. 넘치는 값은 자동으로 넘어간다
+  const dt=new Date(0);
+  dt.setUTCFullYear(y,m,d);
+  dt.setUTCHours(0,0,0,0);
+  return dt.getTime();
+}
+function todayUTC(){
+  const t=new Date();
+  return mk(t.getFullYear(),t.getMonth(),t.getDate());
+}
+function parse(v){
+  if(!v) return null;
+  const m=/^(\d{4,6})-(\d{2})-(\d{2})$/.exec(String(v).trim());
+  if(!m) return null;
+  const y=+m[1], mo=+m[2], d=+m[3];
+  if(!(y>=1&&y<=9999)||mo<1||mo>12||d<1||d>31) return null;
+  const t=mk(y,mo-1,d);
+  const x=new Date(t);
+  if(x.getUTCFullYear()!==y||x.getUTCMonth()!==mo-1||x.getUTCDate()!==d) return null;
+  return t;
+}
+const days=(a,b)=>Math.round((b-a)/MS);
+const add=(t,n)=>t+n*MS;
+const inRange=t=>isFinite(t)&&new Date(t).getUTCFullYear()>=1&&new Date(t).getUTCFullYear()<=9999;
+function iso(t){
+  const d=new Date(t), p=(n,w)=>String(n).padStart(w,'0');
+  return p(d.getUTCFullYear(),4)+'-'+p(d.getUTCMonth()+1,2)+'-'+p(d.getUTCDate(),2);
+}
+function fmt(t){
+  const d=new Date(t);
+  return d.getUTCFullYear()+'년 '+(d.getUTCMonth()+1)+'월 '+d.getUTCDate()+'일';
+}
+const dow=t=>WD[new Date(t).getUTCDay()];
+const fmtW=t=>fmt(t)+' ('+dow(t)+')';
+const isLeap=y=>(y%4===0&&y%100!==0)||y%400===0;
+
+function addMonths(t,n){
+  const d=new Date(t), y=d.getUTCFullYear(), m=d.getUTCMonth(), day=d.getUTCDate();
+  const last=new Date(mk(y,m+n+1,0)).getUTCDate();   // 목표 달의 말일
+  return mk(y,m+n,Math.min(day,last));
+}
+function monthsBetween(a,b){                          // a<=b 전제
+  const da=new Date(a), db=new Date(b);
+  let m=(db.getUTCFullYear()-da.getUTCFullYear())*12+(db.getUTCMonth()-da.getUTCMonth());
+  if(m<0) m=0;
+  while(m>0&&addMonths(a,m)>b) m--;
+  return [m, days(addMonths(a,m),b)];
+}
+function ddayLabel(n){ return n>0?'D-'+num(n) : n<0?'D+'+num(-n) : 'D-Day'; }
+
+/* 토·일을 뺀 일수. 양 끝 모두 포함. a<=b 전제 */
+function bizDays(a,b){
+  const total=days(a,b)+1;
+  const full=Math.floor(total/7);
+  let rem=total-full*7, cnt=full*5, w=new Date(a).getUTCDay();
+  for(let i=0;i<rem;i++){ if(w!==0&&w!==6) cnt++; w=(w+1)%7; }
+  return cnt;
+}
+function bizAdd(t,n){
+  const step=n<0?-1:1;
+  let left=Math.abs(n), cur=t, guard=0;
+  while(left>0&&guard++<400000){
+    cur=add(cur,step);
+    const w=new Date(cur).getUTCDay();
+    if(w!==0&&w!==6) left--;
+  }
+  return cur;
+}
+
+let tab='age', dir=1;
+function warn(cls,html){
+  const w=$('warn');
+  if(!cls){ w.className='hidden'; w.innerHTML=''; return; }
+  w.className='msg '+cls; w.innerHTML=html;
+}
+function cmpBox(list){
+  $('cmp').innerHTML=list.map(c=>
+    '<div class="c"><div class="k">'+c[0]+'</div><div class="v">'+c[1]+'</div>'+
+    (c[2]?'<div class="d">'+c[2]+'</div>':'')+'</div>').join('');
+}
+const SRC='날짜는 연·월·일만 뽑아 UTC 자정으로 맞춘 뒤 하루 단위로 셉니다. 시간대나 서머타임의 영향을 받지 않습니다. '+
+  '개월수는 시작일과 같은 날짜가 돌아오는 것을 1개월로 세고, 그 날짜가 없는 달은 말일을 기준으로 봅니다. '+
+  '영업일은 <strong>토·일만 제외</strong>하며 공휴일은 빼지 않습니다. 입력값은 전송되거나 저장되지 않습니다.';
+
+/* ── 만 나이 ───────────────────────────── */
+function calcAge(){
+  const b=parse($('bd').value), T=parse($('bt').value);
+  if(b===null||T===null){
+    $('res').classList.add('hidden');
+    warn('m-bad', b===null?'생년월일을 입력하세요.':'기준일을 입력하세요.');
+    return;
+  }
+  if(b>T){
+    $('res').classList.add('hidden');
+    warn('m-bad','생년월일이 기준일보다 뒤입니다. 아직 오지 않은 날짜로는 만 나이를 계산할 수 없어요.');
+    return;
+  }
+  const bd=new Date(b), td=new Date(T);
+  const by=bd.getUTCFullYear(), bm=bd.getUTCMonth(), bdy=bd.getUTCDate();
+  const ty=td.getUTCFullYear();
+  const thisB=mk(ty,bm,bdy);                 // 2월 29일생은 평년이면 자동으로 3월 1일
+  const age=ty-by-(T<thisB?1:0);
+  const yearAge=ty-by;
+  const lived=days(b,T);
+  const nextB=T<thisB?thisB:(T===thisB?T:mk(ty+1,bm,bdy));
+  const toB=days(T,nextB);
+  const feb29=(bm===1&&bdy===29);
+
+  $('lab').textContent='만 나이';
+  $('val').innerHTML=num(age)+'<small>세</small>';
+  $('meta').textContent=fmtW(b)+' 출생 · 기준일 '+fmtW(T);
+  cmpBox([
+    ['연 나이', num(yearAge)+'세', ty+' − '+by],
+    ['태어난 지', num(lived)+'일', '오늘이 '+num(lived+1)+'일째'],
+    ['다음 생일', toB===0?'오늘':ddayLabel(toB), toB===0?fmt(nextB):fmtW(nextB)]
+  ]);
+  const rows=[
+    ['생년월일','', fmtW(b)],
+    ['기준일','', fmtW(T)],
+    ['만 나이','생일 '+(T<thisB?'전':'후'), num(age)+'세'],
+    ['연 나이','현재 연도 − 출생 연도', num(yearAge)+'세'],
+    ['태어난 지','기준일까지 경과', num(lived)+'일'],
+    ['살아온 날','출생일을 1일로', num(lived+1)+'일'],
+    ['다음 생일', ddayLabel(toB), fmtW(nextB)]
+  ];
+  $('tb').innerHTML=rows.map(r=>'<tr><td>'+r[0]+'</td><td class="r">'+r[1]+'</td><td class="n">'+r[2]+'</td></tr>').join('')
+    +'<tr class="take"><td>만 나이</td><td class="r"></td><td class="n">'+num(age)+'세</td></tr>';
+
+  let ex='<table><tbody>';
+  [100,200,1000].forEach(function(n){
+    ex+='<tr><td>태어난 지 '+num(n)+'일 (출생일을 1일로)</td><td class="r">'+ddayLabel(days(T,add(b,n-1)))+
+        '</td><td class="n">'+fmtW(add(b,n-1))+'</td></tr>';
+  });
+  ex+='</tbody></table>';
+  $('extra').innerHTML='<details><summary>100일·200일·1000일 보기</summary>'+ex+'</details>';
+
+  if(toB===0) warn('m-ok','오늘이 생일입니다. 오늘부터 <strong>만 '+num(age)+'세</strong>가 됩니다.');
+  else if(feb29) warn('m-warn','2월 29일생입니다. 평년에는 생일이 없어서 이 계산기는 <strong>3월 1일</strong>부터 한 살을 더합니다. 2월 28일로 보는 계산기와는 그 하루만 결과가 다릅니다.');
+  else if(age<19&&yearAge>=19) warn('m-warn','만 나이로는 19세 미만이지만 연 나이로는 '+num(yearAge)+'세입니다. 주류·담배 구매나 병역처럼 <strong>연 나이를 쓰는 기준</strong>에서는 이미 성년으로 봅니다.');
+  else warn(null);
+  $('src').innerHTML=SRC;
+  $('res').classList.remove('hidden');
+}
+
+/* ── D-day ─────────────────────────────── */
+function calcDday(){
+  const t=parse($('dd').value), T=parse($('dt').value);
+  if(t===null||T===null){
+    $('res').classList.add('hidden');
+    warn('m-bad', t===null?'기준 날짜를 입력하세요.':'오늘 날짜를 입력하세요.');
+    return;
+  }
+  const n=days(T,t), a=Math.abs(n);
+  $('lab').textContent = n>0?'남은 날':(n<0?'지난 날':'오늘');
+  $('val').textContent = ddayLabel(n);
+  $('meta').textContent = fmtW(t)+' · 기준 '+fmtW(T);
+  cmpBox([
+    [n>=0?'남은 일수':'지난 일수', num(a)+'일', n===0?'오늘입니다':(n>0?'앞으로':'이미 지남')],
+    ['주 단위', Math.floor(a/7)+'주 '+(a%7)+'일', '총 '+(a/7).toFixed(1)+'주'],
+    ['요일', dow(t)+'요일', fmt(t)]
+  ]);
+
+  const S=[50,100,200,300,500,1000,2000];
+  let html='<tr><th>기념일</th><th style="text-align:right">한국식 (시작일 = 1일)</th><th style="text-align:right">0일 기준</th></tr>';
+  S.forEach(function(k){
+    const ko=add(t,k-1), zr=add(t,k);
+    html+='<tr><td>'+num(k)+'일</td>'+
+      '<td class="n">'+fmtW(ko)+'<br><span style="font-size:12px;color:var(--ink-3)">'+ddayLabel(days(T,ko))+'</span></td>'+
+      '<td class="n">'+fmtW(zr)+'<br><span style="font-size:12px;color:var(--ink-3)">'+ddayLabel(days(T,zr))+'</span></td></tr>';
+  });
+  [1,2,3].forEach(function(y){
+    const d=addMonths(t,12*y);
+    html+='<tr><td>'+y+'주년</td><td class="n" colspan="2">'+fmtW(d)+
+      ' <span style="font-size:12px;color:var(--ink-3)">'+ddayLabel(days(T,d))+'</span></td></tr>';
+  });
+  $('tb').innerHTML=html;
+  $('extra').innerHTML='<p class="note" style="margin-top:4px">기념일은 <strong>기준 날짜를 시작일로</strong> 계산했습니다. 시작일을 1일로 세는 한국식은 시작일에 '+
+    '<code>N−1</code>일을, 0일부터 세는 방식은 <code>N</code>일을 더합니다. 그래서 두 날짜는 항상 하루 차이가 납니다. '+
+    '주년은 달력 날짜를 그대로 따르므로 방식에 관계없이 같습니다.</p>';
+
+  if(n===0) warn('m-ok','오늘이 바로 그날입니다.');
+  else if(n>0) warn('m-warn','<strong>'+num(n)+'일</strong> 남았습니다. 목표일은 '+dow(t)+'요일이에요.');
+  else warn('m-warn','<strong>'+num(a)+'일</strong> 지났습니다. 그날은 '+dow(t)+'요일이었어요.');
+  $('src').innerHTML=SRC;
+  $('res').classList.remove('hidden');
+}
+
+/* ── 날짜 사이 · 며칠 후 ────────────────── */
+function calcSpan(){
+  const a0=parse($('s1').value), b0=parse($('s2').value);
+  calcPlus();
+  if(a0===null||b0===null){
+    $('res').classList.add('hidden');
+    warn('m-bad', a0===null?'시작일을 입력하세요.':'종료일을 입력하세요.');
+    return;
+  }
+  const flip=a0>b0, a=flip?b0:a0, b=flip?a0:b0;
+  const d=days(a,b);
+  const mb=monthsBetween(a,b);
+  const biz=bizDays(a,b);
+  const wk=Math.floor(d/7), wr=d%7;
+
+  $('lab').textContent='두 날짜 사이';
+  $('val').innerHTML=num(d)+'<small>일</small>';
+  $('meta').textContent=fmtW(a)+' → '+fmtW(b)+(flip?' (순서를 바꿔 계산)':'');
+  cmpBox([
+    ['초일 산입', num(d+1)+'일', '양 끝 모두 포함'],
+    ['주 단위', wk+'주 '+wr+'일', '총 '+(d/7).toFixed(1)+'주'],
+    ['개월', mb[0]+'개월 '+mb[1]+'일', '같은 날짜 기준'],
+    ['영업일', num(biz)+'일', '토·일 제외']
+  ]);
+  const rows=[
+    ['시작일','', fmtW(a)],
+    ['종료일','', fmtW(b)],
+    ['날짜 차이','초일 불산입', num(d)+'일'],
+    ['기간 일수','초일 산입 (양 끝 포함)', num(d+1)+'일'],
+    ['주','', wk+'주 '+wr+'일'],
+    ['개월','같은 날짜가 돌아오면 1개월', mb[0]+'개월 '+mb[1]+'일'],
+    ['영업일','토·일 제외 · 공휴일 미반영', num(biz)+'일'],
+    ['주말','토·일', num(d+1-biz)+'일']
+  ];
+  $('tb').innerHTML=rows.map(r=>'<tr><td>'+r[0]+'</td><td class="r">'+r[1]+'</td><td class="n">'+r[2]+'</td></tr>').join('')
+    +'<tr class="take"><td>날짜 차이</td><td class="r"></td><td class="n">'+num(d)+'일</td></tr>';
+  $('extra').innerHTML='';
+
+  if(d===0) warn('m-warn','시작일과 종료일이 같습니다. 차이는 0일이고, 그날 하루를 세면 1일입니다.');
+  else if(flip) warn('m-warn','종료일이 시작일보다 앞서 있어 <strong>순서를 바꿔</strong> 계산했습니다.');
+  else warn(null);
+  $('src').innerHTML=SRC;
+  $('res').classList.remove('hidden');
+}
+function calcPlus(){
+  const base=parse($('bs').value);
+  let n=parseInt(String($('nd').value).replace(/[^0-9]/g,''),10);
+  if(!isFinite(n)||n<0) n=0;
+  if(n>100000) n=100000;
+  if(base===null){
+    $('res2').classList.add('hidden');
+    return;
+  }
+  const t=add(base,n*dir);
+  if(!inRange(t)){
+    $('res2').classList.add('hidden');
+    return;
+  }
+  const bt=bizAdd(base,n*dir);
+  const word=dir>0?'후':'전';
+  $('lab2').textContent=fmt(base)+'로부터 '+num(n)+'일 '+word;
+  $('val2').textContent=fmtW(t);
+  $('meta2').textContent='영업일 기준으로 '+num(n)+'영업일 '+word+'는 '+(inRange(bt)?fmtW(bt):'계산 범위를 벗어남');
+  const wk=Math.floor(n/7), wr=n%7;
+  const mb=dir>0?monthsBetween(base,t):monthsBetween(t,base);
+  const rows=[
+    ['기준 날짜','', fmtW(base)],
+    [num(n)+'일 '+word,'달력 그대로', fmtW(t)],
+    [num(n)+'영업일 '+word,'토·일 건너뜀', inRange(bt)?fmtW(bt):'—'],
+    ['일수 환산','', wk+'주 '+wr+'일'],
+    ['개월 환산','같은 날짜 기준', mb[0]+'개월 '+mb[1]+'일']
+  ];
+  $('tb2').innerHTML=rows.map(r=>'<tr><td>'+r[0]+'</td><td class="r">'+r[1]+'</td><td class="n">'+r[2]+'</td></tr>').join('')
+    +'<tr class="take"><td>'+num(n)+'일 '+word+'</td><td class="r"></td><td class="n">'+fmtW(t)+'</td></tr>';
+  $('res2').classList.remove('hidden');
+}
+
+function calc(){
+  if(tab==='age') calcAge();
+  else if(tab==='dday') calcDday();
+  else calcSpan();
+}
+function sync(){
+  $('in-age').classList.toggle('hidden',tab!=='age');
+  $('in-dday').classList.toggle('hidden',tab!=='dday');
+  $('in-span').classList.toggle('hidden',tab!=='span');
+  $('p2').classList.toggle('hidden',tab!=='span');
+  if(tab!=='span') $('res2').classList.add('hidden');
+}
+
+/* 초기값 */
+const T0=todayUTC();
+$('bd').value=iso(mk(1990,2,15));
+$('bt').value=iso(T0);
+$('dd').value=iso(add(T0,100));
+$('dt').value=iso(T0);
+$('s1').value=iso(T0);
+$('s2').value=iso(add(T0,30));
+$('bs').value=iso(T0);
+
+document.querySelectorAll('#tabs button').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('#tabs button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); tab=b.dataset.v; sync(); calc();
+  });
+});
+document.querySelectorAll('#dir button').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('#dir button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); dir=parseInt(b.dataset.v,10); calc();
+  });
+});
+['bd','bt','dd','dt','s1','s2','bs','nd'].forEach(function(id){
+  $(id).addEventListener('input',calc);
+  $(id).addEventListener('change',calc);
+});
+$('btToday').addEventListener('click',function(){ $('bt').value=iso(todayUTC()); calc(); });
+$('dtToday').addEventListener('click',function(){ $('dt').value=iso(todayUTC()); calc(); });
+
+sync(); calc();
+})();
+</script>
+</body>
+</html>

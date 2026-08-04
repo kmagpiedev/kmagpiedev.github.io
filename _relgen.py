@@ -26,6 +26,16 @@ TOOLS = {
                    '집이나 상가를 살 때 내는 취득세·지방교육세·농어촌특별세를 항목별로 계산합니다. 다주택 중과와 생애최초 감면, 일시적 2주택까지 반영하고 인지세·중개보수를 더한 총 부대비용도 보여줍니다.'),
  'broker-fee':    ('🔑','중개수수료 계산기','매매·전세·월세 복비 상한',
                    '공인중개사에게 낼 복비의 법정 상한을 계산합니다. 월세 보증금 환산과 구간별 한도액, 부가세까지 자동으로 처리해 실제 지급액을 보여줍니다.'),
+ 'car-tax':       ('🚗','자동차세 계산기','배기량·차령 경감·연납 할인',
+                   '배기량과 최초 등록 연도만 넣으면 자동차세와 지방교육세가 나옵니다. 차령 경감을 법 산식 그대로 반기 단위로 계산하고 1월·3월·6월·9월 연납 할인액을 비교합니다.'),
+ 'car-acquisition':('🚙','자동차 취득세 계산기','경차 75만원·전기차 140만원 감면',
+                   '차를 살 때 내는 취득세를 차종·용도별 세율로 계산합니다. 경차와 전기차 감면 한도를 반영하고, 공채 매입처럼 지역마다 다른 항목은 무엇을 더 확인해야 하는지 알려줍니다.'),
+ 'char-count':    ('🔤','글자수 세기','공백 포함·제외, 바이트, 원고지',
+                   '붙여넣으면 글자수와 바이트가 즉시 나옵니다. 자소서 목표 글자수를 공백 포함·제외 기준으로 골라 진행률을 확인할 수 있고 원고지 매수도 세어 줍니다.'),
+ 'pyeong':        ('📐','평수 계산기','평↔㎡, 전용·공급면적',
+                   '평과 제곱미터를 정확한 값 400/121로 양방향 변환합니다. 전용률을 넣으면 전용면적과 공급면적을 함께 보여주고 국민주택 규모 85㎡ 기준선도 표시합니다.'),
+ 'date-calc':     ('📆','날짜 계산기','만나이·D-day·날짜 사이 일수',
+                   '만 나이와 D-day, 두 날짜 사이의 일수를 계산합니다. 100일·1000일 기념일을 한국식과 0일식으로 나란히 보여주고 주말을 뺀 영업일도 셀 수 있습니다.'),
  'pdf':           ('📑','PDF 편집기','합치기·나누기·페이지 삭제',
                    '여러 PDF를 합치고 페이지를 삭제·회전·순서 변경하고, 필요한 페이지만 뽑아냅니다. 이미지를 PDF로 만들 수도 있습니다.'),
  'pdf-sign':      ('✍️','PDF 서명·도장 넣기','인쇄 없이 계약서에 바로',
@@ -57,7 +67,11 @@ CATS = [
  ('급여·노동', '법령과 공식 고시를 그대로 적용해 계산합니다. 근사식을 쓰지 않고 계산 과정과 근거 조문을 함께 보여줍니다.',
   ['salary','severance','unemployment','annual-leave','holiday-pay']),
  ('부동산·금융', '집을 사고팔 때, 돈을 빌릴 때 필요한 계산입니다. 법령과 고시 요율을 그대로 적용하고 입력한 값은 어디로도 전송되지 않습니다.',
-  ['acquisition-tax','broker-fee','loan','qr']),
+  ['acquisition-tax','broker-fee','loan']),
+ ('자동차', '차를 사고 유지할 때 내는 세금입니다. 확인되지 않은 항목은 계산에 넣지 않고 어디서 확인해야 하는지 알려드립니다.',
+  ['car-tax','car-acquisition']),
+ ('생활 편의', '자주 찾게 되는 단순한 계산과 변환입니다. 가입도 설치도 없이 바로 씁니다.',
+  ['char-count','pyeong','date-calc','qr']),
  ('앱 개발',    '안드로이드 앱을 출시할 때 반복적으로 필요한 작업들입니다. 직접 앱을 만들며 필요해서 만든 도구예요.',
   ['app-icon','screenshot','privacy-policy']),
 ]
@@ -78,7 +92,12 @@ REL = {
  'convert':       ['image-compress','remove-bg','id-photo'],
  'id-photo':      ['remove-bg','convert','image-compress'],
  'image-compress':['convert','remove-bg','pdf'],
- 'qr':            ['convert','image-compress','holiday-pay'],
+ 'qr':            ['char-count','convert','date-calc'],
+ 'car-tax':       ['car-acquisition','loan','acquisition-tax'],
+ 'car-acquisition':['car-tax','loan','acquisition-tax'],
+ 'char-count':    ['date-calc','pyeong','qr'],
+ 'pyeong':        ['acquisition-tax','broker-fee','date-calc'],
+ 'date-calc':     ['char-count','annual-leave','severance'],
  'app-icon':      ['screenshot','privacy-policy','image-compress'],
  'screenshot':    ['app-icon','privacy-policy','image-compress'],
  'privacy-policy':['app-icon','screenshot','pdf'],
@@ -161,7 +180,7 @@ def patch(slug):
 
 # 계산 결과를 내놓는 도구 — 푸터에 면책 안내 한 줄을 더 붙인다
 CALC = {'salary', 'severance', 'holiday-pay', 'annual-leave', 'unemployment',
-        'loan', 'acquisition-tax', 'broker-fee'}
+        'loan', 'acquisition-tax', 'broker-fee', 'car-tax', 'car-acquisition'}
 
 FOOT_NOTE = {
  'ko': '<p>계산 결과는 참고용 추정치이며 법적 효력이 없습니다. '
@@ -186,13 +205,15 @@ def patch_footer(s, lang, calc=False):
     if 'disclaimer' not in s.lower():
         s = s.replace(old, new)
 
+    nl = '\r\n' if '\r\n' in s[:2000] else '\n'
     if calc and 'FOOTNOTE' not in s:
-        nl = '\r\n' if '\r\n' in s[:2000] else '\n'
         i = s.find(anchor)
         if i > 0:
             j = i + len(anchor)
-            note = f'{nl}  <!--FOOTNOTE-->{FOOT_NOTE[lang]}'
-            s = s[:j] + note + s[j:]
+            s = s[:j] + f'{nl}  <!--FOOTNOTE-->{FOOT_NOTE[lang]}' + s[j:]
+    elif not calc and 'FOOTNOTE' in s:
+        # 계산기가 아닌 페이지에 잘못 들어간 안내 문구는 걷어낸다
+        s = re.sub(r'[ \t]*<!--FOOTNOTE-->.*?</p>\r?\n?', '', s, flags=re.S)
     return s
 
 
