@@ -55,7 +55,20 @@
   h2.cat:first-of-type{margin-top:26px}
   p.cat-d{font-size:13.5px;color:var(--ink-3);margin:0 0 12px;line-height:1.6}
 /*CAT:E*/
+  .brand{display:flex;align-items:center;gap:14px;margin:0 0 10px}
+  .brand img{width:64px;height:64px;flex:none;display:block}
+  @media (prefers-color-scheme:dark){ .brand img.lt{display:none} }
+  @media (prefers-color-scheme:light){ .brand img.dk{display:none} }
+  .brand h1{margin:0}
+  @media (max-width:560px){ .brand img{width:52px;height:52px} }
 </style>
+<!--HEAD:S-->
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
+<meta property="og:site_name" content="까치툴">
+<!--HEAD:E-->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -63,7 +76,7 @@
 
 <p class="crumb"><a href="/">K-magpie</a> › 까치툴</p>
 
-<h1>까치툴</h1>
+<div class="brand"><img class="lt" src="/images/kmagpie-logo.png" alt="까치툴 로고 — 공구를 든 까치" width="64" height="64"><img class="dk" src="/images/kmagpie-logo-dark.png" alt="까치툴 로고 — 공구를 든 까치" width="64" height="64"><h1>까치툴</h1></div>
 <p class="sub">유용한 도구 모음. 가입도, 파일 업로드도 필요 없고 전부 브라우저 안에서 처리됩니다.</p>
 
 <!--CAT:S-->
@@ -137,9 +150,19 @@
   </a>
 </div>
 
-<h2 class="cat">금융·생활</h2>
-<p class="cat-d">돈과 관련된 계산입니다. 입력한 값은 어디로도 전송되지 않습니다.</p>
+<h2 class="cat">부동산·금융</h2>
+<p class="cat-d">집을 사고팔 때, 돈을 빌릴 때 필요한 계산입니다. 법령과 고시 요율을 그대로 적용하고 입력한 값은 어디로도 전송되지 않습니다.</p>
 <div class="grid">
+  <a class="tool" href="/tools/acquisition-tax/">
+    <span class="ic">🏠</span>
+    <div class="nm">취득세 계산기</div>
+    <div class="ds">집이나 상가를 살 때 내는 취득세·지방교육세·농어촌특별세를 항목별로 계산합니다. 다주택 중과와 생애최초 감면, 일시적 2주택까지 반영하고 인지세·중개보수를 더한 총 부대비용도 보여줍니다.</div>
+  </a>
+  <a class="tool" href="/tools/broker-fee/">
+    <span class="ic">🔑</span>
+    <div class="nm">중개수수료 계산기</div>
+    <div class="ds">공인중개사에게 낼 복비의 법정 상한을 계산합니다. 월세 보증금 환산과 구간별 한도액, 부가세까지 자동으로 처리해 실제 지급액을 보여줍니다.</div>
+  </a>
   <a class="tool" href="/tools/loan/">
     <span class="ic">🏦</span>
     <div class="nm">대출 이자 계산기</div>

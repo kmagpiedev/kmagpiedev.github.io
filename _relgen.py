@@ -22,6 +22,10 @@ TOOLS = {
                    '1일 지급액과 소정급여일수, 총 수급액을 계산합니다. 2026년에 7년 만에 오른 상한액과 최저임금 연동 하한액을 반영했고 수급 요건도 확인해 드립니다.'),
  'loan':          ('🏦','대출 이자 계산기','원리금균등·원금균등·거치기간',
                    '월 상환액과 총 이자를 계산하고 원리금균등·원금균등·만기일시를 한 화면에서 비교합니다. 거치기간을 반영한 상환 스케줄을 회차별로 보여줍니다.'),
+ 'acquisition-tax':('🏠','취득세 계산기','다주택 중과·생애최초 감면 반영',
+                   '집이나 상가를 살 때 내는 취득세·지방교육세·농어촌특별세를 항목별로 계산합니다. 다주택 중과와 생애최초 감면, 일시적 2주택까지 반영하고 인지세·중개보수를 더한 총 부대비용도 보여줍니다.'),
+ 'broker-fee':    ('🔑','중개수수료 계산기','매매·전세·월세 복비 상한',
+                   '공인중개사에게 낼 복비의 법정 상한을 계산합니다. 월세 보증금 환산과 구간별 한도액, 부가세까지 자동으로 처리해 실제 지급액을 보여줍니다.'),
  'pdf':           ('📑','PDF 편집기','합치기·나누기·페이지 삭제',
                    '여러 PDF를 합치고 페이지를 삭제·회전·순서 변경하고, 필요한 페이지만 뽑아냅니다. 이미지를 PDF로 만들 수도 있습니다.'),
  'pdf-sign':      ('✍️','PDF 서명·도장 넣기','인쇄 없이 계약서에 바로',
@@ -52,8 +56,8 @@ CATS = [
   ['pdf','pdf-sign']),
  ('급여·노동', '법령과 공식 고시를 그대로 적용해 계산합니다. 근사식을 쓰지 않고 계산 과정과 근거 조문을 함께 보여줍니다.',
   ['salary','severance','unemployment','annual-leave','holiday-pay']),
- ('금융·생활', '돈과 관련된 계산입니다. 입력한 값은 어디로도 전송되지 않습니다.',
-  ['loan','qr']),
+ ('부동산·금융', '집을 사고팔 때, 돈을 빌릴 때 필요한 계산입니다. 법령과 고시 요율을 그대로 적용하고 입력한 값은 어디로도 전송되지 않습니다.',
+  ['acquisition-tax','broker-fee','loan','qr']),
  ('앱 개발',    '안드로이드 앱을 출시할 때 반복적으로 필요한 작업들입니다. 직접 앱을 만들며 필요해서 만든 도구예요.',
   ['app-icon','screenshot','privacy-policy']),
 ]
@@ -61,7 +65,9 @@ CATS = [
 # 각 도구 페이지 하단에 노출할 관련 도구 (맥락 흐름 순)
 REL = {
  'salary':        ['severance','loan','annual-leave'],
- 'loan':          ['salary','severance','pdf-sign'],
+ 'loan':          ['acquisition-tax','broker-fee','salary'],
+ 'acquisition-tax':['broker-fee','loan','pdf-sign'],
+ 'broker-fee':    ['acquisition-tax','loan','pdf-sign'],
  'annual-leave':  ['severance','unemployment','holiday-pay'],
  'severance':     ['unemployment','annual-leave','salary'],
  'unemployment':  ['severance','annual-leave','salary'],
@@ -104,6 +110,26 @@ def put(text, start, end, new):
         return None
     return text[:i] + new + text[j + len(end):]
 
+HEAD_BLOCK = """<!--HEAD:S-->
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
+<meta property="og:site_name" content="까치툴">
+<!--HEAD:E-->"""
+
+def patch_head(s, nl):
+    """<head> 공통 블록 삽입 — 마커가 있으면 교체, 없으면 </head> 앞에 추가"""
+    blk = HEAD_BLOCK.replace('\n', nl)
+    r = put(s, '<!--HEAD:S-->', '<!--HEAD:E-->', blk)
+    if r is not None:
+        return r
+    i = s.find('<script async src="https://pagead2')
+    if i < 0:
+        i = s.lower().find('</head>')
+    assert i > 0, '<head> 삽입 위치를 못 찾음'
+    return s[:i] + blk + nl + s[i:]
+
 def patch(slug):
     p = ROOT / slug / 'index.html'
     s = open(p, encoding='utf-8', newline='').read()
@@ -118,6 +144,8 @@ def patch(slug):
         s = s[:i] + css + s[i:]
     else:
         s = r
+
+    s = patch_head(s, nl)
 
     r = put(s, '<!--REL:S-->', '<!--REL:E-->', blk.strip())
     if r is None:
@@ -161,6 +189,8 @@ def patch_index(path):
         s = s[:i] + CAT_CSS + s[i:]
     else:
         s = r
+
+    s = patch_head(s, '\r\n' if '\r\n' in s[:2000] else '\n')
 
     r = put(s, '<!--CAT:S-->', '<!--CAT:E-->', index_grid())
     if r is None:
