@@ -58,7 +58,12 @@
     touch-action:none;cursor:crosshair;
     background:conic-gradient(#0000 90deg,#8882 0 180deg,#0000 0 270deg,#8882 0) 0 0/18px 18px, var(--surface)}
   .cvwrap canvas{display:block;width:100%;height:auto}
+  #ov{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
   .hint{font-size:12px;color:var(--ink-3);text-align:center;margin-top:8px}
+  .mini{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .mini button{font-family:inherit;font-size:12.5px;padding:5px 10px;border-radius:7px;border:1px solid var(--line);
+    background:transparent;color:var(--ink-2);cursor:pointer}
+  .mini button:hover{border-color:var(--accent);color:var(--accent)}
 
   .panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:14px}
   .panel h4{margin:0 0 13px;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
@@ -132,8 +137,8 @@
 <div id="editor" class="hidden">
   <div class="stage">
     <div class="view">
-      <div class="cvwrap" id="cvwrap"><canvas id="pv"></canvas></div>
-      <div class="hint">브러시 모드에서 드래그하면 지우거나 되살릴 수 있습니다</div>
+      <div class="cvwrap" id="cvwrap"><canvas id="pv"></canvas><canvas id="ov"></canvas></div>
+      <div class="hint">브러시 모드에서 드래그하면 지우거나 되살릴 수 있습니다 · 빨간 원 = 지우기, 초록 원 = 되살리기</div>
     </div>
 
     <div class="side">
@@ -158,8 +163,18 @@
           </div>
         </div>
         <div class="fld"><label>붓 크기 <span class="val" id="bsV">40</span></label>
-          <input type="range" id="brush" min="8" max="180" value="40"></div>
-        <button class="act ghost" id="clearPaint" style="padding:7px 14px;font-size:13px">칠한 것 되돌리기</button>
+          <input type="range" id="brush" min="8" max="180" value="40">
+          <div class="mini" id="bpre">
+            <button data-b="15">소 15</button>
+            <button data-b="40">중 40</button>
+            <button data-b="80">대 80</button>
+            <button data-b="150">특대 150</button>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="act ghost" id="undoStroke" style="padding:7px 14px;font-size:13px" disabled>한 획 되돌리기</button>
+          <button class="act ghost" id="clearPaint" style="padding:7px 14px;font-size:13px">칠한 것 되돌리기</button>
+        </div>
       </div>
 
       <div class="panel">
@@ -188,7 +203,7 @@
 </div>
 
 <h2>사용법</h2>
-<p>사진을 올리고 <strong>AI로 배경 지우기</strong>를 누르면 인물만 남습니다. 결과가 어색하면 인물 영역 슬라이더를 조절하고, 그래도 남거나 잘린 부분은 지우기·되살리기 브러시로 다듬으세요. 마지막으로 배경을 투명으로 둘지 색을 채울지 흐리게 할지 고르고 PNG로 받으시면 됩니다.</p>
+<p>사진을 올리고 <strong>AI로 배경 지우기</strong>를 누르면 인물만 남습니다. 결과가 어색하면 인물 영역 슬라이더를 조절하고, 그래도 남거나 잘린 부분은 지우기·되살리기 브러시로 다듬으세요. 브러시 모드에서는 마우스를 올리면 <strong>현재 붓 크기만큼의 원</strong>이 커서를 따라다녀서(지우기는 빨간 원, 되살리기는 초록 원) 어디를 얼마나 칠할지 미리 보입니다. 붓 크기는 슬라이더 아래 <strong>소·중·대·특대</strong> 버튼으로 빠르게 바꿀 수 있고, 실수하면 <strong>한 획 되돌리기</strong>로 방금 칠한 획만 취소할 수 있습니다. 마지막으로 배경을 투명으로 둘지 색을 채울지 흐리게 할지 고르고 PNG로 받으시면 됩니다.</p>
 <p>모든 처리는 브라우저 안에서 이루어집니다. 인식 모델을 이 사이트에 함께 올려두고 브라우저가 직접 계산하기 때문에 <strong>사진이 외부로 나가지 않습니다.</strong> 개발자 도구의 네트워크 탭을 열어두고 확인해 보셔도 됩니다.</p>
 
 <h2>다른 서비스와 뭐가 다른가요</h2>
@@ -214,7 +229,7 @@
   <a href="/tools/convert/"><strong>이미지 확장자 변환</strong><span>PNG·JPG·WebP·BMP·ICO</span></a>
   <a href="/tools/image-compress/"><strong>이미지 용량 줄이기</strong><span>목표 용량에 자동으로 맞춤</span></a>
 </div>
-<p class="rel-all"><a href="/tools/">까치툴 도구 32개 전체 보기 →</a></p>
+<p class="rel-all"><a href="/tools/">까치툴 도구 33개 전체 보기 →</a></p>
 <!--REL:E-->
 
 <footer>
@@ -248,6 +263,7 @@
     im.onload=()=>{
       img=im; W=im.naturalWidth; H=im.naturalHeight;
       aiMask=null; aiPerson=null; paint=null;
+      undoPaint=null; hasUndo=false; $('undoStroke').disabled=true;
       $('tune').classList.add('hidden');
       warn.classList.add('hidden');
       $('editor').classList.remove('hidden');
@@ -365,8 +381,30 @@
   $('thresh').addEventListener('input',()=>{buildMask();draw()});
 
   /* ---------- 브러시 ---------- */
-  const wrap=$('cvwrap');
-  let painting=false;
+  const wrap=$('cvwrap'), ov=$('ov'), ovx=$('ov').getContext('2d');
+  let painting=false, undoPaint=null, hasUndo=false, curPt=null;
+  function snapshotPaint(){
+    if(paint){
+      const c=document.createElement('canvas'); c.width=paint.width; c.height=paint.height;
+      c.getContext('2d').drawImage(paint,0,0); undoPaint=c;
+    }else undoPaint=null;
+    hasUndo=true; $('undoStroke').disabled=false;
+  }
+  function clearCursor(){ ovx.clearRect(0,0,ov.width,ov.height); curPt=null; }
+  function drawCursor(clientX,clientY){
+    if(tool==='none'||!img){ clearCursor(); return }
+    const r=$('pv').getBoundingClientRect();
+    if(!r.width) return;
+    curPt=[clientX,clientY];
+    const dpr=window.devicePixelRatio||1;
+    const cw=Math.round(r.width*dpr), ch=Math.round(r.height*dpr);
+    if(ov.width!==cw||ov.height!==ch){ov.width=cw;ov.height=ch;}
+    const x=(clientX-r.left)*dpr, y=(clientY-r.top)*dpr, rad=(+$('brush').value/2)*dpr;
+    ovx.clearRect(0,0,ov.width,ov.height);
+    ovx.beginPath(); ovx.arc(x,y,rad,0,Math.PI*2);
+    ovx.lineWidth=4.5*dpr; ovx.strokeStyle='rgba(255,255,255,.9)'; ovx.stroke();
+    ovx.lineWidth=2*dpr; ovx.strokeStyle= tool==='erase' ? '#dc2626' : '#16a34a'; ovx.stroke();
+  }
   function ensurePaint(){
     if(!paint||paint.width!==W||paint.height!==H){
       const c=document.createElement('canvas'); c.width=W; c.height=H;
@@ -388,17 +426,40 @@
   }
   wrap.addEventListener('pointerdown',e=>{
     if(tool==='none') return;
-    wrap.setPointerCapture(e.pointerId); painting=true; stroke(e,tool==='erase'); draw();
+    try{wrap.setPointerCapture(e.pointerId)}catch(_){}
+    painting=true;
+    snapshotPaint();
+    stroke(e,tool==='erase'); draw(); drawCursor(e.clientX,e.clientY);
   });
-  wrap.addEventListener('pointermove',e=>{ if(painting){ stroke(e,tool==='erase'); draw(); } });
-  ['pointerup','pointercancel'].forEach(ev=>wrap.addEventListener(ev,()=>painting=false));
+  wrap.addEventListener('pointermove',e=>{
+    if(painting){ stroke(e,tool==='erase'); draw(); }
+    drawCursor(e.clientX,e.clientY);
+  });
+  ['pointerup','pointercancel'].forEach(ev=>wrap.addEventListener(ev,e=>{
+    painting=false;
+    if(e.pointerType!=='mouse') clearCursor();   // 터치는 손을 떼면 원 숨김
+  }));
+  wrap.addEventListener('pointerleave',()=>{ if(!painting) clearCursor(); });
   document.querySelectorAll('#tool button').forEach(b=>b.addEventListener('click',()=>{
     document.querySelectorAll('#tool button').forEach(x=>x.classList.remove('on'));
     b.classList.add('on'); tool=b.dataset.m;
     wrap.style.cursor = tool==='none' ? 'default' : 'crosshair';
+    if(tool==='none') clearCursor();
+    else if(curPt) drawCursor(curPt[0],curPt[1]);
   }));
-  $('clearPaint').addEventListener('click',()=>{paint=null;draw()});
-  $('brush').addEventListener('input',draw);
+  $('undoStroke').addEventListener('click',()=>{
+    if(!hasUndo) return;
+    paint=undoPaint; undoPaint=null; hasUndo=false;
+    $('undoStroke').disabled=true; draw();
+  });
+  $('clearPaint').addEventListener('click',()=>{
+    paint=null; undoPaint=null; hasUndo=false; $('undoStroke').disabled=true; draw();
+  });
+  $('brush').addEventListener('input',()=>{ draw(); if(curPt) drawCursor(curPt[0],curPt[1]); });
+  document.querySelectorAll('#bpre button').forEach(b=>b.addEventListener('click',()=>{
+    $('brush').value=b.dataset.b; draw();
+    if(curPt) drawCursor(curPt[0],curPt[1]);
+  }));
 
   /* ---------- 배경 ---------- */
   document.querySelectorAll('#bgsw button').forEach(b=>b.addEventListener('click',()=>{
@@ -420,6 +481,7 @@
   });
   $('reset').addEventListener('click',()=>{
     img=null; file.value=''; aiMask=null; aiPerson=null; paint=null;
+    undoPaint=null; hasUndo=false; $('undoStroke').disabled=true; clearCursor();
     $('editor').classList.add('hidden'); warn.classList.add('hidden');
     window.scrollTo({top:0,behavior:'smooth'});
   });

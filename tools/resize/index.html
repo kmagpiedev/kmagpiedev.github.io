@@ -120,6 +120,15 @@
   .bar>i{display:block;height:100%;width:0;background:var(--accent);transition:width .18s}
   code{background:var(--line-soft);padding:2px 6px;border-radius:5px;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
   .note{font-size:13.5px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:13px;margin:14px 0}
+  #pvWrap{position:relative;display:inline-block;overflow:hidden;border-radius:10px;max-width:100%;
+    background:var(--line-soft);line-height:0;vertical-align:top}
+  #pvImg{display:block;max-width:100%;max-height:320px;width:auto;height:auto}
+  #pvRect{position:absolute;box-sizing:border-box;border:2px solid #fff;outline:1px solid rgba(0,0,0,.35);
+    box-shadow:0 0 0 9999px rgba(0,0,0,.55);cursor:grab;touch-action:none}
+  #pvRect.drag{cursor:grabbing}
+  #pvBadge{position:absolute;left:8px;bottom:8px;background:rgba(0,0,0,.62);color:#fff;font-size:12px;
+    padding:3px 9px;border-radius:999px;font-variant-numeric:tabular-nums;line-height:1.5;pointer-events:none;white-space:nowrap}
+  .pvhint{font-size:12.5px;color:var(--ink-3);margin-top:8px;line-height:1.55}
   footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
   footer a{color:var(--ink-3)}
   @media (max-width:560px){
@@ -172,6 +181,16 @@
 <div id="warn" class="hidden"></div>
 
 <div id="editor" class="hidden">
+  <div class="panel" id="pvPanel">
+    <label class="f">미리보기 <span id="pvMulti" style="text-transform:none;letter-spacing:0;font-weight:400"></span></label>
+    <div id="pvWrap">
+      <img id="pvImg" alt="원본 미리보기">
+      <div id="pvRect" class="hidden"></div>
+      <div id="pvBadge"></div>
+    </div>
+    <div class="pvhint" id="pvHint"></div>
+  </div>
+
   <div class="panel">
     <label class="f">크기 정하는 방식</label>
     <div class="seg" id="mode">
@@ -325,7 +344,7 @@
 <p>그래서 위 도구는 "원본보다 크게 만들지 않기"를 기본으로 켜둡니다. 지정한 크기가 원본보다 크면 비율을 유지한 채 원본 크기까지만 맞춰요. 정말로 큰 파일이 필요하다면 확대하지 말고 <strong>애초에 큰 원본을 구하는 게 맞습니다.</strong> 카메라 원본 파일을 다시 찾거나, 스크린샷이라면 화면 배율을 올려 다시 찍는 쪽이 훨씬 낫습니다. 인쇄용이라면 필요한 크기를 300dpi 기준으로 계산해 두고 그에 맞는 원본을 준비하세요.</p>
 
 <h2>비율 자르기에서 잘려나가는 부분</h2>
-<p>비율을 바꾸면 반드시 무언가가 잘립니다. 16:9로 찍은 가로 사진을 1:1 정사각으로 만들면 좌우가 크게 날아가고, 세로로 찍은 9:16 사진을 16:9로 만들면 위아래가 통째로 사라집니다. 이 도구는 정해진 비율에 맞춰 원본에서 <strong>가장 큰 영역</strong>을 잘라내므로 손실을 최소로 줄이지만, 비율이 다른 이상 잘려나가는 부분 자체를 없앨 수는 없습니다.</p>
+<p>비율을 바꾸면 반드시 무언가가 잘립니다. 16:9로 찍은 가로 사진을 1:1 정사각으로 만들면 좌우가 크게 날아가고, 세로로 찍은 9:16 사진을 16:9로 만들면 위아래가 통째로 사라집니다. 이 도구는 정해진 비율에 맞춰 원본에서 <strong>가장 큰 영역</strong>을 잘라내므로 손실을 최소로 줄이지만, 비율이 다른 이상 잘려나가는 부분 자체를 없앨 수는 없습니다. 사진을 올리면 위 미리보기에서 <strong>잘려나갈 부분이 어둡게 표시</strong>되니 결과를 받기 전에 확인할 수 있고, 밝은 사각형을 드래그하면 기준점 아홉 개로 안 되는 미세한 위치도 직접 정할 수 있습니다. 여러 장을 한꺼번에 처리할 때는 첫 번째 사진에서 정한 위치가 나머지에도 같은 비율로 적용돼요.</p>
 <p>기본값은 중앙 기준입니다. 풍경이나 사물은 대체로 이게 무난합니다. 그런데 <strong>인물 사진은 상단 기준이 나은 경우가 많습니다.</strong> 사람은 대체로 화면 위쪽에 얼굴이 오도록 찍히기 때문에, 세로 사진을 정사각으로 중앙에서 자르면 이마나 정수리가 잘리고 발치의 바닥만 남는 일이 흔합니다. 기준점을 상단으로 옮기면 얼굴이 살아납니다. 단체 사진이나 전신 사진이라면 몇 가지 기준점을 바꿔가며 표에 나오는 결과 크기를 보고 판단하세요.</p>
 
 <h2>자주 겪는 문제</h2>
@@ -342,10 +361,10 @@
 <h2>함께 쓰면 좋은 도구</h2>
 <div class="rel">
   <a href="/tools/image-compress/"><strong>이미지 용량 줄이기</strong><span>목표 용량에 자동으로 맞춤</span></a>
+  <a href="/tools/gif-maker/"><strong>GIF 만들기</strong><span>사진 여러 장으로 움짤 애니메이션</span></a>
   <a href="/tools/convert/"><strong>이미지 확장자 변환</strong><span>PNG·JPG·WebP·BMP·ICO</span></a>
-  <a href="/tools/watermark/"><strong>이미지 워터마크 넣기</strong><span>텍스트·로고, 여러 장 한 번에</span></a>
 </div>
-<p class="rel-all"><a href="/tools/">까치툴 도구 32개 전체 보기 →</a></p>
+<p class="rel-all"><a href="/tools/">까치툴 도구 33개 전체 보기 →</a></p>
 <!--REL:E-->
 
 <footer>
@@ -575,6 +594,68 @@
     stale();
   }));
 
+  /* ---------- 미리보기 ---------- */
+  const pvImg=$('pvImg'), pvRect=$('pvRect'), pvBadge=$('pvBadge');
+  pvImg.addEventListener('load',()=>updatePreview());
+  window.addEventListener('resize',()=>{ if(items.length) updatePreview(); });
+
+  function updatePreview(){
+    const it=items[0];
+    if(!it){ $('pvPanel').classList.add('hidden'); return; }
+    $('pvPanel').classList.remove('hidden');
+    $('pvMulti').textContent=items.length>1?`— 첫 번째 이미지 기준 (총 ${items.length}장)`:'';
+    if(pvImg.getAttribute('src')!==it.url){ pvImg.src=it.url; return; }
+    if(!pvImg.clientWidth) return;
+    const p=plan(it);
+    pvBadge.textContent=`${it.w}×${it.h} → ${p.tw}×${p.th}`;
+    const on=$('cropOn').checked;
+    pvRect.classList.toggle('hidden',!on);
+    if(on){
+      const s=pvImg.clientWidth/it.w;
+      pvRect.style.left=(p.sx*s)+'px';
+      pvRect.style.top=(p.sy*s)+'px';
+      pvRect.style.width=(p.sw*s)+'px';
+      pvRect.style.height=(p.sh*s)+'px';
+      $('pvHint').textContent=p.cropped
+        ?'어두운 부분이 잘려나가고 밝은 영역만 남습니다. 사각형을 드래그하면 자를 위치를 직접 옮길 수 있고, 기준점 버튼을 누르면 다시 그 위치로 돌아갑니다.'
+        :'현재 설정에서는 비율이 원본과 같아 잘리는 부분이 없습니다.';
+    }else{
+      $('pvHint').textContent='자르기가 없는 설정이라 전체가 그대로 크기만 바뀝니다. 왼쪽 아래 숫자가 결과 크기입니다.';
+    }
+  }
+
+  let dragSt=null;
+  pvRect.addEventListener('pointerdown',e=>{
+    const it=items[0];
+    if(!it||busy) return;
+    const p=plan(it);
+    if(!p.cropped) return;
+    e.preventDefault();
+    pvRect.setPointerCapture(e.pointerId);
+    dragSt={x:e.clientX,y:e.clientY,sx:p.sx,sy:p.sy,sw:p.sw,sh:p.sh,moved:false};
+    pvRect.classList.add('drag');
+  });
+  pvRect.addEventListener('pointermove',e=>{
+    const it=items[0];
+    if(!dragSt||!it||!pvImg.clientWidth) return;
+    const s=pvImg.clientWidth/it.w;
+    const mx=it.w-dragSt.sw, my=it.h-dragSt.sh;
+    const nsx=Math.min(mx,Math.max(0,dragSt.sx+(e.clientX-dragSt.x)/s));
+    const nsy=Math.min(my,Math.max(0,dragSt.sy+(e.clientY-dragSt.y)/s));
+    anchor={x:mx>0?nsx/mx:anchor.x, y:my>0?nsy/my:anchor.y, name:'직접 지정'};
+    if(!dragSt.moved){
+      dragSt.moved=true;
+      $('anchor').querySelectorAll('button').forEach(x=>x.classList.remove('on'));
+      $('anchorName').textContent='직접 지정 (드래그)';
+      stale();
+    }else{
+      updatePreview();
+    }
+  });
+  const endDrag=()=>{ if(dragSt){ pvRect.classList.remove('drag'); dragSt=null; } };
+  pvRect.addEventListener('pointerup',endDrag);
+  pvRect.addEventListener('pointercancel',endDrag);
+
   $('fmt').addEventListener('change',()=>{
     $('paneQ').classList.toggle('hidden',$('fmt').value==='png');
     stale();
@@ -591,6 +672,7 @@
 
   /* ---------- 표 ---------- */
   function draw(){
+    updatePreview();
     const tb=$('tb'); tb.innerHTML='';
     $('tbl').classList.toggle('hidden',!items.length);
     if(!items.length) return;
@@ -734,6 +816,7 @@
     if(busy) return;
     items.forEach(i=>URL.revokeObjectURL(i.url));
     items=[]; file.value='';
+    $('pvImg').removeAttribute('src');
     $('editor').classList.add('hidden');
     warn.classList.add('hidden');
     $('summary').classList.add('hidden');

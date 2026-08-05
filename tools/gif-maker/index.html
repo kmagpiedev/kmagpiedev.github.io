@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GIF 만들기 — 사진 여러 장으로 움짤 애니메이션 | 까치툴</title>
+<meta name="description" content="사진 여러 장을 순서대로 이어 움직이는 GIF를 만듭니다. 프레임 간격과 반복 횟수, 출력 크기를 고르고 미리보기로 확인한 뒤 저장하세요. 파일은 서버로 업로드되지 않고 브라우저 안에서만 처리됩니다.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/gif-maker/">
+<meta property="og:title" content="GIF 만들기 — 사진 여러 장으로 움짤 애니메이션">
+<meta property="og:description" content="이미지 여러 장을 움직이는 GIF로. 간격·반복·크기 조절과 미리보기, 업로드 없이 브라우저에서 처리.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/gif-maker/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:940px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  .row{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start}
+  .col{flex:1;min-width:210px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
+  input[type=number]{padding:9px 11px;border:1px solid var(--line);border-radius:9px;
+    background:var(--surface);color:var(--ink);font-size:15px;font-family:inherit;width:96px;
+    text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+  input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .amt{display:flex;align-items:center;gap:8px}
+  .unit{font-size:14px;color:var(--ink-2);flex:none;white-space:nowrap}
+  .mini{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .mini button{font-family:inherit;font-size:12.5px;padding:5px 10px;border-radius:7px;border:1px solid var(--line);
+    background:transparent;color:var(--ink-2);cursor:pointer}
+  .mini button:hover{border-color:var(--accent);color:var(--accent)}
+  .mini button.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:12px 0 0}
+  .seg{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+  .seg button{flex:1;background:transparent;border:0;padding:10px 6px;font-size:13.5px;font-weight:600;
+    color:var(--ink-2);cursor:pointer;font-family:inherit;transition:.12s}
+  .seg button.on{background:var(--accent);color:#fff}
+  .seg.sm button{font-size:12.5px;padding:9px 4px}
+  .fld{margin-top:20px}
+  input[type=color]{width:44px;height:34px;padding:2px;border:1px solid var(--line);border-radius:8px;
+    background:var(--surface);cursor:pointer}
+
+  .drop{border:2px dashed var(--line);border-radius:16px;padding:38px 22px;text-align:center;
+    background:var(--surface);cursor:pointer;transition:.14s}
+  .drop:hover,.drop.over{border-color:var(--accent);background:var(--accent-soft)}
+  .drop .ic{font-size:34px;display:block;margin-bottom:10px}
+  .drop .t{font-size:16px;font-weight:700;margin-bottom:4px}
+  .drop .d{font-size:13.5px;color:var(--ink-3)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:12px 20px;border-radius:10px;
+    border:1px solid var(--accent);background:var(--accent);color:#fff;font-size:15px;font-weight:700;
+    font-family:inherit;cursor:pointer;transition:.14s;text-decoration:none}
+  .btn:hover{filter:brightness(1.06)}
+  .btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+  .btn.g{background:transparent;color:var(--accent)}
+  .btn.sm{padding:8px 14px;font-size:13.5px;font-weight:600}
+  .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;align-items:center}
+
+  .list{margin:16px 0;display:flex;flex-direction:column;gap:8px}
+  .it{display:flex;align-items:center;gap:12px;padding:9px 12px;border:1px solid var(--line);
+    border-radius:12px;background:var(--surface)}
+  .it .no{flex:none;width:22px;text-align:center;font-size:13px;font-weight:700;color:var(--accent);
+    font-variant-numeric:tabular-nums}
+  .it canvas{flex:none;width:46px;height:46px;object-fit:contain;border-radius:7px;
+    background:var(--line-soft);display:block}
+  .it .mt{flex:1;min-width:0}
+  .it .nm{font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .it .dm{font-size:12.5px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+  .it .ops{flex:none;display:flex;gap:5px}
+  .it .ops button{width:32px;height:32px;border:1px solid var(--line);border-radius:8px;background:transparent;
+    color:var(--ink-2);cursor:pointer;font-size:14px;font-family:inherit;line-height:1;padding:0}
+  .it .ops button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+  .it .ops button:disabled{opacity:.3;cursor:not-allowed}
+  .it .ops .del:hover{border-color:var(--bad);color:var(--bad)}
+
+  .pv{text-align:center}
+  .pv canvas,.pv img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:12px;
+    background:var(--line-soft);image-rendering:auto}
+  .pv .cap{font-size:13px;color:var(--ink-3);margin-top:8px}
+
+  .sum{display:flex;gap:8px;flex-wrap:wrap;align-items:baseline;font-size:14px;color:var(--ink-2);
+    padding:13px 16px;border:1px solid var(--line);border-radius:12px;background:var(--surface);margin:16px 0 0}
+  .sum b{color:var(--accent);font-variant-numeric:tabular-nums}
+
+  .bar{height:8px;background:var(--line-soft);border-radius:99px;overflow:hidden;margin:14px 0 8px}
+  .bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .15s}
+  .pstat{font-size:14px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .m-ok{background:var(--good-soft);border-color:var(--good)}
+  .hidden{display:none}
+  code{background:var(--line-soft);padding:1px 5px;border-radius:4px;font-size:12.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .seg button{font-size:12px;padding:9px 2px}
+    .it{gap:8px;padding:8px 9px}
+    .it canvas{width:38px;height:38px}
+    .it .ops button{width:30px;height:30px}
+  }
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
+</style>
+<!--ALT:S--><!--ALT:E-->
+<!--HEAD:S-->
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
+<meta property="og:site_name" content="까치툴">
+<!--HEAD:E-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › GIF 만들기</p>
+<!--LANG:S--><!--LANG:E-->
+
+<h1>GIF 만들기</h1>
+<p class="sub">사진 여러 장을 순서대로 이어 <strong>움직이는 GIF</strong>를 만듭니다. 프레임 간격과 반복 횟수, 출력 크기를 고르고 미리보기로 확인한 뒤 저장하세요. 파일은 브라우저 밖으로 나가지 않습니다.</p>
+
+<div class="drop" id="drop">
+  <span class="ic">🎞️</span>
+  <div class="t">이미지를 여기에 놓으세요</div>
+  <div class="d">클릭해서 고를 수도 있습니다 · PNG · JPG · WebP · 여러 장 동시 선택 가능</div>
+  <input type="file" id="file" accept="image/png,image/jpeg,image/webp,image/*" multiple class="hidden">
+</div>
+
+<div id="status" class="hidden"></div>
+
+<div class="list hidden" id="list"></div>
+
+<div class="panel hidden" id="opts">
+  <div class="row">
+    <div class="col">
+      <label class="f">프레임 간격</label>
+      <div class="amt">
+        <input type="number" id="delaySec" value="0.5" min="0.02" max="10" step="0.1">
+        <span class="unit">초</span>
+      </div>
+      <div class="mini" id="delayPresets">
+        <button data-v="0.1">0.1초</button>
+        <button data-v="0.2">0.2초</button>
+        <button data-v="0.5" class="on">0.5초</button>
+        <button data-v="1">1초</button>
+        <button data-v="2">2초</button>
+      </div>
+      <p class="note">모든 프레임에 같은 간격이 적용됩니다. GIF 규격상 최소 간격은 0.02초입니다.</p>
+    </div>
+
+    <div class="col">
+      <label class="f">반복</label>
+      <div class="seg sm" id="loopSeg">
+        <button data-v="inf" class="on">무한 반복</button>
+        <button data-v="once">1회만 재생</button>
+      </div>
+
+      <label class="f" style="margin-top:20px">출력 크기</label>
+      <div class="seg sm" id="sizeSeg">
+        <button data-v="orig">원본</button>
+        <button data-v="480" class="on">긴 변 480px</button>
+        <button data-v="320">긴 변 320px</button>
+      </div>
+      <p class="note">GIF는 픽셀당 용량이 커서 <strong>480px을 권장</strong>합니다. 크기는 첫 프레임 기준으로 전체가 통일됩니다.</p>
+    </div>
+  </div>
+
+  <div class="fld">
+    <label class="f">여백 색</label>
+    <div class="amt">
+      <input type="color" id="bgColor" value="#ffffff">
+      <span style="font-size:13px;color:var(--ink-3)">크기가 다른 이미지는 첫 프레임 크기에 맞춰지고, 남는 자리가 이 색으로 채워집니다.</span>
+    </div>
+  </div>
+
+  <div class="sum" id="sum"></div>
+  <div id="sizeWarn" class="hidden"></div>
+
+  <div class="btns">
+    <button class="btn" id="go">GIF 만들기</button>
+    <button class="btn g" id="more">이미지 더 넣기</button>
+    <button class="btn g sm" id="reset">처음부터</button>
+  </div>
+</div>
+
+<div class="panel pv hidden" id="pvBox">
+  <label class="f" style="text-align:left" id="pvLabel">미리보기</label>
+  <canvas id="pvCanvas"></canvas>
+  <img id="outImg" class="hidden" alt="만들어진 GIF">
+  <p class="cap" id="pvCap"></p>
+</div>
+
+<div class="bar hidden" id="progBar"><i id="prog"></i></div>
+<p class="pstat hidden" id="pstat"></p>
+<div id="done" class="hidden"></div>
+
+<h2>GIF는 왜 이렇게 용량이 큰가</h2>
+<p>GIF는 1989년에 만들어진 형식입니다. 그때의 설계가 지금까지 그대로 이어져서, 한 프레임에 <strong>256가지 색만 쓸 수 있고, 그 안에서는 화질을 깎아 용량을 줄이는 손실 압축이 없습니다.</strong> 게다가 대부분의 GIF는 프레임마다 화면 전체를 통째로 다시 저장합니다. 사진 열 장으로 GIF를 만들면 사진 열 장 분량의 데이터가 고스란히 들어간다는 뜻이에요.</p>
+<p>동영상 코덱은 정반대로 동작합니다. mp4에 흔히 쓰이는 H.264 같은 코덱은 앞 프레임과 달라진 부분만 저장하고, 사람 눈이 잘 구분하지 못하는 세부는 과감히 버립니다. 그래서 같은 장면이라면 mp4가 GIF보다 열 배에서 수십 배 작은 게 보통입니다. GIF가 기술적으로 뒤떨어진 형식인 건 사실이지만, 그런데도 살아남은 이유가 있습니다. 이미지 파일이라서 <strong>동영상 플레이어 없이 어디서나 자동으로 재생되고, 소리도 없고, 멈추지도 않기 때문</strong>입니다.</p>
+
+<h2>GIF가 어울리는 곳, 동영상이 나은 곳</h2>
+<p>몇 초짜리 짧은 장면이 계속 반복되는 용도라면 GIF가 여전히 편합니다. 채팅에 붙이는 반응 짤, 블로그 본문에 넣는 짧은 시연 장면, 게시판 서명이나 배너처럼 <strong>이미지가 들어가는 자리에 움직임을 넣고 싶은 경우</strong>가 대표적이에요. 이미지 취급이라 첨부가 막히는 일이 드물고, 받는 쪽에서 재생 버튼을 누를 필요도 없습니다.</p>
+<p>반대로 길이가 몇 초를 넘어가거나 장면 수가 많다면 동영상으로 만드는 편이 낫습니다. 30장 넘는 사진을 1초 간격으로 잇는다면 그건 이미 슬라이드쇼 영상이고, GIF로 만들면 용량만 커지고 화질은 떨어집니다. 소리가 필요한 경우에도 GIF는 선택지가 아닙니다. GIF에는 소리를 담는 방법 자체가 없어요. 이 도구는 그 경계 안쪽, 그러니까 <strong>사진 몇 장에서 십수 장을 짧게 반복하는 용도</strong>에 맞춰져 있습니다.</p>
+
+<h2>사진이 지글거려 보이는 이유</h2>
+<p>256색 제한은 그림에는 관대하고 사진에는 가혹합니다. 로고나 화면 캡처, 단순한 일러스트는 실제로 쓰는 색이 몇십 가지라 256색 안에 거뜬히 들어가서 원본과 거의 구분되지 않습니다. 하지만 하늘, 노을, 피부처럼 <strong>색이 매끄럽게 이어지는 그라데이션</strong>은 사정이 다릅니다. 수만 가지 중간색을 256개로 눌러 담아야 하니, 비슷한 색끼리 묶이면서 매끄럽던 하늘에 등고선 같은 띠가 생깁니다. 이걸 밴딩이라고 불러요.</p>
+<p>이 도구는 프레임마다 그 프레임에 가장 잘 맞는 256색 팔레트를 따로 뽑아서 손실을 최대한 줄이지만, 원리상 한계는 어쩔 수 없습니다. 사진마다 조명이 다르면 프레임이 넘어갈 때 색감이 살짝 출렁이는 것도 같은 이유입니다. 사진 위주의 결과물에서 지글거림이 거슬린다면 GIF 대신 동영상 형식을 쓰는 게 근본적인 해결책이고, GIF로 가야 한다면 크기를 줄이는 것이 얼룩을 눈에 덜 띄게 하는 데도 도움이 됩니다.</p>
+
+<h2>프레임 간격이 결정하는 것</h2>
+<p>간격 0.1초는 초당 10장, 0.5초는 초당 2장이라는 뜻입니다. 손으로 넘기는 슬라이드쇼 느낌을 원하면 0.5초에서 1초, 연속 촬영한 사진으로 움직임을 만들려면 0.1초에서 0.2초가 자연스럽습니다. 부드러움은 결국 장수에서 나오기 때문에, <strong>같은 길이라면 간격을 줄일수록 프레임이 많이 필요하고 용량도 그만큼 늘어납니다.</strong></p>
+<p>더 빠르게 만들고 싶어도 한계가 있습니다. GIF의 시간 단위는 100분의 1초인데, 간격을 0.01초 근처까지 낮추면 대부분의 브라우저가 이를 무시하고 0.1초로 되돌려 재생합니다. 오래전 광고성 GIF들이 악용하던 걸 막던 관행이 지금까지 남은 거예요. 그래서 이 도구는 <strong>0.02초 아래로는 내려가지 않게</strong> 잡아둡니다. 초당 50장이면 눈으로는 충분히 매끄럽습니다.</p>
+
+<h2>블로그와 메신저에 올릴 때</h2>
+<p>만든 GIF를 어디에 올릴지에 따라 허용 용량이 크게 다릅니다. 카카오톡은 움직이는 이미지 전송에 수십 MB 수준의 제한이 있고, 그보다 크면 동영상으로 바뀌어 전송되거나 전송이 막힙니다. 네이버 블로그나 티스토리 같은 블로그 서비스도 첨부 이미지 한 장에 수 MB에서 수십 MB 사이의 한도를 두는 경우가 많고, 디스코드 무료 계정은 한때 8MB, 지금도 수십 MB 선입니다. 한도는 서비스 정책에 따라 수시로 바뀌니 <strong>10MB 아래로 만들어 두면 대부분의 곳에서 무난</strong>하다고 보면 됩니다.</p>
+<p>용량을 줄이는 순서는 정해져 있습니다. 첫째가 크기, 둘째가 장수, 셋째가 간격입니다. 픽셀 수는 가로세로 양쪽으로 곱해지기 때문에 긴 변을 절반으로 줄이면 용량이 대략 4분의 1이 됩니다. 원본 크기 대신 480px을 기본으로 권하는 이유가 이겁니다. 그래도 크면 비슷한 장면끼리 겹치는 프레임을 빼서 장수를 줄이고, 마지막으로 간격을 조금 늘려 전체 재생 시간을 유지하는 식으로 조절하세요.</p>
+
+<h2>자주 겪는 문제</h2>
+<h3>만든 GIF가 너무 커요</h3>
+<p>출력 크기를 확인하세요. 원본으로 두면 휴대폰 사진 기준 프레임 하나가 수 MB씩 나올 수 있습니다. <strong>긴 변 480px</strong>로 줄이면 용량이 극적으로 줄고, 채팅이나 블로그 본문에서는 480px로도 충분히 큽니다. 그래도 크다면 프레임 수를 줄이는 게 다음 순서입니다.</p>
+<h3>색이 원본과 달라 보여요</h3>
+<p>GIF의 256색 제한 때문입니다. 특히 그라데이션이 많은 사진에서 띠나 얼룩이 생깁니다. 형식의 한계라 완전히 피할 수는 없고, 색이 중요한 결과물이라면 GIF 대신 동영상 형식을 검토하세요.</p>
+<h3>설정한 속도보다 느리게 재생돼요</h3>
+<p>간격을 아주 짧게 잡은 경우입니다. 브라우저들은 0.02초보다 짧은 간격을 무시하고 0.1초로 재생하는 관행이 있어서, 이 도구는 애초에 0.02초 밑으로 내려가지 않게 막아둡니다. 그 이상인데도 느리다면 기기 성능 문제일 가능성이 큽니다. 프레임 크기를 줄여보세요.</p>
+<h3>크기가 다른 사진을 올렸더니 여백이 생겨요</h3>
+<p>GIF는 모든 프레임이 같은 크기여야 합니다. 이 도구는 <strong>첫 프레임의 크기를 기준</strong>으로 나머지를 비율을 유지한 채 축소해 가운데에 놓고, 남는 자리를 여백 색으로 채웁니다. 잘라내지 않으니 내용이 사라질 걱정은 없지만, 여백이 싫다면 올리기 전에 사진들을 같은 비율로 맞춰 두세요.</p>
+<h3>파일이 서버로 올라가나요</h3>
+<p>올라가지 않습니다. 이미지를 읽고 GIF로 인코딩하는 일이 전부 브라우저 안에서 일어나고, 인터넷을 끊어도 똑같이 동작합니다. 탭을 닫으면 아무것도 남지 않으므로, 대신 새로고침하면 처음부터 다시 올려야 합니다.</p>
+<h3>내려받은 파일 이름이 animation.gif입니다</h3>
+<p>일부러 그렇게 했습니다. 크로미움 계열 브라우저가 한글이 섞인 파일명을 자동 내려받기에서 버리는 경우가 있어서, 영문 고정 이름으로 저장한 뒤 바꿔 쓰도록 했습니다.</p>
+
+<!--CAT:S--><!--CAT:E-->
+<!--REL:S-->
+<h2>함께 쓰면 좋은 도구</h2>
+<div class="rel">
+  <a href="/tools/resize/"><strong>이미지 크기 조절</strong><span>정확한 px 지정, 비율 자르기</span></a>
+  <a href="/tools/image-compress/"><strong>이미지 용량 줄이기</strong><span>목표 용량에 자동으로 맞춤</span></a>
+  <a href="/tools/convert/"><strong>이미지 확장자 변환</strong><span>PNG·JPG·WebP·BMP·ICO</span></a>
+</div>
+<p class="rel-all"><a href="/tools/">까치툴 도구 33개 전체 보기 →</a></p>
+<!--REL:E-->
+
+<footer>
+  <p>GIF 인코딩: gifenc (MIT) — 원본과 라이선스는 <a href="/tools/lib/">/tools/lib/</a> 에 있습니다.</p>
+  <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 파일은 전송·저장되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+
+let items=[], size='480', loop='inf', busy=false;
+let pvTimer=null, pvIdx=0, outUrl=null;
+
+const kb=n=>n<1024?n+' B':n<1048576?(n/1024).toFixed(0)+' KB':(n/1048576).toFixed(1)+' MB';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function say(cls,html){const s=$('status');s.className='msg '+cls;s.innerHTML=html;}
+function hideSay(){$('status').className='hidden';}
+
+function delayMs(){
+  const v=parseFloat($('delaySec').value);
+  if(!isFinite(v)||v<=0) return 500;
+  return Math.max(20,Math.round(v*1000));
+}
+
+/* ---------- 이미지 읽기 (EXIF 회전 반영) ---------- */
+async function toBitmap(blob){
+  try{ return await createImageBitmap(blob,{imageOrientation:'from-image'}); }
+  catch(e){ try{ return await createImageBitmap(blob); }catch(e2){ return null; } }
+}
+
+async function add(fileList){
+  const all=[...(fileList||[])];
+  if(!all.length) return;
+  const bad=[]; let added=0;
+  for(const f of all){
+    const bmp=await toBitmap(f);
+    if(!bmp || !bmp.width || !bmp.height){ bad.push(f.name||'파일'); continue; }
+    items.push({name:f.name||'image', bmp, w:bmp.width, h:bmp.height, size:f.size||0});
+    added++;
+  }
+  if(bad.length){
+    say('m-bad',`<strong>${esc(bad[0])}</strong>${bad.length>1?` 외 ${bad.length-1}개`:''}는 이미지로 읽지 못했습니다. PNG · JPG · WebP 파일을 올려주세요. 아이폰 HEIC는 크롬에서 열리지 않습니다.`);
+  }else if(added){
+    say('m-ok',`이미지 <strong>${items.length}장</strong>을 불러왔습니다. 순서를 바꾸려면 목록의 화살표를 누르세요.`);
+  }
+  if(!items.length){ render(); return; }
+  $('opts').classList.remove('hidden');
+  $('drop').classList.add('hidden');
+  render();
+}
+
+/* ---------- 목록 ---------- */
+function render(){
+  const box=$('list');
+  box.innerHTML='';
+  box.classList.toggle('hidden',!items.length);
+  if(!items.length){
+    $('opts').classList.add('hidden');
+    $('drop').classList.remove('hidden');
+    $('pvBox').classList.add('hidden');
+    stopPreview();
+    summary();
+    return;
+  }
+  items.forEach((it,i)=>{
+    const d=document.createElement('div');
+    d.className='it';
+    const c=document.createElement('canvas');
+    const s=Math.min(1,92/Math.max(it.w,it.h));
+    c.width=Math.max(1,Math.round(it.w*s)); c.height=Math.max(1,Math.round(it.h*s));
+    c.getContext('2d').drawImage(it.bmp,0,0,c.width,c.height);
+    c.style.width='46px'; c.style.height='46px';
+    d.innerHTML=`<span class="no">${i+1}</span>`;
+    d.appendChild(c);
+    const mt=document.createElement('div');
+    mt.className='mt';
+    mt.innerHTML=`<div class="nm" title="${esc(it.name)}">${esc(it.name)}</div>`
+      +`<div class="dm">${it.w.toLocaleString('ko-KR')}×${it.h.toLocaleString('ko-KR')}px${it.size?' · '+kb(it.size):''}`
+      +(i===0?' · 기준 프레임':'')+`</div>`;
+    d.appendChild(mt);
+    const ops=document.createElement('div');
+    ops.className='ops';
+    ops.innerHTML=`<button class="up" title="위로" aria-label="위로">↑</button>`
+      +`<button class="dn" title="아래로" aria-label="아래로">↓</button>`
+      +`<button class="del" title="빼기" aria-label="빼기">×</button>`;
+    d.appendChild(ops);
+    ops.querySelector('.up').disabled = i===0;
+    ops.querySelector('.dn').disabled = i===items.length-1;
+    ops.querySelector('.up').addEventListener('click',()=>move(i,-1));
+    ops.querySelector('.dn').addEventListener('click',()=>move(i,1));
+    ops.querySelector('.del').addEventListener('click',()=>{
+      const it2=items.splice(i,1)[0];
+      if(it2 && it2.bmp && it2.bmp.close) try{it2.bmp.close();}catch(e){}
+      render();
+    });
+    box.appendChild(d);
+  });
+  summary();
+  startPreview();
+}
+function move(i,d){
+  const j=i+d;
+  if(j<0||j>=items.length) return;
+  const t=items[i]; items[i]=items[j]; items[j]=t;
+  render();
+}
+
+/* ---------- 출력 크기: 첫 프레임 기준 ---------- */
+function outSize(){
+  if(!items.length) return [0,0];
+  const f=items[0];
+  let s=1;
+  if(size!=='orig'){
+    const m=parseInt(size,10);
+    s=Math.min(1, m/Math.max(f.w,f.h));
+  }
+  return [Math.max(1,Math.round(f.w*s)), Math.max(1,Math.round(f.h*s))];
+}
+/* 프레임을 W×H 캔버스에 letterbox로 그린다 */
+function drawFrame(ctx,it,W,H){
+  ctx.fillStyle=$('bgColor').value||'#ffffff';
+  ctx.fillRect(0,0,W,H);
+  const s=Math.min(W/it.w, H/it.h);
+  const w=it.w*s, h=it.h*s;
+  ctx.imageSmoothingQuality='high';
+  ctx.drawImage(it.bmp,(W-w)/2,(H-h)/2,w,h);
+}
+
+function summary(){
+  if(!items.length){ $('sum').innerHTML=''; $('sizeWarn').className='hidden'; return; }
+  const [W,H]=outSize();
+  const d=delayMs();
+  const dur=(d*items.length/1000);
+  $('sum').innerHTML=`<span><b>${items.length}</b>프레임</span><span>·</span>`
+    +`<span>출력 <b>${W}×${H}</b>px</span><span>·</span>`
+    +`<span>한 바퀴 <b>${dur<10?dur.toFixed(1):Math.round(dur)}</b>초</span><span>·</span>`
+    +`<span>${loop==='inf'?'무한 반복':'1회 재생'}</span>`;
+  const px=W*H*items.length;
+  if(px>50e6){
+    $('sizeWarn').className='msg m-warn';
+    $('sizeWarn').innerHTML='이 설정이면 GIF가 <strong>수십 MB</strong>가 될 수 있습니다. 출력 크기를 <strong>긴 변 480px</strong>로 줄이는 것을 권합니다.';
+  }else{
+    $('sizeWarn').className='hidden';
+  }
+}
+
+/* ---------- 미리보기 (인코딩 전, 캔버스 순환 재생) ---------- */
+function stopPreview(){ if(pvTimer){ clearInterval(pvTimer); pvTimer=null; } }
+function startPreview(){
+  stopPreview();
+  if(!items.length) return;
+  if(outUrl){ URL.revokeObjectURL(outUrl); outUrl=null; }
+  $('outImg').classList.add('hidden');
+  $('outImg').removeAttribute('src');
+  const cv=$('pvCanvas');
+  cv.classList.remove('hidden');
+  $('pvBox').classList.remove('hidden');
+  $('pvLabel').textContent='미리보기';
+  const [W,H]=outSize();
+  cv.width=W; cv.height=H;
+  const ctx=cv.getContext('2d');
+  pvIdx=0;
+  drawFrame(ctx,items[0],W,H);
+  $('pvCap').textContent=`아직 GIF가 아닙니다 — 설정대로 돌려보는 미리보기입니다 (${W}×${H}px)`;
+  pvTimer=setInterval(()=>{
+    if(!items.length) return;
+    pvIdx=(pvIdx+1)%items.length;
+    drawFrame(ctx,items[pvIdx],W,H);
+  }, delayMs());
+}
+
+/* ---------- GIF 만들기 ---------- */
+async function run(){
+  if(busy||!items.length) return;
+  busy=true; $('go').disabled=true;
+  $('done').className='hidden';
+  $('progBar').classList.remove('hidden');
+  $('pstat').classList.remove('hidden');
+  stopPreview();
+  try{
+    const {GIFEncoder, quantize, applyPalette} = await import('/tools/lib/gifenc.mjs');
+    const [W,H]=outSize();
+    const d=delayMs();
+    const rep = loop==='inf' ? 0 : -1;
+    const c=document.createElement('canvas');
+    c.width=W; c.height=H;
+    const ctx=c.getContext('2d',{willReadFrequently:true});
+    const enc=GIFEncoder();
+    for(let i=0;i<items.length;i++){
+      $('pstat').textContent=`프레임 ${i+1}/${items.length} 인코딩 중…`;
+      $('prog').style.width=((i)/items.length*100)+'%';
+      await new Promise(r=>setTimeout(r));
+      drawFrame(ctx,items[i],W,H);
+      const rgba=new Uint8Array(ctx.getImageData(0,0,W,H).data.buffer.slice(0));
+      const palette=quantize(rgba,256);
+      const index=applyPalette(rgba,palette);
+      enc.writeFrame(index,W,H,{palette,delay:d,repeat:rep});
+      $('prog').style.width=((i+1)/items.length*100)+'%';
+      await new Promise(r=>setTimeout(r));
+    }
+    enc.finish();
+    const bytes=enc.bytes();
+    window.__lastGif=bytes;                       /* 검증용 */
+    const blob=new Blob([bytes],{type:'image/gif'});
+    if(outUrl) URL.revokeObjectURL(outUrl);
+    outUrl=URL.createObjectURL(blob);
+    $('pvCanvas').classList.add('hidden');
+    const img=$('outImg');
+    img.src=outUrl;
+    img.classList.remove('hidden');
+    $('pvBox').classList.remove('hidden');
+    $('pvLabel').textContent='완성된 GIF';
+    $('pvCap').textContent=`실제 GIF 파일을 재생 중입니다 (${W}×${H}px · ${kb(blob.size)})`;
+    $('done').className='msg m-ok';
+    $('done').innerHTML=`<strong>animation.gif</strong> — ${items.length}프레임 · ${W}×${H}px · <strong>${kb(blob.size)}</strong> `
+      +`<a class="btn sm" id="dl" href="${outUrl}" download="animation.gif" style="margin-left:8px">내려받기</a>`
+      +`<br><span style="font-size:12.5px;color:var(--ink-3)">한글이 섞인 파일명은 브라우저가 버리는 경우가 있어 영문 이름으로 저장됩니다.</span>`;
+  }catch(err){
+    $('done').className='msg m-bad';
+    $('done').innerHTML='GIF를 만드는 중 문제가 생겼습니다. 이미지 장수를 줄이거나 출력 크기를 낮춰 다시 시도해 보세요. ('
+      +esc(err&&err.message||err)+')';
+    startPreview();
+  }finally{
+    busy=false; $('go').disabled=false;
+    $('pstat').classList.add('hidden'); $('pstat').textContent='';
+    setTimeout(()=>{ $('progBar').classList.add('hidden'); $('prog').style.width='0'; },600);
+  }
+}
+
+/* ---------- UI 배선 ---------- */
+$('drop').addEventListener('click',()=>$('file').click());
+$('file').addEventListener('change',e=>{ add(e.target.files); e.target.value=''; });
+['dragenter','dragover'].forEach(t=>$('drop').addEventListener(t,e=>{e.preventDefault();$('drop').classList.add('over');}));
+['dragleave','drop'].forEach(t=>$('drop').addEventListener(t,e=>{e.preventDefault();$('drop').classList.remove('over');}));
+$('drop').addEventListener('drop',e=>{ if(e.dataTransfer) add(e.dataTransfer.files); });
+
+function segWire(id,fn){
+  document.querySelectorAll('#'+id+' button').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('#'+id+' button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); fn(b.dataset.v); summary(); startPreview();
+  }));
+}
+segWire('loopSeg',v=>loop=v);
+segWire('sizeSeg',v=>size=v);
+
+document.querySelectorAll('#delayPresets button').forEach(b=>b.addEventListener('click',()=>{
+  $('delaySec').value=b.dataset.v;
+  document.querySelectorAll('#delayPresets button').forEach(x=>x.classList.toggle('on',x===b));
+  summary(); startPreview();
+}));
+$('delaySec').addEventListener('input',()=>{
+  document.querySelectorAll('#delayPresets button').forEach(x=>
+    x.classList.toggle('on', x.dataset.v===$('delaySec').value));
+  summary(); startPreview();
+});
+$('bgColor').addEventListener('input',()=>startPreview());
+
+$('go').addEventListener('click',run);
+$('more').addEventListener('click',()=>$('file').click());
+$('reset').addEventListener('click',()=>{
+  items.forEach(it=>{ if(it.bmp&&it.bmp.close) try{it.bmp.close();}catch(e){} });
+  items=[];
+  if(outUrl){ URL.revokeObjectURL(outUrl); outUrl=null; }
+  $('done').className='hidden'; $('file').value=''; hideSay();
+  render();
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+
+summary();
+})();
+</script>
+</body>
+</html>
