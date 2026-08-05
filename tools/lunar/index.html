@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>음력 양력 변환 — 음력 생일·윤달·띠 한 번에 | 까치툴</title>
+<meta name="description" content="음력을 양력으로, 양력을 음력으로 변환합니다. 음력 생일과 기일이 앞으로 10년 동안 양력 며칠인지 표로 보여주고, 그 해에 윤달이 있는지와 각 달이 29일인지 30일인지도 함께 확인할 수 있습니다. 요일·연간지·띠·일진까지 한 화면에 나옵니다.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/lunar/">
+<meta property="og:title" content="음력 양력 변환 — 음력 생일·윤달·띠 한 번에">
+<meta property="og:description" content="음력 생일이 앞으로 10년 동안 양력 며칠인지 한 번에. 윤달과 띠 기준까지 정리했습니다.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/lunar/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  .row{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start}
+  .col{flex:1;min-width:190px}
+  .col.sm{min-width:104px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
+  input[type=date],input[type=text],input[type=number],select{padding:10px 12px;border:1px solid var(--line);border-radius:9px;
+    background:var(--surface);color:var(--ink);font-size:15px;font-family:inherit;width:100%;font-variant-numeric:tabular-nums}
+  input[type=text],input[type=number]{text-align:right;font-weight:600;font-size:16px}
+  select{font-weight:600;font-size:16px;appearance:none;-webkit-appearance:none;background-image:none}
+  input:focus,select:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .mini{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .mini button{font-family:inherit;font-size:12.5px;padding:5px 10px;border-radius:7px;border:1px solid var(--line);
+    background:transparent;color:var(--ink-2);cursor:pointer}
+  .mini button:hover{border-color:var(--accent);color:var(--accent)}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:12px 0 0}
+  .seg{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+  .seg button{flex:1;background:transparent;border:0;padding:10px 6px;font-size:13.5px;font-weight:600;
+    color:var(--ink-2);cursor:pointer;font-family:inherit;transition:.12s}
+  .seg button.on{background:var(--accent);color:#fff}
+  .seg.sm button{font-size:12.5px;padding:9px 4px}
+  .chk{display:flex;gap:9px;align-items:flex-start;margin:11px 0 0;font-size:14.5px;cursor:pointer;color:var(--ink-2)}
+  .chk input{margin:5px 0 0;flex:none;width:16px;height:16px;accent-color:var(--accent)}
+  .chk b{color:var(--ink);font-weight:600}
+  .chk em{display:block;font-style:normal;font-size:12.5px;color:var(--ink-3);line-height:1.5}
+  .chk.off{opacity:.5;cursor:default}
+
+  .cmp{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:12px;margin:16px 0 4px}
+  .cmp .c{border:1px solid var(--line);border-radius:13px;padding:14px 16px;background:var(--surface)}
+  .cmp .c .k{font-size:12.5px;color:var(--ink-3);font-weight:600}
+  .cmp .c .v{font-size:19px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em;margin-top:2px;line-height:1.3}
+  .cmp .c .d{font-size:12.5px;color:var(--ink-3);margin-top:2px}
+
+  .result{background:var(--surface);border:1px solid var(--accent);border-radius:16px;padding:26px 24px;margin:18px 0}
+  .big{font-size:13px;color:var(--ink-2);margin:0 0 4px}
+  .money{font-size:38px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.2;color:var(--accent)}
+  .money small{font-size:18px;font-weight:700;margin-left:3px}
+  .money.sm{font-size:29px}
+  .yearly{font-size:14px;color:var(--ink-2);margin-top:6px;font-variant-numeric:tabular-nums}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px}
+  th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line-soft);word-break:keep-all;overflow-wrap:anywhere}
+  th{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;border-bottom:1px solid var(--line)}
+  td.n{text-align:right;font-variant-numeric:tabular-nums}
+  td.r{font-size:13px;color:var(--ink-3);text-align:right;font-variant-numeric:tabular-nums}
+  tr.sum td{border-top:2px solid var(--line);border-bottom:0;font-weight:700;padding-top:11px}
+  tr.take td{border-bottom:0;font-weight:800;color:var(--accent);font-size:16px}
+  tr.hi td{background:var(--accent-soft)}
+  td.d1{width:20%}
+  td.miss{color:var(--ink-3)}
+
+  details{margin:14px 0;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:0 16px}
+  details[open]{padding-bottom:8px}
+  summary{cursor:pointer;padding:12px 0;font-size:14.5px;font-weight:600;color:var(--ink-2)}
+  summary:hover{color:var(--accent)}
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .m-ok{background:var(--good-soft);border-color:var(--good)}
+  .hidden{display:none}
+  code{background:var(--line-soft);padding:1px 5px;border-radius:4px;font-size:12.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .src{font-size:12.5px;color:var(--ink-3);margin-top:14px;padding-top:12px;border-top:1px solid var(--line-soft)}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .money{font-size:29px}
+    .money.sm{font-size:21px}
+    .cmp{grid-template-columns:1fr 1fr}
+    table{font-size:12.5px}
+    th,td{padding:7px 4px}
+    .seg button{font-size:11.5px;padding:9px 2px}
+    .panel{padding:18px 15px}
+    .result{padding:20px 15px}
+  }
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
+</style>
+<!--ALT:S--><!--ALT:E-->
+<!--HEAD:S-->
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
+<meta property="og:site_name" content="까치툴">
+<!--HEAD:E-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › 음력 양력 변환</p>
+<!--LANG:S--><!--LANG:E-->
+
+<h1>음력 양력 변환기</h1>
+<p class="sub">양력을 <strong>음력</strong>으로, 음력을 <strong>양력</strong>으로 바꿉니다. 음력 생일이나 기일이 앞으로 10년 동안 양력 며칠인지 표로 한 번에 보여주고, 그 해에 윤달이 있는지와 음력 각 달이 29일인지 30일인지도 확인할 수 있어요. 요일과 연간지·띠, 그날의 일진이 함께 나옵니다.</p>
+
+<div class="panel">
+  <div class="seg" id="tabs">
+    <button data-v="s2l" class="on">양력 → 음력</button>
+    <button data-v="l2s">음력 → 양력</button>
+    <button data-v="bday">음력 생일</button>
+    <button data-v="leap">윤달 조회</button>
+  </div>
+
+  <div id="in-s2l" style="margin-top:20px">
+    <div class="row">
+      <div class="col">
+        <label class="f">양력 날짜</label>
+        <input type="date" id="sd" min="1900-01-01" max="2100-12-31">
+        <div class="mini"><button id="sdToday">오늘로</button></div>
+      </div>
+    </div>
+    <p class="note">양력 <strong>1900년 1월 1일 ~ 2100년 12월 31일</strong>까지 변환합니다. 이 범위를 벗어나면 계산하지 않습니다.</p>
+  </div>
+
+  <div id="in-l2s" class="hidden" style="margin-top:20px">
+    <div class="row">
+      <div class="col sm">
+        <label class="f">음력 연도</label>
+        <input type="number" id="ly" min="1900" max="2100" step="1" value="2026">
+      </div>
+      <div class="col sm">
+        <label class="f">월</label>
+        <select id="lm"></select>
+      </div>
+      <div class="col sm">
+        <label class="f">일</label>
+        <input type="number" id="ld" min="1" max="30" step="1" value="1">
+      </div>
+    </div>
+    <label class="chk" id="leapWrap"><input type="checkbox" id="leap">
+      <span><b>윤달</b><em id="leapWhy">그 해에 윤달이 있고, 고른 달이 바로 그 윤달일 때만 켤 수 있습니다.</em></span></label>
+  </div>
+
+  <div id="in-bday" class="hidden" style="margin-top:20px">
+    <div class="row">
+      <div class="col sm">
+        <label class="f">음력 월</label>
+        <select id="bm"></select>
+      </div>
+      <div class="col sm">
+        <label class="f">일</label>
+        <input type="number" id="bd" min="1" max="30" step="1" value="1">
+      </div>
+      <div class="col sm">
+        <label class="f">시작 연도</label>
+        <input type="number" id="by" min="1900" max="2091" step="1">
+      </div>
+    </div>
+    <label class="chk" id="bleapWrap"><input type="checkbox" id="bleap">
+      <span><b>윤달 생일</b><em>윤달에 태어났다면 켜세요. 그 윤달이 없는 해에는 평달 같은 날짜를 참고로 함께 보여줍니다.</em></span></label>
+    <p class="note">음력 월·일을 넣으면 <strong>시작 연도부터 10년치</strong> 양력 날짜가 나옵니다. 생일, 기일, 제삿날을 미리 달력에 옮겨 적을 때 쓰세요.</p>
+  </div>
+
+  <div id="in-leap" class="hidden" style="margin-top:20px">
+    <div class="row">
+      <div class="col sm">
+        <label class="f">음력 연도</label>
+        <input type="number" id="qy" min="1900" max="2100" step="1" value="2026">
+      </div>
+    </div>
+    <p class="note">그 해에 윤달이 있는지, 있다면 몇 월인지, 음력 각 달이 <strong>29일(작은달)인지 30일(큰달)인지</strong>를 표로 보여줍니다.</p>
+  </div>
+</div>
+
+<div id="warn" class="hidden"></div>
+
+<div class="result hidden" id="res">
+  <p class="big" id="lab">음력</p>
+  <div class="money sm" id="val">—</div>
+  <div class="yearly" id="meta"></div>
+  <div class="cmp" id="cmp"></div>
+  <table><tbody id="tb"></tbody></table>
+  <div id="extra"></div>
+  <p class="src" id="src"></p>
+</div>
+
+<div id="adv"></div>
+
+<h2>음력 생일은 왜 해마다 양력 날짜가 바뀌나</h2>
+<p>음력은 달이 차고 기우는 주기를 그대로 따릅니다. 한 달이 29일 아니면 30일이고, 열두 달을 채우면 354일쯤 됩니다. 반면 양력 한 해는 365일이에요. 해마다 <strong>11일씩 어긋난다</strong>는 뜻입니다. 그래서 음력 생일을 양력으로 옮기면 작년보다 열흘 남짓 앞당겨진 날짜가 나옵니다.</p>
+<p>이걸 그대로 두면 몇 년 안 가 설날이 여름에 오게 됩니다. 그래서 2~3년에 한 번 <strong>한 달을 통째로 끼워 넣습니다.</strong> 이 여벌 달이 윤달이에요. 윤달이 들어간 해는 음력이 열세 달, 384일쯤 되기 때문에 그 다음 해 음력 생일은 양력으로 열아홉 날쯤 뒤로 밀립니다. 앞당겨지다가 되돌아오고, 또 앞당겨지는 톱니 모양이 반복되는 겁니다.</p>
+<p>위 <strong>음력 생일 10년</strong> 표를 보면 이 움직임이 눈에 들어옵니다. 2월 중순이던 날짜가 1월 말까지 내려갔다가 다시 2월 중순으로 올라오는 식이에요. 그래서 음력 생일은 "대략 이맘때"까지만 기억으로 잡을 수 있고, 정확한 날짜는 해마다 새로 확인해야 합니다.</p>
+
+<h2>윤달이 무엇이고, 윤달 생일은 어떻게 지내나</h2>
+<p>윤달은 이름이 따로 있는 달이 아니라 <strong>앞 달의 이름을 한 번 더 쓰는 달</strong>입니다. 윤6월은 6월 다음에 오는 두 번째 6월이에요. 어느 달이 반복될지는 정해져 있지 않고 그 해의 절기 배치에 따라 달라집니다. 2025년은 윤6월이었고, 2033년에는 드물게 윤11월이 옵니다. 19년에 일곱 번 들어가니 평균 2~3년에 한 번꼴입니다.</p>
+<p>문제는 윤달에 태어난 사람입니다. 윤5월 10일에 태어났다면 다음 윤5월은 몇십 년 뒤에나 옵니다. 그래서 <strong>대부분은 평달로 옮겨 지냅니다.</strong> 윤5월 10일 대신 그냥 5월 10일에 생일을 쇠는 식이에요. 다만 이건 관습이지 규칙이 아닙니다. 윤달이 오는 해에만 제대로 지내는 집도 있고, 아예 양력으로 고정해 버린 집도 있습니다. <strong>집안마다 다릅니다.</strong> 이 도구는 윤달이 있는 해에는 윤달 날짜를, 없는 해에는 평달 날짜를 참고로 보여줄 뿐 어느 쪽이 옳다고 정하지 않습니다.</p>
+<p>윤달은 예로부터 "덤으로 얻은 달"이라 손이 없다고 여겨, 이사나 수의 장만, 산소 손질을 이 시기에 몰아서 하는 풍습이 있습니다. 윤달이 든 해에 장의업이나 이사업이 바빠지는 이유예요.</p>
+
+<h2>띠는 양력 1월 1일이 아니라 설날에 바뀝니다</h2>
+<p>가장 많이 틀리는 부분입니다. 양력 1월 1일에 띠가 바뀐다고 생각하기 쉽지만, 띠는 <strong>음력 설날</strong>을 기준으로 넘어갑니다. 2026년 설날은 양력 2월 17일이므로, 2026년 1월 1일부터 2월 16일 사이에 태어난 사람은 2026년생이어도 <strong>병오년 말띠가 아니라 을사년 뱀띠</strong>입니다. 위 계산기에서 2026년 2월 16일과 17일을 각각 넣어보면 띠가 갈리는 지점이 보입니다.</p>
+<p>여기에 또 하나의 기준이 섞여 있어서 혼란이 생깁니다. 사주를 다루는 쪽에서는 해가 바뀌는 시점을 <strong>입춘</strong>으로 보는 경우가 많습니다. 입춘은 양력 2월 4일 무렵이라 설날과 며칠에서 몇 주까지 차이가 납니다. 그래서 같은 사람을 두고 자료마다 띠가 다르게 적히는 일이 실제로 벌어집니다.</p>
+<p>이 도구는 <strong>음력 설날 기준</strong>만 씁니다. 달력과 역서가 쓰는 기준이 이쪽이고, 일상에서 "몇 년생 무슨 띠"라고 말할 때 가리키는 것도 이쪽이기 때문입니다. 입춘 기준을 쓰는 곳이 있다는 사실은 알아두되, 이 페이지의 결과는 설날 기준이라고 보면 됩니다.</p>
+
+<h2>제삿날과 주민등록에 올라간 음력 생일</h2>
+<p>제사 날짜를 잡을 때 가장 많이 묻는 것이 "돌아가신 날인가, 그 전날인가"입니다. 제사는 원래 돌아가신 날의 첫 시각에 지내는 것이라 <strong>전날 밤에 준비해 자정을 넘겨 지내는</strong> 방식이 오래된 관행이었습니다. 그러다 보니 실제로 모이는 날은 하루 앞이 됩니다. 요즘은 돌아가신 날 저녁에 지내는 집이 훨씬 많고, 아예 가까운 주말로 옮기는 집도 늘었습니다.</p>
+<p>이건 계산으로 정할 수 있는 문제가 아닙니다. <strong>집안 관습이라 도구가 답을 정해줄 수 없습니다.</strong> 그래서 이 변환기는 돌아가신 날의 음력 날짜에 해당하는 양력 날짜만 알려주고, 하루를 당길지 말지는 건드리지 않습니다. 어른들께 여쭤보고 정한 다음, 그 기준으로 위 10년 표를 읽으면 됩니다.</p>
+<p>주민등록에 음력 생일이 올라간 경우도 골칫거리입니다. 예전에는 출생신고를 하며 음력 날짜를 그대로 적는 일이 흔했는데, <strong>주민등록번호 앞자리는 무조건 양력으로 읽힙니다.</strong> 그래서 등본상 생일과 실제 음력 생일이 매년 어긋나고, 회사나 은행에서 자동으로 보내는 축하 메시지가 엉뚱한 날에 도착합니다. 여권·신용카드·보험처럼 생년월일을 대조하는 서류에서도 실제 생일과 다른 날짜를 써야 하는 상황이 생깁니다. 바로잡으려면 가정법원의 등록부 정정 절차를 밟아야 하는데 출생 당시를 증명할 자료가 필요해서 쉽지 않습니다. 대개는 서류용 생일과 실제 생일을 따로 쓰며 삽니다.</p>
+
+<h2>이 변환기가 쓰는 계산 방식</h2>
+<p>음력 날짜는 표를 찾아 읽는 것이 아니라 천문 계산으로 만들어집니다. 기준은 세 가지입니다. 첫째, <strong>삭(합삭)이 드는 날을 음력 1일</strong>로 삼습니다. 달이 태양과 같은 방향에 놓여 보이지 않는 순간이 그 달의 시작이에요. 둘째, <strong>동지가 든 달을 11월</strong>로 놓습니다. 셋째, 중기가 들지 않은 달을 윤달로 하는 <strong>무중치윤법</strong>을 씁니다. 24절기 중 홀수 번째인 중기가 한 달 안에 하나도 들어오지 않으면 그 달에 이름을 주지 않고 앞 달의 이름을 반복시키는 방식입니다.</p>
+<p>천문 계산은 Meeus 『Astronomical Algorithms』 2판의 삭·태양 황경 알고리즘과 Espenak–Meeus ΔT를 씁니다. 계산 결과는 1900~2100년 <strong>73,414일 전수 왕복 일치</strong>, 설날·추석·부처님오신날 87건 일치, 윤달 74개 전부 일치(2033년 윤11월 포함), 2026년 24절기 시각이 공표값과 분 단위로 일치하는 것을 확인했습니다.</p>
+<p>그래도 두 구간은 짚고 넘어가야 합니다. <strong>1911년 이전 날짜는 우리나라에 표준시 제도가 자리잡기 전이라, 계산 기준 경도에 따라 자료마다 하루 차이가 날 수 있습니다.</strong> 이 도구는 1908년 4월 이전은 동경 120도, 1908~1911년은 동경 127.5도를 기준으로 계산합니다. 다른 자료가 다른 경도를 썼다면 삭이 드는 시각이 자정을 넘나들면서 초하루가 하루 밀릴 수 있어요.</p>
+<p>뒤쪽도 마찬가지입니다. <strong>한국천문연구원이 공식 역서로 공표하는 범위는 2050년까지입니다. 2051년 이후는 같은 방식으로 계산한 예측값이며, 지구 자전 속도 변화(ΔT) 예측 오차 때문에 아주 드물게 하루가 달라질 수 있습니다.</strong> 실제로 2051년·2074년·2096년의 각 한 달이 그 경계에 걸쳐 있습니다. 제사나 법적 절차처럼 정확한 날짜가 필요한 일은 <a href="https://astro.kasi.re.kr/" rel="nofollow noopener" target="_blank">한국천문연구원 음양력 변환 서비스(astro.kasi.re.kr)</a>에서 확인하세요.</p>
+<p>덧붙여, 이 도구는 <strong>사주나 운세를 보지 않습니다.</strong> 연간지와 띠, 그날의 일진은 달력에 적히는 정보라 함께 보여주지만 그 이상으로 해석하지 않고, 월건도 계산하지 않습니다.</p>
+
+<h2>자주 겪는 문제</h2>
+<h3>다른 사이트와 음력 날짜가 하루 다릅니다</h3>
+<p>1911년 이전이라면 위에서 설명한 <strong>기준 경도 차이</strong>일 가능성이 높습니다. 삭이 드는 시각이 자정 근처였다면 어느 경도로 계산하느냐에 따라 초하루가 하루 밀립니다. 2051년 이후라면 <strong>ΔT 예측 차이</strong>일 수 있습니다. 그 사이 구간에서 하루가 다르다면 상대편이 중국 음력을 쓰고 있을 가능성을 의심해 보세요. 중국은 동경 120도를 기준으로 계산하기 때문에 한국 음력과 초하루가 어긋나는 해가 있습니다.</p>
+<h3>음력 30일을 넣었는데 없다고 나옵니다</h3>
+<p>음력 한 달은 29일 아니면 30일입니다. 29일까지만 있는 달을 <strong>작은달</strong>, 30일까지 있는 달을 <strong>큰달</strong>이라고 해요. 어느 쪽인지는 삭에서 다음 삭까지의 실제 길이로 정해지므로 해마다 다릅니다. 음력 30일이 생일인 사람은 그 달이 작은달인 해에는 생일이 아예 없습니다. 대개 <strong>그믐인 29일</strong>에 지냅니다. 위 윤달 조회에서 그 해 각 달이 며칠까지 있는지 확인할 수 있습니다.</p>
+<h3>윤달 체크가 눌리지 않습니다</h3>
+<p>고른 해에 윤달이 없거나, 윤달은 있는데 고른 달이 그 윤달이 아니어서 그렇습니다. 2026년에는 윤달이 아예 없고, 2025년의 윤달은 윤6월 하나뿐이라 2025년 3월에는 윤달 체크가 켜지지 않습니다. 어느 해에 어느 윤달이 있는지는 <strong>윤달 조회</strong> 탭에서 확인하세요.</p>
+<h3>주민등록상 생일이 음력인데 어떻게 확인하나요</h3>
+<p>등본에 적힌 날짜를 <strong>양력 → 음력</strong>에 넣어보면 태어난 날의 음력 날짜가 나옵니다. 그런데 출생신고 때 음력 날짜를 양력 칸에 그대로 적은 경우라면, 등본의 날짜 자체가 이미 음력이라 한 번 더 변환하면 안 됩니다. 어느 쪽인지는 부모님께 확인하는 수밖에 없어요. 실제 태어난 날의 양력 날짜를 알고 있다면 그 날짜가 기준입니다.</p>
+<h3>1900년 이전이나 2101년 이후는 안 되나요</h3>
+<p>계산하지 않습니다. 데이터가 없어서가 아니라 <strong>믿을 수 있는 값을 낼 수 없어서</strong>입니다. 앞쪽은 표준시와 역법 자체가 여러 번 바뀌어 어느 기준으로 계산한 값인지 밝히지 않으면 의미가 없고, 뒤쪽은 ΔT 예측 오차가 누적되어 하루 단위 오차가 늘어납니다. 확신할 수 없는 값을 그럴듯하게 내놓는 것보다 범위를 밝히고 멈추는 쪽이 낫다고 보았습니다.</p>
+
+<!--CAT:S--><!--CAT:E-->
+<!--REL:S-->
+<h2>함께 쓰면 좋은 도구</h2>
+<div class="rel">
+  <a href="/tools/date-calc/"><strong>날짜 계산기</strong><span>만나이·D-day·날짜 사이 일수</span></a>
+  <a href="/tools/char-count/"><strong>글자수 세기</strong><span>공백 포함·제외, 바이트, 원고지</span></a>
+  <a href="/tools/pyeong/"><strong>평수 계산기</strong><span>평↔㎡, 전용·공급면적</span></a>
+</div>
+<p class="rel-all"><a href="/tools/">까치툴 도구 30개 전체 보기 →</a></p>
+<!--REL:E-->
+
+<footer>
+  <!--FOOTNOTE--><p>변환 결과는 참고용이며 법적 효력이 없습니다. 제사·법적 절차처럼 정확한 날짜가 필요하면 <a href="https://astro.kasi.re.kr/" rel="nofollow noopener" target="_blank">한국천문연구원 음양력 변환 서비스</a>에서 확인하시고, 자세한 내용은 <a href="/disclaimer.html">면책조항</a>을 보세요.</p>
+  <p>까치툴 · 모든 계산은 브라우저에서 이루어지며 입력값은 전송·저장되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+/* ── 한국 음력 데이터 (1899~2100) ───────────────────────────────────────────
+   9자 base36 레코드 × 202년.  off(4) = 1899-01-01부터 그 음력해 1월 1일까지 일수
+                              leap(1) = 윤달 월번호(없으면 0)
+                              mask(4) = 각 달이 30일이면 1 (i번째 비트 = i번째 달)
+   생성 근거: 삭(합삭) = Meeus, Astronomical Algorithms 2nd ed. Ch.49
+              태양 겉보기 황경 = 동 Ch.25 (VSOP87 절단) + Ch.22 장동
+              ΔT = Espenak & Meeus 다항식
+              한국 표준시 변경 이력(1908/1912/1954/1961) 반영
+   검증: 1900~2100년 73,414일 전수 왕복 일치, 설날·추석·석가탄신일 87건 일치,
+        윤달 74개 전부 일치(2033년 윤11월 포함), 2026년 24절기 KASI 공표값 일치 */
+const LD="00140025100az804ia00ln001g200vh002w5015c504ei01fz0018r01pt0023f01zo4047q02ac0012i02k60028l02u1204lu034p001g203ej604kl03p70027903z100217048v503ob04jj0023x04te0012i05382029505dw002ax05nr705ea05yf002oi0689002lh06i35057106sr001ue072l000j907cf404a507n4001ck07wy002p5086t205ua08hh002vm08rb602li091y0010n09bs0021j09ln503p209wb002560a66001ck0ag0302w90aqo001ft0b0i704gj0bb6002370bl00010r0buu6021n0c5i001v10cfd002960cp8405ec0czw002as0d9q002890djk2058z0du8002390e427046j0eeq0010t0eok0023x0eyf5048a0f93002pe0fiy002p00fss305s90g3g002mi0gda805910gny0023a0gxs0011y0h7m602450hia002510hs5001ci0i1z402w50icn002w50imi002tm0iwc302hi0j6z0023f0jgu7047q0jri0012i0k1c0028p0kb7504lu0klv001g20kvp001et0l5j404ej0lg7002170lq1803or0m0p000j10maj0012j0mke602950mv2002p50n4x002oi0ner405d10npf002lh0nz9a05710o9x0021i0ojr000ja0otl604a50p4a001ck0pe4002p50pnz505ua0pyn002vm0q8h002li0qib3021i0qsy0021j0r2t803p20rdh0028q0rnc001ck0rx6502x50s7u001ft0sho001ar0sri4046f0t260010r0tc00021n0tlv2047u0twj000oa0u6d705ed0uh2002as0uqw002890v0q5058z0vbe002390vl80010t0vv23021p0w5q0023x0wfl904a20wq90015e0x03002p10x9y505sa0xkm002mi0xug002390y4a4046l0yey0011y0yos002450yyn204a20z9b001ci0zj5602w50ztt002w5103o002tm10di502hi10o5002hn10y000122117u3025111ii0029511sdb04lu1231001g212cv0027912mp604ej12xd002171377000x713h15012313rp0012l141k0029514bf205ea14m3002oi14vx705r9156l002lh15gf0021915q950431160x000ja16ar0014l16km302p516va002w91755805ua17ft002vm17pn002li17zh6021i18a40021j18jz000ye18tt401bp194h001cl19ec002x519o7302vm19yu001ar1a8o7046j1ajc0010r1at60021n1b315047u1bdp0012i1bnj0028l1bxe404ll1c82002891chw8058z1csk002391d2e0010t1dc86023x1dmw002451dwr0014a1e6l402at1eh9002p11er4002mi1f0y305911fbm002hh1flg7046m1fw40011y1g5y002451gft504aa1gqh001ci1h0b002w51ha6405ze1hku0018q1hun802hj1i5b002i31if6001221ip0602511izo002951j9j001g21jjd404h11ju1002791k3v0018r1kdp3042f1kod000x7";
+const LY0=1899, LY1=2100, LBASE=Date.UTC(1899,0,1);
+function lrec(y){const s=LD.substr((y-LY0)*9,9);
+  return{off:parseInt(s.substr(0,4),36),leap:parseInt(s.substr(4,1),36),mask:parseInt(s.substr(5,4),36)};}
+function monthsOf(y){const r=lrec(y),n=r.leap?13:12,out=[];let no=1;
+  for(let i=0;i<n;i++){const isL=r.leap&&i===r.leap;
+    out.push({no:isL?r.leap:no,leap:!!isL,days:(r.mask>>i)&1?30:29});
+    if(!isL)no++;}
+  return{off:r.off,leap:r.leap,months:out};}
+function solarToLunar(y,m,d){
+  const off0=Math.round((Date.UTC(y,m-1,d)-LBASE)/86400000);
+  let ly=Math.min(y+1,LY1);
+  while(ly>=LY0&&lrec(ly).off>off0)ly--;
+  if(ly<LY0)return null;
+  const info=monthsOf(ly);let rest=off0-info.off;
+  for(const mo of info.months){
+    if(rest<mo.days)return{ly:ly,lm:mo.no,leap:mo.leap,ld:rest+1,size:mo.days};
+    rest-=mo.days;}
+  return null;}
+function lunarToSolar(ly,lm,ld,leap){
+  if(ly<LY0||ly>LY1)return null;
+  const info=monthsOf(ly);let acc=0,found=null;
+  for(const mo of info.months){
+    if(mo.no===lm&&!!mo.leap===!!leap){found=mo;break;}
+    acc+=mo.days;}
+  if(!found||ld<1||ld>found.days)return null;
+  const dt=new Date(LBASE+(info.off+acc+ld-1)*86400000);
+  return{y:dt.getUTCFullYear(),m:dt.getUTCMonth()+1,d:dt.getUTCDate(),size:found.days};}
+/* 간지 */
+const GAN="갑을병정무기경신임계", JI="자축인묘진사오미신유술해";
+const GANH="甲乙丙丁戊己庚辛壬癸", JIH="子丑寅卯辰巳午未申酉戌亥";
+const TTI=["쥐","소","호랑이","토끼","용","뱀","말","양","원숭이","닭","개","돼지"];
+function yearGanji(ly){const i=((ly-4)%60+60)%60;
+  return{ko:GAN[i%10]+JI[i%12],hj:GANH[i%10]+JIH[i%12],tti:TTI[i%12]};}
+function jdn(y,m,d){if(m<=2){y--;m+=12;}const a=Math.floor(y/100),b=2-a+Math.floor(a/4);
+  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+b-1524;}
+function dayGanji(y,m,d){const i=((jdn(y,m,d)+49)%60+60)%60;
+  return{ko:GAN[i%10]+JI[i%12],hj:GANH[i%10]+JIH[i%12]};}
+</script>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const WD=['일','월','화','수','목','금','토'];
+const Y0=1900, Y1=2100;
+
+function mk(y,m,d){                       // m은 0부터. UTC 자정으로 고정
+  const dt=new Date(0);
+  dt.setUTCFullYear(y,m,d);
+  dt.setUTCHours(0,0,0,0);
+  return dt.getTime();
+}
+function iso(t){
+  const d=new Date(t), p=(n,w)=>String(n).padStart(w,'0');
+  return p(d.getUTCFullYear(),4)+'-'+p(d.getUTCMonth()+1,2)+'-'+p(d.getUTCDate(),2);
+}
+function todayUTC(){
+  const t=new Date();
+  return mk(t.getFullYear(),t.getMonth(),t.getDate());
+}
+function parseD(v){
+  const m=/^(\d{1,6})-(\d{1,2})-(\d{1,2})$/.exec(String(v||'').trim());
+  if(!m) return null;
+  const y=+m[1], mo=+m[2], d=+m[3];
+  if(mo<1||mo>12||d<1||d>31) return null;
+  const t=mk(y,mo-1,d), x=new Date(t);
+  if(x.getUTCFullYear()!==y||x.getUTCMonth()!==mo-1||x.getUTCDate()!==d) return null;
+  return {t:t, y:y, m:mo, d:d};
+}
+function intOf(id){
+  const v=parseInt(String($(id).value).replace(/[^0-9-]/g,''),10);
+  return isFinite(v)?v:null;
+}
+const dowOf=(y,m,d)=>WD[new Date(mk(y,m-1,d)).getUTCDay()];
+const solFmt =(y,m,d)=>y+'년 '+m+'월 '+d+'일';
+const solFmtW=(y,m,d)=>solFmt(y,m,d)+' ('+dowOf(y,m,d)+')';
+const lunFmt =(ly,lm,leap,ld)=>ly+'년 '+(leap?'윤':'')+lm+'월 '+ld+'일';
+const sizeTxt=s=>s===30?'큰달 (30일)':'작은달 (29일)';
+const sizeShort=s=>s===30?'큰달':'작은달';
+
+function fest(lm,ld,leap,size){
+  if(leap) return '';
+  if(lm===1&&ld===1) return '설날';
+  if(lm===1&&ld===15) return '정월대보름';
+  if(lm===4&&ld===8) return '부처님오신날';
+  if(lm===8&&ld===15) return '추석';
+  if(lm===12&&ld===size) return '섣달그믐';
+  return '';
+}
+function ganjiTxt(ly){
+  const g=yearGanji(ly);
+  return {ko:g.ko+'년', hj:'('+g.hj+')', tti:g.tti+'띠'};
+}
+const TTI_NOTE='띠는 양력 1월 1일이 아니라 <strong>음력 설날</strong>에 바뀝니다. 그래서 양력 1월이나 2월 초에 태어난 사람은 앞 해의 띠가 됩니다. 입춘을 기준으로 삼는 곳도 있지만 이 도구는 설날 기준입니다.';
+
+const SRC='삭(합삭)이 드는 날을 음력 1일로, 동지가 든 달을 11월로 삼고, 중기가 들지 않은 달을 윤달로 하는 '+
+  '<strong>무중치윤법</strong>으로 계산합니다. 천문 계산은 Meeus 『Astronomical Algorithms』 2판의 삭·태양 황경 알고리즘과 '+
+  'Espenak–Meeus ΔT를 씁니다. 지원 범위는 <strong>양력 1900년 1월 1일 ~ 2100년 12월 31일</strong>이며, 그 밖의 날짜는 계산하지 않습니다. '+
+  '띠는 음력 설날 기준입니다. 사주·운세는 다루지 않고 월건도 계산하지 않습니다. 입력값은 전송되거나 저장되지 않습니다.';
+
+const OUT_MSG='양력 <strong>1900년 1월 1일 ~ 2100년 12월 31일</strong>, 음력 <strong>1900년 1월 1일 ~ 2100년 12월 말일</strong>까지만 변환합니다. '+
+  '이 범위를 벗어난 날짜는 믿을 수 있는 값을 낼 수 없어 계산하지 않습니다.';
+
+function warn(cls,html){
+  const w=$('warn');
+  if(!cls){ w.className='hidden'; w.innerHTML=''; return; }
+  w.className='msg '+cls; w.innerHTML=html;
+}
+function hideRes(){ $('res').classList.add('hidden'); }
+function advise(yr){
+  let h='';
+  if(yr!==null&&yr<=1911) h+='<div class="msg m-warn"><strong>1911년 이전 날짜는 우리나라에 표준시 제도가 자리잡기 전이라, 계산 기준 경도에 따라 자료마다 하루 차이가 날 수 있습니다.</strong> '+
+    '이 도구는 1908년 4월 이전은 동경 120도, 1908~1911년은 동경 127.5도 기준으로 계산합니다.</div>';
+  if(yr!==null&&yr>=2051) h+='<div class="msg m-warn"><strong>한국천문연구원이 공식 역서로 공표하는 범위는 2050년까지입니다. 2051년 이후는 같은 방식으로 계산한 예측값이며, '+
+    '지구 자전 속도 변화(ΔT) 예측 오차 때문에 아주 드물게 하루가 달라질 수 있습니다.</strong> 실제로 2051년·2074년·2096년의 각 한 달이 그 경계에 걸쳐 있습니다.</div>';
+  $('adv').innerHTML=h;
+}
+function cmpBox(list){
+  $('cmp').innerHTML=list.map(c=>
+    '<div class="c"><div class="k">'+c[0]+'</div><div class="v">'+c[1]+'</div>'+
+    (c[2]?'<div class="d">'+c[2]+'</div>':'')+'</div>').join('');
+}
+function rowsHtml(rows){
+  return rows.map(r=>'<tr><td>'+r[0]+'</td><td class="r">'+r[1]+'</td><td class="n">'+r[2]+'</td></tr>').join('');
+}
+
+/* ── 양력 → 음력 ───────────────────────── */
+function calcS2L(){
+  const P=parseD($('sd').value);
+  if(P===null){ hideRes(); advise(null); warn('m-bad','양력 날짜를 입력하세요.'); return; }
+  if(P.y<Y0||P.y>Y1){ hideRes(); advise(null); warn('m-bad',OUT_MSG); return; }
+  const L=solarToLunar(P.y,P.m,P.d);
+  if(!L){ hideRes(); advise(null); warn('m-bad',OUT_MSG); return; }
+  const g=ganjiTxt(L.ly), dg=dayGanji(P.y,P.m,P.d), f=fest(L.lm,L.ld,L.leap,L.size);
+
+  $('lab').textContent='음력';
+  $('val').textContent=lunFmt(L.ly,L.lm,L.leap,L.ld);
+  $('meta').textContent='양력 '+solFmtW(P.y,P.m,P.d)+(f?' · '+f:'');
+  cmpBox([
+    ['요일', dowOf(P.y,P.m,P.d)+'요일', solFmt(P.y,P.m,P.d)],
+    ['그 음력 달', sizeShort(L.size), L.size+'일까지'+(L.leap?' · 윤'+L.lm+'월':'')],
+    ['연간지', g.ko, g.hj+' '+g.tti],
+    ['일진', dg.ko, '('+dg.hj+')']
+  ]);
+  $('tb').innerHTML=rowsHtml([
+    ['양력','', solFmtW(P.y,P.m,P.d)],
+    ['음력', L.leap?'윤달':'평달', lunFmt(L.ly,L.lm,L.leap,L.ld)],
+    ['그 달의 크기', L.size+'일까지', sizeTxt(L.size)],
+    ['연간지 · 띠','음력 설날 기준', g.ko+' '+g.hj+' · '+g.tti],
+    ['일진','그날의 간지', dg.ko+' '+dg.hj]
+  ])+'<tr class="take"><td>음력</td><td class="r"></td><td class="n">'+lunFmt(L.ly,L.lm,L.leap,L.ld)+'</td></tr>';
+  $('extra').innerHTML='<p class="note">'+TTI_NOTE+'</p>';
+
+  if(f) warn('m-ok','이날은 <strong>'+f+'</strong>입니다.');
+  else if(P.m<=2&&L.lm>=11) warn('m-warn','아직 음력 설날 전이라 띠가 <strong>'+g.ko+' '+g.tti+'</strong>입니다. 양력으로는 '+P.y+'년이지만 띠는 앞 해 것을 씁니다.');
+  else warn(null);
+  $('src').innerHTML=SRC;
+  $('res').classList.remove('hidden');
+  advise(P.y);
+}
+
+/* ── 음력 → 양력 ───────────────────────── */
+function leapState(y,m){
+  if(y===null||y<Y0||y>Y1) return {ok:false,why:'음력 연도는 1900년부터 2100년까지 넣을 수 있습니다.'};
+  const info=monthsOf(y);
+  if(!info.leap) return {ok:false,why:y+'년에는 윤달이 없습니다. 그래서 켤 수 없어요.'};
+  if(info.leap!==m) return {ok:false,why:y+'년의 윤달은 <b>윤'+info.leap+'월</b> 하나뿐입니다. '+m+'월은 윤달이 아니에요.'};
+  return {ok:true,why:y+'년에는 <b>윤'+info.leap+'월</b>이 있습니다. 윤달 날짜라면 켜세요.'};
+}
+function syncLeap(){
+  const y=intOf('ly'), m=intOf('lm');
+  const st=leapState(y,m);
+  $('leap').disabled=!st.ok;
+  if(!st.ok) $('leap').checked=false;
+  $('leapWhy').innerHTML=st.why;
+  $('leapWrap').classList.toggle('off',!st.ok);
+}
+function calcL2S(){
+  syncLeap();
+  const y=intOf('ly'), m=intOf('lm'), d=intOf('ld'), lp=$('leap').checked;
+  if(y===null||m===null||d===null){ hideRes(); advise(null); warn('m-bad','음력 연·월·일을 모두 입력하세요.'); return; }
+  if(y<Y0||y>Y1){ hideRes(); advise(null); warn('m-bad',OUT_MSG); return; }
+  if(d<1||d>30){ hideRes(); advise(null); warn('m-bad','음력 날짜는 1일부터 30일까지입니다.'); return; }
+  const info=monthsOf(y);
+  let mo=null;
+  for(const x of info.months) if(x.no===m&&(!!x.leap)===(!!lp)){ mo=x; break; }
+  if(!mo){ hideRes(); advise(null); warn('m-bad','음력 '+y+'년 '+(lp?'윤':'')+m+'월은 없는 달입니다.'); return; }
+  if(d>mo.days){
+    hideRes(); advise(null);
+    warn('m-bad','음력 '+y+'년 '+(lp?'윤':'')+m+'월은 <strong>작은달</strong>이라 30일이 없습니다. <strong>그 달은 29일까지입니다.</strong> '+
+      '음력 30일이 생일이나 기일이라면 작은달인 해에는 보통 그믐인 29일에 지냅니다.');
+    return;
+  }
+  const R=lunarToSolar(y,m,d,lp);
+  if(!R){ hideRes(); advise(null); warn('m-bad',OUT_MSG); return; }
+  const g=ganjiTxt(y), dg=dayGanji(R.y,R.m,R.d), f=fest(m,d,lp,mo.days);
+
+  $('lab').textContent='양력';
+  $('val').textContent=solFmtW(R.y,R.m,R.d);
+  $('meta').textContent='음력 '+lunFmt(y,m,lp,d)+' · '+sizeTxt(mo.days)+(f?' · '+f:'');
+  cmpBox([
+    ['요일', dowOf(R.y,R.m,R.d)+'요일', solFmt(R.y,R.m,R.d)],
+    ['그 음력 달', sizeShort(mo.days), mo.days+'일까지'+(lp?' · 윤'+m+'월':'')],
+    ['연간지', g.ko, g.hj+' '+g.tti],
+    ['일진', dg.ko, '('+dg.hj+')']
+  ]);
+  $('tb').innerHTML=rowsHtml([
+    ['음력', lp?'윤달':'평달', lunFmt(y,m,lp,d)],
+    ['양력','', solFmtW(R.y,R.m,R.d)],
+    ['그 달의 크기', mo.days+'일까지', sizeTxt(mo.days)],
+    ['연간지 · 띠','음력 설날 기준', g.ko+' '+g.hj+' · '+g.tti],
+    ['일진','그날의 간지', dg.ko+' '+dg.hj]
+  ])+'<tr class="take"><td>양력</td><td class="r"></td><td class="n">'+solFmtW(R.y,R.m,R.d)+'</td></tr>';
+  $('extra').innerHTML='<p class="note">'+TTI_NOTE+'</p>';
+
+  if(f) warn('m-ok','이날은 <strong>'+f+'</strong>입니다.');
+  else if(lp) warn('m-warn','윤'+m+'월은 '+y+'년에만 오는 달입니다. 다음 윤'+m+'월이 언제인지는 <strong>윤달 조회</strong> 탭에서 연도를 바꿔가며 확인할 수 있어요.');
+  else warn(null);
+  $('src').innerHTML=SRC;
+  $('res').classList.remove('hidden');
+  advise(R.y);
+}
+
+/* ── 음력 생일 · 기일 10년 ───────────────── */
+function calcBday(){
+  const m=intOf('bm'), d=intOf('bd'), lp=$('bleap').checked;
+  let y0=intOf('by');
+  if(m===null||d===null||y0===null){ hideRes(); advise(null); warn('m-bad','음력 월·일과 시작 연도를 입력하세요.'); return; }
+  if(d<1||d>30){ hideRes(); advise(null); warn('m-bad','음력 날짜는 1일부터 30일까지입니다.'); return; }
+  if(y0<Y0||y0>Y1-9){ hideRes(); advise(null); warn('m-bad','시작 연도는 <strong>1900년부터 2091년까지</strong> 넣을 수 있습니다. 10년치를 지원 범위 안에서 보여주기 위해서입니다.'); return; }
+
+  let html='<tr><th>음력 해</th><th style="text-align:right">양력 날짜</th><th style="text-align:right">비고</th></tr>';
+  let first=null, miss=0;
+  for(let y=y0;y<y0+10;y++){
+    const info=monthsOf(y);
+    let mo=null;
+    for(const x of info.months) if(x.no===m&&(!!x.leap)===(!!lp)){ mo=x; break; }
+    let dateTxt='', note='';
+    if(mo&&d<=mo.days){
+      const R=lunarToSolar(y,m,d,lp);
+      dateTxt=solFmtW(R.y,R.m,R.d);
+      note=(lp?'윤'+m+'월 · ':'')+sizeShort(mo.days)+(fest(m,d,lp,mo.days)?' · '+fest(m,d,lp,mo.days):'');
+      if(first===null) first=R;
+    }else if(mo&&d>mo.days){
+      const R=lunarToSolar(y,m,mo.days,lp);
+      dateTxt='<span class="miss">'+solFmtW(R.y,R.m,R.d)+'</span>';
+      note='그 해 '+(lp?'윤':'')+m+'월은 '+mo.days+'일까지입니다. 그믐인 '+mo.days+'일을 참고로 표시했습니다.';
+      miss++;
+    }else if(lp){
+      const R2=lunarToSolar(y,m,Math.min(d,29),false);
+      let pm=null;
+      for(const x of info.months) if(x.no===m&&!x.leap){ pm=x; break; }
+      const R3=(pm&&d<=pm.days)?lunarToSolar(y,m,d,false):R2;
+      dateTxt='<span class="miss">'+(R3?solFmtW(R3.y,R3.m,R3.d):'—')+'</span>';
+      note='<strong>그 해에는 윤'+m+'월이 없습니다.</strong> 평달 '+m+'월 '+(pm&&d<=pm.days?d:Math.min(d,pm?pm.days:29))+'일을 참고로 표시했습니다.';
+      miss++;
+    }else{
+      dateTxt='—'; note='그 해에는 '+m+'월 '+d+'일이 없습니다.';
+      miss++;
+    }
+    html+='<tr'+(y===y0?' class="hi"':'')+'><td class="d1">'+y+'년</td><td class="n">'+dateTxt+'</td><td class="r">'+note+'</td></tr>';
+  }
+
+  const label='음력 '+(lp?'윤':'')+m+'월 '+d+'일';
+  $('lab').textContent=label+' · 앞으로 10년';
+  $('val').textContent=first?solFmtW(first.y,first.m,first.d):'—';
+  $('meta').textContent=y0+'년 양력 날짜 · '+y0+'년부터 '+(y0+9)+'년까지 아래 표에 있습니다';
+  const g=ganjiTxt(y0);
+  cmpBox([
+    ['음력 날짜', (lp?'윤':'')+m+'월 '+d+'일', lp?'윤달 생일':'평달'],
+    ['기간', y0+'~'+(y0+9)+'년', '10년치'],
+    [y0+'년 간지', g.ko, g.hj+' '+g.tti],
+    ['날짜 없는 해', miss+'년', miss?'아래 비고 참고':'모두 있습니다']
+  ]);
+  $('tb').innerHTML=html;
+
+  let ex='<p class="note">양력 날짜가 해마다 열흘 남짓 앞당겨지다가 윤달이 든 해를 지나면 다시 뒤로 밀립니다. 음력 한 해가 354일이라 양력보다 11일 짧고, 2~3년에 한 번 윤달이 그 차이를 메우기 때문입니다.</p>';
+  if(lp) ex+='<p class="note"><strong>윤달 생일은 집안마다 다르게 지냅니다.</strong> 윤달이 오는 해에만 제대로 지내는 집도 있고, 평달 같은 날짜로 옮겨 매년 지내는 집도 있으며, 아예 양력으로 고정한 집도 있습니다. 위 표에서 회색으로 표시한 날짜는 그 해에 윤달이 없어 <strong>평달 날짜를 참고로</strong> 보여준 것이지 정답이 아닙니다.</p>';
+  ex+='<p class="note">제사 날짜를 돌아가신 날로 볼지 그 전날로 볼지는 <strong>집안 관습</strong>이라 이 도구가 정해줄 수 없습니다. 위 표는 넣은 음력 날짜에 해당하는 양력 날짜만 보여줍니다.</p>';
+  $('extra').innerHTML=ex;
+
+  if(miss) warn('m-warn','10년 중 <strong>'+miss+'개 해</strong>에는 이 음력 날짜가 그대로 오지 않습니다. 표의 비고를 확인하세요.');
+  else warn(null);
+  $('src').innerHTML=SRC;
+  $('res').classList.remove('hidden');
+  advise(y0+9);
+}
+
+/* ── 윤달 조회 ─────────────────────────── */
+function calcLeapQ(){
+  const y=intOf('qy');
+  if(y===null){ hideRes(); advise(null); warn('m-bad','음력 연도를 입력하세요.'); return; }
+  if(y<Y0||y>Y1){ hideRes(); advise(null); warn('m-bad',OUT_MSG); return; }
+  const info=monthsOf(y), g=ganjiTxt(y);
+  let total=0, big=0, acc=0;
+  let html='<tr><th>음력 달</th><th style="text-align:right">일수</th><th style="text-align:right">초하루 (양력)</th></tr>';
+  for(const mo of info.months){
+    const R=lunarToSolar(y,mo.no,1,mo.leap);
+    html+='<tr'+(mo.leap?' class="hi"':'')+'><td class="d1">'+(mo.leap?'윤':'')+mo.no+'월</td>'+
+      '<td class="n">'+mo.days+'일 · '+sizeShort(mo.days)+'</td>'+
+      '<td class="r">'+(R?solFmtW(R.y,R.m,R.d):'—')+'</td></tr>';
+    total+=mo.days; acc++; if(mo.days===30) big++;
+  }
+  let nextY=null;
+  for(let k=y+1;k<=Y1;k++) if(monthsOf(k).leap){ nextY=k; break; }
+  let prevY=null;
+  for(let k=y-1;k>=Y0;k--) if(monthsOf(k).leap){ prevY=k; break; }
+  const nyd=lunarToSolar(y,1,1,false);
+
+  $('lab').textContent=y+'년 음력';
+  $('val').textContent=info.leap?('윤'+info.leap+'월이 있습니다'):'윤달이 없습니다';
+  $('meta').textContent=y+'년 음력은 '+acc+'개월 '+total+'일 · '+g.ko+' '+g.tti;
+  cmpBox([
+    ['윤달', info.leap?'윤'+info.leap+'월':'없음', info.leap?'6월 다음 두 번째 달처럼 앞 달 이름을 반복':'평년 12개월'],
+    ['한 해 길이', total+'일', acc+'개월'],
+    ['큰달 · 작은달', big+' · '+(acc-big), '30일 / 29일'],
+    ['설날', nyd?solFmtW(nyd.y,nyd.m,nyd.d):'—', '이날부터 '+g.tti]
+  ]);
+  $('tb').innerHTML=html;
+
+  let ex='<p class="note">음력 한 달은 삭에서 다음 삭까지의 실제 길이로 정해지므로 <strong>29일(작은달)과 30일(큰달)이 해마다 다르게 배치</strong>됩니다. 정해진 규칙으로 번갈아 오는 것이 아닙니다.</p>';
+  ex+='<p class="note">'+(prevY?('직전 윤달은 '+prevY+'년 윤'+monthsOf(prevY).leap+'월'):'직전 윤달은 지원 범위 밖')+' · '+
+    (nextY?('다음 윤달은 '+nextY+'년 윤'+monthsOf(nextY).leap+'월'):'다음 윤달은 지원 범위 밖')+'입니다. 윤달은 19년에 일곱 번, 평균 2~3년에 한 번 들어갑니다.</p>';
+  $('extra').innerHTML=ex;
+
+  if(info.leap) warn('m-ok',y+'년에는 <strong>윤'+info.leap+'월</strong>이 있어 음력이 13개월입니다. 중기가 들지 않은 달이라 앞 달의 이름을 한 번 더 씁니다.');
+  else warn('m-warn',y+'년에는 윤달이 없습니다. 음력 12개월 '+total+'일로, 양력보다 열흘 남짓 짧습니다.');
+  $('src').innerHTML=SRC;
+  $('res').classList.remove('hidden');
+  advise(y);
+}
+
+/* ── 탭 ───────────────────────────────── */
+let tab='s2l';
+function calc(){
+  if(tab==='s2l') calcS2L();
+  else if(tab==='l2s') calcL2S();
+  else if(tab==='bday') calcBday();
+  else calcLeapQ();
+}
+function sync(){
+  ['s2l','l2s','bday','leap'].forEach(k=>$('in-'+k).classList.toggle('hidden',tab!==k));
+}
+
+/* 초기값 */
+const opts=[];
+for(let i=1;i<=12;i++) opts.push('<option value="'+i+'">'+i+'월</option>');
+$('lm').innerHTML=opts.join('');
+$('bm').innerHTML=opts.join('');
+
+const T0=todayUTC(), TY=new Date(T0).getUTCFullYear();
+$('sd').value=iso(T0);
+const L0=solarToLunar(new Date(T0).getUTCFullYear(),new Date(T0).getUTCMonth()+1,new Date(T0).getUTCDate());
+const baseY=Math.min(Math.max(TY,Y0),Y1);
+$('ly').value=L0?L0.ly:baseY;
+$('lm').value=L0?L0.lm:1;
+$('ld').value=L0?L0.ld:1;
+$('qy').value=baseY;
+$('by').value=Math.min(Math.max(TY,Y0),Y1-9);
+$('bm').value=1;
+$('bd').value=1;
+
+document.querySelectorAll('#tabs button').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('#tabs button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); tab=b.dataset.v; sync(); calc();
+  });
+});
+['sd','ly','lm','ld','leap','bm','bd','by','bleap','qy'].forEach(function(id){
+  $(id).addEventListener('input',calc);
+  $(id).addEventListener('change',calc);
+});
+$('sdToday').addEventListener('click',function(){ $('sd').value=iso(todayUTC()); calc(); });
+
+syncLeap();
+sync(); calc();
+})();
+</script>
+</body>
+</html>

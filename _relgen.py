@@ -46,6 +46,10 @@ TOOLS = {
                    '여러 PDF를 합치고 페이지를 삭제·회전·순서 변경하고, 필요한 페이지만 뽑아냅니다. 이미지를 PDF로 만들 수도 있습니다.'),
  'pdf-sign':      ('✍️','PDF 서명·도장 넣기','인쇄 없이 계약서에 바로',
                    '계약서에 서명을 직접 그려 넣고 도장을 얹어 저장합니다. 인쇄해서 서명하고 다시 스캔할 필요가 없고 원본 글자는 그대로 남습니다.'),
+ 'img2pdf':      ('📄','이미지를 PDF로','JPG·PNG 여러 장을 한 파일로',
+                   '사진이나 스캔한 이미지 여러 장을 PDF 한 개로 묶습니다. 순서를 바꾸고 용지 크기와 여백을 고를 수 있으며 원본 화질 그대로 넣습니다.'),
+ 'lunar':         ('🌙','음력 양력 변환','음력 생일·윤달·띠 한 번에',
+                   '음력과 양력을 서로 바꾸고 음력 생일이 앞으로 10년간 양력 며칠인지 표로 보여줍니다. 윤달과 띠, 일진도 함께 확인할 수 있습니다.'),
  'watermark':     ('💧','이미지 워터마크 넣기','텍스트·로고, 여러 장 한 번에',
                    '사진이나 서류 사본에 워터마크를 얹습니다. 텍스트와 로고를 지원하고 9분할 위치나 바둑판 반복으로 배치합니다. 여러 장을 한꺼번에 처리해 ZIP으로 받습니다.'),
  'resize':        ('📏','이미지 크기 조절','정확한 px 지정, 비율 자르기',
@@ -73,7 +77,7 @@ CATS = [
  ('이미지 편집', '사진을 다루는 도구입니다. 전부 브라우저 안에서 처리되고 업로드가 없어서, 얼굴이 나온 사진이나 공개 전 자료도 안심하고 올릴 수 있습니다.',
   ['remove-bg','id-photo','resize','convert','image-compress','watermark']),
  ('PDF·문서',   '계약서나 제출 서류를 다룰 때 쓰는 도구입니다. 원본 문서의 글자를 그대로 살린 채 처리합니다.',
-  ['pdf','pdf-sign','pdf-to-image']),
+  ['pdf','pdf-sign','pdf-to-image','img2pdf']),
  ('급여·노동', '법령과 공식 고시를 그대로 적용해 계산합니다. 근사식을 쓰지 않고 계산 과정과 근거 조문을 함께 보여줍니다.',
   ['salary','severance','unemployment','annual-leave','holiday-pay']),
  ('부동산·금융', '집을 사고팔 때, 돈을 빌릴 때 필요한 계산입니다. 법령과 고시 요율을 그대로 적용하고 입력한 값은 어디로도 전송되지 않습니다.',
@@ -81,7 +85,7 @@ CATS = [
  ('자동차', '차를 사고 유지할 때 내는 세금입니다. 확인되지 않은 항목은 계산에 넣지 않고 어디서 확인해야 하는지 알려드립니다.',
   ['car-tax','car-acquisition']),
  ('생활 편의', '자주 찾게 되는 단순한 계산과 변환입니다. 가입도 설치도 없이 바로 씁니다.',
-  ['char-count','pyeong','date-calc','qr']),
+  ['char-count','pyeong','date-calc','lunar','qr']),
  ('앱 개발',    '안드로이드 앱을 출시할 때 반복적으로 필요한 작업들입니다. 직접 앱을 만들며 필요해서 만든 도구예요.',
   ['app-icon','screenshot','privacy-policy']),
 ]
@@ -97,7 +101,7 @@ REL = {
  'severance':     ['unemployment','annual-leave','salary'],
  'unemployment':  ['severance','annual-leave','salary'],
  'holiday-pay':   ['annual-leave','severance','salary'],
- 'pdf':           ['pdf-to-image','pdf-sign','convert'],
+ 'pdf':           ['pdf-to-image','pdf-sign','img2pdf'],
  'pdf-sign':      ['pdf','id-photo','salary'],
  'remove-bg':     ['id-photo','convert','image-compress'],
  'convert':       ['resize','image-compress','remove-bg'],
@@ -109,10 +113,12 @@ REL = {
  'car-tax':       ['car-acquisition','loan','acquisition-tax'],
  'car-acquisition':['car-tax','loan','acquisition-tax'],
  'rent-convert':  ['broker-fee','acquisition-tax','loan'],
- 'pdf-to-image':  ['pdf','pdf-sign','image-compress'],
- 'char-count':    ['date-calc','pyeong','qr'],
+ 'pdf-to-image':  ['pdf','pdf-sign','img2pdf'],
+ 'img2pdf':       ['pdf','image-compress','pdf-to-image'],
+ 'lunar':         ['date-calc','char-count','pyeong'],
+ 'char-count':    ['date-calc','lunar','qr'],
  'pyeong':        ['acquisition-tax','broker-fee','date-calc'],
- 'date-calc':     ['char-count','annual-leave','severance'],
+ 'date-calc':     ['lunar','char-count','annual-leave'],
  'app-icon':      ['screenshot','privacy-policy','image-compress'],
  'screenshot':    ['app-icon','privacy-policy','image-compress'],
  'privacy-policy':['app-icon','screenshot','pdf'],
@@ -196,7 +202,10 @@ def patch(slug):
 # 계산 결과를 내놓는 도구 — 푸터에 면책 안내 한 줄을 더 붙인다
 CALC = {'salary', 'severance', 'holiday-pay', 'annual-leave', 'unemployment',
         'loan', 'acquisition-tax', 'broker-fee', 'car-tax', 'car-acquisition',
-        'rent-convert', 'deposit'}
+        'rent-convert', 'deposit',
+        # lunar 은 금액이 아니라 날짜를 내놓으므로 페이지가 자체 <!--FOOTNOTE--> 문구를
+        # 이미 갖고 있다. CALC 에 넣어 두면 patch_footer 가 그 문구를 지우지 않는다.
+        'lunar'}
 
 FOOT_NOTE = {
  'ko': '<p>계산 결과는 참고용 추정치이며 법적 효력이 없습니다. '
