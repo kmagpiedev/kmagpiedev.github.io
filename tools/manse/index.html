@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>만세력 — 생년월일시로 사주 원국 뽑기, 절입 시각 반영 | 까치툴</title>
+<meta name="description" content="생년월일시를 넣으면 사주 여덟 글자(원국)를 뽑아줍니다. 절입 시각을 분 단위로 반영해 입춘 당일 출생도 정확하게 연주를 가리고, 일진은 한국천문연구원 음양력과 대조해 검증했습니다. 오행 분포와 십성까지 계산만 하고 해석은 하지 않습니다. 음력 생일 입력, 표준시 30분 보정과 야자시 옵션 지원.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/manse/">
+<meta property="og:title" content="만세력 — 생년월일시로 사주 원국 뽑기, 절입 시각 반영">
+<meta property="og:description" content="사주 여덟 글자를 절입 시각 분 단위까지 따져 정확하게 뽑습니다. 계산만 하고 해석은 하지 않습니다.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/manse/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+    --e0:#2f7d3a; --e0s:#edf6ee;
+    --e1:#c03d2e; --e1s:#fbf0ee;
+    --e2:#9a6a10; --e2s:#faf3e2;
+    --e3:#6f7a85; --e3s:#f0f2f4;
+    --e4:#1f5faa; --e4s:#eaf1f9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+      --e0:#8fd39a; --e0s:#1a2a1d;
+      --e1:#f0968b; --e1s:#2c1c19;
+      --e2:#e3c266; --e2s:#2a2412;
+      --e3:#b8c0c9; --e3s:#23272b;
+      --e4:#8ab6ec; --e4s:#18222e;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  .row{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start}
+  .col{flex:1;min-width:190px}
+  .col.sm{min-width:104px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
+  input[type=date],input[type=time],input[type=text],input[type=number],select{padding:10px 12px;border:1px solid var(--line);border-radius:9px;
+    background:var(--surface);color:var(--ink);font-size:15px;font-family:inherit;width:100%;font-variant-numeric:tabular-nums}
+  input[type=text],input[type=number]{text-align:right;font-weight:600;font-size:16px}
+  input[type=time]{font-weight:600;font-size:16px}
+  select{font-weight:600;font-size:16px;appearance:none;-webkit-appearance:none;background-image:none}
+  input:focus,select:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  input:disabled{opacity:.45}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:12px 0 0}
+  .seg{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+  .seg button{flex:1;background:transparent;border:0;padding:10px 6px;font-size:13.5px;font-weight:600;
+    color:var(--ink-2);cursor:pointer;font-family:inherit;transition:.12s}
+  .seg button.on{background:var(--accent);color:#fff}
+  .chk{display:flex;gap:9px;align-items:flex-start;margin:11px 0 0;font-size:14.5px;cursor:pointer;color:var(--ink-2)}
+  .chk input{margin:5px 0 0;flex:none;width:16px;height:16px;accent-color:var(--accent)}
+  .chk b{color:var(--ink);font-weight:600}
+  .chk em{display:block;font-style:normal;font-size:12.5px;color:var(--ink-3);line-height:1.5}
+  .chk.off{opacity:.5;cursor:default}
+
+  .result{background:var(--surface);border:1px solid var(--accent);border-radius:16px;padding:26px 24px;margin:18px 0}
+  .big{font-size:13px;color:var(--ink-2);margin:0 0 4px}
+  .money{font-size:38px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.2;color:var(--accent)}
+  .money.sm{font-size:26px}
+  .yearly{font-size:14px;color:var(--ink-2);margin-top:6px;font-variant-numeric:tabular-nums}
+
+  .pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0 8px}
+  .pill{border:1px solid var(--line);border-radius:13px;padding:12px 4px 10px;text-align:center;background:var(--surface)}
+  .pill.me{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+  .pk{font-size:11.5px;letter-spacing:.1em;color:var(--ink-3);font-weight:700;margin-bottom:7px}
+  .pill.me .pk{color:var(--accent)}
+  .ss{font-size:11.5px;color:var(--ink-3);line-height:1.4;margin:3px 0}
+  .ss.meTag{color:var(--accent);font-weight:700}
+  .bigc{font-size:33px;font-weight:800;line-height:1.05;border-radius:10px;margin:3px 5px;padding:9px 0 7px;
+    font-family:"Noto Serif KR","Apple SD Gothic Neo",serif}
+  .bigc small{display:block;font-size:12px;font-weight:600;margin-top:3px;letter-spacing:.02em}
+  .bigc .yy{display:block;font-size:10.5px;font-weight:600;opacity:.75;margin-top:1px}
+  .bigc.e0{color:var(--e0);background:var(--e0s)}
+  .bigc.e1{color:var(--e1);background:var(--e1s)}
+  .bigc.e2{color:var(--e2);background:var(--e2s)}
+  .bigc.e3{color:var(--e3);background:var(--e3s)}
+  .bigc.e4{color:var(--e4);background:var(--e4s)}
+  .punk{font-size:15px;color:var(--ink-3);padding:34px 0;font-weight:600}
+  .pnote{font-size:12.5px;color:var(--ink-3);margin:4px 0 0}
+
+  .ilgan{display:flex;gap:16px;align-items:center;border:1px solid var(--line);border-radius:13px;
+    padding:14px 16px;margin:18px 0 0;background:var(--surface)}
+  .ilgan .bigc{flex:none;width:76px;margin:0}
+  .ilgan .tx{font-size:14.5px;color:var(--ink-2)}
+  .ilgan .tx b{color:var(--ink);font-size:16px}
+
+  .osec{margin:22px 0 0}
+  .osec h3{margin:0 0 8px;font-size:14.5px}
+  .osec h3 span{font-weight:600;color:var(--ink-3);font-size:12.5px}
+  .obar{display:flex;align-items:center;gap:10px;margin:5px 0;font-size:13.5px}
+  .obar .ol{width:58px;font-weight:700;flex:none}
+  .obar .ot{flex:1;height:12px;background:var(--line-soft);border-radius:6px;overflow:hidden}
+  .obar .of{height:100%;border-radius:6px}
+  .obar .on{width:26px;text-align:right;font-variant-numeric:tabular-nums;flex:none;font-weight:600}
+  .of.e0{background:var(--e0)} .of.e1{background:var(--e1)} .of.e2{background:var(--e2)}
+  .of.e3{background:var(--e3)} .of.e4{background:var(--e4)}
+  .ol.e0{color:var(--e0)} .ol.e1{color:var(--e1)} .ol.e2{color:var(--e2)}
+  .ol.e3{color:var(--e3)} .ol.e4{color:var(--e4)}
+
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .m-ok{background:var(--good-soft);border-color:var(--good)}
+  .hidden{display:none}
+  code{background:var(--line-soft);padding:1px 5px;border-radius:4px;font-size:12.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .src{font-size:12.5px;color:var(--ink-3);margin-top:14px;padding-top:12px;border-top:1px solid var(--line-soft)}
+
+  .yaong{border:1px solid var(--accent);background:var(--accent-soft);border-radius:16px;padding:22px 24px;margin:26px 0}
+  .yaong .yk{font-size:13px;font-weight:700;color:var(--accent);letter-spacing:.03em;margin:0 0 6px}
+  .yaong p{font-size:14.5px;color:var(--ink-2);margin:0 0 12px}
+  .ylinks{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:0 0 10px}
+  .ylinks a{display:block;padding:13px 15px;border:1px solid var(--line);border-radius:11px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .ylinks a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .ylinks a strong{display:block;font-size:14.5px;font-weight:700;margin-bottom:2px}
+  .ylinks a span{display:block;font-size:12.5px;color:var(--ink-3);line-height:1.5}
+  .ydis{font-size:12.5px;color:var(--ink-3);margin:0}
+
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .money.sm{font-size:19px}
+    .pgrid{gap:6px}
+    .pill{padding:9px 2px 8px;border-radius:11px}
+    .bigc{font-size:24px;margin:2px 3px;padding:7px 0 5px}
+    .bigc small{font-size:10.5px}
+    .bigc .yy{font-size:9.5px}
+    .ss{font-size:10.5px}
+    .pk{font-size:10.5px;letter-spacing:.04em}
+    .seg button{font-size:12px;padding:9px 2px}
+    .panel{padding:18px 15px}
+    .result{padding:20px 15px}
+    .yaong{padding:18px 15px}
+    .ilgan .bigc{width:62px}
+  }
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
+</style>
+<!--ALT:S--><!--ALT:E-->
+<!--HEAD:S-->
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
+<meta property="og:site_name" content="까치툴">
+<!--HEAD:E-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › 만세력</p>
+<!--LANG:S--><!--LANG:E-->
+
+<h1>만세력 — 사주 원국 뽑기</h1>
+<p class="sub">생년월일과 태어난 시각으로 <strong>사주 여덟 글자(원국)</strong>를 뽑습니다. 절입 시각을 분 단위로 반영해 입춘 당일 출생도 정확하게 연주를 가리고, 오행 분포와 십성까지 함께 보여줍니다. 이 도구는 <strong>계산만 하고 해석은 하지 않습니다.</strong> 음력 생일도 그대로 넣을 수 있어요.</p>
+
+<div class="panel">
+  <div class="row">
+    <div class="col sm" style="max-width:180px">
+      <label class="f">달력</label>
+      <div class="seg" id="calSeg">
+        <button data-v="sol" class="on">양력</button>
+        <button data-v="lun">음력</button>
+      </div>
+    </div>
+    <div class="col" id="in-sol">
+      <label class="f">생년월일 (양력)</label>
+      <input type="date" id="sd" min="1900-01-01" max="2100-12-31">
+    </div>
+    <div class="col hidden" id="in-lun">
+      <div class="row" style="gap:10px">
+        <div class="col sm" style="min-width:88px">
+          <label class="f">음력 연도</label>
+          <input type="number" id="ly" min="1900" max="2100" step="1">
+        </div>
+        <div class="col sm" style="min-width:76px">
+          <label class="f">월</label>
+          <select id="lm"></select>
+        </div>
+        <div class="col sm" style="min-width:76px">
+          <label class="f">일</label>
+          <input type="number" id="ld" min="1" max="30" step="1" value="1">
+        </div>
+      </div>
+      <label class="chk" id="leapWrap"><input type="checkbox" id="leap">
+        <span><b>윤달</b><em id="leapWhy">그 해에 윤달이 있고, 고른 달이 바로 그 윤달일 때만 켤 수 있습니다.</em></span></label>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top:16px">
+    <div class="col sm" style="max-width:180px">
+      <label class="f">태어난 시각</label>
+      <input type="time" id="tm" value="12:00">
+    </div>
+    <div class="col">
+      <label class="chk" style="margin-top:26px"><input type="checkbox" id="tunk">
+        <span><b>태어난 시각을 모릅니다</b><em>시주를 빼고 여섯 글자로 계산합니다. 연주·월주·일주는 시각 없이도 대부분 정확합니다.</em></span></label>
+    </div>
+  </div>
+
+  <label class="chk"><input type="checkbox" id="optAdj" checked>
+    <span><b>표준시 보정 (−30분)</b><em>한국 표준시(동경 135도)와 우리나라 실제 태양시(약 동경 127.5도)의 30분 차이를 보정해 자시를 23:30~01:30으로 봅니다. 끄면 시계 시각 그대로 23:00~01:00입니다.</em></span></label>
+  <label class="chk"><input type="checkbox" id="optZasi" checked>
+    <span><b>자시에 날 바꿈</b><em>자시가 시작되면(보정 시 23:30부터) 다음 날의 일주로 계산합니다. 끄면 자정(00:00)에 날을 바꿉니다(야자시설). 유파에 따라 다르니, 이 경계에 걸린 출생이라면 두 설정을 모두 비교해 보세요.</em></span></label>
+
+  <p class="note">양력 <strong>1900년 1월 1일 ~ 2100년 12월 31일</strong> 출생만 계산합니다. 범위를 벗어나면 계산하지 않습니다. 입력값은 어디로도 전송되지 않습니다.</p>
+</div>
+
+<div id="warn" class="hidden"></div>
+
+<div class="result hidden" id="res">
+  <p class="big">사주 원국</p>
+  <div class="money sm" id="sline">—</div>
+  <div class="yearly" id="meta"></div>
+  <div class="pgrid" id="pgrid"></div>
+  <p class="pnote">만세력 관례대로 왼쪽부터 시주·일주·월주·연주 순서입니다(오른쪽 끝이 연주). 각 칸의 작은 글자는 일간을 기준으로 한 십성입니다.</p>
+  <div id="jwarn"></div>
+  <div id="zwarn"></div>
+  <div class="ilgan" id="ilgan"></div>
+  <div class="osec">
+    <h3>오행 분포 <span id="ocnt"></span></h3>
+    <div id="obars"></div>
+  </div>
+  <div id="refs"></div>
+  <p class="src" id="src"></p>
+</div>
+
+<div class="yaong">
+  <p class="yk">이 사주의 풀이가 궁금하다면</p>
+  <p>이 도구는 여덟 글자를 <strong>계산만</strong> 합니다. 뽑힌 원국이 어떤 뜻인지, 올해와 두 사람 사이는 어떤지 풀이가 궁금하다면 야옹명리에서 볼 수 있어요.</p>
+  <div class="ylinks">
+    <a href="https://yaong.kmagpie.com/products/full"><strong>종합 사주</strong><span>원국 전체를 차근차근 풀어읽는 종합 풀이</span></a>
+    <a href="https://yaong.kmagpie.com/products/year"><strong>2026 하반기 운세</strong><span>올해 남은 기간의 흐름 풀이</span></a>
+    <a href="https://yaong.kmagpie.com/products/compatibility"><strong>두 사람 궁합</strong><span>두 사주를 나란히 놓고 보는 궁합 풀이</span></a>
+    <a href="https://yaong.kmagpie.com/"><strong>야옹명리 전체 보기</strong><span>yaong.kmagpie.com</span></a>
+  </div>
+  <p class="ydis">야옹명리는 까치툴 운영자가 함께 만드는 서비스입니다.</p>
+</div>
+
+<h2>사주 여덟 글자는 무엇인가</h2>
+<p>사주는 태어난 <strong>연·월·일·시</strong> 네 기둥을 각각 60갑자 두 글자(천간 하나, 지지 하나)로 적은 것입니다. 네 기둥에 두 글자씩이라 모두 여덟 글자, 그래서 사주팔자라고 부릅니다. 여기서 중요한 점은, 여덟 글자 자체는 점괘가 아니라 <strong>달력 데이터</strong>라는 것입니다. 갑자일, 을축일 하는 일진이 달력에 그대로 적혀 있듯이, 원국은 태어난 시점을 옛 역법의 표기로 옮겨 적은 것뿐입니다. 그 여덟 글자를 어떻게 읽을지는 그다음의 일이고 유파마다 갈립니다.</p>
+<p>그래서 이 도구는 역할을 명확히 나눴습니다. <strong>계산은 정확하게, 해석은 하지 않습니다.</strong> 절입 시각과 일진처럼 검증할 수 있는 부분은 검증하고, 옳고 그름을 가릴 수 없는 유파 문제는 옵션으로 열어두고, 풀이는 아예 다루지 않습니다. 만세력 책을 넘겨 짚던 일을 브라우저가 대신하는 도구라고 생각하면 정확합니다.</p>
+
+<h2>연주는 1월 1일도 설날도 아닌 입춘에 바뀝니다</h2>
+<p>사주에서 해가 바뀌는 기준은 양력 1월 1일도, 음력 설날도 아니고 <strong>입춘</strong>입니다. 명리의 한 해는 달의 차고 기욺이 아니라 태양의 위치, 즉 24절기 체계 위에 서 있기 때문입니다. 입춘에 연주가 바뀌고, 그 뒤 경칩·청명 같은 홀수 번째 절기(12절)를 지날 때마다 월주가 하나씩 넘어갑니다. 그래서 양력 1월생과 2월 초 출생은 해가 이미 바뀐 뒤 같지만 사주로는 <strong>아직 전년</strong>입니다. 예를 들어 2026년 1월에 태어난 사람의 연주는 병오가 아니라 을사입니다.</p>
+<p>월주도 같은 원리입니다. 음력 몇 월생인지는 월주와 아무 관계가 없고, 오직 어느 절기와 어느 절기 사이에 태어났는지로 정해집니다. 음력 생일을 넣더라도 이 도구는 먼저 양력으로 바꾼 뒤 절기 기준으로 월주를 계산합니다.</p>
+
+<h2>절입은 날짜가 아니라 '시각'입니다</h2>
+<p>입춘은 하루 종일 이어지는 날이 아니라 태양의 황경이 315도에 이르는 <strong>한 순간</strong>입니다. 2026년 입춘은 2월 4일 새벽 5시 2분에 들어옵니다. 그러니 같은 2월 4일생이라도 새벽 4시 반 출생은 아직 을사년이고, 5시 반 출생은 병오년입니다. 연주가 갈리면 월주도 함께 갈립니다. 날짜만 보고 짚는 만세력은 이 경계에서 틀립니다.</p>
+<p>이 도구는 절입 시각을 <strong>분 단위</strong>로 반영합니다. 절입 시각은 Meeus/VSOP87 태양 황경 계산으로 구했고, 2026년 24절기가 한국천문연구원 공표값과 분 단위로 일치하는 것을 확인했습니다. 일진도 한국천문연구원 음양력과 대조해 검증했습니다. 출생이 절입과 24시간 이내로 가까우면 결과에 <strong>절입 경계 출생</strong> 경고를 띄우고, 경계를 넘었을 때 연주와 월주가 어떻게 달라지는지 함께 보여줍니다. 출생신고 시각이 실제와 몇 시간 어긋나는 일은 흔하므로, 이 경고가 뜬다면 태어난 시각을 한 번 더 확인해 볼 만합니다.</p>
+
+<h2>만세력마다 결과가 조금씩 다른 이유</h2>
+<p>같은 생년월일시를 넣어도 만세력 앱마다 시주나 일주가 다르게 나오는 일이 있습니다. 틀려서가 아니라 <strong>유파가 달라서</strong>입니다. 첫째는 표준시 보정입니다. 한국 표준시는 동경 135도 기준이라 우리나라 실제 태양시보다 시계가 약 30분 빠릅니다. 이걸 보정해 자시를 23:30부터로 보는 쪽과, 시계 시각 그대로 23:00부터로 보는 쪽이 있습니다. 둘째는 야자시 문제입니다. 자시가 시작되면 바로 다음 날의 일주로 볼지(정자시설), 자정까지는 그날의 일주로 볼지(야자시설)가 갈립니다. 밤 11시대와 자정 전후 출생은 이 두 선택에 따라 시주는 물론 일주까지 달라질 수 있습니다.</p>
+<p>이 도구는 두 옵션을 모두 열어두었고, 기본값은 <strong>보정 켬, 자시에 날 바꿈 켬</strong>입니다. 현재 한국 명리 실무에서 널리 쓰이는 조합이라 기본으로 두었을 뿐, 어느 쪽이 옳다고 단정하지 않습니다. 출생 시각이 밤 11시부터 새벽 1시 반 사이라면 옵션을 바꿔가며 결과가 어떻게 달라지는지 직접 비교해 보세요.</p>
+
+<h2>띠와 연주가 다를 수 있습니다</h2>
+<p>띠는 <strong>음력 설날</strong>에 바뀌고, 사주 연주는 <strong>입춘</strong>에 바뀝니다. 기준이 다르니 두 값이 어긋나는 구간이 생깁니다. 입춘이 설날보다 빠른 해에 그 사이에서 태어난 사람은, 달력과 일상에서는 아직 전년의 띠인데 사주 연주는 이미 새해 간지입니다. 반대로 설날이 입춘보다 빠른 해에는 띠가 먼저 바뀌고 연주가 나중에 바뀝니다. 이 도구는 결과 아래에 설날 기준 띠를 참고로 함께 적고, 연주와 어긋나는 출생이라면 그 사실을 표시합니다. 어느 한쪽이 틀린 것이 아니라 <strong>쓰임이 다른 두 기준</strong>입니다. 일상 대화에서는 띠를, 사주를 볼 때는 연주를 쓰면 됩니다.</p>
+
+<h2>자주 겪는 문제</h2>
+<h3>다른 만세력과 시주·일주가 다르게 나옵니다</h3>
+<p>거의 전부 <strong>표준시 보정과 야자시 설정 차이</strong>입니다. 특히 밤 11시~새벽 1시 반 출생이라면 위 두 옵션을 상대편 만세력의 기준에 맞춰보세요. 대부분 일치합니다. 그래도 다르다면 상대편이 절입 시각을 날짜 단위로만 처리하는지 의심해 볼 수 있습니다. 절입 당일 출생은 시각까지 따져야 정확합니다.</p>
+<h3>태어난 시각을 모릅니다</h3>
+<p>시각 모름을 켜면 시주를 빼고 <strong>여섯 글자</strong>로 계산합니다. 연주·월주·일주는 시각 없이도 정해지므로 대부분 그대로 유효합니다. 다만 절입 당일이나 밤 11시 전후처럼 경계에 걸린 출생이라면 시각에 따라 일주·연주까지 달라질 수 있는데, 그런 날짜에는 결과에 경고를 띄워 알려드립니다. 옛날 호적은 신고 시각이 부정확한 경우가 많으니, 가족에게 대략적인 시간대(새벽·아침·낮·밤)라도 물어두면 좋습니다.</p>
+<h3>입춘날 태어났는데 무슨 띠인가요</h3>
+<p>띠와 연주를 나눠 생각하면 됩니다. 띠는 설날 기준이라 입춘 시각과 무관하게 정해지고, 연주는 입춘 절입 <strong>시각</strong> 전이면 전년, 후면 새해입니다. 이 도구에 날짜와 시각을 넣으면 두 값을 각각 보여주고, 절입과 가까우면 몇 시간 차이인지까지 표시합니다.</p>
+<h3>대운이 안 나옵니다</h3>
+<p>대운·세운 풀이는 유파별 차이가 커서 이 도구는 <strong>원국까지만</strong> 계산합니다. 원국 여덟 글자는 달력 데이터라 정답이 있지만, 대운은 세는 방식부터 해석까지 갈래가 많아 계산기 하나가 정답을 낼 영역이 아니라고 보았습니다. 풀이가 필요하면 위의 야옹명리 링크를 이용하세요.</p>
+
+<!--CAT:S--><!--CAT:E-->
+<h2>함께 쓰면 좋은 도구</h2>
+<!--REL:S-->
+<h2>함께 쓰면 좋은 도구</h2>
+<div class="rel">
+  <a href="/tools/lunar/"><strong>음력 양력 변환</strong><span>음력 생일·윤달·띠 한 번에</span></a>
+  <a href="/tools/date-calc/"><strong>날짜 계산기</strong><span>만나이·D-day·날짜 사이 일수</span></a>
+  <a href="/tools/char-count/"><strong>글자수 세기</strong><span>공백 포함·제외, 바이트, 원고지</span></a>
+</div>
+<p class="rel-all"><a href="/tools/">까치툴 도구 33개 전체 보기 →</a></p>
+<!--REL:E-->
+
+<footer>
+  <p>이 도구는 사주 여덟 글자를 계산해 보여줄 뿐 해석·감정을 제공하지 않으며, 결과는 참고용입니다. 자세한 내용은 <a href="/disclaimer.html">면책조항</a>을 보세요.</p>
+  <p>까치툴 · 모든 계산은 브라우저 안에서 이루어지며 입력값은 어디로도 전송되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+/* ── 만세력 코어 (1900~2100) ─────────────────────────────────────────────
+   절입(12節) 시각: Meeus/VSOP87 태양 황경 계산, KST(표준시 변경 이력 반영), 분 단위.
+   검증: 2026년 24절기 KASI 공표값과 분 단위 일치.
+   JD(연 60자): [입춘,경칩,청명,입하,망종,소서,입추,백로,한로,입동,대설,소한] 순서로
+                each = dayOfYear(base36 2자) + minuteOfDay(base36 3자) */
+const JD_ENC="0y0n41s0dy2m0n53h0d74c0l35712m630er6y0it7t03p8n07s9g0yw0503g0y0ws1s0nn2m0wx3h0n34c0v15808k630om6y0sm7t0dj8n0hn9h04t050d50z02q1s0xk2n02q3h0wr4d00k580hy630xy6y11z7t0mx8n0r69h0eh050n40z0cj1t03b2n0ce3i02e4d0a7580rp6403s6z07u7t0wu8n1119h0ob050ww0z0mc1t0d42n0m73i0c74d0k15811k640do6z0hq7u02o8o06t9h0y10602p0y0w41s0my2m0w33h0m24c0tu58078630n96y0ra7t0c88n0ge9h03n050cf0z01s1s0wo2n01v3h0vx4c13p580h3630x46y1147t0m38n0qb9h0dl050m20z0bn1t02f2n0bj3i01i4d099580qn6402o6z06q7t0vr8n1009h0nb050w00z0lb1t0c22n0ly3i0bx4d0jp58116640d96z0ha7u0298o06g9h0xq0601p0y0vr1s0mj2m0vo3h0lp4c0tk58072630n56y0r57t0c18n0g79h03h050c30z01m1s0wf2n01h3h0ve4c133580gf630wf6y10g7t0lf8n0po9h0cz050lw0z0b41t01x2n0az3i00v4d08k580pz640226z0677t0v98n0zh9h0mq050vf0z0li1t0c92n0lc3i0bb4d0j45810l640cp6z0gu7u01v8o0639h0xb0601w0y0v71s0lx2m0v03h0kz4c0sq58063630m46y0q67t0b88n0fi9h02t050bm0z00t1s0vk2n00m3h0uk4c12c580fr630vt6y0zx7t0kz8n0pb9h0cp050l70z0aq1t01c2n0a93i0034d07s580p86401c6z05h7t0ul8n0yy9h0mc050v40z0ke1t0b22n0jy3i09q4d0he580yu640az6z0f57u0088o04i9h0vu0600s0y0ty1s0kp2m0tq3h0jm4c0rb5804q630ku6y0oz7t0a28n0ed9h01p050aa0y13t1s0ul2m13l3h0te4c10z580e8630u76y0yb7t0jg8n0nv9h0ba050k40z09f1t0062n0953h12y4d06l580nx6313y6z0447t0t98n0xo9h0l2050ts0z0j31t09r2n0ir3i08o4d0gf580xv6409y6z0e37t1358o03h9h0uu0513h0y0sw1s0jl2m0sl3h0ig4c0q65803j630jk6y0nm7t08n8n0cy9h00b0509a0y12j1s0ta2m12a3h0s54c0zu580da630td6y0xi7t0il8n0mx9h0ab050it0z08d1s1312n07y3h11q4d05e580mu631316z0397t0sf8n0ws9h0k5050sq0z0i21t08p2n0hl3i07e4d0f2580wh6408o6z0cy7t1248o02h9h0tt0512i0y0rp1s0ic2m0rb3h0h64c0ox5802d630ij6y0ms7t0808n0ce9g13s050850y11q1s0sc2m1163h0qx4c0yi580bu630rw6y0w47t0hd8n0lw9h09f050i60z07i1s1222n06u3h10h4d041580le6311j6z01t7t0r38n0vl9h0j2050rx0z0h51t07p2n0gj3i0684d0dt580v86407g6z0bq7t10y8o01e9h0st0511j0y0qx1s0hk2m0qf3h0g54c0nn5800w630gx6y0l47t06b8n0as9g1280507a0y10f1s0r52m1023h0pr4c0xa580ak630ql6y0us7t0g28n0kk9h083050gr0z0651s10q2n05l3h0za4d02u580k6631096z00h7t0pr8n0ua9h0hs050qk0z0fu1t06e2n0f63i04v4d0cg580ts6405w6z0a37t0za8n13q9h0r6051090y0p91s0fw2m0or3h0ei4c0m65713l630fq6y0jy7t0548n09j9g10z0505n0y0z41s0pq2m0yk3h0o74c0vq58091630p46y0tc7t0el8n0j39h06l050fh0z04p1s0za2n0423h0xo4d016580ii630yo6y1307t0oc8n0su9h0g9050p20z0e51t04p2n0dj3i0394d0av580sa6404j6z08x7t0y98n12r9h0q6050yn0y0o21s0el2m0ne3h0d34c0kn5711y630e16y0ib7t03n8n0879g0zq0504k0y0xr1s0oa2m0x13h0mn4c0u75807j630np6y0s07t0dd8n0i09h05m050e70z03n1s0y22n02q3h0w94c13s580h6630xf6y11u7t0n98n0rw9h0fh050o40z0dk1t0402n0cn3i0244d09k580qw640346z07h7t0wu8n11f9h0oy050y00y0n21s0dm2m0md3h0by4c0jf5710r630cy6y0hc7t02q8n07c9g0yw0503g0y0x11s0nl2m0wc3h0lv4c0t95806g630mi6y0qu7t0ca8n0gz9h04n050de0z02s1s0xb2n01z3h0vi4c12v580g3630w66y10j7t0ly8n0qn9h0e9050n70z0cb1t02t2n0bi3i0144d08n580q0640276z06k7t0vx8n10j9h0o4050wr0y0m81s0cq2m0lg3h0b14c0ii570zr630bt6y0g27t01d8n05y9g0xk0502n0y0vs1s0md2m0v33h0km4c0s15805b630lg6y0pr7t0b58n0fr9h03c050c40z01e1s0vw2n00k3h0u34c11j580ew630v56y0zl7t0l18n0po9h0d8050lu0z0b61t01m2n0aa3h13s4d078580ok6400q6z0557t0uk8n0z79h0mq050vo0y0kn1s0b32m0js3h09d4c0gv570y8630af6y0eu7t00b8n0509g0wl050150y0ul1s0kz2m0tl3h0j14c0qf5803p630jv6y0oa7t09s8n0ek9h02a050b30z00e1s0ur2m1393h0sl4c0zx580d6630td6y0xu7t0jc8n0o39h0bq050ku0z09t1t0072n08r3h1264d05k580mx631376z03q7t0t88n0xy9h0lk050ua0y0jm1s0a32m0ip3h0844c0fg570wn6308r6y0d57s12m8n03d9g0v1050020y0t71s0jp2m0rh3h0gw4c0o75801d630hh6y0lw7t07f8n0c99g13y0509l0y1201s0sd2m10x3h0qc4c0xp580b0630r86y0vq7t0ha8n0m39h09t050ii0z07u1s1272n06p3h1044d03i580ks6310y6z01d7t0qu8n0vk9h0j8050sc0y0hd1s07s2m0gd3h05s4c0d7570ui6306q6y0b67s10o8n01e9g0t20411t0y0r71s0hn2m0q63h0fj4c0mu58003630gb6y0kt7t06d8n0b69g12w0507m0y1101s0rf2m0zx3h0p94c0wi5809q630py6y0ui7t0g48n0kw9h08j050hg0z06h1s10u2n05e3h0yt4d027580jj630zu6z00f7t0q38n0uw9h0ik050r10y0gg1s06t2m0fc3h04r4c0c4570td6305i6y0at7s10f8n01a9g0t2041110y0r51s0hi2m0py3h0fa4c0mj5713r630fy6y0kf7t0628n0az9g12t0507n0y10w1s0r52m0zj3h0os4c0w25809e630pp6y0uc7t0g08n0kw9h08p050hf0z06t1s1142n05i3h0yr4d020580j8630zg6y13z7t0pl8n0uf9h0i5050ra0y0ga1s06p2m0f73h04i4c0bq570sx630556y09o7s0zb8n0069g0rx0410q0y0q21s0gf2m0ox3h0e74c0le5712j630ep6y0j87t04x8n09v9g11q0506i0y0zv1s0q62m0yl3h0nu4c0v058085630ob6y0su7t0eh8n0jd9h076050gc0z0581s0zi2n03x3h0x84d00j580hu630y36y12n7t0oa8n0t59h0gw050pq0y0ez1s05b2m0dr3h0324c0ac570rk6303q6y0877s0xt8m12n9g0qf040zh0y0om1s0ez2m0ne3h0cm4c0js5710y630d66y0hq7t03e8n08a9g101050520y0y21s0ob2m0wo3h0lw4c0t55806f630ms6y0ri7t0db8n0i99h060050el0z03w1s0y42n02h3h0vp4c12y580g7630wh6y1137t0mu8n0rr9h0fj050oi0y0dg1s03p2m0c23h01b4c08j570pr630216y06n7s0wf8m11f9g0pa040y10y0nc1s0dj2m0lt3h0ay4c0i4570zb630bl6y0g97t0238n0769g0z50503w0y0xb1s0ni2m0vq3h0kr4c0ru5804z630l96y0px7t0bq8n0gr9h04m050du0z02s1s0x02n01b3h0uf4c11j580er630v26y0zs7t0lm8n0qn9h0eh050n90y0cl1s02w2m0ba3h00g4c07k570oo6300u6y05g7s0v88m10a9g0o7040x30y0mf1s0cq2m0l33h0a94c0hb570yd630ai6y0f27t00v8n05y9g0xw0502v0y0w01s0m82m0ui3h0jn4c0qt58041630kb6y0p07t0au8n0fx9h03u050ck0z01y1s0w52n00f3h0tl4c10s580e0630u96y0yt7t0kj8n0pi9h0dd050mh0y0bj1s01t2m0a53g13b4c06h570no6213x6y04j7s0u98m0z89g0n3040w10y0l91s0bj2m0jt3h08w4c0g0570x76309i6y0e87t0028n0549g0x00501r0y0v41s0lb2m0tk3h0in4c0pq5802v630j66y0nw7t09r8n0es9h02m050bn0z00j1s0up2m12y3h0s34c0z9580ch630su6y0xm7t0ji8n0ol9h0cg050l50y0ac1s00g2m08q3g11v4c050570m76212g6y0357s0t08m0y59g0m4040uz0y0k81s0ac2m0ii3h07j4c0ek570vp6307y6y0cn7s12j8n03p9g0vp0500s0y0ts1s0ju2m0rw3h0gu4c0nv58013630hh6y0mc7t08c8n0di9h01g050ad0y13j1s0tn2m11r3h0qq4c0xr580ax630r86y0vz7t0hw8n0n19h0ay050k40y0931r13a2m07i3g10i4c03h570kj6210s6y01i7s0rf8m0wm9g0kl040tm0y0iq1s08v2m0h13h0604c0cy570u0630696y0b17s1128n02c9g0ue041390y0sk1s0io2m0qt3h0fr4c0mq5713t630g16y0kr7t06p8n0bw9g13w050940y1201s0s42m1093h0p94c0wa5809g630pr6y0ui7t0gf8n0ll9h09k050il0y07p1r11v2m0613g0z24c023570j8620zi6y0087s0q48m0v99g0ja040s80y0hj1s07q2m0fw3h04u4c0bt570sv630546y09v7s0zt8n00z9g0sz041200y0r11s0h42m0p83h0e64c0l65712d630es6y0jp7t05r8n0b09g12y0507m0y10w1s0qy2m0z23h0o24c0v55808c630op6y0ti7t0fj8n0kr9h08q050hj0y06q1r10s2m04w3g0xw4c00x570i1620yc6x1357s0p58m0ue9g0ih040rc0y0gl1s06l2m0el3h03f4c0ae570ri6303w6y08s7s0yw8n0089g0se041160y0ql1s0gm2m0ol3h0dd4c0k95711d630dq6y0im7t04o8n09y9g120050750y1041s0q72m0y83h0n24c0tz58072630nf6y0sb7t0ee8n0jo9h07p050gp0y05t1r0zx2m0413g0wx4b13u570gv620x46x11y7s0o18m0td9g0hh040qd0y0fo1s05s2m0du3h02p4c09l570qk6302r6y07j7s0xl8m12y9g0r2041080y0p61s0f52m0n53h0bz4c0iw57100630cc6y0h87t03d8n08p9g10t0505s0y0yw1s0ow2m0wv3h0lr4c0sq5805v630m86y0r17t0d18n0ib9h06d050fj0y04j1r0yl2m02m3g0vh4b12e570fh620vr6x10l7s0ml8m0ru9g0fx040p30y0e31s0452m0c43h00v4c07p570or630156y0637s0w98m11n9g0pr040yn0y0nu1s0du2m0lt3h0ak4c0hf570yi630av6y0ft7t0208n07c9g0ze0504g0y0xc1s0nb2m0va3h0k44c0r058043630kg6y0pe7t0bl8n0gz9h052050e10y0321r0x02m00y3g0tr4b10n570dq620u16x0yy7s0l48m0qk9g0es040nq0y0d01s02y2m0av3g13k4c06d570ne6213p6y04l7s0ur8m1079g0oe040xl0y0ml1s0ci2m0kc3h08z4c0fr570wu630996y0ea7t00j8n05z9g0y5050370y0wa1s0m92m0u63h0iw4c0pq5802t630j76y0o57t0ac8n0fq9h03v050cw0y0211r0w32m0033g0su4b0zn570cn620sw6x0xs7s0jy8m0pe9g0dl040mm0y0br1s01q2m09n3g12b4c053570m36212f6y03d7s0to8m0z79g0ng040wc0y0ln1s0bk2m0jf3h0854c0ey570w06308d6y0dc7s13j8n04z9g0x5050290y0va1s0l82m0t43h0hu4c0op5801r630i56y0n37t0998n0eo9h02t050bw0y00y1r0ux2l12t3g0rj4b0yd570bf620rs6x0wr7s0iy8m0oe9g0cl040lk0y0at1s00s2m08p3g11d4c045570l66211j6y02i7s0sr8m0y89g0me040vd0y0ke1s0aa2m0i33h06r4c0di570ul630716y0c57s12i8n0409g0w6050130y0u31s0jx2m0rq3h0gg4c0na5800e630gu6y0lw7t0878n0dq9h01x050au0x13z1r0tu2l11n3g0qb4b0x4570a5620qi6x0vh7s0hr8m0nb9g0bl040kn0y09r1r13k2m0783g0zq4c02e570je620zt6y00w7s0ra8m0wx9g0la040ue0y0jj1s09c2m0h13h05j4c0c6570t76305n6y0ar7s1148n02o9g0ux050050y0t31s0iz2m0qq3h0fa4c0ly5712w630f96y0kb7t06o8n0c89h00h0509p0x12m1r0sj2l10d3g0ox4b0vl5708h620or6x0ts7s0g58m0ls9g0a4040j90y08e1r12b2m0643g0yp4c01c570i9620yj6x13h7s0pt8m0vg9g0js040sz0y0hy1s07r2m0fh3h0414c0aq570rp630436y0947s0zh8n0129g0td0412m0y0rj1s0hd2m0p33h0do4c0kg5711i630dx6y0iy7t0588n0ar9g131050870x1191r0r52l0yy3g0nk4b0ua5707a620no6x0so7s0ey8m0kh9g08q040hu0y06w1r10r2m04h3g0wy4b13k570gj620wz6x1257s0ol8m0u89g0ij040ri0y0gm1s06f2m0e43h02n4c09c570qd6302v6y0827s0yj8n0059g0sf0411b0y0qd1s0g42m0nt3h0ce4c0j457105630cl6y0hq7t0468n09u9g125050740x1051r0pw2l0xk3g0m24b0sp5705p620m46x0r87s0dq8m0jh9g07x040gw0y0651r0zw2m03i3g0vx4b12i570fh620vx6x1127s0nj8m0t99g0hp040qs0y0fw1s05m2m0d63h01j4c083570p16301i6y06q7s0x98m1309g0rd0410k0y0pk1s0fc2m0my3h0bd4c0hz570yx630bd6y0gj7t0318n08q9g114050670x0zb1r0p62l0ww3g0ld4b0rz5704v620l76x0q97s0cq8m0ig9g06v040fy0y0531r0yv2m02h3g0uv4b11d570e8620ul6x0zq7s0m98m0s39g0gk040pr0y0et1s04j2m0c43h00i4c073570o26300i6y05o7s0w58m11v9g0q9040zg0y0og1s0e72m0lt3h0a94c0gw570xv630aa6y0fe7t01t8n07h9g0zu050530x0y11r0nu2l0vg3g0ju4b0qe5703a620jo6x0ot7s0bb8m0h19g05g040eo0y03p1r0xi2m0143g0tj4b102570cz620tf6x0yl7s0l48m0qv9g0f9040ob0y0db1s0302m0ak3g12y4c05i570mg6212x6y0467s0ur8m10k9g0ox040y10y0mw1s0cj2m0k33h08h4c0f4570w46308k6y0ds7t00d8n0669g0yl0503o0x0wo1r0md2l0tx3g0ib4b0ox5701w620ib6x0nh7s0a08m0ft9g04b040de0y02j1r0w62l13l3g0rs4b0y8570b4620rl6x0wv7s0ji8m0pe9g0dx040n80y0c61s01t2m0993g11g4c03x570ku6211e6y02q7s0td8m0z79g0nn040wu0y0ls1s0bi2m0j13h07c4c0du570ur630776y0cg7s1328n04x9g0xc0502h0x0vh1r0l72l0sq3g0h04b0nf57009620gm6x0lt7s08h8m0ee9g02y040c60y0181r0ux2l12f3g0qq4b0x6570a1620qg6x0vo7s0ic8m0o99g0ct040lw0y0b01s00m2m0813g10b4c02s570jp621056y01f7s0s28m0xy9g0mg040vq0y0kn1s0a92m0hp3h05z4c0ch570tg6305x6y0b67s11r8n03l9g0w30501c0x0ud1r0k32l0rm3g0fx4b0mf5613d620fu6x0l27s07o8m0di9g020040b00y0081r0tv2l11b3g0pi4b0vv5708p620p76x0uj7s0ha8m0n89g0br040kw0y09v1r13h2m06w3g0z44c01k570ih620z16y00f7s0r78m0x49g0lm040um0y0jn1s0982m0go3h04y4c0bg570se6304w6y0a77s10x8n02v9g0vf0500f0x0ti1r0j32l0qg3g0em4b0l05611u620ea6x0jk7s06a8m0ca9g00y040aa0x13a1r0sw2l1083g0oc4b0uo5707j620o16x0te7s0g58m0m59g0ar040jy0y0901r12k2m05w3g0y04c00c570h7620xo6x1327s0pu8m0vt9g0kd040tp0y0ik1s0862m0fj3h03p4c0a1570qv6303b6y08m7s0zd8n01d9g0tx0413a0x0s61r0ht2l0pa3g0di4b0jw5610q620d56x0ie7s0548m0b49f13q0408u0x11z1r0rj2l0yv3g0mz4b0ta57062620mh6x0rs7s0ek8m0km9g09a040io0y07j1r1122m04d3g0wg4b12t570fp620w86x11l7s0od8m0uc9g0iw040s90y0h31s06n2m0e03h0264c08m570pj630226y07e7s0y48n0019g0sl0411t0x0qr1r0gd2l0nq3g0bt4b0i4560yw620bd6x0gq7s03i8m09i9f1240407h0x10d1r0py2l0x93g0lc4b0ro5704i620l16x0qh7s0dd8m0jf9g080040h20y0611r0zi2m02s3g0uw4b119570e5620up6x1067s0n38m0t69g0hs040qv0y0ft1s0592m0ch3h00k4c06x570nt6300b6y05p7s0wl8m12p9g0re0410n0x0pl1r0f22l0mc3g0ae4b0gr560xn620a66x0fk7s02f8m08j9f11a0406c0x0zl1r0p22l0w73g0k44b0qc57034620jm6x0p37s0c18m0i79g06y040gb0y05a1r0ys2m01y3g0tv4b102570cu620tf6x0yx7s0lw8m0s09g0go040q00y0ex1s04h2m0br3g13t4c064570mx6213f6y04v7s0vr8m11v9g0qk040zn0x0os1r0ec2l0ln3g09n4b0fu560wi6208w6x0e97s0158m07c9f1040405i0x0yh1r0o02l0v93g0j94b0ph57029620ip6x0o47s0b18m0h79g05y040f60y0461r0xn2m00v3g0sv4b0z6570c1620sk6x0xz7s0kv8m0qz9g0fo040ox0y0dv1s03c2m0ak3g12k4c04u570lo621266y03k7s0ue8m10h9g0p5040yn0x0nf1r0cy2l0k83g08a4b0ek560ve6207y6x0df7s00a8m06e9f0z2040440x0x91r0mp2l0tw3g0ht4b0o05700s620hc6x0mv7s09w8m0g39g04s040e00y02v1r0w92l13d3g0ra4b0xi570ab620qx6x0wi7s0jj8m0pr9g0eg040np0y0cg1s01t2m08y3g10y4c039570k56210r6y02a7s0ta8m0zi9g0o9040xb0x0me1r0bq2l0it3g06o4b0ct560tj620616x0bi7r12i8m04s9f0xn040380x0w01r0le2l0sf3g0g74b0ma56131620fl6x0l67s0898m0ek9g03d040cq0y01m1r0v02l1223g0pv4b0w05708r620pc6x0uy7s0i18m0ob9g0d3040me0y0ba1s00p2m07s3g0zn4c01q570if620yw6y00e7s0rf8m0xp9g0mj040w30x0kt1r0aa2l0hg3g05d4b0bi560s86204p6x0a77r1188m03j9f0wf0401k0x0uq1r0k32l0r53g0ez4b0l25611s620e96x0js7s06v8m0d79g023040bh0y00f1r0ts2l10s3g0ok4b0uo5707g620o06x0tk7s0gl8m0mv9g0bo040l60y09y1r13d2m06g3g0yc4c00k570he620xz6x13k7s0qk8m0ws9g0lk040up0x0ju1r09a2l0ge3g0484b0aa560qz6203g6x0907r1028m02c9f0v70400l0x0ti1r0ix2l0q03g0ds4b0jv5610k620d46x0ir7s05x8m0ca9g013040a80x1361r0si2l0zk3g0nf4b0tl5706f620n16x0sp7s0fv8m0m89g0b2040k20y0941r12e2m05e3g0x84b13d570g5620wo6x1287s0pb8m0vo9g0kl040u00x0iu1r0862l0f63g02y4b092560pu6202f6x0817r0z68m01j9f0uh0313n0x0st1r0i32l0p03g0cn4b0io560ze620bz6x0ho7s04v8m0ba9g0080409k0x12j1r0ru2l0yr3g0me4b0sc57051620lm6x0rb7s0ei8m0kw9g09r040jb0y07y1r11b2m04b3g0w34b126570ew620vh6x1157s0ob8m0uq9g0jl040ss0x0hu1r0762l0e63g01w4b07v560oh6200x6x06h7r0xm8m0039f0t30312m0x0rg1r0gs2l0np3g0bc4b0hb560xy620ag6x0g27s0398m09q9f12o040880x10x1r0q62l0x33g0kt4b0qw5703n620ka6x0py7s0d48m0ji9g08f040hr0y06o1r0zy2m02v3g0ul4b10m570db620tu6x0zf7s0mj8m0sw9g0hs040rh";
+const JY0=1900, JY1=2100;
+const GAN2="갑을병정무기경신임계", JI2="자축인묘진사오미신유술해";
+const GANH2="甲乙丙丁戊己庚辛壬癸", JIH2="子丑寅卯辰巳午未申酉戌亥";
+const OH=[0,2,4,6,8,10,1,3,5,7,9,11]; /* unused placeholder */
+
+function jieOf(y,idx){ /* idx 0=입춘 … 11=소한, 반환: {m,d,min} */
+  const s=JD_ENC.substr(((y-JY0)*12+idx)*5,5);
+  const doy=parseInt(s.substr(0,2),36), mn=parseInt(s.substr(2,3),36);
+  const dt=new Date(Date.UTC(y,0,1+doy));
+  return {m:dt.getUTCMonth()+1, d:dt.getUTCDate(), min:mn};
+}
+function cmpJie(y,m,d,mn,idx){ /* 생시가 해당 절입 이후면 1 */
+  const j=jieOf(y,idx);
+  if(m!==j.m) return m>j.m?1:-1;
+  if(d!==j.d) return d>j.d?1:-1;
+  return mn>=j.min?1:-1;
+}
+/* 연주: 입춘 절입 시각 기준 */
+function yearPillarIdx(y,m,d,mn){
+  let sy=y;
+  if(cmpJie(y,m,d,mn,0)<0) sy=y-1;      /* 입춘 전이면 전년 */
+  return {sy, idx:((sy-4)%60+60)%60};
+}
+/* 월주: 12절 기준. 인월=입춘~. 오호둔: 갑기→병인, 을경→무인, 병신→경인, 정임→임인, 무계→갑인 */
+function monthPillar(y,m,d,mn){
+  /* 달력 순서: 소한(11,1월) → 입춘(0,2월) → … → 대설(10,12월).
+     시간순으로 마지막에 지난 절기를 찾는다. */
+  const CHRONO=[11,0,1,2,3,4,5,6,7,8,9,10];
+  let mi=-1;
+  for(const i of CHRONO){ if(cmpJie(y,m,d,mn,i)>0) mi=i; else break; }
+  if(mi<0) mi=10;  /* 1월 1일~소한 전 = 전년 대설이 이어지는 자월 */
+  /* mi: 0=인월 … 9=해월? 아니다 — 0=인,1=묘,2=진,3=사,4=오,5=미,6=신,7=유,8=술,9=해,10=자,11=축 */
+  const yp=yearPillarIdx(y,m,d,mn);
+  const yGan=yp.idx%10;
+  const inGan=[2,4,6,8,0][yGan%5];      /* 갑기→병(2), 을경→무(4), 병신→경(6), 정임→임(8), 무계→갑(0) */
+  const gan=(inGan+mi)%10;
+  const ji=(mi+2)%12;                  /* 인월 지지=인(2) */
+  return {gan, ji, mi};
+}
+/* 일주: JDN 기반 (KASI 일진 대조 검증). dayStartMin: 하루 경계(0=자정, 1410=23:30 자시설) */
+function jdn2(y,m,d){ if(m<=2){y--;m+=12;} const a=Math.floor(y/100),b=2-a+Math.floor(a/4);
+  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+b-1524; }
+function dayPillarIdx(y,m,d,mn,zasiNextDay){
+  let n=jdn2(y,m,d);
+  if(zasiNextDay && mn>=1410) n+=1;     /* 23:30 이후를 다음 날로 보는 유파 */
+  return ((n+49)%60+60)%60;
+}
+/* 시주: 오서둔 갑기→갑자, 을경→병자, 병신→무자, 정임→경자, 무계→임자.
+   시지: 보정(-30분) 적용 시 자=23:30~01:30, 미적용 시 23:00~01:00 */
+function hourPillar(dayGanIdx, mn, adjust){
+  const base = adjust ? 1410 : 1380;    /* 자시 시작(분) */
+  const rel = ((mn - base) + 1440) % 1440;
+  const ji = Math.floor(rel/120) % 12;
+  const zaGan=[0,2,4,6,8][dayGanIdx%5];
+  const gan=(zaGan+ji)%10;
+  return {gan, ji};
+}
+function p60(idx){ return {ko:GAN2[idx%10]+JI2[idx%12], hj:GANH2[idx%10]+JIH2[idx%12], g:idx%10, j:idx%12}; }
+
+</script>
+<script>
+/* ── 한국 음력 데이터 (1899~2100) ───────────────────────────────────────────
+   9자 base36 레코드 × 202년.  off(4) = 1899-01-01부터 그 음력해 1월 1일까지 일수
+                              leap(1) = 윤달 월번호(없으면 0)
+                              mask(4) = 각 달이 30일이면 1 (i번째 비트 = i번째 달)
+   생성 근거: 삭(합삭) = Meeus, Astronomical Algorithms 2nd ed. Ch.49
+              태양 겉보기 황경 = 동 Ch.25 (VSOP87 절단) + Ch.22 장동
+              ΔT = Espenak & Meeus 다항식
+              한국 표준시 변경 이력(1908/1912/1954/1961) 반영
+   검증: 1900~2100년 73,414일 전수 왕복 일치, 설날·추석·석가탄신일 87건 일치,
+        윤달 74개 전부 일치(2033년 윤11월 포함), 2026년 24절기 KASI 공표값 일치 */
+const LD="00140025100az804ia00ln001g200vh002w5015c504ei01fz0018r01pt0023f01zo4047q02ac0012i02k60028l02u1204lu034p001g203ej604kl03p70027903z100217048v503ob04jj0023x04te0012i05382029505dw002ax05nr705ea05yf002oi0689002lh06i35057106sr001ue072l000j907cf404a507n4001ck07wy002p5086t205ua08hh002vm08rb602li091y0010n09bs0021j09ln503p209wb002560a66001ck0ag0302w90aqo001ft0b0i704gj0bb6002370bl00010r0buu6021n0c5i001v10cfd002960cp8405ec0czw002as0d9q002890djk2058z0du8002390e427046j0eeq0010t0eok0023x0eyf5048a0f93002pe0fiy002p00fss305s90g3g002mi0gda805910gny0023a0gxs0011y0h7m602450hia002510hs5001ci0i1z402w50icn002w50imi002tm0iwc302hi0j6z0023f0jgu7047q0jri0012i0k1c0028p0kb7504lu0klv001g20kvp001et0l5j404ej0lg7002170lq1803or0m0p000j10maj0012j0mke602950mv2002p50n4x002oi0ner405d10npf002lh0nz9a05710o9x0021i0ojr000ja0otl604a50p4a001ck0pe4002p50pnz505ua0pyn002vm0q8h002li0qib3021i0qsy0021j0r2t803p20rdh0028q0rnc001ck0rx6502x50s7u001ft0sho001ar0sri4046f0t260010r0tc00021n0tlv2047u0twj000oa0u6d705ed0uh2002as0uqw002890v0q5058z0vbe002390vl80010t0vv23021p0w5q0023x0wfl904a20wq90015e0x03002p10x9y505sa0xkm002mi0xug002390y4a4046l0yey0011y0yos002450yyn204a20z9b001ci0zj5602w50ztt002w5103o002tm10di502hi10o5002hn10y000122117u3025111ii0029511sdb04lu1231001g212cv0027912mp604ej12xd002171377000x713h15012313rp0012l141k0029514bf205ea14m3002oi14vx705r9156l002lh15gf0021915q950431160x000ja16ar0014l16km302p516va002w91755805ua17ft002vm17pn002li17zh6021i18a40021j18jz000ye18tt401bp194h001cl19ec002x519o7302vm19yu001ar1a8o7046j1ajc0010r1at60021n1b315047u1bdp0012i1bnj0028l1bxe404ll1c82002891chw8058z1csk002391d2e0010t1dc86023x1dmw002451dwr0014a1e6l402at1eh9002p11er4002mi1f0y305911fbm002hh1flg7046m1fw40011y1g5y002451gft504aa1gqh001ci1h0b002w51ha6405ze1hku0018q1hun802hj1i5b002i31if6001221ip0602511izo002951j9j001g21jjd404h11ju1002791k3v0018r1kdp3042f1kod000x7";
+const LY0=1899, LY1=2100, LBASE=Date.UTC(1899,0,1);
+function lrec(y){const s=LD.substr((y-LY0)*9,9);
+  return{off:parseInt(s.substr(0,4),36),leap:parseInt(s.substr(4,1),36),mask:parseInt(s.substr(5,4),36)};}
+function monthsOf(y){const r=lrec(y),n=r.leap?13:12,out=[];let no=1;
+  for(let i=0;i<n;i++){const isL=r.leap&&i===r.leap;
+    out.push({no:isL?r.leap:no,leap:!!isL,days:(r.mask>>i)&1?30:29});
+    if(!isL)no++;}
+  return{off:r.off,leap:r.leap,months:out};}
+function solarToLunar(y,m,d){
+  const off0=Math.round((Date.UTC(y,m-1,d)-LBASE)/86400000);
+  let ly=Math.min(y+1,LY1);
+  while(ly>=LY0&&lrec(ly).off>off0)ly--;
+  if(ly<LY0)return null;
+  const info=monthsOf(ly);let rest=off0-info.off;
+  for(const mo of info.months){
+    if(rest<mo.days)return{ly:ly,lm:mo.no,leap:mo.leap,ld:rest+1,size:mo.days};
+    rest-=mo.days;}
+  return null;}
+function lunarToSolar(ly,lm,ld,leap){
+  if(ly<LY0||ly>LY1)return null;
+  const info=monthsOf(ly);let acc=0,found=null;
+  for(const mo of info.months){
+    if(mo.no===lm&&!!mo.leap===!!leap){found=mo;break;}
+    acc+=mo.days;}
+  if(!found||ld<1||ld>found.days)return null;
+  const dt=new Date(LBASE+(info.off+acc+ld-1)*86400000);
+  return{y:dt.getUTCFullYear(),m:dt.getUTCMonth()+1,d:dt.getUTCDate(),size:found.days};}
+/* 간지 */
+const GAN="갑을병정무기경신임계", JI="자축인묘진사오미신유술해";
+const GANH="甲乙丙丁戊己庚辛壬癸", JIH="子丑寅卯辰巳午未申酉戌亥";
+const TTI=["쥐","소","호랑이","토끼","용","뱀","말","양","원숭이","닭","개","돼지"];
+function yearGanji(ly){const i=((ly-4)%60+60)%60;
+  return{ko:GAN[i%10]+JI[i%12],hj:GANH[i%10]+JIH[i%12],tti:TTI[i%12]};}
+function jdn(y,m,d){if(m<=2){y--;m+=12;}const a=Math.floor(y/100),b=2-a+Math.floor(a/4);
+  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+b-1524;}
+function dayGanji(y,m,d){const i=((jdn(y,m,d)+49)%60+60)%60;
+  return{ko:GAN[i%10]+JI[i%12],hj:GANH[i%10]+JIH[i%12]};}
+
+</script>
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const Y0=1900, Y1=2100;
+const JIEN=['입춘','경칩','청명','입하','망종','소서','입추','백로','한로','입동','대설','소한'];
+const ELG=[0,0,1,1,2,2,3,3,4,4];                 /* 천간 오행: 목목화화토토금금수수 */
+const ELJ=[4,2,0,0,2,1,1,2,3,3,2,4];             /* 지지 오행 */
+const EN=['목','화','토','금','수'], EHJ=['木','火','土','金','水'];
+const TGT=[['비견','겁재'],['식신','상관'],['편재','정재'],['편관','정관'],['편인','정인']];
+function tenGod(E,P,F,Q){ const rel=((F-E)%5+5)%5; return TGT[rel][P===Q?0:1]; }
+
+let cal='sol';
+function warn(cls,html){
+  const w=$('warn');
+  if(!cls){ w.className='hidden'; w.innerHTML=''; return; }
+  w.className='msg '+cls; w.innerHTML=html;
+}
+function hideRes(){ $('res').classList.add('hidden'); }
+const OUT_MSG='양력 <strong>1900년 1월 1일 ~ 2100년 12월 31일</strong> 출생만 계산합니다. 이 범위를 벗어난 날짜는 절입 시각과 일진을 믿을 수 있게 계산할 수 없어 다루지 않습니다.';
+
+function intOf(id){
+  const v=parseInt(String($(id).value).replace(/[^0-9-]/g,''),10);
+  return isFinite(v)?v:null;
+}
+function parseD(v){
+  const m=/^(\d{1,6})-(\d{1,2})-(\d{1,2})$/.exec(String(v||'').trim());
+  if(!m) return null;
+  const y=+m[1], mo=+m[2], d=+m[3];
+  if(mo<1||mo>12||d<1||d>31) return null;
+  const dt=new Date(Date.UTC(2000,0,1)); dt.setUTCFullYear(y,mo-1,d);
+  if(dt.getUTCFullYear()!==y||dt.getUTCMonth()!==mo-1||dt.getUTCDate()!==d) return null;
+  return {y:y,m:mo,d:d};
+}
+function pad2(n){ return String(n).padStart(2,'0'); }
+function fmtMin(mn){ return pad2(Math.floor(mn/60))+':'+pad2(mn%60); }
+
+/* 윤달 체크 유효성 (음력 엔진 monthsOf 이용) */
+function leapState(y,m){
+  if(y===null||y<Y0||y>Y1) return {ok:false,why:'음력 연도는 1900년부터 2100년까지 넣을 수 있습니다.'};
+  const info=monthsOf(y);
+  if(!info.leap) return {ok:false,why:y+'년에는 윤달이 없습니다. 그래서 켤 수 없어요.'};
+  if(info.leap!==m) return {ok:false,why:y+'년의 윤달은 <b>윤'+info.leap+'월</b> 하나뿐입니다. '+m+'월은 윤달이 아니에요.'};
+  return {ok:true,why:y+'년에는 <b>윤'+info.leap+'월</b>이 있습니다. 윤달 날짜라면 켜세요.'};
+}
+function syncLeap(){
+  const y=intOf('ly'), m=intOf('lm');
+  const st=leapState(y,m);
+  $('leap').disabled=!st.ok;
+  if(!st.ok) $('leap').checked=false;
+  $('leapWhy').innerHTML=st.why;
+  $('leapWrap').classList.toggle('off',!st.ok);
+}
+
+function getSolar(){
+  if(cal==='sol'){
+    const P=parseD($('sd').value);
+    if(P===null) return {empty:!String($('sd').value||'').trim(), err:'생년월일을 입력하세요.'};
+    if(P.y<Y0||P.y>Y1) return {err:OUT_MSG};
+    return {y:P.y,m:P.m,d:P.d};
+  }
+  const y=intOf('ly'), m=intOf('lm'), d=intOf('ld'), lp=$('leap').checked;
+  if(y===null||m===null||d===null) return {empty:$('ly').value==='', err:'음력 연·월·일을 모두 입력하세요.'};
+  if(y<Y0||y>Y1) return {err:OUT_MSG};
+  if(d<1||d>30) return {err:'음력 날짜는 1일부터 30일까지입니다.'};
+  const info=monthsOf(y);
+  let mo=null;
+  for(const x of info.months) if(x.no===m&&(!!x.leap)===(!!lp)){ mo=x; break; }
+  if(!mo) return {err:'음력 '+y+'년 '+(lp?'윤':'')+m+'월은 없는 달입니다.'};
+  if(d>mo.days) return {err:'음력 '+y+'년 '+(lp?'윤':'')+m+'월은 <strong>'+mo.days+'일까지</strong>입니다.'};
+  const R=lunarToSolar(y,m,d,lp);
+  if(!R) return {err:OUT_MSG};
+  if(R.y<Y0||R.y>Y1) return {err:OUT_MSG};
+  return {y:R.y,m:R.m,d:R.d,fromLunar:{ly:y,lm:m,ld:d,leap:lp}};
+}
+
+function ganCell(g){ return {ch:GANH2[g],ko:GAN2[g],e:ELG[g],p:g%2}; }
+function jiCell(j){ return {ch:JIH2[j],ko:JI2[j],e:ELJ[j],p:j%2}; }
+function cellHtml(c){
+  return '<div class="bigc e'+c.e+'">'+c.ch+'<small>'+c.ko+'</small>'+
+    '<span class="yy">'+(c.p===0?'양':'음')+' '+EN[c.e]+'</span></div>';
+}
+function pillarsAt(abs){ /* abs = 분 단위 UTC 캘린더 절대시각 → 연주·월주 */
+  const dt=new Date(abs*60000);
+  const y2=dt.getUTCFullYear(), m2=dt.getUTCMonth()+1, d2=dt.getUTCDate(),
+        mn2=dt.getUTCHours()*60+dt.getUTCMinutes();
+  const yp2=p60(yearPillarIdx(y2,m2,d2,mn2).idx);
+  const mp2=monthPillar(y2,m2,d2,mn2);
+  return {y:yp2.ko, m:GAN2[mp2.gan]+JI2[mp2.ji]};
+}
+
+function calc(){
+  syncLeap();
+  const S=getSolar();
+  if(S.err!==undefined){
+    hideRes();
+    if(S.empty) warn(null); else warn('m-bad',S.err);
+    return;
+  }
+  const tunk=$('tunk').checked;
+  $('tm').disabled=tunk;
+  let mn=720, timeKnown=false;
+  if(!tunk){
+    const t2=/^(\d{1,2}):(\d{2})/.exec(String($('tm').value||''));
+    if(!t2){ hideRes(); warn('m-bad','태어난 시각을 입력하거나 <strong>시각 모름</strong>을 켜세요.'); return; }
+    mn=(+t2[1])*60+(+t2[2]); timeKnown=true;
+    if(mn<0||mn>1439){ hideRes(); warn('m-bad','시각은 00:00부터 23:59까지입니다.'); return; }
+  }
+  warn(null);
+  const adj=$('optAdj').checked, zasi=$('optZasi').checked;
+  const y=S.y, m=S.m, d=S.d;
+
+  /* 네 기둥 */
+  const yp=yearPillarIdx(y,m,d,mn), YP=p60(yp.idx);
+  const mp=monthPillar(y,m,d,mn);
+  const base=adj?1410:1380;
+  const shift=timeKnown&&zasi&&mn>=base;
+  const dIdx=dayPillarIdx(y,m,d,shift?1410:0,shift);
+  const DP=p60(dIdx);
+  let HP=null;
+  if(timeKnown){ const h=hourPillar(dIdx%10,mn,adj); HP={g:h.gan,j:h.ji}; }
+
+  const dg=dIdx%10, dE=ELG[dg], dPo=dg%2;
+  const mpKo=GAN2[mp.gan]+JI2[mp.ji], mpHj=GANH2[mp.gan]+JIH2[mp.ji];
+  const hpKo=HP?GAN2[HP.g]+JI2[HP.j]:null, hpHj=HP?GANH2[HP.g]+JIH2[HP.j]:null;
+
+  $('sline').textContent=YP.ko+'년 '+mpKo+'월 '+DP.ko+'일'+(HP?' '+hpKo+'시':'')+(timeKnown?'':' · 시주 모름');
+  $('meta').textContent='양력 '+y+'년 '+m+'월 '+d+'일'+(timeKnown?' '+fmtMin(mn):'')+' 출생 기준 · '
+    +YP.hj+'年 '+mpHj+'月 '+DP.hj+'日'+(hpHj?' '+hpHj+'時':'');
+
+  /* 기둥 카드: 시·일·월·연 */
+  const cards=[
+    {k:'시주', g:HP?ganCell(HP.g):null, j:HP?jiCell(HP.j):null},
+    {k:'일주', g:ganCell(dg), j:jiCell(dIdx%12), me:true},
+    {k:'월주', g:ganCell(mp.gan), j:jiCell(mp.ji)},
+    {k:'연주', g:ganCell(YP.g), j:jiCell(YP.j)}
+  ];
+  $('pgrid').innerHTML=cards.map(function(c,i){
+    if(!c.g) return '<div class="pill" id="pc'+i+'"><div class="pk">'+c.k+'</div><div class="punk">모름</div></div>';
+    const ssG=c.me?'<span class="ss meTag">일간 · 나</span>':'<span class="ss">'+tenGod(dE,dPo,c.g.e,c.g.p)+'</span>';
+    const ssJ='<span class="ss">'+tenGod(dE,dPo,c.j.e,c.j.p)+'</span>';
+    return '<div class="pill'+(c.me?' me':'')+'" id="pc'+i+'"><div class="pk">'+c.k+'</div>'+
+      ssG+cellHtml(c.g)+cellHtml(c.j)+ssJ+'</div>';
+  }).join('');
+
+  /* 일간 강조 */
+  $('ilgan').innerHTML=cellHtml(ganCell(dg))+
+    '<div class="tx"><b>일간 '+GAN2[dg]+'('+GANH2[dg]+') — '+(dPo===0?'양':'음')+'의 '+EN[dE]+'('+EHJ[dE]+')</b><br>'+
+    '일간은 여덟 글자 가운데 <strong>당신 자신을 나타내는 글자</strong>입니다. 나머지 글자의 십성은 모두 이 글자를 기준으로 정해집니다.</div>';
+
+  /* 오행 분포 */
+  const cnt=[0,0,0,0,0];
+  cards.forEach(function(c){ if(c.g){ cnt[c.g.e]++; cnt[c.j.e]++; } });
+  const total=timeKnown?8:6;
+  $('ocnt').textContent='· '+total+'글자 기준'+(timeKnown?'':' (시주 제외)');
+  const mx=Math.max.apply(null,cnt.concat([1]));
+  $('obars').innerHTML=cnt.map(function(n,e){
+    return '<div class="obar"><span class="ol e'+e+'">'+EN[e]+' '+EHJ[e]+'</span>'+
+      '<span class="ot"><span class="of e'+e+'" style="width:'+(n/mx*100)+'%"></span></span>'+
+      '<span class="on">'+n+'</span></div>';
+  }).join('');
+
+  /* 절입 경계 검사 (24시간 이내) */
+  const bAbs=Date.UTC(y,m-1,d)/60000+mn;
+  let near=null;
+  for(let yy=Math.max(Y0,y-1); yy<=Math.min(Y1,y+1); yy++){
+    for(let i=0;i<12;i++){
+      const j=jieOf(yy,i);
+      const t=Date.UTC(yy,j.m-1,j.d)/60000+j.min;
+      const df=bAbs-t;
+      if(Math.abs(df)<=1440&&(near===null||Math.abs(df)<Math.abs(near.df))) near={yy:yy,i:i,j:j,t:t,df:df};
+    }
+  }
+  let jh='';
+  if(near){
+    const B=pillarsAt(near.t-1), A=pillarsAt(near.t);
+    const ad=Math.abs(near.df), hh=Math.floor(ad/60), mm=ad%60;
+    const gap=(hh?hh+'시간 ':'')+(mm||!hh?mm+'분':'');
+    const what=near.i===0?'연주와 월주가':'월주가';
+    const when=JIEN[near.i]+' 절입('+near.yy+'년 '+near.j.m+'월 '+near.j.d+'일 '+fmtMin(near.j.min)+')';
+    let head;
+    if(!timeKnown){
+      head='시각을 몰라 정오(12:00) 기준으로 계산했는데, '+when+'과 하루 안쪽입니다. 실제 태어난 시각에 따라 '+what+' 달라질 수 있습니다.';
+    }else{
+      head=when+(near.df>=0?'을 지나고 ':'까지 ')+gap+(near.df>=0?' 뒤':' 전')+'의 출생입니다. 이 경계를 사이에 두고 '+what+' 갈립니다.';
+    }
+    jh='<div class="msg m-warn"><strong>절입 경계 출생</strong> — '+head+'<br>'+
+      '절입 <strong>전</strong>이면 연주 '+B.y+' · 월주 '+B.m+', 절입 <strong>후</strong>면 연주 '+A.y+' · 월주 '+A.m+'입니다. '+
+      '출생신고 시각은 실제와 어긋나기도 하니 태어난 시각을 한 번 더 확인해 보세요.</div>';
+  }
+  $('jwarn').innerHTML=jh;
+
+  /* 자시 경계 안내 */
+  let zh='';
+  if(timeKnown&&(mn>=1380||mn<90)){
+    zh='<div class="msg m-warn"><strong>자시 경계 출생</strong> — 밤 11시부터 새벽 1시 반 사이는 '+
+      '<strong>표준시 보정</strong>과 <strong>자시에 날 바꿈</strong> 설정에 따라 시주와 일주가 달라질 수 있습니다. '+
+      '유파에 따라 다르니 두 옵션을 바꿔가며 비교해 보세요.</div>';
+  }
+  $('zwarn').innerHTML=zh;
+
+  /* 참고: 음력 생일 · 띠 */
+  const L=solarToLunar(y,m,d);
+  let ref='';
+  if(L){
+    const lg=yearGanji(L.ly);
+    const seolIdx=((L.ly-4)%60+60)%60;
+    ref='<p class="note">참고 — 음력 생일은 <strong>'+L.ly+'년 '+(L.leap?'윤':'')+L.lm+'월 '+L.ld+'일</strong>이고, '+
+      '설날 기준 띠는 <strong>'+lg.ko+'년 '+lg.tti+'</strong>입니다. 띠는 설날에, 사주 연주는 입춘에 바뀝니다.';
+    if(seolIdx!==yp.idx){
+      ref+=' <strong>이 출생은 둘이 다릅니다</strong> — 띠는 '+lg.tti+'('+lg.ko+')인데 사주 연주는 '+YP.ko+'입니다. 입춘과 설날 사이에 태어나면 이렇게 갈립니다.';
+    }
+    ref+='</p>';
+  }
+  ref+='<p class="note">대운·세운 풀이는 유파별 차이가 커서 이 도구는 원국까지만 계산합니다.</p>';
+  $('refs').innerHTML=ref;
+
+  $('src').innerHTML='절입 시각은 Meeus/VSOP87 태양 황경 계산으로 구해 2026년 24절기가 한국천문연구원 공표값과 분 단위로 일치함을 확인했고, '+
+    '일진은 한국천문연구원 음양력과 대조해 검증했습니다. 연주는 입춘 절입 시각 기준(입춘 당일이라도 시각 전이면 전년), 월주는 12절 기준, 시주는 '+
+    (adj?'표준시 30분 보정을 적용해 자시 23:30~01:30':'보정 없이 자시 23:00~01:00')+', 일주 경계는 '+
+    (zasi?'자시 시작':'자정(00:00)')+' 기준으로 계산했습니다. 30분 보정과 야자시 문제는 유파에 따라 다르며 이 도구는 어느 쪽이 옳다고 정하지 않습니다. '+
+    '지원 범위는 양력 1900~2100년이며 입력값은 어디로도 전송되지 않습니다.';
+
+  $('res').classList.remove('hidden');
+}
+
+/* 초기화 */
+const opts=[];
+for(let i=1;i<=12;i++) opts.push('<option value="'+i+'">'+i+'월</option>');
+$('lm').innerHTML=opts.join('');
+$('ly').value=1990; $('lm').value=1; $('ld').value=1;
+
+document.querySelectorAll('#calSeg button').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('#calSeg button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); cal=b.dataset.v;
+    $('in-sol').classList.toggle('hidden',cal!=='sol');
+    $('in-lun').classList.toggle('hidden',cal!=='lun');
+    calc();
+  });
+});
+['sd','ly','lm','ld','leap','tm','tunk','optAdj','optZasi'].forEach(function(id){
+  $(id).addEventListener('input',calc);
+  $(id).addEventListener('change',calc);
+});
+syncLeap();
+calc();
+})();
+</script>
+</body>
+</html>
