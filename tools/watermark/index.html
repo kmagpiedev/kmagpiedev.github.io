@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>이미지 워터마크 넣기 — 텍스트·로고, 여러 장 한 번에 | 까치툴</title>
+<meta name="description" content="사진과 문서 사본에 워터마크를 넣습니다. 문구나 로고를 골라 크기·색·불투명도를 정하고, 원하는 위치 한 곳에 넣거나 바둑판으로 전면에 깔 수 있어요. 신분증 사본의 제출용 표시로도 씁니다. 여러 장을 한 번에 일괄 처리해 ZIP으로 받고, 파일은 서버로 업로드되지 않습니다.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/watermark/">
+<meta property="og:title" content="이미지 워터마크 넣기 — 텍스트·로고 일괄 삽입">
+<meta property="og:description" content="문구나 로고를 원본 해상도 그대로 얹습니다. 여러 장 한 번에, 업로드 없이 브라우저에서 처리.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/watermark/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:940px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  .row{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start}
+  .col{flex:1;min-width:210px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
+  input[type=text],input[type=number]{padding:10px 12px;border:1px solid var(--line);border-radius:9px;
+    background:var(--surface);color:var(--ink);font-size:16px;font-family:inherit;width:100%;font-weight:600}
+  input[type=range]{width:100%;accent-color:var(--accent)}
+  input[type=color]{width:46px;height:34px;padding:2px;border:1px solid var(--line);border-radius:8px;
+    background:var(--surface);cursor:pointer;vertical-align:middle;flex:none}
+  input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .unit{font-size:14px;color:var(--ink-2);flex:none;white-space:nowrap}
+  .inline{display:flex;align-items:center;gap:10px;font-size:14px;flex-wrap:wrap}
+  .val{font-variant-numeric:tabular-nums;font-weight:700;color:var(--accent)}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:12px 0 0}
+  .seg{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+  .seg button{flex:1;background:transparent;border:0;padding:10px 6px;font-size:13.5px;font-weight:600;
+    color:var(--ink-2);cursor:pointer;font-family:inherit;transition:.12s}
+  .seg button.on{background:var(--accent);color:#fff}
+  .seg.sm button{font-size:12.5px;padding:9px 4px}
+  .chk{display:flex;gap:9px;align-items:flex-start;margin:11px 0 0;font-size:14.5px;cursor:pointer;color:var(--ink-2)}
+  .chk input{margin:5px 0 0;flex:none;width:16px;height:16px;accent-color:var(--accent)}
+  .chk b{color:var(--ink);font-weight:600}
+  .chk em{display:block;font-style:normal;font-size:12.5px;color:var(--ink-3);line-height:1.5}
+  .fld{margin-top:20px}
+
+  .drop{border:2px dashed var(--line);border-radius:16px;padding:38px 22px;text-align:center;
+    background:var(--surface);cursor:pointer;transition:.14s}
+  .drop:hover,.drop.over{border-color:var(--accent);background:var(--accent-soft)}
+  .drop .ic{font-size:34px;display:block;margin-bottom:10px}
+  .drop .t{font-size:16px;font-weight:700;margin-bottom:4px}
+  .drop .d{font-size:13.5px;color:var(--ink-3)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:12px 20px;border-radius:10px;
+    border:1px solid var(--accent);background:var(--accent);color:#fff;font-size:15px;font-weight:700;
+    font-family:inherit;cursor:pointer;transition:.14s}
+  .btn:hover{filter:brightness(1.06)}
+  .btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+  .btn.g{background:transparent;color:var(--accent)}
+  .btn.sm{padding:8px 14px;font-size:13.5px;font-weight:600}
+  .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;align-items:center}
+
+  .thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:10px;margin:16px 0}
+  .th{border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--surface);position:relative;cursor:pointer;transition:.12s}
+  .th.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+  .th canvas{display:block;width:100%;height:auto;background:var(--line-soft)}
+  .th .n{position:absolute;left:6px;top:6px;background:rgba(0,0,0,.62);color:#fff;font-size:11px;
+    font-weight:700;padding:2px 7px;border-radius:6px}
+
+  .grid9{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-width:156px}
+  .grid9 button{aspect-ratio:1;border:1px solid var(--line);border-radius:8px;background:transparent;
+    cursor:pointer;position:relative;padding:0;transition:.12s}
+  .grid9 button:hover{border-color:var(--accent)}
+  .grid9 button::after{content:"";position:absolute;inset:36%;border-radius:2px;background:var(--ink-3)}
+  .grid9 button.on{background:var(--accent);border-color:var(--accent)}
+  .grid9 button.on::after{background:#fff}
+
+  .pvbox{border:1px solid var(--line);border-radius:14px;background:var(--line-soft);padding:12px;
+    display:flex;align-items:center;justify-content:center;min-height:120px;overflow:hidden}
+  #pv{max-width:100%;height:auto;display:block;border-radius:6px;
+    box-shadow:0 1px 6px rgba(0,0,0,.14)}
+  .pvcap{font-size:12.5px;color:var(--ink-3);margin:8px 0 0;text-align:center}
+
+  .bar{height:8px;background:var(--line-soft);border-radius:99px;overflow:hidden;margin:14px 0 8px}
+  .bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .15s}
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .m-ok{background:var(--good-soft);border-color:var(--good)}
+  .hidden{display:none}
+  code{background:var(--line-soft);padding:1px 5px;border-radius:4px;font-size:12.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .src{font-size:12.5px;color:var(--ink-3);margin-top:14px;padding-top:12px;border-top:1px solid var(--line-soft)}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .seg button{font-size:12px;padding:9px 2px}
+    .thumbs{grid-template-columns:repeat(auto-fill,minmax(84px,1fr))}
+  }
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
+</style>
+<!--HEAD:S-->
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
+<meta property="og:site_name" content="까치툴">
+<!--HEAD:E-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › 이미지 워터마크</p>
+
+<h1>이미지 워터마크 넣기</h1>
+<p class="sub">사진이나 문서 사본에 <strong>문구나 로고를 얹습니다.</strong> 한 곳에만 넣을 수도 있고 바둑판으로 전면에 깔 수도 있어요. 여러 장을 한 번에 처리하고 <strong>원본 해상도 그대로</strong> 저장합니다. 파일은 브라우저 밖으로 나가지 않습니다.</p>
+
+<div class="drop" id="drop">
+  <span class="ic">🖼️</span>
+  <div class="t">이미지를 여기에 놓으세요</div>
+  <div class="d">클릭해서 고를 수도 있습니다 · PNG · JPG · WebP · 여러 장 동시 선택 가능</div>
+  <input type="file" id="file" accept="image/png,image/jpeg,image/webp,image/*" multiple class="hidden">
+</div>
+
+<div id="status" class="hidden"></div>
+
+<div class="thumbs hidden" id="thumbs"></div>
+
+<div class="panel hidden" id="opts">
+  <div class="row">
+    <div class="col" style="min-width:280px">
+      <label class="f">워터마크 종류</label>
+      <div class="seg sm" id="mode">
+        <button data-v="text" class="on">텍스트</button>
+        <button data-v="logo">이미지 (로고)</button>
+      </div>
+
+      <div id="paneText">
+        <div class="fld">
+          <label class="f">문구</label>
+          <input type="text" id="txt" value="© kmagpie.com" maxlength="80">
+        </div>
+        <div class="fld">
+          <label class="f">크기 <span class="val" id="szV">5</span>% <span style="text-transform:none;letter-spacing:0;font-weight:400">(긴 변 대비)</span></label>
+          <input type="range" id="sz" min="1" max="20" step="0.5" value="5">
+        </div>
+        <div class="fld">
+          <label class="f">색상</label>
+          <div class="inline">
+            <input type="color" id="color" value="#ffffff">
+            <span id="colorName" class="unit">흰색</span>
+          </div>
+          <label class="chk"><input type="checkbox" id="outline" checked>
+            <span><b>외곽선 넣기</b><em>글자 테두리를 반대 색으로 얇게 둘러서 밝은 배경과 어두운 배경 모두에서 보이게 합니다.</em></span></label>
+        </div>
+      </div>
+
+      <div id="paneLogo" class="hidden">
+        <div class="fld">
+          <label class="f">로고 파일</label>
+          <div class="inline">
+            <button class="btn g sm" id="pickLogo" type="button">로고 이미지 고르기</button>
+            <span id="logoName" class="unit">아직 고르지 않음</span>
+          </div>
+          <input type="file" id="logoFile" accept="image/png,image/*" class="hidden">
+          <p class="note">배경이 투명한 PNG가 가장 깔끔합니다.</p>
+        </div>
+        <div class="fld">
+          <label class="f">크기 <span class="val" id="lszV">15</span>% <span style="text-transform:none;letter-spacing:0;font-weight:400">(긴 변 대비)</span></label>
+          <input type="range" id="lsz" min="1" max="50" step="1" value="15">
+        </div>
+      </div>
+
+      <div class="fld">
+        <label class="f">불투명도 <span class="val" id="opV">40</span>%</label>
+        <input type="range" id="op" min="5" max="100" step="1" value="40">
+      </div>
+      <div class="fld">
+        <label class="f">회전 <span class="val" id="angV">0</span>°</label>
+        <input type="range" id="ang" min="-90" max="90" step="1" value="0">
+      </div>
+    </div>
+
+    <div class="col" style="min-width:280px">
+      <label class="f">배치</label>
+      <div class="seg sm" id="layout">
+        <button data-v="one" class="on">한 곳</button>
+        <button data-v="tile">바둑판 반복</button>
+      </div>
+
+      <div id="paneOne">
+        <div class="fld">
+          <label class="f">위치</label>
+          <div class="grid9" id="pos">
+            <button data-p="0" type="button" aria-label="좌상"></button>
+            <button data-p="1" type="button" aria-label="상"></button>
+            <button data-p="2" type="button" aria-label="우상"></button>
+            <button data-p="3" type="button" aria-label="좌"></button>
+            <button data-p="4" type="button" aria-label="중앙"></button>
+            <button data-p="5" type="button" aria-label="우"></button>
+            <button data-p="6" type="button" aria-label="좌하"></button>
+            <button data-p="7" type="button" aria-label="하"></button>
+            <button data-p="8" class="on" type="button" aria-label="우하"></button>
+          </div>
+        </div>
+        <div class="fld">
+          <label class="f">여백 <span class="val" id="mgV">3</span>% <span style="text-transform:none;letter-spacing:0;font-weight:400" id="mgPx"></span></label>
+          <input type="range" id="mg" min="0" max="20" step="0.5" value="3">
+        </div>
+      </div>
+
+      <div id="paneTile" class="hidden">
+        <div class="fld">
+          <label class="f">간격 <span class="val" id="gapV">12</span>%</label>
+          <input type="range" id="gap" min="2" max="60" step="1" value="12">
+          <p class="note">간격을 좁힐수록 촘촘하게 깔립니다. 문서 사본이라면 촘촘한 편이 잘라내기 어렵습니다.</p>
+        </div>
+      </div>
+
+      <div class="fld">
+        <label class="f">저장 형식</label>
+        <div class="seg sm" id="fmt">
+          <button data-v="png" class="on">PNG</button>
+          <button data-v="jpg">JPG</button>
+        </div>
+      </div>
+      <div class="fld hidden" id="qBox">
+        <label class="f">JPG 품질 <span class="val" id="qV">92</span></label>
+        <input type="range" id="q" min="40" max="100" step="1" value="92">
+      </div>
+    </div>
+  </div>
+
+  <div class="fld">
+    <label class="f">미리보기</label>
+    <div class="pvbox"><canvas id="pv" width="10" height="10"></canvas></div>
+    <p class="pvcap" id="pvcap"></p>
+  </div>
+
+  <div class="btns">
+    <button class="btn" id="go">워터마크 넣어 저장</button>
+    <button class="btn g" id="more">이미지 더 넣기</button>
+    <button class="btn g" id="reset">처음부터</button>
+  </div>
+</div>
+
+<div class="bar hidden" id="progBar"><i id="prog"></i></div>
+<div id="done" class="hidden"></div>
+
+<h2>워터마크를 넣는 두 가지 이유</h2>
+<p>하나는 흔히 아는 쪽입니다. 직접 찍은 사진이나 만든 그림을 블로그나 쇼핑몰에 올릴 때 출처를 남겨두는 용도예요. 누가 퍼가더라도 문구가 같이 따라가니 어디서 온 이미지인지는 남습니다.</p>
+<p>다른 하나가 한국에서는 실제로 더 자주 쓰입니다. <strong>신분증이나 통장, 계약서 사본을 어딘가에 제출할 때 "○○은행 제출용"처럼 용도를 적어 얹는 것</strong>입니다. 은행 대출, 통신사 개통, 부동산 계약, 각종 회원 가입에서 주민등록증 사본을 요구받는 일이 잦은데, 사본이 한 번 넘어가면 그 파일이 어디까지 돌아다니는지 알 수 없습니다. 제출처와 날짜를 사본 위에 적어두면 그 파일이 다른 곳에 그대로 재사용될 때 티가 납니다.</p>
+<p>이건 법적으로 무엇을 보장하는 장치가 아니라 <strong>실무적인 예방책</strong>입니다. 사본을 받아 든 쪽이 다른 용도로 쓰기 껄끄럽게 만들고, 나중에 문제가 생겼을 때 어느 경로로 흘러간 사본인지 짐작할 단서를 남기는 정도예요. 제출처에 따라 원본 사본만 받는 곳도 있으니, 문구를 얹은 사본을 받아주는지 미리 확인하는 편이 좋습니다.</p>
+
+<h2>어디에 넣어야 지워지지 않나</h2>
+<p>구석에 작게 넣은 워터마크는 사실상 없는 것과 같습니다. 이미지를 조금만 잘라내면 그대로 사라지니까요. 실제로 무단 사용을 막고 싶다면 <strong>피사체 위를 가로지르게</strong> 넣거나, 위에서 고를 수 있는 <strong>바둑판 반복</strong>으로 화면 전체에 깔아야 합니다. 제거하려면 이미지 자체를 훼손해야 하는 위치여야 의미가 있어요.</p>
+<p>다만 완벽한 방어는 없습니다. 요즘은 지우개 도구나 생성형 보정 기능으로 워터마크를 꽤 그럴듯하게 지웁니다. 특히 배경이 단순한 사진일수록 쉽게 지워져요. 그러니 목적을 <strong>"막는 것"이 아니라 "귀찮게 만드는 것"</strong>으로 잡는 게 현실적입니다. 대충 퍼가려던 사람은 포기하고, 굳이 지우려는 사람은 시간을 쓰게 되는 정도의 효과입니다.</p>
+<p>제출용 사본이라면 이야기가 조금 다릅니다. 이 경우엔 문구가 읽히는 게 중요하지 숨기는 게 목적이 아니므로, 얼굴이나 사진 부분은 피하고 이름·번호 같은 글자 위를 살짝 겹치게 얹으면 됩니다. 정보를 못 읽을 정도로 진하게 덮으면 제출처에서 반려당합니다.</p>
+
+<h2>불투명도와 가독성</h2>
+<p>워터마크는 진하면 사진을 버리고 옅으면 의미가 없습니다. <strong>40% 안팎에서 시작해</strong> 미리보기를 보면서 올리고 내리는 게 빠릅니다. 감상용 사진이라면 20~30%까지 낮춰도 되고, 사본에 제출용 표시를 남기는 거라면 50~60%로 확실히 읽히게 하는 편이 낫습니다.</p>
+<p>색은 배경에 따라 갈립니다. 밝은 사진에는 흰 글자가 묻히고 어두운 사진에는 검은 글자가 묻혀요. 그래서 <strong>외곽선 넣기</strong>를 켜두면 글자 테두리에 반대 색이 얇게 들어가서 어느 쪽 배경에서도 읽힙니다. 사진 여러 장을 한 번에 처리할 때는 배경 밝기가 제각각이니 켜두는 편이 안전합니다.</p>
+<p>크기는 픽셀이 아니라 <strong>이미지 긴 변에 대한 비율</strong>로 정합니다. 4000픽셀짜리 사진과 800픽셀짜리 사진에 같은 픽셀 크기로 글자를 넣으면 한쪽은 안 보이고 한쪽은 화면을 덮어버리기 때문이에요. 비율로 지정하면 크기가 제각각인 사진 묶음에도 비슷한 비중으로 들어갑니다.</p>
+
+<h2>파일은 업로드되지 않습니다</h2>
+<p>이 도구가 다루는 게 신분증 사본이나 계약서 같은 것들이라 이 점이 중요합니다. 이미지를 고르는 순간부터 저장까지 <strong>모든 처리가 브라우저 안에서 일어나고, 파일이 서버로 전송되지 않습니다.</strong> 워터마크를 그리는 것도 브라우저에 내장된 캔버스 기능이라 외부에 아무것도 보내지 않아요.</p>
+<p>기록도 남기지 않습니다. 고른 이미지나 입력한 문구를 브라우저 저장소에 저장하지 않기 때문에 <strong>페이지를 닫으면 아무것도 남지 않습니다.</strong> 공용 PC에서 급하게 사본을 만들어야 할 때도 탭만 닫으면 됩니다. 대신 새로고침하면 처음부터 다시 올려야 해요.</p>
+
+<h2>자주 겪는 문제</h2>
+<h3>워터마크가 너무 크거나 작게 나와요</h3>
+<p>크기가 <strong>긴 변 기준</strong>이라 그렇습니다. 가로로 긴 사진에서는 가로 길이의 5%지만, 세로로 긴 사진에서는 세로 길이의 5%가 되기 때문에 가로 폭에 비해 커 보입니다. 가로 사진과 세로 사진이 섞여 있으면 미리보기에서 세로 사진을 골라 확인한 뒤 크기를 정하는 게 안전합니다. 썸네일을 누르면 그 이미지로 미리보기가 바뀝니다.</p>
+<h3>JPG로 저장했더니 글자 가장자리가 지저분해요</h3>
+<p>JPG 압축은 경계가 뚜렷한 부분에서 티가 많이 납니다. 글자 주변에 얼룩덜룩한 자국이 생기는 게 그 때문이에요. 품질을 95 이상으로 올리거나 <strong>PNG로 저장</strong>하면 사라집니다. 다만 사진을 PNG로 저장하면 용량이 몇 배 커지니, 용량이 문제라면 품질만 올려서 써 보세요.</p>
+<h3>투명 배경 PNG 로고가 검게 나와요</h3>
+<p>로고 파일이 실제로는 투명하지 않은 경우가 대부분입니다. 배경이 흰색으로 채워진 PNG를 쓰면 그 흰 사각형이 그대로 얹히고, 어두운 사진 위에서는 반대로 로고 자체가 안 보이기도 해요. 이미지 뷰어에서 열었을 때 배경이 회색 격자무늬로 보이면 투명한 PNG입니다. 투명 배경이 아니라면 <a href="/tools/remove-bg/">배경 제거</a>로 먼저 다듬은 뒤 쓰세요.</p>
+<h3>여러 장 처리가 느려요</h3>
+<p>모든 작업이 브라우저에서, 그것도 원본 해상도 그대로 일어나기 때문입니다. 4000픽셀이 넘는 사진은 한 장에 수천만 개의 픽셀을 다시 그려야 해서 시간이 걸려요. 메모리가 터지지 않도록 <strong>한 장씩 순서대로</strong> 처리하고 끝난 이미지는 바로 메모리에서 비웁니다. 수십 장을 한 번에 넣기보다 10~20장씩 나눠 돌리는 편이 안정적입니다.</p>
+<h3>저장한 이미지 크기가 원본과 다른가요</h3>
+<p>같습니다. 화면의 미리보기만 보기 편하게 줄여서 보여줄 뿐, <strong>저장되는 파일은 원본 해상도 그대로</strong>입니다. 크기를 줄이고 싶다면 <a href="/tools/image-compress/">이미지 용량 줄이기</a>를 따로 쓰세요.</p>
+
+<!--REL:S-->
+<h2>함께 쓰면 좋은 도구</h2>
+<div class="rel">
+  <a href="/tools/image-compress/"><strong>이미지 용량 줄이기</strong><span>목표 용량에 자동으로 맞춤</span></a>
+  <a href="/tools/resize/"><strong>이미지 크기 조절</strong><span>정확한 px 지정, 비율 자르기</span></a>
+  <a href="/tools/remove-bg/"><strong>배경 제거 (누끼)</strong><span>인물만 남기고 투명 PNG</span></a>
+</div>
+<p class="rel-all"><a href="/tools/">까치툴 도구 28개 전체 보기 →</a></p>
+<!--REL:E-->
+
+<footer>
+  <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 파일은 전송·저장되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+
+/* ---------- 내장 ZIP (store 방식, 압축 없음) ---------- */
+const CRC=(()=>{const t=new Uint32Array(256);
+  for(let i=0;i<256;i++){let c=i;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[i]=c>>>0;}return t;})();
+function crc32(u8){let c=0xFFFFFFFF;for(let i=0;i<u8.length;i++)c=CRC[(c^u8[i])&0xFF]^(c>>>8);return (c^0xFFFFFFFF)>>>0;}
+function zipStore(entries){
+  const enc=new TextEncoder(), d=new Date();
+  const T=((d.getHours()<<11)|(d.getMinutes()<<5)|(d.getSeconds()>>1))&0xFFFF;
+  const D=(((d.getFullYear()-1980)<<9)|((d.getMonth()+1)<<5)|d.getDate())&0xFFFF;
+  const locals=[],centrals=[];let off=0;
+  for(const e of entries){
+    const nm=enc.encode(e.name),da=e.data,crc=crc32(da);
+    const lh=new Uint8Array(30+nm.length),lv=new DataView(lh.buffer);
+    lv.setUint32(0,0x04034b50,true);lv.setUint16(4,20,true);lv.setUint16(6,0x0800,true);
+    lv.setUint16(10,T,true);lv.setUint16(12,D,true);lv.setUint32(14,crc,true);
+    lv.setUint32(18,da.length,true);lv.setUint32(22,da.length,true);lv.setUint16(26,nm.length,true);
+    lh.set(nm,30);locals.push(lh,da);
+    const ch=new Uint8Array(46+nm.length),cv=new DataView(ch.buffer);
+    cv.setUint32(0,0x02014b50,true);cv.setUint16(4,20,true);cv.setUint16(6,20,true);
+    cv.setUint16(8,0x0800,true);cv.setUint16(12,T,true);cv.setUint16(14,D,true);
+    cv.setUint32(16,crc,true);cv.setUint32(20,da.length,true);cv.setUint32(24,da.length,true);
+    cv.setUint16(28,nm.length,true);cv.setUint32(42,off,true);
+    ch.set(nm,46);centrals.push(ch);off+=lh.length+da.length;
+  }
+  const cd=centrals.reduce((a,c)=>a+c.length,0);
+  const eo=new Uint8Array(22),ev=new DataView(eo.buffer);
+  ev.setUint32(0,0x06054b50,true);ev.setUint16(8,entries.length,true);ev.setUint16(10,entries.length,true);
+  ev.setUint32(12,cd,true);ev.setUint32(16,off,true);
+  return new Blob([...locals,...centrals,eo],{type:'application/zip'});
+}
+
+/* ---------- 상태 ---------- */
+const FONT='"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR","Pretendard",sans-serif';
+let items=[], cur=0, logo=null, logoLabel='';
+let mode='text', layout='one', pos=8, fmt='png', busy=false;
+let angOne=0, angTile=-30;
+
+const kb=n=>n<1024?n+' B':n<1048576?(n/1024).toFixed(0)+' KB':(n/1048576).toFixed(1)+' MB';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function say(cls,html){const s=$('status');s.className='msg '+cls;s.innerHTML=html;}
+function hideSay(){$('status').className='hidden';}
+function invert(hex){
+  const m=/^#([0-9a-f]{6})$/i.exec(hex||'');
+  if(!m) return '#000000';
+  const n=parseInt(m[1],16)^0xFFFFFF;
+  return '#'+n.toString(16).padStart(6,'0');
+}
+
+/* ---------- 파일 읽기 ---------- */
+function looksImage(f){
+  if(!f) return false;
+  if(f.type && /^image\//.test(f.type)) return !/svg/.test(f.type);
+  return /\.(png|jpe?g|webp|gif|bmp|avif)$/i.test(f.name||'');
+}
+async function toBitmap(f){
+  try{
+    return await createImageBitmap(f,{imageOrientation:'from-image'});
+  }catch(e){
+    try{ return await createImageBitmap(f); }catch(e2){ return null; }
+  }
+}
+
+async function add(list){
+  const all=[...(list||[])];
+  if(!all.length) return;
+  const bad=[];
+  let added=0;
+  for(const f of all){
+    if(!looksImage(f)){ bad.push(f.name); continue; }
+    const bmp=await toBitmap(f);
+    if(!bmp || !bmp.width || !bmp.height){ bad.push(f.name); continue; }
+    items.push({name:f.name||'image', bmp, w:bmp.width, h:bmp.height, size:f.size||0});
+    added++;
+  }
+  if(bad.length){
+    say('m-bad',`<strong>${esc(bad[0])}</strong>${bad.length>1?` 외 ${bad.length-1}개`:''}는 이미지로 읽지 못했습니다. PNG · JPG · WebP 파일을 올려주세요.`);
+  }else if(added){
+    say('m-ok',`이미지 <strong>${items.length}장</strong>을 불러왔습니다. 설정을 바꾸면 미리보기가 바로 갱신됩니다.`);
+  }
+  if(!items.length){ $('opts').classList.add('hidden'); $('thumbs').classList.add('hidden'); return; }
+  if(cur>=items.length) cur=0;
+  $('opts').classList.remove('hidden');
+  $('drop').classList.add('hidden');
+  drawThumbs();
+  preview();
+}
+
+function drawThumbs(){
+  const box=$('thumbs'); box.innerHTML='';
+  box.classList.toggle('hidden',!items.length);
+  items.forEach((it,i)=>{
+    const d=document.createElement('div');
+    d.className='th'+(i===cur?' on':'');
+    const c=document.createElement('canvas');
+    const s=Math.min(1,150/Math.max(it.w,it.h));
+    c.width=Math.max(1,Math.round(it.w*s)); c.height=Math.max(1,Math.round(it.h*s));
+    c.getContext('2d').drawImage(it.bmp,0,0,c.width,c.height);
+    d.innerHTML=`<span class="n">${i+1}</span>`;
+    d.appendChild(c);
+    d.title=it.name;
+    d.addEventListener('click',()=>{ cur=i; drawThumbs(); preview(); });
+    box.appendChild(d);
+  });
+}
+
+/* ---------- 워터마크 그리기 (모든 치수는 긴 변 대비 비율) ---------- */
+function paint(ctx,W,H){
+  const L=Math.max(W,H);
+  if(!L) return;
+  const alpha=Math.max(0.01,(parseFloat($('op').value)||40)/100);
+  const ang=(layout==='one'?angOne:angTile)*Math.PI/180;
+
+  ctx.save();
+  ctx.globalAlpha=alpha;
+
+  let bw=0,bh=0,drawOne=null;
+
+  if(mode==='text'){
+    const text=$('txt').value;
+    if(!text.trim()){ ctx.restore(); return; }
+    const fs=Math.max(4,L*(parseFloat($('sz').value)||5)/100);
+    ctx.font='700 '+fs+'px '+FONT;
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    let m;
+    try{ m=ctx.measureText(text); }catch(e){ ctx.restore(); return; }
+    bw=Math.max(1,m.width); bh=Math.max(1,fs);
+    const col=$('color').value||'#ffffff';
+    ctx.fillStyle=col;
+    const useOutline=$('outline').checked;
+    if(useOutline){
+      ctx.strokeStyle=invert(col);
+      ctx.lineWidth=Math.max(1,fs*0.045);
+      ctx.lineJoin='round'; ctx.miterLimit=2;
+    }
+    drawOne=(x,y)=>{ if(useOutline) ctx.strokeText(text,x,y); ctx.fillText(text,x,y); };
+  }else{
+    if(!logo){ ctx.restore(); return; }
+    const target=L*(parseFloat($('lsz').value)||15)/100;
+    const s=target/Math.max(logo.width,logo.height);
+    bw=Math.max(1,logo.width*s); bh=Math.max(1,logo.height*s);
+    drawOne=(x,y)=>ctx.drawImage(logo,x-bw/2,y-bh/2,bw,bh);
+  }
+
+  if(layout==='one'){
+    const mg=L*(parseFloat($('mg').value)||0)/100;
+    const cols=[mg+bw/2, W/2, W-mg-bw/2];
+    const rows=[mg+bh/2, H/2, H-mg-bh/2];
+    ctx.translate(cols[pos%3], rows[Math.floor(pos/3)]);
+    ctx.rotate(ang);
+    drawOne(0,0);
+  }else{
+    const gap=L*(parseFloat($('gap').value)||12)/100;
+    let sx=Math.max(L*0.02, bw+gap), sy=Math.max(L*0.02, bh+gap);
+    const diag=Math.sqrt(W*W+H*H);
+    let nx=Math.ceil(diag/sx/2)+1, ny=Math.ceil(diag/sy/2)+1;
+    /* 안전장치: 타일이 너무 많아지면 간격을 벌린다 */
+    while((2*nx+1)*(2*ny+1)>4000 && (nx>1||ny>1)){
+      sx*=1.5; sy*=1.5;
+      nx=Math.ceil(diag/sx/2)+1; ny=Math.ceil(diag/sy/2)+1;
+    }
+    ctx.translate(W/2,H/2);
+    ctx.rotate(ang);
+    for(let i=-nx;i<=nx;i++) for(let j=-ny;j<=ny;j++) drawOne(i*sx,j*sy);
+  }
+  ctx.restore();
+}
+
+/* ---------- 미리보기 ---------- */
+function preview(){
+  const c=$('pv');
+  const it=items[cur];
+  if(!it){ c.width=c.height=10; $('pvcap').textContent=''; return; }
+  const s=Math.min(1, 760/it.w, 520/it.h);
+  const pw=Math.max(1,Math.round(it.w*s)), ph=Math.max(1,Math.round(it.h*s));
+  c.width=pw; c.height=ph;
+  const x=c.getContext('2d');
+  if(fmt==='jpg'){ x.fillStyle='#ffffff'; x.fillRect(0,0,pw,ph); }
+  x.drawImage(it.bmp,0,0,pw,ph);
+  try{ paint(x,pw,ph); }catch(e){}
+  $('pvcap').innerHTML=`${esc(it.name)} · 원본 <strong>${it.w.toLocaleString('ko-KR')}×${it.h.toLocaleString('ko-KR')}px</strong>`
+    +(s<1?` · 미리보기는 ${Math.round(s*100)}%로 줄여서 표시합니다. 저장 파일은 원본 크기 그대로예요.`:'');
+  const L=Math.max(it.w,it.h);
+  $('mgPx').textContent='≈ '+Math.round(L*(parseFloat($('mg').value)||0)/100)+'px';
+}
+
+/* ---------- 저장 ---------- */
+function save(blob,fn){
+  const u=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=u; a.download=fn; document.body.appendChild(a); a.click();
+  a.remove(); setTimeout(()=>URL.revokeObjectURL(u),4000);
+}
+function outName(name,ext){
+  const base=String(name).replace(/\.[^.\\/]+$/,'')||'image';
+  return base+'_wm.'+ext;
+}
+
+async function renderOne(it,ext,q){
+  const c=document.createElement('canvas');
+  c.width=it.w; c.height=it.h;
+  const x=c.getContext('2d');
+  if(ext==='jpg'){ x.fillStyle='#ffffff'; x.fillRect(0,0,c.width,c.height); }
+  x.drawImage(it.bmp,0,0);
+  paint(x,c.width,c.height);
+  const blob=await new Promise(r=>c.toBlob(r, ext==='jpg'?'image/jpeg':'image/png', ext==='jpg'?q:undefined));
+  c.width=c.height=1;              /* 캔버스 메모리 즉시 반환 */
+  return blob;
+}
+
+async function run(){
+  if(busy || !items.length) return;
+  if(mode==='logo' && !logo){ say('m-bad','로고로 쓸 이미지를 먼저 골라주세요.'); return; }
+  if(mode==='text' && !$('txt').value.trim()){ say('m-bad','워터마크로 넣을 문구를 입력하세요.'); return; }
+  busy=true; $('go').disabled=true; $('done').className='hidden';
+  $('progBar').classList.remove('hidden');
+  const ext=fmt==='jpg'?'jpg':'png';
+  const q=(parseInt($('q').value,10)||92)/100;
+  const out=[]; let total=0;
+  try{
+    for(let i=0;i<items.length;i++){
+      const blob=await renderOne(items[i],ext,q);
+      if(!blob) throw new Error('encode');
+      total+=blob.size;
+      out.push({name:outName(items[i].name,ext), blob});
+      $('prog').style.width=((i+1)/items.length*100)+'%';
+      await new Promise(r=>setTimeout(r,0));
+    }
+    if(out.length===1){
+      save(out[0].blob,out[0].name);
+      $('done').className='msg m-ok';
+      $('done').innerHTML=`<strong>${esc(out[0].name)}</strong> (${kb(total)}) 을(를) 저장했습니다. 원본 해상도 그대로입니다.`;
+    }else{
+      const seen={}, entries=[];
+      for(const o of out){
+        let n=o.name;
+        if(seen[o.name]) n=n.replace(/(\.[^.]+)$/,`_${seen[o.name]}$1`);
+        seen[o.name]=(seen[o.name]||0)+1;
+        entries.push({name:n,data:new Uint8Array(await o.blob.arrayBuffer())});
+      }
+      const zip=zipStore(entries);
+      save(zip,'watermarked-images.zip');
+      $('done').className='msg m-ok';
+      $('done').innerHTML=`${entries.length}장을 <strong>watermarked-images.zip</strong> (${kb(zip.size)}) 으로 저장했습니다. ZIP은 묶기만 하므로 화질 손실이 없습니다.`;
+    }
+  }catch(err){
+    $('done').className='msg m-bad';
+    $('done').innerHTML='저장 중 문제가 생겼습니다. 이미지 장수를 줄이거나 JPG로 바꿔서 다시 시도해 보세요.';
+  }finally{
+    busy=false; $('go').disabled=false;
+    setTimeout(()=>{ $('progBar').classList.add('hidden'); $('prog').style.width='0'; },600);
+  }
+}
+
+/* ---------- UI 배선 ---------- */
+$('drop').addEventListener('click',()=>$('file').click());
+$('file').addEventListener('change',e=>{ add(e.target.files); e.target.value=''; });
+['dragenter','dragover'].forEach(t=>$('drop').addEventListener(t,e=>{e.preventDefault();$('drop').classList.add('over');}));
+['dragleave','drop'].forEach(t=>$('drop').addEventListener(t,e=>{e.preventDefault();$('drop').classList.remove('over');}));
+$('drop').addEventListener('drop',e=>{ if(e.dataTransfer) add(e.dataTransfer.files); });
+
+function segWire(id,fn){
+  document.querySelectorAll('#'+id+' button').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('#'+id+' button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); fn(b.dataset.v); preview();
+  }));
+}
+segWire('mode',v=>{
+  mode=v;
+  $('paneText').classList.toggle('hidden',v!=='text');
+  $('paneLogo').classList.toggle('hidden',v!=='logo');
+});
+segWire('layout',v=>{
+  layout=v;
+  $('paneOne').classList.toggle('hidden',v!=='one');
+  $('paneTile').classList.toggle('hidden',v!=='tile');
+  const a=v==='one'?angOne:angTile;
+  $('ang').value=a; $('angV').textContent=a;
+});
+segWire('fmt',v=>{ fmt=v; $('qBox').classList.toggle('hidden',v!=='jpg'); });
+
+document.querySelectorAll('#pos button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('#pos button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); pos=parseInt(b.dataset.p,10)||0; preview();
+}));
+
+function rng(id,valId,fn){
+  $(id).addEventListener('input',()=>{ if(valId) $(valId).textContent=$(id).value; if(fn) fn(); preview(); });
+}
+rng('sz','szV'); rng('lsz','lszV'); rng('op','opV');
+rng('mg','mgV'); rng('gap','gapV'); rng('q','qV');
+$('ang').addEventListener('input',()=>{
+  const v=parseInt($('ang').value,10)||0;
+  $('angV').textContent=v;
+  if(layout==='one') angOne=v; else angTile=v;
+  preview();
+});
+$('txt').addEventListener('input',preview);
+$('outline').addEventListener('change',preview);
+$('color').addEventListener('input',()=>{
+  const v=$('color').value.toLowerCase();
+  $('colorName').textContent = v==='#ffffff'?'흰색' : v==='#000000'?'검정' : v;
+  preview();
+});
+
+$('pickLogo').addEventListener('click',()=>$('logoFile').click());
+$('logoFile').addEventListener('change',async e=>{
+  const f=e.target.files&&e.target.files[0];
+  e.target.value='';
+  if(!f) return;
+  if(!looksImage(f)){ say('m-bad','로고는 PNG 같은 이미지 파일이어야 합니다.'); return; }
+  const bmp=await toBitmap(f);
+  if(!bmp){ say('m-bad','로고 이미지를 읽지 못했습니다. 다른 파일로 시도해 보세요.'); return; }
+  if(logo&&logo.close) try{logo.close();}catch(err){}
+  logo=bmp; logoLabel=f.name;
+  $('logoName').textContent=f.name+' ('+bmp.width+'×'+bmp.height+')';
+  hideSay(); preview();
+});
+
+$('go').addEventListener('click',run);
+$('more').addEventListener('click',()=>$('file').click());
+$('reset').addEventListener('click',()=>{
+  items.forEach(it=>{ if(it.bmp&&it.bmp.close) try{it.bmp.close();}catch(e){} });
+  items=[]; cur=0;
+  $('thumbs').innerHTML=''; $('thumbs').classList.add('hidden');
+  $('opts').classList.add('hidden'); $('drop').classList.remove('hidden');
+  $('done').className='hidden'; $('file').value=''; hideSay();
+  const c=$('pv'); c.width=c.height=10; $('pvcap').textContent='';
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+})();
+</script>
+</body>
+</html>
