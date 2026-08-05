@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PDF를 이미지로 변환 — JPG·PNG, 300dpi 고화질 | 까치툴</title>
+<meta name="description" content="PDF를 페이지별 JPG나 PNG 이미지로 바꿉니다. 해상도를 골라 인쇄용 300dpi로 뽑을 수 있고 여러 장은 ZIP으로 한 번에 받습니다. 업로드 없이 브라우저 안에서 처리됩니다.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/pdf-to-image/">
+<meta property="og:title" content="PDF를 이미지로 변환 — JPG·PNG 300dpi">
+<meta property="og:description" content="페이지별 이미지로 변환해 ZIP으로 받으세요. 업로드 없이 브라우저에서 처리됩니다.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/pdf-to-image/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  .row{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start}
+  .col{flex:1;min-width:190px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
+  input[type=text],input[type=number]{padding:10px 12px;border:1px solid var(--line);border-radius:9px;
+    background:var(--surface);color:var(--ink);font-size:16px;font-family:inherit;width:100%;
+    text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+  input[type=range]{width:100%;accent-color:var(--accent)}
+  input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .unit{font-size:14px;color:var(--ink-2);flex:none;white-space:nowrap}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:12px 0 0}
+  .seg{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+  .seg button{flex:1;background:transparent;border:0;padding:10px 6px;font-size:13.5px;font-weight:600;
+    color:var(--ink-2);cursor:pointer;font-family:inherit;transition:.12s}
+  .seg button.on{background:var(--accent);color:#fff}
+  .seg.sm button{font-size:12.5px;padding:9px 4px}
+
+  .drop{border:2px dashed var(--line);border-radius:16px;padding:38px 22px;text-align:center;
+    background:var(--surface);cursor:pointer;transition:.14s}
+  .drop:hover,.drop.over{border-color:var(--accent);background:var(--accent-soft)}
+  .drop .ic{font-size:34px;display:block;margin-bottom:10px}
+  .drop .t{font-size:16px;font-weight:700;margin-bottom:4px}
+  .drop .d{font-size:13.5px;color:var(--ink-3)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:12px 20px;border-radius:10px;
+    border:1px solid var(--accent);background:var(--accent);color:#fff;font-size:15px;font-weight:700;
+    font-family:inherit;cursor:pointer;transition:.14s}
+  .btn:hover{filter:brightness(1.06)}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .btn.g{background:transparent;color:var(--accent)}
+  .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+
+  .thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:12px;margin:16px 0}
+  .th{border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--surface);position:relative;cursor:pointer;transition:.12s}
+  .th.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+  .th canvas{display:block;width:100%;height:auto;background:#fff}
+  .th .n{position:absolute;left:6px;top:6px;background:rgba(0,0,0,.62);color:#fff;font-size:11.5px;
+    font-weight:700;padding:2px 7px;border-radius:6px}
+  .th .x{position:absolute;right:6px;top:6px;width:20px;height:20px;border-radius:6px;
+    display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;
+    background:var(--accent);color:#fff;opacity:0;transition:.12s}
+  .th.on .x{opacity:1}
+
+  .bar{height:8px;background:var(--line-soft);border-radius:99px;overflow:hidden;margin:14px 0 8px}
+  .bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .15s}
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .m-ok{background:var(--good-soft);border-color:var(--good)}
+  .hidden{display:none}
+  code{background:var(--line-soft);padding:1px 5px;border-radius:4px;font-size:12.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .src{font-size:12.5px;color:var(--ink-3);margin-top:14px;padding-top:12px;border-top:1px solid var(--line-soft)}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .seg button{font-size:12px;padding:9px 2px}
+    .thumbs{grid-template-columns:repeat(auto-fill,minmax(104px,1fr))}
+  }
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
+</style>
+<!--HEAD:S-->
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
+<meta property="og:site_name" content="까치툴">
+<!--HEAD:E-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › PDF를 이미지로</p>
+
+<h1>PDF를 이미지로 변환</h1>
+<p class="sub">PDF의 각 페이지를 <strong>JPG나 PNG 이미지</strong>로 바꿉니다. 해상도를 골라 인쇄용 300dpi로 뽑을 수 있고, 여러 장은 ZIP으로 한 번에 받습니다. <strong>파일을 업로드하지 않고</strong> 브라우저 안에서 처리해요.</p>
+
+<div class="drop" id="drop">
+  <span class="ic">📄</span>
+  <div class="t">PDF 파일을 여기에 놓으세요</div>
+  <div class="d">클릭해서 고를 수도 있습니다 · 파일은 어디로도 전송되지 않습니다</div>
+  <input type="file" id="file" accept="application/pdf,.pdf" class="hidden">
+</div>
+
+<div id="status" class="hidden"></div>
+
+<div class="panel hidden" id="opts">
+  <div class="row">
+    <div class="col">
+      <label class="f">이미지 형식</label>
+      <div class="seg sm" id="fmt">
+        <button data-v="png" class="on">PNG</button>
+        <button data-v="jpg">JPG</button>
+      </div>
+      <p class="note">PNG는 글자가 또렷하고 용량이 큽니다. JPG는 용량이 작지만 글자 가장자리가 조금 뭉개져요. <strong>문서라면 PNG, 사진 위주 페이지라면 JPG</strong>가 낫습니다.</p>
+    </div>
+    <div class="col">
+      <label class="f">해상도</label>
+      <div class="seg sm" id="dpi">
+        <button data-v="72">72dpi 화면용</button>
+        <button data-v="150" class="on">150dpi 기본</button>
+        <button data-v="300">300dpi 인쇄용</button>
+      </div>
+      <p class="note" id="sizeNote"></p>
+    </div>
+  </div>
+
+  <div class="row hidden" id="qBox" style="margin-top:18px">
+    <div class="col">
+      <label class="f">JPG 품질 <span id="qVal" style="color:var(--accent)">92</span></label>
+      <input type="range" id="q" min="40" max="100" value="92">
+    </div>
+  </div>
+
+  <div class="btns">
+    <button class="btn" id="go">선택한 페이지 변환</button>
+    <button class="btn g" id="all">전체 선택</button>
+    <button class="btn g" id="none">전체 해제</button>
+    <button class="btn g" id="reset">다른 파일</button>
+  </div>
+</div>
+
+<div class="bar hidden" id="progBar"><i id="prog"></i></div>
+
+<div class="thumbs" id="thumbs"></div>
+
+<div id="done" class="hidden"></div>
+
+<h2>왜 PDF를 이미지로 바꾸나</h2>
+<p>PDF를 그대로 쓸 수 없는 자리가 의외로 많습니다. 블로그나 쇼핑몰 상세페이지에는 이미지만 올라가고, 카카오톡이나 인스타그램으로 보낼 때도 이미지가 편합니다. 발표 자료에 특정 페이지만 끼워 넣거나, 인쇄소에 넘길 때 이미지 파일을 요구하는 경우도 있어요.</p>
+<p>편집을 막고 싶을 때도 씁니다. PDF는 텍스트를 그대로 복사할 수 있지만 <strong>이미지로 만들면 글자를 긁어갈 수 없습니다.</strong> 물론 화면 캡처로 옮길 수는 있으니 완전한 보호는 아니고, 무심코 복사되는 걸 막는 정도예요.</p>
+
+<h2>해상도를 어떻게 고를까</h2>
+<p>PDF는 기본적으로 <strong>72dpi</strong>를 기준으로 만들어집니다. 그래서 72dpi로 뽑으면 원본과 같은 크기의 이미지가 나오는데, 화면에서 보기엔 괜찮아도 확대하면 글자가 흐려집니다.</p>
+<p><strong>150dpi</strong>는 화면에서 보고 웹에 올리기에 충분합니다. A4 한 페이지가 대략 1240×1754픽셀이 나와요. <strong>300dpi</strong>는 인쇄용 표준이라 A4가 2480×3508픽셀이 되고, 파일도 그만큼 커집니다. 인쇄할 게 아니라면 150dpi로 충분해요.</p>
+<p>해상도를 올리면 픽셀 수가 제곱으로 늘어납니다. 72에서 300으로 올리면 가로세로가 각각 4배가 넘어서 <strong>용량은 17배 이상</strong>이 돼요. 페이지가 많은 문서를 300dpi로 뽑으면 브라우저가 버거워질 수 있으니, 필요한 페이지만 골라서 변환하세요.</p>
+
+<h2>글자가 선명하지 않다면</h2>
+<p>원본 PDF가 이미 <strong>스캔본</strong>일 수 있습니다. 종이를 스캔해서 만든 PDF는 안에 들어 있는 게 글자가 아니라 사진이라, 아무리 높은 해상도로 뽑아도 원본 스캔 품질을 넘지 못합니다. PDF를 열어 글자를 드래그해 봤을 때 선택되지 않으면 스캔본이에요.</p>
+<p>글자가 선택되는 PDF라면 해상도를 올리는 만큼 선명해집니다. 300dpi로도 부족하면 JPG 대신 PNG를 써 보세요. JPG 압축은 글자처럼 경계가 뚜렷한 부분에서 특히 티가 납니다.</p>
+
+<h2>자주 겪는 문제</h2>
+<h3>파일이 안 열려요</h3>
+<p>암호가 걸린 PDF는 열 수 없습니다. 뷰어에서 열 때 비밀번호를 물어보는 파일이라면 먼저 암호를 풀어야 해요. 또 파일이 손상됐거나 확장자만 PDF인 경우도 있습니다.</p>
+<h3>페이지가 많으면 느려요</h3>
+<p>모든 렌더링이 브라우저에서 일어나기 때문입니다. 서버로 보내지 않는 대신 내 컴퓨터의 성능을 씁니다. 100페이지짜리를 300dpi로 한 번에 돌리면 시간이 꽤 걸리고 메모리도 많이 먹어요. <strong>필요한 페이지만 골라서</strong> 나눠 변환하는 게 빠릅니다.</p>
+<h3>배경이 투명하게 나오나요</h3>
+<p>아닙니다. PDF 페이지는 흰 종이를 전제로 하기 때문에 <strong>배경을 흰색으로 채워서</strong> 내보냅니다. 투명 배경이 필요하면 변환한 뒤 <a href="/tools/remove-bg/">배경 제거</a> 도구를 쓰세요.</p>
+<h3>반대로 이미지를 PDF로 만들려면</h3>
+<p><a href="/tools/pdf/">PDF 편집기</a>에서 이미지를 PDF로 묶을 수 있습니다. 페이지 합치기나 순서 변경, 특정 페이지 추출도 그쪽에서 됩니다.</p>
+<h3>용량이 너무 커요</h3>
+<p>해상도를 낮추거나 JPG로 바꾸세요. 그래도 크다면 변환한 이미지를 <a href="/tools/image-compress/">이미지 용량 줄이기</a>에 넣어 목표 용량에 맞출 수 있습니다.</p>
+
+<!--REL:S-->
+<h2>함께 쓰면 좋은 도구</h2>
+<div class="rel">
+  <a href="/tools/pdf/"><strong>PDF 편집기</strong><span>합치기·나누기·페이지 삭제</span></a>
+  <a href="/tools/pdf-sign/"><strong>PDF 서명·도장 넣기</strong><span>인쇄 없이 계약서에 바로</span></a>
+  <a href="/tools/image-compress/"><strong>이미지 용량 줄이기</strong><span>목표 용량에 자동으로 맞춤</span></a>
+</div>
+<p class="rel-all"><a href="/tools/">까치툴 도구 25개 전체 보기 →</a></p>
+<!--REL:E-->
+
+<footer>
+  <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 파일은 전송·저장되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script type="module">
+import * as pdfjs from '/tools/lib/pdf.min.mjs';
+pdfjs.GlobalWorkerOptions.workerSrc='/tools/lib/pdf.worker.min.mjs';
+
+const $=id=>document.getElementById(id);
+
+/* ---------- 내장 ZIP (store 방식, 압축 없음) ---------- */
+const CRC=(()=>{const t=new Uint32Array(256);
+  for(let i=0;i<256;i++){let c=i;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[i]=c>>>0;}return t;})();
+function crc32(u8){let c=0xFFFFFFFF;for(let i=0;i<u8.length;i++)c=CRC[(c^u8[i])&0xFF]^(c>>>8);return (c^0xFFFFFFFF)>>>0;}
+function zipStore(entries){
+  const enc=new TextEncoder(), d=new Date();
+  const T=((d.getHours()<<11)|(d.getMinutes()<<5)|(d.getSeconds()>>1))&0xFFFF;
+  const D=(((d.getFullYear()-1980)<<9)|((d.getMonth()+1)<<5)|d.getDate())&0xFFFF;
+  const locals=[],centrals=[];let off=0;
+  for(const e of entries){
+    const nm=enc.encode(e.name),da=e.data,crc=crc32(da);
+    const lh=new Uint8Array(30+nm.length),lv=new DataView(lh.buffer);
+    lv.setUint32(0,0x04034b50,true);lv.setUint16(4,20,true);lv.setUint16(6,0x0800,true);
+    lv.setUint16(10,T,true);lv.setUint16(12,D,true);lv.setUint32(14,crc,true);
+    lv.setUint32(18,da.length,true);lv.setUint32(22,da.length,true);lv.setUint16(26,nm.length,true);
+    lh.set(nm,30);locals.push(lh,da);
+    const ch=new Uint8Array(46+nm.length),cv=new DataView(ch.buffer);
+    cv.setUint32(0,0x02014b50,true);cv.setUint16(4,20,true);cv.setUint16(6,20,true);
+    cv.setUint16(8,0x0800,true);cv.setUint16(12,T,true);cv.setUint16(14,D,true);
+    cv.setUint32(16,crc,true);cv.setUint32(20,da.length,true);cv.setUint32(24,da.length,true);
+    cv.setUint16(28,nm.length,true);cv.setUint32(42,off,true);
+    ch.set(nm,46);centrals.push(ch);off+=lh.length+da.length;
+  }
+  const cd=centrals.reduce((a,c)=>a+c.length,0);
+  const eo=new Uint8Array(22),ev=new DataView(eo.buffer);
+  ev.setUint32(0,0x06054b50,true);ev.setUint16(8,entries.length,true);ev.setUint16(10,entries.length,true);
+  ev.setUint32(12,cd,true);ev.setUint32(16,off,true);
+  return new Blob([...locals,...centrals,eo],{type:'application/zip'});
+}
+
+let doc=null, name='document', sel=new Set(), fmt='png', dpi=150, busy=false;
+
+const kb=n=>n<1024?n+' B':n<1048576?(n/1024).toFixed(0)+' KB':(n/1048576).toFixed(1)+' MB';
+function say(cls,html){ const s=$('status'); s.className='msg '+cls; s.innerHTML=html; }
+function hideSay(){ $('status').className='hidden'; }
+
+/* ---------- 파일 열기 ---------- */
+async function open(f){
+  if(!f) return;
+  if(!/\.pdf$/i.test(f.name) && f.type!=='application/pdf'){
+    say('m-bad','PDF 파일만 열 수 있습니다.'); return;
+  }
+  name=f.name.replace(/\.pdf$/i,'') || 'document';
+  say('m-warn','파일을 여는 중입니다…');
+  try{
+    const buf=new Uint8Array(await f.arrayBuffer());
+    doc=await pdfjs.getDocument({data:buf}).promise;
+  }catch(err){
+    doc=null;
+    say('m-bad','파일을 열지 못했습니다. 암호가 걸려 있거나 손상된 PDF일 수 있어요.');
+    return;
+  }
+  sel=new Set(Array.from({length:doc.numPages},(_,i)=>i+1));
+  $('opts').classList.remove('hidden');
+  $('drop').classList.add('hidden');
+  say('m-ok',`<strong>${f.name}</strong> · ${doc.numPages}페이지 · ${kb(f.size)}. 변환할 페이지를 골라 주세요.`);
+  await thumbs();
+  sizeNote();
+}
+
+/* ---------- 썸네일 ---------- */
+async function thumbs(){
+  const box=$('thumbs'); box.innerHTML='';
+  for(let n=1;n<=doc.numPages;n++){
+    const page=await doc.getPage(n);
+    const vp0=page.getViewport({scale:1});
+    const scale=Math.min(1.2, 150/Math.max(vp0.width, vp0.height));
+    const vp=page.getViewport({scale});
+    const c=document.createElement('canvas');
+    c.width=Math.max(1,Math.round(vp.width)); c.height=Math.max(1,Math.round(vp.height));
+    const ctx=c.getContext('2d');
+    ctx.fillStyle='#fff'; ctx.fillRect(0,0,c.width,c.height);
+    await page.render({canvasContext:ctx, viewport:vp}).promise;
+    const d=document.createElement('div');
+    d.className='th on'; d.dataset.n=String(n);
+    d.innerHTML=`<span class="n">${n}</span><span class="x">✓</span>`;
+    d.appendChild(c);
+    d.addEventListener('click',()=>{
+      if(sel.has(n)) sel.delete(n); else sel.add(n);
+      d.classList.toggle('on', sel.has(n));
+      sizeNote();
+    });
+    box.appendChild(d);
+  }
+}
+
+/* ---------- 예상 크기 안내 ---------- */
+async function sizeNote(){
+  if(!doc){ $('sizeNote').textContent=''; return; }
+  const page=await doc.getPage(1);
+  const vp=page.getViewport({scale:dpi/72});
+  const w=Math.round(vp.width), h=Math.round(vp.height);
+  $('sizeNote').innerHTML=`첫 페이지 기준 <strong>${w.toLocaleString('ko-KR')} × ${h.toLocaleString('ko-KR')}px</strong>로 나옵니다. 선택 ${sel.size}/${doc.numPages}페이지.`;
+  $('go').disabled = sel.size===0 || busy;
+}
+
+/* ---------- 변환 ---------- */
+async function render(n){
+  const page=await doc.getPage(n);
+  const vp=page.getViewport({scale:dpi/72});
+  const c=document.createElement('canvas');
+  c.width=Math.max(1,Math.round(vp.width)); c.height=Math.max(1,Math.round(vp.height));
+  const ctx=c.getContext('2d');
+  ctx.fillStyle='#fff'; ctx.fillRect(0,0,c.width,c.height);   /* PDF는 흰 종이가 전제 */
+  await page.render({canvasContext:ctx, viewport:vp}).promise;
+  const type = fmt==='jpg' ? 'image/jpeg' : 'image/png';
+  const q = fmt==='jpg' ? (parseInt($('q').value,10)||92)/100 : undefined;
+  const blob=await new Promise(res=>c.toBlob(res, type, q));
+  c.width=c.height=1;                                          /* 캔버스 메모리 즉시 반환 */
+  return blob;
+}
+
+function save(blob, fn){
+  const u=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=u; a.download=fn; document.body.appendChild(a); a.click();
+  a.remove(); setTimeout(()=>URL.revokeObjectURL(u), 4000);
+}
+
+async function convert(){
+  if(!doc || busy || sel.size===0) return;
+  busy=true; $('go').disabled=true; $('done').className='hidden';
+  const pages=[...sel].sort((a,b)=>a-b);
+  const ext = fmt==='jpg'?'jpg':'png';
+  $('progBar').classList.remove('hidden');
+  const out=[]; let total=0;
+  try{
+    for(let i=0;i<pages.length;i++){
+      const blob=await render(pages[i]);
+      total+=blob.size;
+      out.push({name:`${name}_${String(pages[i]).padStart(3,'0')}.${ext}`,
+                data:new Uint8Array(await blob.arrayBuffer()), blob});
+      $('prog').style.width=((i+1)/pages.length*100)+'%';
+      await new Promise(r=>setTimeout(r,0));    /* 화면 갱신 여유 */
+    }
+    if(out.length===1){
+      save(out[0].blob, out[0].name);
+      $('done').className='msg m-ok';
+      $('done').innerHTML=`<strong>${out[0].name}</strong> (${kb(total)}) 을(를) 저장했습니다.`;
+    }else{
+      const zip=zipStore(out.map(o=>({name:o.name,data:o.data})));
+      save(zip, `${name}_이미지.zip`);
+      $('done').className='msg m-ok';
+      $('done').innerHTML=`${out.length}장을 <strong>${name}_이미지.zip</strong> (${kb(zip.size)}) 으로 저장했습니다. ZIP은 압축 없이 묶기만 하므로 원본 화질 그대로입니다.`;
+    }
+  }catch(err){
+    $('done').className='msg m-bad';
+    $('done').innerHTML='변환 중 문제가 생겼습니다. 페이지 수를 줄이거나 해상도를 낮춰서 다시 시도해 보세요.';
+  }finally{
+    busy=false; $('go').disabled=sel.size===0;
+    setTimeout(()=>{ $('progBar').classList.add('hidden'); $('prog').style.width='0'; }, 600);
+  }
+}
+
+/* ---------- UI 배선 ---------- */
+$('drop').addEventListener('click',()=>$('file').click());
+$('file').addEventListener('change',e=>open(e.target.files[0]));
+['dragenter','dragover'].forEach(t=>$('drop').addEventListener(t,e=>{
+  e.preventDefault(); $('drop').classList.add('over');
+}));
+['dragleave','drop'].forEach(t=>$('drop').addEventListener(t,e=>{
+  e.preventDefault(); $('drop').classList.remove('over');
+}));
+$('drop').addEventListener('drop',e=>open(e.dataTransfer.files[0]));
+
+function segWire(id, fn){
+  document.querySelectorAll('#'+id+' button').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('#'+id+' button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); fn(b.dataset.v);
+  }));
+}
+segWire('fmt',v=>{ fmt=v; $('qBox').classList.toggle('hidden', v!=='jpg'); });
+segWire('dpi',v=>{ dpi=parseInt(v,10); sizeNote(); });
+$('q').addEventListener('input',()=>$('qVal').textContent=$('q').value);
+$('go').addEventListener('click',convert);
+$('all').addEventListener('click',()=>{
+  if(!doc) return;
+  sel=new Set(Array.from({length:doc.numPages},(_,i)=>i+1));
+  document.querySelectorAll('.th').forEach(t=>t.classList.add('on')); sizeNote();
+});
+$('none').addEventListener('click',()=>{
+  sel.clear();
+  document.querySelectorAll('.th').forEach(t=>t.classList.remove('on')); sizeNote();
+});
+$('reset').addEventListener('click',()=>{
+  doc=null; sel.clear(); $('thumbs').innerHTML='';
+  $('opts').classList.add('hidden'); $('drop').classList.remove('hidden');
+  $('done').className='hidden'; $('file').value=''; hideSay();
+});
+</script>
+</body>
+</html>

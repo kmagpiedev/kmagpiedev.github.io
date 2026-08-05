@@ -30,6 +30,10 @@ TOOLS = {
                    '배기량과 최초 등록 연도만 넣으면 자동차세와 지방교육세가 나옵니다. 차령 경감을 법 산식 그대로 반기 단위로 계산하고 1월·3월·6월·9월 연납 할인액을 비교합니다.'),
  'car-acquisition':('🚙','자동차 취득세 계산기','경차 75만원·전기차 140만원 감면',
                    '차를 살 때 내는 취득세를 차종·용도별 세율로 계산합니다. 경차와 전기차 감면 한도를 반영하고, 공채 매입처럼 지역마다 다른 항목은 무엇을 더 확인해야 하는지 알려줍니다.'),
+ 'rent-convert':  ('🏘️','전월세 전환 계산기','법정 전환율 상한 확인',
+                   '전세를 월세로 바꾸면 월세가 얼마인지, 월세를 전세로 환산하면 얼마인지 계산합니다. 집주인이 제시한 조건이 법정 상한을 넘는지 역산해서 확인해 드립니다.'),
+ 'pdf-to-image':  ('🖼️','PDF를 이미지로','JPG·PNG 300dpi, ZIP 저장',
+                   'PDF의 각 페이지를 JPG나 PNG로 바꿉니다. 해상도를 골라 인쇄용 300dpi로 뽑을 수 있고 여러 장은 ZIP으로 한 번에 받습니다.'),
  'char-count':    ('🔤','글자수 세기','공백 포함·제외, 바이트, 원고지',
                    '붙여넣으면 글자수와 바이트가 즉시 나옵니다. 자소서 목표 글자수를 공백 포함·제외 기준으로 골라 진행률을 확인할 수 있고 원고지 매수도 세어 줍니다.'),
  'pyeong':        ('📐','평수 계산기','평↔㎡, 전용·공급면적',
@@ -63,11 +67,11 @@ CATS = [
  ('이미지 편집', '사진을 다루는 도구입니다. 전부 브라우저 안에서 처리되고 업로드가 없어서, 얼굴이 나온 사진이나 공개 전 자료도 안심하고 올릴 수 있습니다.',
   ['remove-bg','id-photo','convert','image-compress']),
  ('PDF·문서',   '계약서나 제출 서류를 다룰 때 쓰는 도구입니다. 원본 문서의 글자를 그대로 살린 채 처리합니다.',
-  ['pdf','pdf-sign']),
+  ['pdf','pdf-sign','pdf-to-image']),
  ('급여·노동', '법령과 공식 고시를 그대로 적용해 계산합니다. 근사식을 쓰지 않고 계산 과정과 근거 조문을 함께 보여줍니다.',
   ['salary','severance','unemployment','annual-leave','holiday-pay']),
  ('부동산·금융', '집을 사고팔 때, 돈을 빌릴 때 필요한 계산입니다. 법령과 고시 요율을 그대로 적용하고 입력한 값은 어디로도 전송되지 않습니다.',
-  ['acquisition-tax','broker-fee','loan']),
+  ['acquisition-tax','broker-fee','rent-convert','loan']),
  ('자동차', '차를 사고 유지할 때 내는 세금입니다. 확인되지 않은 항목은 계산에 넣지 않고 어디서 확인해야 하는지 알려드립니다.',
   ['car-tax','car-acquisition']),
  ('생활 편의', '자주 찾게 되는 단순한 계산과 변환입니다. 가입도 설치도 없이 바로 씁니다.',
@@ -86,7 +90,7 @@ REL = {
  'severance':     ['unemployment','annual-leave','salary'],
  'unemployment':  ['severance','annual-leave','salary'],
  'holiday-pay':   ['annual-leave','severance','salary'],
- 'pdf':           ['pdf-sign','convert','image-compress'],
+ 'pdf':           ['pdf-to-image','pdf-sign','convert'],
  'pdf-sign':      ['pdf','id-photo','salary'],
  'remove-bg':     ['id-photo','convert','image-compress'],
  'convert':       ['image-compress','remove-bg','id-photo'],
@@ -95,6 +99,8 @@ REL = {
  'qr':            ['char-count','convert','date-calc'],
  'car-tax':       ['car-acquisition','loan','acquisition-tax'],
  'car-acquisition':['car-tax','loan','acquisition-tax'],
+ 'rent-convert':  ['broker-fee','acquisition-tax','loan'],
+ 'pdf-to-image':  ['pdf','pdf-sign','image-compress'],
  'char-count':    ['date-calc','pyeong','qr'],
  'pyeong':        ['acquisition-tax','broker-fee','date-calc'],
  'date-calc':     ['char-count','annual-leave','severance'],
@@ -180,7 +186,8 @@ def patch(slug):
 
 # 계산 결과를 내놓는 도구 — 푸터에 면책 안내 한 줄을 더 붙인다
 CALC = {'salary', 'severance', 'holiday-pay', 'annual-leave', 'unemployment',
-        'loan', 'acquisition-tax', 'broker-fee', 'car-tax', 'car-acquisition'}
+        'loan', 'acquisition-tax', 'broker-fee', 'car-tax', 'car-acquisition',
+        'rent-convert'}
 
 FOOT_NOTE = {
  'ko': '<p>계산 결과는 참고용 추정치이며 법적 효력이 없습니다. '
