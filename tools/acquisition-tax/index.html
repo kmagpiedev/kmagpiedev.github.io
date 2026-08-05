@@ -255,7 +255,7 @@
 
 <h2>생애최초 감면, 얼마나 받나</h2>
 <p>본인과 배우자가 모두 태어나서 한 번도 집을 가진 적이 없고, 사려는 집이 <strong>12억원 이하</strong>라면 취득세를 최대 200만원까지 감면받습니다. 예전에 있던 소득 요건은 폐지돼서 연봉과 무관하게 받을 수 있어요. 취득가가 낮아 취득세가 200만원이 안 되면 그 금액 전부가 면제됩니다.</p>
-<p>다만 조건이 붙습니다. 취득일부터 <strong>3개월 안에 전입해서 실제로 살아야 하고, 3년 안에 팔거나 임대를 주면 감면받은 세금을 다시 토해내야</strong> 합니다. 전용 60㎡ 이하 소형 저가주택이거나 인구감소지역에 있는 집이면 한도가 300만원으로 늘어납니다.</p>
+<p>다만 조건이 붙습니다. 취득일부터 <strong>3개월 안에 전입해서 실제로 살아야 하고, 3년 안에 팔거나 임대를 주면 감면받은 세금을 다시 토해내야</strong> 합니다. 전용 60㎡ 이하 소형 저가주택이거나 인구감소지역에 있는 집이면 한도가 300만원으로 늘어납니다. 이 계산기는 일반 한도인 200만원으로만 계산하므로, 300만원 대상이라면 실제 감면이 더 클 수 있어요.</p>
 <p>감면은 취득세에만 적용됩니다. 지방교육세와 농어촌특별세는 별도로 판단하므로, 위 계산기는 취득세만 깎고 나머지는 그대로 두었습니다. 실제 고지서와 몇만원 차이가 날 수 있으니 위택스 신고 화면에서 최종 금액을 확인하세요.</p>
 
 <h2>자주 겪는 문제</h2>
@@ -393,7 +393,9 @@ function calc(){
 
   /* 감면 (주택 유상취득, 표준세율 구간에서만) */
   let cut=0, cutWhy='';
-  const eligible = isHouse && cause==='buy' && price<=12*EOK && R.acq<0.08;
+  /* 생애최초·출산양육 모두 1가구 1주택이 요건 — 2주택 이상 선택 시 적용하지 않는다 */
+  const oneHouse = parseInt(cnt,10)===1;
+  const eligible = isHouse && cause==='buy' && price<=12*EOK && R.acq<0.08 && oneHouse;
   if(eligible){
     const wantFirst=$('first').checked, wantBirth=$('birth').checked;
     const cap = wantBirth?5000000 : (wantFirst?2000000:0);
@@ -401,6 +403,8 @@ function calc(){
       cut=Math.min(acqTax, cap);
       cutWhy = wantBirth ? '출산·양육 가구 감면 (한도 500만원)' : '생애최초 주택 구입 감면 (한도 200만원)';
     }
+  }else if(isHouse && cause==='buy' && !oneHouse && ($('first').checked||$('birth').checked)){
+    cutWhy='skip-multi';
   }
   const acqPaid=acqTax-cut;
   const tax=acqPaid+eduTax+farTax;
@@ -466,6 +470,10 @@ function calc(){
   else if(isHouse&&cause==='buy'&&price>6*EOK&&price<=9*EOK){
     w.className='msg m-warn';
     w.innerHTML=`6억~9억 구간이라 세율이 <strong>${pct(R.acq)}</strong>로 계산됐습니다. 이 구간은 계단이 아니라 가격에 비례해 1%에서 3%까지 이어집니다. 1천만원 깎으면 세금은 약 ${won(Math.floor(price*R.acq*1.1)-Math.floor((price-10000000)*stdHouseRate(price-10000000)*1.1))}원 줄어요.`;
+  }
+  else if(cutWhy==='skip-multi'){
+    w.className='msg m-warn';
+    w.innerHTML=`생애최초·출산 감면은 <strong>1가구 1주택</strong>이 요건이라 2주택 이상에는 적용하지 않았습니다. 일시적 2주택 등 예외에 해당하는지는 시·군·구청 세무과에서 확인하세요.`;
   }
   else if(isHouse&&cause==='buy'&&price>12*EOK&&($('first').checked||$('birth').checked)){
     w.className='msg m-warn';

@@ -215,7 +215,7 @@
   <div id="prepayBox">
     <p class="big" style="margin-top:22px">연납(선납) 할인 비교</p>
     <div class="cmp" id="cmp"></div>
-    <p style="font-size:13px;color:var(--ink-3);margin:0">연납은 <strong>남은 개월분에 대해서만</strong> 5%를 공제합니다. 1월에 내도 12개월이 아니라 2~12월분이 대상이라 실질 할인율이 4.58%예요.</p>
+    <p style="font-size:13px;color:var(--ink-3);margin:0">연납은 <strong>남은 개월분에 대해서만</strong> 5%를 공제합니다. 1월에 내도 12개월이 아니라 2~12월분이 대상이라 실질 할인율이 4.58%예요. 위 공제액은 자동차세 본세 기준이며, 고지서에서는 지방교육세도 함께 조정되어 실제 할인 총액이 이보다 클 수 있습니다 — 위택스 고지 금액이 우선입니다.</p>
   </div>
 
   <details>
@@ -354,7 +354,8 @@ function ageInfo(){
 
 function calc(){
   const B=baseYear();
-  const canAge = kind==='car' && use==='priv';
+  /* 전기·수소차는 정액(10만원)이라 차령 경감 대상이 아니다 */
+  const canAge = kind==='car' && use==='priv' && fuel!=='ev';
   const A=B.tax;
   const AG=ageInfo();
   const cut = canAge?AG.cut:0;

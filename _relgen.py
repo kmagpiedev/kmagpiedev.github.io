@@ -540,7 +540,7 @@ EN_INDEX = """<!DOCTYPE html>
 
 <p class="crumb"><a href="/">K-magpie</a> &rsaquo; Kmagpie Tools</p>
 
-<div class="brand"><img class="lt" src="/images/kmagpie-logo.png" alt="Kmagpie Tools logo, a magpie holding a wrench" width="64" height="64"><img class="dk" src="/images/kmagpie-logo-dark.png" alt="Kmagpie Tools logo, a magpie holding a wrench" width="64" height="64"><h1>Kmagpie Tools</h1></div>
+<div class="brand"><img class="lt" src="/images/kmagpie-logo.png" alt="Kmagpie Tools logo, a magpie holding a wrench and a hammer" width="64" height="64"><img class="dk" src="/images/kmagpie-logo-dark.png" alt="Kmagpie Tools logo, a magpie holding a wrench and a hammer" width="64" height="64"><h1>Kmagpie Tools</h1></div>
 <p class="sub">Free calculators for people working in Korea. No sign-up, no uploads &mdash; everything runs inside your browser.</p>
 <p class="langsw"><a href="/tools/" hreflang="ko" lang="ko">&#54620;&#44397;&#50612;&#47196; &#48372;&#44592;</a></p>
 
