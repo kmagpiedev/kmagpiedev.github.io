@@ -50,6 +50,8 @@ TOOLS = {
                    '사진이나 스캔한 이미지 여러 장을 PDF 한 개로 묶습니다. 순서를 바꾸고 용지 크기와 여백을 고를 수 있으며 원본 화질 그대로 넣습니다.'),
  'lunar':         ('🌙','음력 양력 변환','음력 생일·윤달·띠 한 번에',
                    '음력과 양력을 서로 바꾸고 음력 생일이 앞으로 10년간 양력 며칠인지 표로 보여줍니다. 윤달과 띠, 일진도 함께 확인할 수 있습니다.'),
+ 'electricity':   ('⚡','전기요금 계산기','누진세·에어컨 요금 얼마나',
+                   '이번 달 전기요금이 얼마 나올지 누진 구간까지 따져 계산합니다. 에어컨을 하루 몇 시간 더 쓰면 얼마가 늘어나는지, 다음 누진 구간까지 몇 kWh 남았는지 함께 보여줍니다.'),
  'watermark':     ('💧','이미지 워터마크 넣기','텍스트·로고, 여러 장 한 번에',
                    '사진이나 서류 사본에 워터마크를 얹습니다. 텍스트와 로고를 지원하고 9분할 위치나 바둑판 반복으로 배치합니다. 여러 장을 한꺼번에 처리해 ZIP으로 받습니다.'),
  'resize':        ('📏','이미지 크기 조절','정확한 px 지정, 비율 자르기',
@@ -84,8 +86,8 @@ CATS = [
   ['acquisition-tax','broker-fee','rent-convert','loan','deposit']),
  ('자동차', '차를 사고 유지할 때 내는 세금입니다. 확인되지 않은 항목은 계산에 넣지 않고 어디서 확인해야 하는지 알려드립니다.',
   ['car-tax','car-acquisition']),
- ('생활 편의', '자주 찾게 되는 단순한 계산과 변환입니다. 가입도 설치도 없이 바로 씁니다.',
-  ['char-count','pyeong','date-calc','lunar','qr']),
+ ('생활 편의', '집과 일상에서 자주 찾게 되는 계산입니다. 가입도 설치도 없이 바로 쓰고, 근거가 확인된 값만 계산합니다.',
+  ['electricity','pyeong','lunar','date-calc','char-count','qr']),
  ('앱 개발',    '안드로이드 앱을 출시할 때 반복적으로 필요한 작업들입니다. 직접 앱을 만들며 필요해서 만든 도구예요.',
   ['app-icon','screenshot','privacy-policy']),
 ]
@@ -116,8 +118,9 @@ REL = {
  'pdf-to-image':  ['pdf','pdf-sign','img2pdf'],
  'img2pdf':       ['pdf','image-compress','pdf-to-image'],
  'lunar':         ['date-calc','char-count','pyeong'],
+ 'electricity':   ['pyeong','deposit','loan'],
  'char-count':    ['date-calc','lunar','qr'],
- 'pyeong':        ['acquisition-tax','broker-fee','date-calc'],
+ 'pyeong':        ['electricity','acquisition-tax','broker-fee'],
  'date-calc':     ['lunar','char-count','annual-leave'],
  'app-icon':      ['screenshot','privacy-policy','image-compress'],
  'screenshot':    ['app-icon','privacy-policy','image-compress'],
@@ -202,7 +205,7 @@ def patch(slug):
 # 계산 결과를 내놓는 도구 — 푸터에 면책 안내 한 줄을 더 붙인다
 CALC = {'salary', 'severance', 'holiday-pay', 'annual-leave', 'unemployment',
         'loan', 'acquisition-tax', 'broker-fee', 'car-tax', 'car-acquisition',
-        'rent-convert', 'deposit',
+        'rent-convert', 'deposit', 'electricity',
         # lunar 은 금액이 아니라 날짜를 내놓으므로 페이지가 자체 <!--FOOTNOTE--> 문구를
         # 이미 갖고 있다. CALC 에 넣어 두면 patch_footer 가 그 문구를 지우지 않는다.
         'lunar'}
