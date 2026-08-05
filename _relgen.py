@@ -30,6 +30,8 @@ TOOLS = {
                    '배기량과 최초 등록 연도만 넣으면 자동차세와 지방교육세가 나옵니다. 차령 경감을 법 산식 그대로 반기 단위로 계산하고 1월·3월·6월·9월 연납 할인액을 비교합니다.'),
  'car-acquisition':('🚙','자동차 취득세 계산기','경차 75만원·전기차 140만원 감면',
                    '차를 살 때 내는 취득세를 차종·용도별 세율로 계산합니다. 경차와 전기차 감면 한도를 반영하고, 공채 매입처럼 지역마다 다른 항목은 무엇을 더 확인해야 하는지 알려줍니다.'),
+ 'deposit':       ('🏧','예금·적금 이자 계산기','세후 실수령액, 단리·복리 비교',
+                   '정기예금과 정기적금의 만기 이자를 계산합니다. 이자소득세 15.4%를 뗀 실수령액이 바로 나오고, 목표 금액에서 매달 얼마씩 넣어야 하는지도 역산합니다.'),
  'rent-convert':  ('🏘️','전월세 전환 계산기','법정 전환율 상한 확인',
                    '전세를 월세로 바꾸면 월세가 얼마인지, 월세를 전세로 환산하면 얼마인지 계산합니다. 집주인이 제시한 조건이 법정 상한을 넘는지 역산해서 확인해 드립니다.'),
  'pdf-to-image':  ('🖼️','PDF를 이미지로','JPG·PNG 300dpi, ZIP 저장',
@@ -71,7 +73,7 @@ CATS = [
  ('급여·노동', '법령과 공식 고시를 그대로 적용해 계산합니다. 근사식을 쓰지 않고 계산 과정과 근거 조문을 함께 보여줍니다.',
   ['salary','severance','unemployment','annual-leave','holiday-pay']),
  ('부동산·금융', '집을 사고팔 때, 돈을 빌릴 때 필요한 계산입니다. 법령과 고시 요율을 그대로 적용하고 입력한 값은 어디로도 전송되지 않습니다.',
-  ['acquisition-tax','broker-fee','rent-convert','loan']),
+  ['acquisition-tax','broker-fee','rent-convert','loan','deposit']),
  ('자동차', '차를 사고 유지할 때 내는 세금입니다. 확인되지 않은 항목은 계산에 넣지 않고 어디서 확인해야 하는지 알려드립니다.',
   ['car-tax','car-acquisition']),
  ('생활 편의', '자주 찾게 되는 단순한 계산과 변환입니다. 가입도 설치도 없이 바로 씁니다.',
@@ -83,7 +85,8 @@ CATS = [
 # 각 도구 페이지 하단에 노출할 관련 도구 (맥락 흐름 순)
 REL = {
  'salary':        ['severance','loan','annual-leave'],
- 'loan':          ['acquisition-tax','broker-fee','salary'],
+ 'loan':          ['deposit','acquisition-tax','salary'],
+ 'deposit':       ['loan','salary','severance'],
  'acquisition-tax':['broker-fee','loan','pdf-sign'],
  'broker-fee':    ['acquisition-tax','loan','pdf-sign'],
  'annual-leave':  ['severance','unemployment','holiday-pay'],
@@ -187,7 +190,7 @@ def patch(slug):
 # 계산 결과를 내놓는 도구 — 푸터에 면책 안내 한 줄을 더 붙인다
 CALC = {'salary', 'severance', 'holiday-pay', 'annual-leave', 'unemployment',
         'loan', 'acquisition-tax', 'broker-fee', 'car-tax', 'car-acquisition',
-        'rent-convert'}
+        'rent-convert', 'deposit'}
 
 FOOT_NOTE = {
  'ko': '<p>계산 결과는 참고용 추정치이며 법적 효력이 없습니다. '

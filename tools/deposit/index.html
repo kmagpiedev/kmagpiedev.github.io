@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>예금·적금 이자 계산기 — 세후 실수령액, 단리·복리 | 까치툴</title>
+<meta name="description" content="정기예금과 정기적금의 만기 이자를 계산합니다. 이자소득세 15.4%를 뗀 실수령액이 바로 나오고, 단리와 월복리를 비교합니다. 목표 금액에서 매달 얼마를 넣어야 하는지도 역산합니다.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/deposit/">
+<meta property="og:title" content="예금·적금 이자 계산기 — 세후 실수령액">
+<meta property="og:description" content="이자소득세 15.4%를 뗀 실제 받는 돈. 적금 이자가 생각보다 적은 이유도 보여줍니다.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/deposit/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  .row{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start}
+  .col{flex:1;min-width:190px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
+  input[type=text],input[type=number]{padding:10px 12px;border:1px solid var(--line);border-radius:9px;
+    background:var(--surface);color:var(--ink);font-size:16px;font-family:inherit;width:100%;
+    text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+  input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .amt{display:flex;align-items:center;gap:8px}
+  .unit{font-size:14px;color:var(--ink-2);flex:none;white-space:nowrap}
+  .mini{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .mini button{font-family:inherit;font-size:12.5px;padding:5px 10px;border-radius:7px;border:1px solid var(--line);
+    background:transparent;color:var(--ink-2);cursor:pointer}
+  .mini button:hover{border-color:var(--accent);color:var(--accent)}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:12px 0 0}
+  .seg{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+  .seg button{flex:1;background:transparent;border:0;padding:10px 6px;font-size:13.5px;font-weight:600;
+    color:var(--ink-2);cursor:pointer;font-family:inherit;transition:.12s}
+  .seg button.on{background:var(--accent);color:#fff}
+  .seg.sm button{font-size:12.5px;padding:9px 4px}
+
+  .result{background:var(--surface);border:1px solid var(--accent);border-radius:16px;padding:26px 24px;margin:18px 0}
+  .big{font-size:13px;color:var(--ink-2);margin:0 0 4px}
+  .money{font-size:38px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.2;color:var(--accent)}
+  .money small{font-size:18px;font-weight:700;margin-left:3px}
+  .yearly{font-size:14px;color:var(--ink-2);margin-top:6px;font-variant-numeric:tabular-nums}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px}
+  th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line-soft)}
+  th{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;border-bottom:1px solid var(--line)}
+  td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  td.r{font-size:13px;color:var(--ink-3);text-align:right;font-variant-numeric:tabular-nums}
+  tr.sum td{border-top:2px solid var(--line);border-bottom:0;font-weight:700;padding-top:11px}
+  tr.take td{border-bottom:0;font-weight:800;color:var(--accent);font-size:16px}
+  tr.cut td{color:var(--bad)}
+
+  .cmp{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:16px 0}
+  .cmp .c{border:1px solid var(--line);border-radius:13px;padding:14px 16px;background:var(--surface);cursor:pointer;transition:.14s}
+  .cmp .c:hover{border-color:var(--accent)}
+  .cmp .c.win{border-color:var(--accent);background:var(--accent-soft)}
+  .cmp .c .k{font-size:12.5px;color:var(--ink-3);font-weight:600}
+  .cmp .c .v{font-size:19px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em;margin-top:3px}
+  .cmp .c.win .v{color:var(--accent)}
+  .cmp .c .d{font-size:12px;color:var(--ink-3);margin-top:2px;font-variant-numeric:tabular-nums}
+
+  details{margin:14px 0;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:0 16px}
+  details[open]{padding-bottom:8px}
+  summary{cursor:pointer;padding:12px 0;font-size:14.5px;font-weight:600;color:var(--ink-2)}
+  summary:hover{color:var(--accent)}
+  .sched{max-height:420px;overflow:auto}
+  .sched table{font-size:13.5px;margin:0}
+  .sched th{position:sticky;top:0;background:var(--surface);z-index:1}
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .m-ok{background:var(--good-soft);border-color:var(--good)}
+  .hidden{display:none}
+  code{background:var(--line-soft);padding:1px 5px;border-radius:4px;font-size:12.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .src{font-size:12.5px;color:var(--ink-3);margin-top:14px;padding-top:12px;border-top:1px solid var(--line-soft)}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .money{font-size:29px}
+    .cmp{grid-template-columns:1fr}
+    table{font-size:13px}
+    th,td{padding:7px 4px}
+    .seg button{font-size:12px;padding:9px 2px}
+  }
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
+</style>
+<!--HEAD:S-->
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
+<meta property="og:site_name" content="까치툴">
+<!--HEAD:E-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › 예금·적금 이자 계산기</p>
+
+<h1>예금·적금 이자 계산기</h1>
+<p class="sub">만기에 <strong>실제로 손에 쥐는 금액</strong>을 계산합니다. 이자소득세 15.4%를 뗀 세후 금액이 바로 나오고, 단리와 월복리를 나란히 비교합니다. 목표 금액에서 매달 얼마씩 넣어야 하는지도 역산해요.</p>
+
+<div class="panel">
+  <label class="f">무엇을 계산할까요</label>
+  <div class="seg" id="mode">
+    <button data-v="saving" class="on">정기적금 (매달 납입)</button>
+    <button data-v="deposit">정기예금 (목돈 예치)</button>
+    <button data-v="goal">목표 금액 역산</button>
+  </div>
+
+  <div class="row" style="margin-top:20px">
+    <div class="col" id="amtBox">
+      <label class="f" id="amtLabel">월 납입액</label>
+      <div class="amt">
+        <input type="text" id="amt" inputmode="numeric" value="50">
+        <span class="unit">만원</span>
+      </div>
+      <div class="mini" id="quick"></div>
+    </div>
+    <div class="col">
+      <label class="f">연 이자율</label>
+      <div class="amt">
+        <input type="number" id="rate" value="3.5" min="0" max="30" step="0.01">
+        <span class="unit">%</span>
+      </div>
+      <div class="mini">
+        <button data-r="2.5">2.5</button>
+        <button data-r="3.0">3.0</button>
+        <button data-r="3.5">3.5</button>
+        <button data-r="4.5">4.5</button>
+        <button data-r="6.0">6.0</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top:20px">
+    <div class="col">
+      <label class="f">기간</label>
+      <div class="amt">
+        <input type="number" id="months" value="12" min="1" max="600">
+        <span class="unit">개월</span>
+      </div>
+      <div class="mini">
+        <button data-m="6">6개월</button>
+        <button data-m="12">1년</button>
+        <button data-m="24">2년</button>
+        <button data-m="36">3년</button>
+      </div>
+    </div>
+    <div class="col">
+      <label class="f">이자 계산 방식</label>
+      <div class="seg sm" id="comp">
+        <button data-v="simple" class="on">단리</button>
+        <button data-v="monthly">월복리</button>
+      </div>
+      <p class="note">국내 은행의 정기예금·정기적금은 <strong>대부분 단리</strong>입니다. 월복리 상품은 따로 표시되어 있어요.</p>
+    </div>
+  </div>
+
+  <label class="f" style="margin-top:20px">이자소득세</label>
+  <div class="seg sm" id="tax">
+    <button data-v="15.4" class="on">일반과세 15.4%</button>
+    <button data-v="0">비과세 0%</button>
+    <button data-v="x">직접 입력</button>
+  </div>
+  <div class="row hidden" id="taxBox" style="margin-top:14px">
+    <div class="col">
+      <div class="amt">
+        <input type="number" id="taxRate" value="9.5" min="0" max="50" step="0.1">
+        <span class="unit">%</span>
+      </div>
+    </div>
+  </div>
+  <p class="note">일반과세는 소득세 14% + 지방소득세 1.4%입니다. 비과세종합저축이나 조합 예탁금 세금우대는 <strong>가입 자격과 한도가 정해져 있으니</strong> 해당되는지 은행에서 확인하고 직접 입력에 그 세율을 넣으세요.</p>
+</div>
+
+<div id="warn" class="hidden"></div>
+
+<div class="result">
+  <p class="big" id="payLabel">만기 수령액 (세후)</p>
+  <div class="money" id="pay">0<small>원</small></div>
+  <div class="yearly" id="meta"></div>
+
+  <table><tbody id="tb"></tbody></table>
+
+  <div id="cmpBox">
+    <p class="big" style="margin-top:22px">단리와 월복리 비교</p>
+    <div class="cmp" id="cmp"></div>
+  </div>
+
+  <details id="schedBox">
+    <summary>회차별 내역 보기</summary>
+    <div class="sched">
+      <table>
+        <thead><tr><th>회차</th><th class="n">납입 누계</th><th class="n">이자(세전)</th><th class="n">평가액</th></tr></thead>
+        <tbody id="sched"></tbody>
+      </table>
+    </div>
+  </details>
+
+  <p class="src" id="src"></p>
+</div>
+
+<h2>적금 이자가 생각보다 적은 이유</h2>
+<p>가장 많이 하는 오해입니다. 연 5% 적금에 매달 50만원씩 1년을 넣으면 원금이 600만원이니까 이자가 30만원일 거라고 생각하는데, 실제로는 <strong>절반가량인 16만원</strong>밖에 안 나옵니다.</p>
+<p>이유는 간단해요. <strong>첫 달에 넣은 돈만 12개월치 이자를 받습니다.</strong> 두 번째 달 돈은 11개월, 세 번째 달은 10개월치를 받고, 마지막 달에 넣은 돈은 한 달치 이자밖에 못 받아요. 다 더하면 평균 6.5개월치라서, 표시된 금리의 절반 조금 넘는 만큼만 붙는 셈입니다.</p>
+<p>그래서 <strong>같은 금리라면 예금이 적금보다 이자가 훨씬 많습니다.</strong> 600만원을 한 번에 넣는 정기예금은 12개월 내내 600만원 전체에 이자가 붙으니까요. 목돈이 있다면 예금, 매달 모아가는 거라면 적금이고, 둘을 금리만으로 비교하면 안 됩니다.</p>
+
+<h2>세금 15.4%를 빼야 실제 금액입니다</h2>
+<p>이자에는 <strong>이자소득세 14%와 지방소득세 1.4%</strong>가 붙어서 총 15.4%가 원천징수됩니다. 원금에 붙는 게 아니라 <strong>이자에만</strong> 붙어요. 이자가 16만원이면 약 2만 5천원을 떼고 13만 7천원 정도가 실제로 들어옵니다.</p>
+<p>은행 상품 안내에 적힌 금리는 세전 기준입니다. 그래서 광고의 "연 5%"는 실질적으로 <strong>연 4.23%</strong> 정도예요. 다른 투자 수단과 비교할 때는 이 세후 수익률로 봐야 공정합니다.</p>
+<p>비과세나 세금우대를 받을 수 있는 경우도 있습니다. 만 65세 이상이나 장애인 등이 가입하는 비과세종합저축, 새마을금고·신협 같은 조합의 예탁금 세금우대가 대표적인데 <strong>가입 자격과 한도가 정해져 있고 제도가 자주 바뀝니다.</strong> 해당된다고 생각되면 가입 전에 창구에서 확인하고, 위 계산기의 세율을 직접 입력해서 다시 계산해 보세요.</p>
+
+<h2>단리와 복리</h2>
+<p>단리는 원금에만 이자가 붙고, 복리는 <strong>이자에도 이자가 붙습니다.</strong> 국내 은행의 정기예금·정기적금은 대부분 단리이고, 월복리 상품은 이름에 명시되어 있어요.</p>
+<p>기간이 짧으면 차이가 거의 없습니다. 1년짜리면 단리와 월복리의 차이가 몇천원 수준이에요. 하지만 <strong>기간이 길어질수록 벌어집니다.</strong> 위 계산기에서 기간을 36개월, 60개월로 바꿔 가며 두 방식을 비교해 보세요.</p>
+<p>주의할 게 하나 있습니다. 만기에 자동으로 재예치되는 상품은 <strong>재예치 시점의 금리로 다시 시작</strong>합니다. 3년 복리처럼 보이지만 실은 1년짜리를 세 번 굴리는 것이고, 그사이 금리가 내려가면 처음 예상보다 적게 받아요.</p>
+
+<h2>자주 겪는 문제</h2>
+<h3>은행 계산기와 몇백원 차이가 나요</h3>
+<p>은행마다 이자를 <strong>일수로 계산</strong>하는 곳과 월 단위로 계산하는 곳이 있습니다. 일수 기준이면 2월이 낀 달과 31일인 달의 이자가 달라져요. 또 원 단위를 올리는지 버리는지, 세금을 10원 단위로 절사하는지도 은행마다 다릅니다. 이 계산기는 월 단위 표준 방식이라 실제와 수백원 차이가 날 수 있습니다.</p>
+<h3>우대금리는 어떻게 반영하나요</h3>
+<p>최종 적용될 금리를 위 이자율 칸에 그대로 넣으면 됩니다. 다만 광고의 "최고 연 7%"는 급여이체, 카드 사용, 자동이체 같은 조건을 <strong>전부 충족했을 때</strong>의 숫자예요. 기본금리가 2%인데 우대가 5%p인 경우도 흔합니다. 조건을 못 채우면 기본금리만 받으니, 확실히 채울 수 있는 조건만 더해서 계산하세요.</p>
+<h3>중도해지하면 얼마 받나요</h3>
+<p>약정 금리가 아니라 훨씬 낮은 <strong>중도해지 이율</strong>이 적용됩니다. 보통 연 0.1~1% 수준이라 사실상 이자가 없다고 보면 돼요. 급전이 필요할 때는 해지보다 <strong>예금담보대출</strong>이 나은 경우가 많습니다. 예금 금리보다 1~1.5%p 높은 이율로 빌릴 수 있어서, 남은 기간이 짧다면 해지해서 이자를 통째로 날리는 것보다 유리합니다.</p>
+<h3>금융소득이 많으면 세금이 더 나오나요</h3>
+<p>이자와 배당을 합친 <strong>금융소득이 연 2천만원을 넘으면</strong> 초과분이 다른 소득과 합산되어 종합과세됩니다. 이 경우 15.4%보다 높은 세율이 적용될 수 있어요. 다만 2천만원의 이자를 받으려면 원금이 수억원 단위여야 해서 대부분은 해당되지 않습니다. 해당된다면 세무사와 상담하세요.</p>
+<h3>예금자보호는 얼마까지인가요</h3>
+<p>금융회사별로 <strong>원금과 이자를 합쳐 1인당 5천만원까지</strong> 보호됩니다. 여기서 중요한 건 <strong>금융회사별</strong>이라는 점이에요. 한 은행에 1억을 넣는 것보다 두 은행에 5천만원씩 나누는 게 안전합니다. 저축은행이나 상호금융처럼 금리가 높은 곳에 넣을 때는 특히 한도를 넘기지 않도록 이자까지 계산해서 맞추세요.</p>
+
+<!--REL:S-->
+<h2>함께 쓰면 좋은 도구</h2>
+<div class="rel">
+  <a href="/tools/loan/"><strong>대출 이자 계산기</strong><span>원리금균등·원금균등·거치기간</span></a>
+  <a href="/tools/salary/"><strong>연봉 실수령액 계산기</strong><span>2026년 요율·간이세액표 원본</span></a>
+  <a href="/tools/severance/"><strong>퇴직금 계산기</strong><span>평균임금·통상임금 자동 비교</span></a>
+</div>
+<p class="rel-all"><a href="/tools/">까치툴 도구 26개 전체 보기 →</a></p>
+<!--REL:E-->
+
+<footer>
+  <!--FOOTNOTE--><p>계산 결과는 참고용 추정치이며 법적 효력이 없습니다. 정확한 금액과 문의처는 <a href="/disclaimer.html">면책조항</a>에서 확인하세요.</p>
+  <p>까치툴 · 모든 계산은 브라우저에서 이루어지며 입력값은 전송·저장되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const won=n=>Math.round(n).toLocaleString('ko-KR');
+const eok=n=>{
+  n=Math.round(n);
+  if(n>=100000000){const e=Math.floor(n/100000000), r=Math.round((n%100000000)/10000);
+    return e+'억'+(r?' '+r.toLocaleString('ko-KR')+'만':'');}
+  return Math.round(n/10000).toLocaleString('ko-KR')+'만';
+};
+
+let mode='saving', comp='simple', taxSel='15.4';
+
+const QUICK={
+  saving:[[10,'10만'],[30,'30만'],[50,'50만'],[100,'100만'],[200,'200만']],
+  deposit:[[1000,'1천만'],[3000,'3천만'],[5000,'5천만'],[10000,'1억']],
+  goal:  [[1000,'1천만'],[3000,'3천만'],[5000,'5천만'],[10000,'1억']],
+};
+
+function taxRate(){
+  if(taxSel==='x') return (parseFloat($('taxRate').value)||0)/100;
+  return parseFloat(taxSel)/100;
+}
+
+/* ── 정기적금: 매월 초 납입 ──
+   단리   이자 = P × (r/12) × n(n+1)/2
+   월복리 만기 = P × ((1+i)^n − 1)/i × (1+i),  i = r/12          */
+function saving(P, r, n, how){
+  const i=r/12;
+  if(how==='monthly'){
+    const fv = i>0 ? P*(((1+i)**n)-1)/i*(1+i) : P*n;
+    return {principal:P*n, interest:fv-P*n};
+  }
+  return {principal:P*n, interest:P*i*(n*(n+1)/2)};
+}
+/* ── 정기예금: 목돈 예치 ── */
+function deposit(P, r, n, how){
+  const i=r/12;
+  if(how==='monthly') return {principal:P, interest:P*(((1+i)**n)-1)};
+  return {principal:P, interest:P*r*(n/12)};
+}
+/* ── 목표 역산: 세후 만기금액이 T가 되는 월 납입액 ── */
+function goalMonthly(T, r, n, how, t){
+  const i=r/12;
+  if(how==='monthly'){
+    const f = i>0 ? (((1+i)**n)-1)/i*(1+i) : n;   // 원금 1원당 만기 평가액
+    return T / (n + (f-n)*(1-t));
+  }
+  return T / (n + i*(n*(n+1)/2)*(1-t));
+}
+
+function calc(){
+  const raw=parseInt(String($('amt').value).replace(/[^0-9]/g,''),10)||0;
+  const A=raw*10000;
+  const r=(parseFloat($('rate').value)||0)/100;
+  const n=Math.max(1, parseInt($('months').value,10)||1);
+  const t=taxRate();
+
+  let R, label, big, meta=[], html='', schedRows=[];
+
+  if(mode==='goal'){
+    const P=goalMonthly(A, r, n, comp, t);
+    R=saving(P, r, n, comp);
+    const tax=R.interest*t, net=R.principal+R.interest-tax;
+    label='매달 넣어야 할 금액'; big=P;
+    meta=[`${n}개월 후 세후 ${eok(A)}원`, `연 ${(r*100).toFixed(2)}%`, comp==='monthly'?'월복리':'단리'];
+    html=`<tr><td>월 납입액</td><td class="r">역산 결과</td><td class="n">${won(P)}원</td></tr>`
+       +`<tr><td>납입 원금 합계</td><td class="r">${n}회</td><td class="n">${won(R.principal)}원</td></tr>`
+       +`<tr><td>세전 이자</td><td class="r"></td><td class="n">${won(R.interest)}원</td></tr>`
+       +`<tr class="cut"><td>이자소득세</td><td class="r">${(t*100).toFixed(2)}%</td><td class="n">−${won(tax)}원</td></tr>`
+       +`<tr class="take"><td>만기 수령액 (세후)</td><td class="r"></td><td class="n">${won(net)}원</td></tr>`;
+    schedRows=buildSched(P, r, n, comp, 'saving');
+  }
+  else{
+    R = mode==='saving' ? saving(A, r, n, comp) : deposit(A, r, n, comp);
+    const tax=R.interest*t, net=R.principal+R.interest-tax;
+    label='만기 수령액 (세후)'; big=net;
+    const eff = R.principal>0 ? (R.interest-tax)/R.principal*100 : 0;
+    meta=[`원금 ${eok(R.principal)}원`, `세후 이자 ${won(R.interest-tax)}원`, `원금 대비 ${eff.toFixed(2)}%`];
+    html=`<tr><td>${mode==='saving'?'납입 원금 합계':'예치 원금'}</td><td class="r">${mode==='saving'?n+'회 × '+won(A)+'원':''}</td><td class="n">${won(R.principal)}원</td></tr>`
+       +`<tr><td>세전 이자</td><td class="r">연 ${(r*100).toFixed(2)}% · ${n}개월 · ${comp==='monthly'?'월복리':'단리'}</td><td class="n">${won(R.interest)}원</td></tr>`
+       +`<tr class="cut"><td>이자소득세</td><td class="r">${(t*100).toFixed(2)}%</td><td class="n">−${won(tax)}원</td></tr>`
+       +`<tr class="sum"><td>세후 이자</td><td class="r"></td><td class="n">${won(R.interest-tax)}원</td></tr>`
+       +`<tr class="take"><td>만기 수령액</td><td class="r"></td><td class="n">${won(net)}원</td></tr>`;
+    schedRows=buildSched(A, r, n, comp, mode);
+  }
+
+  $('payLabel').textContent=label;
+  $('pay').innerHTML=won(big)+'<small>원</small>';
+  $('meta').textContent=meta.join(' · ');
+  $('tb').innerHTML=html;
+
+  /* 단리 vs 월복리 비교 */
+  const base = mode==='goal' ? goalMonthly(A,r,n,comp,t) : A;
+  const both=['simple','monthly'].map(h=>{
+    const x = mode==='deposit' ? deposit(base,r,n,h) : saving(base,r,n,h);
+    return {h, net:x.principal+x.interest*(1-t), interest:x.interest*(1-t)};
+  });
+  const best=Math.max(...both.map(b=>b.net));
+  $('cmp').innerHTML=both.map(b=>
+    `<div class="c${b.net===best?' win':''}" data-h="${b.h}">
+       <div class="k">${b.h==='monthly'?'월복리':'단리'}</div>
+       <div class="v">${won(b.net)}원</div>
+       <div class="d">세후 이자 ${won(b.interest)}원</div>
+     </div>`).join('');
+  $('cmp').querySelectorAll('.c').forEach(c=>c.addEventListener('click',()=>{
+    document.querySelector(`#comp button[data-v="${c.dataset.h}"]`).click();
+  }));
+  $('cmpBox').classList.toggle('hidden', mode==='goal');
+
+  $('sched').innerHTML=schedRows;
+  $('schedBox').classList.toggle('hidden', mode==='deposit'&&comp==='simple');
+
+  /* 안내 */
+  const w=$('warn');
+  if(!A){ w.className='msg m-bad'; w.textContent='금액을 입력하세요.'; }
+  else if(mode==='saving'){
+    const dep=deposit(A*n, r, n, comp);
+    const gap=dep.interest-R.interest;
+    w.className='msg m-warn';
+    w.innerHTML=`같은 금액 <strong>${eok(A*n)}원</strong>을 한 번에 정기예금으로 넣으면 이자가 <strong>${won(dep.interest)}원</strong>입니다. 적금보다 ${won(gap)}원 많아요. `
+      +`적금은 나중에 넣은 돈일수록 이자 받는 기간이 짧아서, 표시 금리의 절반 조금 넘는 만큼만 붙습니다.`;
+  }
+  else if(mode==='goal'){
+    w.className='msg m-ok';
+    const P=goalMonthly(A,r,n,comp,t);
+    w.innerHTML=`매달 <strong>${won(P)}원</strong>씩 ${n}개월을 넣으면 세금까지 뗀 뒤 목표한 ${eok(A)}원이 됩니다. 이자 덕분에 원금은 ${won(P*n)}원만 있으면 돼요.`;
+  }
+  else{
+    const y=R.interest*(1-t)/R.principal/(n/12)*100;
+    w.className='msg m-ok';
+    w.innerHTML=`표시 금리는 연 ${(r*100).toFixed(2)}%지만 세금을 떼면 <strong>실질 연 ${y.toFixed(2)}%</strong>입니다. 다른 투자와 비교할 때는 이 숫자로 보세요.`;
+  }
+
+  $('src').innerHTML='이자소득세 14% + 지방소득세 1.4% = <strong>15.4%</strong> 원천징수 기준 · '
+   +'적금 단리 <code>이자 = 월납입액 × (연이율÷12) × n(n+1)÷2</code> · 월복리 <code>((1+i)ⁿ−1)÷i × (1+i)</code>'
+   +'<br><strong>이 결과는 참고용 추정치입니다.</strong> 은행마다 이자를 일수로 계산하는지 월 단위로 계산하는지, 원 단위와 세액을 어떻게 절사하는지가 달라 실제 지급액과 수백원 차이가 날 수 있습니다. 우대금리 조건 충족 여부, 중도해지 이율, 비과세·세금우대 자격은 반영되지 않았습니다. 정확한 금액은 가입할 금융회사에 확인하세요.';
+}
+
+/* 회차별 내역 (너무 길면 솎아냄) */
+function buildSched(P, r, n, how, kind){
+  const i=r/12, rows=[];
+  let paid=0, val=0;
+  for(let k=1;k<=n;k++){
+    if(kind==='deposit'){
+      paid=P;
+      val = how==='monthly' ? P*((1+i)**k) : P*(1+r*(k/12));
+    }else{
+      paid=P*k;
+      /* 단리: k월 시점까지 각 회차가 (k−j+1)개월 이자 → 합이 k(k+1)/2 */
+      if(how==='monthly') val=(val+P)*(1+i);
+      else val = paid + P*i*(k*(k+1)/2);
+    }
+    rows.push({k, paid, val, int:val-paid});
+  }
+  const show = rows.length>60 ? rows.filter((_,x)=>x<6||x%6===5||x>=rows.length-2) : rows;
+  return show.map(x=>
+    `<tr><td>${x.k}회</td><td class="n">${won(x.paid)}</td><td class="n">${won(x.int)}</td><td class="n">${won(x.val)}</td></tr>`).join('');
+}
+/* ── UI ── */
+function fillQuick(){
+  $('quick').innerHTML=QUICK[mode].map(([v,t])=>`<button data-v="${v}">${t}</button>`).join('');
+  $('quick').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+    $('amt').value=parseInt(b.dataset.v,10).toLocaleString('ko-KR'); calc();
+  }));
+}
+function sync(){
+  $('amtLabel').textContent = mode==='saving' ? '월 납입액' : (mode==='deposit' ? '예치 금액' : '목표 금액 (세후)');
+  $('taxBox').classList.toggle('hidden', taxSel!=='x');
+  fillQuick();
+}
+function segWire(id, fn){
+  document.querySelectorAll('#'+id+' button').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('#'+id+' button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); fn(b.dataset.v); sync(); calc();
+  }));
+}
+segWire('mode',v=>{
+  mode=v;
+  const d={saving:'50',deposit:'1,000',goal:'1,000'};
+  $('amt').value=d[v];
+});
+segWire('comp',v=>comp=v);
+segWire('tax', v=>taxSel=v);
+
+$('amt').addEventListener('input',e=>{
+  const raw=e.target.value.replace(/[^0-9]/g,'');
+  e.target.value=raw?parseInt(raw,10).toLocaleString('ko-KR'):'';
+  calc();
+});
+['rate','months','taxRate'].forEach(id=>$(id).addEventListener('input',calc));
+document.querySelectorAll('.mini button[data-r]').forEach(b=>b.addEventListener('click',()=>{
+  $('rate').value=b.dataset.r; calc();
+}));
+document.querySelectorAll('.mini button[data-m]').forEach(b=>b.addEventListener('click',()=>{
+  $('months').value=b.dataset.m; calc();
+}));
+
+sync(); calc();
+})();
+</script>
+</body>
+</html>
