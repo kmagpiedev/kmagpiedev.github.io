@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>QR코드 만들기 — 무료 생성기, 로고 삽입·고화질 저장 | 까치툴</title>
-<meta name="description" content="링크·와이파이·연락처·문자 QR코드를 무료로 만듭니다. 색상과 로고를 넣고 인쇄용 SVG나 고화질 PNG로 받으세요. 서버 전송 없이 브라우저에서 생성되며 유효기간이나 추적이 없습니다.">
-<link rel="canonical" href="https://www.kmagpie.com/tools/qr/">
-<meta property="og:title" content="QR코드 만들기 — 무료 생성기">
-<meta property="og:description" content="링크·와이파이·연락처 QR을 로고까지 넣어 무료로. 유효기간도 추적도 없습니다.">
+<title>QR Code Generator — Free, No Sign-Up, No Expiry | K-magpie</title>
+<meta name="description" content="Create QR codes for links, Wi-Fi, contacts, SMS and email — free, with your own colors and logo. Download print-ready SVG or high-res PNG. Generated locally in your browser: no tracking, no account, and codes that never expire.">
+<link rel="canonical" href="https://www.kmagpie.com/en/tools/qr/">
+<meta property="og:title" content="QR Code Generator — Free, No Sign-Up, No Expiry">
+<meta property="og:description" content="Link, Wi-Fi, contact and SMS QR codes with logo support, free. Generated locally — no expiry dates, no scan tracking.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://www.kmagpie.com/tools/qr/">
+<meta property="og:url" content="https://www.kmagpie.com/en/tools/qr/">
 <style>
   :root{
     --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
@@ -133,25 +133,25 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
 <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
-<meta property="og:site_name" content="까치툴">
+<meta property="og:site_name" content="Kmagpie Tools">
 <!--HEAD:E-->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="wrap">
 
-<p class="crumb"><a href="/">K-magpie</a> &rsaquo; <a href="/tools/">까치툴</a> &rsaquo; QR코드 만들기</p>
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/en/tools/">Kmagpie Tools</a> › QR Code Generator</p>
 <!--LANG:S-->
-<p class="langsw"><a href="/en/tools/qr/" hreflang="en" lang="en">English version</a></p>
+<p class="langsw"><a href="/tools/qr/" hreflang="ko" lang="ko">한국어로 보기</a></p>
 <!--LANG:E-->
 
-<h1>QR코드 만들기</h1>
-<p class="sub">링크, 와이파이, 연락처, 문자 QR을 무료로 만듭니다. 로고를 넣고 인쇄용 SVG로 받을 수 있어요. <strong>유효기간도, 사용 횟수 제한도, 스캔 추적도 없습니다.</strong></p>
+<h1>QR Code Generator</h1>
+<p class="sub">Make QR codes for links, Wi-Fi, contacts, SMS and email — free. Add a logo and download a print-ready SVG. <strong>Generated locally in your browser: no expiry date, no scan limits, no tracking.</strong></p>
 
 <div class="stage">
   <div class="pvbox">
     <div class="frame"><canvas id="pv" width="280" height="280"></canvas></div>
-    <div class="pvcap" id="cap">내용을 입력하세요</div>
+    <div class="pvcap" id="cap">Enter something to encode</div>
     <div style="display:flex;gap:8px;margin-top:12px">
       <button class="act primary" id="dlPng" style="flex:1;padding:10px 0;font-size:14px">PNG</button>
       <button class="act ghost" id="dlSvg" style="flex:1;padding:10px 0;font-size:14px">SVG</button>
@@ -160,142 +160,142 @@
 
   <div class="side">
     <div class="tabs" id="tabs">
-      <button data-t="url" class="on">링크 / 텍스트</button>
-      <button data-t="wifi">와이파이</button>
-      <button data-t="card">연락처</button>
-      <button data-t="sms">문자</button>
-      <button data-t="mail">이메일</button>
+      <button data-t="url" class="on">Link / Text</button>
+      <button data-t="wifi">Wi-Fi</button>
+      <button data-t="card">Contact</button>
+      <button data-t="sms">SMS</button>
+      <button data-t="mail">Email</button>
     </div>
 
     <div class="panel">
       <div id="pane-url">
-        <div class="fld"><label>주소 또는 텍스트</label><textarea id="u_text" placeholder="https://www.kmagpie.com/"></textarea></div>
+        <div class="fld"><label>URL or text</label><textarea id="u_text" placeholder="https://www.kmagpie.com/"></textarea></div>
       </div>
       <div id="pane-wifi" class="hidden">
-        <div class="fld"><label>네트워크 이름 (SSID)</label><input type="text" id="w_ssid" placeholder="MyWiFi"></div>
+        <div class="fld"><label>Network name (SSID)</label><input type="text" id="w_ssid" placeholder="MyWiFi"></div>
         <div class="two">
-          <div class="fld"><label>비밀번호</label><input type="text" id="w_pw" placeholder="비밀번호"></div>
-          <div class="fld"><label>보안 방식</label>
-            <select id="w_enc"><option value="WPA">WPA / WPA2 / WPA3</option><option value="WEP">WEP</option><option value="nopass">비밀번호 없음</option></select>
+          <div class="fld"><label>Password</label><input type="text" id="w_pw" placeholder="password"></div>
+          <div class="fld"><label>Security</label>
+            <select id="w_enc"><option value="WPA">WPA / WPA2 / WPA3</option><option value="WEP">WEP</option><option value="nopass">No password</option></select>
           </div>
         </div>
-        <label class="opt"><input type="checkbox" id="w_hidden">숨겨진 네트워크</label>
+        <label class="opt"><input type="checkbox" id="w_hidden">Hidden network</label>
       </div>
       <div id="pane-card" class="hidden">
         <div class="two">
-          <div class="fld"><label>이름</label><input type="text" id="c_name" placeholder="홍길동"></div>
-          <div class="fld"><label>휴대전화</label><input type="text" id="c_tel" placeholder="010-1234-5678"></div>
+          <div class="fld"><label>Name</label><input type="text" id="c_name" placeholder="Jane Doe"></div>
+          <div class="fld"><label>Mobile</label><input type="text" id="c_tel" placeholder="+1 555 123 4567"></div>
         </div>
         <div class="two">
-          <div class="fld"><label>이메일</label><input type="text" id="c_mail" placeholder="hong@example.com"></div>
-          <div class="fld"><label>회사 / 소속</label><input type="text" id="c_org" placeholder="K-magpie"></div>
+          <div class="fld"><label>Email</label><input type="text" id="c_mail" placeholder="jane@example.com"></div>
+          <div class="fld"><label>Company / organization</label><input type="text" id="c_org" placeholder="K-magpie"></div>
         </div>
-        <div class="fld"><label>웹사이트</label><input type="text" id="c_url" placeholder="https://example.com"></div>
+        <div class="fld"><label>Website</label><input type="text" id="c_url" placeholder="https://example.com"></div>
       </div>
       <div id="pane-sms" class="hidden">
-        <div class="fld"><label>받는 번호</label><input type="text" id="s_tel" placeholder="010-1234-5678"></div>
-        <div class="fld"><label>메시지 내용</label><textarea id="s_msg" placeholder="미리 채워질 문자 내용"></textarea></div>
+        <div class="fld"><label>Recipient number</label><input type="text" id="s_tel" placeholder="+1 555 123 4567"></div>
+        <div class="fld"><label>Message</label><textarea id="s_msg" placeholder="Text that will be pre-filled"></textarea></div>
       </div>
       <div id="pane-mail" class="hidden">
-        <div class="fld"><label>받는 주소</label><input type="text" id="m_to" placeholder="hello@example.com"></div>
-        <div class="fld"><label>제목</label><input type="text" id="m_sub" placeholder="문의드립니다"></div>
-        <div class="fld"><label>본문</label><textarea id="m_body" placeholder="미리 채워질 본문"></textarea></div>
+        <div class="fld"><label>To</label><input type="text" id="m_to" placeholder="hello@example.com"></div>
+        <div class="fld"><label>Subject</label><input type="text" id="m_sub" placeholder="Quick question"></div>
+        <div class="fld"><label>Body</label><textarea id="m_body" placeholder="Message that will be pre-filled"></textarea></div>
       </div>
     </div>
 
     <div class="panel">
-      <h4>모양</h4>
+      <h4>Appearance</h4>
       <div class="fld inline">
-        <input type="color" id="fg" value="#101828"><span style="font-size:13.5px;color:var(--ink-3)">코드색</span>
-        <input type="color" id="bg" value="#ffffff" style="margin-left:12px"><span style="font-size:13.5px;color:var(--ink-3)">배경색</span>
+        <input type="color" id="fg" value="#101828"><span style="font-size:13.5px;color:var(--ink-3)">Code</span>
+        <input type="color" id="bg" value="#ffffff" style="margin-left:12px"><span style="font-size:13.5px;color:var(--ink-3)">Background</span>
       </div>
-      <div class="fld"><label>여백 <span class="val" id="qV">4</span></label>
+      <div class="fld"><label>Quiet zone <span class="val" id="qV">4</span></label>
         <input type="range" id="quiet" min="1" max="8" value="4"></div>
-      <div class="fld"><label>저장 크기 <span class="val" id="szV">1024px</span></label>
+      <div class="fld"><label>Export size <span class="val" id="szV">1024px</span></label>
         <input type="range" id="size" min="256" max="2048" step="128" value="1024"></div>
-      <div class="fld"><label>오류 정정 수준</label>
+      <div class="fld"><label>Error correction level</label>
         <select id="ecl">
-          <option value="L">L — 약 7% 복원 (가장 작음)</option>
-          <option value="M" selected>M — 약 15% 복원 (기본)</option>
-          <option value="Q">Q — 약 25% 복원</option>
-          <option value="H">H — 약 30% 복원 (로고 삽입 시 권장)</option>
+          <option value="L">L — recovers ~7% (smallest code)</option>
+          <option value="M" selected>M — recovers ~15% (default)</option>
+          <option value="Q">Q — recovers ~25%</option>
+          <option value="H">H — recovers ~30% (best with a logo)</option>
         </select>
       </div>
     </div>
 
     <div class="panel">
-      <h4>가운데 로고 (선택)</h4>
+      <h4>Center logo (optional)</h4>
       <div class="fld"><input type="file" id="logo" accept="image/*" style="font-size:13.5px"></div>
-      <div class="fld"><label>로고 크기 <span class="val" id="lV">20%</span></label>
+      <div class="fld"><label>Logo size <span class="val" id="lV">20%</span></label>
         <input type="range" id="lsize" min="10" max="30" value="20"></div>
-      <label class="opt"><input type="checkbox" id="lpad" checked>로고 뒤에 흰 여백 넣기</label>
-      <button class="act ghost" id="lclear" style="margin-top:10px;padding:7px 14px;font-size:13px">로고 제거</button>
+      <label class="opt"><input type="checkbox" id="lpad" checked>White padding behind the logo</label>
+      <button class="act ghost" id="lclear" style="margin-top:10px;padding:7px 14px;font-size:13px">Remove logo</button>
     </div>
   </div>
 </div>
 
 <div id="warn" class="hidden"></div>
 
-<p class="gist">링크·와이파이·연락처·문자 QR을 서버 전송 없이 브라우저에서 바로 만듭니다. 단축 주소를 거치지 않아 유효기간이나 스캔 추적이 없고, 인쇄용 SVG와 고화질 PNG로 저장할 수 있습니다. 로고를 넣을 때는 오류 정정 수준을 H로 올리고 실제 기기로 스캔해 확인하세요.</p>
+<p class="gist">Create link, Wi-Fi, contact and SMS QR codes right in your browser — nothing is sent to a server. There's no URL shortener in the middle, so your codes never expire and no one tracks the scans. Download as print-ready SVG or high-res PNG. If you add a logo, raise the error correction level to H and test-scan with a real phone.</p>
 
-<details class="fold"><summary><h2>사용법</h2></summary><div class="fx">
-<p>왼쪽 탭에서 만들 종류를 고르고 내용을 입력하면 미리보기가 바로 갱신됩니다. 색상과 여백을 맞춘 뒤 PNG나 SVG로 받으세요. 인쇄물에 넣으실 거면 <strong>SVG를 권합니다.</strong> 벡터라서 아무리 키워도 깨지지 않아요. 화면이나 웹에 쓰실 거면 PNG로 충분합니다.</p>
-<p>여기서 만든 QR은 입력한 내용이 코드 자체에 그대로 담깁니다. 중간에 단축 주소나 추적 서버를 끼우지 않기 때문에 <strong>유효기간이 없고, 서비스가 사라져도 계속 동작하며, 누가 언제 스캔했는지 저장되지 않습니다.</strong> 무료 QR 서비스 중에는 자사 도메인을 경유시켜 나중에 유료로 전환하거나 링크를 죽이는 곳이 있으니 인쇄물에 쓰실 때는 특히 주의하세요.</p>
+<details class="fold"><summary><h2>How to use it</h2></summary><div class="fx">
+<p>Pick a type in the tabs, type your content, and the preview updates instantly. Adjust colors and the quiet zone, then download as PNG or SVG. For anything going to print, <strong>choose SVG</strong> — it's vector, so it stays crisp at any size. For screens and the web, PNG is all you need.</p>
+<p>The QR codes made here contain your content directly — the text you type is what's encoded. There's no shortened URL or tracking server in between, which means <strong>no expiry date, codes that keep working even if this site ever disappears, and no record of who scanned what, when.</strong> Some "free" QR services route your link through their own domain, then later paywall it or kill the redirect — be especially careful with those on printed material.</p>
 </div></details>
 
-<details class="fold"><summary><h2>오류 정정 수준은 뭘 고르나요</h2></summary><div class="fx">
-<p>QR은 일부가 가려지거나 훼손돼도 읽히도록 여분 데이터를 담습니다. 그 비율이 오류 정정 수준이에요. 높일수록 잘 읽히지만 코드가 촘촘해집니다.</p>
+<details class="fold"><summary><h2>Which error correction level should I pick?</h2></summary><div class="fx">
+<p>QR codes carry redundant data so they can still be read when partly covered or damaged. That redundancy is the error correction level — higher levels scan more reliably but make the code denser.</p>
 <table>
-  <thead><tr><th>수준</th><th>복원 가능</th><th>이럴 때 쓰세요</th></tr></thead>
+  <thead><tr><th>Level</th><th>Recovers</th><th>Use it for</th></tr></thead>
   <tbody>
-    <tr><td>L</td><td>약 7%</td><td>화면 표시용, 내용이 길어 코드를 작게 유지해야 할 때</td></tr>
-    <tr><td>M</td><td>약 15%</td><td>대부분의 경우. 기본값으로 두시면 됩니다</td></tr>
-    <tr><td>Q</td><td>약 25%</td><td>명함·전단처럼 접히거나 더러워질 수 있는 인쇄물</td></tr>
-    <tr><td>H</td><td>약 30%</td><td><strong>가운데 로고를 넣을 때</strong>, 야외 스티커처럼 훼손이 잦은 곳</td></tr>
+    <tr><td>L</td><td>~7%</td><td>On-screen display, or long content where the code must stay sparse</td></tr>
+    <tr><td>M</td><td>~15%</td><td>Most cases — the default is fine</td></tr>
+    <tr><td>Q</td><td>~25%</td><td>Business cards and flyers that get folded or grubby</td></tr>
+    <tr><td>H</td><td>~30%</td><td><strong>Whenever you add a center logo</strong>, or outdoor stickers that take abuse</td></tr>
   </tbody>
 </table>
-<p>로고를 넣으면 그만큼 코드가 가려지므로 오류 정정으로 메워야 합니다. 로고 크기를 20% 이상 키우실 거면 수준을 H로 올리고, 만든 뒤 <strong>반드시 실제 휴대전화로 스캔해 보세요.</strong></p>
+<p>A logo covers part of the code, and error correction has to make up the difference. If you push the logo past 20%, switch to level H — and <strong>always test-scan the finished code with a real phone</strong> before it goes anywhere.</p>
 </div></details>
 
-<details class="fold"><summary><h2>잘 읽히는 QR 만들기</h2></summary><div class="fx">
-<h3>충분히 크게 인쇄하세요</h3>
-<p>일반적인 기준은 <strong>스캔 거리의 10분의 1</strong>입니다. 30cm 거리에서 찍는다면 3cm, 3m 떨어진 포스터라면 30cm는 되어야 안정적으로 읽힙니다. 전단이나 명함이라면 최소 2cm는 확보하세요.</p>
-<h3>명암 대비를 지키세요</h3>
-<p>코드색은 어둡게, 배경은 밝게가 원칙입니다. 반대로 뒤집으면 인식하지 못하는 기기가 많습니다. 파스텔톤끼리 조합하거나 배경 사진 위에 얹는 것도 실패 원인이에요.</p>
-<h3>여백을 없애지 마세요</h3>
-<p>코드 주변의 흰 여백은 장식이 아니라 규격의 일부입니다. 최소 4모듈이 필요해서 기본값을 4로 두었습니다. 디자인상 답답해 보여도 줄이지 마세요.</p>
-<h3>만들고 나면 꼭 테스트하세요</h3>
-<p>인쇄를 넘기기 전에 <strong>안드로이드와 아이폰 양쪽에서, 실제 인쇄될 크기로 출력해</strong> 스캔해 보세요. 화면에서 잘 읽히는 코드가 종이에서 안 읽히는 경우가 생각보다 많습니다.</p>
+<details class="fold"><summary><h2>Making a QR code that scans reliably</h2></summary><div class="fx">
+<h3>Print it big enough</h3>
+<p>The usual rule of thumb is <strong>one tenth of the scanning distance</strong>. Scanned from 30cm away, the code should be 3cm across; on a poster read from 3m, make it 30cm. On flyers and business cards, keep it at least 2cm.</p>
+<h3>Keep the contrast right</h3>
+<p>Dark code on a light background — that's the rule. Invert it and many phones simply won't read it. Pastel-on-pastel combinations and codes laid over background photos are the other classic failures.</p>
+<h3>Don't shave off the quiet zone</h3>
+<p>The white border around a QR code isn't decoration — it's part of the spec. Scanners need at least 4 modules of clear space, which is why the default here is 4. However cramped it looks in your layout, don't reduce it.</p>
+<h3>Test before you commit</h3>
+<p>Before sending anything to print, <strong>print a sample at final size and scan it with both an Android phone and an iPhone.</strong> Codes that read fine on screen fail on paper more often than you'd expect.</p>
 </div></details>
 
-<details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
-<h3>와이파이 QR이 아이폰에서 안 돼요</h3>
-<p>아이폰은 카메라로 와이파이 QR을 인식합니다. 비밀번호에 세미콜론이나 역슬래시 같은 특수문자가 있으면 문제가 생길 수 있으니, 그럴 때는 비밀번호를 바꾸거나 직접 입력하도록 안내하세요.</p>
-<h3>내용을 길게 넣었더니 너무 촘촘해요</h3>
-<p>QR은 담는 내용이 길수록 격자가 조밀해집니다. 주소가 길다면 짧은 경로로 바꾸시고, 연락처는 꼭 필요한 항목만 넣으세요. 오류 정정 수준을 L로 낮추는 것도 방법입니다.</p>
+<details class="fold"><summary><h2>Troubleshooting</h2></summary><div class="fx">
+<h3>My Wi-Fi QR doesn't work on iPhone</h3>
+<p>iPhones read Wi-Fi QR codes through the Camera app. Passwords containing characters like semicolons or backslashes can trip things up — if yours does, change the password or have people type it in manually.</p>
+<h3>I pasted long content and the code is incredibly dense</h3>
+<p>The more you encode, the finer the grid gets. Shorten long URLs to a compact path, and put only the essential fields in a contact code. Dropping the error correction level to L also helps.</p>
 </div></details>
 
 <!--REL:S-->
-<h2>함께 쓰면 좋은 도구</h2>
+<h2>Related tools</h2>
 <div class="rel">
-  <a href="/tools/char-count/"><strong>글자수 세기</strong><span>공백 포함·제외, 바이트, 원고지</span></a>
-  <a href="/tools/convert/"><strong>이미지 확장자 변환</strong><span>PNG·JPG·WebP·BMP·ICO</span></a>
-  <a href="/tools/date-calc/"><strong>날짜 계산기</strong><span>만나이·D-day·날짜 사이 일수</span></a>
+  <a href="/en/tools/image-compress/"><strong>Compress Images</strong><span>Auto-fit a target file size</span></a>
+  <a href="/en/tools/convert/"><strong>Convert Images</strong><span>PNG, JPG, WebP, BMP, ICO</span></a>
+  <a href="/en/tools/resize/"><strong>Resize Images</strong><span>Exact pixels, ratio crops, batch</span></a>
 </div>
-<p class="rel-all"><a href="/tools/">까치툴 도구 33개 전체 보기 →</a></p>
+<p class="rel-all"><a href="/en/tools/">See all 18 English tools →</a></p>
 <!--REL:E-->
 
 <footer>
-  <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 입력한 내용은 전송되지 않습니다.</p>
-  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+  <p>Kmagpie Tools · Everything runs in your browser. What you type is never sent anywhere.</p>
+  <p><a href="/">Home</a> · <a href="/en/tools/">Other tools</a> · <a href="/en/disclaimer.html">Disclaimer</a> · <a href="/privacy-policy.html">Privacy Policy</a></p>
 </footer>
 
 </div>
 
 <script>
-/* 최소 구현 QR 인코더 (ISO/IEC 18004) — 외부 의존 없음 */
+/* Minimal QR encoder (ISO/IEC 18004) — no external dependencies */
 const ECL = { L:0, M:1, Q:2, H:3 };
-const FORMAT_BITS = [1, 0, 3, 2];               // L,M,Q,H → 형식정보용 2비트
+const FORMAT_BITS = [1, 0, 3, 2];               // L,M,Q,H → 2 bits for the format info
 
 const ECC_PER_BLOCK = [
  [-1,7,10,15,20,26,18,20,24,30,18,20,24,26,30,22,24,28,30,28,28,28,28,30,30,26,28,30,30,30,30,30,30,30,30,30,30,30,30,30,30],
@@ -337,7 +337,7 @@ const EXP = new Uint8Array(512), LOG = new Uint8Array(256);
 })();
 const gmul = (a,b) => (a === 0 || b === 0) ? 0 : EXP[LOG[a] + LOG[b]];
 
-/* 생성다항식의 나눗셈용 계수(선두 1 제외, 차수 내림차순) */
+/* generator polynomial coefficients for division (leading 1 omitted, descending degree) */
 function rsGenerator(deg){
   const g = new Uint8Array(deg); g[deg-1] = 1;
   let root = 1;
@@ -360,14 +360,14 @@ function rsEncode(data, deg){
   return res;
 }
 
-/* ---- 비트 버퍼 ---- */
+/* ---- bit buffer ---- */
 class Bits {
   constructor(){ this.a = []; }
   push(val, len){ for (let i = len-1; i >= 0; i--) this.a.push((val >>> i) & 1); }
   get length(){ return this.a.length; }
 }
 
-/* ---- 모드 판정 ---- */
+/* ---- mode detection ---- */
 const isNum = s => /^[0-9]*$/.test(s);
 const isAlnum = s => [...s].every(c => ALNUM.indexOf(c) >= 0);
 function utf8(s){ return new TextEncoder().encode(s); }
@@ -400,7 +400,7 @@ function segmentBitLength(text, mode, v){
   const b = new Bits(); encodeSegment(b, text, mode, v); return b.length;
 }
 
-/* ---- 메인 ---- */
+/* ---- main ---- */
 function encode(text, eclName='M', minVersion=1){
   const e = ECL[eclName];
   const mode = isNum(text) ? 'num' : isAlnum(text) ? 'alnum' : 'byte';
@@ -409,7 +409,7 @@ function encode(text, eclName='M', minVersion=1){
   for (let v = Math.max(1,minVersion); v <= 40; v++){
     if (segmentBitLength(text, mode, v) <= dataCodewords(v,e)*8){ version = v; break; }
   }
-  if (version < 0) throw new Error('내용이 너무 깁니다. 오류 정정 수준을 낮추거나 글자 수를 줄이세요.');
+  if (version < 0) throw new Error('Too much content for one QR code. Lower the error correction level or shorten the text.');
 
   const cap = dataCodewords(version, e) * 8;
   const bits = new Bits();
@@ -422,7 +422,7 @@ function encode(text, eclName='M', minVersion=1){
   const dat = new Uint8Array(bits.length/8);
   bits.a.forEach((b,i) => { if (b) dat[i>>3] |= 0x80 >>> (i & 7); });
 
-  /* 블록 분할 + RS + 인터리브 */
+  /* split into blocks + RS + interleave */
   const nBlocks = NUM_BLOCKS[e][version], eccLen = ECC_PER_BLOCK[e][version];
   const rawCw = Math.floor(rawDataModules(version)/8);
   const shortCount = nBlocks - (rawCw % nBlocks);
@@ -446,10 +446,10 @@ function encode(text, eclName='M', minVersion=1){
 
 function buildMatrix(codewords, version, e){
   const size = version*4 + 17;
-  const m = Array.from({length:size}, () => new Int8Array(size).fill(-1)); // -1 = 미할당
+  const m = Array.from({length:size}, () => new Int8Array(size).fill(-1)); // -1 = unassigned
 
   const setF = (x,y,v) => { if (x>=0 && x<size && y>=0 && y<size) m[y][x] = v; };
-  // 파인더 + 분리자
+  // finders + separators
   const finder = (cx,cy) => {
     for (let dy = -4; dy <= 4; dy++) for (let dx = -4; dx <= 4; dx++){
       const d = Math.max(Math.abs(dx), Math.abs(dy));
@@ -457,16 +457,16 @@ function buildMatrix(codewords, version, e){
     }
   };
   finder(3,3); finder(size-4,3); finder(3,size-4);
-  // 타이밍
+  // timing
   for (let i = 0; i < size; i++){ if (m[6][i] < 0) m[6][i] = (i%2===0)?1:0; if (m[i][6] < 0) m[i][6] = (i%2===0)?1:0; }
-  // 정렬 패턴
+  // alignment patterns
   const ap = alignPositions(version);
   for (const ay of ap) for (const ax of ap){
     if ((ax===6&&ay===6)||(ax===6&&ay===size-7)||(ax===size-7&&ay===6)) continue;
     for (let dy=-2; dy<=2; dy++) for (let dx=-2; dx<=2; dx++)
       m[ay+dy][ax+dx] = (Math.max(Math.abs(dx),Math.abs(dy)) !== 1) ? 1 : 0;
   }
-  // 형식정보 자리 예약(임시 0) + 다크모듈
+  // reserve format info cells (temporary 0) + dark module
   const fmtCells = [];
   for (let i = 0; i <= 5; i++) fmtCells.push([8,i]);
   fmtCells.push([8,7],[8,8],[7,8]);
@@ -476,7 +476,7 @@ function buildMatrix(codewords, version, e){
   for (let i = 8; i <= 14; i++) fmtCells2.push([8,size-15+i]);
   fmtCells.concat(fmtCells2).forEach(([x,y]) => { if (m[y][x] < 0) m[y][x] = 0; });
   m[size-8][8] = 1;
-  // 버전정보(v>=7)
+  // version info (v>=7)
   if (version >= 7){
     let rem = version;
     for (let i = 0; i < 12; i++) rem = (rem << 1) ^ ((rem >>> 11) * 0x1F25);
@@ -489,7 +489,7 @@ function buildMatrix(codewords, version, e){
 
   const reserved = m.map(r => Array.from(r, v => v >= 0));
 
-  /* 데이터 배치 */
+  /* place data */
   let idx = 0, up = true;
   for (let right = size - 1; right >= 1; right -= 2){
     if (right === 6) right = 5;
@@ -506,7 +506,7 @@ function buildMatrix(codewords, version, e){
     up = !up;
   }
 
-  /* 마스크 선택 */
+  /* mask selection */
   const maskFns = [
     (x,y)=>(x+y)%2===0, (x,y)=>y%2===0, (x,y)=>x%3===0, (x,y)=>(x+y)%3===0,
     (x,y)=>(Math.floor(y/2)+Math.floor(x/3))%2===0, (x,y)=>((x*y)%2)+((x*y)%3)===0,
@@ -632,7 +632,7 @@ function penalty(m, size){
     const c=$('pv'), x=c.getContext('2d');
     if(!text){ current=null; x.clearRect(0,0,c.width,c.height);
       x.fillStyle='#f2f0ec'; x.fillRect(0,0,c.width,c.height);
-      $('cap').textContent='내용을 입력하세요'; warn.classList.add('hidden'); return; }
+      $('cap').textContent='Enter something to encode'; warn.classList.add('hidden'); return; }
     let qr;
     try{ qr=encode(text,$('ecl').value); }
     catch(e){ warn.className='msg m-bad'; warn.textContent=e.message; warn.classList.remove('hidden');
@@ -641,7 +641,7 @@ function penalty(m, size){
     current={qr,text};
     render(c, qr, 280);
     const ver=(qr.size-17)/4;
-    $('cap').textContent=`버전 ${ver} · ${qr.size}×${qr.size} 모듈 · ${new TextEncoder().encode(text).length}바이트`;
+    $('cap').textContent=`Version ${ver} · ${qr.size}×${qr.size} modules · ${new TextEncoder().encode(text).length} bytes`;
   }
 
   function render(canvas, qr, px){
@@ -685,7 +685,7 @@ function penalty(m, size){
     const f=e.target.files[0]; if(!f) return;
     const im=new Image(); im.onload=()=>{ logoImg=im;
       if($('ecl').value!=='H'){ warn.className='msg m-warn';
-        warn.innerHTML='로고를 넣으셨네요. <strong>오류 정정 수준을 H로 올리는 것</strong>을 권합니다. 그리고 만든 뒤 실제 휴대전화로 꼭 스캔해 보세요.';
+        warn.innerHTML='Logo added. We recommend <strong>raising the error correction level to H</strong> — and always test-scan the finished code with a real phone.';
         warn.classList.remove('hidden'); }
       draw(); };
     im.src=URL.createObjectURL(f);
@@ -703,7 +703,7 @@ function penalty(m, size){
   $('dlSvg').addEventListener('click',()=>{
     if(!current) return;
     if(logoImg){ warn.className='msg m-warn';
-      warn.textContent='SVG에는 로고가 포함되지 않습니다. 로고가 필요하시면 PNG로 받으세요.';
+      warn.textContent='The SVG does not include the logo. Download the PNG if you need the logo baked in.';
       warn.classList.remove('hidden'); }
     const a=document.createElement('a');
     a.href=URL.createObjectURL(new Blob([svg(current.qr)],{type:'image/svg+xml'}));

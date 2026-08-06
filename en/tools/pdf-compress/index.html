@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PDF 용량 줄이기 — 2MB·5MB·10MB 목표 용량에 맞춰 압축 | 까치툴</title>
-<meta name="description" content="스캔한 PDF를 목표 용량(2MB·5MB·10MB)에 맞춰 자동으로 압축합니다. 해상도와 품질을 이진 탐색으로 찾아 제출 한도에 맞추고, 전후 화질을 비교할 수 있어요. 서버 전송 없이 브라우저 안에서 처리됩니다.">
-<link rel="canonical" href="https://www.kmagpie.com/tools/pdf-compress/">
-<meta property="og:title" content="PDF 용량 줄이기 — 목표 용량에 맞춰 압축">
-<meta property="og:description" content="스캔 PDF를 2MB·5MB·10MB 같은 제출 한도에 맞춰 자동 압축. 서버 전송 없이 브라우저에서 처리.">
+<title>Compress PDF to 2MB, 5MB or 10MB in Your Browser — Free, No Upload | K-magpie</title>
+<meta name="description" content="Shrink a scanned PDF to fit a size limit like 2MB, 5MB or 10MB. The tool finds the best resolution and quality automatically, shows a before/after preview, and never uploads your file — everything runs in your browser.">
+<link rel="canonical" href="https://www.kmagpie.com/en/tools/pdf-compress/">
+<meta property="og:title" content="Compress PDF to a Target Size — 2MB, 5MB, 10MB">
+<meta property="og:description" content="Compress scanned PDFs to fit submission limits like 5MB. No upload — everything runs in your browser.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://www.kmagpie.com/tools/pdf-compress/">
+<meta property="og:url" content="https://www.kmagpie.com/en/tools/pdf-compress/">
 <style>
   :root{
     --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
@@ -149,25 +149,25 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
 <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
-<meta property="og:site_name" content="까치툴">
+<meta property="og:site_name" content="Kmagpie Tools">
 <!--HEAD:E-->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="wrap">
 
-<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › PDF 용량 줄이기</p>
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/en/tools/">Kmagpie Tools</a> › Compress PDF</p>
 <!--LANG:S-->
-<p class="langsw"><a href="/en/tools/pdf-compress/" hreflang="en" lang="en">English version</a></p>
+<p class="langsw"><a href="/tools/pdf-compress/" hreflang="ko" lang="ko">한국어로 보기</a></p>
 <!--LANG:E-->
 
-<h1>PDF 용량 줄이기</h1>
-<p class="sub">스캔한 PDF를 <strong>목표 용량에 맞춰</strong> 압축합니다. 해상도와 품질을 자동으로 찾아 "5MB 이하" 같은 제출 한도에 맞추고, 압축 전후 화질을 눈으로 비교할 수 있어요. 파일은 서버로 전송되지 않고 전부 브라우저 안에서 처리됩니다.</p>
+<h1>Compress PDF to a Target Size</h1>
+<p class="sub">Shrink a scanned PDF <strong>to fit a size limit</strong>. Pick a target like "under 5MB" and the tool finds the resolution and quality for you, with a before/after preview so you can check the result with your own eyes. <strong>Your file never leaves your browser — no upload, no sign-up.</strong></p>
 
 <div class="drop" id="drop">
   <span class="ic">📄</span>
-  <div class="t">PDF 파일을 여기에 놓으세요</div>
-  <div class="d">클릭해서 고를 수도 있습니다 · 파일은 어디로도 전송되지 않습니다</div>
+  <div class="t">Drop a PDF file here</div>
+  <div class="d">Or click to choose one · your file is never sent anywhere</div>
   <input type="file" id="file" accept="application/pdf,.pdf" class="hidden">
 </div>
 
@@ -176,21 +176,21 @@
 <div id="verdict" class="hidden"></div>
 
 <div class="panel hidden" id="opts">
-  <label class="f">목표 용량</label>
+  <label class="f">Target size</label>
   <div class="seg sm" id="tgt">
     <button data-v="2">2MB</button>
     <button data-v="5" class="on">5MB</button>
     <button data-v="10">10MB</button>
-    <button data-v="c">직접 입력</button>
+    <button data-v="c">Custom</button>
   </div>
   <div class="inline hidden" id="custBox" style="margin-top:10px">
-    <input type="number" id="cust" value="1" min="0.05" step="0.05"> <span class="unit">MB 이하</span>
+    <input type="number" id="cust" value="1" min="0.05" step="0.05"> <span class="unit">MB max</span>
   </div>
-  <p class="note">이메일 첨부는 10~25MB, 관공서·학교 업로드는 5~10MB 한도가 흔합니다. 제출처마다 다르니 안내문을 먼저 확인하세요.</p>
+  <p class="note">Email attachments are usually capped at 10–25MB; application portals and upload forms often allow only 5–10MB. Limits differ everywhere, so check the instructions of wherever you're submitting first.</p>
 
   <div class="btns">
-    <button class="btn" id="go" disabled>이 용량에 맞춰 압축</button>
-    <button class="btn g" id="reset">다른 파일</button>
+    <button class="btn" id="go" disabled>Compress to this size</button>
+    <button class="btn g" id="reset">Different file</button>
     <span class="stat" id="stat"></span>
   </div>
   <div class="bar hidden" id="progBar"><i id="prog"></i></div>
@@ -201,76 +201,75 @@
   <div class="panel">
     <table class="res">
       <tbody>
-      <tr><th>원본 용량 → 결과 용량</th><td id="rSize"></td></tr>
-      <tr><th>절감률</th><td id="rSave"></td></tr>
-      <tr><th>적용된 설정</th><td id="rSet"></td></tr>
-      <tr><th>페이지 수</th><td id="rPages"></td></tr>
-      <tr><th>글자 선택·검색</th><td><strong>불가능해짐</strong> — 모든 페이지가 그림으로 다시 만들어집니다</td></tr>
+      <tr><th>Original → result size</th><td id="rSize"></td></tr>
+      <tr><th>Reduction</th><td id="rSave"></td></tr>
+      <tr><th>Settings applied</th><td id="rSet"></td></tr>
+      <tr><th>Pages</th><td id="rPages"></td></tr>
+      <tr><th>Text selection &amp; search</th><td><strong>No longer possible</strong> — every page is rebuilt as an image</td></tr>
       </tbody>
     </table>
     <div class="btns" style="margin-top:6px">
-      <button class="btn" id="dl">compressed.pdf 받기</button>
+      <button class="btn" id="dl">Download compressed.pdf</button>
     </div>
   </div>
 
-  <label class="f" style="margin-top:18px">첫 페이지 전후 비교 — 클릭하면 실제 크기로 확대됩니다</label>
+  <label class="f" style="margin-top:18px">First page, before and after — click to zoom to actual size</label>
   <div class="cmp">
-    <div class="box" id="boxA"><div class="cap">원본</div><div class="view"><canvas id="prevA"></canvas></div></div>
-    <div class="box" id="boxB"><div class="cap">압축 후</div><div class="view"><img id="prevB" alt="압축 후 첫 페이지 미리보기"></div></div>
+    <div class="box" id="boxA"><div class="cap">Original</div><div class="view"><canvas id="prevA"></canvas></div></div>
+    <div class="box" id="boxB"><div class="cap">Compressed</div><div class="view"><img id="prevB" alt="Preview of the first page after compression"></div></div>
   </div>
 </div>
 
-<p class="gist">스캔한 PDF를 2·5·10MB 같은 목표 용량에 맞춰 해상도와 품질을 자동으로 찾아 압축합니다. 파일은 서버로 전송되지 않고 브라우저 안에서 처리되며, 압축 전후 화질을 눈으로 비교할 수 있습니다. 재렌더링 방식이라 글자 선택·검색이 사라지므로 원본은 따로 보관하세요.</p>
+<p class="gist">Compresses a scanned PDF to a target size such as 2, 5 or 10MB by automatically searching for the best resolution and quality. Your file is never uploaded — everything runs inside your browser — and you can compare before/after quality on screen. Because pages are re-rendered as images, text selection and search are lost, so keep your original file.</p>
 
-<details class="fold"><summary><h2>왜 "목표 용량"으로 줄이나</h2></summary><div class="fx">
-<p>PDF 용량을 줄이려는 이유는 대부분 어딘가에 내야 하기 때문입니다. 이메일 첨부 한도, 정부 민원 사이트의 "10MB 이하", 입사 지원 포털의 "5MB 이하" 같은 규정이죠. 이럴 때 중요한 건 몇 퍼센트 줄었느냐가 아니라 <strong>한도 아래로 들어갔느냐</strong>입니다. 그래서 이 도구는 압축 강도를 고르게 하는 대신 목표 용량을 먼저 정하게 하고, 그 안에서 화질이 가장 덜 상하는 해상도와 품질 조합을 이진 탐색으로 찾아냅니다. 페이지가 많으면 대표 페이지 몇 장으로 먼저 근사한 뒤 전체를 한 번에 인코딩하기 때문에 반복 횟수도 줄어듭니다.</p>
+<details class="fold"><summary><h2>Why compress to a target size</h2></summary><div class="fx">
+<p>People usually shrink a PDF because they have to submit it somewhere: an email attachment limit, a government portal's "10MB max", a job application's "5MB max". What matters then isn't the percentage saved — it's whether the file <strong>gets under the limit</strong>. So instead of asking you to pick a compression strength, this tool asks for the target size first, then binary-searches for the resolution and quality combination that damages the image least while still fitting. For long documents it first approximates with a few representative pages before encoding everything in one pass, which keeps the number of retries down.</p>
 </div></details>
 
-<details class="fold"><summary><h2>스캔 PDF와 텍스트 PDF는 압축 원리가 다릅니다</h2></summary><div class="fx">
-<p>종이를 스캔하거나 휴대폰으로 찍어 만든 PDF는 페이지 하나하나가 통째로 사진입니다. 사진은 해상도를 낮추고 JPEG 품질을 조절하면 크게 줄어들기 때문에, 이런 파일에는 이 도구가 쓰는 <strong>재렌더링 방식</strong> — 각 페이지를 그림으로 다시 찍어 새 PDF로 조립하는 방식 — 이 잘 맞습니다.</p>
-<p>반면 워드나 한글에서 바로 저장한 PDF는 글자가 폰트와 좌표로 저장되어 있어 원래부터 용량이 작습니다. 이런 파일을 재렌더링하면 몇십 KB짜리 글자 정보가 페이지 전체 그림으로 바뀌면서 <strong>용량이 오히려 커질 수 있고</strong>, 글자 선택·검색·복사도 사라집니다. 그래서 이 도구는 파일을 여는 순간 첫 페이지들의 텍스트 양과 페이지당 파일 크기를 분석해 스캔본인지 텍스트본인지 판별하고, 텍스트본이면 진행 전에 분명하게 경고합니다. 판정 근거도 화면에 그대로 보여드려요.</p>
+<details class="fold"><summary><h2>Scanned PDFs and text PDFs compress differently</h2></summary><div class="fx">
+<p>A PDF made by scanning paper or photographing it with a phone stores each page as one big picture. Pictures shrink dramatically when you lower the resolution and adjust JPEG quality, so these files respond well to the <strong>re-rendering approach</strong> this tool uses — redrawing each page as an image and assembling a new PDF from those images.</p>
+<p>A PDF exported straight from Word or Google Docs is different: its text is stored as fonts and coordinates, which is tiny to begin with. Re-render a file like that and a few dozen kilobytes of text data become a full-page image — <strong>the file can actually get bigger</strong>, and text selection, search and copying disappear. That's why this tool analyses the first pages the moment you open a file, checking the amount of real text and the file size per page to judge whether it's a scan or a text document, and warns you clearly before proceeding if it's the latter. The evidence behind the verdict is shown on screen too.</p>
 </div></details>
 
-<details class="fold"><summary><h2>글자 선택과 검색이 사라지는 대가</h2></summary><div class="fx">
-<p>재렌더링을 거친 PDF는 모든 페이지가 그림입니다. 뷰어에서 글자를 드래그해도 선택되지 않고, 문서 안 검색도 되지 않으며, 텍스트를 복사하거나 화면 낭독기로 읽을 수도 없습니다. 원본이 스캔본이었다면 어차피 없던 기능이라 잃을 것이 없지만, 텍스트 PDF였다면 실질적인 손실입니다. 어느 쪽이든 <strong>원본 파일은 지우지 말고 보관</strong>하고, 압축본은 제출용 사본으로만 쓰는 것을 권합니다.</p>
+<details class="fold"><summary><h2>The trade-off: text selection and search are lost</h2></summary><div class="fx">
+<p>After re-rendering, every page of the PDF is an image. You can't drag to select text in a viewer, in-document search finds nothing, and text can't be copied or read aloud by a screen reader. If the original was a scan, those features never existed and you lose nothing; if it was a text PDF, this is a real loss. Either way, <strong>keep the original file</strong> and treat the compressed copy as a submission-only version.</p>
 </div></details>
 
-<details class="fold"><summary><h2>폰으로 찍은 서류가 왜 그렇게 큰가</h2></summary><div class="fx">
-<p>요즘 휴대폰 카메라는 기본이 1,200만 화소 이상이라 사진 한 장이 4,000×3,000픽셀쯤 됩니다. A4 서류를 300dpi로 스캔한 것보다도 높은 해상도인데, 서류 내용을 읽는 데에는 150dpi 안팎이면 충분합니다. 즉 서류 사진 PDF가 페이지당 3~5MB씩 나가는 건 대부분 <strong>해상도 과잉</strong> 때문입니다. 재렌더링은 이 과잉을 정리하는 과정이라, 글자를 읽는 데 지장이 없는 선에서 용량이 크게 줄어듭니다. 압축 후에는 전후 비교 화면을 확대해서 글자가 여전히 또렷한지 꼭 확인하세요.</p>
+<details class="fold"><summary><h2>Why phone photos of documents are so large</h2></summary><div class="fx">
+<p>Modern phone cameras shoot at 12 megapixels or more, so a single photo is around 4,000×3,000 pixels — higher resolution than a Letter or A4 page scanned at 300dpi, when roughly 150dpi is plenty for reading a document. In other words, a photographed document that weighs 3–5MB per page is almost always a case of <strong>resolution overkill</strong>. Re-rendering trims that excess, so the file shrinks a lot without hurting legibility. After compressing, zoom into the before/after preview and make sure the text is still crisp.</p>
 </div></details>
 
-<details class="fold"><summary><h2>압축해도 안 줄어드는 경우</h2></summary><div class="fx">
-<p>이미 낮은 해상도와 강한 압축으로 만들어진 파일은 더 줄일 여지가 거의 없습니다. 한 번 압축을 거친 스캔본을 다시 넣으면 절감률이 미미하거나, 재인코딩 손실만 얹혀 오히려 커지기도 합니다. 결과가 원본보다 크게 나오면 그 파일은 원본을 그대로 쓰세요. 텍스트 위주 PDF도 같은 이유로 이 방식으로는 줄지 않는 경우가 많습니다. 또 목표를 지나치게 작게 잡으면 최저 설정(72dpi·낮은 품질)으로도 못 맞출 수 있는데, 그럴 때는 결과와 함께 목표를 넘겼다는 사실을 숨기지 않고 표시합니다.</p>
+<details class="fold"><summary><h2>When compression won't help</h2></summary><div class="fx">
+<p>A file that was already produced at low resolution with strong compression has almost nothing left to give. Feed in a scan that has been compressed once before and the saving may be tiny — or re-encoding losses may even make it bigger. If the result comes out larger than the original, just use the original. Text-heavy PDFs often won't shrink this way either, for the reasons above. And if you set the target too small, even the lowest settings (72dpi, low quality) may not reach it — in that case the tool shows the result along with an honest notice that the target was missed.</p>
 </div></details>
 
-<details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
-<h3>파일이 안 열려요</h3>
-<p>암호가 걸린 PDF는 열 수 없습니다. 뷰어에서 열 때 비밀번호를 묻는 파일이라면 먼저 암호를 해제한 파일을 준비해야 합니다. 파일이 손상됐거나 확장자만 PDF인 경우에도 열리지 않아요.</p>
-<h3>결과가 목표보다 조금 커요</h3>
-<p>최저 설정으로도 목표에 못 미친 경우입니다. 페이지 수가 많은데 목표가 작으면 물리적으로 불가능할 수 있어요. 문서를 나눠서 내거나, <a href="/tools/pdf/">PDF 편집기</a>로 꼭 필요한 페이지만 추려서 다시 압축해 보세요.</p>
-<h3>화질이 너무 나빠졌어요</h3>
-<p>목표 용량이 작을수록 해상도와 품질을 많이 깎습니다. 제출 한도에 여유가 있다면 목표를 한 단계 올려서 다시 압축하세요. 원본은 그대로 있으니 몇 번이든 다시 시도할 수 있습니다.</p>
-<h3>페이지가 많으면 느리거나 실패해요</h3>
-<p>모든 렌더링과 인코딩이 브라우저 안에서 일어나기 때문에 내 기기의 성능과 메모리를 씁니다. 100페이지가 넘거나 100MB가 넘는 파일은 중간에 실패할 수 있어요. 그럴 때는 문서를 나눠서 압축하는 게 안전합니다.</p>
-<h3>내려받은 파일 이름이 compressed.pdf예요</h3>
-<p>한글이 섞인 파일명은 일부 브라우저가 자동 내려받기에서 버리거나 바꿔버려서, 영문 고정 이름으로 내려받은 뒤 직접 바꾸도록 했습니다.</p>
+<details class="fold"><summary><h2>Troubleshooting</h2></summary><div class="fx">
+<h3>The file won't open</h3>
+<p>Password-protected PDFs can't be opened. If a viewer asks for a password when you open the file, you'll need an unprotected copy first. Damaged files, or files that merely have a .pdf extension, won't open either.</p>
+<h3>The result is slightly over the target</h3>
+<p>That means even the lowest settings couldn't reach the target. With many pages and a small target it can be physically impossible. Submit the document in parts, or use the <a href="/en/tools/pdf/">PDF editor</a> to keep only the essential pages and compress again.</p>
+<h3>The quality got too bad</h3>
+<p>The smaller the target, the more resolution and quality get cut. If your submission limit has room, raise the target one step and compress again. Your original is untouched, so you can retry as many times as you like.</p>
+<h3>Long documents are slow or fail</h3>
+<p>All rendering and encoding happens inside your browser, using your own device's CPU and memory. Files over 100 pages or 100MB can fail partway through. When that happens, splitting the document and compressing it in parts is the safe route.</p>
+<h3>The download is always named compressed.pdf</h3>
+<p>The tool saves under one fixed English filename so downloads behave identically in every browser. Rename the file after downloading if you need a specific name.</p>
 </div></details>
 
 <!--CAT:S--><!--CAT:E-->
-<h2>함께 쓰면 좋은 도구</h2>
 <!--REL:S-->
-<h2>함께 쓰면 좋은 도구</h2>
+<h2>Related tools</h2>
 <div class="rel">
-  <a href="/tools/img2pdf/"><strong>이미지를 PDF로</strong><span>JPG·PNG 여러 장을 한 파일로</span></a>
-  <a href="/tools/pdf/"><strong>PDF 편집기</strong><span>합치기·나누기·페이지 삭제</span></a>
-  <a href="/tools/image-compress/"><strong>이미지 용량 줄이기</strong><span>목표 용량에 자동으로 맞춤</span></a>
+  <a href="/en/tools/pdf/"><strong>PDF Editor</strong><span>Merge, split, rotate — no upload</span></a>
+  <a href="/en/tools/img2pdf/"><strong>Image to PDF</strong><span>Combine photos into one PDF</span></a>
+  <a href="/en/tools/image-compress/"><strong>Compress Images</strong><span>Auto-fit a target file size</span></a>
 </div>
-<p class="rel-all"><a href="/tools/">까치툴 도구 33개 전체 보기 →</a></p>
+<p class="rel-all"><a href="/en/tools/">See all 18 English tools →</a></p>
 <!--REL:E-->
 
 <footer>
-  <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 파일은 전송·저장되지 않습니다.</p>
-  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+  <p>Kmagpie Tools · Everything runs in your browser. Your files are never uploaded or stored.</p>
+  <p><a href="/">Home</a> · <a href="/en/tools/">Other tools</a> · <a href="/en/disclaimer.html">Disclaimer</a> · <a href="/privacy-policy.html">Privacy Policy</a></p>
 </footer>
 
 </div>
@@ -279,7 +278,7 @@
 <script type="module">
 import * as pdfjs from '/tools/lib/pdf.min.mjs';
 pdfjs.GlobalWorkerOptions.workerSrc='/tools/lib/pdf.worker.min.mjs';
-window.__pdfjs=pdfjs;                     /* 검증용 */
+window.__pdfjs=pdfjs;                     /* for verification */
 
 const $=id=>document.getElementById(id);
 const kb=n=>n<1024?n+' B':n<1048576?(n/1024).toFixed(0)+' KB':(n/1048576).toFixed(2)+' MB';
@@ -287,7 +286,7 @@ const tick=()=>new Promise(r=>setTimeout(r,0));
 
 let doc=null, fileSize=0, N=0, needAck=false, busy=false, outBlob=null, firstJpegUrl=null;
 
-/* 단일 스케일 파라미터 s(0~1)에 해상도와 품질을 묶는다 */
+/* a single scale parameter s (0-1) drives both resolution and quality */
 const S_MIN_DPI=72, S_MAX_DPI=200, S_MIN_Q=0.35, S_MAX_Q=0.85;
 const sDpi=s=>S_MIN_DPI+s*(S_MAX_DPI-S_MIN_DPI);
 const sQ=s=>S_MIN_Q+s*(S_MAX_Q-S_MIN_Q);
@@ -300,14 +299,14 @@ function updateGo(){
   $('go').disabled = !doc || busy || (needAck && !(ack&&ack.checked));
 }
 
-/* ---------- 파일 열기 ---------- */
+/* ---------- open file ---------- */
 async function open(f){
   if(!f||busy) return;
   if(!/\.pdf$/i.test(f.name) && f.type!=='application/pdf'){
-    say('m-bad','PDF 파일만 열 수 있습니다.'); return;
+    say('m-bad','Only PDF files can be opened.'); return;
   }
   fileSize=f.size;
-  say('m-warn','분석 중…');
+  say('m-warn','Analyzing…');
   $('verdict').className='hidden'; $('bigWarn').className='hidden'; $('result').className='hidden';
   let buf;
   try{
@@ -316,17 +315,17 @@ async function open(f){
   }catch(err){
     doc=null;
     if(err && err.name==='PasswordException')
-      say('m-bad','암호로 보호된 PDF입니다. 이 도구는 암호를 풀 수 없어요. 암호를 해제한 파일로 다시 시도해 주세요.');
+      say('m-bad','This PDF is password-protected and the tool cannot decrypt it. Please try again with an unprotected copy.');
     else
-      say('m-bad','파일을 열지 못했습니다. 손상됐거나 PDF가 아닌 파일일 수 있어요.');
+      say('m-bad','Could not open the file. It may be damaged or not actually a PDF.');
     return;
   }
   N=doc.numPages;
   if(N>100 || fileSize>100*1048576){
     const b=$('bigWarn'); b.className='msg m-warn';
-    b.innerHTML=`<strong>${N}페이지 · ${kb(fileSize)}</strong> — 큰 파일이라 브라우저 메모리 한계로 중간에 실패할 수 있습니다. 실패하면 문서를 나눠서 시도하세요.`;
+    b.innerHTML=`<strong>${N} pages · ${kb(fileSize)}</strong> — this is a large file and may fail partway due to browser memory limits. If it does, split the document and try again.`;
   }
-  /* ---------- 스캔본/텍스트본 판별: 첫 3페이지 ---------- */
+  /* ---------- scan vs text verdict: first 3 pages ---------- */
   const k=Math.min(3,N); let items=0;
   try{
     for(let n=1;n<=k;n++){
@@ -334,31 +333,31 @@ async function open(f){
       const tc=await pg.getTextContent();
       items+=tc.items.length;
     }
-  }catch(e){/* 판별 실패해도 진행은 가능 */}
+  }catch(e){/* verdict failure doesn't block compression */}
   const avgItems=items/k, perPage=fileSize/N;
-  const basis=`판정 근거: 페이지당 텍스트 아이템 평균 <strong>${avgItems.toFixed(1)}개</strong> · 파일 크기 <strong>${kb(perPage)}</strong>/페이지`;
+  const basis=`Evidence: average of <strong>${avgItems.toFixed(1)} text items</strong> per page · file size <strong>${kb(perPage)}</strong> per page`;
   const v=$('verdict');
   needAck=false;
   if(avgItems>=10){
     needAck=true;
     v.className='msg m-warn';
-    v.innerHTML=`<strong>텍스트 위주 문서로 보입니다.</strong> 이 PDF는 글자가 실제 텍스트로 들어 있는 문서입니다. 재렌더링하면 용량이 오히려 커질 수 있고, 글자 선택·검색·복사가 안 되게 됩니다.<br>${basis}
-      <label class="opt"><input type="checkbox" id="ack"><span>위 내용을 확인했고, 그래도 그림으로 바꿔 압축합니다</span></label>`;
+    v.innerHTML=`<strong>This looks like a text-based document.</strong> Its characters are stored as real text. Re-rendering may make the file bigger, and text selection, search and copying will stop working.<br>${basis}
+      <label class="opt"><input type="checkbox" id="ack"><span>I understand, compress it into images anyway</span></label>`;
     v.querySelector('#ack').addEventListener('change',updateGo);
   }else if(perPage>=100*1024){
     v.className='msg m-ok';
-    v.innerHTML=`<strong>스캔본으로 보입니다.</strong> 페이지가 그림으로 된 문서라 재렌더링 압축에 잘 맞습니다.<br>${basis}`;
+    v.innerHTML=`<strong>This looks like a scan.</strong> Its pages are images, which is exactly what re-rendering compression works best on.<br>${basis}`;
   }else{
     v.className='msg m-warn';
-    v.innerHTML=`<strong>텍스트는 거의 없지만 파일도 가벼운 편입니다.</strong> 이미 압축된 파일이면 줄어드는 폭이 작을 수 있습니다.<br>${basis}`;
+    v.innerHTML=`<strong>Little text, but the file is already light.</strong> If it has been compressed before, the saving may be small.<br>${basis}`;
   }
-  say('m-ok',`<strong>${f.name}</strong> · ${N}페이지 · ${kb(fileSize)}`);
+  say('m-ok',`<strong>${f.name}</strong> · ${N} pages · ${kb(fileSize)}`);
   $('opts').classList.remove('hidden');
   $('drop').classList.add('hidden');
   stat(''); updateGo();
 }
 
-/* ---------- 목표 용량 ---------- */
+/* ---------- target size ---------- */
 let tgtMode='5';
 document.querySelectorAll('#tgt button').forEach(b=>b.addEventListener('click',()=>{
   document.querySelectorAll('#tgt button').forEach(x=>x.classList.remove('on'));
@@ -370,7 +369,7 @@ function targetBytes(){
   return mb*1048576;
 }
 
-/* ---------- 페이지 → JPEG ---------- */
+/* ---------- page -> JPEG ---------- */
 async function renderPageJpeg(n,dpi,q){
   const page=await doc.getPage(n);
   const vp0=page.getViewport({scale:1});
@@ -387,7 +386,7 @@ async function renderPageJpeg(n,dpi,q){
   return {u8:new Uint8Array(await blob.arrayBuffer()), w:vp0.width, h:vp0.height};
 }
 
-/* ---------- pdf-lib 조립 ---------- */
+/* ---------- pdf-lib assembly ---------- */
 async function assemble(pages){
   const {PDFDocument}=PDFLib;
   const out=await PDFDocument.create();
@@ -400,7 +399,7 @@ async function assemble(pages){
   return await out.save({useObjectStreams:false});
 }
 
-/* ---------- 대표 페이지 근사 ---------- */
+/* ---------- representative-page approximation ---------- */
 function samplePages(){
   if(N<=5) return Array.from({length:N},(_,i)=>i+1);
   return [1, Math.ceil(N/2), N];
@@ -408,13 +407,13 @@ function samplePages(){
 async function estimate(s,sample){
   let sum=0;
   for(const n of sample) sum+=(await renderPageJpeg(n,sDpi(s),sQ(s))).u8.length;
-  return sum/sample.length*N + 900*N + 3000;   /* pdf-lib 오버헤드 근사 */
+  return sum/sample.length*N + 900*N + 3000;   /* rough pdf-lib overhead */
 }
 
 async function fullEncode(s,label){
   const dpi=sDpi(s), q=sQ(s), pages=[];
   for(let n=1;n<=N;n++){
-    stat(`${label}${n}/${N}페이지 인코딩 중…`);
+    stat(`${label}Encoding page ${n}/${N}…`);
     $('prog').style.width=(n/N*100)+'%';
     pages.push(await renderPageJpeg(n,dpi,q));
     await tick();
@@ -423,7 +422,7 @@ async function fullEncode(s,label){
   return {bytes, first:pages[0].u8};
 }
 
-/* ---------- 압축 실행 ---------- */
+/* ---------- run compression ---------- */
 async function run(){
   if(!doc||busy) return;
   busy=true; updateGo();
@@ -431,53 +430,53 @@ async function run(){
   $('progBar').classList.remove('hidden');
   const target=targetBytes();
   try{
-    /* 1) 대표 페이지로 s 이진 탐색 */
+    /* 1) binary-search s on representative pages */
     const sample=samplePages();
     let s;
-    stat('최적 설정 탐색 중…');
+    stat('Searching for the best settings…');
     if(await estimate(0,sample)>target){ s=0; }
     else if(await estimate(1,sample)<=target){ s=1; }
     else{
       let lo=0, hi=1;
       for(let i=0;i<6;i++){
-        stat(`최적 설정 탐색 중… (${i+1}/6)`);
+        stat(`Searching for the best settings… (${i+1}/6)`);
         const m=(lo+hi)/2;
         if(await estimate(m,sample)<=target) lo=m; else hi=m;
         await tick();
       }
       s=lo;
     }
-    /* 2) 전체 인코딩 */
+    /* 2) full encode */
     let r=await fullEncode(s,'');
-    /* 3) 목표 초과면 한 단계 낮춰 1회 재시도 */
+    /* 3) if over target, retry once one step lower */
     if(r.bytes.length>target && s>0){
       s=Math.max(0, s-0.125);
-      r=await fullEncode(s,'재시도 중 — ');
+      r=await fullEncode(s,'Retrying — ');
     }
     const over=r.bytes.length>target;
     outBlob=new Blob([r.bytes],{type:'application/pdf'});
-    window.__lastPdf=r.bytes;                /* 검증용 */
+    window.__lastPdf=r.bytes;                /* for verification */
     const dpi=Math.round(sDpi(s)), qPct=Math.round(sQ(s)*100);
     window.__applied={dpi,q:sQ(s),qPct,s,origSize:fileSize,outSize:r.bytes.length,pages:N,over};
-    /* 결과 표 */
+    /* result table */
     const cut=(1-r.bytes.length/fileSize)*100;
     $('rSize').innerHTML=`${kb(fileSize)} → <strong>${kb(r.bytes.length)}</strong>`;
-    $('rSave').innerHTML=`<span class="save ${cut>=0?'g':'b'}">${cut>=0?'−':'+'}${Math.abs(cut).toFixed(1)}%</span>${cut<0?' — 원본이 더 작습니다. 원본을 그대로 쓰세요.':''}`;
-    $('rSet').textContent=`${dpi}dpi · JPEG 품질 ${qPct}%`;
-    $('rPages').textContent=`${N}페이지 (원본과 동일)`;
+    $('rSave').innerHTML=`<span class="save ${cut>=0?'g':'b'}">${cut>=0?'−':'+'}${Math.abs(cut).toFixed(1)}%</span>${cut<0?' — the original is smaller. Keep using the original.':''}`;
+    $('rSet').textContent=`${dpi}dpi · JPEG quality ${qPct}%`;
+    $('rPages').textContent=`${N} pages (same as the original)`;
     if(over && s<=0.0001){
       const w=$('overWarn'); w.className='msg m-bad';
-      w.innerHTML=`<strong>최저 설정(72dpi·품질 35%)으로도 목표 ${kb(target)}를 넘습니다.</strong> 결과는 ${kb(r.bytes.length)}입니다. 페이지 수가 많으면 물리적으로 불가능할 수 있어요. 문서를 나누거나 목표를 올려서 다시 시도하세요.`;
+      w.innerHTML=`<strong>Even the lowest settings (72dpi, 35% quality) exceed the ${kb(target)} target.</strong> The result is ${kb(r.bytes.length)}. With many pages this can be physically impossible. Split the document or raise the target and try again.`;
     }else if(over){
       const w=$('overWarn'); w.className='msg m-warn';
-      w.innerHTML=`재시도까지 했지만 목표 ${kb(target)}를 조금 넘겼습니다. 결과는 ${kb(r.bytes.length)}입니다.`;
+      w.innerHTML=`Even after a retry the result slightly exceeds the ${kb(target)} target. The result is ${kb(r.bytes.length)}.`;
     }
-    /* 전후 비교 미리보기 */
+    /* before/after preview */
     await preview(r.first);
     $('result').className='';
-    stat(`완료 — ${kb(fileSize)} → ${kb(r.bytes.length)}`);
+    stat(`Done — ${kb(fileSize)} → ${kb(r.bytes.length)}`);
   }catch(err){
-    say('m-bad','압축 중 문제가 생겼습니다. 파일이 크면 브라우저 메모리 한계일 수 있어요. 문서를 나눠서 다시 시도해 보세요.');
+    say('m-bad','Something went wrong during compression. Large files can hit browser memory limits — try splitting the document and compressing it in parts.');
     stat('');
   }finally{
     busy=false; updateGo();
@@ -485,7 +484,7 @@ async function run(){
   }
 }
 
-/* ---------- 전후 비교 ---------- */
+/* ---------- before/after preview ---------- */
 async function preview(firstU8){
   const page=await doc.getPage(1);
   const vp0=page.getViewport({scale:1});
@@ -502,17 +501,17 @@ async function preview(firstU8){
 }
 ['boxA','boxB'].forEach(id=>$(id).addEventListener('click',()=>$(id).classList.toggle('zoom')));
 
-/* ---------- 내려받기 ---------- */
+/* ---------- download ---------- */
 $('dl').addEventListener('click',()=>{
   if(!outBlob) return;
   const u=URL.createObjectURL(outBlob);
   const a=document.createElement('a');
-  a.href=u; a.download='compressed.pdf';       /* 한글 파일명은 브라우저가 버리는 경우가 있다 */
+  a.href=u; a.download='compressed.pdf';       /* fixed ASCII filename keeps every browser happy */
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(()=>URL.revokeObjectURL(u),4000);
 });
 
-/* ---------- UI 배선 ---------- */
+/* ---------- UI wiring ---------- */
 $('drop').addEventListener('click',()=>$('file').click());
 $('file').addEventListener('change',e=>open(e.target.files[0]));
 ['dragenter','dragover'].forEach(t=>$('drop').addEventListener(t,e=>{e.preventDefault();$('drop').classList.add('over');}));

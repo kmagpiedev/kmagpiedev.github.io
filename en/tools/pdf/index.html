@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PDF 편집기 — 합치기·나누기·페이지 삭제·회전 무료 | 까치툴</title>
-<meta name="description" content="PDF를 합치고 나누고 페이지를 삭제·회전·순서 변경하세요. 이미지를 PDF로 만들 수도 있습니다. 파일을 서버에 올리지 않고 브라우저에서 바로 처리합니다.">
-<link rel="canonical" href="https://www.kmagpie.com/tools/pdf/">
-<meta property="og:title" content="PDF 편집기 — 합치기·나누기·페이지 삭제·회전">
-<meta property="og:description" content="서버 전송 없이 브라우저에서 PDF를 편집하세요.">
+<title>Merge and Split PDF in Your Browser — Free, No Upload | K-magpie</title>
+<meta name="description" content="Merge PDFs, split them, delete, reorder and rotate pages, or turn images into a PDF. Your files never leave your browser — no upload, no sign-up, no file size limits.">
+<link rel="canonical" href="https://www.kmagpie.com/en/tools/pdf/">
+<meta property="og:title" content="PDF Editor — Merge, Split, Delete and Rotate Pages">
+<meta property="og:description" content="Edit PDFs right in your browser. Files are never uploaded to a server.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://www.kmagpie.com/tools/pdf/">
+<meta property="og:url" content="https://www.kmagpie.com/en/tools/pdf/">
 <style>
   :root{
     --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
@@ -142,24 +142,24 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
 <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
-<meta property="og:site_name" content="까치툴">
+<meta property="og:site_name" content="Kmagpie Tools">
 <!--HEAD:E-->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="wrap">
 
-<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › PDF 편집기</p>
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/en/tools/">Kmagpie Tools</a> › PDF Editor</p>
 <!--LANG:S-->
-<p class="langsw"><a href="/en/tools/pdf/" hreflang="en" lang="en">English version</a></p>
+<p class="langsw"><a href="/tools/pdf/" hreflang="ko" lang="ko">한국어로 보기</a></p>
 <!--LANG:E-->
 
-<h1>PDF 편집기</h1>
-<p class="sub">여러 PDF를 합치고, 필요 없는 페이지를 지우고, 순서를 바꾸고, 회전하세요. 이미지를 PDF로 만들 수도 있습니다. <strong>파일이 서버로 전송되지 않고 브라우저 안에서만 처리됩니다.</strong></p>
+<h1>PDF Editor</h1>
+<p class="sub">Merge several PDFs, delete the pages you don't need, reorder and rotate them, or turn images into a PDF. <strong>Your files never leave your browser — no upload, no sign-up.</strong></p>
 
 <div id="drop">
-  <div class="big">PDF나 이미지를 끌어다 놓거나 클릭해서 선택하세요</div>
-  <div class="small">여러 개를 한꺼번에 올리면 순서대로 이어집니다 · PDF · JPG · PNG</div>
+  <div class="big">Drop PDFs or images here, or click to choose</div>
+  <div class="small">Add several at once and they join in order · PDF · JPG · PNG</div>
   <input type="file" id="file" accept="application/pdf,image/*" multiple>
 </div>
 
@@ -167,13 +167,13 @@
 
 <div id="editor" class="hidden">
   <div class="toolbar">
-    <button class="tb" id="selAll">전체 선택</button>
-    <button class="tb" id="selNone">선택 해제</button>
+    <button class="tb" id="selAll">Select all</button>
+    <button class="tb" id="selNone">Deselect</button>
     <span class="sep"></span>
-    <button class="tb" id="rotL" disabled>↺ 왼쪽</button>
-    <button class="tb" id="rotR" disabled>↻ 오른쪽</button>
+    <button class="tb" id="rotL" disabled>↺ Left</button>
+    <button class="tb" id="rotR" disabled>↻ Right</button>
     <span class="sep"></span>
-    <button class="tb danger" id="del" disabled>선택 삭제</button>
+    <button class="tb danger" id="del" disabled>Delete selected</button>
     <span class="count" id="count"></span>
   </div>
 
@@ -181,61 +181,66 @@
   <div class="bar hidden" id="barWrap"><i id="bar"></i></div>
 
   <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px">
-    <button class="act primary" id="save">하나의 PDF로 저장</button>
-    <button class="act ghost" id="saveSel" disabled>선택한 페이지만 저장</button>
-    <button class="act ghost" id="split">페이지별로 분리 (ZIP)</button>
-    <button class="act ghost" id="reset">처음부터</button>
+    <button class="act primary" id="save">Save as one PDF</button>
+    <button class="act ghost" id="saveSel" disabled>Save selected pages</button>
+    <button class="act ghost" id="split">Split into pages (ZIP)</button>
+    <button class="act ghost" id="reset">Start over</button>
     <span id="stat" style="font-size:14px;color:var(--ink-3)"></span>
   </div>
 </div>
 
-<p class="gist">여러 PDF와 이미지를 올려 합치고, 페이지를 삭제·회전·정렬해 하나의 파일이나 낱장 ZIP으로 저장합니다. 모든 작업은 서버 전송 없이 브라우저 안에서 처리되어 민감한 문서도 안전합니다. 암호가 걸린 PDF와 스캔본의 글자 수정은 지원하지 않습니다.</p>
+<p class="gist">Combine PDFs and images, then delete, rotate and reorder pages before saving everything as one file or a ZIP of single pages. Every step runs inside your browser — nothing is uploaded, so even sensitive documents stay on your device. Password-protected PDFs and editing the text of scans are not supported.</p>
 
-<details class="fold"><summary><h2>사용법</h2></summary><div class="fx">
-<p>PDF 파일을 여러 개 올리면 모든 페이지가 한 줄로 이어져 표시됩니다. 페이지를 눌러 선택하고 회전하거나 삭제할 수 있고, 페이지 위에 마우스를 올리면 나타나는 화살표로 순서를 옮길 수 있습니다. 다 됐으면 하나의 PDF로 저장하거나, 선택한 페이지만 따로 뽑거나, 페이지마다 낱장으로 분리해 ZIP으로 받으세요.</p>
-<p>이미지를 함께 올리면 각각 한 페이지로 변환되어 들어갑니다. 사진 여러 장을 PDF 한 파일로 묶어 제출해야 할 때 그대로 쓰시면 됩니다.</p>
-<p>모든 처리는 브라우저 안에서 이루어집니다. 계약서나 신분증 사본처럼 민감한 문서도 외부로 나가지 않으며, 파일 크기 제한이나 하루 사용 횟수 제한도 없습니다.</p>
+<details class="fold"><summary><h2>How to use</h2></summary><div class="fx">
+<p>Add one or more PDF files and every page lines up in a single strip. Click a page to select it, then rotate or delete it; hover over a page and the arrows that appear let you move it left or right. When you're done, save everything as one PDF, pull out just the selected pages, or split the document into single-page files delivered as a ZIP.</p>
+<p>Add images alongside your PDFs and each one becomes a page of its own — exactly what you need when a form asks for several photos combined into a single PDF.</p>
+<p>All processing happens inside your browser. Contracts, ID scans and other sensitive documents never leave your device, and there is no file size cap or daily usage limit.</p>
 </div></details>
 
-<details class="fold"><summary><h2>이 도구로 할 수 있는 것</h2></summary><div class="fx">
+<details class="fold"><summary><h2>What you can do with it</h2></summary><div class="fx">
 <table>
-  <thead><tr><th>작업</th><th>방법</th></tr></thead>
+  <thead><tr><th>Task</th><th>How</th></tr></thead>
   <tbody>
-    <tr><td>PDF 합치기</td><td>합칠 파일을 원하는 순서대로 여러 개 올린 뒤 저장</td></tr>
-    <tr><td>PDF 나누기</td><td>원하는 페이지만 선택해 "선택한 페이지만 저장"</td></tr>
-    <tr><td>페이지 삭제</td><td>지울 페이지를 선택하고 삭제 후 저장</td></tr>
-    <tr><td>페이지 순서 변경</td><td>페이지 위 화살표로 좌우 이동</td></tr>
-    <tr><td>페이지 회전</td><td>선택 후 왼쪽·오른쪽 회전 (90도 단위)</td></tr>
-    <tr><td>낱장으로 분리</td><td>"페이지별로 분리"로 페이지마다 파일 생성</td></tr>
-    <tr><td>이미지를 PDF로</td><td>JPG·PNG를 올리면 자동으로 페이지가 됩니다</td></tr>
+    <tr><td>Merge PDFs</td><td>Add the files in the order you want, then save</td></tr>
+    <tr><td>Split a PDF</td><td>Select the pages you need and use "Save selected pages"</td></tr>
+    <tr><td>Delete pages</td><td>Select the pages, delete them, then save</td></tr>
+    <tr><td>Reorder pages</td><td>Move pages left or right with the on-page arrows</td></tr>
+    <tr><td>Rotate pages</td><td>Select, then rotate left or right in 90° steps</td></tr>
+    <tr><td>One file per page</td><td>"Split into pages (ZIP)" makes a file for every page</td></tr>
+    <tr><td>Images to PDF</td><td>Drop in JPG or PNG files and each becomes a page</td></tr>
   </tbody>
 </table>
 </div></details>
 
-<details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
-<h3>암호가 걸린 PDF는 열리지 않아요</h3>
-<p>열기 암호가 설정된 파일은 브라우저에서 해독할 수 없습니다. 암호를 알고 계시면 뷰어에서 열어 인쇄 기능으로 새 PDF를 만든 뒤 그 파일을 올려주세요.</p>
-<h3>스캔한 문서의 글자를 편집하고 싶어요</h3>
-<p>이 도구는 페이지 단위 편집만 지원합니다. 스캔본은 글자가 아니라 이미지라서 텍스트 수정이 되지 않고, 그러려면 별도의 문자 인식 과정이 필요합니다.</p>
-<h3>파일이 너무 커서 느려요</h3>
-<p>페이지 수가 아주 많은 문서는 미리보기를 만드는 데 시간이 걸립니다. 미리보기가 다 뜨기 전에도 편집과 저장은 정상 동작하니 잠시 기다려 주세요.</p>
-<h3>저장한 파일 용량이 원본보다 커요</h3>
-<p>페이지를 재조립하는 과정에서 일부 최적화가 풀릴 수 있습니다. 용량을 줄이셔야 한다면 <a href="/tools/image-compress/">이미지 용량 줄이기</a>로 사진을 먼저 줄인 뒤 PDF로 만드시는 편이 효과적입니다.</p>
+<details class="fold"><summary><h2>Why "no upload" matters</h2></summary><div class="fx">
+<p>Most popular online PDF sites work by sending your file to their servers, processing it there, and sending the result back. You have no way of knowing how long your document sits on those servers or who can see it — a real concern when the file is a contract, a scan of your passport, or medical paperwork, and often a breach of company policy for work documents.</p>
+<p>This tool takes the other approach: the PDF is read, edited and reassembled entirely inside your browser. Nothing is transmitted anywhere — it even keeps working with your internet connection switched off.</p>
+</div></details>
+
+<details class="fold"><summary><h2>Troubleshooting</h2></summary><div class="fx">
+<h3>A password-protected PDF won't open</h3>
+<p>Files locked with an open password can't be decrypted in the browser. If you know the password, open the file in a PDF viewer and use its print function to save an unprotected copy, then add that copy here.</p>
+<h3>I want to edit the text of a scanned document</h3>
+<p>This tool works on whole pages only. A scan stores pictures of letters rather than actual text, so the characters can't be edited — that would require a separate OCR step.</p>
+<h3>Large files feel slow</h3>
+<p>Documents with a lot of pages take a while to build previews. Editing and saving work normally even before every preview has appeared, so feel free to keep going.</p>
+<h3>The saved file is larger than the original</h3>
+<p>Reassembling pages can undo some of the original file's internal optimisation. If you need the result smaller, run it through the <a href="/en/tools/pdf-compress/">PDF compressor</a>, which shrinks a file to a target size like 2MB or 5MB.</p>
 </div></details>
 
 <!--REL:S-->
-<h2>함께 쓰면 좋은 도구</h2>
+<h2>Related tools</h2>
 <div class="rel">
-  <a href="/tools/pdf-compress/"><strong>PDF 용량 줄이기</strong><span>2·5·10MB 목표 용량에 맞춰 압축</span></a>
-  <a href="/tools/pdf-to-image/"><strong>PDF를 이미지로</strong><span>JPG·PNG 300dpi, ZIP 저장</span></a>
-  <a href="/tools/pdf-sign/"><strong>PDF 서명·도장 넣기</strong><span>인쇄 없이 계약서에 바로</span></a>
+  <a href="/en/tools/pdf-compress/"><strong>Compress PDF</strong><span>Hit a size limit automatically</span></a>
+  <a href="/en/tools/pdf-sign/"><strong>Sign a PDF</strong><span>Draw your signature, no printing</span></a>
+  <a href="/en/tools/pdf-to-image/"><strong>PDF to Image</strong><span>Every page to JPG or PNG</span></a>
 </div>
-<p class="rel-all"><a href="/tools/">까치툴 도구 33개 전체 보기 →</a></p>
+<p class="rel-all"><a href="/en/tools/">See all 18 English tools →</a></p>
 <!--REL:E-->
 
 <footer>
-  <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 파일은 업로드되지 않습니다.</p>
-  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+  <p>Kmagpie Tools · Everything runs in your browser. Your files are never uploaded.</p>
+  <p><a href="/">Home</a> · <a href="/en/tools/">Other tools</a> · <a href="/en/disclaimer.html">Disclaimer</a> · <a href="/privacy-policy.html">Privacy Policy</a></p>
 </footer>
 
 </div>
@@ -294,7 +299,7 @@ file.addEventListener('change',e=>add(e.target.files));
 
 async function add(list){
   const fs=[...list].filter(f=>f.type==='application/pdf'||f.type.startsWith('image/'));
-  if(!fs.length){msg('bad','PDF나 이미지 파일이 아닙니다.');return}
+  if(!fs.length){msg('bad','That is not a PDF or image file.');return}
   warn.classList.add('hidden');
   $('editor').classList.remove('hidden');
   $('barWrap').classList.remove('hidden');
@@ -313,7 +318,7 @@ async function add(list){
         pages.push({srcId:id,srcIndex:0,rot:0,sel:false,name:f.name,thumb:null});
       }
     }catch(err){
-      msg('bad',`<strong>${f.name}</strong> 을 열지 못했습니다. 암호가 걸린 PDF이거나 손상된 파일일 수 있습니다.`);
+      msg('bad',`Could not open <strong>${f.name}</strong>. It may be password-protected or damaged.`);
     }
   }
   render();
@@ -389,7 +394,7 @@ function render(){
     const no=document.createElement('div');no.className='no';no.textContent=i+1;d.appendChild(no);
     const src=document.createElement('div');src.className='src';src.textContent=p.name;d.appendChild(src);
     const mv=document.createElement('div');mv.className='mv';
-    mv.innerHTML='<button data-a="l" title="왼쪽으로">◀</button><button data-a="r" title="오른쪽으로">▶</button>';
+    mv.innerHTML='<button data-a="l" title="Move left">◀</button><button data-a="r" title="Move right">▶</button>';
     d.appendChild(mv);
     d.addEventListener('click',e=>{
       const a=e.target.dataset?.a;
@@ -402,7 +407,7 @@ function render(){
     grid.appendChild(d);
   });
   const n=pages.filter(p=>p.sel).length;
-  $('count').textContent=`전체 ${pages.length}장${n?` · ${n}장 선택됨`:''}`;
+  $('count').textContent=`${pages.length} pages total${n?` · ${n} selected`:''}`;
   ['rotL','rotR','del','saveSel'].forEach(id=>$(id).disabled=!n);
   $('save').disabled=!pages.length;
   $('split').disabled=!pages.length;
@@ -447,19 +452,19 @@ function dl(bytes,name,type){
 }
 
 $('save').addEventListener('click',async()=>{
-  $('stat').textContent='만드는 중…';$('save').disabled=true;
-  try{ dl(await build(pages),'edited.pdf'); $('stat').textContent=`완료 — ${pages.length}장`; }
-  catch(e){ msg('bad','저장에 실패했습니다: '+e.message); $('stat').textContent=''; }
+  $('stat').textContent='Building…';$('save').disabled=true;
+  try{ dl(await build(pages),'edited.pdf'); $('stat').textContent=`Done — ${pages.length} pages`; }
+  catch(e){ msg('bad','Could not save: '+e.message); $('stat').textContent=''; }
   $('save').disabled=false;
 });
 $('saveSel').addEventListener('click',async()=>{
   const sel=pages.filter(p=>p.sel);
-  $('stat').textContent='만드는 중…';
-  try{ dl(await build(sel),'selected.pdf'); $('stat').textContent=`완료 — ${sel.length}장`; }
-  catch(e){ msg('bad','저장에 실패했습니다: '+e.message); }
+  $('stat').textContent='Building…';
+  try{ dl(await build(sel),'selected.pdf'); $('stat').textContent=`Done — ${sel.length} pages`; }
+  catch(e){ msg('bad','Could not save: '+e.message); }
 });
 $('split').addEventListener('click',async()=>{
-  $('stat').textContent='분리 중…';$('barWrap').classList.remove('hidden');
+  $('stat').textContent='Splitting…';$('barWrap').classList.remove('hidden');
   const entries=[];
   for(let i=0;i<pages.length;i++){
     entries.push({name:String(i+1).padStart(3,'0')+'.pdf',data:await build([pages[i]])});
@@ -470,7 +475,7 @@ $('split').addEventListener('click',async()=>{
   a.href=URL.createObjectURL(zipStore(entries));a.download='pages.zip';a.click();
   setTimeout(()=>URL.revokeObjectURL(a.href),4000);
   $('barWrap').classList.add('hidden');$('bar').style.width='0';
-  $('stat').textContent=`완료 — ${pages.length}개 파일`;
+  $('stat').textContent=`Done — ${pages.length} files`;
 });
 $('reset').addEventListener('click',()=>{
   pages=[];sources=[];file.value='';$('editor').classList.add('hidden');

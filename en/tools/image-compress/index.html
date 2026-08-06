@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>이미지 용량 줄이기 — 목표 용량에 맞춰 자동 압축 | 까치툴</title>
-<meta name="description" content="여러 장을 한 번에 압축하고 목표 용량(예: 500KB 이하)에 맞춰 자동으로 품질을 조절합니다. WebP·JPEG 변환과 크기 축소 지원. 서버 전송 없이 브라우저에서 처리됩니다.">
-<link rel="canonical" href="https://www.kmagpie.com/tools/image-compress/">
-<meta property="og:title" content="이미지 용량 줄이기 — 목표 용량에 맞춰 자동 압축">
-<meta property="og:description" content="여러 장 일괄 압축, 목표 용량 자동 맞추기. 서버 전송 없이 브라우저에서 처리.">
+<title>Compress Images in Your Browser — JPG, PNG, WebP | K-magpie</title>
+<meta name="description" content="Compress multiple images at once and automatically hit a target file size such as 500 KB. Convert to WebP or JPEG and shrink dimensions in one pass. Files never leave your browser — no upload, no sign-up.">
+<link rel="canonical" href="https://www.kmagpie.com/en/tools/image-compress/">
+<meta property="og:title" content="Compress Images in Your Browser — Auto-Fit a Target File Size">
+<meta property="og:description" content="Batch compression that auto-adjusts quality to hit your target size. Everything runs in your browser — files are never uploaded.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://www.kmagpie.com/tools/image-compress/">
+<meta property="og:url" content="https://www.kmagpie.com/en/tools/image-compress/">
 <style>
   :root{
     --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
@@ -31,7 +31,7 @@
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);
-    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
   .wrap{max-width:940px;margin:0 auto;padding:44px 22px 90px}
   .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
@@ -104,6 +104,17 @@
   .note{font-size:13.5px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:13px;margin:14px 0}
   footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
   footer a{color:var(--ink-3)}
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:24px}
+    table{font-size:13px}
+    th,td{padding:9px 5px}
+    td.n{font-size:12.5px}
+    .thumb{width:34px;height:34px}
+    .fname{font-size:12.5px}
+    .dl{padding:5px 9px;font-size:12px}
+    th:first-child,td:first-child{display:none}
+  }
 /*FOLD:S*/
   .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
     padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
@@ -145,24 +156,24 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
 <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
-<meta property="og:site_name" content="까치툴">
+<meta property="og:site_name" content="Kmagpie Tools">
 <!--HEAD:E-->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="wrap">
 
-<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › 이미지 용량 줄이기</p>
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/en/tools/">Kmagpie Tools</a> › Compress Images</p>
 <!--LANG:S-->
-<p class="langsw"><a href="/en/tools/image-compress/" hreflang="en" lang="en">English version</a></p>
+<p class="langsw"><a href="/tools/image-compress/" hreflang="ko" lang="ko">한국어로 보기</a></p>
 <!--LANG:E-->
 
-<h1>이미지 용량 줄이기</h1>
-<p class="sub">여러 장을 한 번에 압축하고, <strong>목표 용량을 정하면 품질을 자동으로 맞춰줍니다.</strong> 파일이 서버로 전송되지 않고 브라우저 안에서만 처리됩니다.</p>
+<h1>Compress Images</h1>
+<p class="sub">Compress many images at once — <strong>set a target file size and the quality adjusts itself to hit it.</strong> Files never leave your browser: no upload, no sign-up, no watermark.</p>
 
 <div id="drop">
-  <div class="big">이미지를 여기에 끌어다 놓거나 클릭해서 선택하세요</div>
-  <div class="small">여러 장을 한꺼번에 선택할 수 있습니다 · PNG · JPG · WebP</div>
+  <div class="big">Drop images here, or click to choose files</div>
+  <div class="small">Select as many as you like · PNG · JPG · WebP</div>
   <input type="file" id="file" accept="image/*" multiple>
 </div>
 
@@ -172,51 +183,51 @@
   <div class="panel">
     <div class="row">
       <div class="col">
-        <label class="f">압축 방식</label>
+        <label class="f">Compression mode</label>
         <div class="seg" id="mode">
-          <button data-m="q" class="on">품질 지정</button>
-          <button data-m="t">목표 용량</button>
+          <button data-m="q" class="on">Set quality</button>
+          <button data-m="t">Target size</button>
         </div>
 
         <div id="paneQ" style="margin-top:16px">
-          <label class="f">품질 <span class="val" id="qv">80</span></label>
+          <label class="f">Quality <span class="val" id="qv">80</span></label>
           <input type="range" id="q" min="30" max="95" value="80">
-          <p class="note" style="margin-top:6px">80 근처가 대부분의 사진에서 눈에 띄는 손실 없이 용량이 가장 많이 줄어드는 구간입니다.</p>
+          <p class="note" style="margin-top:6px">Around 80 is the sweet spot for most photos — the biggest size reduction without visible loss.</p>
         </div>
 
         <div id="paneT" class="hidden" style="margin-top:16px">
-          <label class="f">목표 용량</label>
+          <label class="f">Target size</label>
           <div class="inline">
-            <input type="number" id="target" value="500" min="10" step="50"> <span>KB 이하</span>
+            <input type="number" id="target" value="500" min="10" step="50"> <span>KB or less</span>
           </div>
-          <p class="note" style="margin-top:6px">품질을 자동으로 조절해 목표 용량에 최대한 가깝게 맞춥니다. 목표가 너무 작으면 최저 품질로도 못 맞출 수 있어요.</p>
+          <p class="note" style="margin-top:6px">Quality is adjusted automatically to get as close to the target as possible. If the target is too small, even the lowest quality may not reach it.</p>
         </div>
       </div>
 
       <div class="col">
-        <label class="f">출력 형식</label>
+        <label class="f">Output format</label>
         <select id="fmt">
-          <option value="webp">WebP — 용량이 가장 작음 (권장)</option>
-          <option value="jpeg">JPEG — 호환성이 가장 좋음</option>
-          <option value="png">PNG — 투명도 유지</option>
-          <option value="keep">원본 형식 유지</option>
+          <option value="webp">WebP — smallest files (recommended)</option>
+          <option value="jpeg">JPEG — best compatibility</option>
+          <option value="png">PNG — keeps transparency</option>
+          <option value="keep">Keep original format</option>
         </select>
-        <p class="note" style="margin-top:6px">WebP는 같은 화질에서 JPEG보다 25~35% 작습니다. 요즘 브라우저는 모두 지원해요. <strong>투명 배경이 필요하면 WebP나 PNG</strong>를 쓰세요.</p>
+        <p class="note" style="margin-top:6px">At the same visual quality, WebP is 25–35% smaller than JPEG, and every modern browser supports it. <strong>Need a transparent background? Use WebP or PNG.</strong></p>
 
-        <label class="f" style="margin-top:20px">크기 제한</label>
-        <label class="opt"><input type="checkbox" id="resizeOn"><span>긴 변을 이 크기로 줄이기</span></label>
+        <label class="f" style="margin-top:20px">Size limit</label>
+        <label class="opt"><input type="checkbox" id="resizeOn"><span>Shrink the longest side to</span></label>
         <div class="inline">
           <input type="number" id="maxSide" value="1920" min="100" step="100"> <span>px</span>
         </div>
-        <p class="note" style="margin-top:6px">용량을 줄이는 가장 확실한 방법입니다. 웹에 올릴 사진이면 1920px, 썸네일이면 800px 정도면 충분해요.</p>
+        <p class="note" style="margin-top:6px">The most reliable way to cut file size. For photos going on the web, 1920px is plenty; for thumbnails, around 800px.</p>
       </div>
     </div>
   </div>
 
   <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-    <button class="act primary" id="go">압축하기</button>
-    <button class="act ghost" id="zipAll" disabled>ZIP으로 모두 받기</button>
-    <button class="act ghost" id="reset">파일 다시 선택</button>
+    <button class="act primary" id="go">Compress</button>
+    <button class="act ghost" id="zipAll" disabled>Download all as ZIP</button>
+    <button class="act ghost" id="reset">Choose different files</button>
     <span id="stat" style="font-size:14px;color:var(--ink-3)"></span>
   </div>
   <div class="bar hidden" id="barWrap"><i id="bar"></i></div>
@@ -225,56 +236,56 @@
 
   <table id="tbl" class="hidden">
     <thead><tr>
-      <th style="width:56px"></th><th>파일</th>
-      <th class="n">이전</th><th class="n">이후</th><th class="n">절감</th><th style="width:90px"></th>
+      <th style="width:56px"></th><th>File</th>
+      <th class="n">Before</th><th class="n">After</th><th class="n">Saved</th><th style="width:90px"></th>
     </tr></thead>
     <tbody id="tb"></tbody>
   </table>
 </div>
 
-<p class="gist">목표 용량을 KB 단위로 정하면 품질을 자동으로 좁혀가며 그 아래에서 가장 좋은 화질을 찾아 줍니다. 여러 장을 한 번에 처리해 ZIP으로 받을 수 있고, 서버 전송 없이 브라우저에서만 처리됩니다. PNG는 품질 조절 효과가 작아 크기 축소나 WebP 변환이 더 효과적입니다.</p>
+<p class="gist">Set a target size in KB and the tool narrows in on the best possible quality that stays under it. Batch-process many images and download them all as a ZIP — everything runs in your browser, so files are never uploaded anywhere. For PNGs, quality settings have little effect; shrinking dimensions or converting to WebP works far better.</p>
 
-<details class="fold"><summary><h2>사용법</h2></summary><div class="fx">
-<p>이미지를 여러 장 올린 뒤 압축 방식을 고르고 압축하기를 누르면 됩니다. 결과는 파일별로 이전·이후 용량과 절감률이 표시되고, 하나씩 받거나 ZIP으로 한 번에 받을 수 있습니다. 원본은 그대로 두고 새 파일이 만들어지므로 마음에 안 들면 설정을 바꿔 다시 누르면 됩니다.</p>
-<p>모든 처리는 브라우저의 Canvas API로 이루어집니다. 파일이 서버로 올라가지 않기 때문에 개인 사진이나 공개 전 자료도 안심하고 쓰실 수 있고, 업로드·다운로드 대기 시간이 없어 수십 장도 금방 끝납니다.</p>
+<details class="fold"><summary><h2>How to use</h2></summary><div class="fx">
+<p>Add your images, pick a compression mode, and press Compress. The results table shows before and after sizes and the percentage saved for each file, and you can download them one by one or grab everything as a ZIP. Your originals are untouched — a new file is created each time, so if you are not happy with the result, change the settings and press the button again.</p>
+<p>All processing happens with your browser's Canvas API. Because files never leave your browser, private photos and unpublished material stay private — and with no upload or download to wait for, even dozens of images finish quickly.</p>
 </div></details>
 
-<details class="fold"><summary><h2>목표 용량 맞추기는 어떻게 동작하나요</h2></summary><div class="fx">
-<p>"500KB 이하"처럼 상한이 정해진 경우가 많습니다. 게시판 첨부 제한, 이메일 용량, 스토어 등록 규격 같은 것들이죠. 품질을 손으로 바꿔가며 여러 번 시도하는 대신, 이 도구는 <strong>이진 탐색으로 품질을 8단계까지 좁혀가며</strong> 목표 용량 아래에서 가능한 가장 높은 품질을 찾아냅니다.</p>
-<p>목표가 지나치게 작으면 최저 품질로도 맞추지 못할 수 있습니다. 그럴 때는 크기 제한을 함께 켜세요. 해상도를 줄이는 쪽이 품질을 낮추는 것보다 훨씬 효율적이고, 결과물도 덜 뭉개집니다. 여기서는 긴 변만 지정할 수 있는데, <strong>가로·세로를 정확한 px로 지정</strong>하거나 1:1, 16:9 같은 비율로 잘라내야 한다면 <a href="/tools/resize/">이미지 크기 조절</a>을 쓰세요.</p>
+<details class="fold"><summary><h2>How target-size matching works</h2></summary><div class="fx">
+<p>Upload limits are everywhere: forum attachments capped at 500 KB, email size limits, store listing requirements. Instead of nudging a quality slider and re-exporting over and over, this tool runs a <strong>binary search over quality, up to 8 rounds</strong>, to find the highest quality that still fits under your target size.</p>
+<p>If the target is unrealistically small, even the lowest quality may not reach it. When that happens, turn on the size limit as well — reducing resolution is far more efficient than crushing quality, and the result looks much cleaner. Here you can only cap the longest side; if you need <strong>exact width and height in pixels</strong> or crops to ratios like 1:1 or 16:9, use the <a href="/en/tools/resize/">image resizer</a> instead.</p>
 </div></details>
 
-<details class="fold"><summary><h2>어떤 형식을 골라야 하나요</h2></summary><div class="fx">
+<details class="fold"><summary><h2>Which format should I pick</h2></summary><div class="fx">
 <h3>WebP</h3>
-<p>같은 화질 기준으로 JPEG보다 25~35% 작습니다. 투명도도 지원하고 주요 브라우저가 모두 읽을 수 있어서, 웹에 올릴 이미지라면 대부분 이게 정답입니다. 다만 오래된 프로그램이나 일부 문서 편집기에서는 열리지 않을 수 있어요.</p>
+<p>25–35% smaller than JPEG at the same visual quality. It supports transparency and every major browser can read it, so for anything going on the web it is usually the right answer. Some older programs and document editors still cannot open it, though.</p>
 <h3>JPEG</h3>
-<p>어디서나 열립니다. 첨부 파일로 보내거나 상대방 환경을 모를 때 안전한 선택이에요. 대신 투명 배경을 지원하지 않아서, 투명한 PNG를 JPEG로 바꾸면 투명한 부분이 흰색으로 채워집니다.</p>
+<p>Opens everywhere. It is the safe choice for email attachments or when you do not know what software the recipient uses. It has no transparency support, so converting a transparent PNG to JPEG fills the transparent areas with white.</p>
 <h3>PNG</h3>
-<p>로고나 아이콘처럼 색 수가 적고 경계가 또렷한 이미지, 그리고 투명 배경이 꼭 필요한 경우에 쓰세요. 다만 PNG는 무손실 방식이라 품질 조절로 줄어드는 폭이 크지 않습니다. <strong>PNG 용량을 크게 줄이고 싶으면 크기를 줄이거나 WebP로 바꾸는 편이 훨씬 효과적입니다.</strong></p>
+<p>Use it for logos, icons, and other images with flat colors and crisp edges — or whenever you genuinely need a transparent background. PNG is lossless, so the quality setting barely changes its size. <strong>To make a PNG dramatically smaller, shrink its dimensions or convert it to WebP.</strong></p>
 </div></details>
 
-<details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
-<h3>PNG를 압축했는데 용량이 그대로예요</h3>
-<p>PNG는 무손실 형식이라 품질 슬라이더가 사실상 영향을 주지 않습니다. 위에 적은 대로 크기를 줄이거나 WebP로 변환하세요. 투명도가 필요 없다면 JPEG도 좋은 선택입니다.</p>
-<h3>압축했더니 오히려 용량이 커졌어요</h3>
-<p>이미 강하게 압축된 이미지를 다시 인코딩하면 그럴 수 있습니다. 이 경우 표에 절감률이 빨간색으로 표시되니, 그 파일은 원본을 그대로 쓰시면 됩니다.</p>
-<h3>투명 배경이 흰색으로 바뀌었어요</h3>
-<p>JPEG로 변환하셨을 가능성이 높습니다. JPEG는 투명도를 지원하지 않아요. WebP나 PNG로 다시 시도하세요.</p>
+<details class="fold"><summary><h2>Troubleshooting</h2></summary><div class="fx">
+<h3>I compressed a PNG but the size did not change</h3>
+<p>PNG is a lossless format, so the quality slider has essentially no effect on it. As described above, shrink the dimensions or convert to WebP instead. If you do not need transparency, JPEG is also a good option.</p>
+<h3>Compression made the file bigger</h3>
+<p>That can happen when an already heavily compressed image is re-encoded. In that case the savings column turns red — just keep using the original for that file.</p>
+<h3>My transparent background turned white</h3>
+<p>You most likely converted to JPEG, which does not support transparency. Try again with WebP or PNG.</p>
 </div></details>
 
 <!--REL:S-->
-<h2>함께 쓰면 좋은 도구</h2>
+<h2>Related tools</h2>
 <div class="rel">
-  <a href="/tools/resize/"><strong>이미지 크기 조절</strong><span>정확한 px 지정, 비율 자르기</span></a>
-  <a href="/tools/convert/"><strong>이미지 확장자 변환</strong><span>PNG·JPG·WebP·BMP·ICO</span></a>
-  <a href="/tools/remove-bg/"><strong>배경 제거 (누끼)</strong><span>인물만 남기고 투명 PNG</span></a>
+  <a href="/en/tools/resize/"><strong>Resize Images</strong><span>Exact pixels, ratio crops, batch</span></a>
+  <a href="/en/tools/convert/"><strong>Convert Images</strong><span>PNG, JPG, WebP, BMP, ICO</span></a>
+  <a href="/en/tools/pdf-compress/"><strong>Compress PDF</strong><span>Hit a size limit automatically</span></a>
 </div>
-<p class="rel-all"><a href="/tools/">까치툴 도구 33개 전체 보기 →</a></p>
+<p class="rel-all"><a href="/en/tools/">See all 18 English tools →</a></p>
 <!--REL:E-->
 
 <footer>
-  <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 파일은 업로드되지 않습니다.</p>
-  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+  <p>Kmagpie Tools · Everything runs in your browser. Files are never uploaded.</p>
+  <p><a href="/">Home</a> · <a href="/en/tools/">Other tools</a> · <a href="/en/disclaimer.html">Disclaimer</a> · <a href="/privacy-policy.html">Privacy Policy</a></p>
 </footer>
 
 </div>
@@ -283,7 +294,7 @@
 (function(){
   const $=id=>document.getElementById(id);
 
-  /* ---------- 내장 ZIP (store) ---------- */
+  /* ---------- built-in ZIP (store) ---------- */
   const CRC=(()=>{const t=new Uint32Array(256);
     for(let i=0;i<256;i++){let c=i;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[i]=c>>>0;}return t;})();
   function crc32(u8){let c=0xFFFFFFFF;for(let i=0;i<u8.length;i++)c=CRC[(c^u8[i])&0xFF]^(c>>>8);return (c^0xFFFFFFFF)>>>0;}
@@ -329,7 +340,7 @@
 
   async function add(list){
     const fs=[...list].filter(f=>f.type.startsWith('image/'));
-    if(!fs.length){msg('bad','이미지 파일이 없습니다.');return;}
+    if(!fs.length){msg('bad','No image files found.');return;}
     warn.classList.add('hidden');
     for(const f of fs){
       const img=await new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=URL.createObjectURL(f);}).catch(()=>null);
@@ -338,7 +349,7 @@
     }
     $('editor').classList.remove('hidden');
     draw();
-    $('stat').textContent=`${items.length}장 대기 중`;
+    $('stat').textContent=`${items.length} in queue`;
   }
 
   /* ---------- mode toggle ---------- */
@@ -365,7 +376,7 @@
         <td class="n">${kb(it.orig)}</td>
         <td class="n">${it.blob?kb(it.blob.size):'–'}</td>
         <td class="n"><span class="save ${cut===null?'':(cut>0?'g':'b')}">${cut===null?'–':(cut>0?'−':'+')+Math.abs(cut).toFixed(0)+'%'}</span></td>
-        <td>${it.blob?`<button class="dl" data-i="${i}">받기</button>`:''}</td>`;
+        <td>${it.blob?`<button class="dl" data-i="${i}">Save</button>`:''}</td>`;
       tb.appendChild(tr);
     });
     tb.querySelectorAll('.dl').forEach(b=>b.addEventListener('click',()=>{
@@ -436,23 +447,23 @@
       const base=it.name.replace(/\.[^.]+$/,'');
       it.outName=base+'.'+(fmtExt[mime.split('/')[1]]||'img');
       $('bar').style.width=Math.round((i+1)/items.length*100)+'%';
-      $('stat').textContent=`처리 중 ${i+1}/${items.length}`;
+      $('stat').textContent=`Processing ${i+1}/${items.length}`;
       await new Promise(r=>setTimeout(r));
     }
 
     const oT=items.reduce((a,i)=>a+i.orig,0), nT=items.reduce((a,i)=>a+(i.blob?i.blob.size:i.orig),0);
     $('totals').className='totals';
     $('totals').innerHTML=
-      `<div><span class="k">이전 합계</span><span class="v">${kb(oT)}</span></div>
-       <div><span class="k">이후 합계</span><span class="v">${kb(nT)}</span></div>
-       <div><span class="k">절감</span><span class="v">${kb(Math.max(0,oT-nT))} (${((1-nT/oT)*100).toFixed(0)}%)</span></div>`;
+      `<div><span class="k">Total before</span><span class="v">${kb(oT)}</span></div>
+       <div><span class="k">Total after</span><span class="v">${kb(nT)}</span></div>
+       <div><span class="k">Saved</span><span class="v">${kb(Math.max(0,oT-nT))} (${((1-nT/oT)*100).toFixed(0)}%)</span></div>`;
 
-    if(missed) msg('warn',`${missed}장은 최저 품질로도 목표 용량을 맞추지 못했습니다. <strong>크기 제한</strong>을 함께 켜고 다시 시도해 보세요.`);
-    else if($('fmt').value==='png') msg('warn','PNG는 무손실 형식이라 품질 조절 효과가 거의 없습니다. 크기 제한을 켜거나 WebP로 바꾸면 훨씬 많이 줄어듭니다.');
+    if(missed) msg('warn',`${missed} image(s) could not reach the target size even at the lowest quality. Turn on the <strong>size limit</strong> and try again.`);
+    else if($('fmt').value==='png') msg('warn','PNG is a lossless format, so quality settings have almost no effect. Turning on the size limit or switching to WebP shrinks files far more.');
     else warn.classList.add('hidden');
 
     draw();
-    $('stat').textContent=`완료 — ${items.length}장`;
+    $('stat').textContent=`Done — ${items.length} image(s)`;
     $('barWrap').classList.add('hidden');$('bar').style.width='0';
     btn.disabled=false;$('zipAll').disabled=false;
   });

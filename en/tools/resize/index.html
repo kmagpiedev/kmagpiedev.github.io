@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>이미지 크기 조절 — 정확한 px 지정, 비율 자르기 | 까치툴</title>
-<meta name="description" content="이미지 크기 조절을 정확한 px로 지정하거나 긴 변·배율 기준으로 합니다. 1:1, 16:9 같은 비율 자르기와 1080×1080 프리셋, 여러 장 일괄 처리를 지원해요. 사진 사이즈 변경과 이미지 리사이즈가 서버 전송 없이 브라우저에서 끝나고 워터마크나 횟수 제한이 없습니다.">
-<link rel="canonical" href="https://www.kmagpie.com/tools/resize/">
-<meta property="og:title" content="이미지 크기 조절 — 정확한 px 지정, 비율 자르기">
-<meta property="og:description" content="가로·세로를 직접 지정하고 1:1, 16:9로 잘라냅니다. 여러 장 일괄 처리, 서버 업로드 없음.">
+<title>Resize Images to Exact Pixels — Crop to Ratio, Batch | K-magpie</title>
+<meta name="description" content="Resize images to exact pixel dimensions, by longest side, or by percentage. Crop to ratios like 1:1 and 16:9 with presets such as 1080×1080, and batch-process many photos at once. Everything runs in your browser — no upload, no watermark, no limits.">
+<link rel="canonical" href="https://www.kmagpie.com/en/tools/resize/">
+<meta property="og:title" content="Resize Images to Exact Pixels — Crop to Ratio">
+<meta property="og:description" content="Set exact width and height, crop to 1:1 or 16:9, batch-process many images. Files never leave your browser.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://www.kmagpie.com/tools/resize/">
+<meta property="og:url" content="https://www.kmagpie.com/en/tools/resize/">
 <style>
   :root{
     --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
@@ -31,7 +31,7 @@
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);
-    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
   .wrap{max-width:940px;margin:0 auto;padding:44px 22px 90px}
   .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
@@ -186,24 +186,24 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
 <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
-<meta property="og:site_name" content="까치툴">
+<meta property="og:site_name" content="Kmagpie Tools">
 <!--HEAD:E-->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="wrap">
 
-<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › 이미지 크기 조절</p>
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/en/tools/">Kmagpie Tools</a> › Resize Images</p>
 <!--LANG:S-->
-<p class="langsw"><a href="/en/tools/resize/" hreflang="en" lang="en">English version</a></p>
+<p class="langsw"><a href="/tools/resize/" hreflang="ko" lang="ko">한국어로 보기</a></p>
 <!--LANG:E-->
 
-<h1>이미지 크기 조절</h1>
-<p class="sub">가로·세로를 <strong>정확한 px로 지정</strong>하거나 긴 변·배율을 기준으로 줄입니다. 1:1, 16:9 같은 <strong>비율 자르기</strong>도 함께 됩니다. 파일이 서버로 전송되지 않고 브라우저 안에서만 처리됩니다.</p>
+<h1>Resize Images</h1>
+<p class="sub">Set <strong>exact width and height in pixels</strong>, or resize by longest side or percentage. <strong>Crop to ratios</strong> like 1:1 and 16:9 in the same pass. Files never leave your browser — no upload, no sign-up.</p>
 
 <div id="drop">
-  <div class="big">이미지를 여기에 끌어다 놓거나 클릭해서 선택하세요</div>
-  <div class="small">여러 장을 한꺼번에 선택할 수 있습니다 · PNG · JPG · WebP</div>
+  <div class="big">Drop images here, or click to choose files</div>
+  <div class="small">Select as many as you like · PNG · JPG · WebP</div>
   <input type="file" id="file" accept="image/png,image/jpeg,image/webp,image/*" multiple>
 </div>
 
@@ -211,9 +211,9 @@
 
 <div id="editor" class="hidden">
   <div class="panel" id="pvPanel">
-    <label class="f">미리보기 <span id="pvMulti" style="text-transform:none;letter-spacing:0;font-weight:400"></span></label>
+    <label class="f">Preview <span id="pvMulti" style="text-transform:none;letter-spacing:0;font-weight:400"></span></label>
     <div id="pvWrap">
-      <img id="pvImg" alt="원본 미리보기">
+      <img id="pvImg" alt="Original preview">
       <div id="pvRect" class="hidden"></div>
       <div id="pvBadge"></div>
     </div>
@@ -221,22 +221,22 @@
   </div>
 
   <div class="panel">
-    <label class="f">크기 정하는 방식</label>
+    <label class="f">How to set the size</label>
     <div class="seg" id="mode">
-      <button data-m="exact" class="on">정확한 크기</button>
-      <button data-m="long">긴 변 기준</button>
-      <button data-m="scale">배율</button>
+      <button data-m="exact" class="on">Exact size</button>
+      <button data-m="long">Longest side</button>
+      <button data-m="scale">Percentage</button>
     </div>
 
     <div id="paneExact" style="margin-top:18px">
       <div class="inline">
         <div>
-          <label class="f">가로</label>
+          <label class="f">Width</label>
           <input type="number" id="tw" value="1080" min="1" max="20000" step="10">
         </div>
         <span class="times" style="align-self:flex-end;padding-bottom:9px">×</span>
         <div>
-          <label class="f">세로</label>
+          <label class="f">Height</label>
           <input type="number" id="th" value="1080" min="1" max="20000" step="10">
         </div>
         <span style="align-self:flex-end;padding-bottom:11px;font-size:14px;color:var(--ink-2)">px</span>
@@ -248,11 +248,11 @@
         <button data-w="1280" data-h="720">1280×720</button>
       </div>
       <label class="chk"><input type="checkbox" id="lock" checked>
-        <span><b>비율 유지</b><em>한쪽을 고치면 첫 번째 이미지의 원본 비율에 맞춰 다른 쪽이 따라옵니다. 프리셋을 누르면 자동으로 꺼집니다.</em></span></label>
+        <span><b>Keep aspect ratio</b><em>Change one side and the other follows the first image's original ratio. Pressing a preset turns this off automatically.</em></span></label>
     </div>
 
     <div id="paneLong" class="hidden" style="margin-top:18px">
-      <label class="f">긴 변</label>
+      <label class="f">Longest side</label>
       <div class="inline">
         <input type="number" id="long" value="1920" min="1" max="20000" step="10"> <span style="font-size:14px;color:var(--ink-2)">px</span>
       </div>
@@ -261,13 +261,13 @@
         <button data-v="1920">1920</button>
         <button data-v="2560">2560</button>
       </div>
-      <p class="note" style="margin-top:10px">가로 사진이든 세로 사진이든 <strong>더 긴 쪽</strong>을 이 값에 맞추고 비율은 그대로 둡니다. SNS나 블로그에 여러 장을 올릴 때 크기를 통일하는 용도로 씁니다.</p>
+      <p class="note" style="margin-top:10px">Whether a photo is landscape or portrait, its <strong>longer side</strong> is set to this value and the ratio stays intact. Handy for making a batch of photos a uniform size before posting to social media or a blog.</p>
     </div>
 
     <div id="paneScale" class="hidden" style="margin-top:18px">
-      <label class="f">배율 <span class="val" id="scaleV">50</span>%</label>
+      <label class="f">Scale <span class="val" id="scaleV">50</span>%</label>
       <div class="inline">
-        <input type="number" id="scale" value="50" min="10" max="400" step="5"> <span style="font-size:14px;color:var(--ink-2)">% (10 ~ 400)</span>
+        <input type="number" id="scale" value="50" min="10" max="400" step="5"> <span style="font-size:14px;color:var(--ink-2)">% (10 – 400)</span>
       </div>
       <div class="mini" id="scalePre">
         <button data-v="25">25%</button>
@@ -275,21 +275,21 @@
         <button data-v="75">75%</button>
         <button data-v="150">150%</button>
       </div>
-      <p class="note" style="margin-top:10px">원본마다 크기가 제각각이어도 <strong>같은 비율로</strong> 줄입니다. 결과 크기는 아래 표에서 파일별로 확인하세요.</p>
+      <p class="note" style="margin-top:10px">Even if your originals are all different sizes, each is scaled by the <strong>same percentage</strong>. Check the resulting size per file in the table below.</p>
     </div>
 
     <label class="chk" style="margin-top:18px"><input type="checkbox" id="noUp" checked>
-      <span><b>원본보다 크게 만들지 않기</b><em>지정한 크기가 원본보다 커도 원본 크기를 유지합니다. 없던 픽셀을 만들어내는 확대는 화질을 떨어뜨리기 때문에, 특별한 이유가 없으면 켜두세요.</em></span></label>
+      <span><b>Never enlarge beyond the original</b><em>If the size you set is bigger than the original, the original size is kept. Upscaling invents pixels that were never there and degrades quality, so leave this on unless you have a specific reason not to.</em></span></label>
   </div>
 
   <div class="panel">
     <label class="chk" style="margin:0"><input type="checkbox" id="cropOn">
-      <span><b>비율 자르기</b><em>정해진 비율에 맞게 원본에서 가장 큰 영역을 잘라냅니다. 남는 쪽은 잘려나갑니다.</em></span></label>
+      <span><b>Crop to ratio</b><em>Cuts the largest possible area of the original that fits the chosen ratio. Whatever falls outside is trimmed away.</em></span></label>
 
     <div id="cropBox" class="hidden" style="margin-top:16px">
       <div class="row">
         <div class="col">
-          <label class="f">비율</label>
+          <label class="f">Ratio</label>
           <div class="mini" id="ratios">
             <button data-r="1:1" class="on">1:1</button>
             <button data-r="4:3">4:3</button>
@@ -299,22 +299,22 @@
             <button data-r="3:2">3:2</button>
             <button data-r="2:3">2:3</button>
           </div>
-          <p class="note" id="ratioNote" style="margin-top:10px">정확한 크기 모드에서는 위에 입력한 가로·세로 비율을 그대로 씁니다. 그래서 이 버튼은 긴 변·배율 모드에서만 적용됩니다.</p>
+          <p class="note" id="ratioNote" style="margin-top:10px">In exact-size mode the ratio comes straight from the width and height you typed above, so these buttons only apply in longest-side and percentage modes.</p>
         </div>
         <div class="col" style="flex:none">
-          <label class="f">기준점</label>
+          <label class="f">Anchor</label>
           <div class="g9" id="anchor">
-            <button data-x="0" data-y="0" title="왼쪽 위"></button>
-            <button data-x="0.5" data-y="0" title="상단"></button>
-            <button data-x="1" data-y="0" title="오른쪽 위"></button>
-            <button data-x="0" data-y="0.5" title="왼쪽"></button>
-            <button data-x="0.5" data-y="0.5" class="on" title="중앙"></button>
-            <button data-x="1" data-y="0.5" title="오른쪽"></button>
-            <button data-x="0" data-y="1" title="왼쪽 아래"></button>
-            <button data-x="0.5" data-y="1" title="하단"></button>
-            <button data-x="1" data-y="1" title="오른쪽 아래"></button>
+            <button data-x="0" data-y="0" title="Top left"></button>
+            <button data-x="0.5" data-y="0" title="Top"></button>
+            <button data-x="1" data-y="0" title="Top right"></button>
+            <button data-x="0" data-y="0.5" title="Left"></button>
+            <button data-x="0.5" data-y="0.5" class="on" title="Center"></button>
+            <button data-x="1" data-y="0.5" title="Right"></button>
+            <button data-x="0" data-y="1" title="Bottom left"></button>
+            <button data-x="0.5" data-y="1" title="Bottom"></button>
+            <button data-x="1" data-y="1" title="Bottom right"></button>
           </div>
-          <div style="font-size:12.5px;color:var(--ink-3);margin-top:7px" id="anchorName">중앙 기준</div>
+          <div style="font-size:12.5px;color:var(--ink-3);margin-top:7px" id="anchorName">Center anchor</div>
         </div>
       </div>
     </div>
@@ -323,27 +323,27 @@
   <div class="panel">
     <div class="row">
       <div class="col">
-        <label class="f">출력 형식</label>
+        <label class="f">Output format</label>
         <select id="fmt">
-          <option value="keep">원본 형식 유지</option>
-          <option value="png">PNG — 투명도 유지, 무손실</option>
-          <option value="jpeg">JPG — 호환성이 가장 좋음</option>
-          <option value="webp">WebP — 용량이 가장 작음</option>
+          <option value="keep">Keep original format</option>
+          <option value="png">PNG — keeps transparency, lossless</option>
+          <option value="jpeg">JPG — best compatibility</option>
+          <option value="webp">WebP — smallest files</option>
         </select>
-        <p class="note" style="margin-top:8px">투명한 PNG를 JPG로 바꾸면 투명한 부분이 흰색으로 채워집니다.</p>
+        <p class="note" style="margin-top:8px">Converting a transparent PNG to JPG fills the transparent areas with white.</p>
       </div>
       <div class="col" id="paneQ">
-        <label class="f">품질 <span class="val" id="qv">90</span></label>
+        <label class="f">Quality <span class="val" id="qv">90</span></label>
         <input type="range" id="q" min="40" max="100" value="90">
-        <p class="note" style="margin-top:8px">크기 조절이 목적이라면 90 이상을 쓰세요. 용량을 줄이는 게 목적이면 <a href="/tools/image-compress/">이미지 용량 줄이기</a>가 목표 용량에 맞춰 자동으로 조절해 줍니다.</p>
+        <p class="note" style="margin-top:8px">If resizing is the goal, keep this at 90 or above. If file size is the goal, the <a href="/en/tools/image-compress/">image compressor</a> can auto-fit a target size for you.</p>
       </div>
     </div>
   </div>
 
   <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-    <button class="act primary" id="go">크기 조절하기</button>
-    <button class="act ghost" id="dlAll" disabled>모두 받기</button>
-    <button class="act ghost" id="reset">파일 다시 선택</button>
+    <button class="act primary" id="go">Resize</button>
+    <button class="act ghost" id="dlAll" disabled>Download all</button>
+    <button class="act ghost" id="reset">Choose different files</button>
     <span id="stat" style="font-size:14px;color:var(--ink-3)"></span>
   </div>
   <div class="bar hidden" id="barWrap"><i id="bar"></i></div>
@@ -352,60 +352,60 @@
 
   <table id="tbl" class="hidden">
     <thead><tr>
-      <th style="width:56px"></th><th>파일</th>
-      <th class="n">원본 크기</th><th class="n">결과 크기</th><th class="n">용량</th><th style="width:78px"></th>
+      <th style="width:56px"></th><th>File</th>
+      <th class="n">Original</th><th class="n">Result</th><th class="n">Size</th><th style="width:78px"></th>
     </tr></thead>
     <tbody id="tb"></tbody>
   </table>
 </div>
 
-<p class="gist">가로·세로 px, 긴 변, 배율 중 원하는 방식으로 크기를 줄이고 1:1·16:9 같은 비율 자르기와 여러 장 일괄 처리를 지원합니다. 모든 처리는 서버 전송 없이 브라우저 안에서 끝나 개인 사진도 안전합니다. 표시 크기가 아니라 파일 용량이 문제라면 이미지 용량 줄이기가 더 맞는 도구입니다.</p>
+<p class="gist">Resize by exact pixels, longest side, or percentage, with ratio crops like 1:1 and 16:9 and batch processing built in. Everything runs inside your browser with no upload, so private photos stay private. If your real problem is file size rather than display size, the image compressor is the better tool.</p>
 
-<details class="fold"><summary><h2>크기 조절과 용량 줄이기는 다릅니다</h2></summary><div class="fx">
-<p>둘 다 "사진을 작게 만든다"는 말로 뭉뚱그려지지만 하는 일이 다릅니다. 크기 조절은 <strong>픽셀 수 자체를 줄이는 것</strong>입니다. 4000×3000 사진을 1080×810으로 만들면 픽셀이 1200만 개에서 87만 개로 줄어들고, 화면에 표시되는 크기도 그만큼 작아집니다. 용량 줄이기는 픽셀 수는 그대로 두고 <strong>압축률을 높여 파일을 가볍게</strong> 만드는 것이라, 화면에 보이는 크기는 변하지 않습니다.</p>
-<p>그래서 목적에 따라 도구가 갈립니다. "게시판에 올리려니 사진이 너무 크다"처럼 표시 크기가 문제면 이 도구를, "첨부 용량이 5MB를 넘는다"처럼 파일 크기가 문제면 <a href="/tools/image-compress/">이미지 용량 줄이기</a>를 쓰세요. 후자는 목표 용량을 KB 단위로 정해두면 품질을 자동으로 맞춰 줍니다. 물론 픽셀을 줄이면 용량도 함께 줄어들기 때문에, 용량이 심하게 클 때는 이 도구로 크기부터 줄이는 편이 압축만 세게 거는 것보다 결과가 훨씬 깔끔합니다.</p>
+<details class="fold"><summary><h2>Resizing is not the same as compressing</h2></summary><div class="fx">
+<p>Both get lumped under "making the photo smaller", but they do different things. Resizing <strong>reduces the number of pixels</strong>: turn a 4000×3000 photo into 1080×810 and it drops from 12 million pixels to about 870 thousand, appearing that much smaller on screen. Compressing keeps the pixel count and <strong>raises the compression ratio to lighten the file</strong>, so the on-screen size does not change.</p>
+<p>So pick the tool by the problem. If the photo displays too large — say it overflows a page layout — use this tool. If the file is too heavy — an attachment over the 5 MB cap, for instance — use the <a href="/en/tools/image-compress/">image compressor</a>, which can auto-adjust quality to hit a target size in KB. Of course, fewer pixels also means a smaller file, so when a file is massively oversized, shrinking its dimensions here first gives a far cleaner result than cranking up compression alone.</p>
 </div></details>
 
-<details class="fold"><summary><h2>자주 쓰는 규격</h2></summary><div class="fx">
-<p>인스타그램은 대체로 정사각 1080×1080, 세로 1080×1350, 가로 1080×566을 씁니다. 세로형이 화면을 가장 많이 차지해서 요즘은 1080×1350을 기본으로 두는 경우가 많습니다. 유튜브 썸네일은 1280×720이 표준이고, 이보다 크게 올려도 서비스 쪽에서 알아서 줄입니다.</p>
-<p>블로그 본문은 플랫폼마다 다르지만 본문 폭이 대체로 800~900px 안팎이라, 긴 변 1200~1600px 정도면 선명하게 보이면서 페이지가 무거워지지 않습니다. 고해상도 화면을 고려해 본문 폭의 두 배쯤 잡는다고 생각하면 편합니다.</p>
-<p>다만 이 숫자들은 <strong>플랫폼이 수시로 바꿉니다.</strong> 몇 년 사이에 인스타그램 정사각 기준이 640에서 1080으로 올라갔고, 권장 비율도 계속 손봤습니다. 중요한 제출물이라면 해당 서비스의 최신 안내를 한 번 확인하는 게 안전합니다. 확신이 없으면 조금 크게 만들어 두세요. 줄이는 건 언제든 되지만 키우는 건 되돌릴 수 없습니다.</p>
+<details class="fold"><summary><h2>Common size presets</h2></summary><div class="fx">
+<p>Instagram mostly uses 1080×1080 for squares, 1080×1350 for portrait, and 1080×566 for landscape. Portrait fills the most screen, so many accounts now default to 1080×1350. YouTube thumbnails are standardized at 1280×720 — upload larger and the platform scales it down for you.</p>
+<p>For blog posts, content columns usually run around 800–900px wide, so a longest side of 1200–1600px looks sharp without weighing the page down. A handy rule of thumb for high-DPI screens is roughly twice your content width.</p>
+<p>Keep in mind that <strong>platforms change these numbers all the time.</strong> Instagram's square standard climbed from 640 to 1080 over a few years, and recommended ratios keep shifting. For anything important, check the service's current guidelines. When in doubt, go a little bigger — you can always shrink later, but enlarging cannot be undone.</p>
 </div></details>
 
-<details class="fold"><summary><h2>확대하면 왜 흐려지나</h2></summary><div class="fx">
-<p>800×600 사진을 1600×1200으로 키우면 픽셀 수가 네 배가 됩니다. 그런데 늘어난 픽셀에 담을 정보는 원본에 없습니다. 프로그램이 할 수 있는 일은 주변 픽셀의 색을 섞어 그럴듯한 값을 <strong>만들어내는 것</strong>뿐이고, 그 결과가 뿌옇고 경계가 뭉개진 이미지입니다. 없던 디테일이 생겨나지는 않습니다.</p>
-<p>그래서 위 도구는 "원본보다 크게 만들지 않기"를 기본으로 켜둡니다. 지정한 크기가 원본보다 크면 비율을 유지한 채 원본 크기까지만 맞춰요. 정말로 큰 파일이 필요하다면 확대하지 말고 <strong>애초에 큰 원본을 구하는 게 맞습니다.</strong> 카메라 원본 파일을 다시 찾거나, 스크린샷이라면 화면 배율을 올려 다시 찍는 쪽이 훨씬 낫습니다. 인쇄용이라면 필요한 크기를 300dpi 기준으로 계산해 두고 그에 맞는 원본을 준비하세요.</p>
+<details class="fold"><summary><h2>Why enlarging makes images blurry</h2></summary><div class="fx">
+<p>Scale an 800×600 photo up to 1600×1200 and the pixel count quadruples — but the information for those new pixels does not exist in the original. All software can do is blend neighboring colors and <strong>invent</strong> plausible values, and the result is a soft, mushy image. Detail that was never captured cannot appear.</p>
+<p>That is why "Never enlarge beyond the original" is on by default here: if your target is larger than the original, the image is only scaled up to its original size, ratio intact. If you genuinely need a bigger file, do not upscale — <strong>go find a bigger original.</strong> Dig up the camera file, or for screenshots, raise the display scaling and capture again. For print, work out the required dimensions at 300dpi and source an original to match.</p>
 </div></details>
 
-<details class="fold"><summary><h2>비율 자르기에서 잘려나가는 부분</h2></summary><div class="fx">
-<p>비율을 바꾸면 반드시 무언가가 잘립니다. 16:9로 찍은 가로 사진을 1:1 정사각으로 만들면 좌우가 크게 날아가고, 세로로 찍은 9:16 사진을 16:9로 만들면 위아래가 통째로 사라집니다. 이 도구는 정해진 비율에 맞춰 원본에서 <strong>가장 큰 영역</strong>을 잘라내므로 손실을 최소로 줄이지만, 비율이 다른 이상 잘려나가는 부분 자체를 없앨 수는 없습니다. 사진을 올리면 위 미리보기에서 <strong>잘려나갈 부분이 어둡게 표시</strong>되니 결과를 받기 전에 확인할 수 있고, 밝은 사각형을 드래그하면 기준점 아홉 개로 안 되는 미세한 위치도 직접 정할 수 있습니다. 여러 장을 한꺼번에 처리할 때는 첫 번째 사진에서 정한 위치가 나머지에도 같은 비율로 적용돼요.</p>
-<p>기본값은 중앙 기준입니다. 풍경이나 사물은 대체로 이게 무난합니다. 그런데 <strong>인물 사진은 상단 기준이 나은 경우가 많습니다.</strong> 사람은 대체로 화면 위쪽에 얼굴이 오도록 찍히기 때문에, 세로 사진을 정사각으로 중앙에서 자르면 이마나 정수리가 잘리고 발치의 바닥만 남는 일이 흔합니다. 기준점을 상단으로 옮기면 얼굴이 살아납니다. 단체 사진이나 전신 사진이라면 몇 가지 기준점을 바꿔가며 표에 나오는 결과 크기를 보고 판단하세요.</p>
+<details class="fold"><summary><h2>What gets trimmed when you crop to a ratio</h2></summary><div class="fx">
+<p>Changing the aspect ratio always cuts something. Crop a 16:9 landscape shot to a 1:1 square and big slices of the left and right disappear; force a 9:16 portrait shot into 16:9 and the top and bottom vanish entirely. This tool keeps the <strong>largest possible area</strong> of the original that fits the target ratio, minimizing the loss — but if the ratios differ, some trimming is unavoidable. Once you add a photo, the preview above <strong>darkens the parts that will be cut</strong> so you can check before downloading, and dragging the bright rectangle lets you fine-tune the position beyond what the nine anchor buttons offer. In a batch, the position you set on the first photo is applied proportionally to the rest.</p>
+<p>The default anchor is center, which works fine for landscapes and objects. But <strong>portraits often do better with the top anchor.</strong> Faces usually sit in the upper part of the frame, so center-cropping a portrait shot to a square tends to slice off foreheads while keeping the floor at someone's feet. Move the anchor to the top and the face survives. For group shots or full-body photos, try a few anchors and judge by the result sizes shown in the table.</p>
 </div></details>
 
-<details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
-<h3>지정한 크기와 결과가 1px 다릅니다</h3>
-<p>비율 유지나 긴 변 기준을 쓰면 짧은 쪽이 계산 결과에 따라 반올림됩니다. 4032×3024 사진의 긴 변을 1920으로 맞추면 짧은 쪽은 1440.0이 나오지만, 4032×3016 같은 값이면 1436.19처럼 소수가 나와 1436으로 반올림돼요. 픽셀은 쪼갤 수 없으니 어쩔 수 없는 부분입니다. 두 값이 모두 정확해야 한다면 <strong>정확한 크기 모드에서 비율 유지를 끄고</strong> 가로·세로를 직접 넣으세요. 대신 원본과 비율이 다르면 이미지가 늘어나 보이니, 비율 자르기를 함께 켜는 편이 낫습니다.</p>
-<h3>세로 사진이 가로로 누워서 나옵니다</h3>
-<p>스마트폰은 사진을 항상 같은 방향으로 저장하고, 어느 쪽이 위인지는 EXIF라는 정보에 따로 적어둡니다. 이 정보를 읽지 못하는 프로그램에서 열면 사진이 눕습니다. 이 도구는 EXIF 방향을 반영해서 화면에 보이는 모습 그대로 처리하므로 눕지 않습니다. 다른 곳에서 이미 누운 채로 저장된 파일이라면 <a href="/tools/screenshot/">돌려서</a> 바로잡은 뒤 가져오세요.</p>
-<h3>투명 PNG를 JPG로 바꿨더니 배경이 검게 나옵니다</h3>
-<p>JPG는 투명도를 저장하지 못하는 형식이라, 투명한 부분을 어떤 색으로든 채워야 합니다. 이 도구는 흰색으로 채웁니다. 검게 나오는 건 채우기 없이 그대로 저장한 프로그램에서 흔한 증상이에요. 투명 배경을 유지해야 한다면 출력 형식을 <strong>PNG나 WebP</strong>로 두세요. 배경을 다른 색으로 채우고 싶으면 <a href="/tools/convert/">이미지 확장자 변환</a>에서 채울 색을 고를 수 있습니다.</p>
-<h3>여러 장을 넣으니 느립니다</h3>
-<p>모든 처리가 내 컴퓨터의 브라우저에서 이루어지기 때문입니다. 서버로 보내지 않으니 개인 사진도 안심할 수 있는 대신, 속도는 기기 성능을 따라갑니다. 특히 4000px이 넘는 카메라 원본은 한 장을 여는 데만 시간이 걸려요. 메모리가 넘치지 않도록 <strong>한 장씩 순서대로</strong> 처리하고 끝난 이미지는 즉시 비우기 때문에, 수십 장을 넣어도 브라우저가 멈추지는 않습니다. 진행 막대가 움직이는 동안 기다려 주세요.</p>
+<details class="fold"><summary><h2>Troubleshooting</h2></summary><div class="fx">
+<h3>The result is 1px off from what I set</h3>
+<p>With Keep aspect ratio or longest-side mode, the shorter side is rounded to the nearest whole pixel. Set the longest side of a 4032×3024 photo to 1920 and the short side comes out exactly 1440.0 — but a 4032×3016 original gives 1436.19, which rounds to 1436. Pixels cannot be split, so this is unavoidable. If both dimensions must be exact, <strong>switch to exact-size mode, turn off Keep aspect ratio</strong>, and type both values. If those differ from the original ratio the image will look stretched, so it is better to enable Crop to ratio alongside.</p>
+<h3>My portrait photo comes out sideways</h3>
+<p>Phones always store photos in one fixed orientation and record which way is up in the EXIF metadata. Programs that ignore that data show the photo lying on its side. This tool honors EXIF orientation and processes the image exactly as you see it, so it will not tip over. If a file was already saved sideways somewhere else, rotate it in an image editor first, then bring it here.</p>
+<h3>Converting a transparent PNG to JPG gave me a black background</h3>
+<p>JPG cannot store transparency, so transparent areas must be filled with some color. This tool fills them with white. A black fill is the classic symptom of software that saved without filling at all. To keep the transparency, set the output format to <strong>PNG or WebP</strong>. To fill with a color of your choice, the <a href="/en/tools/convert/">image converter</a> has a background color picker.</p>
+<h3>It gets slow with many images</h3>
+<p>All the work happens in your own browser. Nothing is sent to a server — which keeps private photos safe — but speed depends on your device. Camera originals over 4000px take a moment just to open. To keep memory in check the tool processes <strong>one image at a time</strong> and frees each as it finishes, so even dozens of images will not freeze the browser. Just let the progress bar do its thing.</p>
 </div></details>
 
 <!--REL:S-->
-<h2>함께 쓰면 좋은 도구</h2>
+<h2>Related tools</h2>
 <div class="rel">
-  <a href="/tools/image-compress/"><strong>이미지 용량 줄이기</strong><span>목표 용량에 자동으로 맞춤</span></a>
-  <a href="/tools/gif-maker/"><strong>GIF 만들기</strong><span>사진 여러 장으로 움짤 애니메이션</span></a>
-  <a href="/tools/convert/"><strong>이미지 확장자 변환</strong><span>PNG·JPG·WebP·BMP·ICO</span></a>
+  <a href="/en/tools/image-compress/"><strong>Compress Images</strong><span>Auto-fit a target file size</span></a>
+  <a href="/en/tools/convert/"><strong>Convert Images</strong><span>PNG, JPG, WebP, BMP, ICO</span></a>
+  <a href="/en/tools/remove-bg/"><strong>Remove Background</strong><span>Cut out people, no upload</span></a>
 </div>
-<p class="rel-all"><a href="/tools/">까치툴 도구 33개 전체 보기 →</a></p>
+<p class="rel-all"><a href="/en/tools/">See all 18 English tools →</a></p>
 <!--REL:E-->
 
 <footer>
-  <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 파일은 업로드되지 않습니다.</p>
-  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+  <p>Kmagpie Tools · Everything runs in your browser. Files are never uploaded.</p>
+  <p><a href="/">Home</a> · <a href="/en/tools/">Other tools</a> · <a href="/en/disclaimer.html">Disclaimer</a> · <a href="/privacy-policy.html">Privacy Policy</a></p>
 </footer>
 
 </div>
@@ -414,7 +414,7 @@
 (function(){
   const $=id=>document.getElementById(id);
 
-  /* ---------- 내장 ZIP (store) ---------- */
+  /* ---------- built-in ZIP (store) ---------- */
   const CRC=(()=>{const t=new Uint32Array(256);
     for(let i=0;i<256;i++){let c=i;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[i]=c>>>0;}return t;})();
   function crc32(u8){let c=0xFFFFFFFF;for(let i=0;i<u8.length;i++)c=CRC[(c^u8[i])&0xFF]^(c>>>8);return (c^0xFFFFFFFF)>>>0;}
@@ -444,9 +444,9 @@
     return new Blob([...locals,...centrals,eo],{type:'application/zip'});
   }
 
-  /* ---------- 상태 ---------- */
+  /* ---------- state ---------- */
   let items=[];               // {file,name,url,orig,w,h,blob,outName,plan}
-  let anchor={x:.5,y:.5,name:'중앙'};
+  let anchor={x:.5,y:.5,name:'Center'};
   let ratio=[1,1];
   let busy=false;
   const drop=$('drop'),file=$('file'),warn=$('warn');
@@ -463,7 +463,7 @@
   const mode=()=>document.querySelector('#mode button.on').dataset.m;
   function free(c){ try{ c.width=1; c.height=1; }catch(e){} }
 
-  /* ---------- 계산 ---------- */
+  /* ---------- planning ---------- */
   function plan(it){
     const m=mode(), cropOn=$('cropOn').checked;
     let sw=it.w, sh=it.h, sx=0, sy=0, r=0;
@@ -523,7 +523,7 @@
     return Math.max(600,Math.round(it.orig*r*f));
   }
 
-  /* ---------- 파일 받기 ---------- */
+  /* ---------- file intake ---------- */
   drop.addEventListener('click',()=>{ if(!busy) file.click(); });
   drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('over')});
   drop.addEventListener('dragleave',()=>drop.classList.remove('over'));
@@ -552,7 +552,7 @@
       added++;
     }
     if(bad.length){
-      msg('bad',`<strong>${esc(bad[0])}</strong>${bad.length>1?` 외 ${bad.length-1}개`:''}는 이미지로 읽지 못했습니다. 파일이 손상되었거나 브라우저가 지원하지 않는 형식입니다. PNG · JPG · WebP를 넣어주세요.`);
+      msg('bad',`<strong>${esc(bad[0])}</strong>${bad.length>1?` and ${bad.length-1} more`:''} could not be read as an image. The file may be corrupted or in a format your browser does not support. Please use PNG, JPG or WebP.`);
     }else{
       warn.classList.add('hidden');
     }
@@ -560,10 +560,10 @@
     if(added&&$('lock').checked) syncLock('tw');
     $('editor').classList.remove('hidden');
     stale();
-    $('stat').textContent=`${items.length}장 대기 중`;
+    $('stat').textContent=`${items.length} in queue`;
   }
 
-  /* ---------- 설정 UI ---------- */
+  /* ---------- settings UI ---------- */
   function panes(){
     const m=mode();
     $('paneExact').classList.toggle('hidden',m!=='exact');
@@ -626,11 +626,11 @@
     $('anchor').querySelectorAll('button').forEach(x=>x.classList.remove('on'));
     b.classList.add('on');
     anchor={x:parseFloat(b.dataset.x),y:parseFloat(b.dataset.y),name:b.title};
-    $('anchorName').textContent=b.title+' 기준';
+    $('anchorName').textContent=b.title+' anchor';
     stale();
   }));
 
-  /* ---------- 미리보기 ---------- */
+  /* ---------- preview ---------- */
   const pvImg=$('pvImg'), pvRect=$('pvRect'), pvBadge=$('pvBadge');
   pvImg.addEventListener('load',()=>updatePreview());
   window.addEventListener('resize',()=>{ if(items.length) updatePreview(); });
@@ -639,7 +639,7 @@
     const it=items[0];
     if(!it){ $('pvPanel').classList.add('hidden'); return; }
     $('pvPanel').classList.remove('hidden');
-    $('pvMulti').textContent=items.length>1?`— 첫 번째 이미지 기준 (총 ${items.length}장)`:'';
+    $('pvMulti').textContent=items.length>1?`— based on the first image (${items.length} total)`:'';
     if(pvImg.getAttribute('src')!==it.url){ pvImg.src=it.url; return; }
     if(!pvImg.clientWidth) return;
     const p=plan(it);
@@ -653,10 +653,10 @@
       pvRect.style.width=(p.sw*s)+'px';
       pvRect.style.height=(p.sh*s)+'px';
       $('pvHint').textContent=p.cropped
-        ?'어두운 부분이 잘려나가고 밝은 영역만 남습니다. 사각형을 드래그하면 자를 위치를 직접 옮길 수 있고, 기준점 버튼을 누르면 다시 그 위치로 돌아갑니다.'
-        :'현재 설정에서는 비율이 원본과 같아 잘리는 부분이 없습니다.';
+        ?'The darkened parts will be trimmed away, keeping only the bright area. Drag the rectangle to move the crop yourself; pressing an anchor button snaps it back to that position.'
+        :'With the current settings the ratio matches the original, so nothing gets trimmed.';
     }else{
-      $('pvHint').textContent='자르기가 없는 설정이라 전체가 그대로 크기만 바뀝니다. 왼쪽 아래 숫자가 결과 크기입니다.';
+      $('pvHint').textContent='No cropping in the current settings — the whole image is simply resized. The number at the bottom left is the resulting size.';
     }
   }
 
@@ -678,11 +678,11 @@
     const mx=it.w-dragSt.sw, my=it.h-dragSt.sh;
     const nsx=Math.min(mx,Math.max(0,dragSt.sx+(e.clientX-dragSt.x)/s));
     const nsy=Math.min(my,Math.max(0,dragSt.sy+(e.clientY-dragSt.y)/s));
-    anchor={x:mx>0?nsx/mx:anchor.x, y:my>0?nsy/my:anchor.y, name:'직접 지정'};
+    anchor={x:mx>0?nsx/mx:anchor.x, y:my>0?nsy/my:anchor.y, name:'Custom'};
     if(!dragSt.moved){
       dragSt.moved=true;
       $('anchor').querySelectorAll('button').forEach(x=>x.classList.remove('on'));
-      $('anchorName').textContent='직접 지정 (드래그)';
+      $('anchorName').textContent='Custom (dragged)';
       stale();
     }else{
       updatePreview();
@@ -698,7 +698,7 @@
   });
   $('q').addEventListener('input',()=>{ $('qv').textContent=$('q').value; stale(); });
 
-  /* 설정이 바뀌면 이전 결과는 버린다 */
+  /* settings changed: discard previous results */
   function stale(){
     items.forEach(i=>{ i.blob=null; i.outName=''; });
     $('dlAll').disabled=true;
@@ -706,7 +706,7 @@
     draw();
   }
 
-  /* ---------- 표 ---------- */
+  /* ---------- table ---------- */
   function draw(){
     updatePreview();
     const tb=$('tb'); tb.innerHTML='';
@@ -723,19 +723,19 @@
       tr.innerHTML=
         `<td><img class="thumb" src="${it.url}" alt=""></td>`+
         `<td><div class="fname">${esc(it.name)}</div>`+
-          `<div class="cut">${kb(it.orig)}${p.cropped?` · ${p.sw}×${p.sh} 영역만 사용`:''}${p.clamped?' · 원본 크기 유지':''}</div></td>`+
+          `<div class="cut">${kb(it.orig)}${p.cropped?` · crops to ${p.sw}×${p.sh}`:''}${p.clamped?' · original size kept':''}</div></td>`+
         `<td class="n dim">${it.w}×${it.h}</td>`+
         `<td class="n dim"><span class="arw">→</span><span class="${same?'':'to'}">${p.tw}×${p.th}</span></td>`+
         `<td class="n">${size}</td>`+
-        `<td>${it.blob?`<button class="dl" data-i="${i}">받기</button>`:''}</td>`;
+        `<td>${it.blob?`<button class="dl" data-i="${i}">Save</button>`:''}</td>`;
       tb.appendChild(tr);
     });
     tb.querySelectorAll('.dl').forEach(b=>b.addEventListener('click',()=>{
       const it=items[+b.dataset.i];
       if(it&&it.blob) save(it.blob,it.outName);
     }));
-    if(up) msg('warn',`${up}장은 지정한 크기가 원본보다 큽니다. <strong>확대하면 없던 픽셀을 만들어내기 때문에 화질이 떨어집니다.</strong> 위의 "원본보다 크게 만들지 않기"를 켜면 원본 크기까지만 맞춥니다.`);
-    else if(clamped) msg('ok',`${clamped}장은 지정한 크기가 원본보다 커서 <strong>원본 크기를 그대로 유지</strong>했습니다. 확대로 인한 화질 저하를 막기 위해서예요.`);
+    if(up) msg('warn',`For ${up} image(s) the size you set is larger than the original. <strong>Upscaling invents pixels that were never there and degrades quality.</strong> Turn on "Never enlarge beyond the original" above to cap at the original size.`);
+    else if(clamped) msg('ok',`For ${clamped} image(s) the requested size was larger than the original, so the <strong>original size was kept</strong> to avoid the quality loss of upscaling.`);
     else if(warn.classList.contains('m-warn')||warn.classList.contains('m-ok')) warn.classList.add('hidden');
   }
 
@@ -745,7 +745,7 @@
     setTimeout(()=>URL.revokeObjectURL(a.href),4000);
   }
 
-  /* ---------- 그리기 ---------- */
+  /* ---------- rendering ---------- */
   function stepDown(src,tw,th){
     let cur=src,w=cur.width,h=cur.height;
     while(w>=tw*2&&h>=th*2){
@@ -779,7 +779,7 @@
     return c;
   }
 
-  /* ---------- 실행 ---------- */
+  /* ---------- run ---------- */
   $('go').addEventListener('click',async()=>{
     if(!items.length||busy) return;
     busy=true;
@@ -790,7 +790,7 @@
 
     for(let i=0;i<items.length;i++){
       const it=items[i];
-      $('stat').textContent=`처리 중 ${i+1}/${items.length}`;
+      $('stat').textContent=`Processing ${i+1}/${items.length}`;
       const p=plan(it); it.plan=p;
       const mime=mimeFor(it);
       let bmp=null,c=null;
@@ -820,16 +820,16 @@
       const dims=[...new Set(done.map(i=>`${i.plan.tw}×${i.plan.th}`))];
       $('summary').className='result';
       $('summary').innerHTML=
-        `<div><span class="k">처리한 장수</span><span class="v">${done.length}장</span></div>`+
-        `<div><span class="k">결과 크기</span><span class="v">${dims.length===1?dims[0]:dims.length+'가지'}</span></div>`+
-        `<div><span class="k">용량 합계</span><span class="v">${kb(total)}</span></div>`+
-        `<div><span class="k">받는 방식</span><span class="v">${done.length===1?'이미지 파일':'ZIP'}</span></div>`;
+        `<div><span class="k">Images processed</span><span class="v">${done.length}</span></div>`+
+        `<div><span class="k">Output size</span><span class="v">${dims.length===1?dims[0]:dims.length+' sizes'}</span></div>`+
+        `<div><span class="k">Total file size</span><span class="v">${kb(total)}</span></div>`+
+        `<div><span class="k">Download as</span><span class="v">${done.length===1?'Image file':'ZIP'}</span></div>`;
       $('dlAll').disabled=false;
-      $('dlAll').textContent=done.length===1?'파일 받기':'ZIP으로 모두 받기';
+      $('dlAll').textContent=done.length===1?'Download file':'Download all as ZIP';
     }
 
-    if(failed) msg('bad',`${failed}장은 처리하지 못했습니다. 파일이 손상되었거나 브라우저가 읽지 못하는 형식일 수 있습니다.`);
-    $('stat').textContent=`완료 — ${done.length}장`;
+    if(failed) msg('bad',`${failed} image(s) could not be processed. The files may be corrupted or in a format your browser cannot read.`);
+    $('stat').textContent=`Done — ${done.length}`;
     $('barWrap').classList.add('hidden'); $('bar').style.width='0';
     btn.disabled=false; busy=false;
   });
@@ -858,7 +858,7 @@
     $('summary').classList.add('hidden');
     $('tbl').classList.add('hidden');
     $('tb').innerHTML='';
-    $('dlAll').disabled=true; $('dlAll').textContent='모두 받기';
+    $('dlAll').disabled=true; $('dlAll').textContent='Download all';
     $('stat').textContent='';
     window.scrollTo({top:0,behavior:'smooth'});
   });

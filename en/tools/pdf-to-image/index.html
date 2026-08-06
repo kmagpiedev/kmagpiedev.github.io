@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PDF를 이미지로 변환 — JPG·PNG, 300dpi 고화질 | 까치툴</title>
-<meta name="description" content="PDF를 페이지별 JPG나 PNG 이미지로 바꿉니다. 해상도를 골라 인쇄용 300dpi로 뽑을 수 있고 여러 장은 ZIP으로 한 번에 받습니다. 서버 전송 없이 브라우저 안에서 처리됩니다.">
-<link rel="canonical" href="https://www.kmagpie.com/tools/pdf-to-image/">
-<meta property="og:title" content="PDF를 이미지로 변환 — JPG·PNG 300dpi">
-<meta property="og:description" content="페이지별 이미지로 변환해 ZIP으로 받으세요. 서버 전송 없이 브라우저에서 처리됩니다.">
+<title>PDF to JPG/PNG in Your Browser — Free, No Upload | K-magpie</title>
+<meta name="description" content="Turn each page of a PDF into a JPG or PNG image, right in your browser. Choose 72–300 dpi for screen or print, and download multiple pages as one ZIP. Files never leave your device — no upload, no sign-up.">
+<link rel="canonical" href="https://www.kmagpie.com/en/tools/pdf-to-image/">
+<meta property="og:title" content="PDF to JPG/PNG in Your Browser — Free, No Upload">
+<meta property="og:description" content="Convert PDF pages to images at up to 300 dpi and grab them as a ZIP. Everything runs locally in your browser — nothing is uploaded.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://www.kmagpie.com/tools/pdf-to-image/">
+<meta property="og:url" content="https://www.kmagpie.com/en/tools/pdf-to-image/">
 <style>
   :root{
     --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
@@ -144,25 +144,25 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
 <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
-<meta property="og:site_name" content="까치툴">
+<meta property="og:site_name" content="Kmagpie Tools">
 <!--HEAD:E-->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="wrap">
 
-<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › PDF를 이미지로</p>
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/en/tools/">Kmagpie Tools</a> › PDF to Image</p>
 <!--LANG:S-->
-<p class="langsw"><a href="/en/tools/pdf-to-image/" hreflang="en" lang="en">English version</a></p>
+<p class="langsw"><a href="/tools/pdf-to-image/" hreflang="ko" lang="ko">한국어로 보기</a></p>
 <!--LANG:E-->
 
-<h1>PDF를 이미지로 변환</h1>
-<p class="sub">PDF의 각 페이지를 <strong>JPG나 PNG 이미지</strong>로 바꿉니다. 해상도를 골라 인쇄용 300dpi로 뽑을 수 있고, 여러 장은 ZIP으로 한 번에 받습니다. <strong>파일을 업로드하지 않고</strong> 브라우저 안에서 처리해요.</p>
+<h1>PDF to Image Converter</h1>
+<p class="sub">Turn every page of a PDF into a <strong>JPG or PNG image</strong>. Pick the resolution — up to a print-ready 300 dpi — and download multiple pages as a single ZIP. <strong>Your file never leaves your browser</strong> — no upload, no sign-up.</p>
 
 <div class="drop" id="drop">
   <span class="ic">📄</span>
-  <div class="t">PDF 파일을 여기에 놓으세요</div>
-  <div class="d">클릭해서 고를 수도 있습니다 · 파일은 어디로도 전송되지 않습니다</div>
+  <div class="t">Drop your PDF here</div>
+  <div class="d">or click to choose a file · nothing is sent anywhere</div>
   <input type="file" id="file" accept="application/pdf,.pdf" class="hidden">
 </div>
 
@@ -171,19 +171,19 @@
 <div class="panel hidden" id="opts">
   <div class="row">
     <div class="col">
-      <label class="f">이미지 형식</label>
+      <label class="f">Image format</label>
       <div class="seg sm" id="fmt">
         <button data-v="png" class="on">PNG</button>
         <button data-v="jpg">JPG</button>
       </div>
-      <p class="note">PNG는 글자가 또렷하고 용량이 큽니다. JPG는 용량이 작지만 글자 가장자리가 조금 뭉개져요. <strong>문서라면 PNG, 사진 위주 페이지라면 JPG</strong>가 낫습니다.</p>
+      <p class="note">PNG keeps text razor-sharp but makes larger files. JPG is much smaller, at the cost of slightly fuzzy edges around text. <strong>Pick PNG for documents, JPG for photo-heavy pages.</strong></p>
     </div>
     <div class="col">
-      <label class="f">해상도</label>
+      <label class="f">Resolution</label>
       <div class="seg sm" id="dpi">
-        <button data-v="72">72dpi 화면용</button>
-        <button data-v="150" class="on">150dpi 기본</button>
-        <button data-v="300">300dpi 인쇄용</button>
+        <button data-v="72">72 dpi screen</button>
+        <button data-v="150" class="on">150 dpi default</button>
+        <button data-v="300">300 dpi print</button>
       </div>
       <p class="note" id="sizeNote"></p>
     </div>
@@ -191,16 +191,16 @@
 
   <div class="row hidden" id="qBox" style="margin-top:18px">
     <div class="col">
-      <label class="f">JPG 품질 <span id="qVal" style="color:var(--accent)">92</span></label>
+      <label class="f">JPG quality <span id="qVal" style="color:var(--accent)">92</span></label>
       <input type="range" id="q" min="40" max="100" value="92">
     </div>
   </div>
 
   <div class="btns">
-    <button class="btn" id="go">선택한 페이지 변환</button>
-    <button class="btn g" id="all">전체 선택</button>
-    <button class="btn g" id="none">전체 해제</button>
-    <button class="btn g" id="reset">다른 파일</button>
+    <button class="btn" id="go">Convert selected pages</button>
+    <button class="btn g" id="all">Select all</button>
+    <button class="btn g" id="none">Clear selection</button>
+    <button class="btn g" id="reset">New file</button>
   </div>
 </div>
 
@@ -210,50 +210,50 @@
 
 <div id="done" class="hidden"></div>
 
-<p class="gist">PDF의 각 페이지를 JPG나 PNG로 바꾸고 여러 장은 ZIP으로 한 번에 받습니다. 해상도는 화면·웹용 150dpi와 인쇄용 300dpi 중에서 고르면 되고, 파일은 서버 전송 없이 브라우저 안에서 변환됩니다. 페이지가 많은 문서는 필요한 페이지만 골라 변환하는 편이 빠릅니다.</p>
+<p class="gist">Convert each PDF page to a JPG or PNG and download several pages at once as a ZIP. Choose 150 dpi for screens and the web, or 300 dpi for print. Everything runs locally — your PDF is never uploaded to a server. For long documents, converting just the pages you need is much faster.</p>
 
-<details class="fold"><summary><h2>왜 PDF를 이미지로 바꾸나</h2></summary><div class="fx">
-<p>PDF를 그대로 쓸 수 없는 자리가 의외로 많습니다. 블로그나 쇼핑몰 상세페이지에는 이미지만 올라가고, 카카오톡이나 인스타그램으로 보낼 때도 이미지가 편합니다. 발표 자료에 특정 페이지만 끼워 넣거나, 인쇄소에 넘길 때 이미지 파일을 요구하는 경우도 있어요.</p>
-<p>편집을 막고 싶을 때도 씁니다. PDF는 텍스트를 그대로 복사할 수 있지만 <strong>이미지로 만들면 글자를 긁어갈 수 없습니다.</strong> 물론 화면 캡처로 옮길 수는 있으니 완전한 보호는 아니고, 무심코 복사되는 걸 막는 정도예요.</p>
+<details class="fold"><summary><h2>Why convert a PDF to images</h2></summary><div class="fx">
+<p>Plenty of places simply won't take a PDF. Blog posts, online shop listings and most social platforms only accept images, and dropping a page into a chat app or an Instagram story is far easier as a picture. You might also want to slot a single page into a slide deck, or a print shop may ask for image files instead of the original document.</p>
+<p>It also works as a light copy deterrent. Text in a PDF can be selected and copied straight out, but <strong>once it's an image, the text can no longer be lifted with a click.</strong> Someone can still screenshot or run OCR, so it's not real protection — it just stops casual copy-and-paste.</p>
 </div></details>
 
-<details class="fold"><summary><h2>해상도를 어떻게 고를까</h2></summary><div class="fx">
-<p>PDF는 기본적으로 <strong>72dpi</strong>를 기준으로 만들어집니다. 그래서 72dpi로 뽑으면 원본과 같은 크기의 이미지가 나오는데, 화면에서 보기엔 괜찮아도 확대하면 글자가 흐려집니다.</p>
-<p><strong>150dpi</strong>는 화면에서 보고 웹에 올리기에 충분합니다. A4 한 페이지가 대략 1240×1754픽셀이 나와요. <strong>300dpi</strong>는 인쇄용 표준이라 A4가 2480×3508픽셀이 되고, 파일도 그만큼 커집니다. 인쇄할 게 아니라면 150dpi로 충분해요.</p>
-<p>해상도를 올리면 픽셀 수가 제곱으로 늘어납니다. 72에서 300으로 올리면 가로세로가 각각 4배가 넘어서 <strong>용량은 17배 이상</strong>이 돼요. 페이지가 많은 문서를 300dpi로 뽑으면 브라우저가 버거워질 수 있으니, 필요한 페이지만 골라서 변환하세요.</p>
+<details class="fold"><summary><h2>Which resolution should I pick?</h2></summary><div class="fx">
+<p>PDFs are laid out on a <strong>72 dpi</strong> grid, so exporting at 72 dpi gives you an image the same nominal size as the page. That's fine on screen at 100%, but text turns blurry the moment you zoom in.</p>
+<p><strong>150 dpi</strong> is plenty for viewing on screen and posting on the web — an A4 page comes out around 1240×1754 pixels. <strong>300 dpi</strong> is the standard for print, making an A4 page 2480×3508 pixels, with files to match. If you're not printing, 150 dpi is all you need.</p>
+<p>Resolution scales the pixel count quadratically. Going from 72 to 300 dpi multiplies both width and height by more than 4×, so <strong>file size grows 17-fold or more</strong>. Rendering a long document at 300 dpi can strain the browser, so select only the pages you actually need.</p>
 </div></details>
 
-<details class="fold"><summary><h2>글자가 선명하지 않다면</h2></summary><div class="fx">
-<p>원본 PDF가 이미 <strong>스캔본</strong>일 수 있습니다. 종이를 스캔해서 만든 PDF는 안에 들어 있는 게 글자가 아니라 사진이라, 아무리 높은 해상도로 뽑아도 원본 스캔 품질을 넘지 못합니다. PDF를 열어 글자를 드래그해 봤을 때 선택되지 않으면 스캔본이에요.</p>
-<p>글자가 선택되는 PDF라면 해상도를 올리는 만큼 선명해집니다. 300dpi로도 부족하면 JPG 대신 PNG를 써 보세요. JPG 압축은 글자처럼 경계가 뚜렷한 부분에서 특히 티가 납니다.</p>
+<details class="fold"><summary><h2>If the text isn't sharp</h2></summary><div class="fx">
+<p>Your PDF may already be a <strong>scan</strong>. A PDF made by scanning paper contains photographs of text rather than actual text, so no export resolution can exceed the quality of the original scan. Quick check: open the PDF and try to drag-select some text — if nothing selects, it's a scan.</p>
+<p>If the text does select, raising the resolution will keep making it sharper. If 300 dpi still isn't enough, switch from JPG to PNG — JPG compression is most visible exactly where text meets background, on hard high-contrast edges.</p>
 </div></details>
 
-<details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
-<h3>파일이 안 열려요</h3>
-<p>암호가 걸린 PDF는 열 수 없습니다. 뷰어에서 열 때 비밀번호를 물어보는 파일이라면 먼저 암호를 풀어야 해요. 또 파일이 손상됐거나 확장자만 PDF인 경우도 있습니다.</p>
-<h3>페이지가 많으면 느려요</h3>
-<p>모든 렌더링이 브라우저에서 일어나기 때문입니다. 서버로 보내지 않는 대신 내 컴퓨터의 성능을 씁니다. 100페이지짜리를 300dpi로 한 번에 돌리면 시간이 꽤 걸리고 메모리도 많이 먹어요. <strong>필요한 페이지만 골라서</strong> 나눠 변환하는 게 빠릅니다.</p>
-<h3>배경이 투명하게 나오나요</h3>
-<p>아닙니다. PDF 페이지는 흰 종이를 전제로 하기 때문에 <strong>배경을 흰색으로 채워서</strong> 내보냅니다. 투명 배경이 필요하면 변환한 뒤 <a href="/tools/remove-bg/">배경 제거</a> 도구를 쓰세요.</p>
-<h3>반대로 이미지를 PDF로 만들려면</h3>
-<p><a href="/tools/pdf/">PDF 편집기</a>에서 이미지를 PDF로 묶을 수 있습니다. 페이지 합치기나 순서 변경, 특정 페이지 추출도 그쪽에서 됩니다.</p>
-<h3>용량이 너무 커요</h3>
-<p>해상도를 낮추거나 JPG로 바꾸세요. 그래도 크다면 변환한 이미지를 <a href="/tools/image-compress/">이미지 용량 줄이기</a>에 넣어 목표 용량에 맞출 수 있습니다.</p>
+<details class="fold"><summary><h2>Troubleshooting</h2></summary><div class="fx">
+<h3>The file won't open</h3>
+<p>Password-protected PDFs can't be opened here. If your viewer asks for a password, remove the protection first. The file may also be corrupted, or not actually a PDF despite the extension.</p>
+<h3>It's slow with many pages</h3>
+<p>All rendering happens in your browser — nothing goes to a server, so the work runs on your own machine instead. A 100-page document at 300 dpi takes a while and eats a lot of memory. <strong>Converting just the pages you need</strong>, in batches, is much faster.</p>
+<h3>Do the images have transparent backgrounds?</h3>
+<p>No. PDF pages assume white paper, so pages are exported with a <strong>solid white background</strong>. If you need transparency, run the converted image through the <a href="/en/tools/remove-bg/">background remover</a> afterwards.</p>
+<h3>What about going the other way — images to PDF?</h3>
+<p>Use the <a href="/en/tools/img2pdf/">Image to PDF tool</a> to bundle JPG or PNG files into a single PDF, and the <a href="/en/tools/pdf/">PDF editor</a> to merge, reorder or extract pages.</p>
+<h3>The files are too big</h3>
+<p>Lower the resolution or switch to JPG. If they're still too large, drop the converted images into the <a href="/en/tools/image-compress/">image compressor</a> to hit a target file size.</p>
 </div></details>
 
 <!--REL:S-->
-<h2>함께 쓰면 좋은 도구</h2>
+<h2>Related tools</h2>
 <div class="rel">
-  <a href="/tools/pdf/"><strong>PDF 편집기</strong><span>합치기·나누기·페이지 삭제</span></a>
-  <a href="/tools/pdf-sign/"><strong>PDF 서명·도장 넣기</strong><span>인쇄 없이 계약서에 바로</span></a>
-  <a href="/tools/img2pdf/"><strong>이미지를 PDF로</strong><span>JPG·PNG 여러 장을 한 파일로</span></a>
+  <a href="/en/tools/pdf/"><strong>PDF Editor</strong><span>Merge, split, rotate — no upload</span></a>
+  <a href="/en/tools/img2pdf/"><strong>Image to PDF</strong><span>Combine photos into one PDF</span></a>
+  <a href="/en/tools/image-compress/"><strong>Compress Images</strong><span>Auto-fit a target file size</span></a>
 </div>
-<p class="rel-all"><a href="/tools/">까치툴 도구 33개 전체 보기 →</a></p>
+<p class="rel-all"><a href="/en/tools/">See all 18 English tools →</a></p>
 <!--REL:E-->
 
 <footer>
-  <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 파일은 전송·저장되지 않습니다.</p>
-  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+  <p>Kmagpie Tools · Everything runs in your browser. Your files are never uploaded or stored.</p>
+  <p><a href="/">Home</a> · <a href="/en/tools/">Other tools</a> · <a href="/en/disclaimer.html">Disclaimer</a> · <a href="/privacy-policy.html">Privacy Policy</a></p>
 </footer>
 
 </div>
@@ -264,7 +264,7 @@ pdfjs.GlobalWorkerOptions.workerSrc='/tools/lib/pdf.worker.min.mjs';
 
 const $=id=>document.getElementById(id);
 
-/* ---------- 내장 ZIP (store 방식, 압축 없음) ---------- */
+/* ---------- built-in ZIP (store method, no compression) ---------- */
 const CRC=(()=>{const t=new Uint32Array(256);
   for(let i=0;i<256;i++){let c=i;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[i]=c>>>0;}return t;})();
 function crc32(u8){let c=0xFFFFFFFF;for(let i=0;i<u8.length;i++)c=CRC[(c^u8[i])&0xFF]^(c>>>8);return (c^0xFFFFFFFF)>>>0;}
@@ -300,31 +300,31 @@ const kb=n=>n<1024?n+' B':n<1048576?(n/1024).toFixed(0)+' KB':(n/1048576).toFixe
 function say(cls,html){ const s=$('status'); s.className='msg '+cls; s.innerHTML=html; }
 function hideSay(){ $('status').className='hidden'; }
 
-/* ---------- 파일 열기 ---------- */
+/* ---------- open file ---------- */
 async function open(f){
   if(!f) return;
   if(!/\.pdf$/i.test(f.name) && f.type!=='application/pdf'){
-    say('m-bad','PDF 파일만 열 수 있습니다.'); return;
+    say('m-bad','Only PDF files can be opened here.'); return;
   }
   name=f.name.replace(/\.pdf$/i,'') || 'document';
-  say('m-warn','파일을 여는 중입니다…');
+  say('m-warn','Opening the file…');
   try{
     const buf=new Uint8Array(await f.arrayBuffer());
     doc=await pdfjs.getDocument({data:buf}).promise;
   }catch(err){
     doc=null;
-    say('m-bad','파일을 열지 못했습니다. 암호가 걸려 있거나 손상된 PDF일 수 있어요.');
+    say('m-bad','Could not open this file. It may be password-protected or damaged.');
     return;
   }
   sel=new Set(Array.from({length:doc.numPages},(_,i)=>i+1));
   $('opts').classList.remove('hidden');
   $('drop').classList.add('hidden');
-  say('m-ok',`<strong>${f.name}</strong> · ${doc.numPages}페이지 · ${kb(f.size)}. 변환할 페이지를 골라 주세요.`);
+  say('m-ok',`<strong>${f.name}</strong> · ${doc.numPages}-page PDF · ${kb(f.size)}. Pick the pages to convert.`);
   await thumbs();
   sizeNote();
 }
 
-/* ---------- 썸네일 ---------- */
+/* ---------- thumbnails ---------- */
 async function thumbs(){
   const box=$('thumbs'); box.innerHTML='';
   for(let n=1;n<=doc.numPages;n++){
@@ -350,29 +350,29 @@ async function thumbs(){
   }
 }
 
-/* ---------- 예상 크기 안내 ---------- */
+/* ---------- estimated size note ---------- */
 async function sizeNote(){
   if(!doc){ $('sizeNote').textContent=''; return; }
   const page=await doc.getPage(1);
   const vp=page.getViewport({scale:dpi/72});
   const w=Math.round(vp.width), h=Math.round(vp.height);
-  $('sizeNote').innerHTML=`첫 페이지 기준 <strong>${w.toLocaleString('ko-KR')} × ${h.toLocaleString('ko-KR')}px</strong>로 나옵니다. 선택 ${sel.size}/${doc.numPages}페이지.`;
+  $('sizeNote').innerHTML=`First page comes out at <strong>${w.toLocaleString('en-US')} × ${h.toLocaleString('en-US')}px</strong>. Selected ${sel.size}/${doc.numPages} pages.`;
   $('go').disabled = sel.size===0 || busy;
 }
 
-/* ---------- 변환 ---------- */
+/* ---------- convert ---------- */
 async function render(n){
   const page=await doc.getPage(n);
   const vp=page.getViewport({scale:dpi/72});
   const c=document.createElement('canvas');
   c.width=Math.max(1,Math.round(vp.width)); c.height=Math.max(1,Math.round(vp.height));
   const ctx=c.getContext('2d');
-  ctx.fillStyle='#fff'; ctx.fillRect(0,0,c.width,c.height);   /* PDF는 흰 종이가 전제 */
+  ctx.fillStyle='#fff'; ctx.fillRect(0,0,c.width,c.height);   /* PDF assumes white paper */
   await page.render({canvasContext:ctx, viewport:vp}).promise;
   const type = fmt==='jpg' ? 'image/jpeg' : 'image/png';
   const q = fmt==='jpg' ? (parseInt($('q').value,10)||92)/100 : undefined;
   const blob=await new Promise(res=>c.toBlob(res, type, q));
-  c.width=c.height=1;                                          /* 캔버스 메모리 즉시 반환 */
+  c.width=c.height=1;                                          /* release canvas memory right away */
   return blob;
 }
 
@@ -397,28 +397,28 @@ async function convert(){
       out.push({name:`${name}_${String(pages[i]).padStart(3,'0')}.${ext}`,
                 data:new Uint8Array(await blob.arrayBuffer()), blob});
       $('prog').style.width=((i+1)/pages.length*100)+'%';
-      await new Promise(r=>setTimeout(r,0));    /* 화면 갱신 여유 */
+      await new Promise(r=>setTimeout(r,0));    /* let the screen refresh */
     }
     if(out.length===1){
       save(out[0].blob, out[0].name);
       $('done').className='msg m-ok';
-      $('done').innerHTML=`<strong>${out[0].name}</strong> (${kb(total)}) 을(를) 저장했습니다.`;
+      $('done').innerHTML=`Saved <strong>${out[0].name}</strong> (${kb(total)}).`;
     }else{
       const zip=zipStore(out.map(o=>({name:o.name,data:o.data})));
-      save(zip, `${name}_이미지.zip`);
+      save(zip, `${name}_images.zip`);
       $('done').className='msg m-ok';
-      $('done').innerHTML=`${out.length}장을 <strong>${name}_이미지.zip</strong> (${kb(zip.size)}) 으로 저장했습니다. ZIP은 압축 없이 묶기만 하므로 원본 화질 그대로입니다.`;
+      $('done').innerHTML=`Saved ${out.length} images as <strong>${name}_images.zip</strong> (${kb(zip.size)}). The ZIP just bundles the files without compressing them, so image quality is untouched.`;
     }
   }catch(err){
     $('done').className='msg m-bad';
-    $('done').innerHTML='변환 중 문제가 생겼습니다. 페이지 수를 줄이거나 해상도를 낮춰서 다시 시도해 보세요.';
+    $('done').innerHTML='Something went wrong during conversion. Try again with fewer pages or a lower resolution.';
   }finally{
     busy=false; $('go').disabled=sel.size===0;
     setTimeout(()=>{ $('progBar').classList.add('hidden'); $('prog').style.width='0'; }, 600);
   }
 }
 
-/* ---------- UI 배선 ---------- */
+/* ---------- UI wiring ---------- */
 $('drop').addEventListener('click',()=>$('file').click());
 $('file').addEventListener('change',e=>open(e.target.files[0]));
 ['dragenter','dragover'].forEach(t=>$('drop').addEventListener(t,e=>{

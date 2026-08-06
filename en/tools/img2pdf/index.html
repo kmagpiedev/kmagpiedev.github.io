@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JPG to PDF — Combine Images into One PDF, Free &amp; No Upload | K-magpie</title>
+<meta name="description" content="Merge photos of documents into a single PDF. Set the page order yourself, choose A4 or Letter with margins, and print straight away. JPGs go in untouched with no recompression — and your files never leave your browser.">
+<link rel="canonical" href="https://www.kmagpie.com/en/tools/img2pdf/">
+<meta property="og:title" content="JPG to PDF — Combine Images into One PDF, No Upload">
+<meta property="og:description" content="Bundle document photos into one PDF in the order you choose. A4/Letter sizing, margins, no server upload — everything runs in your browser.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/en/tools/img2pdf/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:940px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  .row{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start}
+  .col{flex:1;min-width:210px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:12px 0 0}
+  .seg{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+  .seg button{flex:1;background:transparent;border:0;padding:10px 6px;font-size:13.5px;font-weight:600;
+    color:var(--ink-2);cursor:pointer;font-family:inherit;transition:.12s}
+  .seg button.on{background:var(--accent);color:#fff}
+  .seg button:disabled{opacity:.4;cursor:not-allowed}
+  .seg.sm button{font-size:12.5px;padding:9px 4px}
+  .fld{margin-top:20px}
+
+  .drop{border:2px dashed var(--line);border-radius:16px;padding:38px 22px;text-align:center;
+    background:var(--surface);cursor:pointer;transition:.14s}
+  .drop:hover,.drop.over{border-color:var(--accent);background:var(--accent-soft)}
+  .drop .ic{font-size:34px;display:block;margin-bottom:10px}
+  .drop .t{font-size:16px;font-weight:700;margin-bottom:4px}
+  .drop .d{font-size:13.5px;color:var(--ink-3)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:12px 20px;border-radius:10px;
+    border:1px solid var(--accent);background:var(--accent);color:#fff;font-size:15px;font-weight:700;
+    font-family:inherit;cursor:pointer;transition:.14s}
+  .btn:hover{filter:brightness(1.06)}
+  .btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+  .btn.g{background:transparent;color:var(--accent)}
+  .btn.sm{padding:8px 14px;font-size:13.5px;font-weight:600}
+  .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;align-items:center}
+
+  .list{margin:16px 0;display:flex;flex-direction:column;gap:8px}
+  .it{display:flex;align-items:center;gap:12px;padding:9px 12px;border:1px solid var(--line);
+    border-radius:12px;background:var(--surface)}
+  .it .no{flex:none;width:22px;text-align:center;font-size:13px;font-weight:700;color:var(--accent);
+    font-variant-numeric:tabular-nums}
+  .it canvas{flex:none;width:46px;height:46px;object-fit:contain;border-radius:7px;
+    background:var(--line-soft);display:block}
+  .it .mt{flex:1;min-width:0}
+  .it .nm{font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .it .dm{font-size:12.5px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+  .it .ops{flex:none;display:flex;gap:5px}
+  .it .ops button{width:32px;height:32px;border:1px solid var(--line);border-radius:8px;background:transparent;
+    color:var(--ink-2);cursor:pointer;font-size:14px;font-family:inherit;line-height:1;padding:0}
+  .it .ops button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+  .it .ops button:disabled{opacity:.3;cursor:not-allowed}
+  .it .ops .del:hover{border-color:var(--bad);color:var(--bad)}
+
+  .sum{display:flex;gap:8px;flex-wrap:wrap;align-items:baseline;font-size:14px;color:var(--ink-2);
+    padding:13px 16px;border:1px solid var(--line);border-radius:12px;background:var(--surface);margin:16px 0 0}
+  .sum b{color:var(--accent);font-variant-numeric:tabular-nums}
+
+  .bar{height:8px;background:var(--line-soft);border-radius:99px;overflow:hidden;margin:14px 0 8px}
+  .bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .15s}
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .m-ok{background:var(--good-soft);border-color:var(--good)}
+  .hidden{display:none}
+  code{background:var(--line-soft);padding:1px 5px;border-radius:4px;font-size:12.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .seg button{font-size:12px;padding:9px 2px}
+    .it{gap:8px;padding:8px 9px}
+    .it canvas{width:38px;height:38px}
+    .it .ops button{width:30px;height:30px}
+  }
+/*FOLD:S*/
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 8px}
+  .fold .fx>:first-child{margin-top:4px}
+/*FOLD:E*/
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
+/*LANG:S*/
+  .langsw{font-size:13px;margin:-12px 0 20px}
+  .langsw a{color:var(--ink-3);text-decoration:none;border-bottom:1px solid var(--line)}
+  .langsw a:hover{color:var(--accent);border-color:var(--accent)}
+/*LANG:E*/
+</style>
+<!--ALT:S-->
+<link rel="alternate" hreflang="ko" href="https://www.kmagpie.com/tools/img2pdf/">
+<link rel="alternate" hreflang="en" href="https://www.kmagpie.com/en/tools/img2pdf/">
+<link rel="alternate" hreflang="x-default" href="https://www.kmagpie.com/tools/img2pdf/">
+<!--ALT:E-->
+<!--HEAD:S-->
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
+<meta property="og:site_name" content="Kmagpie Tools">
+<!--HEAD:E-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/en/tools/">Kmagpie Tools</a> › Image to PDF</p>
+<!--LANG:S-->
+<p class="langsw"><a href="/tools/img2pdf/" hreflang="ko" lang="ko">한국어로 보기</a></p>
+<!--LANG:E-->
+
+<h1>Image to PDF Converter</h1>
+<p class="sub">Combine several photos into <strong>one PDF</strong>. Set the page order yourself, fit everything to A4 or Letter, and print straight away. JPGs are embedded as-is with no recompression. <strong>Your files never leave your browser</strong> — no upload, no sign-up.</p>
+
+<div class="drop" id="drop">
+  <span class="ic">📄</span>
+  <div class="t">Drop your images here</div>
+  <div class="d">or click to choose files · PNG · JPG · WebP · select several at once</div>
+  <input type="file" id="file" accept="image/png,image/jpeg,image/webp,image/*" multiple class="hidden">
+</div>
+
+<div id="status" class="hidden"></div>
+
+<div class="list hidden" id="list"></div>
+
+<div class="panel hidden" id="opts">
+  <div class="row">
+    <div class="col" style="min-width:280px">
+      <label class="f">Paper size</label>
+      <div class="seg sm" id="paper">
+        <button data-v="orig" class="on">Match image size</button>
+        <button data-v="a4">A4</button>
+        <button data-v="letter">Letter</button>
+      </div>
+      <p class="note" id="paperNote"></p>
+    </div>
+
+    <div class="col" style="min-width:280px">
+      <label class="f">Orientation</label>
+      <div class="seg sm" id="orient">
+        <button data-v="auto" class="on">Auto</button>
+        <button data-v="p">Portrait</button>
+        <button data-v="l">Landscape</button>
+      </div>
+      <p class="note" id="orientNote">Auto puts wide images on landscape pages and tall images on portrait pages. With "Match image size" the page follows the image's shape, so there is nothing to choose.</p>
+    </div>
+  </div>
+
+  <div class="fld">
+    <label class="f">Margins</label>
+    <div class="seg sm" id="margin">
+      <button data-v="none" class="on">None</button>
+      <button data-v="s">Narrow (10mm)</button>
+      <button data-v="l">Wide (20mm)</button>
+    </div>
+    <p class="note">Images are <strong>centred inside the margins with their proportions intact</strong>. Nothing gets cropped; if the image and page proportions differ, the leftover space stays white.</p>
+  </div>
+
+  <div class="sum" id="sum"></div>
+
+  <div class="btns">
+    <button class="btn" id="go">Create PDF</button>
+    <button class="btn g" id="more">Add more images</button>
+    <button class="btn g sm" id="sort">Sort by file name</button>
+    <button class="btn g sm" id="reset">Start over</button>
+  </div>
+</div>
+
+<div class="bar hidden" id="progBar"><i id="prog"></i></div>
+<div id="done" class="hidden"></div>
+
+<p class="gist">Bundle photos of documents into a single PDF in the order you choose, with A4 or Letter sizing and margins. JPGs are embedded without recompression, and your files stay in the browser — nothing is uploaded to a server. PDF is not a compressed format, so if there's a size limit, shrink the images first and combine them after.</p>
+
+<details class="fold"><summary><h2>Why bundle photos into a PDF at all</h2></summary><div class="fx">
+<p>These days documents get photographed with a phone rather than run through a scanner. Hardly anyone owns a scanner, and a photo taken square-on in good light reads perfectly well. The trouble starts afterwards. Snap both sides of an ID, a bank statement and a four-page contract and you're holding seven photos — while the upload form wants exactly one file, or caps attachments at three. Bank applications, expense reports, school paperwork and visa forms hit this wall constantly.</p>
+<p>Even where multiple files are accepted, the order rarely survives. The recipient's screen usually sorts by file name, so pages you carefully uploaded as 1 through 4 arrive shuffled. For anything that has to read in sequence — a contract, most obviously — that alone can get a submission bounced. Combine everything into one PDF and <strong>the page order is locked inside the file</strong>: it opens the same way for everyone, everywhere.</p>
+<p>Email is easier too. Seven photos mean seven downloads and seven clicks for whoever receives them; a PDF is one click and a scroll. Same for printing — image files go through the print dialog one at a time, while a PDF prints end to end in one pass.</p>
+</div></details>
+
+<details class="fold"><summary><h2>Original size vs. fitting to A4</h2></summary><div class="fx">
+<p><strong>Match image size</strong> uses each image's pixel dimensions as the page size — a 1200-pixel-wide photo becomes a 1200 pt-wide page. Nothing is cropped and no white space appears, so for documents that will only ever be viewed on screen, this is the cleaner choice. The trade-off: every page can be a different size, and a modern 3000×4000-pixel phone photo produces a nominal page over a metre tall. Viewers scale it to fit so you'd never notice on screen, but when printing you must pick "Fit to page" in the print dialog to land it on a single sheet.</p>
+<p>Choose <strong>A4</strong> or <strong>Letter</strong> and every page comes out the same size — the safe option for anything meant to be printed or filed. Just don't expect photo and paper proportions to match: A4 is roughly 1:1.414 while phone photos are usually 3:4, so a 3:4 photo on a portrait A4 page leaves white bands top and bottom. This tool never crops the image to fill that space. <strong>In a document photo, cropping means losing content</strong>, so a fill-the-page mode was deliberately left out.</p>
+<p>With orientation set to <strong>Auto</strong>, wide photos land on landscape pages and tall ones on portrait pages — the least wasted space when portrait documents and landscape receipts are mixed together. If the PDF is headed for a printer and a binder, though, alternating orientations are a nuisance; lock it to portrait or landscape instead.</p>
+<p>Margins are converted precisely. PDF measures in points, and <code>1mm = 72/25.4pt</code>, so a 10mm margin goes in as 28.3465 pt. That said, <strong>what lands on paper is decided by your printer settings.</strong> If "Fit to page" or "Fit to printable area" is on, the printer shrinks the whole page a few percent to dodge its unprintable edge, and your 10mm margin prints closer to 12mm. When physical size matters, choose <strong>"Actual size"</strong> or 100% scale in the print dialog. This tool only guarantees the coordinates inside the PDF — the rest is up to the printer. It also doesn't follow archival profiles like PDF/A, so if a recipient mandates a specific standard, use the method they prescribe.</p>
+</div></details>
+
+<details class="fold"><summary><h2>A PDF will not make your files smaller</h2></summary><div class="fx">
+<p>This is misunderstood remarkably often. PDF is not a compression format — it's a <strong>container</strong>. Your photos aren't recompressed; the original JPEG data is dropped in whole, with an instruction attached saying "draw this picture here, at this size". Five 4MB photos therefore make a PDF of roughly 20MB — slightly more, in fact, once the PDF scaffolding is added. That's a feature, not a flaw: recompressing would have smeared the text.</p>
+<p>PNG behaves a little differently. PNGs are re-encoded losslessly, and the result can end up larger than the original file — especially when the PNG holds a photograph. Photos were never a good fit for PNG to begin with, and putting them in a PDF makes them bigger still. For anything that's a <strong>photo rather than text or line art, JPG beats PNG on every count</strong>.</p>
+<p>If you're bumping into an upload size limit, flip the order of operations. There's no good way to shrink a PDF after the fact. Run the photos through the <a href="/en/tools/image-compress/">image compressor</a> first, then combine the results here. Five pages against a 10MB cap means about 1.5MB per photo with room to spare — document photos stay perfectly legible even at fairly aggressive compression.</p>
+</div></details>
+
+<details class="fold"><summary><h2>Making it look like a real scan</h2></summary><div class="fx">
+<p>Camera angle matters most. Shoot from directly above with the camera parallel to the paper and the sheet comes out as a proper rectangle. Shoot at an angle and it skews into a trapezoid — and this tool <strong>does not straighten perspective for you.</strong> The photo goes onto the page exactly as taken, so reshooting is the quickest fix. Put the paper on a desk rather than the floor, keep a window to your side so your body doesn't cast a shadow, and it will usually come out square.</p>
+<p>Margins make a surprising difference too. A PDF filled edge to edge looks bold on screen but loses its borders on most home printers, which physically can't print the outer 3–5mm of the sheet. Even <strong>Narrow (10mm)</strong> eliminates the problem — and makes the result look much more like a flatbed scan, which always leaves white space around the original.</p>
+<p>Tidy the background as well. Wood grain or a stray fingertip in frame gives the photo away no matter how straight it is. White paper on a plain dark surface gives crisp edges — better looking, and easier to crop later.</p>
+</div></details>
+
+<details class="fold"><summary><h2>Why the order gets shuffled</h2></summary><div class="fx">
+<p>When you pick several files in the file dialog, the order the browser hands them over is <strong>usually file-name order, not the order you clicked them</strong>. Click 1, 3, 2 and they still arrive as 1, 2, 3 — and if the order you want doesn't match the names, there's nothing you can do about it at that stage. The exact behaviour even varies by operating system and browser.</p>
+<p>Worse, plain file-name sorting doesn't match how people count. It compares character by character, so <code>IMG_10</code> comes before <code>IMG_2</code>, and <code>1.jpg</code> is followed by <code>10.jpg</code> and only then <code>2.jpg</code>. This tool's "Sort by file name" compares the numbers inside names as numbers, giving you 1, 2, 10. If you're still on the camera's default file names, that one button usually fixes everything.</p>
+<p>If anything is still out of place, use the up/down arrows in the list. Drag-and-drop was left out on purpose: <strong>on a phone, dragging list items fights with page scrolling</strong>, and photographing a document and submitting it on the spot almost always happens on a phone. So: buttons.</p>
+</div></details>
+
+<details class="fold"><summary><h2>Troubleshooting</h2></summary><div class="fx">
+<h3>It says my WebP will lose a little quality</h3>
+<p>The PDF specification has no slot for WebP. JPEG and PNG can be embedded byte-for-byte, but WebP can't, so WebP files — and only those — are <strong>converted once to JPEG at quality 92</strong> on the way in. For a document photo the difference won't be visible, but it isn't strictly lossless. If you have the original JPG, use that instead. WebP transparency is filled with white.</p>
+<h3>My iPhone HEIC photos won't load</h3>
+<p>Chrome and Firefox can't decode HEIC. On the iPhone, switch <strong>Settings → Camera → Formats → Most Compatible</strong> and new photos are saved as JPG; photos you've already taken are often converted to JPG automatically when shared. In Safari on a Mac or iPhone, HEIC opens on this page too.</p>
+<h3>I shot it upright but it comes in sideways</h3>
+<p>Photos carry a hidden note saying "rotate me 90° for viewing", and some programs honour it while others ignore it — PDF viewers don't read it at all. When this tool finds a photo with that rotation flag, it <strong>bakes the rotation in and re-saves the image</strong>, so it displays upright in every viewer. The one side effect: that photo has to be re-encoded as JPEG, so it alone is recompressed.</p>
+<h3>The pages in my PDF are all different sizes</h3>
+<p>Paper size is set to <strong>Match image size</strong>, so pages follow each photo's resolution. Pick A4 or Letter and every page comes out identical.</p>
+<h3>Are my files uploaded anywhere?</h3>
+<p>No. Reading the images and building the PDF happens entirely inside your browser — it works exactly the same with the internet disconnected. That matters here, because this tool routinely handles IDs, bank details and contracts. Your files aren't kept in browser storage either, so <strong>close the tab and nothing remains</strong>. The flip side: reload the page and you start from scratch.</p>
+<h3>The download is always called images.pdf</h3>
+<p>That's deliberate. Some browsers mangle or discard download names containing non-ASCII characters, so the file uses one fixed, safe name — just rename it after downloading. If it's headed for a submission portal, you'd likely be renaming it to their required name anyway.</p>
+</div></details>
+
+<!--CAT:S--><!--CAT:E-->
+<!--REL:S-->
+<h2>Related tools</h2>
+<div class="rel">
+  <a href="/en/tools/pdf/"><strong>PDF Editor</strong><span>Merge, split, rotate — no upload</span></a>
+  <a href="/en/tools/pdf-compress/"><strong>Compress PDF</strong><span>Hit a size limit automatically</span></a>
+  <a href="/en/tools/pdf-to-image/"><strong>PDF to Image</strong><span>Every page to JPG or PNG</span></a>
+</div>
+<p class="rel-all"><a href="/en/tools/">See all 18 English tools →</a></p>
+<!--REL:E-->
+
+<footer>
+  <p>Kmagpie Tools · Everything runs in your browser. Your files are never uploaded or stored.</p>
+  <p><a href="/">Home</a> · <a href="/en/tools/">Other tools</a> · <a href="/en/disclaimer.html">Disclaimer</a> · <a href="/privacy-policy.html">Privacy Policy</a></p>
+</footer>
+
+</div>
+
+<script src="/tools/lib/pdf-lib.min.js"></script>
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+
+/* ---------- units ---------- */
+const MM=72/25.4;                       /* 1mm = 72/25.4 pt */
+const PAPER={ orig:null, a4:[595.28,841.89], letter:[612,792] };
+const MARGIN={ none:0, s:10*MM, l:20*MM };
+const PAPER_NAME={ orig:'Original size', a4:'A4 (210×297mm)', letter:'Letter (8.5×11in)' };
+
+let items=[], paper='orig', orient='auto', margin='none', busy=false;
+
+const kb=n=>n<1024?n+' B':n<1048576?(n/1024).toFixed(0)+' KB':(n/1048576).toFixed(1)+' MB';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function say(cls,html){const s=$('status');s.className='msg '+cls;s.innerHTML=html;}
+function hideSay(){$('status').className='hidden';}
+
+/* ---------- detect file kind (by magic bytes, not extension) ---------- */
+function sniff(u8){
+  if(u8.length>3 && u8[0]===0xFF && u8[1]===0xD8 && u8[2]===0xFF) return 'jpg';
+  if(u8.length>7 && u8[0]===0x89 && u8[1]===0x50 && u8[2]===0x4E && u8[3]===0x47) return 'png';
+  if(u8.length>11 && u8[0]===0x52 && u8[1]===0x49 && u8[2]===0x46 && u8[3]===0x46
+     && u8[8]===0x57 && u8[9]===0x45 && u8[10]===0x42 && u8[11]===0x50) return 'webp';
+  return 'other';
+}
+
+/* ---------- JPEG EXIF orientation ---------- */
+/* If the value isn't 1, the original can't go in as-is: PDF ignores this flag. */
+function exifOrientation(u8){
+  if(u8.length<4 || u8[0]!==0xFF || u8[1]!==0xD8) return 1;
+  let i=2;
+  while(i+3<u8.length){
+    if(u8[i]!==0xFF){ i++; continue; }
+    const m=u8[i+1];
+    if(m===0xFF){ i++; continue; }
+    if(m===0x01 || (m>=0xD0 && m<=0xD9)){ i+=2; continue; }
+    if(m===0xDA) break;                         /* start of image data */
+    const len=(u8[i+2]<<8)|u8[i+3];
+    if(len<2) break;
+    if(m===0xE1 && i+10<=u8.length
+       && u8[i+4]===0x45 && u8[i+5]===0x78 && u8[i+6]===0x69 && u8[i+7]===0x66
+       && u8[i+8]===0x00 && u8[i+9]===0x00){
+      const t=i+10;
+      if(t+8>u8.length) return 1;
+      const le = u8[t]===0x49 && u8[t+1]===0x49;
+      const g16=o=> le ? (u8[o]|(u8[o+1]<<8)) : ((u8[o]<<8)|u8[o+1]);
+      const g32=o=> le ? ((u8[o]|(u8[o+1]<<8)|(u8[o+2]<<16)|(u8[o+3]<<24))>>>0)
+                       : (((u8[o]<<24)|(u8[o+1]<<16)|(u8[o+2]<<8)|u8[o+3])>>>0);
+      if(g16(t+2)!==42) return 1;
+      const ifd=t+g32(t+4);
+      if(ifd+2>u8.length) return 1;
+      const n=g16(ifd);
+      for(let k=0;k<n;k++){
+        const e=ifd+2+k*12;
+        if(e+12>u8.length) break;
+        if(g16(e)===0x0112){ const v=g16(e+8); return (v>=1&&v<=8)?v:1; }
+      }
+      return 1;
+    }
+    i+=2+len;
+  }
+  return 1;
+}
+
+/* ---------- read images ---------- */
+async function toBitmap(blob){
+  try{ return await createImageBitmap(blob,{imageOrientation:'from-image'}); }
+  catch(e){ try{ return await createImageBitmap(blob); }catch(e2){ return null; } }
+}
+
+/* shrink (only when needed) to stay within canvas limits */
+function fitCanvas(w,h){
+  const MAXD=12000, MAXA=40e6;
+  let s=Math.min(1, MAXD/Math.max(w,h));
+  if(w*h*s*s>MAXA) s=Math.min(s, Math.sqrt(MAXA/(w*h)));
+  return s;
+}
+function toCanvas(bmp,white){
+  const s=fitCanvas(bmp.width,bmp.height);
+  const c=document.createElement('canvas');
+  c.width=Math.max(1,Math.round(bmp.width*s));
+  c.height=Math.max(1,Math.round(bmp.height*s));
+  const x=c.getContext('2d');
+  if(white){ x.fillStyle='#ffffff'; x.fillRect(0,0,c.width,c.height); }
+  x.imageSmoothingQuality='high';
+  x.drawImage(bmp,0,0,c.width,c.height);
+  return c;
+}
+function canvasBytes(c,type,q){
+  return new Promise(res=>{
+    c.toBlob(async b=>{
+      if(!b){ res(null); return; }
+      res(new Uint8Array(await b.arrayBuffer()));
+    }, type, q);
+  });
+}
+
+async function add(fileList){
+  const all=[...(fileList||[])];
+  if(!all.length) return;
+  const bad=[]; let added=0, conv=0;
+  for(const f of all){
+    let u8;
+    try{ u8=new Uint8Array(await f.arrayBuffer()); }catch(e){ bad.push(f.name); continue; }
+    const bmp=await toBitmap(f);
+    if(!bmp || !bmp.width || !bmp.height){ bad.push(f.name||'file'); continue; }
+    const kind=sniff(u8);
+    const rot = kind==='jpg' ? exifOrientation(u8) : 1;
+    const reencode = kind==='webp' || kind==='other' || rot!==1;
+    if(reencode) conv++;
+    items.push({name:f.name||'image', bytes:u8, bmp, kind, rot, reencode,
+                w:bmp.width, h:bmp.height, size:f.size||u8.length});
+    added++;
+  }
+  if(bad.length){
+    say('m-bad',`<strong>${esc(bad[0])}</strong>${bad.length>1?` and ${bad.length-1} more`:''} could not be read as an image. Please use PNG, JPG or WebP files. iPhone HEIC photos will not open in Chrome.`);
+  }else if(added){
+    let h=`Images loaded: <strong>${items.length}</strong>. Use the arrows in the list to change the order.`;
+    if(conv) h+=` Of these, ${conv} will be <strong>converted to JPEG (quality 92)</strong> because PDF can't hold their format or they carry rotation data.`;
+    say('m-ok',h);
+  }
+  if(!items.length){ render(); return; }
+  $('opts').classList.remove('hidden');
+  $('drop').classList.add('hidden');
+  render();
+}
+
+/* ---------- list ---------- */
+function render(){
+  const box=$('list');
+  box.innerHTML='';
+  box.classList.toggle('hidden',!items.length);
+  if(!items.length){
+    $('opts').classList.add('hidden');
+    $('drop').classList.remove('hidden');
+    return;
+  }
+  items.forEach((it,i)=>{
+    const d=document.createElement('div');
+    d.className='it';
+    const c=document.createElement('canvas');
+    const s=Math.min(1,92/Math.max(it.w,it.h));
+    c.width=Math.max(1,Math.round(it.w*s)); c.height=Math.max(1,Math.round(it.h*s));
+    c.getContext('2d').drawImage(it.bmp,0,0,c.width,c.height);
+    c.style.width='46px'; c.style.height='46px';
+    const kindTxt = it.kind==='jpg'?'JPG':it.kind==='png'?'PNG':it.kind==='webp'?'WebP':'Other';
+    d.innerHTML=`<span class="no">${i+1}</span>`;
+    d.appendChild(c);
+    const mt=document.createElement('div');
+    mt.className='mt';
+    mt.innerHTML=`<div class="nm" title="${esc(it.name)}">${esc(it.name)}</div>`
+      +`<div class="dm">${it.w.toLocaleString('en-US')}×${it.h.toLocaleString('en-US')}px · ${kb(it.size)} · ${kindTxt}`
+      +(it.reencode?' · converts to JPEG':'')+`</div>`;
+    d.appendChild(mt);
+    const ops=document.createElement('div');
+    ops.className='ops';
+    ops.innerHTML=`<button class="up" title="Move up" aria-label="Move up">↑</button>`
+      +`<button class="dn" title="Move down" aria-label="Move down">↓</button>`
+      +`<button class="del" title="Remove" aria-label="Remove">×</button>`;
+    d.appendChild(ops);
+    ops.querySelector('.up').disabled = i===0;
+    ops.querySelector('.dn').disabled = i===items.length-1;
+    ops.querySelector('.up').addEventListener('click',()=>move(i,-1));
+    ops.querySelector('.dn').addEventListener('click',()=>move(i,1));
+    ops.querySelector('.del').addEventListener('click',()=>{
+      const it2=items.splice(i,1)[0];
+      if(it2 && it2.bmp && it2.bmp.close) try{it2.bmp.close();}catch(e){}
+      render();
+    });
+    box.appendChild(d);
+  });
+  summary();
+}
+function move(i,d){
+  const j=i+d;
+  if(j<0||j>=items.length) return;
+  const t=items[i]; items[i]=items[j]; items[j]=t;
+  render();
+}
+
+/* ---------- page size ---------- */
+function pageSize(iw,ih){
+  const m=MARGIN[margin];
+  if(paper==='orig') return [iw+m*2, ih+m*2];
+  const [a,b]=PAPER[paper];                       /* a = short edge, b = long edge */
+  const land = orient==='l' || (orient==='auto' && iw>ih);
+  return land ? [b,a] : [a,b];
+}
+function place(iw,ih,pw,ph){
+  const m=MARGIN[margin];
+  const aw=Math.max(1,pw-m*2), ah=Math.max(1,ph-m*2);
+  const s=Math.min(aw/iw, ah/ih);                 /* keep proportions, never crop */
+  const w=iw*s, h=ih*s;
+  return {x:(pw-w)/2, y:(ph-h)/2, width:w, height:h};
+}
+
+function summary(){
+  if(!items.length){ $('sum').innerHTML=''; return; }
+  const total=items.reduce((a,b)=>a+b.size,0);
+  const orig = paper==='orig';
+  let sizes='';
+  if(!orig){
+    const [a,b]=PAPER[paper];
+    const land=items.filter(it=> orient==='l' || (orient==='auto' && it.w>it.h)).length;
+    sizes = orient==='auto'
+      ? `${PAPER_NAME[paper]} · ${items.length-land} portrait / ${land} landscape`
+      : `${PAPER_NAME[paper]} ${orient==='l'?'landscape':'portrait'}`;
+  }else{
+    sizes='each page matches its image';
+  }
+  $('sum').innerHTML=`<span>Pages: <b>${items.length}</b></span><span>·</span><span>${sizes}</span>`
+    +`<span>·</span><span>original images total <b>${kb(total)}</b> — the finished PDF is usually about the same or slightly larger</span>`;
+  $('paperNote').innerHTML = orig
+    ? 'Each image\'s pixel size becomes the page size (1px = 1pt). Margins make the page larger by the same amount.'
+    : `Every page is set to ${PAPER_NAME[paper]}. Images are centred with their proportions intact, and any leftover space stays white.`;
+  document.querySelectorAll('#orient button').forEach(b=>b.disabled=orig);
+}
+
+/* ---------- build the PDF ---------- */
+async function embed(doc,it){
+  if(!it.reencode){
+    try{
+      if(it.kind==='jpg') return await doc.embedJpg(it.bytes);
+      if(it.kind==='png') return await doc.embedPng(it.bytes);
+    }catch(e){ /* fall through to the canvas path below */ }
+  }
+  /* PNG is re-encoded as PNG to keep transparency; everything else as JPEG quality 0.92 */
+  const asPng = it.kind==='png';
+  const c=toCanvas(it.bmp, !asPng);
+  const b=await canvasBytes(c, asPng?'image/png':'image/jpeg', asPng?undefined:0.92);
+  c.width=c.height=1;
+  if(!b) throw new Error('encode');
+  return asPng ? await doc.embedPng(b) : await doc.embedJpg(b);
+}
+
+async function run(){
+  if(busy||!items.length) return;
+  busy=true; $('go').disabled=true;
+  $('done').className='hidden';
+  $('progBar').classList.remove('hidden');
+  try{
+    const {PDFDocument}=PDFLib;
+    const doc=await PDFDocument.create();
+    doc.setTitle('images');
+    doc.setProducer('kmagpie.com');
+    doc.setCreator('kmagpie.com');
+    for(let i=0;i<items.length;i++){
+      const it=items[i];
+      const img=await embed(doc,it);
+      const iw=img.width, ih=img.height;         /* based on the image actually embedded */
+      const [pw,ph]=pageSize(iw,ih);
+      const page=doc.addPage([pw,ph]);
+      page.drawImage(img, place(iw,ih,pw,ph));
+      $('prog').style.width=((i+1)/items.length*100)+'%';
+      await new Promise(r=>setTimeout(r,0));
+    }
+    /* save with a classic xref table — opens more reliably in old viewers and upload portals */
+    const out=await doc.save({useObjectStreams:false});
+    const blob=new Blob([out],{type:'application/pdf'});
+    const u=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=u; a.download='images.pdf';           /* fixed ASCII name — some browsers mangle others */
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(u),4000);
+    window.__lastPdf=out;                        /* for verification */
+    $('done').className='msg m-ok';
+    $('done').innerHTML=`Saved <strong>images.pdf</strong> (${items.length} pages · ${kb(blob.size)}). `
+      +`The download uses a fixed name because browsers sometimes mangle special characters — rename it to whatever you need.`;
+  }catch(err){
+    $('done').className='msg m-bad';
+    $('done').innerHTML='Something went wrong while building the PDF. Try removing an image or two and running it again. ('
+      +esc(err&&err.message||err)+')';
+  }finally{
+    busy=false; $('go').disabled=false;
+    setTimeout(()=>{ $('progBar').classList.add('hidden'); $('prog').style.width='0'; },600);
+  }
+}
+
+/* ---------- UI wiring ---------- */
+$('drop').addEventListener('click',()=>$('file').click());
+$('file').addEventListener('change',e=>{ add(e.target.files); e.target.value=''; });
+['dragenter','dragover'].forEach(t=>$('drop').addEventListener(t,e=>{e.preventDefault();$('drop').classList.add('over');}));
+['dragleave','drop'].forEach(t=>$('drop').addEventListener(t,e=>{e.preventDefault();$('drop').classList.remove('over');}));
+$('drop').addEventListener('drop',e=>{ if(e.dataTransfer) add(e.dataTransfer.files); });
+
+function segWire(id,fn){
+  document.querySelectorAll('#'+id+' button').forEach(b=>b.addEventListener('click',()=>{
+    if(b.disabled) return;
+    document.querySelectorAll('#'+id+' button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); fn(b.dataset.v); summary();
+  }));
+}
+segWire('paper',v=>paper=v);
+segWire('orient',v=>orient=v);
+segWire('margin',v=>margin=v);
+
+const collator=new Intl.Collator('en',{numeric:true,sensitivity:'base'});
+$('sort').addEventListener('click',()=>{
+  items.sort((a,b)=>collator.compare(a.name,b.name));
+  render();
+  say('m-ok','Sorted by file name. Numbers inside names are compared as numbers, so the order runs 1, 2, 10.');
+});
+$('go').addEventListener('click',run);
+$('more').addEventListener('click',()=>$('file').click());
+$('reset').addEventListener('click',()=>{
+  items.forEach(it=>{ if(it.bmp&&it.bmp.close) try{it.bmp.close();}catch(e){} });
+  items=[];
+  $('done').className='hidden'; $('file').value=''; hideSay();
+  render();
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+
+summary();
+})();
+</script>
+</body>
+</html>

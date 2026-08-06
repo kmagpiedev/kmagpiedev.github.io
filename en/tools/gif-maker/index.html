@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GIF 만들기 — 사진 여러 장으로 움짤 애니메이션 | 까치툴</title>
-<meta name="description" content="사진 여러 장을 순서대로 이어 움직이는 GIF를 만듭니다. 프레임 간격과 반복 횟수, 출력 크기를 고르고 미리보기로 확인한 뒤 저장하세요. 파일은 서버로 업로드되지 않고 브라우저 안에서만 처리됩니다.">
-<link rel="canonical" href="https://www.kmagpie.com/tools/gif-maker/">
-<meta property="og:title" content="GIF 만들기 — 사진 여러 장으로 움짤 애니메이션">
-<meta property="og:description" content="이미지 여러 장을 움직이는 GIF로. 간격·반복·크기 조절과 미리보기, 서버 전송 없이 브라우저에서 처리.">
+<title>GIF Maker — Turn Photos into an Animated GIF Online, Free &amp; Private | K-magpie</title>
+<meta name="description" content="Combine several photos into an animated GIF right in your browser, or animate a single photo with zoom and pan effects. Set the frame delay, loop count and output size, check the live preview, then save. Files never leave your browser — no upload, no sign-up, no watermark.">
+<link rel="canonical" href="https://www.kmagpie.com/en/tools/gif-maker/">
+<meta property="og:title" content="GIF Maker — Turn Photos into an Animated GIF Online">
+<meta property="og:description" content="Several images into one animated GIF: delay, loop and size controls with a live preview. Everything runs in your browser — nothing is uploaded.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://www.kmagpie.com/tools/gif-maker/">
+<meta property="og:url" content="https://www.kmagpie.com/en/tools/gif-maker/">
 <style>
   :root{
     --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
@@ -170,30 +170,30 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
 <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
-<meta property="og:site_name" content="까치툴">
+<meta property="og:site_name" content="Kmagpie Tools">
 <!--HEAD:E-->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="wrap">
 
-<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › GIF 만들기</p>
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/en/tools/">Kmagpie Tools</a> › GIF Maker</p>
 <!--LANG:S-->
-<p class="langsw"><a href="/en/tools/gif-maker/" hreflang="en" lang="en">English version</a></p>
+<p class="langsw"><a href="/tools/gif-maker/" hreflang="ko" lang="ko">한국어로 보기</a></p>
 <!--LANG:E-->
 
-<h1>GIF 만들기</h1>
-<p class="sub">사진 여러 장을 순서대로 이어 <strong>움직이는 GIF</strong>를 만듭니다. 사진이 한 장뿐이라면 줌인·패닝 같은 카메라 효과로 움직임을 만들 수도 있어요. 파일은 브라우저 밖으로 나가지 않습니다.</p>
+<h1>GIF Maker</h1>
+<p class="sub">String several photos together into an <strong>animated GIF</strong>. Only have one photo? Camera effects like zoom and panning can animate it too. Files never leave your browser — no upload, no sign-up, no watermark.</p>
 
 <div class="seg" id="modeSeg" style="margin:0 0 18px;max-width:460px">
-  <button data-v="multi" class="on">여러 장 이어붙이기</button>
-  <button data-v="one">사진 한 장으로</button>
+  <button data-v="multi" class="on">Combine multiple photos</button>
+  <button data-v="one">Animate a single photo</button>
 </div>
 
 <div class="drop" id="drop">
   <span class="ic">🎞️</span>
-  <div class="t">이미지를 여기에 놓으세요</div>
-  <div class="d">클릭해서 고를 수도 있습니다 · PNG · JPG · WebP · 여러 장 동시 선택 가능</div>
+  <div class="t">Drop images here</div>
+  <div class="d">Or click to choose · PNG · JPG · WebP · multiple files at once</div>
   <input type="file" id="file" accept="image/png,image/jpeg,image/webp,image/*" multiple class="hidden">
 </div>
 
@@ -204,43 +204,43 @@
 <div class="panel hidden" id="opts">
   <div class="row">
     <div class="col">
-      <label class="f">프레임 간격</label>
+      <label class="f">Frame delay</label>
       <div class="amt">
         <input type="number" id="delaySec" value="0.5" min="0.02" max="10" step="0.1">
-        <span class="unit">초</span>
+        <span class="unit">seconds</span>
       </div>
       <div class="mini" id="delayPresets">
-        <button data-v="0.1">0.1초</button>
-        <button data-v="0.2">0.2초</button>
-        <button data-v="0.5" class="on">0.5초</button>
-        <button data-v="1">1초</button>
-        <button data-v="2">2초</button>
+        <button data-v="0.1">0.1s</button>
+        <button data-v="0.2">0.2s</button>
+        <button data-v="0.5" class="on">0.5s</button>
+        <button data-v="1">1s</button>
+        <button data-v="2">2s</button>
       </div>
-      <p class="note">모든 프레임에 같은 간격이 적용됩니다. GIF 규격상 최소 간격은 0.02초입니다.</p>
+      <p class="note">The same delay applies to every frame. The GIF format's minimum delay is 0.02 seconds.</p>
     </div>
 
     <div class="col">
-      <label class="f">반복</label>
+      <label class="f">Loop</label>
       <div class="seg sm" id="loopSeg">
-        <button data-v="inf" class="on">무한 반복</button>
-        <button data-v="once">1회만 재생</button>
+        <button data-v="inf" class="on">Loop forever</button>
+        <button data-v="once">Play once</button>
       </div>
 
-      <label class="f" style="margin-top:20px">출력 크기</label>
+      <label class="f" style="margin-top:20px">Output size</label>
       <div class="seg sm" id="sizeSeg">
-        <button data-v="orig">원본</button>
-        <button data-v="480" class="on">긴 변 480px</button>
-        <button data-v="320">긴 변 320px</button>
+        <button data-v="orig">Original</button>
+        <button data-v="480" class="on">480px long side</button>
+        <button data-v="320">320px long side</button>
       </div>
-      <p class="note">GIF는 픽셀당 용량이 커서 <strong>480px을 권장</strong>합니다. 크기는 첫 프레임 기준으로 전체가 통일됩니다.</p>
+      <p class="note">GIFs are heavy per pixel, so <strong>480px is recommended</strong>. All frames are sized to match the first frame.</p>
     </div>
   </div>
 
   <div class="fld">
-    <label class="f">여백 색</label>
+    <label class="f">Padding color</label>
     <div class="amt">
       <input type="color" id="bgColor" value="#ffffff">
-      <span style="font-size:13px;color:var(--ink-3)">크기가 다른 이미지는 첫 프레임 크기에 맞춰지고, 남는 자리가 이 색으로 채워집니다.</span>
+      <span style="font-size:13px;color:var(--ink-3)">Images with different dimensions are fitted to the first frame's size, and the leftover space is filled with this color.</span>
     </div>
   </div>
 
@@ -248,67 +248,67 @@
   <div id="sizeWarn" class="hidden"></div>
 
   <div class="btns">
-    <button class="btn" id="go">GIF 만들기</button>
-    <button class="btn g" id="more">이미지 더 넣기</button>
-    <button class="btn g sm" id="reset">처음부터</button>
+    <button class="btn" id="go">Make GIF</button>
+    <button class="btn g" id="more">Add more images</button>
+    <button class="btn g sm" id="reset">Start over</button>
   </div>
 </div>
 
 <div class="panel hidden" id="opts1">
-  <label class="f">카메라 효과</label>
+  <label class="f">Camera effect</label>
   <div class="mini" id="fxBtns" style="margin-top:0">
-    <button data-v="zoomin" class="on">줌인</button>
-    <button data-v="zoomout">줌아웃</button>
-    <button data-v="pan">좌→우 패닝</button>
-    <button data-v="shake">흔들기</button>
-    <button data-v="rotate">회전 흔들기</button>
-    <button data-v="pulse">두근두근</button>
+    <button data-v="zoomin" class="on">Zoom in</button>
+    <button data-v="zoomout">Zoom out</button>
+    <button data-v="pan">Pan left to right</button>
+    <button data-v="shake">Shake</button>
+    <button data-v="rotate">Rotate wobble</button>
+    <button data-v="pulse">Heartbeat</button>
   </div>
 
   <div class="row" style="margin-top:20px">
     <div class="col">
-      <label class="f">길이</label>
+      <label class="f">Duration</label>
       <div class="seg sm" id="durSeg">
-        <button data-v="1">1초</button>
-        <button data-v="1.5">1.5초</button>
-        <button data-v="2" class="on">2초</button>
-        <button data-v="3">3초</button>
+        <button data-v="1">1s</button>
+        <button data-v="1.5">1.5s</button>
+        <button data-v="2" class="on">2s</button>
+        <button data-v="3">3s</button>
       </div>
-      <label class="f" style="margin-top:20px">초당 프레임</label>
+      <label class="f" style="margin-top:20px">Frames per second</label>
       <div class="seg sm" id="fpsSeg">
-        <button data-v="10" class="on">10장</button>
-        <button data-v="15">15장</button>
+        <button data-v="10" class="on">10</button>
+        <button data-v="15">15</button>
       </div>
     </div>
     <div class="col">
-      <label class="f">왕복 재생</label>
+      <label class="f">Ping-pong playback</label>
       <div class="seg sm" id="ppSeg">
-        <button data-v="on" class="on">켬 — 되돌아오기</button>
-        <button data-v="off">끔</button>
+        <button data-v="on" class="on">On — play back and forth</button>
+        <button data-v="off">Off</button>
       </div>
-      <label class="f" style="margin-top:20px">출력 크기</label>
+      <label class="f" style="margin-top:20px">Output size</label>
       <div class="seg sm" id="sizeSeg1">
-        <button data-v="orig">원본</button>
-        <button data-v="480" class="on">긴 변 480px</button>
-        <button data-v="320">긴 변 320px</button>
+        <button data-v="orig">Original</button>
+        <button data-v="480" class="on">480px long side</button>
+        <button data-v="320">320px long side</button>
       </div>
     </div>
   </div>
-  <p class="note">왕복을 켜면 효과가 끝난 뒤 역재생으로 제자리에 돌아와, 줌인·패닝에서 반복이 자연스럽습니다. 흔들기·두근두근은 꺼도 매끄럽게 이어집니다.</p>
+  <p class="note">With ping-pong on, the effect plays in reverse back to the start, so zooms and pans loop naturally. Shake and heartbeat loop smoothly even with it off.</p>
 
   <div class="sum" id="sum1"></div>
 
   <div class="btns">
-    <button class="btn" id="go1">GIF 만들기</button>
-    <button class="btn g" id="swap1">다른 사진으로</button>
-    <button class="btn g sm" id="reset1">처음부터</button>
+    <button class="btn" id="go1">Make GIF</button>
+    <button class="btn g" id="swap1">Choose another photo</button>
+    <button class="btn g sm" id="reset1">Start over</button>
   </div>
 </div>
 
 <div class="panel pv hidden" id="pvBox">
-  <label class="f" style="text-align:left" id="pvLabel">미리보기</label>
+  <label class="f" style="text-align:left" id="pvLabel">Preview</label>
   <canvas id="pvCanvas"></canvas>
-  <img id="outImg" class="hidden" alt="만들어진 GIF">
+  <img id="outImg" class="hidden" alt="Finished GIF">
   <p class="cap" id="pvCap"></p>
 </div>
 
@@ -316,67 +316,67 @@
 <p class="pstat hidden" id="pstat"></p>
 <div id="done" class="hidden"></div>
 
-<p class="gist">사진 여러 장을 이어 붙이거나 한 장에 줌·패닝 효과를 줘 움직이는 GIF를 만듭니다. 인코딩까지 전부 브라우저 안에서 일어나 파일이 서버로 전송되지 않습니다. 용량이 부담되면 긴 변 480px 축소가 가장 효과적입니다.</p>
+<p class="gist">Stitch several photos into an animated GIF, or bring a single photo to life with zoom and pan effects. Everything, including the encoding, happens inside your browser — files are never uploaded anywhere. If file size is a worry, shrinking to 480px on the long side is the single most effective fix.</p>
 
-<details class="fold"><summary><h2>GIF는 왜 이렇게 용량이 큰가</h2></summary><div class="fx">
-<p>GIF는 1989년에 만들어진 형식입니다. 그때의 설계가 지금까지 그대로 이어져서, 한 프레임에 <strong>256가지 색만 쓸 수 있고, 그 안에서는 화질을 깎아 용량을 줄이는 손실 압축이 없습니다.</strong> 게다가 대부분의 GIF는 프레임마다 화면 전체를 통째로 다시 저장합니다. 사진 열 장으로 GIF를 만들면 사진 열 장 분량의 데이터가 고스란히 들어간다는 뜻이에요.</p>
-<p>동영상 코덱은 정반대로 동작합니다. mp4에 흔히 쓰이는 H.264 같은 코덱은 앞 프레임과 달라진 부분만 저장하고, 사람 눈이 잘 구분하지 못하는 세부는 과감히 버립니다. 그래서 같은 장면이라면 mp4가 GIF보다 열 배에서 수십 배 작은 게 보통입니다. GIF가 기술적으로 뒤떨어진 형식인 건 사실이지만, 그런데도 살아남은 이유가 있습니다. 이미지 파일이라서 <strong>동영상 플레이어 없이 어디서나 자동으로 재생되고, 소리도 없고, 멈추지도 않기 때문</strong>입니다.</p>
+<details class="fold"><summary><h2>Why are GIFs so big?</h2></summary><div class="fx">
+<p>GIF is a format from 1989, and its original design has carried through unchanged: a frame can use <strong>only 256 colors, and within that limit there is no lossy compression to trade quality for size.</strong> On top of that, most GIFs store the entire canvas again for every frame. Build a GIF from ten photos and you are essentially packing ten photos' worth of data into one file.</p>
+<p>Video codecs work the opposite way. H.264, the codec behind most mp4 files, stores only what changed since the previous frame and boldly discards detail the human eye can't distinguish. That is why the same clip as an mp4 is routinely ten to fifty times smaller than as a GIF. Yes, GIF is technically outdated — but there is a reason it survives. Because it is an image file, <strong>it plays automatically everywhere with no video player, no sound, and no pausing.</strong></p>
 </div></details>
 
-<details class="fold"><summary><h2>GIF가 어울리는 곳, 동영상이 나은 곳</h2></summary><div class="fx">
-<p>몇 초짜리 짧은 장면이 계속 반복되는 용도라면 GIF가 여전히 편합니다. 채팅에 붙이는 반응 짤, 블로그 본문에 넣는 짧은 시연 장면, 게시판 서명이나 배너처럼 <strong>이미지가 들어가는 자리에 움직임을 넣고 싶은 경우</strong>가 대표적이에요. 이미지 취급이라 첨부가 막히는 일이 드물고, 받는 쪽에서 재생 버튼을 누를 필요도 없습니다.</p>
-<p>반대로 길이가 몇 초를 넘어가거나 장면 수가 많다면 동영상으로 만드는 편이 낫습니다. 30장 넘는 사진을 1초 간격으로 잇는다면 그건 이미 슬라이드쇼 영상이고, GIF로 만들면 용량만 커지고 화질은 떨어집니다. 소리가 필요한 경우에도 GIF는 선택지가 아닙니다. GIF에는 소리를 담는 방법 자체가 없어요. 이 도구는 그 경계 안쪽, 그러니까 <strong>사진 몇 장에서 십수 장을 짧게 반복하는 용도</strong>에 맞춰져 있습니다.</p>
+<details class="fold"><summary><h2>When a GIF fits, and when a video is better</h2></summary><div class="fx">
+<p>For a short scene of a few seconds looping forever, a GIF is still the convenient choice. Reaction GIFs in chat, a short demo clip inside a blog post, a forum signature or banner — <strong>anywhere an image slot needs motion</strong> is GIF territory. Since it counts as an image, it is rarely blocked as an attachment, and nobody has to press play.</p>
+<p>Once the clip runs past a few seconds or the scene count climbs, make a video instead. Thirty photos at one-second intervals is really a slideshow video, and forcing it into a GIF only inflates the size while degrading the quality. If you need sound, GIF is not even an option — the format simply has no way to carry audio. This tool is tuned for the territory inside that boundary: <strong>a handful to a dozen or so photos on a short loop</strong>.</p>
 </div></details>
 
-<details class="fold"><summary><h2>사진이 지글거려 보이는 이유</h2></summary><div class="fx">
-<p>256색 제한은 그림에는 관대하고 사진에는 가혹합니다. 로고나 화면 캡처, 단순한 일러스트는 실제로 쓰는 색이 몇십 가지라 256색 안에 거뜬히 들어가서 원본과 거의 구분되지 않습니다. 하지만 하늘, 노을, 피부처럼 <strong>색이 매끄럽게 이어지는 그라데이션</strong>은 사정이 다릅니다. 수만 가지 중간색을 256개로 눌러 담아야 하니, 비슷한 색끼리 묶이면서 매끄럽던 하늘에 등고선 같은 띠가 생깁니다. 이걸 밴딩이라고 불러요.</p>
-<p>이 도구는 프레임마다 그 프레임에 가장 잘 맞는 256색 팔레트를 따로 뽑아서 손실을 최대한 줄이지만, 원리상 한계는 어쩔 수 없습니다. 사진마다 조명이 다르면 프레임이 넘어갈 때 색감이 살짝 출렁이는 것도 같은 이유입니다. 사진 위주의 결과물에서 지글거림이 거슬린다면 GIF 대신 동영상 형식을 쓰는 게 근본적인 해결책이고, GIF로 가야 한다면 크기를 줄이는 것이 얼룩을 눈에 덜 띄게 하는 데도 도움이 됩니다.</p>
+<details class="fold"><summary><h2>Why photos look grainy in a GIF</h2></summary><div class="fx">
+<p>The 256-color limit is kind to graphics and cruel to photographs. Logos, screenshots and simple illustrations use only a few dozen distinct colors, so they fit inside 256 with room to spare and look nearly identical to the original. But <strong>smooth gradients</strong> — sky, sunsets, skin — are another story. Tens of thousands of in-between shades must be squeezed into 256, so similar colors get merged and a once-smooth sky develops contour-line stripes. That artifact is called banding.</p>
+<p>This tool computes a dedicated best-fit 256-color palette for every single frame to minimize the damage, but the format's ceiling can't be avoided. It is also why colors can shimmer slightly between frames when your photos were shot under different lighting. If the graininess bothers you in a photo-heavy result, switching to a video format is the real fix; if it has to be a GIF, shrinking the output also makes the speckling less visible.</p>
 </div></details>
 
-<details class="fold"><summary><h2>프레임 간격이 결정하는 것</h2></summary><div class="fx">
-<p>간격 0.1초는 초당 10장, 0.5초는 초당 2장이라는 뜻입니다. 손으로 넘기는 슬라이드쇼 느낌을 원하면 0.5초에서 1초, 연속 촬영한 사진으로 움직임을 만들려면 0.1초에서 0.2초가 자연스럽습니다. 부드러움은 결국 장수에서 나오기 때문에, <strong>같은 길이라면 간격을 줄일수록 프레임이 많이 필요하고 용량도 그만큼 늘어납니다.</strong></p>
-<p>더 빠르게 만들고 싶어도 한계가 있습니다. GIF의 시간 단위는 100분의 1초인데, 간격을 0.01초 근처까지 낮추면 대부분의 브라우저가 이를 무시하고 0.1초로 되돌려 재생합니다. 오래전 광고성 GIF들이 악용하던 걸 막던 관행이 지금까지 남은 거예요. 그래서 이 도구는 <strong>0.02초 아래로는 내려가지 않게</strong> 잡아둡니다. 초당 50장이면 눈으로는 충분히 매끄럽습니다.</p>
+<details class="fold"><summary><h2>What the frame delay decides</h2></summary><div class="fx">
+<p>A 0.1-second delay means 10 frames per second; 0.5 seconds means 2 per second. For a hand-flipped slideshow feel, 0.5 to 1 second reads naturally; to create motion from burst-shot photos, 0.1 to 0.2 seconds works better. Smoothness ultimately comes from frame count, so <strong>for the same duration, a shorter delay means more frames and a proportionally bigger file.</strong></p>
+<p>There is a floor on how fast you can go. GIF measures time in hundredths of a second, and when the delay drops near 0.01 seconds, most browsers ignore it and play at 0.1 seconds instead — a convention left over from blocking abusive flashing ads in the early web. So this tool <strong>never goes below 0.02 seconds</strong>. At 50 frames per second, motion already looks perfectly smooth to the eye.</p>
 </div></details>
 
-<details class="fold"><summary><h2>블로그와 메신저에 올릴 때</h2></summary><div class="fx">
-<p>만든 GIF를 어디에 올릴지에 따라 허용 용량이 크게 다릅니다. 카카오톡은 움직이는 이미지 전송에 수십 MB 수준의 제한이 있고, 그보다 크면 동영상으로 바뀌어 전송되거나 전송이 막힙니다. 네이버 블로그나 티스토리 같은 블로그 서비스도 첨부 이미지 한 장에 수 MB에서 수십 MB 사이의 한도를 두는 경우가 많고, 디스코드 무료 계정은 한때 8MB, 지금도 수십 MB 선입니다. 한도는 서비스 정책에 따라 수시로 바뀌니 <strong>10MB 아래로 만들어 두면 대부분의 곳에서 무난</strong>하다고 보면 됩니다.</p>
-<p>용량을 줄이는 순서는 정해져 있습니다. 첫째가 크기, 둘째가 장수, 셋째가 간격입니다. 픽셀 수는 가로세로 양쪽으로 곱해지기 때문에 긴 변을 절반으로 줄이면 용량이 대략 4분의 1이 됩니다. 원본 크기 대신 480px을 기본으로 권하는 이유가 이겁니다. 그래도 크면 비슷한 장면끼리 겹치는 프레임을 빼서 장수를 줄이고, 마지막으로 간격을 조금 늘려 전체 재생 시간을 유지하는 식으로 조절하세요.</p>
+<details class="fold"><summary><h2>Posting to chat apps, Discord and blogs</h2></summary><div class="fx">
+<p>How big your GIF may be depends entirely on where it is going. Messaging apps typically cap animated images at a few dozen MB and either convert oversized ones to video or refuse them. Discord's upload cap for free accounts was famously 8MB for years and still sits in the tens of MB, blog platforms commonly allow a few MB to a few dozen MB per image, and forums vary wildly. Limits shift with each service's policy, so the practical rule is simple: <strong>keep it under 10MB and it will post almost anywhere.</strong></p>
+<p>The order for cutting size is fixed: dimensions first, frame count second, delay third. Pixel count multiplies across width and height, so halving the long side cuts the file to roughly a quarter — which is exactly why 480px, not the original size, is the default recommendation. Still too big? Drop near-duplicate frames to reduce the count, and finally stretch the delay a little to keep the total duration the same.</p>
 </div></details>
 
-<details class="fold"><summary><h2>사진 한 장으로 만드는 움직임</h2></summary><div class="fx">
-<p>움직임이 꼭 여러 장에서만 나오는 건 아닙니다. <strong>사진 한 장으로</strong> 모드는 한 장짜리 사진에 카메라가 천천히 다가가는 줌인, 옆으로 훑는 패닝, 심장박동 같은 두근두근 펄스를 얹어 정지 사진을 움직이는 GIF로 바꿉니다. 유튜브 썸네일이나 상품·인물을 강조하는 짤, 채팅에서 한 장면을 내밀 때처럼 <strong>시선을 붙들고 싶은 자리</strong>에 어울려요. 다만 사진 속 인물이 실제로 움직이는 AI 애니메이션과는 다른 것으로, 여기서는 화면 전체가 카메라처럼 움직일 뿐입니다.</p>
+<details class="fold"><summary><h2>Motion from a single photo</h2></summary><div class="fx">
+<p>Motion doesn't have to come from multiple shots. The <strong>single photo</strong> mode takes one still image and adds a slow zoom-in, a sideways pan, or a heartbeat-style pulse, turning it into an animated GIF. It suits <strong>spots where you want to hold the eye</strong> — a thumbnail, a product or portrait highlight, or a single dramatic frame dropped into chat. Note this is different from AI animation that makes the person in the photo actually move; here the whole frame moves like a camera, nothing more.</p>
 </div></details>
 
-<details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
-<h3>만든 GIF가 너무 커요</h3>
-<p>출력 크기를 확인하세요. 원본으로 두면 휴대폰 사진 기준 프레임 하나가 수 MB씩 나올 수 있습니다. <strong>긴 변 480px</strong>로 줄이면 용량이 극적으로 줄고, 채팅이나 블로그 본문에서는 480px로도 충분히 큽니다. 그래도 크다면 프레임 수를 줄이는 게 다음 순서입니다.</p>
-<h3>색이 원본과 달라 보여요</h3>
-<p>GIF의 256색 제한 때문입니다. 특히 그라데이션이 많은 사진에서 띠나 얼룩이 생깁니다. 형식의 한계라 완전히 피할 수는 없고, 색이 중요한 결과물이라면 GIF 대신 동영상 형식을 검토하세요.</p>
-<h3>설정한 속도보다 느리게 재생돼요</h3>
-<p>간격을 아주 짧게 잡은 경우입니다. 브라우저들은 0.02초보다 짧은 간격을 무시하고 0.1초로 재생하는 관행이 있어서, 이 도구는 애초에 0.02초 밑으로 내려가지 않게 막아둡니다. 그 이상인데도 느리다면 기기 성능 문제일 가능성이 큽니다. 프레임 크기를 줄여보세요.</p>
-<h3>크기가 다른 사진을 올렸더니 여백이 생겨요</h3>
-<p>GIF는 모든 프레임이 같은 크기여야 합니다. 이 도구는 <strong>첫 프레임의 크기를 기준</strong>으로 나머지를 비율을 유지한 채 축소해 가운데에 놓고, 남는 자리를 여백 색으로 채웁니다. 잘라내지 않으니 내용이 사라질 걱정은 없지만, 여백이 싫다면 올리기 전에 사진들을 같은 비율로 맞춰 두세요.</p>
-<h3>파일이 서버로 올라가나요</h3>
-<p>올라가지 않습니다. 이미지를 읽고 GIF로 인코딩하는 일이 전부 브라우저 안에서 일어나고, 인터넷을 끊어도 똑같이 동작합니다. 탭을 닫으면 아무것도 남지 않으므로, 대신 새로고침하면 처음부터 다시 올려야 합니다.</p>
-<h3>내려받은 파일 이름이 animation.gif입니다</h3>
-<p>일부러 그렇게 했습니다. 크로미움 계열 브라우저가 한글이 섞인 파일명을 자동 내려받기에서 버리는 경우가 있어서, 영문 고정 이름으로 저장한 뒤 바꿔 쓰도록 했습니다.</p>
+<details class="fold"><summary><h2>Troubleshooting</h2></summary><div class="fx">
+<h3>My GIF is too big</h3>
+<p>Check the output size. Left at Original, a single phone-photo frame can weigh several MB. Shrinking to <strong>480px on the long side</strong> cuts the size dramatically, and 480px is plenty big in chat or a blog post. If it is still too large, reducing the frame count is the next lever.</p>
+<h3>The colors look different from my originals</h3>
+<p>That is GIF's 256-color limit, which produces stripes and blotches especially in gradient-heavy photos. It is inherent to the format and can't be fully avoided; if color fidelity matters, consider a video format instead.</p>
+<h3>It plays slower than the speed I set</h3>
+<p>That happens with very short delays. Browsers conventionally ignore delays shorter than 0.02 seconds and play them at 0.1 seconds, so this tool blocks anything below 0.02s to begin with. If it is still slow above that, the device is likely struggling — try a smaller frame size.</p>
+<h3>My photos have padding around them</h3>
+<p>Every frame of a GIF must be the same size. This tool uses <strong>the first frame's dimensions as the reference</strong>, scales the rest down to fit while keeping their proportions, centers them and fills the leftover space with the padding color. Nothing is cropped, so no content is lost — but if the padding bothers you, crop your photos to the same aspect ratio before uploading.</p>
+<h3>Are my files uploaded to a server?</h3>
+<p>No. Reading the images and encoding the GIF happen entirely inside your browser, and everything works the same with the internet disconnected. Closing the tab leaves nothing behind — which also means refreshing the page starts you over from scratch.</p>
+<h3>The downloaded file is named animation.gif</h3>
+<p>On purpose. Some browsers silently drop downloads whose filenames contain unusual characters, so the tool always saves under one plain ASCII name that works everywhere. Rename it after downloading if you like.</p>
 </div></details>
 
 <!--CAT:S--><!--CAT:E-->
 <!--REL:S-->
-<h2>함께 쓰면 좋은 도구</h2>
+<h2>Related tools</h2>
 <div class="rel">
-  <a href="/tools/meme/"><strong>짤 만들기</strong><span>사진에 굵은 텍스트, 움짤 자막</span></a>
-  <a href="/tools/resize/"><strong>이미지 크기 조절</strong><span>정확한 px 지정, 비율 자르기</span></a>
-  <a href="/tools/image-compress/"><strong>이미지 용량 줄이기</strong><span>목표 용량에 자동으로 맞춤</span></a>
+  <a href="/en/tools/meme/"><strong>Meme Generator</strong><span>Bold captions on images and GIFs</span></a>
+  <a href="/en/tools/image-compress/"><strong>Compress Images</strong><span>Auto-fit a target file size</span></a>
+  <a href="/en/tools/resize/"><strong>Resize Images</strong><span>Exact pixels, ratio crops, batch</span></a>
 </div>
-<p class="rel-all"><a href="/tools/">까치툴 도구 33개 전체 보기 →</a></p>
+<p class="rel-all"><a href="/en/tools/">See all 18 English tools →</a></p>
 <!--REL:E-->
 
 <footer>
-  <p>GIF 인코딩: gifenc (MIT) — 원본과 라이선스는 <a href="/tools/lib/">/tools/lib/</a> 에 있습니다.</p>
-  <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 파일은 전송·저장되지 않습니다.</p>
-  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+  <p>GIF encoding: gifenc (MIT) — source and license at <a href="/tools/lib/">/tools/lib/</a>.</p>
+  <p>Kmagpie Tools · Everything runs in your browser; files are never uploaded or stored.</p>
+  <p><a href="/">Home</a> · <a href="/en/tools/">Other tools</a> · <a href="/en/disclaimer.html">Disclaimer</a> · <a href="/privacy-policy.html">Privacy Policy</a></p>
 </footer>
 
 </div>
@@ -401,7 +401,7 @@ function delayMs(){
   return Math.max(20,Math.round(v*1000));
 }
 
-/* ---------- 이미지 읽기 (EXIF 회전 반영) ---------- */
+/* ---------- image reading (applies EXIF rotation) ---------- */
 async function toBitmap(blob){
   try{ return await createImageBitmap(blob,{imageOrientation:'from-image'}); }
   catch(e){ try{ return await createImageBitmap(blob); }catch(e2){ return null; } }
@@ -414,14 +414,14 @@ async function add(fileList){
   const bad=[]; let added=0;
   for(const f of all){
     const bmp=await toBitmap(f);
-    if(!bmp || !bmp.width || !bmp.height){ bad.push(f.name||'파일'); continue; }
+    if(!bmp || !bmp.width || !bmp.height){ bad.push(f.name||'file'); continue; }
     items.push({name:f.name||'image', bmp, w:bmp.width, h:bmp.height, size:f.size||0});
     added++;
   }
   if(bad.length){
-    say('m-bad',`<strong>${esc(bad[0])}</strong>${bad.length>1?` 외 ${bad.length-1}개`:''}는 이미지로 읽지 못했습니다. PNG · JPG · WebP 파일을 올려주세요. 아이폰 HEIC는 크롬에서 열리지 않습니다.`);
+    say('m-bad',`<strong>${esc(bad[0])}</strong>${bad.length>1?` and ${bad.length-1} more`:''} could not be read as an image. Please upload PNG, JPG or WebP files. iPhone HEIC photos do not open in Chrome.`);
   }else if(added){
-    say('m-ok',`이미지 <strong>${items.length}장</strong>을 불러왔습니다. 순서를 바꾸려면 목록의 화살표를 누르세요.`);
+    say('m-ok',`Loaded <strong>${items.length} image${items.length>1?'s':''}</strong>. Use the arrows in the list to change the order.`);
   }
   if(!items.length){ render(); return; }
   $('opts').classList.remove('hidden');
@@ -429,22 +429,22 @@ async function add(fileList){
   render();
 }
 
-/* ---------- 한 장 모드: 불러오기 ---------- */
+/* ---------- single photo mode: loading ---------- */
 async function addOne(fileList){
   const all=[...(fileList||[])];
   if(!all.length) return;
   const f=all[0];
   const bmp=await toBitmap(f);
   if(!bmp || !bmp.width || !bmp.height){
-    say('m-bad',`<strong>${esc(f.name||'파일')}</strong>은 이미지로 읽지 못했습니다. PNG · JPG · WebP 파일을 올려주세요. 아이폰 HEIC는 크롬에서 열리지 않습니다.`);
+    say('m-bad',`<strong>${esc(f.name||'This file')}</strong> could not be read as an image. Please upload a PNG, JPG or WebP file. iPhone HEIC photos do not open in Chrome.`);
     return;
   }
   if(oneItem && oneItem.bmp && oneItem.bmp.close) try{oneItem.bmp.close();}catch(e){}
   oneItem={name:f.name||'image', bmp, w:bmp.width, h:bmp.height, size:f.size||0};
   if(all.length>1){
-    say('m-warn',`한 장 모드에서는 <strong>첫 번째 사진(${esc(oneItem.name)})</strong>만 사용합니다. 나머지 ${all.length-1}장은 무시했어요. 여러 장을 이어붙이려면 위에서 모드를 바꾸세요.`);
+    say('m-warn',`Single photo mode uses <strong>only the first photo (${esc(oneItem.name)})</strong>. The other ${all.length-1} were ignored. To combine several photos, switch modes above.`);
   }else{
-    say('m-ok',`<strong>${esc(oneItem.name)}</strong> (${oneItem.w.toLocaleString('ko-KR')}×${oneItem.h.toLocaleString('ko-KR')}px)을 불러왔습니다. 효과를 고르고 미리보기로 확인하세요.`);
+    say('m-ok',`Loaded <strong>${esc(oneItem.name)}</strong> (${oneItem.w.toLocaleString('en-US')}×${oneItem.h.toLocaleString('en-US')}px). Pick an effect and check the preview.`);
   }
   $('opts1').classList.remove('hidden');
   $('drop').classList.add('hidden');
@@ -452,7 +452,7 @@ async function addOne(fileList){
   startPreview();
 }
 
-/* ---------- 목록 ---------- */
+/* ---------- list ---------- */
 function render(){
   const box=$('list');
   box.innerHTML='';
@@ -478,14 +478,14 @@ function render(){
     const mt=document.createElement('div');
     mt.className='mt';
     mt.innerHTML=`<div class="nm" title="${esc(it.name)}">${esc(it.name)}</div>`
-      +`<div class="dm">${it.w.toLocaleString('ko-KR')}×${it.h.toLocaleString('ko-KR')}px${it.size?' · '+kb(it.size):''}`
-      +(i===0?' · 기준 프레임':'')+`</div>`;
+      +`<div class="dm">${it.w.toLocaleString('en-US')}×${it.h.toLocaleString('en-US')}px${it.size?' · '+kb(it.size):''}`
+      +(i===0?' · reference frame':'')+`</div>`;
     d.appendChild(mt);
     const ops=document.createElement('div');
     ops.className='ops';
-    ops.innerHTML=`<button class="up" title="위로" aria-label="위로">↑</button>`
-      +`<button class="dn" title="아래로" aria-label="아래로">↓</button>`
-      +`<button class="del" title="빼기" aria-label="빼기">×</button>`;
+    ops.innerHTML=`<button class="up" title="Move up" aria-label="Move up">↑</button>`
+      +`<button class="dn" title="Move down" aria-label="Move down">↓</button>`
+      +`<button class="del" title="Remove" aria-label="Remove">×</button>`;
     d.appendChild(ops);
     ops.querySelector('.up').disabled = i===0;
     ops.querySelector('.dn').disabled = i===items.length-1;
@@ -508,7 +508,7 @@ function move(i,d){
   render();
 }
 
-/* ---------- 출력 크기: 첫 프레임 기준 ---------- */
+/* ---------- output size: based on the first frame ---------- */
 function outSizeOf(it,sz){
   let s=1;
   if(sz!=='orig'){
@@ -525,7 +525,7 @@ function outSize1(){
   if(!oneItem) return [0,0];
   return outSizeOf(oneItem,size1);
 }
-/* 프레임을 W×H 캔버스에 letterbox로 그린다 */
+/* draw a frame letterboxed onto a W×H canvas */
 function drawFrame(ctx,it,W,H){
   ctx.fillStyle=$('bgColor').value||'#ffffff';
   ctx.fillRect(0,0,W,H);
@@ -535,20 +535,20 @@ function drawFrame(ctx,it,W,H){
   ctx.drawImage(it.bmp,(W-w)/2,(H-h)/2,w,h);
 }
 
-/* ---------- 한 장 모드: 효과 프레임 ---------- */
-/* 결정적 의사난수 — 같은 프레임 인덱스는 항상 같은 값 */
+/* ---------- single photo mode: effect frames ---------- */
+/* deterministic pseudo-random — the same frame index always yields the same value */
 const frac=x=>x-Math.floor(x);
 const rnd1=k=>frac(Math.sin(k*12.9898+78.233)*43758.5453);
 function oneCount(){ return Math.max(2,Math.round(durSec*fps)); }
-/* 왕복: 정방향 N장 + 역방향 N-2장(양 끝 중복 제외) = 2N-2장 */
+/* ping-pong: N forward frames + N-2 reverse frames (both ends deduplicated) = 2N-2 frames */
 function oneSeq(){
   const N=oneCount(), seq=[];
   for(let i=0;i<N;i++) seq.push(i);
   if(pingpong && N>2) for(let i=N-2;i>=1;i--) seq.push(i);
   return seq;
 }
-/* i번째 정방향 프레임을 그린다. 어떤 효과든 소스를 충분히 키워
-   캔버스 밖 여백이 절대 드러나지 않게 한다. */
+/* draw the i-th forward frame. Whatever the effect, the source is scaled up
+   enough that the canvas edges are never exposed. */
 function drawOne(ctx,W,H,i){
   const N=oneCount();
   const t=N>1 ? i/(N-1) : 0;
@@ -556,14 +556,14 @@ function drawOne(ctx,W,H,i){
   switch(effect){
     case 'zoomin':  z=1+0.25*t; break;
     case 'zoomout': z=1.25-0.25*t; break;
-    case 'pan':     /* 1.15배 확대 상태에서 왼쪽→오른쪽 */
+    case 'pan':     /* left to right while zoomed to 1.15x */
       z=1.15; dx=(1-2*t)*(z-1)*W/2; break;
-    case 'shake':   /* ±3% 오프셋, 여유 4%가 되게 1.08배 */
+    case 'shake':   /* ±3% offset, 1.08x for 4% headroom */
       z=1.08;
       dx=(rnd1(i*2+1)*2-1)*0.03*W;
       dy=(rnd1(i*2+2)*2-1)*0.03*H;
       break;
-    case 'rotate':{ /* ±3도 사인파 — 최대 각도에서도 덮이는 배율 */
+    case 'rotate':{ /* ±3 degree sine wave — scaled to cover even at max angle */
       const a=3*Math.PI/180;
       rot=a*Math.sin(2*Math.PI*t);
       z=Math.cos(a)+Math.sin(a)*Math.max(W/H,H/W);
@@ -571,7 +571,7 @@ function drawOne(ctx,W,H,i){
     }
     case 'pulse':   z=1+0.06*Math.sin(Math.PI*t); break;
   }
-  z*=1.004; /* 서브픽셀 여유 */
+  z*=1.004; /* sub-pixel headroom */
   ctx.save();
   ctx.fillStyle='#000';
   ctx.fillRect(0,0,W,H);
@@ -582,17 +582,17 @@ function drawOne(ctx,W,H,i){
   ctx.drawImage(oneItem.bmp,-W/2,-H/2,W,H);
   ctx.restore();
 }
-const FX_NAME={zoomin:'줌인',zoomout:'줌아웃',pan:'좌→우 패닝',shake:'흔들기',rotate:'회전 흔들기',pulse:'두근두근'};
+const FX_NAME={zoomin:'Zoom in',zoomout:'Zoom out',pan:'Pan left to right',shake:'Shake',rotate:'Rotate wobble',pulse:'Heartbeat'};
 function summary1(){
   if(!oneItem){ $('sum1').innerHTML=''; return; }
   const [W,H]=outSize1();
   const seq=oneSeq();
   const total=seq.length/fps;
   $('sum1').innerHTML=`<span><b>${FX_NAME[effect]}</b></span><span>·</span>`
-    +`<span><b>${seq.length}</b>프레임</span><span>·</span>`
-    +`<span>출력 <b>${W}×${H}</b>px</span><span>·</span>`
-    +`<span>한 바퀴 <b>${total<10?total.toFixed(1):Math.round(total)}</b>초</span>`
-    +(pingpong?`<span>·</span><span>왕복</span>`:'');
+    +`<span><b>${seq.length}</b> frames</span><span>·</span>`
+    +`<span>output <b>${W}×${H}</b>px</span><span>·</span>`
+    +`<span><b>${total<10?total.toFixed(1):Math.round(total)}</b>s per loop</span>`
+    +(pingpong?`<span>·</span><span>ping-pong</span>`:'');
 }
 
 function summary(){
@@ -600,20 +600,20 @@ function summary(){
   const [W,H]=outSize();
   const d=delayMs();
   const dur=(d*items.length/1000);
-  $('sum').innerHTML=`<span><b>${items.length}</b>프레임</span><span>·</span>`
-    +`<span>출력 <b>${W}×${H}</b>px</span><span>·</span>`
-    +`<span>한 바퀴 <b>${dur<10?dur.toFixed(1):Math.round(dur)}</b>초</span><span>·</span>`
-    +`<span>${loop==='inf'?'무한 반복':'1회 재생'}</span>`;
+  $('sum').innerHTML=`<span><b>${items.length}</b> frames</span><span>·</span>`
+    +`<span>output <b>${W}×${H}</b>px</span><span>·</span>`
+    +`<span><b>${dur<10?dur.toFixed(1):Math.round(dur)}</b>s per loop</span><span>·</span>`
+    +`<span>${loop==='inf'?'loops forever':'plays once'}</span>`;
   const px=W*H*items.length;
   if(px>50e6){
     $('sizeWarn').className='msg m-warn';
-    $('sizeWarn').innerHTML='이 설정이면 GIF가 <strong>수십 MB</strong>가 될 수 있습니다. 출력 크기를 <strong>긴 변 480px</strong>로 줄이는 것을 권합니다.';
+    $('sizeWarn').innerHTML='With these settings the GIF could reach <strong>tens of MB</strong>. Shrinking the output to <strong>480px on the long side</strong> is recommended.';
   }else{
     $('sizeWarn').className='hidden';
   }
 }
 
-/* ---------- 미리보기 (인코딩 전, 캔버스 순환 재생) ---------- */
+/* ---------- preview (before encoding, cycles frames on a canvas) ---------- */
 function stopPreview(){ if(pvTimer){ clearInterval(pvTimer); pvTimer=null; } }
 function startPreview(){
   stopPreview();
@@ -625,13 +625,13 @@ function startPreview(){
   const cv=$('pvCanvas');
   cv.classList.remove('hidden');
   $('pvBox').classList.remove('hidden');
-  $('pvLabel').textContent='미리보기';
+  $('pvLabel').textContent='Preview';
   const [W,H]=outSize();
   cv.width=W; cv.height=H;
   const ctx=cv.getContext('2d');
   pvIdx=0;
   drawFrame(ctx,items[0],W,H);
-  $('pvCap').textContent=`아직 GIF가 아닙니다 — 설정대로 돌려보는 미리보기입니다 (${W}×${H}px)`;
+  $('pvCap').textContent=`Not a GIF yet — this is a live preview of your settings (${W}×${H}px)`;
   pvTimer=setInterval(()=>{
     if(!items.length) return;
     pvIdx=(pvIdx+1)%items.length;
@@ -646,14 +646,14 @@ function startPreview1(){
   const cv=$('pvCanvas');
   cv.classList.remove('hidden');
   $('pvBox').classList.remove('hidden');
-  $('pvLabel').textContent='미리보기';
+  $('pvLabel').textContent='Preview';
   const [W,H]=outSize1();
   cv.width=W; cv.height=H;
   const ctx=cv.getContext('2d');
   const seq=oneSeq();
   pvIdx=0;
   drawOne(ctx,W,H,seq[0]);
-  $('pvCap').textContent=`아직 GIF가 아닙니다 — 설정대로 돌려보는 미리보기입니다 (${W}×${H}px)`;
+  $('pvCap').textContent=`Not a GIF yet — this is a live preview of your settings (${W}×${H}px)`;
   pvTimer=setInterval(()=>{
     if(!oneItem) return;
     pvIdx=(pvIdx+1)%seq.length;
@@ -661,7 +661,7 @@ function startPreview1(){
   }, Math.round(1000/fps));
 }
 
-/* ---------- GIF 만들기 (공용 인코딩 경로) ---------- */
+/* ---------- GIF building (shared encoding path) ---------- */
 async function encodeFrames(count,W,H,delay,rep,drawFn){
   const {GIFEncoder, quantize, applyPalette} = await import('/tools/lib/gifenc.mjs');
   const c=document.createElement('canvas');
@@ -669,7 +669,7 @@ async function encodeFrames(count,W,H,delay,rep,drawFn){
   const ctx=c.getContext('2d',{willReadFrequently:true});
   const enc=GIFEncoder();
   for(let i=0;i<count;i++){
-    $('pstat').textContent=`프레임 ${i+1}/${count} 인코딩 중…`;
+    $('pstat').textContent=`Encoding frame ${i+1}/${count}…`;
     $('prog').style.width=((i)/count*100)+'%';
     await new Promise(r=>setTimeout(r));
     drawFn(ctx,i);
@@ -684,7 +684,7 @@ async function encodeFrames(count,W,H,delay,rep,drawFn){
   return enc.bytes();
 }
 function present(bytes,W,H,count){
-  window.__lastGif=bytes;                       /* 검증용 */
+  window.__lastGif=bytes;                       /* for verification */
   const blob=new Blob([bytes],{type:'image/gif'});
   if(outUrl) URL.revokeObjectURL(outUrl);
   outUrl=URL.createObjectURL(blob);
@@ -693,12 +693,12 @@ function present(bytes,W,H,count){
   img.src=outUrl;
   img.classList.remove('hidden');
   $('pvBox').classList.remove('hidden');
-  $('pvLabel').textContent='완성된 GIF';
-  $('pvCap').textContent=`실제 GIF 파일을 재생 중입니다 (${W}×${H}px · ${kb(blob.size)})`;
+  $('pvLabel').textContent='Finished GIF';
+  $('pvCap').textContent=`Playing the actual GIF file (${W}×${H}px · ${kb(blob.size)})`;
   $('done').className='msg m-ok';
-  $('done').innerHTML=`<strong>animation.gif</strong> — ${count}프레임 · ${W}×${H}px · <strong>${kb(blob.size)}</strong> `
-    +`<a class="btn sm" id="dl" href="${outUrl}" download="animation.gif" style="margin-left:8px">내려받기</a>`
-    +`<br><span style="font-size:12.5px;color:var(--ink-3)">한글이 섞인 파일명은 브라우저가 버리는 경우가 있어 영문 이름으로 저장됩니다.</span>`;
+  $('done').innerHTML=`<strong>animation.gif</strong> — ${count} frames · ${W}×${H}px · <strong>${kb(blob.size)}</strong> `
+    +`<a class="btn sm" id="dl" href="${outUrl}" download="animation.gif" style="margin-left:8px">Download</a>`
+    +`<br><span style="font-size:12.5px;color:var(--ink-3)">Saved under a fixed plain filename so every browser accepts the download — rename it afterwards if you like.</span>`;
 }
 async function run(){
   if(busy||!items.length) return;
@@ -715,7 +715,7 @@ async function run(){
     present(bytes,W,H,items.length);
   }catch(err){
     $('done').className='msg m-bad';
-    $('done').innerHTML='GIF를 만드는 중 문제가 생겼습니다. 이미지 장수를 줄이거나 출력 크기를 낮춰 다시 시도해 보세요. ('
+    $('done').innerHTML='Something went wrong while building the GIF. Try again with fewer images or a smaller output size. ('
       +esc(err&&err.message||err)+')';
     startPreview();
   }finally{
@@ -740,7 +740,7 @@ async function runOne(){
     present(bytes,W,H,seq.length);
   }catch(err){
     $('done').className='msg m-bad';
-    $('done').innerHTML='GIF를 만드는 중 문제가 생겼습니다. 출력 크기를 낮추거나 길이를 줄여 다시 시도해 보세요. ('
+    $('done').innerHTML='Something went wrong while building the GIF. Try again with a smaller output size or a shorter duration. ('
       +esc(err&&err.message||err)+')';
     startPreview();
   }finally{
@@ -750,7 +750,7 @@ async function runOne(){
   }
 }
 
-/* ---------- 모드 전환 ---------- */
+/* ---------- mode switching ---------- */
 function setMode(m){
   mode=m;
   hideSay();
@@ -781,7 +781,7 @@ function setMode(m){
   }
 }
 
-/* ---------- UI 배선 ---------- */
+/* ---------- UI wiring ---------- */
 $('drop').addEventListener('click',()=>$('file').click());
 $('file').addEventListener('change',e=>{ add(e.target.files); e.target.value=''; });
 ['dragenter','dragover'].forEach(t=>$('drop').addEventListener(t,e=>{e.preventDefault();$('drop').classList.add('over');}));

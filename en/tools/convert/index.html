@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>이미지 확장자 변환 — PNG·JPG·WebP·BMP·ICO 무료 변환 | 까치툴</title>
-<meta name="description" content="PNG, JPG, WebP, BMP, ICO를 서로 변환합니다. 여러 장 한꺼번에 바꾸고 ZIP으로 받으세요. 가입 없이, 파일을 서버로 보내지 않고 브라우저에서 바로 처리되며 워터마크나 횟수 제한이 없습니다.">
-<link rel="canonical" href="https://www.kmagpie.com/tools/convert/">
-<meta property="og:title" content="이미지 확장자 변환 — PNG·JPG·WebP·BMP·ICO">
-<meta property="og:description" content="여러 장 일괄 변환, ZIP 다운로드. 서버 전송 없이 브라우저에서 처리.">
+<title>Convert Images Online Free — PNG, JPG, WebP, BMP, ICO | K-magpie</title>
+<meta name="description" content="Convert between PNG, JPG, WebP, BMP and ICO. Batch-convert many images at once and download them as a ZIP. Files never leave your browser — no upload, no sign-up, no watermark, no limits.">
+<link rel="canonical" href="https://www.kmagpie.com/en/tools/convert/">
+<meta property="og:title" content="Convert Images — PNG, JPG, WebP, BMP, ICO">
+<meta property="og:description" content="Batch conversion with ZIP download. Everything runs in your browser — files are never uploaded.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://www.kmagpie.com/tools/convert/">
+<meta property="og:url" content="https://www.kmagpie.com/en/tools/convert/">
 <style>
   :root{
     --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
@@ -31,7 +31,7 @@
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);
-    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
   .wrap{max-width:940px;margin:0 auto;padding:44px 22px 90px}
   .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
@@ -162,24 +162,24 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
 <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
-<meta property="og:site_name" content="까치툴">
+<meta property="og:site_name" content="Kmagpie Tools">
 <!--HEAD:E-->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="wrap">
 
-<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › 이미지 확장자 변환</p>
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/en/tools/">Kmagpie Tools</a> › Convert Images</p>
 <!--LANG:S-->
-<p class="langsw"><a href="/en/tools/convert/" hreflang="en" lang="en">English version</a></p>
+<p class="langsw"><a href="/tools/convert/" hreflang="ko" lang="ko">한국어로 보기</a></p>
 <!--LANG:E-->
 
-<h1>이미지 확장자 변환</h1>
-<p class="sub">PNG · JPG · WebP · BMP · ICO를 서로 바꿉니다. <strong>여러 장을 한꺼번에 변환</strong>하고 ZIP으로 받으세요. 파일이 서버로 전송되지 않고 브라우저 안에서만 처리됩니다.</p>
+<h1>Convert Images</h1>
+<p class="sub">Convert between PNG · JPG · WebP · BMP · ICO. <strong>Batch-convert many images at once</strong> and download them as a ZIP. Files never leave your browser — no upload, no sign-up.</p>
 
 <div id="drop">
-  <div class="big">이미지를 여기에 끌어다 놓거나 클릭해서 선택하세요</div>
-  <div class="small">여러 장 동시 선택 가능 · PNG · JPG · WebP · AVIF · GIF · BMP · SVG · ICO</div>
+  <div class="big">Drop images here, or click to choose files</div>
+  <div class="small">Select as many as you like · PNG · JPG · WebP · AVIF · GIF · BMP · SVG · ICO</div>
   <input type="file" id="file" accept="image/*,.svg,.bmp,.ico,.avif,.heic,.heif" multiple>
 </div>
 
@@ -187,34 +187,34 @@
 
 <div id="editor" class="hidden">
   <div class="panel">
-    <label class="f">어떤 형식으로 바꿀까요</label>
+    <label class="f">Convert to</label>
     <div class="fmts" id="fmts">
-      <button data-f="png" class="on">PNG<small>투명 지원</small></button>
-      <button data-f="jpeg">JPG<small>호환성 최고</small></button>
-      <button data-f="webp">WebP<small>용량 최소</small></button>
-      <button data-f="bmp">BMP<small>무압축</small></button>
-      <button data-f="ico">ICO<small>파비콘</small></button>
+      <button data-f="png" class="on">PNG<small>transparency</small></button>
+      <button data-f="jpeg">JPG<small>most compatible</small></button>
+      <button data-f="webp">WebP<small>smallest</small></button>
+      <button data-f="bmp">BMP<small>uncompressed</small></button>
+      <button data-f="ico">ICO<small>favicon</small></button>
     </div>
 
     <div class="row" style="margin-top:22px">
       <div class="col">
         <div id="paneQ" class="hidden">
-          <label class="f">품질 <span class="val" id="qv">92</span></label>
+          <label class="f">Quality <span class="val" id="qv">92</span></label>
           <input type="range" id="q" min="40" max="100" value="92">
-          <p class="note" style="margin-top:6px">형식만 바꾸는 게 목적이라면 90 이상을 쓰세요. 용량을 줄이는 게 목적이면 <a href="/tools/image-compress/">이미지 용량 줄이기</a>가 목표 용량에 맞춰 자동으로 조절해 줍니다.</p>
+          <p class="note" style="margin-top:6px">If you just need a different format, keep this at 90 or above. If shrinking the file is the goal, the <a href="/en/tools/image-compress/">image compressor</a> can auto-fit a target size.</p>
         </div>
 
         <div id="paneBg" class="hidden">
-          <label class="f">투명한 부분을 채울 색</label>
+          <label class="f">Fill color for transparent areas</label>
           <div class="inline">
             <input type="color" id="bg" value="#ffffff">
-            <span id="bgName">흰색</span>
+            <span id="bgName">White</span>
           </div>
-          <p class="note" style="margin-top:6px">JPG와 BMP는 투명도를 저장하지 못합니다. 원본에 투명한 부분이 있으면 이 색으로 채워집니다.</p>
+          <p class="note" style="margin-top:6px">JPG and BMP cannot store transparency. Any transparent areas in the original are filled with this color.</p>
         </div>
 
         <div id="paneIco">
-          <label class="f">ICO에 담을 크기</label>
+          <label class="f">Sizes to include in the ICO</label>
           <div class="sizes" id="icoSizes">
             <label><input type="checkbox" value="16" checked>16</label>
             <label><input type="checkbox" value="32" checked>32</label>
@@ -223,87 +223,87 @@
             <label><input type="checkbox" value="128">128</label>
             <label><input type="checkbox" value="256">256</label>
           </div>
-          <p class="note" style="margin-top:6px">ICO 한 파일 안에 여러 해상도를 함께 담습니다. 웹사이트 파비콘이면 16·32·48로 충분해요.</p>
+          <p class="note" style="margin-top:6px">One ICO file holds several resolutions at once. For a website favicon, 16, 32 and 48 are plenty.</p>
         </div>
       </div>
 
       <div class="col">
-        <label class="f">크기 조절 <span style="text-transform:none;letter-spacing:0;font-weight:400">(선택)</span></label>
-        <label class="opt"><input type="checkbox" id="resizeOn"><span>긴 변을 이 크기로 맞추기</span></label>
+        <label class="f">Resize <span style="text-transform:none;letter-spacing:0;font-weight:400">(optional)</span></label>
+        <label class="opt"><input type="checkbox" id="resizeOn"><span>Cap the longest side at</span></label>
         <div class="inline">
           <input type="number" id="maxSide" value="1920" min="16" step="100"> <span>px</span>
         </div>
-        <p class="note" style="margin-top:6px">비율은 그대로 유지되고, 원본보다 커지지는 않습니다. 단계적으로 축소해서 계단 현상 없이 매끄럽게 줄입니다.</p>
+        <p class="note" style="margin-top:6px">The aspect ratio is preserved and nothing is enlarged. Images are stepped down gradually for a smooth result without jagged edges.</p>
       </div>
     </div>
   </div>
 
   <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-    <button class="act primary" id="go">변환하기</button>
-    <button class="act ghost" id="zipAll" disabled>ZIP으로 모두 받기</button>
-    <button class="act ghost" id="reset">파일 다시 선택</button>
+    <button class="act primary" id="go">Convert</button>
+    <button class="act ghost" id="zipAll" disabled>Download all as ZIP</button>
+    <button class="act ghost" id="reset">Choose different files</button>
     <span id="stat" style="font-size:14px;color:var(--ink-3)"></span>
   </div>
   <div class="bar hidden" id="barWrap"><i id="bar"></i></div>
 
   <table id="tbl" class="hidden">
     <thead><tr>
-      <th style="width:56px"></th><th>파일</th>
-      <th class="n">이전</th><th class="n">이후</th><th style="width:90px"></th>
+      <th style="width:56px"></th><th>File</th>
+      <th class="n">Before</th><th class="n">After</th><th style="width:90px"></th>
     </tr></thead>
     <tbody id="tb"></tbody>
   </table>
 </div>
 
-<p class="gist">PNG·JPG·WebP·BMP·ICO 사이를 여러 장 한꺼번에 변환하고 ZIP으로 받을 수 있습니다. 변환은 전부 브라우저 안에서 일어나 파일이 서버로 올라가지 않습니다. 제출용은 JPG, 웹용은 WebP, 투명 배경이 필요하면 PNG가 무난한 선택입니다.</p>
+<p class="gist">Convert between PNG, JPG, WebP, BMP and ICO in batches and download everything as a ZIP. The conversion happens entirely inside your browser, so files are never uploaded. For submissions and forms JPG is the safe pick, for the web WebP, and for transparent backgrounds PNG.</p>
 
-<details class="fold"><summary><h2>사용법</h2></summary><div class="fx">
-<p>이미지를 여러 장 올린 뒤 바꿀 형식을 고르고 변환하기를 누르면 됩니다. 결과는 파일별로 표시되고 하나씩 받거나 ZIP으로 한 번에 받을 수 있습니다. 원본은 건드리지 않고 새 파일이 만들어지므로, 결과가 마음에 안 들면 설정을 바꿔 다시 누르면 됩니다.</p>
-<p>모든 변환은 브라우저의 Canvas API로 이루어집니다. 파일이 서버로 올라가지 않기 때문에 개인 사진이나 공개 전 자료도 안심하고 쓰실 수 있고, 업로드·다운로드를 기다릴 필요가 없어 수십 장도 금방 끝납니다. 사용 횟수 제한이나 워터마크도 없습니다.</p>
+<details class="fold"><summary><h2>How to use</h2></summary><div class="fx">
+<p>Add your images, pick the target format, and press Convert. Results appear per file, and you can download them individually or all at once as a ZIP. Your originals are untouched — a new file is created each time, so if the result is not what you wanted, adjust the settings and press the button again.</p>
+<p>Every conversion runs through your browser's Canvas API. Because files never leave your browser, private photos and unpublished material stay private, and with no upload or download to wait for, even dozens of images finish quickly. There are no usage limits and no watermarks.</p>
 </div></details>
 
-<details class="fold"><summary><h2>어떤 형식으로 바꿔야 하나요</h2></summary><div class="fx">
+<details class="fold"><summary><h2>Which format should I convert to</h2></summary><div class="fx">
 <h3>PNG</h3>
-<p>투명 배경이 필요하거나, 로고·아이콘·스크린샷처럼 글자와 경계선이 또렷해야 하는 이미지에 씁니다. 무손실이라 몇 번을 다시 저장해도 화질이 나빠지지 않습니다. 대신 사진을 PNG로 저장하면 JPG보다 용량이 몇 배 커집니다.</p>
+<p>Use it when you need a transparent background, or for logos, icons and screenshots where text and edges must stay crisp. It is lossless, so re-saving it any number of times never degrades quality. The trade-off: photos saved as PNG are several times larger than as JPG.</p>
 <h3>JPG</h3>
-<p>사진에 가장 적합하고 어디서나 열립니다. 상대방 환경을 모를 때, 오래된 프로그램에 넣어야 할 때, 관공서나 학교 서식에 첨부할 때 안전한 선택입니다. 투명도를 지원하지 않아서 투명한 부분은 위에서 고른 색으로 채워집니다.</p>
+<p>Best for photos, and it opens everywhere. It is the safe choice when you do not know the recipient's software, when dealing with legacy programs, or when attaching images to official forms and applications. It cannot store transparency — transparent areas get filled with the color you pick above.</p>
 <h3>WebP</h3>
-<p>같은 화질 기준으로 JPG보다 25~35% 작으면서 투명도까지 지원합니다. 웹사이트에 올릴 이미지라면 대부분 이게 정답입니다. 다만 오래된 프로그램이나 일부 문서 편집기, 관공서 업로드 창에서는 안 열릴 수 있으니 제출용 파일은 JPG로 두세요.</p>
+<p>25–35% smaller than JPG at the same visual quality, with transparency support on top. For images going on a website it is usually the right answer. Older programs, some document editors and the occasional upload form still reject it, though, so keep files meant for submission in JPG.</p>
 <h3>BMP</h3>
-<p>압축을 전혀 하지 않는 형식이라 용량이 아주 큽니다. 일부 산업용 장비 소프트웨어나 오래된 프로그램이 BMP만 받는 경우에 쓰세요. 일반적인 용도로는 권장하지 않습니다.</p>
+<p>Completely uncompressed, so files are enormous. Use it only when some industrial or legacy software insists on BMP. Not recommended for anything else.</p>
 <h3>ICO</h3>
-<p>웹사이트 파비콘과 윈도우 프로그램 아이콘에 쓰는 형식입니다. 한 파일 안에 여러 해상도를 함께 담을 수 있어서, 브라우저 탭에서는 16px을, 바탕화면 바로가기에서는 48px을 골라 쓰는 식으로 동작합니다. 정사각형이 아닌 이미지를 넣으면 비율을 유지한 채 가운데 정렬되고 남는 부분은 투명하게 채워집니다.</p>
+<p>The format for website favicons and Windows application icons. One file can carry multiple resolutions — the browser tab picks the 16px version, a desktop shortcut picks 48px, and so on. Non-square images are centered with their ratio preserved, and the leftover space is filled with transparency.</p>
 </div></details>
 
-<details class="fold"><summary><h2>아이폰 HEIC 사진은요</h2></summary><div class="fx">
-<p>아이폰이 기본으로 저장하는 HEIC은 <strong>브라우저가 아직 읽지 못해서 이 도구에서 변환할 수 없습니다.</strong> 사파리를 제외한 대부분의 브라우저가 마찬가지예요. 다만 아이폰 쪽 설정을 한 번만 바꿔두면 앞으로 찍는 사진이 JPG로 저장되니 이게 더 확실한 해결책입니다.</p>
-<p><strong>설정 → 카메라 → 포맷 → 높은 호환성</strong>을 고르세요. 이미 찍어둔 HEIC 사진은 <strong>설정 → 사진 → 맨 아래 "MAC 또는 PC로 전송" → 자동</strong>으로 바꾼 뒤 케이블로 옮기면 아이폰이 알아서 JPG로 변환해서 보내줍니다.</p>
+<details class="fold"><summary><h2>What about iPhone HEIC photos</h2></summary><div class="fx">
+<p>HEIC, the iPhone's default photo format, <strong>cannot yet be read by browsers, so this tool cannot convert it.</strong> That goes for nearly every browser except Safari. The most reliable fix is a one-time settings change on the iPhone so future photos are saved as JPG.</p>
+<p>Go to <strong>Settings → Camera → Formats → Most Compatible</strong>. For HEIC photos you have already taken, set <strong>Settings → Photos → Transfer to Mac or PC (at the bottom) → Automatic</strong>, then transfer over a cable — the iPhone converts them to JPG on the way out.</p>
 </div></details>
 
-<details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
-<h3>투명 배경이 흰색으로 바뀌었어요</h3>
-<p>JPG나 BMP로 바꾸셨을 가능성이 높습니다. 두 형식은 투명도를 저장하지 못합니다. 투명 배경을 유지하려면 PNG나 WebP를 고르세요. 흰색 말고 다른 색으로 채우고 싶다면 색상 선택 상자에서 바꿀 수 있습니다.</p>
-<h3>GIF를 올렸더니 움직임이 사라졌어요</h3>
-<p>첫 번째 장면만 이미지로 가져옵니다. 움직이는 GIF를 그대로 유지하는 변환은 지원하지 않아요.</p>
-<h3>PNG로 바꿨더니 용량이 훨씬 커졌어요</h3>
-<p>정상입니다. PNG는 무손실이라 사진을 담으면 JPG보다 몇 배 커집니다. 사진은 JPG나 WebP로 두시고, PNG는 투명도가 필요하거나 글자·도형이 많은 이미지에만 쓰세요.</p>
-<h3>변환한 파일을 특정 사이트에 올렸더니 거부돼요</h3>
-<p>WebP나 BMP를 받지 않는 곳이 아직 많습니다. 업로드용이라면 JPG로 다시 변환해 보세요. 용량 상한 때문에 거부된 거라면 <a href="/tools/image-compress/">이미지 용량 줄이기</a>에서 목표 용량을 지정해 맞출 수 있습니다.</p>
+<details class="fold"><summary><h2>Troubleshooting</h2></summary><div class="fx">
+<h3>My transparent background turned white</h3>
+<p>You most likely converted to JPG or BMP — neither can store transparency. To keep the transparent background, pick PNG or WebP. To fill with something other than white, change it in the color picker.</p>
+<h3>My GIF stopped moving</h3>
+<p>Only the first frame is imported. Converting animated GIFs while keeping the animation is not supported.</p>
+<h3>Converting to PNG made the file much bigger</h3>
+<p>That is normal. PNG is lossless, so a photo stored as PNG is several times larger than as JPG. Keep photos in JPG or WebP, and save PNG for images that need transparency or contain lots of text and line art.</p>
+<h3>A site rejected my converted file</h3>
+<p>Plenty of sites still refuse WebP or BMP. If it is for an upload form, try converting to JPG instead. If it was rejected for being over a size cap, the <a href="/en/tools/image-compress/">image compressor</a> can fit it under a target size.</p>
 </div></details>
 
 <!--REL:S-->
-<h2>함께 쓰면 좋은 도구</h2>
+<h2>Related tools</h2>
 <div class="rel">
-  <a href="/tools/resize/"><strong>이미지 크기 조절</strong><span>정확한 px 지정, 비율 자르기</span></a>
-  <a href="/tools/gif-maker/"><strong>GIF 만들기</strong><span>사진 여러 장으로 움짤 애니메이션</span></a>
-  <a href="/tools/image-compress/"><strong>이미지 용량 줄이기</strong><span>목표 용량에 자동으로 맞춤</span></a>
+  <a href="/en/tools/image-compress/"><strong>Compress Images</strong><span>Auto-fit a target file size</span></a>
+  <a href="/en/tools/resize/"><strong>Resize Images</strong><span>Exact pixels, ratio crops, batch</span></a>
+  <a href="/en/tools/qr/"><strong>QR Code Generator</strong><span>No expiry, no tracking, free</span></a>
 </div>
-<p class="rel-all"><a href="/tools/">까치툴 도구 33개 전체 보기 →</a></p>
+<p class="rel-all"><a href="/en/tools/">See all 18 English tools →</a></p>
 <!--REL:E-->
 
 <footer>
-  <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 파일은 업로드되지 않습니다.</p>
-  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+  <p>Kmagpie Tools · Everything runs in your browser. Files are never uploaded.</p>
+  <p><a href="/">Home</a> · <a href="/en/tools/">Other tools</a> · <a href="/en/disclaimer.html">Disclaimer</a> · <a href="/privacy-policy.html">Privacy Policy</a></p>
 </footer>
 
 </div>
@@ -312,7 +312,7 @@
 (function(){
   const $=id=>document.getElementById(id);
 
-  /* ---------- 내장 ZIP (store) ---------- */
+  /* ---------- built-in ZIP (store) ---------- */
   const CRC=(()=>{const t=new Uint32Array(256);
     for(let i=0;i<256;i++){let c=i;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[i]=c>>>0;}return t;})();
   function crc32(u8){let c=0xFFFFFFFF;for(let i=0;i<u8.length;i++)c=CRC[(c^u8[i])&0xFF]^(c>>>8);return (c^0xFFFFFFFF)>>>0;}
@@ -342,7 +342,7 @@
     return new Blob([...locals,...centrals,eo],{type:'application/zip'});
   }
 
-  /* ---------- BMP 인코더 (24비트, 하단부터 저장) ---------- */
+  /* ---------- BMP encoder (24-bit, bottom-up) ---------- */
   function bmpBlob(canvas){
     const w=canvas.width,h=canvas.height;
     const px=canvas.getContext('2d').getImageData(0,0,w,h).data;
@@ -351,14 +351,14 @@
     const out=new Uint8Array(fileSize), dv=new DataView(out.buffer);
     out[0]=0x42; out[1]=0x4D;                 /* "BM" */
     dv.setUint32(2,fileSize,true);
-    dv.setUint32(10,54,true);                 /* 픽셀 데이터 시작 위치 */
+    dv.setUint32(10,54,true);                 /* pixel data offset */
     dv.setUint32(14,40,true);                 /* BITMAPINFOHEADER */
     dv.setInt32(18,w,true);
-    dv.setInt32(22,h,true);                   /* 양수 = 아래에서 위로 */
+    dv.setInt32(22,h,true);                   /* positive = bottom-up */
     dv.setUint16(26,1,true);                  /* planes */
     dv.setUint16(28,24,true);                 /* bpp */
     dv.setUint32(34,dataSize,true);
-    dv.setInt32(38,2835,true); dv.setInt32(42,2835,true);  /* 약 72dpi */
+    dv.setInt32(38,2835,true); dv.setInt32(42,2835,true);  /* ~72dpi */
     let p=54;
     for(let y=h-1;y>=0;y--){
       let s=y*w*4;
@@ -370,7 +370,7 @@
     return new Blob([out],{type:'image/bmp'});
   }
 
-  /* ---------- ICO 인코더 (PNG를 담는 방식) ---------- */
+  /* ---------- ICO encoder (PNG-based) ---------- */
   async function icoBlob(img,sizes){
     const pngs=[];
     for(const s of sizes){
@@ -389,7 +389,7 @@
     dv.setUint16(0,0,true); dv.setUint16(2,1,true); dv.setUint16(4,pngs.length,true);
     pngs.forEach((p,i)=>{
       const o=6+16*i;
-      dir[o]=p.size>=256?0:p.size;      /* 256은 0으로 표기 */
+      dir[o]=p.size>=256?0:p.size;      /* 256 is written as 0 */
       dir[o+1]=p.size>=256?0:p.size;
       dir[o+2]=0; dir[o+3]=0;
       dv.setUint16(o+4,1,true);         /* planes */
@@ -401,7 +401,7 @@
     return new Blob([dir,...pngs.map(p=>p.data)],{type:'image/x-icon'});
   }
 
-  /* ---------- 상태 ---------- */
+  /* ---------- state ---------- */
   let items=[];
   const drop=$('drop'),file=$('file'),warn=$('warn');
   const EXT={png:'png',jpeg:'jpg',webp:'webp',bmp:'bmp',ico:'ico'};
@@ -411,7 +411,7 @@
   function msg(k,h){warn.className='msg m-'+k;warn.innerHTML=h;warn.classList.remove('hidden');}
   const fmt=()=>document.querySelector('#fmts button.on').dataset.f;
 
-  /* ---------- 형식 선택 ---------- */
+  /* ---------- format selection ---------- */
   function syncPanes(){
     const f=fmt();
     $('paneQ').classList.toggle('hidden',!NEEDS_Q[f]);
@@ -426,17 +426,17 @@
   $('q').addEventListener('input',()=>$('qv').textContent=$('q').value);
   $('bg').addEventListener('input',()=>{
     const v=$('bg').value.toLowerCase();
-    $('bgName').textContent = v==='#ffffff'?'흰색' : v==='#000000'?'검정' : v;
+    $('bgName').textContent = v==='#ffffff'?'White' : v==='#000000'?'Black' : v;
   });
 
-  /* ---------- 파일 받기 ---------- */
+  /* ---------- file intake ---------- */
   drop.addEventListener('click',()=>file.click());
   drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('over')});
   drop.addEventListener('dragleave',()=>drop.classList.remove('over'));
   drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('over');add(e.dataTransfer.files)});
   file.addEventListener('change',e=>add(e.target.files));
 
-  /* HEIC 여부는 확장자와 ftyp 브랜드 둘 다로 확인 */
+  /* HEIC detection: check both the extension and the ftyp brand */
   async function isHeic(f){
     if(/\.(heic|heif)$/i.test(f.name)) return true;
     try{
@@ -471,19 +471,19 @@
                   from:srcExt(f.name,f.type||''),blob:null});
     }
     if(heic.length){
-      msg('warn',`<strong>${esc(heic[0])}</strong>${heic.length>1?` 외 ${heic.length-1}개`:''}는 아이폰 HEIC 형식이라 브라우저가 읽지 못합니다. 아이폰에서 <strong>설정 → 카메라 → 포맷 → 높은 호환성</strong>으로 바꾸면 앞으로는 JPG로 저장됩니다. 자세한 방법은 아래 <a href="#" onclick="document.querySelectorAll('h2')[2].scrollIntoView({behavior:'smooth'});return false">아이폰 HEIC 사진은요</a>를 봐주세요.`);
+      msg('warn',`<strong>${esc(heic[0])}</strong>${heic.length>1?` and ${heic.length-1} more`:''} is an iPhone HEIC file, which browsers cannot read. On the iPhone, switch <strong>Settings → Camera → Formats → Most Compatible</strong> so future photos are saved as JPG. See <a href="#" onclick="document.querySelectorAll('h2')[2].scrollIntoView({behavior:'smooth'});return false">What about iPhone HEIC photos</a> below for details.`);
     } else if(bad.length){
-      msg('bad',`<strong>${esc(bad[0])}</strong>${bad.length>1?` 외 ${bad.length-1}개`:''}는 이미지로 읽지 못했습니다. 파일이 손상되었거나 지원하지 않는 형식입니다.`);
+      msg('bad',`<strong>${esc(bad[0])}</strong>${bad.length>1?` and ${bad.length-1} more`:''} could not be read as an image. The file may be corrupted or in an unsupported format.`);
     } else {
       warn.classList.add('hidden');
     }
     if(!items.length) return;
     $('editor').classList.remove('hidden');
     draw();
-    $('stat').textContent=`${items.length}장 대기 중`;
+    $('stat').textContent=`${items.length} in queue`;
   }
 
-  /* ---------- 표 ---------- */
+  /* ---------- table ---------- */
   function draw(){
     const tb=$('tb'); tb.innerHTML='';
     $('tbl').classList.toggle('hidden',!items.length);
@@ -498,7 +498,7 @@
             </div></td>
         <td class="n">${kb(it.orig)}</td>
         <td class="n">${it.blob?kb(it.blob.size):'–'}</td>
-        <td>${it.blob?`<button class="dl" data-i="${i}">받기</button>`:''}</td>`;
+        <td>${it.blob?`<button class="dl" data-i="${i}">Save</button>`:''}</td>`;
       tb.appendChild(tr);
     });
     tb.querySelectorAll('.dl').forEach(b=>b.addEventListener('click',()=>{
@@ -509,7 +509,7 @@
     }));
   }
 
-  /* ---------- 캔버스 ---------- */
+  /* ---------- canvas ---------- */
   function stepDown(src,tw,th){
     let cur=src,w=cur.width,h=cur.height;
     while(w>=tw*2&&h>=th*2){
@@ -539,12 +539,12 @@
     return c;
   }
 
-  /* ---------- 변환 ---------- */
+  /* ---------- convert ---------- */
   $('go').addEventListener('click',async()=>{
     if(!items.length)return;
     const f=fmt();
     let sizes=[...document.querySelectorAll('#icoSizes input:checked')].map(i=>+i.value).sort((a,b)=>a-b);
-    if(f==='ico'&&!sizes.length){ msg('bad','ICO에 담을 크기를 하나 이상 골라주세요.'); return; }
+    if(f==='ico'&&!sizes.length){ msg('bad','Pick at least one size to include in the ICO.'); return; }
 
     const btn=$('go'); btn.disabled=true; $('barWrap').classList.remove('hidden');
     const q=+$('q').value/100;
@@ -565,17 +565,17 @@
       it.outName=it.name.replace(/\.[^.]+$/,'')+'.'+EXT[f];
       if(it.blob&&it.blob.size>it.orig*1.15) grew++;
       $('bar').style.width=Math.round((i+1)/items.length*100)+'%';
-      $('stat').textContent=`변환 중 ${i+1}/${items.length}`;
+      $('stat').textContent=`Converting ${i+1}/${items.length}`;
       await new Promise(r=>setTimeout(r));
     }
 
-    if(f==='bmp') msg('warn','BMP는 압축을 하지 않는 형식이라 용량이 원본보다 훨씬 커집니다. 정상이며, BMP만 받는 프로그램에 넣을 때만 쓰세요.');
-    else if(grew&&f==='png') msg('warn',`${grew}장은 변환 후 용량이 커졌습니다. PNG는 무손실이라 사진을 담으면 원래 커집니다. 사진이라면 JPG나 WebP를 쓰세요.`);
-    else if(grew) msg('warn',`${grew}장은 변환 후 용량이 커졌습니다. 이미 압축된 이미지를 다시 인코딩하면 그럴 수 있습니다.`);
-    else msg('ok',`${items.length}장 변환을 마쳤습니다. 아래에서 하나씩 받거나 ZIP으로 한 번에 받으세요.`);
+    if(f==='bmp') msg('warn','BMP applies no compression at all, so files come out much larger than the originals. That is normal — use BMP only for software that accepts nothing else.');
+    else if(grew&&f==='png') msg('warn',`${grew} file(s) got larger after conversion. PNG is lossless, so photos naturally grow. For photos, use JPG or WebP instead.`);
+    else if(grew) msg('warn',`${grew} file(s) got larger after conversion. Re-encoding an already compressed image can do that.`);
+    else msg('ok',`Converted ${items.length} image(s). Download them below one by one, or grab everything as a ZIP.`);
 
     draw();
-    $('stat').textContent=`완료 — ${items.length}장`;
+    $('stat').textContent=`Done — ${items.length}`;
     $('barWrap').classList.add('hidden'); $('bar').style.width='0';
     btn.disabled=false; $('zipAll').disabled=false;
   });

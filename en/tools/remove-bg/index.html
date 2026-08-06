@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>배경 제거 — 누끼 따기 무료, 서버 전송 없이 브라우저에서 | 까치툴</title>
-<meta name="description" content="사진에서 인물만 남기고 배경을 지웁니다. 투명 PNG로 저장하거나 배경색을 바꾸거나 흐리게 처리하세요. 사진을 서버로 보내지 않고 브라우저 안에서 처리하며 워터마크도 없습니다.">
-<link rel="canonical" href="https://www.kmagpie.com/tools/remove-bg/">
-<meta property="og:title" content="배경 제거 — 누끼 따기 무료">
-<meta property="og:description" content="사진을 서버에 올리지 않고 브라우저에서 배경을 지웁니다. 워터마크 없음.">
+<title>Remove Background from Photos Free — Right in Your Browser | K-magpie</title>
+<meta name="description" content="Erase the background from a photo and keep just the person. Save as a transparent PNG, swap in a background color, or blur it. Photos never leave your browser — no upload, no sign-up, no watermark.">
+<link rel="canonical" href="https://www.kmagpie.com/en/tools/remove-bg/">
+<meta property="og:title" content="Remove Background from Photos — Free, No Upload">
+<meta property="og:description" content="Background removal that runs entirely in your browser. No upload, no watermark, no limits.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://www.kmagpie.com/tools/remove-bg/">
+<meta property="og:url" content="https://www.kmagpie.com/en/tools/remove-bg/">
 <style>
   :root{
     --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
@@ -31,7 +31,7 @@
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);
-    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
   .wrap{max-width:1000px;margin:0 auto;padding:44px 22px 90px}
   .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
@@ -140,24 +140,24 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
 <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
-<meta property="og:site_name" content="까치툴">
+<meta property="og:site_name" content="Kmagpie Tools">
 <!--HEAD:E-->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="wrap">
 
-<p class="crumb"><a href="/">K-magpie</a> &rsaquo; <a href="/tools/">까치툴</a> &rsaquo; 배경 제거</p>
+<p class="crumb"><a href="/">K-magpie</a> &rsaquo; <a href="/en/tools/">Kmagpie Tools</a> &rsaquo; Remove Background</p>
 <!--LANG:S-->
-<p class="langsw"><a href="/en/tools/remove-bg/" hreflang="en" lang="en">English version</a></p>
+<p class="langsw"><a href="/tools/remove-bg/" hreflang="ko" lang="ko">한국어로 보기</a></p>
 <!--LANG:E-->
 
-<h1>배경 제거 (누끼 따기)</h1>
-<p class="sub">사진에서 인물만 남기고 배경을 지웁니다. 투명 PNG로 받거나 배경색을 바꾸거나 흐리게 처리하세요. <strong>사진이 서버로 전송되지 않고, 워터마크도 없고, 횟수 제한도 없습니다.</strong></p>
+<h1>Remove Background from Photos</h1>
+<p class="sub">Erase the background from a photo and keep just the person. Save as a transparent PNG, fill in a background color, or blur it. <strong>Photos never leave your browser — no upload, no watermark, no usage limits.</strong></p>
 
 <div id="drop">
-  <div class="big">사진을 끌어다 놓거나 클릭해서 선택하세요</div>
-  <div class="small">사람이 나온 사진에서 가장 잘 동작합니다 · JPG · PNG · WebP</div>
+  <div class="big">Drop a photo here, or click to choose one</div>
+  <div class="small">Works best on photos of people · JPG · PNG · WebP</div>
   <input type="file" id="file" accept="image/*">
 </div>
 
@@ -167,109 +167,109 @@
   <div class="stage">
     <div class="view">
       <div class="cvwrap" id="cvwrap"><canvas id="pv"></canvas><canvas id="ov"></canvas></div>
-      <div class="hint">브러시 모드에서 드래그하면 지우거나 되살릴 수 있습니다 · 빨간 원 = 지우기, 초록 원 = 되살리기</div>
+      <div class="hint">In brush mode, drag to erase or restore · red circle = erase, green circle = restore</div>
     </div>
 
     <div class="side">
       <div class="panel">
-        <h4>1. 배경 지우기</h4>
-        <button class="act primary" id="aiBtn" style="width:100%;padding:11px 0;font-size:14px">✨ AI로 배경 지우기</button>
+        <h4>1. Remove the background</h4>
+        <button class="act primary" id="aiBtn" style="width:100%;padding:11px 0;font-size:14px">✨ Remove background with AI</button>
         <div class="fld hidden" id="tune" style="margin-top:13px">
-          <label>인물 영역 <span class="val" id="thV">기본</span></label>
+          <label>Subject area <span class="val" id="thV">Default</span></label>
           <input type="range" id="thresh" min="-12" max="12" value="0">
-          <p class="note" style="margin:6px 0 0">잘려나갔으면 왼쪽, 배경이 남았으면 오른쪽으로.</p>
+          <p class="note" style="margin:6px 0 0">Slide left if parts of the person got cut off, right if background is left over.</p>
         </div>
-        <p class="note" id="aiNote" style="margin:10px 0 0">처음 누르면 인식 모델 <strong>약 28MB</strong>를 내려받습니다. 사진은 전송되지 않고 브라우저 안에서 계산됩니다.</p>
+        <p class="note" id="aiNote" style="margin:10px 0 0">The first press downloads the recognition model, <strong>about 28MB</strong>. Your photo is never sent anywhere — everything is computed inside your browser.</p>
       </div>
 
       <div class="panel">
-        <h4>2. 손으로 다듬기</h4>
+        <h4>2. Touch up by hand</h4>
         <div class="fld">
           <div class="seg3" id="tool">
-            <button data-m="none" class="on">끄기</button>
-            <button data-m="erase">지우기</button>
-            <button data-m="restore">되살리기</button>
+            <button data-m="none" class="on">Off</button>
+            <button data-m="erase">Erase</button>
+            <button data-m="restore">Restore</button>
           </div>
         </div>
-        <div class="fld"><label>붓 크기 <span class="val" id="bsV">40</span></label>
+        <div class="fld"><label>Brush size <span class="val" id="bsV">40</span></label>
           <input type="range" id="brush" min="8" max="180" value="40">
           <div class="mini" id="bpre">
-            <button data-b="15">소 15</button>
-            <button data-b="40">중 40</button>
-            <button data-b="80">대 80</button>
-            <button data-b="150">특대 150</button>
+            <button data-b="15">S 15</button>
+            <button data-b="40">M 40</button>
+            <button data-b="80">L 80</button>
+            <button data-b="150">XL 150</button>
           </div>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button class="act ghost" id="undoStroke" style="padding:7px 14px;font-size:13px" disabled>한 획 되돌리기</button>
-          <button class="act ghost" id="clearPaint" style="padding:7px 14px;font-size:13px">칠한 것 되돌리기</button>
+          <button class="act ghost" id="undoStroke" style="padding:7px 14px;font-size:13px" disabled>Undo stroke</button>
+          <button class="act ghost" id="clearPaint" style="padding:7px 14px;font-size:13px">Clear brushwork</button>
         </div>
       </div>
 
       <div class="panel">
-        <h4>3. 배경 처리</h4>
+        <h4>3. Background</h4>
         <div class="swatch" id="bgsw">
-          <button class="wide clear on" data-bg="none">투명</button>
+          <button class="wide clear on" data-bg="none">Clear</button>
           <button data-bg="#ffffff" style="background:#fff"></button>
           <button data-bg="#101828" style="background:#101828"></button>
           <button data-bg="#cfe3f7" style="background:#cfe3f7"></button>
           <button data-bg="#f9d9e3" style="background:#f9d9e3"></button>
-          <button class="wide" data-bg="blur">흐림</button>
+          <button class="wide" data-bg="blur">Blur</button>
         </div>
         <div class="fld hidden" id="blurBox" style="margin-top:13px">
-          <label>흐림 정도 <span class="val" id="blV">14</span></label>
+          <label>Blur strength <span class="val" id="blV">14</span></label>
           <input type="range" id="blur" min="2" max="40" value="14">
         </div>
       </div>
 
       <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="act primary" id="save" style="flex:1">PNG로 저장</button>
-        <button class="act ghost" id="reset">다시</button>
+        <button class="act primary" id="save" style="flex:1">Save as PNG</button>
+        <button class="act ghost" id="reset">Start over</button>
       </div>
       <p class="note" style="margin:10px 0 0" id="info"></p>
     </div>
   </div>
 </div>
 
-<p class="gist">사진에서 인물만 남기고 배경을 지워 투명 PNG로 저장하거나 배경색·흐림 처리를 할 수 있습니다. 인식 모델을 브라우저가 직접 내려받아 계산하므로 사진이 서버로 전송되지 않고, 워터마크나 횟수 제한도 없습니다. 인물이 아닌 사진은 브러시로 직접 칠해 지우면 됩니다.</p>
+<p class="gist">Cut a person out of a photo and save it as a transparent PNG, or swap in a background color or blur. The recognition model is downloaded straight into your browser and runs there, so your photo is never uploaded — and there are no watermarks or usage limits. For photos without a person, paint the background away with the brush instead.</p>
 
-<details class="fold"><summary><h2>사용법</h2></summary><div class="fx">
-<p>사진을 올리고 <strong>AI로 배경 지우기</strong>를 누르면 인물만 남습니다. 결과가 어색하면 인물 영역 슬라이더를 조절하고, 그래도 남거나 잘린 부분은 지우기·되살리기 브러시로 다듬으세요. 브러시 모드에서는 마우스를 올리면 <strong>현재 붓 크기만큼의 원</strong>이 커서를 따라다녀서(지우기는 빨간 원, 되살리기는 초록 원) 어디를 얼마나 칠할지 미리 보입니다. 붓 크기는 슬라이더 아래 <strong>소·중·대·특대</strong> 버튼으로 빠르게 바꿀 수 있고, 실수하면 <strong>한 획 되돌리기</strong>로 방금 칠한 획만 취소할 수 있습니다. 마지막으로 배경을 투명으로 둘지 색을 채울지 흐리게 할지 고르고 PNG로 받으시면 됩니다.</p>
-<p>모든 처리는 브라우저 안에서 이루어집니다. 인식 모델을 이 사이트에 함께 올려두고 브라우저가 직접 계산하기 때문에 <strong>사진이 외부로 나가지 않습니다.</strong> 개발자 도구의 네트워크 탭을 열어두고 확인해 보셔도 됩니다.</p>
+<details class="fold"><summary><h2>How to use</h2></summary><div class="fx">
+<p>Add a photo and press <strong>Remove background with AI</strong> — only the person remains. If the result looks off, adjust the Subject area slider, then clean up anything left over or cut away with the erase and restore brushes. In brush mode, a <strong>circle the size of your current brush</strong> follows the cursor (red for erase, green for restore), so you can see exactly what you are about to paint. The <strong>S · M · L · XL</strong> buttons under the slider switch brush sizes quickly, and <strong>Undo stroke</strong> takes back just the last stroke if you slip. Finally, choose a transparent, colored, or blurred background and save as PNG.</p>
+<p>Everything happens inside your browser. The recognition model is hosted alongside this page and your browser does the math itself, so <strong>your photo never leaves your device.</strong> Feel free to verify with the network tab of your browser's developer tools.</p>
 </div></details>
 
-<details class="fold"><summary><h2>다른 서비스와 뭐가 다른가요</h2></summary><div class="fx">
-<p>배경 제거 서비스 대부분은 사진을 자사 서버로 업로드해 처리합니다. 편리하지만 얼굴 사진이나 업무 자료를 남의 서버에 올려야 하고, 무료로는 저해상도만 주거나 워터마크를 넣거나 하루 몇 장으로 제한하는 곳이 많습니다.</p>
-<p>여기서는 <strong>사진이 업로드되지 않고, 원본 해상도 그대로 저장되며, 워터마크가 없고, 횟수 제한도 없습니다.</strong> 대신 처음 한 번 모델을 내려받아야 하고, 계산을 본인 기기에서 하므로 사양에 따라 몇 초 걸립니다.</p>
+<details class="fold"><summary><h2>How is this different from other services</h2></summary><div class="fx">
+<p>Most background removal services upload your photo to their servers for processing. Convenient — but it means handing photos of faces or work material to someone else's server, and the free tiers often cap you at low resolution, stamp a watermark, or limit you to a few images a day.</p>
+<p>Here, <strong>your photo is never uploaded, it is saved at full original resolution, there is no watermark, and no usage cap.</strong> The trade-off: the model has to be downloaded once, and since the computation runs on your own device it can take a few seconds depending on your hardware.</p>
 </div></details>
 
-<details class="fold"><summary><h2>어떤 사진에서 잘 되나요</h2></summary><div class="fx">
-<p>이 도구는 <strong>사람을 인식하도록 학습된 모델</strong>을 씁니다. 인물 사진, 특히 상반신이 크게 나온 사진에서 가장 정확합니다. 반대로 사물이나 동물, 제품 사진은 인식하지 못하니 그런 경우에는 AI를 쓰지 말고 <strong>지우기 브러시로 직접 칠해</strong> 지우세요. 브러시는 어떤 사진에서든 동작합니다.</p>
-<p>인물 사진이라도 결과가 아쉬울 수 있는 경우가 있습니다. 배경과 옷 색이 거의 같거나, 머리카락이 흩날리거나, 조명이 어두워 윤곽이 흐릿하면 경계가 뭉툭해집니다. 이럴 때는 슬라이더로 크게 맞춘 뒤 <strong>작은 붓으로 경계만 정리</strong>하는 게 가장 빠릅니다.</p>
+<details class="fold"><summary><h2>What photos does it work best on</h2></summary><div class="fx">
+<p>This tool uses a <strong>model trained to recognize people.</strong> It is most accurate on portraits, especially ones where the upper body fills the frame. Objects, animals and product shots are not recognized — for those, skip the AI and <strong>paint the background away with the erase brush</strong>, which works on any photo.</p>
+<p>Even with people, some shots are harder than others. If the clothing nearly matches the background color, hair is flying loose, or dim lighting blurs the outline, the edges come out soft. The fastest fix is to get the rough shape right with the slider, then <strong>tidy just the edges with a small brush</strong>.</p>
 </div></details>
 
-<details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
-<h3>투명 배경으로 저장했는데 흰색으로 보여요</h3>
-<p>PNG의 투명 영역을 지원하지 않는 프로그램에서 열면 흰색이나 검은색으로 채워져 보입니다. 카카오톡이나 일부 문서 편집기가 그렇습니다. 투명이 꼭 필요하면 PNG 그대로 쓰시고, 아니면 배경색을 지정해 저장하세요.</p>
-<h3>저장한 파일이 너무 커요</h3>
-<p>투명도를 지원하려면 PNG로 저장해야 하는데 PNG는 사진에서 용량이 큽니다. 투명이 필요 없다면 배경색을 채운 뒤 <a href="/tools/image-compress/">이미지 용량 줄이기</a>로 JPG나 WebP로 바꾸시면 크게 줄어듭니다.</p>
-<h3>모델을 불러오지 못했다고 나와요</h3>
-<p>기기 메모리가 부족하거나 오래된 브라우저일 수 있습니다. 이 경우에도 <strong>브러시는 정상 동작</strong>하니 직접 칠해서 지우실 수 있습니다.</p>
+<details class="fold"><summary><h2>Troubleshooting</h2></summary><div class="fx">
+<h3>I saved with a transparent background but it shows up white</h3>
+<p>Programs that do not support PNG transparency render it as white or black — messaging apps and some document editors are common culprits. If you truly need transparency, keep the PNG as-is; otherwise, pick a background color before saving.</p>
+<h3>The saved file is huge</h3>
+<p>Transparency requires PNG, and PNG is heavy for photos. If you do not need the transparency, fill in a background color and then run the file through the <a href="/en/tools/image-compress/">image compressor</a> to convert it to JPG or WebP — the size drops dramatically.</p>
+<h3>It says the model could not be loaded</h3>
+<p>Your device may be low on memory, or the browser may be too old. Even then, <strong>the brushes still work</strong>, so you can paint the background away by hand.</p>
 </div></details>
 
 <!--REL:S-->
-<h2>함께 쓰면 좋은 도구</h2>
+<h2>Related tools</h2>
 <div class="rel">
-  <a href="/tools/id-photo/"><strong>증명사진 만들기</strong><span>여권·반명함 300dpi</span></a>
-  <a href="/tools/convert/"><strong>이미지 확장자 변환</strong><span>PNG·JPG·WebP·BMP·ICO</span></a>
-  <a href="/tools/image-compress/"><strong>이미지 용량 줄이기</strong><span>목표 용량에 자동으로 맞춤</span></a>
+  <a href="/en/tools/resize/"><strong>Resize Images</strong><span>Exact pixels, ratio crops, batch</span></a>
+  <a href="/en/tools/image-compress/"><strong>Compress Images</strong><span>Auto-fit a target file size</span></a>
+  <a href="/en/tools/meme/"><strong>Meme Generator</strong><span>Bold captions on images and GIFs</span></a>
 </div>
-<p class="rel-all"><a href="/tools/">까치툴 도구 33개 전체 보기 →</a></p>
+<p class="rel-all"><a href="/en/tools/">See all 18 English tools →</a></p>
 <!--REL:E-->
 
 <footer>
-  <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 사진은 업로드되지 않습니다.</p>
-  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+  <p>Kmagpie Tools · Everything runs in your browser. Photos are never uploaded.</p>
+  <p><a href="/">Home</a> · <a href="/en/tools/">Other tools</a> · <a href="/en/disclaimer.html">Disclaimer</a> · <a href="/privacy-policy.html">Privacy Policy</a></p>
 </footer>
 
 </div>
@@ -284,7 +284,7 @@
   let paint=null, tool='none', bgMode='none';
   const MAXVIEW=760;
 
-  /* ---------- 로드 ---------- */
+  /* ---------- load ---------- */
   const drop=$('drop'), file=$('file');
   drop.addEventListener('click',()=>file.click());
   drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('over')});
@@ -293,7 +293,7 @@
   file.addEventListener('change',e=>load(e.target.files[0]));
 
   function load(f){
-    if(!f||!f.type.startsWith('image/')){msg('bad','이미지 파일이 아닙니다.');return}
+    if(!f||!f.type.startsWith('image/')){msg('bad','That is not an image file.');return}
     const im=new Image();
     im.onload=()=>{
       img=im; W=im.naturalWidth; H=im.naturalHeight;
@@ -305,17 +305,17 @@
       draw();
       $('editor').scrollIntoView({behavior:'smooth',block:'nearest'});
     };
-    im.onerror=()=>msg('bad','이미지를 읽지 못했습니다.');
+    im.onerror=()=>msg('bad','Could not read the image.');
     im.src=URL.createObjectURL(f);
   }
 
-  /* ---------- 합성 ---------- */
+  /* ---------- compositing ---------- */
   function compose(scale){
     const w=Math.round(W*scale), h=Math.round(H*scale);
     const c=document.createElement('canvas'); c.width=w; c.height=h;
     const x=c.getContext('2d');
 
-    /* 배경 레이어 */
+    /* background layer */
     if(bgMode==='blur'){
       x.save(); x.filter=`blur(${Math.max(1,+$('blur').value*scale)}px)`;
       x.drawImage(img,-8*scale,-8*scale,w+16*scale,h+16*scale); x.restore();
@@ -323,17 +323,17 @@
       x.fillStyle=bgMode; x.fillRect(0,0,w,h);
     }
 
-    /* 인물 레이어 = 원본에 알파 마스크 적용 */
+    /* subject layer = original with alpha mask applied */
     const fg=document.createElement('canvas'); fg.width=w; fg.height=h;
     const fx=fg.getContext('2d');
     fx.drawImage(img,0,0,w,h);
     if(aiMask||paint){
       const m=document.createElement('canvas'); m.width=w; m.height=h;
       const mx=m.getContext('2d');
-      mx.fillStyle='#000'; mx.fillRect(0,0,w,h);           // 기본은 전부 보임
+      mx.fillStyle='#000'; mx.fillRect(0,0,w,h);           // everything visible by default
       mx.globalCompositeOperation='destination-out';
-      if(aiMask) mx.drawImage(aiMask,0,0,w,h);             // AI가 지운 곳
-      if(paint)  mx.drawImage(paint,0,0,w,h);              // 손으로 지운 곳
+      if(aiMask) mx.drawImage(aiMask,0,0,w,h);             // erased by the AI
+      if(paint)  mx.drawImage(paint,0,0,w,h);              // erased by hand
       fx.globalCompositeOperation='destination-in';
       fx.drawImage(m,0,0);
       fx.globalCompositeOperation='source-over';
@@ -344,14 +344,14 @@
 
   function draw(){
     if(!img) return;
-    $('thV').textContent=(()=>{const v=+$('thresh').value;return v>0?'좁게 '+v:v<0?'넓게 '+(-v):'기본'})();
+    $('thV').textContent=(()=>{const v=+$('thresh').value;return v>0?'Tighter '+v:v<0?'Wider '+(-v):'Default'})();
     $('bsV').textContent=$('brush').value;
     $('blV').textContent=$('blur').value;
     const scale=Math.min(1, MAXVIEW/Math.max(W,H));
     const c=compose(scale);
     const pv=$('pv'); pv.width=c.width; pv.height=c.height;
     pv.getContext('2d').drawImage(c,0,0);
-    $('info').textContent=`${W} × ${H}px · 원본 해상도로 저장됩니다`;
+    $('info').textContent=`${W} × ${H}px · saved at full resolution`;
   }
 
   /* ---------- AI ---------- */
@@ -380,17 +380,17 @@
   $('aiBtn').addEventListener('click',async()=>{
     if(!img) return;
     const b=$('aiBtn'), label=b.textContent;
-    b.disabled=true; b.textContent='모델 불러오는 중…';
+    b.disabled=true; b.textContent='Loading model…';
     try{
       const seg=await getSeg();
-      b.textContent='분석 중…'; await new Promise(r=>setTimeout(r,20));
+      b.textContent='Analyzing…'; await new Promise(r=>setTimeout(r,20));
       const s=Math.min(1,1024/Math.max(W,H));
       const iw=Math.round(W*s), ih=Math.round(H*s);
       const src=document.createElement('canvas'); src.width=iw; src.height=ih;
       src.getContext('2d').drawImage(img,0,0,iw,ih);
       const res=seg.segment(src);
       const masks=res.confidenceMasks||[], multi=masks.length>2, m0=masks[0];
-      if(!m0) throw new Error('마스크를 얻지 못했습니다');
+      if(!m0) throw new Error('could not get a mask');
       aiW=m0.width; aiH=m0.height;
       const n=aiW*aiH; aiPerson=new Float32Array(n);
       const raw=m0.getAsFloat32Array();
@@ -405,17 +405,17 @@
       res.close && res.close();
       buildMask();
       $('tune').classList.remove('hidden');
-      $('aiNote').innerHTML='배경을 지웠습니다. 어색하면 위 슬라이더나 아래 브러시로 다듬으세요.';
+      $('aiNote').innerHTML='Background removed. If it looks off, adjust the slider above or touch up with the brushes below.';
       warn.classList.add('hidden');
       draw();
     }catch(e){
-      msg('bad',`AI 처리에 실패했습니다 (${e.message}). <strong>지우기 브러시</strong>로 직접 칠해서 지우실 수 있습니다.`);
+      msg('bad',`AI processing failed (${e.message}). You can still remove the background by hand with the <strong>erase brush</strong>.`);
     }
     b.disabled=false; b.textContent=label;
   });
   $('thresh').addEventListener('input',()=>{buildMask();draw()});
 
-  /* ---------- 브러시 ---------- */
+  /* ---------- brush ---------- */
   const wrap=$('cvwrap'), ov=$('ov'), ovx=$('ov').getContext('2d');
   let painting=false, undoPaint=null, hasUndo=false, curPt=null;
   function snapshotPaint(){
@@ -472,7 +472,7 @@
   });
   ['pointerup','pointercancel'].forEach(ev=>wrap.addEventListener(ev,e=>{
     painting=false;
-    if(e.pointerType!=='mouse') clearCursor();   // 터치는 손을 떼면 원 숨김
+    if(e.pointerType!=='mouse') clearCursor();   // on touch, hide the circle on lift
   }));
   wrap.addEventListener('pointerleave',()=>{ if(!painting) clearCursor(); });
   document.querySelectorAll('#tool button').forEach(b=>b.addEventListener('click',()=>{
@@ -496,7 +496,7 @@
     if(curPt) drawCursor(curPt[0],curPt[1]);
   }));
 
-  /* ---------- 배경 ---------- */
+  /* ---------- background ---------- */
   document.querySelectorAll('#bgsw button').forEach(b=>b.addEventListener('click',()=>{
     document.querySelectorAll('#bgsw button').forEach(x=>x.classList.remove('on'));
     b.classList.add('on'); bgMode=b.dataset.bg;
@@ -505,7 +505,7 @@
   }));
   $('blur').addEventListener('input',draw);
 
-  /* ---------- 저장 ---------- */
+  /* ---------- save ---------- */
   $('save').addEventListener('click',()=>{
     if(!img) return;
     compose(1).toBlob(b=>{

@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>짤 만들기 — 사진에 굵은 텍스트, 움짤 자막까지 | 까치툴</title>
-<meta name="description" content="내 사진이나 그림에 흰 글자와 검은 외곽선의 굵은 텍스트를 얹어 짤을 만듭니다. 위아래 문구, 글자 크기와 색, 자동 줄바꿈을 지원하고 움직이는 GIF에도 같은 자막을 넣을 수 있어요. 원본 해상도 그대로 저장하며, 파일은 서버로 전송되지 않고 전부 브라우저 안에서 처리됩니다.">
-<link rel="canonical" href="https://www.kmagpie.com/tools/meme/">
-<meta property="og:title" content="짤 만들기 — 사진에 굵은 텍스트, 움짤 자막까지">
-<meta property="og:description" content="내 이미지에 흰 글자·검은 외곽선 텍스트를 얹어 짤을 만듭니다. GIF 자막도, 서버 전송 없이 브라우저에서.">
+<title>Meme Generator — Bold Captions on Images and GIFs, No Sign-Up | K-magpie</title>
+<meta name="description" content="Put bold white text with a black outline on your own images and make memes in seconds. Top and bottom captions, auto line wrapping, drag-to-position, and captions on animated GIFs too. Saves at full original resolution — files never leave your browser, no upload, no sign-up, no watermark.">
+<link rel="canonical" href="https://www.kmagpie.com/en/tools/meme/">
+<meta property="og:title" content="Meme Generator — Bold Captions on Images and GIFs, No Sign-Up">
+<meta property="og:description" content="Classic white-text-black-outline meme captions on your images and animated GIFs. Everything runs in your browser — nothing is uploaded.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://www.kmagpie.com/tools/meme/">
+<meta property="og:url" content="https://www.kmagpie.com/en/tools/meme/">
 <style>
   :root{
     --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
@@ -149,31 +149,31 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
 <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
-<meta property="og:site_name" content="까치툴">
+<meta property="og:site_name" content="Kmagpie Tools">
 <!--HEAD:E-->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="wrap">
 
-<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › 짤 만들기</p>
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/en/tools/">Kmagpie Tools</a> › Meme Generator</p>
 <!--LANG:S-->
-<p class="langsw"><a href="/en/tools/meme/" hreflang="en" lang="en">English version</a></p>
+<p class="langsw"><a href="/tools/meme/" hreflang="ko" lang="ko">한국어로 보기</a></p>
 <!--LANG:E-->
 
-<h1>짤 만들기</h1>
-<p class="sub">내가 가진 사진이나 그림에 <strong>흰 글자·검은 외곽선의 굵은 텍스트</strong>를 얹어 짤을 만듭니다. 위아래 문구, 자동 줄바꿈, 움직이는 GIF 자막까지. 원본 해상도 그대로 저장하고, 파일은 서버로 전송되지 않고 전부 브라우저 안에서 처리됩니다.</p>
+<h1>Meme Generator</h1>
+<p class="sub">Put <strong>bold white text with a black outline</strong> on any photo or picture and turn it into a meme. Top and bottom captions, automatic line wrapping, even captions on animated GIFs. Saves at the original resolution, and <strong>files never leave your browser — no upload, no sign-up, no watermark</strong>.</p>
 
 <div class="seg" id="modeSeg" style="margin:0 0 8px;max-width:420px">
-  <button data-v="img" class="on">사진에 텍스트</button>
-  <button data-v="gif" id="gifBtn">GIF 자막 (움짤)</button>
+  <button data-v="img" class="on">Caption a photo</button>
+  <button data-v="gif" id="gifBtn">GIF captions</button>
 </div>
-<p class="note hidden" id="gifNo" style="margin:0 0 12px">이 브라우저는 GIF 자막을 지원하지 않습니다 (크롬·엣지 필요). 사진 모드는 그대로 쓸 수 있어요.</p>
+<p class="note hidden" id="gifNo" style="margin:0 0 12px">This browser can't caption GIFs (Chrome or Edge required). Photo mode still works fine.</p>
 
 <div class="drop" id="drop">
   <span class="ic">💬</span>
-  <div class="t" id="dropT">이미지를 여기에 놓으세요</div>
-  <div class="d" id="dropD">클릭해서 고를 수도 있습니다 · PNG · JPG · WebP · 1장</div>
+  <div class="t" id="dropT">Drop an image here</div>
+  <div class="d" id="dropD">Or click to choose one · PNG · JPG · WebP · 1 file</div>
   <input type="file" id="file" accept="image/png,image/jpeg,image/webp" class="hidden">
 </div>
 
@@ -183,52 +183,52 @@
   <div class="row">
     <div class="col">
       <div>
-        <label class="f">위 텍스트</label>
-        <textarea id="topTxt" rows="2" maxlength="300" placeholder="위쪽에 얹을 문구 (비워도 됩니다)"></textarea>
+        <label class="f">Top text</label>
+        <textarea id="topTxt" rows="2" maxlength="300" placeholder="Caption for the top (leave blank if you like)"></textarea>
       </div>
       <div class="fld">
-        <label class="f">아래 텍스트</label>
-        <textarea id="botTxt" rows="2" maxlength="300" placeholder="아래쪽에 얹을 문구 (비워도 됩니다)"></textarea>
+        <label class="f">Bottom text</label>
+        <textarea id="botTxt" rows="2" maxlength="300" placeholder="Caption for the bottom (leave blank if you like)"></textarea>
       </div>
-      <p class="note">줄바꿈(Enter)이 그대로 반영되고, 한 줄이 화면 폭의 90%를 넘으면 자동으로 다음 줄로 넘어갑니다.</p>
+      <p class="note">Line breaks (Enter) are kept, and any line wider than 90% of the image wraps to the next line automatically.</p>
     </div>
     <div class="col">
       <div>
-        <label class="f">글자 크기 <span class="val" id="fszV">7</span>% <span style="text-transform:none;letter-spacing:0;font-weight:400">(긴 변 대비)</span></label>
+        <label class="f">Text size <span class="val" id="fszV">7</span>% <span style="text-transform:none;letter-spacing:0;font-weight:400">(of the longer side)</span></label>
         <input type="range" id="fsz" min="4" max="12" step="0.5" value="7">
       </div>
       <div class="fld">
-        <label class="f">글자색</label>
+        <label class="f">Text color</label>
         <div class="seg sm" id="colSeg">
-          <button data-v="w" class="on">흰색</button>
-          <button data-v="k">검정</button>
-          <button data-v="y">노랑</button>
+          <button data-v="w" class="on">White</button>
+          <button data-v="k">Black</button>
+          <button data-v="y">Yellow</button>
         </div>
       </div>
       <label class="chk"><input type="checkbox" id="outline" checked>
-        <span><b>외곽선 넣기</b><em>글자 둘레에 반대 색 테두리를 둘러 밝은 배경과 어두운 배경 모두에서 읽히게 합니다. 두께는 글자 크기에 비례합니다.</em></span></label>
+        <span><b>Add outline</b><em>Draws a contrasting border around each letter so the text stays readable on both light and dark backgrounds. The thickness scales with the text size.</em></span></label>
       <label class="chk hidden" id="shrinkWrap"><input type="checkbox" id="shrink" checked>
-        <span><b>긴 변 480px로 줄이기</b><em>GIF는 픽셀당 용량이 커서 줄여 저장하는 것을 권합니다. 원본이 480px보다 작으면 그대로 둡니다.</em></span></label>
+        <span><b>Shrink to 480px on the long side</b><em>GIFs are heavy per pixel, so saving smaller is recommended. If the original is already under 480px it stays as it is.</em></span></label>
     </div>
   </div>
 
   <div id="lineWarn" class="hidden"></div>
 
   <div class="fld">
-    <label class="f">미리보기</label>
+    <label class="f">Preview</label>
     <div class="pvbox">
       <canvas id="pv" width="10" height="10"></canvas>
-      <img id="outImg" class="hidden" alt="완성된 GIF">
+      <img id="outImg" class="hidden" alt="Finished GIF">
     </div>
     <p class="pvcap" id="pvcap"></p>
-    <p class="pvcap">미리보기에서 글자를 끌어 위치를 옮길 수 있습니다
-      <button class="btn g sm hidden" id="posReset" type="button" style="margin-left:6px;padding:4px 10px;font-size:12.5px">위치 초기화</button></p>
+    <p class="pvcap">Drag the text in the preview to move it
+      <button class="btn g sm hidden" id="posReset" type="button" style="margin-left:6px;padding:4px 10px;font-size:12.5px">Reset position</button></p>
   </div>
 
   <div class="btns">
-    <button class="btn" id="go">짤 저장 (meme.png)</button>
-    <button class="btn g" id="swap">다른 파일로</button>
-    <button class="btn g sm" id="reset">처음부터</button>
+    <button class="btn" id="go">Save meme (meme.png)</button>
+    <button class="btn g" id="swap">Choose another file</button>
+    <button class="btn g sm" id="reset">Start over</button>
   </div>
 </div>
 
@@ -236,63 +236,63 @@
 <p class="pstat hidden" id="pstat"></p>
 <div id="done" class="hidden"></div>
 
-<p class="gist">사진이나 GIF에 흰 글자·검은 외곽선의 짤 텍스트를 얹어 원본 해상도 그대로 저장합니다. 위아래 문구와 자동 줄바꿈, 드래그로 글자 위치 조절까지 지원합니다. 파일은 서버로 전송되지 않고 전부 브라우저 안에서 처리됩니다.</p>
+<p class="gist">Lay classic meme text — bold white letters with a black outline — over a photo or an animated GIF, and save at the original resolution. Top and bottom captions, automatic line wrapping, and drag-to-position are all supported. Files never leave your browser: no upload, no sign-up, no watermark.</p>
 
-<details class="fold"><summary><h2>흰 글자에 검은 외곽선, 짤 텍스트의 정석</h2></summary><div class="fx">
-<p>짤에 얹는 글자가 거의 예외 없이 흰 글자에 검은 테두리인 데는 이유가 있습니다. 글자가 어디에 놓일지 미리 알 수 없기 때문이에요. 하늘처럼 밝은 배경에서는 흰 글자가 묻히고, 그늘이나 밤 장면에서는 검은 글자가 사라집니다. 그런데 <strong>흰 면과 검은 테두리를 같이 쓰면 배경이 밝든 어둡든 둘 중 하나는 반드시 배경과 대비를 만듭니다.</strong> 어떤 사진 위에서도 읽히는 조합이라 수십 년 동안 살아남은 겁니다.</p>
-<p>글꼴이 굵어야 하는 것도 같은 이유입니다. 가는 글자에 테두리를 두르면 테두리가 획을 잡아먹어 글자가 뭉개져요. 획이 두꺼운 고딕이어야 테두리를 둘러도 속이 남습니다. 이 도구는 기기에 이미 들어 있는 <strong>굵은 고딕 계열 글꼴</strong>을 그대로 쓰기 때문에 웹폰트를 따로 내려받지 않고, 페이지가 가볍고 빠릅니다. 그래서 기기에 따라 글자 모양이 조금씩 다를 수 있는데, 짤 용도로는 문제가 되지 않는 수준입니다.</p>
+<details class="fold"><summary><h2>White text, black outline: why every meme looks like this</h2></summary><div class="fx">
+<p>There is a reason almost every meme caption is white text with a black border: you never know in advance what the text will land on. On a bright background like the sky, white letters vanish; in a shadowy or night-time scene, black letters disappear. But <strong>a white face with a black outline guarantees that one of the two always contrasts with whatever is behind it.</strong> It is the one combination that stays readable on any photo, which is why it has survived for decades.</p>
+<p>The heavy typeface matters for the same reason. Put an outline on a thin font and the border swallows the strokes, turning the letters to mush. Only a fat sans-serif keeps its interior after the border goes on. This tool uses the <strong>heaviest sans-serif font already on your device</strong>, so there is no web font to download and the page stays light and fast. Letterforms may differ slightly between devices as a result, but for meme purposes the difference never matters.</p>
 </div></details>
 
-<details class="fold"><summary><h2>글자는 어디에 얹어야 하나</h2></summary><div class="fx">
-<p>기본은 위아래 여백입니다. 사진에서 시선이 가는 곳은 대개 가운데의 얼굴이나 피사체인데, 글자가 그 위를 덮으면 사진도 글자도 죽습니다. 그래서 짤 문법이 <strong>위에 상황, 아래에 한마디</strong>로 굳은 거예요. 이 도구도 텍스트를 위 가장자리와 아래 가장자리에 붙이고, 한 줄이 폭의 90%를 넘으면 자동으로 줄을 나눕니다.</p>
-<p>글자 크기는 픽셀이 아니라 <strong>이미지 긴 변에 대한 비율</strong>로 정합니다. 4000픽셀짜리 원본과 800픽셀짜리 캡처에 같은 픽셀 크기를 쓰면 한쪽은 안 보이고 한쪽은 화면을 덮기 때문이에요. 기본값 7%는 휴대폰 화면에서 봤을 때 또렷하게 읽히는 선입니다. 문구가 길면 크기를 키우는 대신 문장을 줄이는 쪽이 낫습니다. 글자가 3줄을 넘어가면 사진이 자막에 밀려나기 시작해서, 이 도구는 크기를 몰래 줄이지 않고 3줄이 넘는다고 알려만 줍니다. 문구를 다듬을지 크기를 낮출지는 직접 정하세요.</p>
+<details class="fold"><summary><h2>Where the text should go</h2></summary><div class="fx">
+<p>The default spots are the top and bottom edges. The eye goes to the middle of a photo — the face or the subject — and text laid over that kills both the picture and the caption. That is how the meme grammar settled into <strong>setup on top, punchline on the bottom</strong>. This tool pins the captions to those edges and wraps any line that grows past 90% of the width. You can still drag either block anywhere you like in the preview.</p>
+<p>Text size is set not in pixels but as <strong>a percentage of the image's longer side</strong>. Use the same pixel size on a 4,000-pixel original and an 800-pixel screenshot and one is invisible while the other covers the frame. The 7% default is about the smallest size that reads crisply on a phone screen. If your caption is long, shortening the sentence beats enlarging the text. Once a caption passes three lines the photo starts losing to the words, so this tool never shrinks your text behind your back — it just tells you when you are over three lines. Whether to trim the wording or lower the size is your call.</p>
 </div></details>
 
-<details class="fold"><summary><h2>카톡·커뮤니티에 올릴 때 용량과 크기</h2></summary><div class="fx">
-<p>완성본은 원본 해상도 그대로 저장됩니다. 원본이 PNG나 WebP였다면 화질 손실이 없는 PNG로, 원본이 JPG였다면 JPG로 저장해요. 사진을 PNG로 바꾸면 용량이 몇 배로 커지기만 하고 이득이 없기 때문입니다.</p>
-<p>올리는 곳을 생각하면 해상도 욕심을 낼 필요가 없습니다. 카카오톡은 일반 화질로 보내면 이미지를 알아서 줄여 전송하고, 커뮤니티와 SNS도 본문 표시 폭이 정해져 있어 긴 변 1080픽셀이면 어디서든 충분합니다. 원본이 아주 크다면 만들고 나서 <a href="/tools/resize/">이미지 크기 조절</a>이나 <a href="/tools/image-compress/">이미지 용량 줄이기</a>를 거치면 됩니다. 반대로 너무 작은 이미지를 억지로 키우는 것도 손해예요. 글자는 이 도구가 저장 시점에 원본 해상도로 새로 그리니 선명하지만, 바탕 사진의 화질은 원본 이상으로 좋아지지 않습니다.</p>
+<details class="fold"><summary><h2>File size and dimensions for chat and social media</h2></summary><div class="fx">
+<p>Your meme is saved at the original resolution. If the source was a PNG or WebP it is saved as a lossless PNG; if the source was a JPG it stays a JPG, because converting a photo to PNG only multiplies the file size for no visible gain.</p>
+<p>Think about where the meme is going and you will see there is no need to chase resolution. Messaging apps recompress and shrink images on their own, and Reddit, Discord, X and most forums display posts at a fixed column width — 1,080 pixels on the long side is plenty everywhere. If your original is huge, run the finished meme through an image resizer or compressor afterwards. The reverse is also true: upscaling a tiny image buys you nothing. The text stays sharp because this tool redraws it at full resolution when you save, but the underlying photo can never get better than its source.</p>
 </div></details>
 
-<details class="fold"><summary><h2>남의 이미지로 짤을 만들 때</h2></summary><div class="fx">
-<p>이 도구는 방송 캡처 같은 짤 템플릿을 제공하지 않습니다. <strong>이미지는 사용자가 직접 가져오고, 그 이미지를 쓸 수 있는지에 대한 판단과 책임도 사용자에게 있습니다.</strong> 방송 장면, 영화 스틸, 남이 그린 그림에는 저작권이 있고, 사진 속 인물에게는 초상권이 있어요. 도구는 텍스트를 얹는 일만 할 뿐, 어떤 이미지를 써도 되는지는 알지 못합니다.</p>
-<p>겁을 주려는 얘기는 아닙니다. 친구끼리 채팅방에서 웃자고 주고받는 짤과, 가게 홍보물이나 상품 페이지·수익이 나는 채널에 올리는 이미지는 무게가 다릅니다. 전자를 일일이 문제 삼는 경우는 드물지만, 후자는 권리자가 실제로 대응하는 영역이에요. 널리 공개되는 자리나 상업적인 용도라면 직접 찍은 사진, 직접 그린 그림, 이용 조건이 명시된 무료 이미지를 쓰는 것이 마음 편합니다.</p>
+<details class="fold"><summary><h2>Using images you didn't make</h2></summary><div class="fx">
+<p>This tool ships no meme templates. <strong>You bring the image, and judging whether you may use it is your responsibility.</strong> TV frames, film stills and other people's artwork are copyrighted, and the people in a photo have rights over their own likeness. The tool only draws text — it has no idea whether an image is fair game.</p>
+<p>This is not meant to scare you. A meme traded for laughs in a group chat carries very different weight from an image used in an ad, a product page or a monetized channel. The former almost never draws attention; the latter is exactly where rights holders do act. For anything public-facing or commercial, you will sleep better using photos you took, art you drew, or free stock images whose license terms are spelled out.</p>
 </div></details>
 
-<details class="fold"><summary><h2>GIF에 자막을 넣으면 왜 용량이 커지나</h2></summary><div class="fx">
-<p>인터넷에 돌아다니는 GIF는 대부분 꽤 영리하게 압축돼 있습니다. 프레임 전체를 매번 저장하는 대신 <strong>앞 프레임에서 달라진 부분만</strong> 저장하고, 색 팔레트도 전체가 하나를 같이 쓰는 식이에요. 그런데 자막을 얹으려면 프레임을 전부 펼쳐서 글자를 그린 다음 처음부터 다시 인코딩해야 합니다. 이 과정에서 그 최적화가 풀리기 때문에, 같은 장면인데도 파일이 원본보다 커지는 일이 흔합니다.</p>
-<p>화질도 한 번은 손해를 봅니다. GIF는 한 프레임에 256가지 색만 쓸 수 있어서, 다시 인코딩할 때마다 색을 추리는 과정을 거쳐요. 이 도구는 프레임마다 가장 잘 맞는 팔레트를 따로 뽑아 손실을 줄이지만 원리상 한계는 있습니다. 그래서 <strong>긴 변 480px로 줄이기</strong>를 기본으로 켜 두었습니다. 픽셀 수는 가로세로로 곱해지니 크기를 줄이는 것이 용량을 잡는 가장 확실한 방법이고, 채팅이나 게시판에서 480px은 충분히 큽니다. 원본 크기가 꼭 필요할 때만 끄세요. 프레임 수와 각 프레임의 재생 시간, 무한 반복은 원본 그대로 유지됩니다.</p>
+<details class="fold"><summary><h2>Why captioning a GIF makes it bigger</h2></summary><div class="fx">
+<p>Most GIFs floating around the internet are compressed rather cleverly. Instead of storing every frame in full, they store <strong>only the pixels that changed from the previous frame</strong>, and often share a single color palette across the whole animation. To draw a caption, though, every frame has to be unpacked, painted on, and re-encoded from scratch. That undoes those optimizations, which is why the same clip frequently comes out larger than the original.</p>
+<p>Quality also takes one hit. A GIF frame can hold only 256 colors, so every re-encode involves reducing the palette again. This tool computes the best-fitting palette for each frame individually to keep the loss down, but the format's ceiling is what it is. That is why <strong>Shrink to 480px on the long side</strong> is on by default: pixel count multiplies across both dimensions, so shrinking is by far the most effective way to control size, and 480px is plenty for chat and forum posts. Turn it off only when you truly need the original dimensions. Frame count, per-frame timing and infinite looping are all preserved exactly.</p>
 </div></details>
 
-<details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
-<h3>글자가 3줄을 넘는다는 안내가 떠요</h3>
-<p>긴 문장이 자동 줄바꿈으로 쌓이면 사진이 자막에 가려집니다. 이 도구는 글자 크기를 임의로 줄이지 않으므로, 안내가 뜨면 문구를 줄이거나 크기 슬라이더를 낮추세요. 위와 아래에 문구를 나눠 싣는 것도 방법입니다.</p>
-<h3>GIF 자막 버튼이 눌리지 않아요</h3>
-<p>GIF를 프레임 단위로 분해하는 기능(ImageDecoder)을 브라우저가 지원하지 않는 경우입니다. 크롬·엣지 등 크로미움 계열 브라우저에서 열면 버튼이 살아납니다. 사파리와 파이어폭스에서는 사진 모드만 쓸 수 있어요.</p>
-<h3>움짤을 저장했더니 원본보다 커졌어요</h3>
-<p>위에서 설명한 재인코딩 때문입니다. 원본이 차분(달라진 부분만 저장) 방식으로 최적화된 GIF일수록 차이가 커요. <strong>긴 변 480px로 줄이기</strong>를 켠 상태로 저장하는 것이 가장 효과적이고, 그래도 크면 애초에 프레임이 적고 짧은 장면을 고르는 수밖에 없습니다.</p>
-<h3>아이폰 사진(HEIC)이 안 열려요</h3>
-<p>크롬 등 대부분의 브라우저가 HEIC를 읽지 못합니다. 아이폰에서 사진을 공유할 때 자동으로 JPG로 바뀌는 경로(카톡 나에게 보내기 등)를 거치거나, PNG·JPG로 바꾼 뒤 쓰세요.</p>
-<h3>파일이 서버로 가나요</h3>
-<p>가지 않습니다. 이미지를 읽고 글자를 그리고 저장 파일을 만드는 일까지 전부 브라우저 안에서 일어나고, 인터넷을 끊어도 똑같이 동작합니다. 탭을 닫으면 아무것도 남지 않아요. 신원이 드러나는 사진을 다뤄도 밖으로 나가는 것이 없습니다.</p>
-<h3>파일 이름이 meme.png로 저장돼요</h3>
-<p>일부러 그렇게 했습니다. 한글이 섞인 파일명을 자동 내려받기에서 버리는 브라우저가 있어서, <code>meme.png</code>·<code>meme.jpg</code>·<code>meme.gif</code> 같은 영문 이름으로 저장한 뒤 바꿔 쓰도록 했습니다.</p>
+<details class="fold"><summary><h2>Troubleshooting</h2></summary><div class="fx">
+<h3>It says my text is over three lines</h3>
+<p>A long sentence stacks up through auto-wrapping and starts hiding the photo. This tool never shrinks your text automatically, so when the notice appears, trim the caption or lower the size slider. Splitting the wording between the top and bottom captions also works.</p>
+<h3>The GIF captions button won't click</h3>
+<p>Your browser lacks the frame-by-frame GIF decoding feature (ImageDecoder) this mode needs. Open the page in Chrome, Edge or another Chromium-based browser and the button comes alive. In Safari and Firefox only photo mode is available.</p>
+<h3>My saved GIF is bigger than the original</h3>
+<p>That is the re-encoding described above. The more heavily the original was optimized (storing only changed pixels), the bigger the difference. Saving with <strong>Shrink to 480px on the long side</strong> enabled helps most; if it is still too big, the only cure is starting from a shorter clip with fewer frames.</p>
+<h3>My iPhone photo (HEIC) won't open</h3>
+<p>Chrome and most other browsers cannot read HEIC. Share the photo through a route that converts it to JPG automatically (most messaging apps do), or convert it to PNG or JPG first and then use it here.</p>
+<h3>Does my file go to a server?</h3>
+<p>No. Reading the image, drawing the text and building the saved file all happen inside your browser, and the page works identically with the internet disconnected. Close the tab and nothing remains. Even photos that identify someone never leave your machine.</p>
+<h3>Why is the file named meme.png?</h3>
+<p>On purpose. Some browsers silently drop downloads whose filenames contain non-ASCII characters, so the tool saves under plain names — <code>meme.png</code>, <code>meme.jpg</code>, <code>meme.gif</code> — that work everywhere. Rename the file afterwards if you like.</p>
 </div></details>
 
 <!--CAT:S--><!--CAT:E-->
 <!--REL:S-->
-<h2>함께 쓰면 좋은 도구</h2>
+<h2>Related tools</h2>
 <div class="rel">
-  <a href="/tools/gif-maker/"><strong>GIF 만들기</strong><span>사진 여러 장으로 움짤 애니메이션</span></a>
-  <a href="/tools/watermark/"><strong>이미지 워터마크 넣기</strong><span>텍스트·로고, 여러 장 한 번에</span></a>
-  <a href="/tools/image-compress/"><strong>이미지 용량 줄이기</strong><span>목표 용량에 자동으로 맞춤</span></a>
+  <a href="/en/tools/gif-maker/"><strong>GIF Maker</strong><span>Photos into animated GIFs</span></a>
+  <a href="/en/tools/watermark/"><strong>Image Watermark</strong><span>Text or logo, batch processing</span></a>
+  <a href="/en/tools/image-compress/"><strong>Compress Images</strong><span>Auto-fit a target file size</span></a>
 </div>
-<p class="rel-all"><a href="/tools/">까치툴 도구 33개 전체 보기 →</a></p>
+<p class="rel-all"><a href="/en/tools/">See all 18 English tools →</a></p>
 <!--REL:E-->
 
 <footer>
-  <p>GIF 인코딩: gifenc (MIT) — 원본과 라이선스는 <a href="/tools/lib/">/tools/lib/</a> 에 있습니다.</p>
-  <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 파일은 전송·저장되지 않습니다. 가져온 이미지의 저작권·초상권 확인 책임은 사용자에게 있습니다.</p>
-  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+  <p>GIF encoding: gifenc (MIT) — source and license at <a href="/tools/lib/">/tools/lib/</a>.</p>
+  <p>Kmagpie Tools · Everything runs in your browser; files are never uploaded or stored. Checking the copyright and likeness rights of images you bring is your responsibility.</p>
+  <p><a href="/">Home</a> · <a href="/en/tools/">Other tools</a> · <a href="/en/disclaimer.html">Disclaimer</a> · <a href="/privacy-policy.html">Privacy Policy</a></p>
 </footer>
 
 </div>
@@ -318,7 +318,7 @@ if(!GIF_OK){
   $('gifNo').classList.remove('hidden');
 }
 
-/* ---------- 텍스트 그리기 (미리보기와 저장이 같은 함수를 쓴다) ---------- */
+/* ---------- text drawing (preview and save share this function) ---------- */
 function wrapLines(ctx,text,maxW){
   const out=[];
   for(const raw of String(text||'').split('\n')){
@@ -332,7 +332,7 @@ function wrapLines(ctx,text,maxW){
       if(ctx.measureText(t).width<=maxW){ cur=t; continue; }
       if(cur){ out.push(cur); cur=''; }
       if(ctx.measureText(w).width<=maxW){ cur=w; continue; }
-      let seg='';                      /* 띄어쓰기 없는 긴 덩어리는 글자 단위로 */
+      let seg='';                      /* long unbroken chunks wrap character by character */
       for(const ch of w){
         if(ctx.measureText(seg+ch).width<=maxW) seg+=ch;
         else{ if(seg) out.push(seg); seg=ch; }
@@ -344,7 +344,7 @@ function wrapLines(ctx,text,maxW){
   return out;
 }
 
-/* 블록 중심 위치(% — 이미지 크기 대비). null이면 기본 위치(위: 상단 중앙, 아래: 하단 중앙) */
+/* block center position (% of image size). null = default (top: top center, bottom: bottom center) */
 let posTop=null, posBot=null;
 
 function paint(ctx,W,H){
@@ -363,7 +363,7 @@ function paint(ctx,W,H){
   const top=wrapLines(ctx,$('topTxt').value,maxW);
   const bot=wrapLines(ctx,$('botTxt').value,maxW);
   const blocks={};
-  /* 기본 위치는 예전 렌더링과 동일: 위 블록 첫 줄 top=margin, 아래 블록 마지막 줄 bottom=H-margin */
+  /* defaults match the old rendering: top block first line top=margin, bottom block last line bottom=H-margin */
   const drawBlock=(lines,which,pos,defCy)=>{
     if(!lines.length) return;
     const n=lines.length, bh=(n-1)*lineH+fs;
@@ -389,18 +389,18 @@ function paint(ctx,W,H){
 
 function lineWarn(r){
   const over=[];
-  if(r.t>3) over.push('위 텍스트가 '+r.t+'줄');
-  if(r.b>3) over.push('아래 텍스트가 '+r.b+'줄');
+  if(r.t>3) over.push('the top text is '+r.t+' lines');
+  if(r.b>3) over.push('the bottom text is '+r.b+' lines');
   const w=$('lineWarn');
   if(over.length){
     w.className='msg m-warn';
-    w.innerHTML='<strong>'+over.join(', ')+'</strong>입니다. 3줄이 넘으면 사진이 자막에 가려져요. 문구를 줄이거나 글자 크기를 낮춰 보세요. 크기를 자동으로 줄이지는 않습니다.';
+    w.innerHTML='Right now <strong>'+over.join(' and ')+'</strong>. Past 3 lines the caption starts hiding the photo. Try shortening the wording or lowering the text size — the size is never reduced automatically.';
   }else{
     w.className='hidden'; w.innerHTML='';
   }
 }
 
-/* ---------- 파일 읽기 ---------- */
+/* ---------- file reading ---------- */
 async function toBitmap(blob){
   try{ return await createImageBitmap(blob,{imageOrientation:'from-image'}); }
   catch(e){ try{ return await createImageBitmap(blob); }catch(e2){ return null; } }
@@ -411,27 +411,27 @@ async function addImg(f){
   const isGifFile=(f.type==='image/gif')||/\.gif$/i.test(f.name||'');
   if(isGifFile){
     say('m-warn', GIF_OK
-      ? 'GIF 파일이네요. 움짤에 자막을 넣으려면 위에서 <strong>GIF 자막 (움짤)</strong> 모드로 바꾼 뒤 다시 골라주세요.'
-      : '이 브라우저는 GIF 자막을 지원하지 않습니다 (크롬·엣지 필요).');
+      ? 'That is a GIF file. To caption an animated GIF, switch to <strong>GIF captions</strong> mode above and choose it again.'
+      : 'This browser can\'t caption GIFs (Chrome or Edge required).');
     return;
   }
   const bmp=await toBitmap(f);
   if(!bmp || !bmp.width || !bmp.height){
-    say('m-bad','<strong>'+esc(f.name||'파일')+'</strong>은 이미지로 읽지 못했습니다. PNG · JPG · WebP 파일을 골라주세요. 아이폰 HEIC는 크롬에서 열리지 않습니다.');
+    say('m-bad','<strong>'+esc(f.name||'This file')+'</strong> could not be read as an image. Please choose a PNG, JPG or WebP file. iPhone HEIC photos do not open in Chrome.');
     return;
   }
   if(img) closeBmp(img.bmp);
   const jpg=(f.type==='image/jpeg')||/\.jpe?g$/i.test(f.name||'');
   img={bmp,w:bmp.width,h:bmp.height,jpg,name:f.name||'image'};
   posTop=posBot=null;
-  say('m-ok','<strong>'+esc(img.name)+'</strong> ('+img.w.toLocaleString('ko-KR')+'×'+img.h.toLocaleString('ko-KR')+'px)를 불러왔습니다. 문구를 넣으면 미리보기에 바로 나타납니다.');
+  say('m-ok','Loaded <strong>'+esc(img.name)+'</strong> ('+img.w.toLocaleString('en-US')+'×'+img.h.toLocaleString('en-US')+'px). Type a caption and it appears in the preview right away.');
   showPanel();
 }
 
 async function addGif(f){
   const isGifFile=(f.type==='image/gif')||/\.gif$/i.test(f.name||'');
   if(!isGifFile){
-    say('m-bad','이 모드는 <strong>움직이는 GIF</strong> 전용입니다. 일반 사진은 <strong>사진에 텍스트</strong> 모드에서 골라주세요.');
+    say('m-bad','This mode is for <strong>animated GIFs</strong> only. For regular photos, choose the file in <strong>Caption a photo</strong> mode.');
     return;
   }
   let dec=null, frames=[];
@@ -444,7 +444,7 @@ async function addGif(f){
     if(!n) throw new Error('no frames');
     if(n>1000) throw new Error('too many frames');
     for(let i=0;i<n;i++){
-      $('pstat').textContent='프레임 '+(i+1)+'/'+n+' 읽는 중…';
+      $('pstat').textContent='Reading frame '+(i+1)+'/'+n+'…';
       $('pstat').classList.remove('hidden');
       const {image}=await dec.decode({frameIndex:i});
       const ms=image.duration ? Math.max(20,Math.round(image.duration/1000)) : 100;
@@ -454,7 +454,7 @@ async function addGif(f){
     }
   }catch(e){
     frames.forEach(fr=>closeBmp(fr.bmp));
-    say('m-bad','<strong>'+esc(f.name||'파일')+'</strong>을 GIF로 읽지 못했습니다. '+(String(e&&e.message).includes('too many')?'프레임이 1,000장을 넘는 GIF는 다루지 않습니다.':'움직이는 GIF 파일이 맞는지 확인해 주세요.'));
+    say('m-bad','<strong>'+esc(f.name||'This file')+'</strong> could not be read as a GIF. '+(String(e&&e.message).includes('too many')?'GIFs with more than 1,000 frames are not supported.':'Please check that it really is an animated GIF.'));
     if(dec) try{dec.close();}catch(e2){}
     $('pstat').classList.add('hidden');
     return;
@@ -465,7 +465,7 @@ async function addGif(f){
   gif={frames,w:frames[0].bmp.width,h:frames[0].bmp.height,name:f.name||'anim.gif'};
   posTop=posBot=null;
   const total=frames.reduce((a,fr)=>a+fr.ms,0)/1000;
-  say('m-ok','<strong>'+esc(gif.name)+'</strong> — '+frames.length+'프레임 · '+gif.w.toLocaleString('ko-KR')+'×'+gif.h.toLocaleString('ko-KR')+'px · 한 바퀴 '+(total<10?total.toFixed(1):Math.round(total))+'초. 문구를 넣고 저장하세요.');
+  say('m-ok','<strong>'+esc(gif.name)+'</strong> — '+frames.length+' frames · '+gif.w.toLocaleString('en-US')+'×'+gif.h.toLocaleString('en-US')+'px · '+(total<10?total.toFixed(1):Math.round(total))+'s per loop. Add your caption and save.');
   showPanel();
 }
 
@@ -477,11 +477,11 @@ function showPanel(){
   preview();
 }
 function setGoLabel(){
-  $('go').textContent = mode==='gif' ? 'GIF로 저장 (meme.gif)'
-    : '짤 저장 (meme.'+(img&&img.jpg?'jpg':'png')+')';
+  $('go').textContent = mode==='gif' ? 'Save as GIF (meme.gif)'
+    : 'Save meme (meme.'+(img&&img.jpg?'jpg':'png')+')';
 }
 
-/* ---------- 미리보기 ---------- */
+/* ---------- preview ---------- */
 function hideOut(){
   if(outUrl){ URL.revokeObjectURL(outUrl); outUrl=null; }
   $('outImg').classList.add('hidden');
@@ -503,7 +503,7 @@ function outlineBlock(b){
   x.strokeStyle='rgba(255,255,255,.95)'; x.strokeRect(rx,ry,rw,rh);
   x.restore();
 }
-/* 현재 상태로 미리보기 캔버스를 한 번 그린다 — 드래그와 GIF 재생 루프가 같이 쓴다 */
+/* draw the preview canvas once for the current state — shared by dragging and the GIF playback loop */
 function pvDraw(first){
   if(!pvCtx) return;
   if(mode==='img'){
@@ -530,8 +530,8 @@ function preview(){
     const c=$('pv'); c.width=pvW; c.height=pvH;
     pvCtx=c.getContext('2d');
     pvDraw(true);
-    $('pvcap').innerHTML=esc(img.name)+' · 저장은 원본 <strong>'+img.w.toLocaleString('ko-KR')+'×'+img.h.toLocaleString('ko-KR')+'px</strong> 그대로입니다'
-      +(s<1?' · 미리보기는 '+Math.round(s*100)+'%로 줄여서 표시':'');
+    $('pvcap').innerHTML=esc(img.name)+' · saves at the original <strong>'+img.w.toLocaleString('en-US')+'×'+img.h.toLocaleString('en-US')+'px</strong>'
+      +(s<1?' · preview shown at '+Math.round(s*100)+'%':'');
   }else{
     if(!gif) return;
     const s=Math.min(1,760/gif.w,420/gif.h);
@@ -553,11 +553,11 @@ function preview(){
     };
     step();
     const os=outGifSize();
-    $('pvcap').innerHTML=esc(gif.name)+' · '+gif.frames.length+'프레임 · 저장 크기 <strong>'+os[0]+'×'+os[1]+'px</strong> · 무한 반복 유지';
+    $('pvcap').innerHTML=esc(gif.name)+' · '+gif.frames.length+' frames · output size <strong>'+os[0]+'×'+os[1]+'px</strong> · infinite loop preserved';
   }
 }
 
-/* ---------- 드래그로 텍스트 위치 옮기기 ---------- */
+/* ---------- drag to move the text ---------- */
 function toCanvas(e){
   const c=$('pv');
   if(c.classList.contains('hidden')||!pvW||!pvH) return null;
@@ -594,7 +594,7 @@ function hitBlock(p){
     if(!p) return;
     if(drag){
       const cx=p.x+drag.offx, cy=p.y+drag.offy;
-      const v={x:cx/pvW*100, y:cy/pvH*100};   /* 클램프는 paint()가 한다 — 미리보기와 저장이 같은 규칙 */
+      const v={x:cx/pvW*100, y:cy/pvH*100};   /* clamping happens in paint() — preview and save share the rule */
       if(drag.which==='top') posTop=v; else posBot=v;
       pvDraw();
     }else{
@@ -611,7 +611,7 @@ function outGifSize(){
   return [Math.max(1,Math.round(gif.w*s)), Math.max(1,Math.round(gif.h*s))];
 }
 
-/* ---------- 저장 ---------- */
+/* ---------- saving ---------- */
 function download(url,fn){
   const a=document.createElement('a');
   a.href=url; a.download=fn; document.body.appendChild(a); a.click(); a.remove();
@@ -627,12 +627,12 @@ async function saveImg(){
   c.width=c.height=1;
   if(!blob) throw new Error('encode');
   const fn='meme.'+(img.jpg?'jpg':'png');
-  window.__lastBlob=blob; window.__lastName=fn;   /* 검증용 */
+  window.__lastBlob=blob; window.__lastName=fn;   /* for verification */
   const u=URL.createObjectURL(blob);
   download(u,fn);
   setTimeout(()=>URL.revokeObjectURL(u),4000);
   $('done').className='msg m-ok';
-  $('done').innerHTML='<strong>'+fn+'</strong> ('+kb(blob.size)+') 을(를) 저장했습니다. 원본 해상도 '+img.w.toLocaleString('ko-KR')+'×'+img.h.toLocaleString('ko-KR')+'px 그대로입니다.';
+  $('done').innerHTML='Saved <strong>'+fn+'</strong> ('+kb(blob.size)+') at the original resolution of '+img.w.toLocaleString('en-US')+'×'+img.h.toLocaleString('en-US')+'px.';
 }
 async function saveGif(){
   if(!gif) return;
@@ -644,7 +644,7 @@ async function saveGif(){
   const enc=GIFEncoder();
   const n=gif.frames.length;
   for(let i=0;i<n;i++){
-    $('pstat').textContent='프레임 '+(i+1)+'/'+n+' 인코딩 중…';
+    $('pstat').textContent='Encoding frame '+(i+1)+'/'+n+'…';
     $('prog').style.width=(i/n*100)+'%';
     await new Promise(r=>setTimeout(r));
     x.drawImage(gif.frames[i].bmp,0,0,W,H);
@@ -657,7 +657,7 @@ async function saveGif(){
   enc.finish();
   c.width=c.height=1;
   const bytes=enc.bytes();
-  window.__lastGif=bytes;                          /* 검증용 */
+  window.__lastGif=bytes;                          /* for verification */
   const blob=new Blob([bytes],{type:'image/gif'});
   pvToken++;
   if(outUrl) URL.revokeObjectURL(outUrl);
@@ -665,10 +665,10 @@ async function saveGif(){
   $('pv').classList.add('hidden');
   $('outImg').src=outUrl;
   $('outImg').classList.remove('hidden');
-  $('pvcap').textContent='완성된 GIF를 재생 중입니다 ('+W+'×'+H+'px · '+kb(blob.size)+')';
+  $('pvcap').textContent='Playing the finished GIF ('+W+'×'+H+'px · '+kb(blob.size)+')';
   $('done').className='msg m-ok';
-  $('done').innerHTML='<strong>meme.gif</strong> — '+n+'프레임 · '+W+'×'+H+'px · <strong>'+kb(blob.size)+'</strong> '
-    +'<a class="btn sm" href="'+outUrl+'" download="meme.gif" style="margin-left:8px">내려받기</a>';
+  $('done').innerHTML='<strong>meme.gif</strong> — '+n+' frames · '+W+'×'+H+'px · <strong>'+kb(blob.size)+'</strong> '
+    +'<a class="btn sm" href="'+outUrl+'" download="meme.gif" style="margin-left:8px">Download</a>';
 }
 async function run(){
   if(busy) return;
@@ -682,7 +682,7 @@ async function run(){
     else await saveGif();
   }catch(err){
     $('done').className='msg m-bad';
-    $('done').innerHTML='저장 중 문제가 생겼습니다. 파일을 다시 골라 시도해 보세요. ('+esc(err&&err.message||err)+')';
+    $('done').innerHTML='Something went wrong while saving. Please choose the file again and retry. ('+esc(err&&err.message||err)+')';
   }finally{
     busy=false; $('go').disabled=false;
     $('pstat').classList.add('hidden'); $('pstat').textContent='';
@@ -690,7 +690,7 @@ async function run(){
   }
 }
 
-/* ---------- 모드 ---------- */
+/* ---------- mode ---------- */
 function setMode(m){
   if(m==='gif'&&!GIF_OK) return;
   mode=m;
@@ -698,8 +698,8 @@ function setMode(m){
   $('done').className='hidden';
   pvToken++;
   $('shrinkWrap').classList.toggle('hidden',m!=='gif');
-  $('dropT').textContent = m==='gif'?'GIF 파일을 여기에 놓으세요':'이미지를 여기에 놓으세요';
-  $('dropD').textContent = m==='gif'?'클릭해서 고를 수도 있습니다 · 움직이는 GIF 1개':'클릭해서 고를 수도 있습니다 · PNG · JPG · WebP · 1장';
+  $('dropT').textContent = m==='gif'?'Drop a GIF file here':'Drop an image here';
+  $('dropD').textContent = m==='gif'?'Or click to choose one · 1 animated GIF':'Or click to choose one · PNG · JPG · WebP · 1 file';
   $('file').setAttribute('accept', m==='gif'?'image/gif':'image/png,image/jpeg,image/webp');
   const has = m==='gif'?!!gif:!!img;
   $('opts').classList.toggle('hidden',!has);
@@ -709,7 +709,7 @@ function setMode(m){
   else{ hideOut(); lineWarn({t:0,b:0}); }
 }
 
-/* ---------- UI 배선 ---------- */
+/* ---------- UI wiring ---------- */
 $('drop').addEventListener('click',()=>$('file').click());
 $('file').addEventListener('change',e=>{
   const f=e.target.files&&e.target.files[0];

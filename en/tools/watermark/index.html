@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>이미지 워터마크 넣기 — 텍스트·로고, 여러 장 한 번에 | 까치툴</title>
-<meta name="description" content="사진과 문서 사본에 워터마크를 넣습니다. 문구나 로고를 골라 크기·색·불투명도를 정하고, 원하는 위치 한 곳에 넣거나 바둑판으로 전면에 깔 수 있어요. 신분증 사본의 제출용 표시로도 씁니다. 여러 장을 한 번에 일괄 처리해 ZIP으로 받고, 파일은 서버로 업로드되지 않습니다.">
-<link rel="canonical" href="https://www.kmagpie.com/tools/watermark/">
-<meta property="og:title" content="이미지 워터마크 넣기 — 텍스트·로고 일괄 삽입">
-<meta property="og:description" content="문구나 로고를 원본 해상도 그대로 얹습니다. 여러 장 한 번에, 서버 전송 없이 브라우저에서 처리.">
+<title>Add a Watermark to Photos Online — Text or Logo, Batch, No Upload | K-magpie</title>
+<meta name="description" content="Stamp text or a logo onto photos and document scans in your browser. Set the size, color, opacity and angle, place it in one corner or tile it across the whole image, and batch-process many photos into a ZIP. Great for marking ID and document copies before submitting them. Files never leave your browser — no upload, no sign-up.">
+<link rel="canonical" href="https://www.kmagpie.com/en/tools/watermark/">
+<meta property="og:title" content="Add a Watermark to Photos — Text or Logo, Batch Processing">
+<meta property="og:description" content="Text or logo watermarks at full original resolution. Many photos at once, everything in your browser — nothing is uploaded.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://www.kmagpie.com/tools/watermark/">
+<meta property="og:url" content="https://www.kmagpie.com/en/tools/watermark/">
 <style>
   :root{
     --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
@@ -163,25 +163,25 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
 <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
-<meta property="og:site_name" content="까치툴">
+<meta property="og:site_name" content="Kmagpie Tools">
 <!--HEAD:E-->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="wrap">
 
-<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › 이미지 워터마크</p>
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/en/tools/">Kmagpie Tools</a> › Image Watermark</p>
 <!--LANG:S-->
-<p class="langsw"><a href="/en/tools/watermark/" hreflang="en" lang="en">English version</a></p>
+<p class="langsw"><a href="/tools/watermark/" hreflang="ko" lang="ko">한국어로 보기</a></p>
 <!--LANG:E-->
 
-<h1>이미지 워터마크 넣기</h1>
-<p class="sub">사진이나 문서 사본에 <strong>문구나 로고를 얹습니다.</strong> 한 곳에만 넣을 수도 있고 바둑판으로 전면에 깔 수도 있어요. 여러 장을 한 번에 처리하고 <strong>원본 해상도 그대로</strong> 저장합니다. 파일은 브라우저 밖으로 나가지 않습니다.</p>
+<h1>Add a Watermark to Images</h1>
+<p class="sub">Lay <strong>text or a logo</strong> over photos and document scans. Place it in one spot or tile it across the whole image, process many photos at once, and save at the <strong>full original resolution</strong>. Files never leave your browser — no upload, no sign-up.</p>
 
 <div class="drop" id="drop">
   <span class="ic">🖼️</span>
-  <div class="t">이미지를 여기에 놓으세요</div>
-  <div class="d">클릭해서 고를 수도 있습니다 · PNG · JPG · WebP · 여러 장 동시 선택 가능</div>
+  <div class="t">Drop images here</div>
+  <div class="d">Or click to choose · PNG · JPG · WebP · multiple files at once</div>
   <input type="file" id="file" accept="image/png,image/jpeg,image/webp,image/*" multiple class="hidden">
 </div>
 
@@ -192,175 +192,175 @@
 <div class="panel hidden" id="opts">
   <div class="row">
     <div class="col" style="min-width:280px">
-      <label class="f">워터마크 종류</label>
+      <label class="f">Watermark type</label>
       <div class="seg sm" id="mode">
-        <button data-v="text" class="on">텍스트</button>
-        <button data-v="logo">이미지 (로고)</button>
+        <button data-v="text" class="on">Text</button>
+        <button data-v="logo">Image (logo)</button>
       </div>
 
       <div id="paneText">
         <div class="fld">
-          <label class="f">문구</label>
+          <label class="f">Text</label>
           <input type="text" id="txt" value="© kmagpie.com" maxlength="80">
         </div>
         <div class="fld">
-          <label class="f">크기 <span class="val" id="szV">5</span>% <span style="text-transform:none;letter-spacing:0;font-weight:400">(긴 변 대비)</span></label>
+          <label class="f">Size <span class="val" id="szV">5</span>% <span style="text-transform:none;letter-spacing:0;font-weight:400">(of the longer side)</span></label>
           <input type="range" id="sz" min="1" max="20" step="0.5" value="5">
         </div>
         <div class="fld">
-          <label class="f">색상</label>
+          <label class="f">Color</label>
           <div class="inline">
             <input type="color" id="color" value="#ffffff">
-            <span id="colorName" class="unit">흰색</span>
+            <span id="colorName" class="unit">White</span>
           </div>
           <label class="chk"><input type="checkbox" id="outline" checked>
-            <span><b>외곽선 넣기</b><em>글자 테두리를 반대 색으로 얇게 둘러서 밝은 배경과 어두운 배경 모두에서 보이게 합니다.</em></span></label>
+            <span><b>Add outline</b><em>Draws a thin contrasting border around the letters so they stay visible on both light and dark backgrounds.</em></span></label>
         </div>
       </div>
 
       <div id="paneLogo" class="hidden">
         <div class="fld">
-          <label class="f">로고 파일</label>
+          <label class="f">Logo file</label>
           <div class="inline">
-            <button class="btn g sm" id="pickLogo" type="button">로고 이미지 고르기</button>
-            <span id="logoName" class="unit">아직 고르지 않음</span>
+            <button class="btn g sm" id="pickLogo" type="button">Choose a logo image</button>
+            <span id="logoName" class="unit">None chosen yet</span>
           </div>
           <input type="file" id="logoFile" accept="image/png,image/*" class="hidden">
-          <p class="note">배경이 투명한 PNG가 가장 깔끔합니다.</p>
+          <p class="note">A PNG with a transparent background looks cleanest.</p>
         </div>
         <div class="fld">
-          <label class="f">크기 <span class="val" id="lszV">15</span>% <span style="text-transform:none;letter-spacing:0;font-weight:400">(긴 변 대비)</span></label>
+          <label class="f">Size <span class="val" id="lszV">15</span>% <span style="text-transform:none;letter-spacing:0;font-weight:400">(of the longer side)</span></label>
           <input type="range" id="lsz" min="1" max="50" step="1" value="15">
         </div>
       </div>
 
       <div class="fld">
-        <label class="f">불투명도 <span class="val" id="opV">40</span>%</label>
+        <label class="f">Opacity <span class="val" id="opV">40</span>%</label>
         <input type="range" id="op" min="5" max="100" step="1" value="40">
       </div>
       <div class="fld">
-        <label class="f">회전 <span class="val" id="angV">0</span>°</label>
+        <label class="f">Rotation <span class="val" id="angV">0</span>°</label>
         <input type="range" id="ang" min="-90" max="90" step="1" value="0">
       </div>
     </div>
 
     <div class="col" style="min-width:280px">
-      <label class="f">배치</label>
+      <label class="f">Layout</label>
       <div class="seg sm" id="layout">
-        <button data-v="one" class="on">한 곳</button>
-        <button data-v="tile">바둑판 반복</button>
+        <button data-v="one" class="on">One spot</button>
+        <button data-v="tile">Tile across</button>
       </div>
 
       <div id="paneOne">
         <div class="fld">
-          <label class="f">위치</label>
+          <label class="f">Position</label>
           <div class="grid9" id="pos">
-            <button data-p="0" type="button" aria-label="좌상"></button>
-            <button data-p="1" type="button" aria-label="상"></button>
-            <button data-p="2" type="button" aria-label="우상"></button>
-            <button data-p="3" type="button" aria-label="좌"></button>
-            <button data-p="4" type="button" aria-label="중앙"></button>
-            <button data-p="5" type="button" aria-label="우"></button>
-            <button data-p="6" type="button" aria-label="좌하"></button>
-            <button data-p="7" type="button" aria-label="하"></button>
-            <button data-p="8" class="on" type="button" aria-label="우하"></button>
+            <button data-p="0" type="button" aria-label="Top left"></button>
+            <button data-p="1" type="button" aria-label="Top"></button>
+            <button data-p="2" type="button" aria-label="Top right"></button>
+            <button data-p="3" type="button" aria-label="Left"></button>
+            <button data-p="4" type="button" aria-label="Center"></button>
+            <button data-p="5" type="button" aria-label="Right"></button>
+            <button data-p="6" type="button" aria-label="Bottom left"></button>
+            <button data-p="7" type="button" aria-label="Bottom"></button>
+            <button data-p="8" class="on" type="button" aria-label="Bottom right"></button>
           </div>
         </div>
         <div class="fld">
-          <label class="f">여백 <span class="val" id="mgV">3</span>% <span style="text-transform:none;letter-spacing:0;font-weight:400" id="mgPx"></span></label>
+          <label class="f">Margin <span class="val" id="mgV">3</span>% <span style="text-transform:none;letter-spacing:0;font-weight:400" id="mgPx"></span></label>
           <input type="range" id="mg" min="0" max="20" step="0.5" value="3">
         </div>
       </div>
 
       <div id="paneTile" class="hidden">
         <div class="fld">
-          <label class="f">간격 <span class="val" id="gapV">12</span>%</label>
+          <label class="f">Spacing <span class="val" id="gapV">12</span>%</label>
           <input type="range" id="gap" min="2" max="60" step="1" value="12">
-          <p class="note">간격을 좁힐수록 촘촘하게 깔립니다. 문서 사본이라면 촘촘한 편이 잘라내기 어렵습니다.</p>
+          <p class="note">The tighter the spacing, the denser the tiling. For document copies, a dense pattern is harder to crop away.</p>
         </div>
       </div>
 
       <div class="fld">
-        <label class="f">저장 형식</label>
+        <label class="f">Save format</label>
         <div class="seg sm" id="fmt">
           <button data-v="png" class="on">PNG</button>
           <button data-v="jpg">JPG</button>
         </div>
       </div>
       <div class="fld hidden" id="qBox">
-        <label class="f">JPG 품질 <span class="val" id="qV">92</span></label>
+        <label class="f">JPG quality <span class="val" id="qV">92</span></label>
         <input type="range" id="q" min="40" max="100" step="1" value="92">
       </div>
     </div>
   </div>
 
   <div class="fld">
-    <label class="f">미리보기</label>
+    <label class="f">Preview</label>
     <div class="pvbox"><canvas id="pv" width="10" height="10"></canvas></div>
     <p class="pvcap" id="pvcap"></p>
   </div>
 
   <div class="btns">
-    <button class="btn" id="go">워터마크 넣어 저장</button>
-    <button class="btn g" id="more">이미지 더 넣기</button>
-    <button class="btn g" id="reset">처음부터</button>
+    <button class="btn" id="go">Watermark and save</button>
+    <button class="btn g" id="more">Add more images</button>
+    <button class="btn g" id="reset">Start over</button>
   </div>
 </div>
 
 <div class="bar hidden" id="progBar"><i id="prog"></i></div>
 <div id="done" class="hidden"></div>
 
-<p class="gist">사진이나 신분증 사본 위에 제출용 문구·로고 워터마크를 여러 장 한 번에 얹습니다. 위치와 불투명도, 바둑판 반복을 미리보기로 조절할 수 있습니다. 민감한 사본도 서버 전송 없이 브라우저 안에서만 처리되고 기록이 남지 않습니다.</p>
+<p class="gist">Stamp a caption or logo watermark onto photos, or onto ID and document copies before you hand them over — many images in one batch. Adjust position, opacity and tiling with a live preview. Files never leave your browser: no upload, no sign-up, and nothing is kept, so even sensitive copies stay on your machine.</p>
 
-<details class="fold"><summary><h2>워터마크를 넣는 두 가지 이유</h2></summary><div class="fx">
-<p>하나는 흔히 아는 쪽입니다. 직접 찍은 사진이나 만든 그림을 블로그나 쇼핑몰에 올릴 때 출처를 남겨두는 용도예요. 누가 퍼가더라도 문구가 같이 따라가니 어디서 온 이미지인지는 남습니다.</p>
-<p>다른 하나가 한국에서는 실제로 더 자주 쓰입니다. <strong>신분증이나 통장, 계약서 사본을 어딘가에 제출할 때 "○○은행 제출용"처럼 용도를 적어 얹는 것</strong>입니다. 은행 대출, 통신사 개통, 부동산 계약, 각종 회원 가입에서 주민등록증 사본을 요구받는 일이 잦은데, 사본이 한 번 넘어가면 그 파일이 어디까지 돌아다니는지 알 수 없습니다. 제출처와 날짜를 사본 위에 적어두면 그 파일이 다른 곳에 그대로 재사용될 때 티가 납니다.</p>
-<p>이건 법적으로 무엇을 보장하는 장치가 아니라 <strong>실무적인 예방책</strong>입니다. 사본을 받아 든 쪽이 다른 용도로 쓰기 껄끄럽게 만들고, 나중에 문제가 생겼을 때 어느 경로로 흘러간 사본인지 짐작할 단서를 남기는 정도예요. 제출처에 따라 원본 사본만 받는 곳도 있으니, 문구를 얹은 사본을 받아주는지 미리 확인하는 편이 좋습니다.</p>
+<details class="fold"><summary><h2>The two reasons people watermark images</h2></summary><div class="fx">
+<p>The first is the familiar one. When you post photos you took or artwork you made to a blog, a portfolio or a shop, a watermark keeps your name attached. If someone reposts the image, the credit travels with it.</p>
+<p>The second is less talked about but just as practical: <strong>marking copies of IDs, bank statements or contracts with their purpose before submitting them</strong> — something like "For ACME Bank verification only — 2026-08-06" written across the scan. Banks, landlords, carriers and sign-up processes routinely ask for a copy of your ID, and once a copy leaves your hands you have no idea where that file travels. Writing the recipient and the date on the copy makes it obvious if that exact file ever resurfaces somewhere it shouldn't.</p>
+<p>To be clear, this is not a legal guarantee of anything — it is <strong>a practical precaution</strong>. It makes the copy awkward to reuse for any other purpose, and if something does go wrong later, the marking hints at which channel the copy leaked through. Some recipients only accept clean copies, so check first that a marked copy is acceptable.</p>
 </div></details>
 
-<details class="fold"><summary><h2>어디에 넣어야 지워지지 않나</h2></summary><div class="fx">
-<p>구석에 작게 넣은 워터마크는 사실상 없는 것과 같습니다. 이미지를 조금만 잘라내면 그대로 사라지니까요. 실제로 무단 사용을 막고 싶다면 <strong>피사체 위를 가로지르게</strong> 넣거나, 위에서 고를 수 있는 <strong>바둑판 반복</strong>으로 화면 전체에 깔아야 합니다. 제거하려면 이미지 자체를 훼손해야 하는 위치여야 의미가 있어요.</p>
-<p>다만 완벽한 방어는 없습니다. 요즘은 지우개 도구나 생성형 보정 기능으로 워터마크를 꽤 그럴듯하게 지웁니다. 특히 배경이 단순한 사진일수록 쉽게 지워져요. 그러니 목적을 <strong>"막는 것"이 아니라 "귀찮게 만드는 것"</strong>으로 잡는 게 현실적입니다. 대충 퍼가려던 사람은 포기하고, 굳이 지우려는 사람은 시간을 쓰게 되는 정도의 효과입니다.</p>
-<p>제출용 사본이라면 이야기가 조금 다릅니다. 이 경우엔 문구가 읽히는 게 중요하지 숨기는 게 목적이 아니므로, 얼굴이나 사진 부분은 피하고 이름·번호 같은 글자 위를 살짝 겹치게 얹으면 됩니다. 정보를 못 읽을 정도로 진하게 덮으면 제출처에서 반려당합니다.</p>
+<details class="fold"><summary><h2>Where to put it so it can't just be cropped off</h2></summary><div class="fx">
+<p>A small watermark tucked into a corner is practically no watermark at all — a light crop removes it completely. If you actually want to deter unauthorized use, run the text <strong>across the subject itself</strong>, or use the <strong>tile layout</strong> above to blanket the whole frame. A watermark only means something when removing it requires damaging the image.</p>
+<p>That said, no watermark is bulletproof. Modern eraser tools and generative fill can remove watermarks convincingly, especially on photos with simple backgrounds. The realistic goal is <strong>not "prevent" but "inconvenience"</strong>: casual repost-and-run users give up, and anyone determined enough at least has to spend real time on it.</p>
+<p>Document copies are a slightly different game. There the text is meant to be read, not hidden, so keep it clear of faces and photos and let it lightly overlap printed details like names and numbers. Cover the information so heavily that it can't be read, though, and the recipient will reject the copy.</p>
 </div></details>
 
-<details class="fold"><summary><h2>불투명도와 가독성</h2></summary><div class="fx">
-<p>워터마크는 진하면 사진을 버리고 옅으면 의미가 없습니다. <strong>40% 안팎에서 시작해</strong> 미리보기를 보면서 올리고 내리는 게 빠릅니다. 감상용 사진이라면 20~30%까지 낮춰도 되고, 사본에 제출용 표시를 남기는 거라면 50~60%로 확실히 읽히게 하는 편이 낫습니다.</p>
-<p>색은 배경에 따라 갈립니다. 밝은 사진에는 흰 글자가 묻히고 어두운 사진에는 검은 글자가 묻혀요. 그래서 <strong>외곽선 넣기</strong>를 켜두면 글자 테두리에 반대 색이 얇게 들어가서 어느 쪽 배경에서도 읽힙니다. 사진 여러 장을 한 번에 처리할 때는 배경 밝기가 제각각이니 켜두는 편이 안전합니다.</p>
-<p>크기는 픽셀이 아니라 <strong>이미지 긴 변에 대한 비율</strong>로 정합니다. 4000픽셀짜리 사진과 800픽셀짜리 사진에 같은 픽셀 크기로 글자를 넣으면 한쪽은 안 보이고 한쪽은 화면을 덮어버리기 때문이에요. 비율로 지정하면 크기가 제각각인 사진 묶음에도 비슷한 비중으로 들어갑니다.</p>
+<details class="fold"><summary><h2>Opacity and readability</h2></summary><div class="fx">
+<p>Too dark and the watermark ruins the photo; too faint and it means nothing. <strong>Start around 40%</strong> and nudge it up or down against the preview. For photos meant to be enjoyed, 20–30% is enough; for a purpose notice on a document copy, 50–60% keeps it unmistakably legible.</p>
+<p>Color depends on the background: white text drowns in bright photos and black text drowns in dark ones. That is what <strong>Add outline</strong> is for — a thin contrasting border around the letters keeps them readable on either. When batch-processing a mixed set of photos with different brightness, leaving it on is the safe move.</p>
+<p>Size is set not in pixels but as <strong>a percentage of the image's longer side</strong>. The same pixel size that vanishes on a 4,000-pixel photo would smother an 800-pixel one; a percentage keeps the watermark proportionally similar across a folder of mismatched sizes.</p>
 </div></details>
 
-<details class="fold"><summary><h2>파일은 업로드되지 않습니다</h2></summary><div class="fx">
-<p>이 도구가 다루는 게 신분증 사본이나 계약서 같은 것들이라 이 점이 중요합니다. 이미지를 고르는 순간부터 저장까지 <strong>모든 처리가 브라우저 안에서 일어나고, 파일이 서버로 전송되지 않습니다.</strong> 워터마크를 그리는 것도 브라우저에 내장된 캔버스 기능이라 외부에 아무것도 보내지 않아요.</p>
-<p>기록도 남기지 않습니다. 고른 이미지나 입력한 문구를 브라우저 저장소에 저장하지 않기 때문에 <strong>페이지를 닫으면 아무것도 남지 않습니다.</strong> 공용 PC에서 급하게 사본을 만들어야 할 때도 탭만 닫으면 됩니다. 대신 새로고침하면 처음부터 다시 올려야 해요.</p>
+<details class="fold"><summary><h2>Your files are never uploaded</h2></summary><div class="fx">
+<p>Because this tool routinely handles things like ID copies and contracts, this point matters most. From the moment you pick an image to the moment you save, <strong>every step happens inside your browser and no file is sent to any server.</strong> Even the watermark drawing uses the browser's built-in canvas — nothing goes out over the network.</p>
+<p>Nothing is recorded either. The images you choose and the text you type are never written to browser storage, so <strong>closing the page leaves nothing behind.</strong> Making a quick marked copy on a shared computer is fine — just close the tab when you are done. The flip side: refresh the page and you start from scratch.</p>
 </div></details>
 
-<details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
-<h3>워터마크가 너무 크거나 작게 나와요</h3>
-<p>크기가 <strong>긴 변 기준</strong>이라 그렇습니다. 가로로 긴 사진에서는 가로 길이의 5%지만, 세로로 긴 사진에서는 세로 길이의 5%가 되기 때문에 가로 폭에 비해 커 보입니다. 가로 사진과 세로 사진이 섞여 있으면 미리보기에서 세로 사진을 골라 확인한 뒤 크기를 정하는 게 안전합니다. 썸네일을 누르면 그 이미지로 미리보기가 바뀝니다.</p>
-<h3>JPG로 저장했더니 글자 가장자리가 지저분해요</h3>
-<p>JPG 압축은 경계가 뚜렷한 부분에서 티가 많이 납니다. 글자 주변에 얼룩덜룩한 자국이 생기는 게 그 때문이에요. 품질을 95 이상으로 올리거나 <strong>PNG로 저장</strong>하면 사라집니다. 다만 사진을 PNG로 저장하면 용량이 몇 배 커지니, 용량이 문제라면 품질만 올려서 써 보세요.</p>
-<h3>투명 배경 PNG 로고가 검게 나와요</h3>
-<p>로고 파일이 실제로는 투명하지 않은 경우가 대부분입니다. 배경이 흰색으로 채워진 PNG를 쓰면 그 흰 사각형이 그대로 얹히고, 어두운 사진 위에서는 반대로 로고 자체가 안 보이기도 해요. 이미지 뷰어에서 열었을 때 배경이 회색 격자무늬로 보이면 투명한 PNG입니다. 투명 배경이 아니라면 <a href="/tools/remove-bg/">배경 제거</a>로 먼저 다듬은 뒤 쓰세요.</p>
-<h3>여러 장 처리가 느려요</h3>
-<p>모든 작업이 브라우저에서, 그것도 원본 해상도 그대로 일어나기 때문입니다. 4000픽셀이 넘는 사진은 한 장에 수천만 개의 픽셀을 다시 그려야 해서 시간이 걸려요. 메모리가 터지지 않도록 <strong>한 장씩 순서대로</strong> 처리하고 끝난 이미지는 바로 메모리에서 비웁니다. 수십 장을 한 번에 넣기보다 10~20장씩 나눠 돌리는 편이 안정적입니다.</p>
-<h3>저장한 이미지 크기가 원본과 다른가요</h3>
-<p>같습니다. 화면의 미리보기만 보기 편하게 줄여서 보여줄 뿐, <strong>저장되는 파일은 원본 해상도 그대로</strong>입니다. 크기를 줄이고 싶다면 <a href="/tools/image-compress/">이미지 용량 줄이기</a>를 따로 쓰세요.</p>
+<details class="fold"><summary><h2>Troubleshooting</h2></summary><div class="fx">
+<h3>The watermark comes out too big or too small</h3>
+<p>The size is measured against <strong>the longer side</strong>. On a landscape photo, 5% means 5% of the width — but on a portrait photo it means 5% of the height, which looks large relative to the narrow width. With a mix of orientations, click a portrait thumbnail to preview it before settling on a size. Clicking any thumbnail switches the preview to that image.</p>
+<h3>The text edges look dirty after saving as JPG</h3>
+<p>JPG compression shows most around sharp edges, which is exactly what text is — hence the smudgy halo around the letters. Raise the quality to 95 or higher, or <strong>save as PNG</strong> and it disappears. PNG makes photos several times larger, though, so if file size matters, try just raising the JPG quality first.</p>
+<h3>My transparent PNG logo shows up as a solid box</h3>
+<p>Usually the logo file is not actually transparent. A PNG with a filled white background stamps that white rectangle onto the photo, and on dark photos the logo itself may disappear instead. Open the file in an image viewer: if the background shows a gray checkerboard, it is transparent. If not, run it through a background-removal tool first.</p>
+<h3>Processing many images is slow</h3>
+<p>Everything happens in your browser, and at full original resolution. A 4,000-pixel photo means tens of millions of pixels redrawn per image. To avoid running out of memory the tool processes <strong>one image at a time</strong> and releases each from memory as it finishes. Batches of 10–20 at a time run more reliably than dumping in dozens at once.</p>
+<h3>Is the saved image a different size from my original?</h3>
+<p>No — it is identical. Only the on-screen preview is scaled down for convenience; <strong>the saved file keeps the full original resolution</strong>. If you want smaller files, run them through an image compressor separately afterwards.</p>
 </div></details>
 
 <!--REL:S-->
-<h2>함께 쓰면 좋은 도구</h2>
+<h2>Related tools</h2>
 <div class="rel">
-  <a href="/tools/meme/"><strong>짤 만들기</strong><span>사진에 굵은 텍스트, 움짤 자막</span></a>
-  <a href="/tools/image-compress/"><strong>이미지 용량 줄이기</strong><span>목표 용량에 자동으로 맞춤</span></a>
-  <a href="/tools/resize/"><strong>이미지 크기 조절</strong><span>정확한 px 지정, 비율 자르기</span></a>
+  <a href="/en/tools/meme/"><strong>Meme Generator</strong><span>Bold captions on images and GIFs</span></a>
+  <a href="/en/tools/image-compress/"><strong>Compress Images</strong><span>Auto-fit a target file size</span></a>
+  <a href="/en/tools/img2pdf/"><strong>Image to PDF</strong><span>Combine photos into one PDF</span></a>
 </div>
-<p class="rel-all"><a href="/tools/">까치툴 도구 33개 전체 보기 →</a></p>
+<p class="rel-all"><a href="/en/tools/">See all 18 English tools →</a></p>
 <!--REL:E-->
 
 <footer>
-  <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 파일은 전송·저장되지 않습니다.</p>
-  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+  <p>Kmagpie Tools · Everything runs in your browser; files are never uploaded or stored.</p>
+  <p><a href="/">Home</a> · <a href="/en/tools/">Other tools</a> · <a href="/en/disclaimer.html">Disclaimer</a> · <a href="/privacy-policy.html">Privacy Policy</a></p>
 </footer>
 
 </div>
@@ -369,7 +369,7 @@
 (function(){
 const $=id=>document.getElementById(id);
 
-/* ---------- 내장 ZIP (store 방식, 압축 없음) ---------- */
+/* ---------- built-in ZIP (store method, no compression) ---------- */
 const CRC=(()=>{const t=new Uint32Array(256);
   for(let i=0;i<256;i++){let c=i;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[i]=c>>>0;}return t;})();
 function crc32(u8){let c=0xFFFFFFFF;for(let i=0;i<u8.length;i++)c=CRC[(c^u8[i])&0xFF]^(c>>>8);return (c^0xFFFFFFFF)>>>0;}
@@ -399,7 +399,7 @@ function zipStore(entries){
   return new Blob([...locals,...centrals,eo],{type:'application/zip'});
 }
 
-/* ---------- 상태 ---------- */
+/* ---------- state ---------- */
 const FONT='"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR","Pretendard",sans-serif';
 let items=[], cur=0, logo=null, logoLabel='';
 let mode='text', layout='one', pos=8, fmt='png', busy=false;
@@ -416,7 +416,7 @@ function invert(hex){
   return '#'+n.toString(16).padStart(6,'0');
 }
 
-/* ---------- 파일 읽기 ---------- */
+/* ---------- file reading ---------- */
 function looksImage(f){
   if(!f) return false;
   if(f.type && /^image\//.test(f.type)) return !/svg/.test(f.type);
@@ -443,9 +443,9 @@ async function add(list){
     added++;
   }
   if(bad.length){
-    say('m-bad',`<strong>${esc(bad[0])}</strong>${bad.length>1?` 외 ${bad.length-1}개`:''}는 이미지로 읽지 못했습니다. PNG · JPG · WebP 파일을 올려주세요.`);
+    say('m-bad',`<strong>${esc(bad[0])}</strong>${bad.length>1?` and ${bad.length-1} more`:''} could not be read as an image. Please upload PNG, JPG or WebP files.`);
   }else if(added){
-    say('m-ok',`이미지 <strong>${items.length}장</strong>을 불러왔습니다. 설정을 바꾸면 미리보기가 바로 갱신됩니다.`);
+    say('m-ok',`Loaded <strong>${items.length} image${items.length>1?'s':''}</strong>. The preview updates as soon as you change a setting.`);
   }
   if(!items.length){ $('opts').classList.add('hidden'); $('thumbs').classList.add('hidden'); return; }
   if(cur>=items.length) cur=0;
@@ -473,7 +473,7 @@ function drawThumbs(){
   });
 }
 
-/* ---------- 워터마크 그리기 (모든 치수는 긴 변 대비 비율) ---------- */
+/* ---------- watermark drawing (all dimensions relative to the longer side) ---------- */
 function paint(ctx,W,H){
   const L=Math.max(W,H);
   if(!L) return;
@@ -523,7 +523,7 @@ function paint(ctx,W,H){
     let sx=Math.max(L*0.02, bw+gap), sy=Math.max(L*0.02, bh+gap);
     const diag=Math.sqrt(W*W+H*H);
     let nx=Math.ceil(diag/sx/2)+1, ny=Math.ceil(diag/sy/2)+1;
-    /* 안전장치: 타일이 너무 많아지면 간격을 벌린다 */
+    /* safety valve: if there are too many tiles, widen the spacing */
     while((2*nx+1)*(2*ny+1)>4000 && (nx>1||ny>1)){
       sx*=1.5; sy*=1.5;
       nx=Math.ceil(diag/sx/2)+1; ny=Math.ceil(diag/sy/2)+1;
@@ -535,7 +535,7 @@ function paint(ctx,W,H){
   ctx.restore();
 }
 
-/* ---------- 미리보기 ---------- */
+/* ---------- preview ---------- */
 function preview(){
   const c=$('pv');
   const it=items[cur];
@@ -547,13 +547,13 @@ function preview(){
   if(fmt==='jpg'){ x.fillStyle='#ffffff'; x.fillRect(0,0,pw,ph); }
   x.drawImage(it.bmp,0,0,pw,ph);
   try{ paint(x,pw,ph); }catch(e){}
-  $('pvcap').innerHTML=`${esc(it.name)} · 원본 <strong>${it.w.toLocaleString('ko-KR')}×${it.h.toLocaleString('ko-KR')}px</strong>`
-    +(s<1?` · 미리보기는 ${Math.round(s*100)}%로 줄여서 표시합니다. 저장 파일은 원본 크기 그대로예요.`:'');
+  $('pvcap').innerHTML=`${esc(it.name)} · original <strong>${it.w.toLocaleString('en-US')}×${it.h.toLocaleString('en-US')}px</strong>`
+    +(s<1?` · preview shown at ${Math.round(s*100)}%. The saved file keeps the original size.`:'');
   const L=Math.max(it.w,it.h);
   $('mgPx').textContent='≈ '+Math.round(L*(parseFloat($('mg').value)||0)/100)+'px';
 }
 
-/* ---------- 저장 ---------- */
+/* ---------- saving ---------- */
 function save(blob,fn){
   const u=URL.createObjectURL(blob);
   const a=document.createElement('a');
@@ -573,14 +573,14 @@ async function renderOne(it,ext,q){
   x.drawImage(it.bmp,0,0);
   paint(x,c.width,c.height);
   const blob=await new Promise(r=>c.toBlob(r, ext==='jpg'?'image/jpeg':'image/png', ext==='jpg'?q:undefined));
-  c.width=c.height=1;              /* 캔버스 메모리 즉시 반환 */
+  c.width=c.height=1;              /* release canvas memory immediately */
   return blob;
 }
 
 async function run(){
   if(busy || !items.length) return;
-  if(mode==='logo' && !logo){ say('m-bad','로고로 쓸 이미지를 먼저 골라주세요.'); return; }
-  if(mode==='text' && !$('txt').value.trim()){ say('m-bad','워터마크로 넣을 문구를 입력하세요.'); return; }
+  if(mode==='logo' && !logo){ say('m-bad','Please choose an image to use as the logo first.'); return; }
+  if(mode==='text' && !$('txt').value.trim()){ say('m-bad','Please type the text to use as the watermark.'); return; }
   busy=true; $('go').disabled=true; $('done').className='hidden';
   $('progBar').classList.remove('hidden');
   const ext=fmt==='jpg'?'jpg':'png';
@@ -598,7 +598,7 @@ async function run(){
     if(out.length===1){
       save(out[0].blob,out[0].name);
       $('done').className='msg m-ok';
-      $('done').innerHTML=`<strong>${esc(out[0].name)}</strong> (${kb(total)}) 을(를) 저장했습니다. 원본 해상도 그대로입니다.`;
+      $('done').innerHTML=`Saved <strong>${esc(out[0].name)}</strong> (${kb(total)}) at the full original resolution.`;
     }else{
       const seen={}, entries=[];
       for(const o of out){
@@ -610,18 +610,18 @@ async function run(){
       const zip=zipStore(entries);
       save(zip,'watermarked-images.zip');
       $('done').className='msg m-ok';
-      $('done').innerHTML=`${entries.length}장을 <strong>watermarked-images.zip</strong> (${kb(zip.size)}) 으로 저장했습니다. ZIP은 묶기만 하므로 화질 손실이 없습니다.`;
+      $('done').innerHTML=`Saved ${entries.length} images as <strong>watermarked-images.zip</strong> (${kb(zip.size)}). The ZIP only bundles the files, so there is no quality loss.`;
     }
   }catch(err){
     $('done').className='msg m-bad';
-    $('done').innerHTML='저장 중 문제가 생겼습니다. 이미지 장수를 줄이거나 JPG로 바꿔서 다시 시도해 보세요.';
+    $('done').innerHTML='Something went wrong while saving. Try again with fewer images, or switch the format to JPG.';
   }finally{
     busy=false; $('go').disabled=false;
     setTimeout(()=>{ $('progBar').classList.add('hidden'); $('prog').style.width='0'; },600);
   }
 }
 
-/* ---------- UI 배선 ---------- */
+/* ---------- UI wiring ---------- */
 $('drop').addEventListener('click',()=>$('file').click());
 $('file').addEventListener('change',e=>{ add(e.target.files); e.target.value=''; });
 ['dragenter','dragover'].forEach(t=>$('drop').addEventListener(t,e=>{e.preventDefault();$('drop').classList.add('over');}));
@@ -668,7 +668,7 @@ $('txt').addEventListener('input',preview);
 $('outline').addEventListener('change',preview);
 $('color').addEventListener('input',()=>{
   const v=$('color').value.toLowerCase();
-  $('colorName').textContent = v==='#ffffff'?'흰색' : v==='#000000'?'검정' : v;
+  $('colorName').textContent = v==='#ffffff'?'White' : v==='#000000'?'Black' : v;
   preview();
 });
 
@@ -677,9 +677,9 @@ $('logoFile').addEventListener('change',async e=>{
   const f=e.target.files&&e.target.files[0];
   e.target.value='';
   if(!f) return;
-  if(!looksImage(f)){ say('m-bad','로고는 PNG 같은 이미지 파일이어야 합니다.'); return; }
+  if(!looksImage(f)){ say('m-bad','The logo must be an image file, such as a PNG.'); return; }
   const bmp=await toBitmap(f);
-  if(!bmp){ say('m-bad','로고 이미지를 읽지 못했습니다. 다른 파일로 시도해 보세요.'); return; }
+  if(!bmp){ say('m-bad','The logo image could not be read. Please try a different file.'); return; }
   if(logo&&logo.close) try{logo.close();}catch(err){}
   logo=bmp; logoLabel=f.name;
   $('logoName').textContent=f.name+' ('+bmp.width+'×'+bmp.height+')';
