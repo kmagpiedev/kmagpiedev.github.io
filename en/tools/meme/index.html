@@ -506,6 +506,7 @@ function outlineBlock(b){
 /* draw the preview canvas once for the current state — shared by dragging and the GIF playback loop */
 function pvDraw(first){
   if(!pvCtx) return;
+  pvCtx.clearRect(0,0,pvW,pvH);          /* prevent the previous frame showing through transparent images */
   if(mode==='img'){
     if(!img) return;
     pvCtx.drawImage(img.bmp,0,0,pvW,pvH);

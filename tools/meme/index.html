@@ -506,6 +506,7 @@ function outlineBlock(b){
 /* 현재 상태로 미리보기 캔버스를 한 번 그린다 — 드래그와 GIF 재생 루프가 같이 쓴다 */
 function pvDraw(first){
   if(!pvCtx) return;
+  pvCtx.clearRect(0,0,pvW,pvH);          /* 투명 배경 이미지에서 이전 프레임이 비쳐 보이는 것 방지 */
   if(mode==='img'){
     if(!img) return;
     pvCtx.drawImage(img.bmp,0,0,pvW,pvH);
