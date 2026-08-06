@@ -111,6 +111,22 @@
     th,td{padding:7px 4px}
     .seg button{font-size:12px;padding:9px 2px}
   }
+/*FOLD:S*/
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 8px}
+  .fold .fx>:first-child{margin-top:4px}
+/*FOLD:E*/
 /*REL:S*/
   .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
   .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
@@ -231,28 +247,34 @@
   <table><tbody id="tb2"></tbody></table>
 </div>
 
-<h2>만 나이로 통일됐지만 예외가 남아 있습니다</h2>
+<p class="gist">만 나이 통일 이후에도 취학·병역·술과 담배 구매는 연 나이 기준이 그대로 남아 있습니다. 기념일은 시작일을 1일로 세고 D-day는 기준일을 0으로 두기 때문에 두 방식은 정확히 하루 차이가 납니다. 계산기끼리 하루가 다르면 대부분 초일 산입 여부 차이이고, 영업일은 토·일요일만 빼며 공휴일은 빼지 않습니다.</p>
+
+<details class="fold"><summary><h2>만 나이로 통일됐지만 예외가 남아 있습니다</h2></summary><div class="fx">
 <p>2023년 6월 28일부터 행정·민사상 나이는 <strong>만 나이</strong>로 통일됐습니다. 법령이나 계약서, 공문서에 그냥 "나이"라고 적혀 있고 따로 정한 바가 없으면 만 나이로 읽습니다. 세는나이는 일상 대화에 남아 있을 뿐 법적인 기준은 아니에요.</p>
 <p>다만 통일됐다는 말이 모든 나이가 만 나이가 됐다는 뜻은 아닙니다. 개별 법률이 나이 기준을 따로 정해둔 영역은 그대로 남았습니다. 대표적인 게 <strong>취학 연령</strong>입니다. 초등학교는 생일과 관계없이 같은 해에 태어난 아이들이 같은 해 3월에 함께 입학하므로, 사실상 출생연도로 묶입니다.</p>
 <p><strong>병역</strong>도 마찬가지입니다. 병역법은 나이를 그 나이에 도달하는 해의 1월 1일부터 12월 31일까지로 보기 때문에, 생일이 오기 전이라도 그 해가 되면 해당 연령으로 취급합니다. 병역판정검사 통지가 생일과 무관하게 나오는 이유예요.</p>
 <p><strong>술과 담배</strong>도 연 나이 기준입니다. 청소년보호법은 만 19세 미만을 청소년으로 보되, 만 19세가 되는 해의 1월 1일을 맞이한 사람은 제외합니다. 그래서 2007년생은 2026년 1월 1일이 되면 생일이 언제든 구매할 수 있습니다. 편의점에서 생년월일이 아니라 출생연도만 보고 판단하는 게 이 조항 때문입니다.</p>
+</div></details>
 
-<h2>D-day를 세는 방식은 두 가지입니다</h2>
+<details class="fold"><summary><h2>D-day를 세는 방식은 두 가지입니다</h2></summary><div class="fx">
 <p>연인 사이의 100일과 수능 D-100은 세는 방법이 다릅니다. 한국에서 기념일을 셀 때는 <strong>시작일을 1일로</strong> 칩니다. 만난 날이 1일이니까 100일은 시작일에 99일을 더한 날입니다. 3월 1일에 만났다면 100일은 6월 8일이에요.</p>
 <p>반면 D-day 표기는 <strong>기준일을 0으로</strong> 둡니다. 목표일 당일이 D-day, 그 하루 전이 D-1입니다. 같은 논리로 시작일에서 100일을 그대로 더하면 6월 9일이 나옵니다. 두 방식이 정확히 하루 차이 나는 이유가 이것이고, 위 계산기가 두 날짜를 나란히 보여주는 이유이기도 합니다.</p>
 <p>어느 쪽이 맞다고 할 수는 없습니다. 기념일은 관행상 1일부터 세는 쪽이 널리 쓰이고, 시험이나 전역처럼 남은 날을 세는 상황에서는 0부터 세는 쪽이 자연스럽습니다. 상대와 날짜가 어긋난다면 대개 이 차이입니다.</p>
+</div></details>
 
-<h2>날짜 계산이 계산기마다 다른 이유</h2>
+<details class="fold"><summary><h2>날짜 계산이 계산기마다 다른 이유</h2></summary><div class="fx">
 <p>첫째는 <strong>시간대</strong>입니다. 컴퓨터는 날짜를 밀리초 숫자로 다루는데, 서머타임이 있는 지역에서는 하루가 23시간이나 25시간이 되는 날이 생깁니다. 이 상태로 두 날짜를 빼서 24시간으로 나누면 값이 어긋납니다. 한국은 서머타임을 쓰지 않지만 해외에서 접속하면 겪을 수 있어요. 이 계산기는 연·월·일만 뽑아 UTC 자정으로 맞춘 뒤 세기 때문에 이 문제가 생기지 않습니다.</p>
 <p>둘째는 <strong>윤년</strong>입니다. 4로 나뉘면 윤년이지만 100으로 나뉘면 평년, 그 중에서도 400으로 나뉘면 다시 윤년입니다. 2000년은 윤년이었고 1900년은 아니었습니다. 이걸 4년 규칙만으로 처리한 프로그램은 긴 기간에서 하루씩 틀립니다.</p>
 <p>셋째가 가장 흔한데, <strong>"1개월 후"의 정의</strong>가 제각각입니다. 1월 31일의 한 달 뒤는 언제일까요. 그 달의 말일로 보면 2월 28일이고, 31일을 그냥 더하면 3월 3일이며, 날짜를 넘겨버리면 3월 2일이나 3일이 됩니다. 민법은 해당 날짜가 없는 달이면 그 달의 말일로 기간이 끝나는 것으로 정하고 있고, 이 계산기도 같은 방식을 씁니다.</p>
+</div></details>
 
-<h2>이 계산기가 쓰는 정의</h2>
+<details class="fold"><summary><h2>이 계산기가 쓰는 정의</h2></summary><div class="fx">
 <p><strong>일수</strong>는 두 날짜의 차이입니다. 3월 1일과 3월 2일 사이는 1일이고, 양 끝을 모두 세는 초일 산입 값은 2일입니다. 두 값을 모두 보여주니 필요한 쪽을 고르면 됩니다.</p>
 <p><strong>개월수</strong>는 시작일과 같은 날짜가 돌아오는 것을 1개월로 셉니다. 1월 15일부터 3월 14일까지는 1개월 27일이고, 3월 15일이 되어야 2개월입니다. 시작일에 해당하는 날짜가 없는 달이면 그 달의 말일을 기준으로 삼습니다. 1월 31일에서 한 달 뒤는 2월 28일, 윤년이면 2월 29일입니다.</p>
 <p><strong>영업일</strong>은 토요일과 일요일만 제외한 값입니다. <strong>공휴일은 빼지 않습니다.</strong> 양 끝 날짜를 모두 포함해서 세므로, 월요일부터 금요일까지는 5영업일입니다.</p>
+</div></details>
 
-<h2>자주 겪는 문제</h2>
+<details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
 <h3>다른 계산기와 하루가 다릅니다</h3>
 <p>거의 대부분 <strong>초일 산입</strong> 여부 때문입니다. 시작일을 하루로 셀 것인지 아닌지에 따라 정확히 하루가 달라집니다. 근무 일수나 입원 일수, 여행 일수처럼 "며칠 있었나"를 세는 계산은 양 끝을 모두 포함하고, "며칠 남았나"를 세는 계산은 포함하지 않습니다. 위 결과에서 두 값을 모두 보여주니 어느 쪽인지 확인하고 쓰세요.</p>
 <h3>영업일에 공휴일이 안 빠집니다</h3>
@@ -261,6 +283,7 @@
 <p>평년에는 생일이 없으니 나이가 언제 오르는지가 문제가 됩니다. 민법의 기간 계산 규정은 해당 날짜가 없는 달이면 그 달의 말일로 기간이 끝난다고 정합니다. 2월 28일이 끝나는 시점에 한 살이 차는 셈이라, 이 계산기는 <strong>평년에는 3월 1일부터</strong> 한 살을 더합니다. 2월 28일에 올린 것으로 보는 계산기도 있어서 그날 하루는 결과가 다를 수 있습니다. 윤년에는 당연히 2월 29일이 생일입니다.</p>
 <h3>계약 기간은 언제부터 세나요</h3>
 <p>민법은 기간을 일·주·월·연으로 정한 때 <strong>첫날은 세지 않는 것</strong>을 원칙으로 합니다. 다만 그 기간이 오전 0시부터 시작하면 첫날을 셉니다. 나이는 별도 규정이 있어서 출생일을 포함해 계산해요. 계약서에 "계약일로부터 30일 이내"라고 적혀 있다면 보통 계약일 다음 날부터 세는 것이고, "3월 1일부터 3월 31일까지"처럼 기간이 명시돼 있으면 양 끝을 모두 포함합니다. 다툼의 소지가 있으면 계약서에 기산일을 못 박아두는 게 안전합니다.</p>
+</div></details>
 
 <!--REL:S-->
 <h2>함께 쓰면 좋은 도구</h2>

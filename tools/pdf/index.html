@@ -101,6 +101,22 @@
   .note{font-size:13.5px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:13px;margin:14px 0}
   footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
   footer a{color:var(--ink-3)}
+/*FOLD:S*/
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 8px}
+  .fold .fx>:first-child{margin-top:4px}
+/*FOLD:E*/
 /*REL:S*/
   .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
   .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
@@ -160,12 +176,15 @@
   </div>
 </div>
 
-<h2>사용법</h2>
+<p class="gist">여러 PDF와 이미지를 올려 합치고, 페이지를 삭제·회전·정렬해 하나의 파일이나 낱장 ZIP으로 저장합니다. 모든 작업은 서버 전송 없이 브라우저 안에서 처리되어 민감한 문서도 안전합니다. 암호가 걸린 PDF와 스캔본의 글자 수정은 지원하지 않습니다.</p>
+
+<details class="fold"><summary><h2>사용법</h2></summary><div class="fx">
 <p>PDF 파일을 여러 개 올리면 모든 페이지가 한 줄로 이어져 표시됩니다. 페이지를 눌러 선택하고 회전하거나 삭제할 수 있고, 페이지 위에 마우스를 올리면 나타나는 화살표로 순서를 옮길 수 있습니다. 다 됐으면 하나의 PDF로 저장하거나, 선택한 페이지만 따로 뽑거나, 페이지마다 낱장으로 분리해 ZIP으로 받으세요.</p>
 <p>이미지를 함께 올리면 각각 한 페이지로 변환되어 들어갑니다. 사진 여러 장을 PDF 한 파일로 묶어 제출해야 할 때 그대로 쓰시면 됩니다.</p>
 <p>모든 처리는 브라우저 안에서 이루어집니다. 계약서나 신분증 사본처럼 민감한 문서도 외부로 나가지 않으며, 파일 크기 제한이나 하루 사용 횟수 제한도 없습니다.</p>
+</div></details>
 
-<h2>이 도구로 할 수 있는 것</h2>
+<details class="fold"><summary><h2>이 도구로 할 수 있는 것</h2></summary><div class="fx">
 <table>
   <thead><tr><th>작업</th><th>방법</th></tr></thead>
   <tbody>
@@ -178,8 +197,9 @@
     <tr><td>이미지를 PDF로</td><td>JPG·PNG를 올리면 자동으로 페이지가 됩니다</td></tr>
   </tbody>
 </table>
+</div></details>
 
-<h2>자주 겪는 문제</h2>
+<details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
 <h3>암호가 걸린 PDF는 열리지 않아요</h3>
 <p>열기 암호가 설정된 파일은 브라우저에서 해독할 수 없습니다. 암호를 알고 계시면 뷰어에서 열어 인쇄 기능으로 새 PDF를 만든 뒤 그 파일을 올려주세요.</p>
 <h3>스캔한 문서의 글자를 편집하고 싶어요</h3>
@@ -188,6 +208,7 @@
 <p>페이지 수가 아주 많은 문서는 미리보기를 만드는 데 시간이 걸립니다. 미리보기가 다 뜨기 전에도 편집과 저장은 정상 동작하니 잠시 기다려 주세요.</p>
 <h3>저장한 파일 용량이 원본보다 커요</h3>
 <p>페이지를 재조립하는 과정에서 일부 최적화가 풀릴 수 있습니다. 용량을 줄이셔야 한다면 <a href="/tools/image-compress/">이미지 용량 줄이기</a>로 사진을 먼저 줄인 뒤 PDF로 만드시는 편이 효과적입니다.</p>
+</div></details>
 
 <!--REL:S-->
 <h2>함께 쓰면 좋은 도구</h2>

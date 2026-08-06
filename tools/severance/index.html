@@ -93,6 +93,22 @@
     th,td{padding:8px 4px}
     #per .rng{font-size:11.5px;white-space:normal}
   }
+/*FOLD:S*/
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 8px}
+  .fold .fx>:first-child{margin-top:4px}
+/*FOLD:E*/
 /*REL:S*/
   .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
   .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
@@ -209,11 +225,14 @@
 </div>
 </div>
 
-<h2>퇴직금은 누가 받나요</h2>
+<p class="gist">퇴직금은 1일 평균임금 × 30일 × (재직일수 ÷ 365)로, 1년 이상·주 15시간 이상 일했다면 5인 미만 사업장에서도 받습니다. 평균임금은 퇴직 전 3개월 임금을 달력상 실제 일수(89~92일)로 나누며, 1년간 받은 상여금과 전년도 연차수당의 3/12을 빠뜨리면 손해입니다. 평균임금이 통상임금보다 적으면 통상임금이 하한선이 되어 그쪽으로 계산합니다.</p>
+
+<details class="fold"><summary><h2>퇴직금은 누가 받나요</h2></summary><div class="fx">
 <p>근로자퇴직급여 보장법 제4조는 두 가지를 모두 채운 사람에게 퇴직금을 주도록 정하고 있습니다. <strong>계속 근로한 기간이 1년 이상</strong>이어야 하고, <strong>4주를 평균해 1주 소정근로시간이 15시간 이상</strong>이어야 합니다. 둘 중 하나라도 못 채우면 퇴직금이 발생하지 않습니다.</p>
 <p>중요한 건 <strong>5인 미만 사업장도 퇴직금을 줘야 한다</strong>는 점입니다. 연차휴가나 연장근로 가산수당은 5인 미만 사업장에 적용되지 않지만, 퇴직금은 근로기준법이 아니라 근로자퇴직급여 보장법이 정하는 것이라 사업장 규모와 상관없이 적용됩니다. 아르바이트, 계약직, 단시간 근로자도 위 두 요건만 채우면 똑같이 받습니다.</p>
+</div></details>
 
-<h2>퇴직금은 어떻게 계산하나요</h2>
+<details class="fold"><summary><h2>퇴직금은 어떻게 계산하나요</h2></summary><div class="fx">
 <p>법이 정한 기준은 <strong>계속근로기간 1년에 대하여 30일분 이상의 평균임금</strong>입니다. 이걸 계산식으로 옮기면 이렇게 됩니다.</p>
 <p><code>퇴직금 = 1일 평균임금 × 30일 × (재직일수 ÷ 365)</code></p>
 <p>그래서 결국 <strong>1일 평균임금을 얼마로 보느냐</strong>가 전부입니다. 그리고 여기서 사람들이 가장 많이 손해를 봅니다.</p>
@@ -228,13 +247,15 @@
 <h3>평균임금이 통상임금보다 적으면 통상임금으로 계산합니다</h3>
 <p>근로기준법 제2조 제2항이 정한 안전장치입니다. 퇴직 직전 몇 달 동안 무급휴직을 했거나, 결근이 많았거나, 수당이 유난히 적었다면 평균임금이 평소보다 낮게 나옵니다. 이럴 때 <strong>통상임금이 하한선</strong>이 되어 그쪽으로 계산해야 합니다.</p>
 <p>계산기에서 통상임금 비교를 켜두는 걸 권합니다. 켜면 두 값을 다 계산해서 더 큰 쪽을 자동으로 적용하고, 어느 쪽이 적용됐는지 결과에 표시합니다.</p>
+</div></details>
 
-<h2>통상임금은 어떻게 구하나요</h2>
+<details class="fold"><summary><h2>통상임금은 어떻게 구하나요</h2></summary><div class="fx">
 <p>통상임금은 소정근로의 대가로 <strong>정기적이고 일률적으로</strong> 지급하기로 정한 임금입니다. 기본급에 식대·직책수당처럼 매달 고정으로 나오는 수당을 더한 금액이라고 보면 대체로 맞습니다. 실적에 따라 달라지는 성과급, 연장근로수당처럼 실제 일한 만큼 나오는 돈은 빠집니다.</p>
 <p>시간당 통상임금은 월 통상임금을 <strong>월 소정근로시간</strong>으로 나눠 구합니다. 주 40시간 근무자는 209시간이에요. 209라는 숫자는 이렇게 나옵니다. 1개월 평균 주수가 365 ÷ 12 ÷ 7 = 4.345주이고, 1주 유급시간이 소정근로 40시간에 주휴 8시간을 더한 48시간이므로, 48 × 4.345 = 208.6시간을 올려 209시간이 됩니다. 2026년 최저임금 월 환산액 2,156,880원도 10,320원 × 209시간으로 나온 값입니다.</p>
 <p>여기서 하나 알아두면 좋은 게 있습니다. <strong>2024년 12월 19일 대법원 전원합의체 판결</strong>로 통상임금의 판단 기준이 바뀌었습니다. 예전에는 "재직 중인 사람에게만 준다"는 조건이 붙은 정기상여금은 통상임금에서 빠졌는데, 이제는 그런 조건이 있어도 정기적·일률적으로 지급된다면 통상임금에 들어갑니다. 정기상여금을 받고 있다면 회사가 통상임금을 제대로 잡고 있는지 확인해 볼 만합니다. 다만 이 판결은 2024년 12월 19일 이후 제공한 근로부터 적용됩니다.</p>
+</div></details>
 
-<h2>자주 겪는 문제</h2>
+<details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
 <h3>계산 결과가 회사가 준 금액과 달라요</h3>
 <p>가장 흔한 원인은 상여금과 연차수당이 빠진 경우입니다. 그다음이 통상임금 비교를 안 한 경우예요. 두 가지를 다 넣어 보고도 차이가 크면 급여명세서를 들고 회사에 산정 내역을 요청할 수 있습니다.</p>
 <h3>1년을 며칠 못 채웠어요</h3>
@@ -243,6 +264,7 @@
 <p>확정기여형(DC) 퇴직연금은 회사가 매년 연간 임금총액의 1/12 이상을 적립하고 그 운용 실적에 따라 금액이 정해지므로, 이 계산기의 결과와 다릅니다. 이 계산기는 <strong>퇴직금 제도</strong>와 확정급여형(DB) 퇴직연금의 최소 기준을 계산합니다.</p>
 <h3>세금은 얼마나 떼나요</h3>
 <p>퇴직소득세는 근속연수공제와 환산급여공제를 거쳐 계산되는 별도 체계라 급여 소득세와 다릅니다. 근속연수가 길수록 세율이 크게 낮아져서, 오래 다닌 사람은 생각보다 적게 냅니다. 이 계산기는 세전 금액을 보여줍니다.</p>
+</div></details>
 
 <!--REL:S-->
 <h2>함께 쓰면 좋은 도구</h2>

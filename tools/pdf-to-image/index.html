@@ -103,6 +103,22 @@
     .seg button{font-size:12px;padding:9px 2px}
     .thumbs{grid-template-columns:repeat(auto-fill,minmax(104px,1fr))}
   }
+/*FOLD:S*/
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 8px}
+  .fold .fx>:first-child{margin-top:4px}
+/*FOLD:E*/
 /*REL:S*/
   .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
   .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
@@ -181,20 +197,25 @@
 
 <div id="done" class="hidden"></div>
 
-<h2>왜 PDF를 이미지로 바꾸나</h2>
+<p class="gist">PDF의 각 페이지를 JPG나 PNG로 바꾸고 여러 장은 ZIP으로 한 번에 받습니다. 해상도는 화면·웹용 150dpi와 인쇄용 300dpi 중에서 고르면 되고, 파일은 서버 전송 없이 브라우저 안에서 변환됩니다. 페이지가 많은 문서는 필요한 페이지만 골라 변환하는 편이 빠릅니다.</p>
+
+<details class="fold"><summary><h2>왜 PDF를 이미지로 바꾸나</h2></summary><div class="fx">
 <p>PDF를 그대로 쓸 수 없는 자리가 의외로 많습니다. 블로그나 쇼핑몰 상세페이지에는 이미지만 올라가고, 카카오톡이나 인스타그램으로 보낼 때도 이미지가 편합니다. 발표 자료에 특정 페이지만 끼워 넣거나, 인쇄소에 넘길 때 이미지 파일을 요구하는 경우도 있어요.</p>
 <p>편집을 막고 싶을 때도 씁니다. PDF는 텍스트를 그대로 복사할 수 있지만 <strong>이미지로 만들면 글자를 긁어갈 수 없습니다.</strong> 물론 화면 캡처로 옮길 수는 있으니 완전한 보호는 아니고, 무심코 복사되는 걸 막는 정도예요.</p>
+</div></details>
 
-<h2>해상도를 어떻게 고를까</h2>
+<details class="fold"><summary><h2>해상도를 어떻게 고를까</h2></summary><div class="fx">
 <p>PDF는 기본적으로 <strong>72dpi</strong>를 기준으로 만들어집니다. 그래서 72dpi로 뽑으면 원본과 같은 크기의 이미지가 나오는데, 화면에서 보기엔 괜찮아도 확대하면 글자가 흐려집니다.</p>
 <p><strong>150dpi</strong>는 화면에서 보고 웹에 올리기에 충분합니다. A4 한 페이지가 대략 1240×1754픽셀이 나와요. <strong>300dpi</strong>는 인쇄용 표준이라 A4가 2480×3508픽셀이 되고, 파일도 그만큼 커집니다. 인쇄할 게 아니라면 150dpi로 충분해요.</p>
 <p>해상도를 올리면 픽셀 수가 제곱으로 늘어납니다. 72에서 300으로 올리면 가로세로가 각각 4배가 넘어서 <strong>용량은 17배 이상</strong>이 돼요. 페이지가 많은 문서를 300dpi로 뽑으면 브라우저가 버거워질 수 있으니, 필요한 페이지만 골라서 변환하세요.</p>
+</div></details>
 
-<h2>글자가 선명하지 않다면</h2>
+<details class="fold"><summary><h2>글자가 선명하지 않다면</h2></summary><div class="fx">
 <p>원본 PDF가 이미 <strong>스캔본</strong>일 수 있습니다. 종이를 스캔해서 만든 PDF는 안에 들어 있는 게 글자가 아니라 사진이라, 아무리 높은 해상도로 뽑아도 원본 스캔 품질을 넘지 못합니다. PDF를 열어 글자를 드래그해 봤을 때 선택되지 않으면 스캔본이에요.</p>
 <p>글자가 선택되는 PDF라면 해상도를 올리는 만큼 선명해집니다. 300dpi로도 부족하면 JPG 대신 PNG를 써 보세요. JPG 압축은 글자처럼 경계가 뚜렷한 부분에서 특히 티가 납니다.</p>
+</div></details>
 
-<h2>자주 겪는 문제</h2>
+<details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
 <h3>파일이 안 열려요</h3>
 <p>암호가 걸린 PDF는 열 수 없습니다. 뷰어에서 열 때 비밀번호를 물어보는 파일이라면 먼저 암호를 풀어야 해요. 또 파일이 손상됐거나 확장자만 PDF인 경우도 있습니다.</p>
 <h3>페이지가 많으면 느려요</h3>
@@ -205,6 +226,7 @@
 <p><a href="/tools/pdf/">PDF 편집기</a>에서 이미지를 PDF로 묶을 수 있습니다. 페이지 합치기나 순서 변경, 특정 페이지 추출도 그쪽에서 됩니다.</p>
 <h3>용량이 너무 커요</h3>
 <p>해상도를 낮추거나 JPG로 바꾸세요. 그래도 크다면 변환한 이미지를 <a href="/tools/image-compress/">이미지 용량 줄이기</a>에 넣어 목표 용량에 맞출 수 있습니다.</p>
+</div></details>
 
 <!--REL:S-->
 <h2>함께 쓰면 좋은 도구</h2>

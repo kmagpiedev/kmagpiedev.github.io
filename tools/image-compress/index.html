@@ -104,6 +104,22 @@
   .note{font-size:13.5px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:13px;margin:14px 0}
   footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
   footer a{color:var(--ink-3)}
+/*FOLD:S*/
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 8px}
+  .fold .fx>:first-child{margin-top:4px}
+/*FOLD:E*/
 /*REL:S*/
   .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
   .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
@@ -203,29 +219,35 @@
   </table>
 </div>
 
-<h2>사용법</h2>
+<p class="gist">목표 용량을 KB 단위로 정하면 품질을 자동으로 좁혀가며 그 아래에서 가장 좋은 화질을 찾아 줍니다. 여러 장을 한 번에 처리해 ZIP으로 받을 수 있고, 서버 전송 없이 브라우저에서만 처리됩니다. PNG는 품질 조절 효과가 작아 크기 축소나 WebP 변환이 더 효과적입니다.</p>
+
+<details class="fold"><summary><h2>사용법</h2></summary><div class="fx">
 <p>이미지를 여러 장 올린 뒤 압축 방식을 고르고 압축하기를 누르면 됩니다. 결과는 파일별로 이전·이후 용량과 절감률이 표시되고, 하나씩 받거나 ZIP으로 한 번에 받을 수 있습니다. 원본은 그대로 두고 새 파일이 만들어지므로 마음에 안 들면 설정을 바꿔 다시 누르면 됩니다.</p>
 <p>모든 처리는 브라우저의 Canvas API로 이루어집니다. 파일이 서버로 올라가지 않기 때문에 개인 사진이나 공개 전 자료도 안심하고 쓰실 수 있고, 업로드·다운로드 대기 시간이 없어 수십 장도 금방 끝납니다.</p>
+</div></details>
 
-<h2>목표 용량 맞추기는 어떻게 동작하나요</h2>
+<details class="fold"><summary><h2>목표 용량 맞추기는 어떻게 동작하나요</h2></summary><div class="fx">
 <p>"500KB 이하"처럼 상한이 정해진 경우가 많습니다. 게시판 첨부 제한, 이메일 용량, 스토어 등록 규격 같은 것들이죠. 품질을 손으로 바꿔가며 여러 번 시도하는 대신, 이 도구는 <strong>이진 탐색으로 품질을 8단계까지 좁혀가며</strong> 목표 용량 아래에서 가능한 가장 높은 품질을 찾아냅니다.</p>
 <p>목표가 지나치게 작으면 최저 품질로도 맞추지 못할 수 있습니다. 그럴 때는 크기 제한을 함께 켜세요. 해상도를 줄이는 쪽이 품질을 낮추는 것보다 훨씬 효율적이고, 결과물도 덜 뭉개집니다. 여기서는 긴 변만 지정할 수 있는데, <strong>가로·세로를 정확한 px로 지정</strong>하거나 1:1, 16:9 같은 비율로 잘라내야 한다면 <a href="/tools/resize/">이미지 크기 조절</a>을 쓰세요.</p>
+</div></details>
 
-<h2>어떤 형식을 골라야 하나요</h2>
+<details class="fold"><summary><h2>어떤 형식을 골라야 하나요</h2></summary><div class="fx">
 <h3>WebP</h3>
 <p>같은 화질 기준으로 JPEG보다 25~35% 작습니다. 투명도도 지원하고 주요 브라우저가 모두 읽을 수 있어서, 웹에 올릴 이미지라면 대부분 이게 정답입니다. 다만 오래된 프로그램이나 일부 문서 편집기에서는 열리지 않을 수 있어요.</p>
 <h3>JPEG</h3>
 <p>어디서나 열립니다. 첨부 파일로 보내거나 상대방 환경을 모를 때 안전한 선택이에요. 대신 투명 배경을 지원하지 않아서, 투명한 PNG를 JPEG로 바꾸면 투명한 부분이 흰색으로 채워집니다.</p>
 <h3>PNG</h3>
 <p>로고나 아이콘처럼 색 수가 적고 경계가 또렷한 이미지, 그리고 투명 배경이 꼭 필요한 경우에 쓰세요. 다만 PNG는 무손실 방식이라 품질 조절로 줄어드는 폭이 크지 않습니다. <strong>PNG 용량을 크게 줄이고 싶으면 크기를 줄이거나 WebP로 바꾸는 편이 훨씬 효과적입니다.</strong></p>
+</div></details>
 
-<h2>자주 겪는 문제</h2>
+<details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
 <h3>PNG를 압축했는데 용량이 그대로예요</h3>
 <p>PNG는 무손실 형식이라 품질 슬라이더가 사실상 영향을 주지 않습니다. 위에 적은 대로 크기를 줄이거나 WebP로 변환하세요. 투명도가 필요 없다면 JPEG도 좋은 선택입니다.</p>
 <h3>압축했더니 오히려 용량이 커졌어요</h3>
 <p>이미 강하게 압축된 이미지를 다시 인코딩하면 그럴 수 있습니다. 이 경우 표에 절감률이 빨간색으로 표시되니, 그 파일은 원본을 그대로 쓰시면 됩니다.</p>
 <h3>투명 배경이 흰색으로 바뀌었어요</h3>
 <p>JPEG로 변환하셨을 가능성이 높습니다. JPEG는 투명도를 지원하지 않아요. WebP나 PNG로 다시 시도하세요.</p>
+</div></details>
 
 <!--REL:S-->
 <h2>함께 쓰면 좋은 도구</h2>

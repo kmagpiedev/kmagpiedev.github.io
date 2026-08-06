@@ -105,6 +105,22 @@
     th,td{padding:7px 4px}
     .seg button{font-size:12px;padding:9px 2px}
   }
+/*FOLD:S*/
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 8px}
+  .fold .fx>:first-child{margin-top:4px}
+/*FOLD:E*/
 /*REL:S*/
   .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
   .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
@@ -198,29 +214,35 @@
 
 <div id="warn" class="hidden"></div>
 
-<h2>평은 왜 아직 쓰이나</h2>
+<p class="gist">1평은 400/121㎡라서 84㎡는 25.41평이지, 흔히 말하는 34평이 아닙니다. 34평은 전용면적이 아니라 공급면적을 평으로 바꾼 값이라 애초에 다른 면적을 가리킵니다. 세금과 청약 기준은 모두 전용면적이며, 전용 85㎡ 이하가 국민주택 규모의 경계선입니다.</p>
+
+<details class="fold"><summary><h2>평은 왜 아직 쓰이나</h2></summary><div class="fx">
 <p>1961년 계량법이 미터법을 법정 계량 단위로 정했고, 2007년 7월부터는 부동산 거래와 광고에서 평을 쓰면 과태료를 부과하기 시작했습니다. 그래서 등기부등본, 건축물대장, 분양 공고, 실거래가 공개 자료는 전부 ㎡로만 적혀 있습니다.</p>
 <p>그런데 말은 바뀌지 않았습니다. 공인중개사도 "34평 매물"이라고 하고 이사업체도 "30평 견적"이라고 부릅니다. 서류는 ㎡, 대화는 평으로 굴러가는 상태가 20년 가까이 이어지고 있어요. 그래서 <strong>84㎡와 34평이 같은 집을 가리킨다</strong>는 걸 알아야 대화가 됩니다.</p>
 <p>다만 이 둘은 같은 숫자를 두 단위로 적은 게 아닙니다. 84㎡는 25.41평이지 34평이 아니에요. 84는 전용면적이고 34평은 공급면적이라, <strong>애초에 서로 다른 면적을 부르는 이름</strong>입니다. 이게 평수 계산에서 가장 많이 꼬이는 지점입니다.</p>
+</div></details>
 
-<h2>전용면적, 공급면적, 계약면적</h2>
+<details class="fold"><summary><h2>전용면적, 공급면적, 계약면적</h2></summary><div class="fx">
 <p><strong>전용면적</strong>은 현관문 안쪽 우리 집입니다. 방, 거실, 주방, 화장실을 합한 면적이고 등기부등본과 건축물대장에 올라가는 숫자도 이것입니다. 세금과 청약 기준도 전부 전용면적을 씁니다.</p>
 <p><strong>공급면적</strong>은 전용면적에 주거공용면적을 더한 것입니다. 주거공용면적은 계단, 복도, 엘리베이터처럼 같은 동 주민이 함께 쓰는 공간이에요. 분양가를 평당 얼마로 이야기할 때의 그 평이 보통 공급면적 기준입니다.</p>
 <p><strong>계약면적</strong>은 공급면적에 기타공용면적까지 더한 가장 큰 숫자입니다. 지하주차장, 관리사무소, 경비실, 노인정 같은 단지 전체의 공용 시설이 여기 들어갑니다. 분양 계약서에 적히는 면적이라 처음 보면 집이 갑자기 커진 것처럼 보이지만 실제로 쓰는 공간과는 거리가 멉니다.</p>
 <p>전용률은 전용면적을 공급면적으로 나눈 값입니다. 전용 84㎡에 공급 112㎡면 75%예요. 이 숫자가 높을수록 같은 평수에서 실제로 쓰는 공간이 넓습니다.</p>
+</div></details>
 
-<h2>같은 84㎡인데 집이 달라 보이는 이유</h2>
+<details class="fold"><summary><h2>같은 84㎡인데 집이 달라 보이는 이유</h2></summary><div class="fx">
 <p>전용면적이 똑같이 84㎡인 두 집을 보고 왔는데 한쪽이 확연히 넓게 느껴졌다면, 대개 이유는 셋 중 하나입니다.</p>
 <p>첫째는 <strong>발코니 확장</strong>입니다. 발코니는 서비스면적이라 전용면적에도 공급면적에도 들어가지 않습니다. 그래서 발코니를 확장한 집은 서류상 84㎡ 그대로인데 실제 사용 면적은 10㎡ 넘게 늘어납니다. 확장 전 집과 나란히 놓고 보면 방 하나가 더 있는 것처럼 느껴지는 이유예요.</p>
 <p>둘째는 <strong>구조</strong>입니다. 같은 84㎡라도 거실과 방을 한쪽 면에 나란히 배치하면 채광면이 넓어져 훨씬 시원해 보입니다. 복도와 죽은 공간이 적은 평면일수록 체감 면적이 커집니다.</p>
 <p>셋째는 <strong>전용률</strong>입니다. 전용률이 다르면 같은 전용 84㎡라도 공급면적이 112㎡일 수도, 120㎡일 수도 있습니다. 후자를 사면 안 쓰는 공용면적에 돈을 더 낸 셈이에요. 분양가는 공급면적 기준으로 매겨지므로 전용률이 낮을수록 손해입니다.</p>
+</div></details>
 
-<h2>85㎡가 기준선인 이유</h2>
+<details class="fold"><summary><h2>85㎡가 기준선인 이유</h2></summary><div class="fx">
 <p>주택법은 주거전용면적 85㎡ 이하인 주택을 <strong>국민주택 규모</strong>로 정의합니다. 수도권이 아니면서 도시지역도 아닌 읍·면 지역은 100㎡ 이하입니다. 이 선이 세금과 청약 여러 곳에서 기준으로 쓰입니다.</p>
 <p>가장 체감되는 건 취득세입니다. 전용 85㎡ 이하 주택은 <strong>농어촌특별세가 비과세</strong>라 취득세와 지방교육세만 내면 됩니다. 85㎡를 넘으면 0.2%가 더 붙어요. 6억 아파트면 120만원 차이입니다. 정확한 세액은 <a href="https://www.wetax.go.kr" rel="noopener">위택스</a>에서 확인할 수 있습니다.</p>
 <p>아파트 타입 이름이 84A, 84B처럼 84에 몰려 있고 실제 면적도 84.97㎡ 같은 값에서 멈추는 게 우연이 아닙니다. 85를 넘기지 않으면서 최대한 크게 뽑은 결과예요.</p>
+</div></details>
 
-<h2>자주 겪는 문제</h2>
+<details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
 <h3>84㎡가 왜 34평인가요</h3>
 <p>84를 3.3058로 나누면 25.41평입니다. 34평이 아니에요. <strong>34평은 84㎡를 바꾼 값이 아니라 공급면적을 바꾼 값</strong>입니다. 전용률이 75%면 공급면적은 84 ÷ 0.75 = 112㎡이고, 이걸 평으로 바꾸면 33.88평이라 반올림해서 34평이라고 부릅니다. 59㎡가 24평, 101㎡가 40평이라고 불리는 것도 같은 계산이에요.</p>
 <h3>3.3으로 계산하면 얼마나 틀리나요</h3>
@@ -234,6 +256,7 @@
 <p>표기 방식도 다릅니다. 오피스텔은 분양면적을 계약면적 기준으로 적는 경우가 많은데, 계약면적에는 주차장까지 들어가므로 전용률이 40~50%대로 보이기도 합니다. 그래서 "30평 오피스텔"이 30평 아파트보다 훨씬 좁습니다. <strong>오피스텔은 평이 아니라 전용면적 ㎡로 비교해야</strong> 실수가 없습니다.</p>
 <h3>발코니 확장 면적은 어디에 들어가나요</h3>
 <p>어디에도 들어가지 않습니다. 발코니는 서비스면적이라 전용면적, 공급면적, 계약면적 어느 쪽에도 포함되지 않아요. 그래서 확장을 해도 서류상 면적은 그대로고 취득세나 국민주택 규모 판정에도 영향이 없습니다. 다만 확장 공사비는 분양가와 별도로 청구되는 것이 보통입니다.</p>
+</div></details>
 
 <!--REL:S-->
 <h2>함께 쓰면 좋은 도구</h2>

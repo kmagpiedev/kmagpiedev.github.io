@@ -95,6 +95,22 @@
     table{font-size:13.5px}
     th,td{padding:7px 4px}
   }
+/*FOLD:S*/
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 8px}
+  .fold .fx>:first-child{margin-top:4px}
+/*FOLD:E*/
 /*REL:S*/
   .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
   .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
@@ -209,39 +225,46 @@
 </div>
 </div>
 
-<h2>연차는 어떻게 생기나요</h2>
+<p class="gist">연차는 1년 미만이면 개근한 달마다 1일(최대 11일), 1년을 80% 이상 출근해 채우면 15일이 생기고 3년차부터 2년마다 1일씩 최대 25일까지 늘어납니다. 회사가 쓰는 회계연도 기준은 관리 편의용이라 퇴사할 때 입사일 기준보다 적으면 그 차액을 보전받아야 합니다. 남은 연차는 1일 통상임금 × 미사용 일수로 수당 정산됩니다.</p>
+
+<details class="fold"><summary><h2>연차는 어떻게 생기나요</h2></summary><div class="fx">
 <p>근로기준법 제60조가 정하고 있습니다. 규칙 자체는 간단한데 첫해가 헷갈립니다.</p>
 <p><strong>입사 후 1년이 안 됐다면</strong> 한 달을 개근할 때마다 하루씩 생깁니다. 최대 11일이에요. 입사 한 달 뒤에 1일, 두 달 뒤에 또 1일, 이렇게 쌓입니다.</p>
 <p><strong>1년을 채우면</strong> 15일이 한꺼번에 생깁니다. 다만 그 1년 동안 80% 이상 출근해야 해요. 못 채우면 1개월 개근당 1일 방식이 이어집니다.</p>
 <p><strong>3년 이상 다니면</strong> 2년마다 하루씩 늘어납니다. 3년차에 16일, 5년차에 17일, 7년차에 18일 이런 식이고 <strong>최대 25일</strong>까지입니다. 21년을 다니면 25일에 도달하고 그 뒤로는 늘지 않아요.</p>
 <p>중요한 예외가 있습니다. <strong>5인 미만 사업장에는 연차휴가 규정이 적용되지 않습니다.</strong> 주휴수당이나 퇴직금은 5인 미만에도 적용되지만 연차는 다릅니다. 다만 회사가 자율적으로 주기로 정했다면 그 약속은 지켜야 합니다.</p>
+</div></details>
 
-<h2>입사일 기준과 회계연도 기준</h2>
+<details class="fold"><summary><h2>입사일 기준과 회계연도 기준</h2></summary><div class="fx">
 <p>법대로라면 연차는 <strong>사람마다 입사일에 맞춰</strong> 생깁니다. 그런데 직원이 많은 회사는 사람마다 날짜가 달라 관리가 어려우니, 실무에서는 <strong>모두의 기준을 1월 1일로 통일</strong>하는 경우가 많습니다. 이걸 회계연도 기준이라고 해요. 고용노동부도 근로자에게 불리하지 않다면 이 방식을 인정합니다.</p>
 <p>회계연도 기준에서는 입사 첫해가 온전한 1년이 아니니 그만큼 <strong>비례해서</strong> 줍니다.</p>
 <p><code>첫 1월 1일 연차 = 15일 × (입사 연도 재직일수 ÷ 365)</code></p>
 <p>예를 들어 7월 1일에 입사했다면 그 해 재직일수가 184일이므로 다음 1월 1일에 15 × 184 ÷ 365 = 약 7.6일이 생깁니다. 여기에 1년 미만 월차가 따로 계속 발생하니 첫 1~2년은 두 가지가 섞여서 복잡해 보입니다.</p>
+</div></details>
 
-<h2>퇴사할 때 반드시 확인해야 하는 것</h2>
+<details class="fold"><summary><h2>퇴사할 때 반드시 확인해야 하는 것</h2></summary><div class="fx">
 <p>여기가 핵심입니다. 회계연도 기준은 어디까지나 <strong>관리 편의를 위한 방식</strong>이고, 법이 보장하는 기준은 입사일입니다. 그래서 <strong>퇴사 시점에 두 방식을 비교해서 입사일 기준이 더 많다면 그 차액을 보전해 줘야 합니다.</strong> 고용노동부 행정해석이 일관되게 이 입장이에요.</p>
 <p>손해가 가장 크게 나는 건 <strong>연중 늦게 입사한 사람이 입사 기념일을 지나서 퇴사</strong>할 때입니다. 원인은 첫해 비례 부여예요. 7월 1일에 입사했다면 첫 1월 1일에 15일이 아니라 7.6일만 받는데, 이 <strong>7.4일의 차이가 그 뒤로 계속 따라다닙니다.</strong></p>
 <p>다만 언제나 손해인 건 아닙니다. 7월 입사자를 예로 들면, 매년 1월부터 6월 사이에는 회계연도 기준이 1년치를 미리 준 셈이라 오히려 유리합니다. 그러다 7월이 되어 입사 기념일이 지나면 입사일 기준이 앞서고, 그 차이가 그대로 손해가 됩니다. <strong>1년 중 절반은 유리하고 절반은 불리한데, 하필 불리한 구간에 퇴사하면 그만큼을 못 받는 것</strong>입니다.</p>
 <p>연초에 입사한 사람은 차이가 작습니다. 2월 1일 입사라면 첫해 비례가 13.7일이라 손해가 1.3일 정도예요. 반대로 10월이나 11월에 입사했다면 첫해 비례가 3~4일밖에 안 되어 차이가 11일을 넘기도 합니다.</p>
 <p>이 계산기가 두 기준을 나란히 보여주는 이유가 이겁니다. 회계연도 기준 쪽이 적게 나오면 경고를 띄우고 차이가 며칠인지 알려드립니다. 그 일수만큼 연차수당을 더 받아야 합니다.</p>
+</div></details>
 
-<h2>연차수당은 얼마인가요</h2>
+<details class="fold"><summary><h2>연차수당은 얼마인가요</h2></summary><div class="fx">
 <p>쓰지 못하고 남은 연차는 수당으로 받습니다. 계산은 이렇습니다.</p>
 <p><code>연차수당 = 1일 통상임금 × 미사용 일수</code></p>
 <p>1일 통상임금은 월 통상임금을 월 소정근로시간(주 40시간이면 209시간)으로 나눈 뒤 하루 소정근로시간 8시간을 곱해 구합니다. 근로기준법 제60조는 통상임금 또는 평균임금 중 취업규칙에서 정한 것을 지급하도록 하고 있는데, 실무에서는 통상임금이 원칙입니다.</p>
 <p>어느 시점의 통상임금이냐도 정해져 있습니다. <strong>휴가를 쓸 수 있는 마지막 달의 통상임금</strong>이 기준이에요. 회계연도 기준 회사에서 2025년치 미사용 연차를 2026년 1월에 정산한다면 2025년 12월의 통상임금으로 계산합니다.</p>
+</div></details>
 
-<h2>자주 겪는 문제</h2>
+<details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
 <h3>회사가 연차 촉진을 했다며 수당을 안 줍니다</h3>
 <p>연차사용촉진제도는 회사가 법이 정한 절차를 <strong>정확히 지켰을 때만</strong> 수당 지급 의무가 없어집니다. 사용 기간 만료 6개월 전에 근로자별 미사용 일수를 알리고 사용 시기를 정해 통보하도록 서면으로 촉구해야 하고, 근로자가 정하지 않으면 회사가 시기를 지정해 다시 서면 통보해야 합니다. 구두로 "연차 쓰세요"라고 한 정도로는 요건을 못 채웁니다.</p>
 <h3>1년 딱 채우고 퇴사하면 며칠인가요</h3>
 <p>1년 미만 월차 11일에 1년을 채운 시점의 15일을 더해 26일입니다. 대법원이 2021년에 이 쟁점을 정리했는데, <strong>15일이 생기려면 1년을 채운 다음 날까지 근로관계가 유지</strong>돼야 합니다. 즉 정확히 365일째에 퇴사하면 11일만, 366일째까지 다니면 26일이 됩니다. 하루 차이로 15일이 갈리니 퇴사일을 정할 때 확인하세요.</p>
 <h3>육아휴직 기간은 어떻게 되나요</h3>
 <p>출근한 것으로 봅니다. 근로기준법 제60조 제7항이 육아휴직, 출산전후휴가, 업무상 재해로 인한 휴업 기간을 출근으로 간주하도록 정하고 있어서, 이 기간이 있어도 연차는 정상적으로 발생합니다.</p>
+</div></details>
 
 <!--REL:S-->
 <h2>함께 쓰면 좋은 도구</h2>

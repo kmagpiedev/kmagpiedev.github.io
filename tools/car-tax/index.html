@@ -111,6 +111,22 @@
     th,td{padding:7px 4px}
     .seg button{font-size:12px;padding:9px 2px}
   }
+/*FOLD:S*/
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 8px}
+  .fold .fx>:first-child{margin-top:4px}
+/*FOLD:E*/
 /*REL:S*/
   .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
   .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
@@ -226,28 +242,34 @@
   <p class="src" id="src"></p>
 </div>
 
-<h2>자동차세는 배기량으로 매깁니다</h2>
+<p class="gist">비영업용 승용차 자동차세는 배기량 1cc당 80·140·200원 구간으로 계산하고 지방교육세가 30% 따라붙으며, 전기·수소차는 정액 연 13만원입니다. 차령 3년째부터 반기 단위로 매년 5%씩 깎여 12년째에 50%까지 줄어듭니다. 1월 연납 할인은 연세액의 5%가 아니라 남은 기간분에 대한 공제라 실질 약 4.58%입니다.</p>
+
+<details class="fold"><summary><h2>자동차세는 배기량으로 매깁니다</h2></summary><div class="fx">
 <p>비영업용 승용차는 <strong>배기량 1cc당 정해진 금액</strong>을 곱해서 계산합니다. 1,000cc 이하는 80원, 1,600cc 이하는 140원, 1,600cc를 넘으면 200원이에요. 차 값이 아니라 배기량이 기준이라, 같은 2,000cc면 국산 소형차든 수입 스포츠카든 자동차세가 같습니다.</p>
 <p>여기에 <strong>지방교육세가 자동차세의 30%</strong>만큼 따라붙습니다. 그래서 1,600cc 차의 실제 부담은 cc당 140원이 아니라 182원인 셈이에요. 흔히 말하는 "자동차세 얼마"는 이 둘을 합친 금액입니다.</p>
 <p>전기차와 수소차는 배기량이 없어서 <strong>정액</strong>입니다. 비영업용 승용은 연 10만원이고 지방교육세 3만원을 더해 13만원이에요. 2,000cc 내연기관차가 지방교육세까지 52만원인 것과 비교하면 차이가 큽니다.</p>
+</div></details>
 
-<h2>차가 오래될수록 세금이 줄어듭니다</h2>
+<details class="fold"><summary><h2>차가 오래될수록 세금이 줄어듭니다</h2></summary><div class="fx">
 <p>비영업용 승용차는 <strong>3년째부터 매년 5%씩</strong> 자동차세가 깎이고, <strong>12년째에 50%까지</strong> 줄어든 뒤로는 그대로 유지됩니다. 법에 적힌 산식은 이렇습니다.</p>
 <p><code>각 기분세액 = A/2 − (A/2 × 5/100) × (n−2)</code></p>
 <p>A는 연세액, n은 차령이고 n은 2 이상 12 이하로 봅니다. 눈여겨볼 점은 이 계산이 <strong>연 단위가 아니라 반기(기분) 단위</strong>라는 겁니다. 자동차세는 6월과 12월에 반씩 나눠 내는데, 경감도 각 기분세액에 적용해요. 연세액에 경감률을 곱한 뒤 반으로 나누는 것과 순서가 달라서 결과가 미세하게 달라질 수 있습니다.</p>
 <p>차령은 <strong>연식이 아니라 최초 등록일</strong>을 기준으로 셉니다. 등록하고 2년까지는 그대로이고 3년이 되는 해부터 줄어들기 시작해요. 다만 등록한 달에 따라 지자체가 차령을 세는 방식에 차이가 있을 수 있어서, 이 계산기는 <strong>등록 연도만으로 차령을 셈했다는 가정</strong>을 결과 아래에 표시합니다.</p>
+</div></details>
 
-<h2>연납은 언제 하는 게 이득인가</h2>
+<details class="fold"><summary><h2>연납은 언제 하는 게 이득인가</h2></summary><div class="fx">
 <p>자동차세를 미리 몰아서 내면 할인을 받습니다. 여기서 많이 오해하는 게 <strong>"1월에 내면 5% 깎아준다"</strong>는 부분이에요. 정확히는 <strong>남은 기간에 대해서만</strong> 5%를 공제합니다. 1월에 신고납부하면 이미 1월이 지나가고 있으므로 2월부터 12월까지 334일분이 대상이고, 그래서 연세액 대비 실질 할인율은 <strong>약 4.58%</strong>가 됩니다.</p>
 <p>같은 이유로 3월 연납은 약 3.76%, 6월은 약 2.51%, 9월은 약 1.25%로 점점 줄어듭니다. <strong>일찍 낼수록 이득</strong>이지만, 2,000cc 차 기준으로 1월과 6월의 차이가 1만원 남짓이라 목돈 부담이 크다면 굳이 무리할 필요는 없어요. 위 비교표에서 내 차 기준 실제 금액 차이를 확인해 보세요.</p>
 <p>연납 신청 기간은 각 달 16일부터 말일까지인데, <strong>휴일 때문에 매년 조금씩 달라집니다.</strong> 2026년 1월 연납은 2월 2일까지 받았어요. 위택스나 지자체 공지에서 그해 기간을 확인하세요.</p>
+</div></details>
 
-<h2>이 계산기가 다루지 않는 것</h2>
+<details class="fold"><summary><h2>이 계산기가 다루지 않는 것</h2></summary><div class="fx">
 <p>정확한 값을 확인하지 못한 항목은 계산에 넣지 않았습니다. 틀린 금액을 보여주는 것보다 안 보여주는 편이 낫다고 판단했어요.</p>
 <p><strong>이륜자동차</strong>는 세액 자료가 공식 출처마다 달라서 제외했습니다. <strong>전기 승합차와 전기 화물차</strong>는 배기량이 없는 승합·화물차에 어떤 규정이 적용되는지 확인하지 못해 제외했어요. 둘 다 관할 지자체 세무과나 위택스에서 확인하세요.</p>
 <p>또 자동차세에는 <strong>원 단위 절사 규칙</strong>과 소액 징수면제가 있는데, 정확한 기준을 확인하지 못했습니다. 그래서 실제 고지서와 <strong>수십 원에서 수백 원 차이</strong>가 날 수 있습니다. 소유권 이전이나 폐차로 소유 기간이 1년이 안 되면 일할 계산되는데 그것도 반영되지 않았어요.</p>
+</div></details>
 
-<h2>자주 겪는 문제</h2>
+<details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
 <h3>고지서 금액이 계산 결과와 조금 달라요</h3>
 <p>원 단위 절사 방식, 지자체별 처리, 소유 기간 일할 계산 때문입니다. 특히 <strong>연중에 차를 사고팔았다면</strong> 소유한 일수만큼만 부과되므로 금액이 크게 달라집니다. 정확한 금액은 위택스에서 조회하는 게 확실해요.</p>
 <h3>차를 팔았는데 자동차세가 나왔어요</h3>
@@ -258,6 +280,7 @@
 <p>따로 감면 제도가 있는 건 아니고, <strong>배기량이 1,000cc 이하라 cc당 80원 구간</strong>에 들어가서 결과적으로 쌉니다. 998cc 경차면 자동차세 79,840원에 지방교육세를 더해 연 10만원 정도예요. 취득세는 별도로 감면 제도가 있는데, 그건 <a href="/tools/car-acquisition/">자동차 취득세 계산기</a>에서 확인하세요.</p>
 <h3>승용차인데 왜 화물차로 등록되어 있나요</h3>
 <p>일부 밴이나 픽업은 화물차로 분류되어 <strong>정액 과세</strong>됩니다. 배기량과 무관하게 적재정량 기준이라 대형 엔진이어도 세금이 훨씬 적어요. 차량등록증의 차종 항목을 확인하고 위 계산기에서 화물차를 선택하세요.</p>
+</div></details>
 
 <!--REL:S-->
 <h2>함께 쓰면 좋은 도구</h2>

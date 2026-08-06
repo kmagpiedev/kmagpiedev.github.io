@@ -99,6 +99,22 @@
   .note{font-size:13.5px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:13px;margin:14px 0}
   footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
   footer a{color:var(--ink-3)}
+/*FOLD:S*/
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 8px}
+  .fold .fx>:first-child{margin-top:4px}
+/*FOLD:E*/
 /*REL:S*/
   .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
   .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
@@ -202,25 +218,31 @@
   </div>
 </div>
 
-<h2>사용법</h2>
+<p class="gist">사진에서 인물만 남기고 배경을 지워 투명 PNG로 저장하거나 배경색·흐림 처리를 할 수 있습니다. 인식 모델을 브라우저가 직접 내려받아 계산하므로 사진이 서버로 전송되지 않고, 워터마크나 횟수 제한도 없습니다. 인물이 아닌 사진은 브러시로 직접 칠해 지우면 됩니다.</p>
+
+<details class="fold"><summary><h2>사용법</h2></summary><div class="fx">
 <p>사진을 올리고 <strong>AI로 배경 지우기</strong>를 누르면 인물만 남습니다. 결과가 어색하면 인물 영역 슬라이더를 조절하고, 그래도 남거나 잘린 부분은 지우기·되살리기 브러시로 다듬으세요. 브러시 모드에서는 마우스를 올리면 <strong>현재 붓 크기만큼의 원</strong>이 커서를 따라다녀서(지우기는 빨간 원, 되살리기는 초록 원) 어디를 얼마나 칠할지 미리 보입니다. 붓 크기는 슬라이더 아래 <strong>소·중·대·특대</strong> 버튼으로 빠르게 바꿀 수 있고, 실수하면 <strong>한 획 되돌리기</strong>로 방금 칠한 획만 취소할 수 있습니다. 마지막으로 배경을 투명으로 둘지 색을 채울지 흐리게 할지 고르고 PNG로 받으시면 됩니다.</p>
 <p>모든 처리는 브라우저 안에서 이루어집니다. 인식 모델을 이 사이트에 함께 올려두고 브라우저가 직접 계산하기 때문에 <strong>사진이 외부로 나가지 않습니다.</strong> 개발자 도구의 네트워크 탭을 열어두고 확인해 보셔도 됩니다.</p>
+</div></details>
 
-<h2>다른 서비스와 뭐가 다른가요</h2>
+<details class="fold"><summary><h2>다른 서비스와 뭐가 다른가요</h2></summary><div class="fx">
 <p>배경 제거 서비스 대부분은 사진을 자사 서버로 업로드해 처리합니다. 편리하지만 얼굴 사진이나 업무 자료를 남의 서버에 올려야 하고, 무료로는 저해상도만 주거나 워터마크를 넣거나 하루 몇 장으로 제한하는 곳이 많습니다.</p>
 <p>여기서는 <strong>사진이 업로드되지 않고, 원본 해상도 그대로 저장되며, 워터마크가 없고, 횟수 제한도 없습니다.</strong> 대신 처음 한 번 모델을 내려받아야 하고, 계산을 본인 기기에서 하므로 사양에 따라 몇 초 걸립니다.</p>
+</div></details>
 
-<h2>어떤 사진에서 잘 되나요</h2>
+<details class="fold"><summary><h2>어떤 사진에서 잘 되나요</h2></summary><div class="fx">
 <p>이 도구는 <strong>사람을 인식하도록 학습된 모델</strong>을 씁니다. 인물 사진, 특히 상반신이 크게 나온 사진에서 가장 정확합니다. 반대로 사물이나 동물, 제품 사진은 인식하지 못하니 그런 경우에는 AI를 쓰지 말고 <strong>지우기 브러시로 직접 칠해</strong> 지우세요. 브러시는 어떤 사진에서든 동작합니다.</p>
 <p>인물 사진이라도 결과가 아쉬울 수 있는 경우가 있습니다. 배경과 옷 색이 거의 같거나, 머리카락이 흩날리거나, 조명이 어두워 윤곽이 흐릿하면 경계가 뭉툭해집니다. 이럴 때는 슬라이더로 크게 맞춘 뒤 <strong>작은 붓으로 경계만 정리</strong>하는 게 가장 빠릅니다.</p>
+</div></details>
 
-<h2>자주 겪는 문제</h2>
+<details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
 <h3>투명 배경으로 저장했는데 흰색으로 보여요</h3>
 <p>PNG의 투명 영역을 지원하지 않는 프로그램에서 열면 흰색이나 검은색으로 채워져 보입니다. 카카오톡이나 일부 문서 편집기가 그렇습니다. 투명이 꼭 필요하면 PNG 그대로 쓰시고, 아니면 배경색을 지정해 저장하세요.</p>
 <h3>저장한 파일이 너무 커요</h3>
 <p>투명도를 지원하려면 PNG로 저장해야 하는데 PNG는 사진에서 용량이 큽니다. 투명이 필요 없다면 배경색을 채운 뒤 <a href="/tools/image-compress/">이미지 용량 줄이기</a>로 JPG나 WebP로 바꾸시면 크게 줄어듭니다.</p>
 <h3>모델을 불러오지 못했다고 나와요</h3>
 <p>기기 메모리가 부족하거나 오래된 브라우저일 수 있습니다. 이 경우에도 <strong>브러시는 정상 동작</strong>하니 직접 칠해서 지우실 수 있습니다.</p>
+</div></details>
 
 <!--REL:S-->
 <h2>함께 쓰면 좋은 도구</h2>

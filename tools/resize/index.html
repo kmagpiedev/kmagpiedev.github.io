@@ -145,6 +145,22 @@
     .arw{display:none}
     th:nth-child(3),td:nth-child(3){font-size:12px;color:var(--ink-3)}
   }
+/*FOLD:S*/
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 8px}
+  .fold .fx>:first-child{margin-top:4px}
+/*FOLD:E*/
 /*REL:S*/
   .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
   .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
@@ -330,24 +346,30 @@
   </table>
 </div>
 
-<h2>크기 조절과 용량 줄이기는 다릅니다</h2>
+<p class="gist">가로·세로 px, 긴 변, 배율 중 원하는 방식으로 크기를 줄이고 1:1·16:9 같은 비율 자르기와 여러 장 일괄 처리를 지원합니다. 모든 처리는 서버 전송 없이 브라우저 안에서 끝나 개인 사진도 안전합니다. 표시 크기가 아니라 파일 용량이 문제라면 이미지 용량 줄이기가 더 맞는 도구입니다.</p>
+
+<details class="fold"><summary><h2>크기 조절과 용량 줄이기는 다릅니다</h2></summary><div class="fx">
 <p>둘 다 "사진을 작게 만든다"는 말로 뭉뚱그려지지만 하는 일이 다릅니다. 크기 조절은 <strong>픽셀 수 자체를 줄이는 것</strong>입니다. 4000×3000 사진을 1080×810으로 만들면 픽셀이 1200만 개에서 87만 개로 줄어들고, 화면에 표시되는 크기도 그만큼 작아집니다. 용량 줄이기는 픽셀 수는 그대로 두고 <strong>압축률을 높여 파일을 가볍게</strong> 만드는 것이라, 화면에 보이는 크기는 변하지 않습니다.</p>
 <p>그래서 목적에 따라 도구가 갈립니다. "게시판에 올리려니 사진이 너무 크다"처럼 표시 크기가 문제면 이 도구를, "첨부 용량이 5MB를 넘는다"처럼 파일 크기가 문제면 <a href="/tools/image-compress/">이미지 용량 줄이기</a>를 쓰세요. 후자는 목표 용량을 KB 단위로 정해두면 품질을 자동으로 맞춰 줍니다. 물론 픽셀을 줄이면 용량도 함께 줄어들기 때문에, 용량이 심하게 클 때는 이 도구로 크기부터 줄이는 편이 압축만 세게 거는 것보다 결과가 훨씬 깔끔합니다.</p>
+</div></details>
 
-<h2>자주 쓰는 규격</h2>
+<details class="fold"><summary><h2>자주 쓰는 규격</h2></summary><div class="fx">
 <p>인스타그램은 대체로 정사각 1080×1080, 세로 1080×1350, 가로 1080×566을 씁니다. 세로형이 화면을 가장 많이 차지해서 요즘은 1080×1350을 기본으로 두는 경우가 많습니다. 유튜브 썸네일은 1280×720이 표준이고, 이보다 크게 올려도 서비스 쪽에서 알아서 줄입니다.</p>
 <p>블로그 본문은 플랫폼마다 다르지만 본문 폭이 대체로 800~900px 안팎이라, 긴 변 1200~1600px 정도면 선명하게 보이면서 페이지가 무거워지지 않습니다. 고해상도 화면을 고려해 본문 폭의 두 배쯤 잡는다고 생각하면 편합니다.</p>
 <p>다만 이 숫자들은 <strong>플랫폼이 수시로 바꿉니다.</strong> 몇 년 사이에 인스타그램 정사각 기준이 640에서 1080으로 올라갔고, 권장 비율도 계속 손봤습니다. 중요한 제출물이라면 해당 서비스의 최신 안내를 한 번 확인하는 게 안전합니다. 확신이 없으면 조금 크게 만들어 두세요. 줄이는 건 언제든 되지만 키우는 건 되돌릴 수 없습니다.</p>
+</div></details>
 
-<h2>확대하면 왜 흐려지나</h2>
+<details class="fold"><summary><h2>확대하면 왜 흐려지나</h2></summary><div class="fx">
 <p>800×600 사진을 1600×1200으로 키우면 픽셀 수가 네 배가 됩니다. 그런데 늘어난 픽셀에 담을 정보는 원본에 없습니다. 프로그램이 할 수 있는 일은 주변 픽셀의 색을 섞어 그럴듯한 값을 <strong>만들어내는 것</strong>뿐이고, 그 결과가 뿌옇고 경계가 뭉개진 이미지입니다. 없던 디테일이 생겨나지는 않습니다.</p>
 <p>그래서 위 도구는 "원본보다 크게 만들지 않기"를 기본으로 켜둡니다. 지정한 크기가 원본보다 크면 비율을 유지한 채 원본 크기까지만 맞춰요. 정말로 큰 파일이 필요하다면 확대하지 말고 <strong>애초에 큰 원본을 구하는 게 맞습니다.</strong> 카메라 원본 파일을 다시 찾거나, 스크린샷이라면 화면 배율을 올려 다시 찍는 쪽이 훨씬 낫습니다. 인쇄용이라면 필요한 크기를 300dpi 기준으로 계산해 두고 그에 맞는 원본을 준비하세요.</p>
+</div></details>
 
-<h2>비율 자르기에서 잘려나가는 부분</h2>
+<details class="fold"><summary><h2>비율 자르기에서 잘려나가는 부분</h2></summary><div class="fx">
 <p>비율을 바꾸면 반드시 무언가가 잘립니다. 16:9로 찍은 가로 사진을 1:1 정사각으로 만들면 좌우가 크게 날아가고, 세로로 찍은 9:16 사진을 16:9로 만들면 위아래가 통째로 사라집니다. 이 도구는 정해진 비율에 맞춰 원본에서 <strong>가장 큰 영역</strong>을 잘라내므로 손실을 최소로 줄이지만, 비율이 다른 이상 잘려나가는 부분 자체를 없앨 수는 없습니다. 사진을 올리면 위 미리보기에서 <strong>잘려나갈 부분이 어둡게 표시</strong>되니 결과를 받기 전에 확인할 수 있고, 밝은 사각형을 드래그하면 기준점 아홉 개로 안 되는 미세한 위치도 직접 정할 수 있습니다. 여러 장을 한꺼번에 처리할 때는 첫 번째 사진에서 정한 위치가 나머지에도 같은 비율로 적용돼요.</p>
 <p>기본값은 중앙 기준입니다. 풍경이나 사물은 대체로 이게 무난합니다. 그런데 <strong>인물 사진은 상단 기준이 나은 경우가 많습니다.</strong> 사람은 대체로 화면 위쪽에 얼굴이 오도록 찍히기 때문에, 세로 사진을 정사각으로 중앙에서 자르면 이마나 정수리가 잘리고 발치의 바닥만 남는 일이 흔합니다. 기준점을 상단으로 옮기면 얼굴이 살아납니다. 단체 사진이나 전신 사진이라면 몇 가지 기준점을 바꿔가며 표에 나오는 결과 크기를 보고 판단하세요.</p>
+</div></details>
 
-<h2>자주 겪는 문제</h2>
+<details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
 <h3>지정한 크기와 결과가 1px 다릅니다</h3>
 <p>비율 유지나 긴 변 기준을 쓰면 짧은 쪽이 계산 결과에 따라 반올림됩니다. 4032×3024 사진의 긴 변을 1920으로 맞추면 짧은 쪽은 1440.0이 나오지만, 4032×3016 같은 값이면 1436.19처럼 소수가 나와 1436으로 반올림돼요. 픽셀은 쪼갤 수 없으니 어쩔 수 없는 부분입니다. 두 값이 모두 정확해야 한다면 <strong>정확한 크기 모드에서 비율 유지를 끄고</strong> 가로·세로를 직접 넣으세요. 대신 원본과 비율이 다르면 이미지가 늘어나 보이니, 비율 자르기를 함께 켜는 편이 낫습니다.</p>
 <h3>세로 사진이 가로로 누워서 나옵니다</h3>
@@ -356,6 +378,7 @@
 <p>JPG는 투명도를 저장하지 못하는 형식이라, 투명한 부분을 어떤 색으로든 채워야 합니다. 이 도구는 흰색으로 채웁니다. 검게 나오는 건 채우기 없이 그대로 저장한 프로그램에서 흔한 증상이에요. 투명 배경을 유지해야 한다면 출력 형식을 <strong>PNG나 WebP</strong>로 두세요. 배경을 다른 색으로 채우고 싶으면 <a href="/tools/convert/">이미지 확장자 변환</a>에서 채울 색을 고를 수 있습니다.</p>
 <h3>여러 장을 넣으니 느립니다</h3>
 <p>모든 처리가 내 컴퓨터의 브라우저에서 이루어지기 때문입니다. 서버로 보내지 않으니 개인 사진도 안심할 수 있는 대신, 속도는 기기 성능을 따라갑니다. 특히 4000px이 넘는 카메라 원본은 한 장을 여는 데만 시간이 걸려요. 메모리가 넘치지 않도록 <strong>한 장씩 순서대로</strong> 처리하고 끝난 이미지는 즉시 비우기 때문에, 수십 장을 넣어도 브라우저가 멈추지는 않습니다. 진행 막대가 움직이는 동안 기다려 주세요.</p>
+</div></details>
 
 <!--REL:S-->
 <h2>함께 쓰면 좋은 도구</h2>

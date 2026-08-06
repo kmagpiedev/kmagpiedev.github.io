@@ -54,6 +54,8 @@ TOOLS = {
                    '스캔하거나 사진으로 찍은 PDF를 제출 한도에 맞춰 압축합니다. 목표 용량을 정하면 해상도와 품질을 자동으로 맞추고, 압축 전후를 비교해서 보여줍니다.'),
  'manse':         ('🀄','만세력 (사주 뽑기)','절입 시각까지 반영한 원국',
                    '생년월일시로 사주 여덟 글자를 뽑습니다. 연주는 입춘 절입 시각까지 따지고, 오행 분포와 십성을 함께 보여줍니다. 풀이는 하지 않고 계산만 정확히 합니다.'),
+ 'mosaic':        ('🫥','사진 모자이크','얼굴·전화번호 가리기',
+                   '사진 속 얼굴이나 전화번호·계좌번호를 드래그 한 번으로 가립니다. 모자이크·블러·검정 막대 중 고를 수 있고, 위치정보(EXIF)도 함께 지워집니다.'),
  'meme':          ('💬','짤 만들기','사진에 굵은 텍스트, 움짤 자막',
                    '내 사진이나 움짤에 굵은 외곽선 텍스트를 얹어 짤을 만듭니다. GIF에도 자막을 넣을 수 있고, 원본 해상도 그대로 저장됩니다.'),
  'watermark':     ('💧','이미지 워터마크 넣기','텍스트·로고, 여러 장 한 번에',
@@ -81,7 +83,7 @@ TOOLS = {
 # 목록 페이지 분류 (순서가 곧 노출 순서)
 CATS = [
  ('이미지 편집', '사진을 다루는 도구입니다. 전부 브라우저 안에서 처리되고 업로드가 없어서, 얼굴이 나온 사진이나 공개 전 자료도 안심하고 올릴 수 있습니다.',
-  ['remove-bg','id-photo','resize','convert','image-compress','watermark','gif-maker','meme']),
+  ['remove-bg','id-photo','resize','convert','image-compress','watermark','gif-maker','meme','mosaic']),
  ('PDF·문서',   '계약서나 제출 서류를 다룰 때 쓰는 도구입니다. 원본 문서의 글자를 그대로 살린 채 처리합니다.',
   ['pdf','pdf-compress','pdf-sign','pdf-to-image','img2pdf']),
  ('급여·노동', '법령과 공식 고시를 그대로 적용해 계산합니다. 근사식을 쓰지 않고 계산 과정과 근거 조문을 함께 보여줍니다.',
@@ -113,7 +115,8 @@ REL = {
  'image-compress':['resize','convert','remove-bg'],
  'watermark':     ['meme','image-compress','resize'],
  'gif-maker':     ['meme','resize','image-compress'],
- 'meme':          ['gif-maker','watermark','image-compress'],
+ 'meme':          ['mosaic','gif-maker','watermark'],
+ 'mosaic':        ['screenshot','meme','image-compress'],
  'resize':        ['image-compress','gif-maker','convert'],
  'qr':            ['char-count','convert','date-calc'],
  'car-tax':       ['fuel-cost','car-acquisition','loan'],
@@ -129,7 +132,7 @@ REL = {
  'pyeong':        ['electricity','date-calc','loan'],
  'date-calc':     ['lunar','char-count','annual-leave'],
  'app-icon':      ['screenshot','privacy-policy','image-compress'],
- 'screenshot':    ['app-icon','privacy-policy','image-compress'],
+ 'screenshot':    ['mosaic','app-icon','image-compress'],
  'privacy-policy':['app-icon','screenshot','pdf'],
 }
 

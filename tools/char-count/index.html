@@ -119,6 +119,22 @@
     th,td{padding:7px 4px}
     .seg button{font-size:12px;padding:9px 2px}
   }
+/*FOLD:S*/
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 8px}
+  .fold .fx>:first-child{margin-top:4px}
+/*FOLD:E*/
 /*REL:S*/
   .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
   .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
@@ -190,25 +206,31 @@
 
 <div id="warn" class="hidden"></div>
 
-<h2>공백 포함이냐 제외냐부터 정하세요</h2>
+<p class="gist">글자수는 공백 포함인지 제외인지에 따라 같은 글도 15~20%씩 달라지므로 지원 시스템의 기준부터 확인해야 합니다. 바이트 제한은 인코딩에 따라 달라 한글 한 글자가 EUC-KR에서는 2바이트, UTF-8에서는 3바이트입니다. 원고지 매수는 공백 포함 글자수를 200으로 나눠 올림한 값입니다.</p>
+
+<details class="fold"><summary><h2>공백 포함이냐 제외냐부터 정하세요</h2></summary><div class="fx">
 <p>글자수를 세는 방법은 하나가 아닙니다. 같은 글이라도 띄어쓰기와 줄바꿈을 세느냐 마느냐에 따라 숫자가 크게 달라집니다. 한국어 문장은 대체로 <strong>전체 글자의 15~20% 정도가 공백</strong>이라, 1,000자짜리 글이 공백을 빼면 800자 근처로 떨어지는 일이 흔합니다.</p>
 <p>문제는 여기서 생깁니다. 공고에 "1,000자 이내"라고만 적혀 있고 기준이 공백 제외인데 공백 포함으로 1,000자를 채웠다면, 실제로는 200자 가까이 덜 쓴 셈입니다. 분량을 채워야 유리한 자소서에서 이건 꽤 큰 손해예요. 반대로 공백 포함 기준인데 공백 제외로 1,000자를 맞췄다면 붙여넣는 순간 초과 판정이 납니다.</p>
 <p>확인하는 방법은 단순합니다. 입력창 아래나 옆에 <strong>"0 / 1000자"처럼 카운터가 붙어 있으면</strong> 거기에 짧은 문장을 넣어보고 숫자가 어떻게 오르는지 보면 됩니다. "가 나"를 입력했을 때 3이 나오면 공백 포함, 2가 나오면 공백 제외입니다. 카운터가 없다면 공고 하단 안내나 지원 유의사항을 찾아보고, 그래도 없으면 <strong>더 빡빡한 쪽인 공백 포함 기준</strong>으로 맞춰두는 게 안전합니다.</p>
+</div></details>
 
-<h2>바이트 제한은 글자수 제한과 다릅니다</h2>
+<details class="fold"><summary><h2>바이트 제한은 글자수 제한과 다릅니다</h2></summary><div class="fx">
 <p>오래된 게시판이나 관공서 민원 양식에서는 글자수 대신 <strong>바이트로 제한</strong>을 거는 경우가 있습니다. 데이터베이스 필드 크기가 바이트 단위로 잡혀 있어서 그렇습니다. "제목 100바이트 이내" 같은 안내를 보셨다면 이 경우예요.</p>
 <p>한글은 인코딩에 따라 차지하는 바이트가 다릅니다. <strong>EUC-KR(CP949)에서 한글 한 글자는 2바이트</strong>, 영문과 숫자는 1바이트입니다. 요즘 표준인 <strong>UTF-8에서는 한글 한 글자가 3바이트</strong>이고 영문과 숫자는 그대로 1바이트예요. 그래서 같은 "안녕하세요"가 EUC-KR로는 10바이트, UTF-8로는 15바이트가 됩니다.</p>
 <p>어느 쪽으로 재야 하는지는 시스템이 결정합니다. 100바이트 제한인 곳에서 EUC-KR 기준이면 한글 50자, UTF-8 기준이면 33자까지 들어갑니다. 위 표에 둘 다 표시해 두었으니 넉넉하게 잡으려면 큰 쪽을 보세요. EUC-KR 값은 아스키를 1바이트, 나머지를 2바이트로 계산한 <strong>근사치</strong>입니다. 실제 CP949로 변환할 수 없는 문자(이모지 등)가 섞여 있으면 어긋날 수 있습니다.</p>
+</div></details>
 
-<h2>원고지 매수는 200자가 기준입니다</h2>
+<details class="fold"><summary><h2>원고지 매수는 200자가 기준입니다</h2></summary><div class="fx">
 <p>공모전이나 학교 과제에서 "원고지 10매 이내"처럼 요구하는 경우가 있습니다. 우리가 흔히 쓰는 원고지는 가로 20칸에 세로 10줄, 즉 <strong>한 장에 200자</strong>입니다. 그래서 2,000자를 썼다면 10매가 됩니다.</p>
 <p>원고지에서는 공백도 한 칸을 차지하므로 <strong>공백 포함 글자수를 200으로 나누고 올림</strong>하는 게 일반적입니다. 위 계산도 그렇게 했습니다. 다만 실제 원고지 작성법에서는 문단 첫 칸 들여쓰기, 줄 끝의 문장부호 처리 같은 규칙 때문에 칸 수가 조금 더 늘어납니다. 딱 맞게 채우기보다 여유를 두는 편이 좋아요.</p>
+</div></details>
 
-<h2>이 도구가 세는 방식</h2>
+<details class="fold"><summary><h2>이 도구가 세는 방식</h2></summary><div class="fx">
 <p>공백 포함 글자수는 입력한 글의 모든 문자를 셉니다. 공백 제외는 <strong>스페이스·탭·줄바꿈을 모두 뺀</strong> 숫자이고, 그 아래 항목은 줄바꿈은 남기고 띄어쓰기만 뺀 숫자입니다. 시스템에 따라 "공백 제외"의 의미가 둘 중 하나이므로 나눠서 보여줍니다.</p>
 <p>단어 수는 공백으로 끊어 셉니다. 한국어에서는 어절 수라고 부르는 값에 가깝습니다. 줄 수는 줄바꿈으로 나눈 개수, 문단 수는 <strong>빈 줄로 구분되는 덩어리</strong>의 개수입니다. 읽는 시간은 분당 500자를 읽는다고 가정한 값이라 글의 난이도에 따라 달라지니 어림값으로만 보세요.</p>
+</div></details>
 
-<h2>자주 겪는 문제</h2>
+<details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
 <h3>워드나 한글 프로그램의 글자수와 다릅니다</h3>
 <p>프로그램마다 무엇을 글자로 볼지가 다릅니다. 문서 끝의 빈 줄과 공백을 세는지, 표 안의 글자나 각주·머리말을 포함하는지, 줄바꿈을 한 글자로 치는지가 제각각이에요. 특히 <strong>문서 맨 끝에 남은 빈 줄과 공백</strong>이 흔한 원인입니다. 숫자가 몇 자씩 안 맞는다면 글의 맨 끝에 커서를 놓고 지워지는 게 없는지 확인해 보세요.</p>
 <h3>이모지는 몇 글자로 세어지나요</h3>
@@ -218,6 +240,7 @@
 <p>PDF나 웹페이지에서 복사한 글은 화면에 보이던 줄이 그대로 줄바꿈으로 따라붙는 경우가 많습니다. 눈에는 한 문단인데 실제로는 열 줄로 쪼개져 있는 거예요. 공백 포함 기준이라면 이 줄바꿈이 전부 글자수에 잡히니 <strong>줄 수와 문단 수가 예상보다 크면</strong> 붙여넣기 문제일 가능성이 높습니다. 메모장 같은 서식 없는 편집기를 한 번 거친 뒤 옮기면 깔끔해집니다.</p>
 <h3>지원 시스템에서 초과가 뜹니다</h3>
 <p>여기서 딱 맞췄는데 지원 사이트에서 초과가 나온다면 원인은 대개 셋 중 하나입니다. 기준이 공백 포함/제외로 어긋났거나, 줄바꿈을 2자(<code>\r\n</code>)로 세는 시스템이거나, 붙여넣는 과정에서 보이지 않는 공백이 딸려 들어간 경우입니다. <strong>안전하게 30~50자 정도 여유</strong>를 두고 쓰고, 최종본은 반드시 실제 입력창에 붙여넣어 그쪽 카운터로 확인하세요.</p>
+</div></details>
 
 <!--REL:S-->
 <h2>함께 쓰면 좋은 도구</h2>

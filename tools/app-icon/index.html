@@ -97,6 +97,22 @@
   footer a{color:var(--ink-3)}
   .bar{height:5px;background:var(--line-soft);border-radius:99px;overflow:hidden;margin-top:12px}
   .bar>i{display:block;height:100%;width:0;background:var(--accent);transition:width .18s}
+/*FOLD:S*/
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 8px}
+  .fold .fx>:first-child{margin-top:4px}
+/*FOLD:E*/
 /*REL:S*/
   .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
   .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
@@ -177,11 +193,14 @@
   <div class="bar hidden" id="barWrap"><i id="bar"></i></div>
 </div>
 
-<h2>사용법</h2>
+<p class="gist">1024px 정사각 PNG 한 장으로 안드로이드·iOS·파비콘 규격 아이콘을 폴더 구조가 갖춰진 ZIP으로 만듭니다. 적응형 아이콘의 세이프존 비율은 자동으로 적용됩니다. 출시 전 아이콘도 서버 전송 없이 브라우저 안에서만 처리되어 유출 걱정이 없습니다.</p>
+
+<details class="fold"><summary><h2>사용법</h2></summary><div class="fx">
 <p>1024×1024 크기의 정사각형 PNG를 준비해 위에 올리세요. 원본이 클수록 축소 품질이 좋아지므로, 가능하면 벡터에서 1024px로 내보낸 파일을 쓰시는 게 가장 깔끔합니다. 생성할 규격을 고르고 내려받기를 누르면 폴더 구조가 갖춰진 ZIP이 만들어집니다. 안드로이드 파일은 압축을 풀어 <code>app/src/main/res/</code> 아래에 그대로 덮어쓰면 되고, iOS는 <code>AppIcon.appiconset</code> 폴더를 통째로 교체하면 됩니다.</p>
 <p>이 도구는 이미지를 서버로 보내지 않습니다. 브라우저의 Canvas API로 처리하기 때문에 인터넷 연결이 끊겨도 동작하고, 출시 전 아이콘이 외부로 유출될 걱정이 없습니다.</p>
+</div></details>
 
-<h2>안드로이드 아이콘 규격 정리</h2>
+<details class="fold"><summary><h2>안드로이드 아이콘 규격 정리</h2></summary><div class="fx">
 <p>안드로이드는 화면 밀도별로 아이콘을 따로 넣습니다. 기준은 48dp이고 밀도 배율에 따라 실제 픽셀 크기가 달라집니다.</p>
 <table>
   <thead><tr><th>폴더</th><th class="n">배율</th><th class="n">런처 아이콘</th><th class="n">적응형 레이어</th></tr></thead>
@@ -206,14 +225,16 @@
     &lt;background android:drawable="@mipmap/ic_launcher_background" /&gt;
     &lt;foreground android:drawable="@mipmap/ic_launcher_foreground" /&gt;
 &lt;/adaptive-icon&gt;</code></pre>
+</div></details>
 
-<h2>자주 겪는 문제</h2>
+<details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
 <h3>Play 스토어에서 아이콘이 거부돼요</h3>
 <p>등록정보용 아이콘은 512×512, 32비트 PNG여야 하고 <strong>모서리를 직접 둥글게 깎으면 안 됩니다.</strong> 스토어가 알아서 마스킹하기 때문에, 미리 깎아두면 이중으로 잘려서 어색해집니다. 이 도구의 모서리 옵션을 꺼둔 채로 쓰시면 됩니다.</p>
 <h3>아이콘이 다른 앱보다 작아 보여요</h3>
 <p>적응형 아이콘 세이프존 때문에 시각적으로 작아 보이는 건 정상입니다. 그래도 작다면 로고 자체를 키워서 원본을 다시 내보내세요. 여백 값을 음수로 줄 수는 없습니다.</p>
 <h3>iOS 아이콘이 검게 나와요</h3>
 <p>App Store용 1024px 아이콘에 알파 채널이 있으면 심사에서 거부되거나 검은 배경으로 합성됩니다. 위의 배경 채우기를 켜고 브랜드 색을 지정하세요.</p>
+</div></details>
 
 <!--REL:S-->
 <h2>함께 쓰면 좋은 도구</h2>

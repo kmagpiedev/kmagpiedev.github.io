@@ -108,6 +108,22 @@
   .note{font-size:13.5px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:13px;margin:14px 0}
   footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
   footer a{color:var(--ink-3)}
+/*FOLD:S*/
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 8px}
+  .fold .fx>:first-child{margin-top:4px}
+/*FOLD:E*/
 /*REL:S*/
   .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
   .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
@@ -250,12 +266,15 @@
   </div>
 </div>
 
-<h2>사용법</h2>
+<p class="gist">사진을 여권 35×45mm, 반명함 30×40mm 등 규격에 맞게 자르고 AI로 배경을 바꿔 300dpi로 저장합니다. 사진관 인화용 4×6인치 시트도 만들 수 있으며, 사진은 서버로 전송되지 않고 브라우저 안에서 처리됩니다. 여권처럼 규정이 까다로운 용도는 제출 전에 기관 안내를 꼭 확인하세요.</p>
+
+<details class="fold"><summary><h2>사용법</h2></summary><div class="fx">
 <p>사진을 올리고 규격을 고른 뒤, 미리보기에서 드래그와 확대로 얼굴 위치를 맞추면 됩니다. 가이드선이 보이는데 <strong>위쪽 선에 정수리, 아래쪽 선에 턱 끝</strong>을 맞추시면 규격에 맞는 얼굴 비율이 됩니다. 세로 중앙선에는 코가 오도록 좌우를 맞추세요.</p>
 <p>배경을 바꾸실 거면 <strong>AI로 배경 지우기</strong>를 누르는 게 가장 빠릅니다. 배경이 복잡해도 인물만 남기고 지워줘요. 결과가 어색하면 인식 강도를 조절하거나 지우개·되살리기 브러시로 다듬으시면 됩니다. 저장할 때 인화용 시트를 선택하면 4×6인치 용지에 여러 장이 배치된 이미지가 만들어집니다. 그 파일을 사진관에 맡기거나 무인 인화기에 넣으면 한 장 값으로 여러 장을 뽑을 수 있어요.</p>
 <p>사진은 서버로 올라가지 않습니다. 얼굴 사진처럼 민감한 파일이 외부로 나가지 않으니 안심하고 쓰셔도 됩니다.</p>
+</div></details>
 
-<h2>규격 정리</h2>
+<details class="fold"><summary><h2>규격 정리</h2></summary><div class="fx">
 <table>
   <thead><tr><th>용도</th><th class="n">크기</th><th>비고</th></tr></thead>
   <tbody>
@@ -266,8 +285,9 @@
   </tbody>
 </table>
 <p class="note">기관마다 세부 요구사항이 다를 수 있습니다. 여권처럼 반려되면 곤란한 서류는 제출 전에 해당 기관의 최신 안내를 꼭 확인하세요. 특히 여권사진은 규정이 까다로워 <strong>탈락 위험을 감수하기 어렵다면 사진관 촬영을 권합니다.</strong></p>
+</div></details>
 
-<h2>반려되지 않는 사진 만들기</h2>
+<details class="fold"><summary><h2>반려되지 않는 사진 만들기</h2></summary><div class="fx">
 <h3>정면, 무표정, 눈을 뜬 상태</h3>
 <p>고개를 기울이거나 옆으로 돌리면 안 됩니다. 입은 다물고 이가 보이지 않게, 눈은 크게 뜨고 머리카락이 눈을 가리지 않아야 합니다. 웃는 사진은 대부분의 신분증용으로 반려됩니다.</p>
 <h3>배경은 균일한 밝은 무채색</h3>
@@ -276,8 +296,9 @@
 <p>여권사진은 원칙적으로 안경을 벗어야 합니다. 모자나 머리 장식도 안 되고, 종교적 이유가 있는 경우에만 얼굴 윤곽이 다 드러나는 조건으로 허용됩니다.</p>
 <h3>최근에 찍은 사진으로</h3>
 <p>보통 6개월 이내 촬영본을 요구합니다. 오래된 사진은 본인 확인이 안 된다는 이유로 반려될 수 있어요.</p>
+</div></details>
 
-<h2>자주 겪는 문제</h2>
+<details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
 <h3>배경을 바꿨더니 머리카락이 뜯겨요</h3>
 <p>자동 인식은 배경과 머리카락 색이 비슷하면 경계를 구분하지 못합니다. 인식 범위를 낮춘 뒤 <strong>되살리기 브러시로 뜯긴 부분을 복구</strong>하세요. 붓 크기를 작게 잡으면 머리카락 경계도 세밀하게 다듬을 수 있습니다.</p>
 <h3>AI 배경 제거는 사진을 어디로 보내나요</h3>
@@ -290,6 +311,7 @@
 <p>저장 파일에는 300dpi 정보가 들어 있지만, 인쇄할 때 <strong>"용지에 맞춤"이나 "자동 크기 조정"을 끄고 100%로</strong> 출력해야 실제 규격이 나옵니다. 사진관 인화라면 4×6인치 시트를 그대로 맡기시면 됩니다.</p>
 <h3>사진이 흐릿해요</h3>
 <p>원본 해상도가 낮으면 300dpi로 키울 때 뭉개집니다. 35×45mm를 300dpi로 뽑으려면 세로 약 530픽셀이 필요하니, 얼굴 부분이 그보다 크게 찍힌 원본을 쓰세요.</p>
+</div></details>
 
 <!--REL:S-->
 <h2>함께 쓰면 좋은 도구</h2>

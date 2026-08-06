@@ -87,7 +87,9 @@
   #pv,#outImg{max-width:100%;height:auto;display:block;border-radius:6px;
     box-shadow:0 1px 6px rgba(0,0,0,.14)}
   #pv.hidden,#outImg.hidden{display:none}
+  #pv{touch-action:none}
   .pvcap{font-size:12.5px;color:var(--ink-3);margin:8px 0 0;text-align:center}
+  .pvcap .btn{vertical-align:middle}
 
   .bar{height:8px;background:var(--line-soft);border-radius:99px;overflow:hidden;margin:14px 0 8px}
   .bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .15s}
@@ -106,6 +108,22 @@
     .seg button{font-size:12px;padding:9px 2px}
     .panel{padding:18px 15px}
   }
+/*FOLD:S*/
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 8px}
+  .fold .fx>:first-child{margin-top:4px}
+/*FOLD:E*/
 /*REL:S*/
   .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
   .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
@@ -192,6 +210,8 @@
       <img id="outImg" class="hidden" alt="완성된 GIF">
     </div>
     <p class="pvcap" id="pvcap"></p>
+    <p class="pvcap">미리보기에서 글자를 끌어 위치를 옮길 수 있습니다
+      <button class="btn g sm hidden" id="posReset" type="button" style="margin-left:6px;padding:4px 10px;font-size:12.5px">위치 초기화</button></p>
   </div>
 
   <div class="btns">
@@ -205,27 +225,34 @@
 <p class="pstat hidden" id="pstat"></p>
 <div id="done" class="hidden"></div>
 
-<h2>흰 글자에 검은 외곽선, 짤 텍스트의 정석</h2>
+<p class="gist">사진이나 GIF에 흰 글자·검은 외곽선의 짤 텍스트를 얹어 원본 해상도 그대로 저장합니다. 위아래 문구와 자동 줄바꿈, 드래그로 글자 위치 조절까지 지원합니다. 파일은 서버로 전송되지 않고 전부 브라우저 안에서 처리됩니다.</p>
+
+<details class="fold"><summary><h2>흰 글자에 검은 외곽선, 짤 텍스트의 정석</h2></summary><div class="fx">
 <p>짤에 얹는 글자가 거의 예외 없이 흰 글자에 검은 테두리인 데는 이유가 있습니다. 글자가 어디에 놓일지 미리 알 수 없기 때문이에요. 하늘처럼 밝은 배경에서는 흰 글자가 묻히고, 그늘이나 밤 장면에서는 검은 글자가 사라집니다. 그런데 <strong>흰 면과 검은 테두리를 같이 쓰면 배경이 밝든 어둡든 둘 중 하나는 반드시 배경과 대비를 만듭니다.</strong> 어떤 사진 위에서도 읽히는 조합이라 수십 년 동안 살아남은 겁니다.</p>
 <p>글꼴이 굵어야 하는 것도 같은 이유입니다. 가는 글자에 테두리를 두르면 테두리가 획을 잡아먹어 글자가 뭉개져요. 획이 두꺼운 고딕이어야 테두리를 둘러도 속이 남습니다. 이 도구는 기기에 이미 들어 있는 <strong>굵은 고딕 계열 글꼴</strong>을 그대로 쓰기 때문에 웹폰트를 따로 내려받지 않고, 페이지가 가볍고 빠릅니다. 그래서 기기에 따라 글자 모양이 조금씩 다를 수 있는데, 짤 용도로는 문제가 되지 않는 수준입니다.</p>
+</div></details>
 
-<h2>글자는 어디에 얹어야 하나</h2>
+<details class="fold"><summary><h2>글자는 어디에 얹어야 하나</h2></summary><div class="fx">
 <p>기본은 위아래 여백입니다. 사진에서 시선이 가는 곳은 대개 가운데의 얼굴이나 피사체인데, 글자가 그 위를 덮으면 사진도 글자도 죽습니다. 그래서 짤 문법이 <strong>위에 상황, 아래에 한마디</strong>로 굳은 거예요. 이 도구도 텍스트를 위 가장자리와 아래 가장자리에 붙이고, 한 줄이 폭의 90%를 넘으면 자동으로 줄을 나눕니다.</p>
 <p>글자 크기는 픽셀이 아니라 <strong>이미지 긴 변에 대한 비율</strong>로 정합니다. 4000픽셀짜리 원본과 800픽셀짜리 캡처에 같은 픽셀 크기를 쓰면 한쪽은 안 보이고 한쪽은 화면을 덮기 때문이에요. 기본값 7%는 휴대폰 화면에서 봤을 때 또렷하게 읽히는 선입니다. 문구가 길면 크기를 키우는 대신 문장을 줄이는 쪽이 낫습니다. 글자가 3줄을 넘어가면 사진이 자막에 밀려나기 시작해서, 이 도구는 크기를 몰래 줄이지 않고 3줄이 넘는다고 알려만 줍니다. 문구를 다듬을지 크기를 낮출지는 직접 정하세요.</p>
+</div></details>
 
-<h2>카톡·커뮤니티에 올릴 때 용량과 크기</h2>
+<details class="fold"><summary><h2>카톡·커뮤니티에 올릴 때 용량과 크기</h2></summary><div class="fx">
 <p>완성본은 원본 해상도 그대로 저장됩니다. 원본이 PNG나 WebP였다면 화질 손실이 없는 PNG로, 원본이 JPG였다면 JPG로 저장해요. 사진을 PNG로 바꾸면 용량이 몇 배로 커지기만 하고 이득이 없기 때문입니다.</p>
 <p>올리는 곳을 생각하면 해상도 욕심을 낼 필요가 없습니다. 카카오톡은 일반 화질로 보내면 이미지를 알아서 줄여 전송하고, 커뮤니티와 SNS도 본문 표시 폭이 정해져 있어 긴 변 1080픽셀이면 어디서든 충분합니다. 원본이 아주 크다면 만들고 나서 <a href="/tools/resize/">이미지 크기 조절</a>이나 <a href="/tools/image-compress/">이미지 용량 줄이기</a>를 거치면 됩니다. 반대로 너무 작은 이미지를 억지로 키우는 것도 손해예요. 글자는 이 도구가 저장 시점에 원본 해상도로 새로 그리니 선명하지만, 바탕 사진의 화질은 원본 이상으로 좋아지지 않습니다.</p>
+</div></details>
 
-<h2>남의 이미지로 짤을 만들 때</h2>
+<details class="fold"><summary><h2>남의 이미지로 짤을 만들 때</h2></summary><div class="fx">
 <p>이 도구는 방송 캡처 같은 짤 템플릿을 제공하지 않습니다. <strong>이미지는 사용자가 직접 가져오고, 그 이미지를 쓸 수 있는지에 대한 판단과 책임도 사용자에게 있습니다.</strong> 방송 장면, 영화 스틸, 남이 그린 그림에는 저작권이 있고, 사진 속 인물에게는 초상권이 있어요. 도구는 텍스트를 얹는 일만 할 뿐, 어떤 이미지를 써도 되는지는 알지 못합니다.</p>
 <p>겁을 주려는 얘기는 아닙니다. 친구끼리 채팅방에서 웃자고 주고받는 짤과, 가게 홍보물이나 상품 페이지·수익이 나는 채널에 올리는 이미지는 무게가 다릅니다. 전자를 일일이 문제 삼는 경우는 드물지만, 후자는 권리자가 실제로 대응하는 영역이에요. 널리 공개되는 자리나 상업적인 용도라면 직접 찍은 사진, 직접 그린 그림, 이용 조건이 명시된 무료 이미지를 쓰는 것이 마음 편합니다.</p>
+</div></details>
 
-<h2>GIF에 자막을 넣으면 왜 용량이 커지나</h2>
+<details class="fold"><summary><h2>GIF에 자막을 넣으면 왜 용량이 커지나</h2></summary><div class="fx">
 <p>인터넷에 돌아다니는 GIF는 대부분 꽤 영리하게 압축돼 있습니다. 프레임 전체를 매번 저장하는 대신 <strong>앞 프레임에서 달라진 부분만</strong> 저장하고, 색 팔레트도 전체가 하나를 같이 쓰는 식이에요. 그런데 자막을 얹으려면 프레임을 전부 펼쳐서 글자를 그린 다음 처음부터 다시 인코딩해야 합니다. 이 과정에서 그 최적화가 풀리기 때문에, 같은 장면인데도 파일이 원본보다 커지는 일이 흔합니다.</p>
 <p>화질도 한 번은 손해를 봅니다. GIF는 한 프레임에 256가지 색만 쓸 수 있어서, 다시 인코딩할 때마다 색을 추리는 과정을 거쳐요. 이 도구는 프레임마다 가장 잘 맞는 팔레트를 따로 뽑아 손실을 줄이지만 원리상 한계는 있습니다. 그래서 <strong>긴 변 480px로 줄이기</strong>를 기본으로 켜 두었습니다. 픽셀 수는 가로세로로 곱해지니 크기를 줄이는 것이 용량을 잡는 가장 확실한 방법이고, 채팅이나 게시판에서 480px은 충분히 큽니다. 원본 크기가 꼭 필요할 때만 끄세요. 프레임 수와 각 프레임의 재생 시간, 무한 반복은 원본 그대로 유지됩니다.</p>
+</div></details>
 
-<h2>자주 겪는 문제</h2>
+<details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
 <h3>글자가 3줄을 넘는다는 안내가 떠요</h3>
 <p>긴 문장이 자동 줄바꿈으로 쌓이면 사진이 자막에 가려집니다. 이 도구는 글자 크기를 임의로 줄이지 않으므로, 안내가 뜨면 문구를 줄이거나 크기 슬라이더를 낮추세요. 위와 아래에 문구를 나눠 싣는 것도 방법입니다.</p>
 <h3>GIF 자막 버튼이 눌리지 않아요</h3>
@@ -238,9 +265,9 @@
 <p>가지 않습니다. 이미지를 읽고 글자를 그리고 저장 파일을 만드는 일까지 전부 브라우저 안에서 일어나고, 인터넷을 끊어도 똑같이 동작합니다. 탭을 닫으면 아무것도 남지 않아요. 신원이 드러나는 사진을 다뤄도 밖으로 나가는 것이 없습니다.</p>
 <h3>파일 이름이 meme.png로 저장돼요</h3>
 <p>일부러 그렇게 했습니다. 한글이 섞인 파일명을 자동 내려받기에서 버리는 브라우저가 있어서, <code>meme.png</code>·<code>meme.jpg</code>·<code>meme.gif</code> 같은 영문 이름으로 저장한 뒤 바꿔 쓰도록 했습니다.</p>
+</div></details>
 
 <!--CAT:S--><!--CAT:E-->
-<h2>함께 쓰면 좋은 도구</h2>
 <!--REL:S-->
 <h2>함께 쓰면 좋은 도구</h2>
 <div class="rel">
@@ -306,12 +333,16 @@ function wrapLines(ctx,text,maxW){
   return out;
 }
 
+/* 블록 중심 위치(% — 이미지 크기 대비). null이면 기본 위치(위: 상단 중앙, 아래: 하단 중앙) */
+let posTop=null, posBot=null;
+
 function paint(ctx,W,H){
   const L=Math.max(W,H);
-  if(!L) return {t:0,b:0};
+  if(!L) return {t:0,b:0,blocks:{}};
   const fs=Math.max(5,L*(parseFloat($('fsz').value)||7)/100);
   ctx.font='900 '+fs+'px '+FONT;
   ctx.textAlign='center';
+  ctx.textBaseline='top';
   ctx.lineJoin='round'; ctx.miterLimit=2;
   ctx.lineWidth=Math.max(1.5,fs*0.09);
   const fill = color==='k'?'#000000' : color==='y'?'#ffe14d' : '#ffffff';
@@ -320,15 +351,29 @@ function paint(ctx,W,H){
   const maxW=W*0.9, lineH=fs*1.18, margin=Math.max(4,L*0.02);
   const top=wrapLines(ctx,$('topTxt').value,maxW);
   const bot=wrapLines(ctx,$('botTxt').value,maxW);
-  const draw=(ln,y)=>{
-    if(useOut){ ctx.strokeStyle=stroke; ctx.strokeText(ln,W/2,y); }
-    ctx.fillStyle=fill; ctx.fillText(ln,W/2,y);
+  const blocks={};
+  /* 기본 위치는 예전 렌더링과 동일: 위 블록 첫 줄 top=margin, 아래 블록 마지막 줄 bottom=H-margin */
+  const drawBlock=(lines,which,pos,defCy)=>{
+    if(!lines.length) return;
+    const n=lines.length, bh=(n-1)*lineH+fs;
+    let bw=0;
+    for(const ln of lines) bw=Math.max(bw,ctx.measureText(ln).width);
+    bw=Math.min(bw+ctx.lineWidth,W);
+    let cx = pos ? pos.x/100*W : W/2;
+    let cy = pos ? pos.y/100*H : defCy;
+    cx = bw>=W ? W/2 : Math.min(Math.max(cx,bw/2),W-bw/2);
+    cy = bh>=H ? H/2 : Math.min(Math.max(cy,bh/2),H-bh/2);
+    const y0=cy-bh/2;
+    lines.forEach((ln,i)=>{
+      const y=y0+i*lineH;
+      if(useOut){ ctx.strokeStyle=stroke; ctx.strokeText(ln,cx,y); }
+      ctx.fillStyle=fill; ctx.fillText(ln,cx,y);
+    });
+    blocks[which]={cx,cy,w:bw,h:bh};
   };
-  ctx.textBaseline='top';
-  top.forEach((ln,i)=>draw(ln,margin+i*lineH));
-  ctx.textBaseline='bottom';
-  bot.forEach((ln,i)=>draw(ln,H-margin-(bot.length-1-i)*lineH));
-  return {t:top.length,b:bot.length};
+  drawBlock(top,'top',posTop, margin+((top.length-1)*lineH+fs)/2);
+  drawBlock(bot,'bot',posBot, H-margin-((bot.length-1)*lineH+fs)/2);
+  return {t:top.length,b:bot.length,blocks};
 }
 
 function lineWarn(r){
@@ -367,6 +412,7 @@ async function addImg(f){
   if(img) closeBmp(img.bmp);
   const jpg=(f.type==='image/jpeg')||/\.jpe?g$/i.test(f.name||'');
   img={bmp,w:bmp.width,h:bmp.height,jpg,name:f.name||'image'};
+  posTop=posBot=null;
   say('m-ok','<strong>'+esc(img.name)+'</strong> ('+img.w.toLocaleString('ko-KR')+'×'+img.h.toLocaleString('ko-KR')+'px)를 불러왔습니다. 문구를 넣으면 미리보기에 바로 나타납니다.');
   showPanel();
 }
@@ -406,6 +452,7 @@ async function addGif(f){
   $('pstat').classList.add('hidden');
   if(gif) gif.frames.forEach(fr=>closeBmp(fr.bmp));
   gif={frames,w:frames[0].bmp.width,h:frames[0].bmp.height,name:f.name||'anim.gif'};
+  posTop=posBot=null;
   const total=frames.reduce((a,fr)=>a+fr.ms,0)/1000;
   say('m-ok','<strong>'+esc(gif.name)+'</strong> — '+frames.length+'프레임 · '+gif.w.toLocaleString('ko-KR')+'×'+gif.h.toLocaleString('ko-KR')+'px · 한 바퀴 '+(total<10?total.toFixed(1):Math.round(total))+'초. 문구를 넣고 저장하세요.');
   showPanel();
@@ -430,42 +477,123 @@ function hideOut(){
   $('outImg').removeAttribute('src');
   $('pv').classList.remove('hidden');
 }
+let pvCtx=null, pvW=0, pvH=0, pvLayout=null, gifIdx=0, drag=null;
+
+function updatePosBtn(){
+  $('posReset').classList.toggle('hidden', !(posTop||posBot));
+}
+function outlineBlock(b){
+  const x=pvCtx, pad=Math.max(6,b.h*0.12);
+  const rx=b.cx-b.w/2-pad, ry=b.cy-b.h/2-pad, rw=b.w+2*pad, rh=b.h+2*pad;
+  x.save();
+  x.lineWidth=1.5; x.setLineDash([6,4]);
+  x.strokeStyle='rgba(0,0,0,.85)'; x.strokeRect(rx,ry,rw,rh);
+  x.lineDashOffset=6;
+  x.strokeStyle='rgba(255,255,255,.95)'; x.strokeRect(rx,ry,rw,rh);
+  x.restore();
+}
+/* 현재 상태로 미리보기 캔버스를 한 번 그린다 — 드래그와 GIF 재생 루프가 같이 쓴다 */
+function pvDraw(first){
+  if(!pvCtx) return;
+  if(mode==='img'){
+    if(!img) return;
+    pvCtx.drawImage(img.bmp,0,0,pvW,pvH);
+  }else{
+    if(!gif) return;
+    pvCtx.drawImage(gif.frames[gifIdx].bmp,0,0,pvW,pvH);
+  }
+  const r=paint(pvCtx,pvW,pvH);
+  pvLayout=r.blocks;
+  if(drag&&pvLayout[drag.which]) outlineBlock(pvLayout[drag.which]);
+  if(first) lineWarn(r);
+  updatePosBtn();
+}
 function preview(){
   pvToken++;
   hideOut();
+  drag=null; pvLayout=null;
   if(mode==='img'){
     if(!img) return;
     const s=Math.min(1,760/img.w,520/img.h);
-    const W=Math.max(1,Math.round(img.w*s)), H=Math.max(1,Math.round(img.h*s));
-    const c=$('pv'); c.width=W; c.height=H;
-    const x=c.getContext('2d');
-    x.drawImage(img.bmp,0,0,W,H);
-    const r=paint(x,W,H);
-    lineWarn(r);
+    pvW=Math.max(1,Math.round(img.w*s)); pvH=Math.max(1,Math.round(img.h*s));
+    const c=$('pv'); c.width=pvW; c.height=pvH;
+    pvCtx=c.getContext('2d');
+    pvDraw(true);
     $('pvcap').innerHTML=esc(img.name)+' · 저장은 원본 <strong>'+img.w.toLocaleString('ko-KR')+'×'+img.h.toLocaleString('ko-KR')+'px</strong> 그대로입니다'
       +(s<1?' · 미리보기는 '+Math.round(s*100)+'%로 줄여서 표시':'');
   }else{
     if(!gif) return;
     const s=Math.min(1,760/gif.w,420/gif.h);
-    const W=Math.max(1,Math.round(gif.w*s)), H=Math.max(1,Math.round(gif.h*s));
-    const c=$('pv'); c.width=W; c.height=H;
-    const x=c.getContext('2d');
+    pvW=Math.max(1,Math.round(gif.w*s)); pvH=Math.max(1,Math.round(gif.h*s));
+    const c=$('pv'); c.width=pvW; c.height=pvH;
+    pvCtx=c.getContext('2d');
+    gifIdx=0;
     const tk=pvToken;
-    let i=0;
+    let first=true;
     const step=()=>{
       if(tk!==pvToken||!gif) return;
-      x.drawImage(gif.frames[i].bmp,0,0,W,H);
-      const r=paint(x,W,H);
-      if(i===0) lineWarn(r);
-      const ms=gif.frames[i].ms;
-      i=(i+1)%gif.frames.length;
-      setTimeout(step,ms);
+      pvDraw(first); first=false;
+      const ms=gif.frames[gifIdx].ms;
+      setTimeout(()=>{
+        if(tk!==pvToken||!gif) return;
+        gifIdx=(gifIdx+1)%gif.frames.length;
+        step();
+      },ms);
     };
     step();
     const os=outGifSize();
     $('pvcap').innerHTML=esc(gif.name)+' · '+gif.frames.length+'프레임 · 저장 크기 <strong>'+os[0]+'×'+os[1]+'px</strong> · 무한 반복 유지';
   }
 }
+
+/* ---------- 드래그로 텍스트 위치 옮기기 ---------- */
+function toCanvas(e){
+  const c=$('pv');
+  if(c.classList.contains('hidden')||!pvW||!pvH) return null;
+  const r=c.getBoundingClientRect();
+  if(!r.width||!r.height) return null;
+  return {x:(e.clientX-r.left)*pvW/r.width, y:(e.clientY-r.top)*pvH/r.height};
+}
+function hitBlock(p){
+  if(!pvLayout) return null;
+  for(const k of ['top','bot']){
+    const b=pvLayout[k];
+    if(!b) continue;
+    const pad=Math.max(8,b.h*0.15);
+    if(Math.abs(p.x-b.cx)<=b.w/2+pad && Math.abs(p.y-b.cy)<=b.h/2+pad) return k;
+  }
+  return null;
+}
+(function(){
+  const c=$('pv');
+  c.addEventListener('pointerdown',e=>{
+    if(busy) return;
+    const p=toCanvas(e);
+    if(!p) return;
+    const hit=hitBlock(p);
+    if(!hit) return;
+    e.preventDefault();
+    try{ c.setPointerCapture(e.pointerId); }catch(err){}
+    const b=pvLayout[hit];
+    drag={which:hit, offx:b.cx-p.x, offy:b.cy-p.y};
+    pvDraw();
+  });
+  c.addEventListener('pointermove',e=>{
+    const p=toCanvas(e);
+    if(!p) return;
+    if(drag){
+      const cx=p.x+drag.offx, cy=p.y+drag.offy;
+      const v={x:cx/pvW*100, y:cy/pvH*100};   /* 클램프는 paint()가 한다 — 미리보기와 저장이 같은 규칙 */
+      if(drag.which==='top') posTop=v; else posBot=v;
+      pvDraw();
+    }else{
+      c.style.cursor = hitBlock(p) ? 'move' : '';
+    }
+  });
+  const end=()=>{ if(drag){ drag=null; pvDraw(); } };
+  c.addEventListener('pointerup',end);
+  c.addEventListener('pointercancel',end);
+})();
 function outGifSize(){
   if(!gif) return [0,0];
   const s=$('shrink').checked ? Math.min(1,480/Math.max(gif.w,gif.h)) : 1;
@@ -603,6 +731,11 @@ $('botTxt').addEventListener('input',preview);
 $('outline').addEventListener('change',preview);
 $('shrink').addEventListener('change',preview);
 
+$('posReset').addEventListener('click',()=>{
+  if(busy) return;
+  posTop=posBot=null;
+  preview();
+});
 $('go').addEventListener('click',run);
 $('swap').addEventListener('click',()=>{ if(!busy) $('file').click(); });
 $('reset').addEventListener('click',()=>{
@@ -610,6 +743,7 @@ $('reset').addEventListener('click',()=>{
   pvToken++;
   if(img){ closeBmp(img.bmp); img=null; }
   if(gif){ gif.frames.forEach(fr=>closeBmp(fr.bmp)); gif=null; }
+  posTop=posBot=null; drag=null; pvCtx=null; pvLayout=null; updatePosBtn();
   hideOut();
   $('topTxt').value=''; $('botTxt').value='';
   $('opts').classList.add('hidden');

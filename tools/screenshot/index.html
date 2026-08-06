@@ -105,6 +105,22 @@
   .note{font-size:13.5px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:13px;margin:14px 0}
   footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
   footer a{color:var(--ink-3)}
+/*FOLD:S*/
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 8px}
+  .fold .fx>:first-child{margin-top:4px}
+/*FOLD:E*/
 /*REL:S*/
   .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
   .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
@@ -218,11 +234,14 @@
   </div>
 </div>
 
-<h2>사용법</h2>
+<p class="gist">화면 캡처에 기기 프레임과 문구를 얹어 Play 스토어 규격 스크린샷과 피처 그래픽을 만듭니다. 기본값 1080×1920은 스토어 요건을 모두 만족하는 무난한 규격입니다. 출시 전 앱 화면도 서버로 올라가지 않고 브라우저 안에서만 처리됩니다.</p>
+
+<details class="fold"><summary><h2>사용법</h2></summary><div class="fx">
 <p>앱에서 찍은 화면 캡처를 여러 장 올리고, 위쪽 썸네일에서 한 장씩 골라가며 문구를 적어 넣으면 됩니다. 배경과 프레임 설정은 전체 장에 공통으로 적용되므로 한 번만 맞추면 되고, 문구만 장마다 다르게 쓰시면 됩니다. 다 되면 전체를 ZIP으로 받아 Play Console의 그래픽 자료 항목에 순서대로 올리세요.</p>
 <p>모든 처리는 브라우저 안에서 이루어집니다. 출시 전 앱 화면이 외부 서버로 올라가지 않으므로 공개 전 자료도 안심하고 쓰실 수 있습니다.</p>
+</div></details>
 
-<h2>Play 스토어 스크린샷 규격</h2>
+<details class="fold"><summary><h2>Play 스토어 스크린샷 규격</h2></summary><div class="fx">
 <p>Google Play는 휴대전화 스크린샷을 <strong>최소 2장, 최대 8장</strong> 요구합니다. 각 이미지는 JPEG 또는 24비트 PNG여야 하고, 가로세로 중 짧은 변이 320px 이상, 긴 변이 3840px 이하여야 하며 <strong>가로세로 비율이 2:1을 넘으면 안 됩니다.</strong> 이 도구의 기본값인 1080 × 1920은 이 조건을 모두 만족하는 가장 무난한 규격입니다.</p>
 
 <table>
@@ -238,8 +257,9 @@
 
 <h3>피처 그래픽은 다르게 만드세요</h3>
 <p>1024 × 500은 가로로 긴 배너라 세로 화면 캡처를 그대로 넣으면 거의 보이지 않습니다. 이 규격을 고르시면 도구가 자동으로 가로 배치로 바꿔서 왼쪽에 문구, 오른쪽에 화면을 놓습니다. 피처 그래픽은 <strong>앱 이름과 한 줄 소개만 크게</strong> 보이는 편이 효과적이고, 스토어 목록에서 잘려 보일 수 있으니 가장자리 가까이에 중요한 내용을 두지 마세요.</p>
+</div></details>
 
-<h2>스크린샷을 잘 만드는 법</h2>
+<details class="fold"><summary><h2>스크린샷을 잘 만드는 법</h2></summary><div class="fx">
 <h3>첫 두 장이 전부입니다</h3>
 <p>스토어 목록에서 사용자가 스크롤 없이 보는 건 보통 앞의 두 장뿐입니다. 앱의 가장 큰 매력을 1번과 2번에 배치하고, 설정 화면이나 부가 기능은 뒤로 미루세요.</p>
 <h3>문구는 짧게</h3>
@@ -248,12 +268,14 @@
 <p>배터리가 15%거나 알림이 잔뜩 쌓인 캡처는 완성도가 떨어져 보입니다. 안드로이드 개발자 옵션에는 상태표시줄을 깔끔하게 고정해주는 데모 모드가 있으니 캡처 전에 켜두시면 좋습니다.</p>
 <h3>배경색은 앱 아이콘과 맞추세요</h3>
 <p>스토어 목록에서는 아이콘과 스크린샷이 나란히 보입니다. 배경 그라데이션을 아이콘의 주요 색상에서 가져오면 전체가 한 벌처럼 보여 신뢰감이 올라갑니다.</p>
+</div></details>
 
-<h2>자주 겪는 문제</h2>
+<details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
 <h3>업로드했더니 비율이 맞지 않다고 나와요</h3>
 <p>가로세로 비율이 2:1을 넘으면 거부됩니다. 이 도구의 프리셋은 모두 이 조건 안에 들어가니 프리셋을 그대로 쓰시면 됩니다.</p>
 <h3>글자가 잘려요</h3>
 <p>문구가 길면 자동으로 줄바꿈되지만 영역을 넘어서면 잘릴 수 있습니다. 글자 크기를 줄이거나 문구를 짧게 나누세요. 미리보기에 보이는 그대로 출력됩니다.</p>
+</div></details>
 
 <!--REL:S-->
 <h2>함께 쓰면 좋은 도구</h2>

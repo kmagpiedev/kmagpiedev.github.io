@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>사진 모자이크 — 얼굴·전화번호 가리기, 블러·검정 막대 | 까치툴</title>
+<meta name="description" content="사진 속 얼굴, 전화번호, 계좌번호 같은 민감한 부분을 드래그로 가립니다. 모자이크·블러·검정 막대 세 가지 효과와 강도 조절, 실행 취소를 지원하고 원본 해상도 그대로 저장합니다. 저장하면 위치정보 등 EXIF 메타데이터도 함께 제거되며, 파일은 서버로 전송되지 않고 전부 브라우저 안에서 처리됩니다.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/mosaic/">
+<meta property="og:title" content="사진 모자이크 — 얼굴·전화번호 가리기, 블러·검정 막대">
+<meta property="og:description" content="사진 속 민감한 부분을 드래그로 가립니다. 모자이크·블러·검정 막대, EXIF 위치정보 제거까지 서버 전송 없이 브라우저에서.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/mosaic/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:940px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  .row{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start}
+  .col{flex:1;min-width:210px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
+  input[type=range]{width:100%;accent-color:var(--accent)}
+  input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .val{font-variant-numeric:tabular-nums;font-weight:700;color:var(--accent)}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:12px 0 0}
+  .seg{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+  .seg button{flex:1;background:transparent;border:0;padding:10px 6px;font-size:13.5px;font-weight:600;
+    color:var(--ink-2);cursor:pointer;font-family:inherit;transition:.12s}
+  .seg button.on{background:var(--accent);color:#fff}
+  .fld{margin-top:20px}
+
+  .drop{border:2px dashed var(--line);border-radius:16px;padding:38px 22px;text-align:center;
+    background:var(--surface);cursor:pointer;transition:.14s}
+  .drop:hover,.drop.over{border-color:var(--accent);background:var(--accent-soft)}
+  .drop .ic{font-size:34px;display:block;margin-bottom:10px}
+  .drop .t{font-size:16px;font-weight:700;margin-bottom:4px}
+  .drop .d{font-size:13.5px;color:var(--ink-3)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:12px 20px;border-radius:10px;
+    border:1px solid var(--accent);background:var(--accent);color:#fff;font-size:15px;font-weight:700;
+    font-family:inherit;cursor:pointer;transition:.14s;text-decoration:none}
+  .btn:hover{filter:brightness(1.06)}
+  .btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+  .btn.g{background:transparent;color:var(--accent)}
+  .btn.sm{padding:8px 14px;font-size:13.5px;font-weight:600}
+  .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;align-items:center}
+
+  .pvbox{border:1px solid var(--line);border-radius:14px;background:var(--line-soft);padding:12px;
+    display:flex;align-items:center;justify-content:center;min-height:120px;overflow:hidden}
+  #pv{max-width:100%;height:auto;display:block;border-radius:6px;
+    box-shadow:0 1px 6px rgba(0,0,0,.14);touch-action:none;cursor:crosshair;
+    -webkit-user-select:none;user-select:none}
+  #pv.hidden{display:none}
+  .pvcap{font-size:12.5px;color:var(--ink-3);margin:8px 0 0;text-align:center}
+
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .m-ok{background:var(--good-soft);border-color:var(--good)}
+  .hidden{display:none}
+  code{background:var(--line-soft);padding:1px 5px;border-radius:4px;font-size:12.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .seg button{font-size:12px;padding:9px 2px}
+    .panel{padding:18px 15px}
+    .pvbox{padding:8px}
+  }
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
+</style>
+<!--ALT:S--><!--ALT:E-->
+<!--HEAD:S-->
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
+<meta property="og:site_name" content="까치툴">
+<!--HEAD:E-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › 사진 모자이크</p>
+<!--LANG:S--><!--LANG:E-->
+
+<h1>사진 모자이크</h1>
+<p class="sub">사진 속 <strong>얼굴·전화번호·계좌번호</strong> 같은 민감한 부분을 드래그로 가립니다. 모자이크·블러·검정 막대 세 가지 효과, 실행 취소, 원본 해상도 저장. 저장하면 <strong>위치정보 등 EXIF 메타데이터도 함께 제거</strong>되고, 파일은 서버로 전송되지 않고 전부 브라우저 안에서 처리됩니다.</p>
+
+<div class="drop" id="drop">
+  <span class="ic">🫥</span>
+  <div class="t">사진을 여기에 놓으세요</div>
+  <div class="d">클릭해서 고를 수도 있습니다 · PNG · JPG · WebP · 1장</div>
+  <input type="file" id="file" accept="image/png,image/jpeg,image/webp" class="hidden">
+</div>
+
+<div id="status" class="hidden"></div>
+
+<div class="panel hidden" id="ed">
+  <div class="row">
+    <div class="col">
+      <label class="f">가리기 효과</label>
+      <div class="seg" id="fxSeg">
+        <button data-v="mosaic" class="on">모자이크</button>
+        <button data-v="blur">블러</button>
+        <button data-v="box">검정 막대</button>
+      </div>
+      <p class="note">효과와 강도는 <strong>새로 지정하는 영역부터</strong> 적용됩니다. 이미 만든 영역을 바꾸려면 실행 취소로 지운 뒤 다시 드래그하세요. 검정 막대는 강도와 무관하게 완전히 덮습니다.</p>
+    </div>
+    <div class="col">
+      <label class="f">강도 <span class="val" id="strV">1.5</span>% <span style="text-transform:none;letter-spacing:0;font-weight:400">(블록 크기 · 긴 변 대비)</span></label>
+      <input type="range" id="str" min="0.5" max="4" step="0.1" value="1.5">
+      <p class="note">숫자가 클수록 블록이 커지고 더 강하게 뭉개집니다. 가린 뒤 확대해서 읽히지 않는지 확인하고, 읽힐 듯하면 강도를 올리거나 검정 막대로 바꾸세요.</p>
+    </div>
+  </div>
+
+  <div class="fld">
+    <label class="f">미리보기 — 가릴 곳을 드래그로 지정하세요</label>
+    <div class="pvbox">
+      <canvas id="pv" width="10" height="10"></canvas>
+    </div>
+    <p class="pvcap" id="pvcap"></p>
+  </div>
+
+  <div class="btns">
+    <button class="btn" id="go" disabled>저장 (masked.png)</button>
+    <button class="btn g" id="undo" disabled>실행 취소</button>
+    <button class="btn g" id="clear" disabled>전부 지우기</button>
+    <button class="btn g sm" id="swap">다른 사진으로</button>
+  </div>
+  <p class="note" id="zeroNote">아직 지정한 영역이 없습니다. 미리보기 위에서 가릴 곳을 드래그하면 바로 효과가 적용되고, 저장 버튼이 켜집니다.</p>
+</div>
+
+<div id="done" class="hidden"></div>
+
+<h2>캡처 한 장에 생각보다 많은 것이 들어 있습니다</h2>
+<p>중고거래 후기, 송금 확인, 합격 문자, 배달 후기. 캡처 한 장 올리는 일은 이제 일상인데, 그 한 장에 담기는 정보의 양은 일상적이지 않습니다. 채팅 캡처에는 상대방의 이름과 전화번호가, 이체 확인 화면에는 계좌번호와 잔액이, 주문 내역에는 집 주소가 그대로 찍혀 있어요. 화면 구석의 프로필 사진, 배경에 찍힌 택배 송장과 자동차 번호판처럼 <strong>본인은 의식하지 못한 정보</strong>가 함께 올라가는 경우도 많습니다.</p>
+<p>문제는 이런 정보가 조합된다는 점입니다. 이름 하나, 전화번호 하나는 별것 아니어도 여러 장의 캡처에서 모은 조각을 합치면 특정인의 생활 반경이 그려집니다. 그리고 한 번 올라간 이미지는 지워도 끝나지 않아요. 누군가 저장했거나 다른 곳에 퍼갔다면 원본을 지워도 사본이 남습니다. 올리기 전에 가리는 것이 유일하게 확실한 시점입니다.</p>
+<p>다른 사람의 얼굴은 또 다른 문제입니다. 내 사진에 우연히 찍힌 행인이라도 그 사람에게는 <strong>초상권</strong>이 있습니다. 동의 없이 얼굴이 드러나는 사진을 공개된 곳에 올리면 분쟁의 소지가 생겨요. 특히 아이들 사진, 사고나 다툼 현장을 찍은 사진이라면 관련 없는 사람의 얼굴은 가리고 올리는 것이 기본입니다.</p>
+
+<h2>모자이크·블러·검정 막대는 무엇이 다른가</h2>
+<p>세 효과는 정보를 지우는 방식이 다릅니다. <strong>모자이크</strong>는 영역을 큼직한 블록으로 나눠 각 블록을 평균색 한 가지로 칠합니다. 블록 하나 안의 정보가 색 하나로 뭉개지는 거예요. <strong>블러</strong>는 영역을 크게 축소했다가 다시 늘려 전체를 부드럽게 뭉갭니다. 인상은 자연스럽지만 색의 흐름이 남습니다. <strong>검정 막대</strong>는 영역을 단색으로 완전히 덮어 정보 자체를 없앱니다.</p>
+<p>여기서 중요한 것이 <strong>복원 가능성</strong>입니다. 약한 블러나 자잘한 모자이크는 원본의 흔적이 꽤 남아 있어서, 요즘은 AI 초해상도나 복원 모델로 가려진 글자와 얼굴을 되살리려는 시도가 실제로 이루어집니다. 특히 글자는 모양의 경우의 수가 정해져 있어서 숫자 몇 자리 정도는 약하게 뭉갠 흔적만으로 추정될 수 있어요. 그래서 <strong>전화번호·계좌번호·주소 같은 텍스트 정보는 검정 막대가 가장 확실합니다.</strong> 원본 픽셀이 아예 남지 않으니 복원할 재료 자체가 없습니다.</p>
+<p>얼굴은 조금 다릅니다. 검정 사각형으로 덮으면 확실하지만 사진 분위기가 험악해져서, 관행적으로 모자이크를 씁니다. 얼굴을 모자이크로 가릴 때는 얼굴 전체가 몇 개의 블록 안에 들어갈 만큼 강하게 거는 것이 요령이에요. 눈코입의 위치가 짐작되는 수준이면 아는 사람은 알아봅니다.</p>
+
+<h2>어느 정도 강도면 안전한가</h2>
+<p>기준은 간단합니다. <strong>가리려는 글자 한 자보다 블록이 커야 합니다.</strong> 블록이 글자보다 작으면 획의 형태가 블록 무늬 속에 남아서, 뭉개져 보여도 추정의 실마리가 됩니다. 이 도구의 강도는 이미지 긴 변에 대한 비율이라 기본값 1.5%면 일반적인 캡처의 글자 크기보다 블록이 커지지만, 확대 캡처처럼 글자가 큰 이미지라면 강도를 올려야 해요.</p>
+<p>확인 방법도 간단합니다. 가린 뒤 미리보기를 확대해서 직접 읽어보세요. 뭐라고 적혀 있었는지 아는 본인이 읽으려고 해도 읽을 수 없어야 합니다. 본인은 내용을 이미 알아서 관대하게 판단하기 쉬우니, 조금이라도 형태가 짐작되면 강도를 한두 단계 올리거나 같은 자리를 한 번 더 드래그해 겹쳐 거세요. 그래도 불안하면 텍스트는 검정 막대로 바꾸는 것이 정답입니다.</p>
+<p>영역은 정보보다 넉넉하게 잡는 것도 요령입니다. 글자 끝에 딱 맞춰 가리면 앞뒤 글자의 일부가 삐져나오기 쉽고, 남은 반 글자가 전체를 추정하는 단서가 되기도 합니다. 여백을 한 글자쯤 더 물고 가리세요.</p>
+
+<h2>위치정보(EXIF)도 함께 지워집니다</h2>
+<p>스마트폰으로 찍은 사진 파일 안에는 화면에 보이지 않는 정보가 함께 저장됩니다. 촬영 일시, 기종, 그리고 위치정보를 켜 두었다면 <strong>찍은 장소의 GPS 좌표</strong>까지요. 사진 파일을 원본 그대로 올리면 화면을 아무리 가려도 파일 속 좌표는 그대로 따라갑니다. 집에서 찍은 물건 사진 한 장에 집 좌표가 실려 나가는 겁니다. 카카오톡이나 인스타그램처럼 올릴 때 메타데이터를 지워 주는 서비스도 있지만, 메일 첨부나 카페 게시판, 중고거래 앱 일부처럼 원본이 그대로 전달되는 경로도 여전히 많습니다.</p>
+<p>이 도구는 사진을 캔버스에 새로 그려서 저장하기 때문에 <strong>위치정보 등 EXIF 메타데이터도 함께 제거됩니다.</strong> 화면에 보이는 픽셀만 새 파일로 만들어지고, 원본 파일에 붙어 있던 좌표·일시·기종 정보는 결과물에 실리지 않아요. 민감한 부분을 가리는 김에 파일 속 정보까지 한 번에 정리되는 셈입니다.</p>
+<p>처리 과정은 전부 이 페이지 안에서 끝납니다. <strong>파일은 서버로 전송되지 않고 전부 브라우저 안에서 처리됩니다.</strong> 신분증이나 계약서처럼 민감한 이미지를 다루는 도구가 파일을 어딘가로 보낸다면 그 자체가 모순이니까요. 인터넷을 끊어도 똑같이 동작하고, 탭을 닫으면 아무것도 남지 않습니다.</p>
+
+<h2>자주 겪는 문제</h2>
+<h3>영역을 잘못 지정했어요</h3>
+<p><strong>실행 취소</strong>를 누르면 마지막에 지정한 영역부터 하나씩 지워집니다. 여러 번 눌러 거슬러 올라갈 수 있고, <strong>전부 지우기</strong>를 누르면 사진을 다시 불러온 상태로 돌아갑니다. 영역을 확정하기 전, 드래그하는 중에는 점선 테두리만 표시되니 놓기 전에 위치를 조정하세요.</p>
+<h3>저장한 사진의 모자이크를 나중에 풀 수 있나요</h3>
+<p>풀 수 없습니다. 저장된 파일에는 가려진 부분의 원본 픽셀이 들어 있지 않아서, 이 도구는 물론 어떤 프로그램으로도 저장본에서 원래 모습을 꺼낼 수 없어요. 그래서 <strong>원본 파일은 따로 남습니다.</strong> 이 도구는 원본을 건드리지 않고 새 파일(masked)로 저장하니, 나중에 필요할 원본은 안전한 곳에 보관하고 공유는 가린 파일로 하세요.</p>
+<h3>아이폰 사진(HEIC)이 안 열려요</h3>
+<p>크롬 등 대부분의 브라우저가 HEIC를 읽지 못합니다. 아이폰에서 사진을 공유할 때 자동으로 JPG로 바뀌는 경로(카톡 나에게 보내기 등)를 거치거나, PNG·JPG로 바꾼 뒤 쓰세요.</p>
+<h3>파일이 서버로 가나요</h3>
+<p>가지 않습니다. 사진을 읽고 가리고 저장 파일을 만드는 일까지 전부 브라우저 안에서 일어나며, 인터넷을 끊어도 똑같이 동작합니다. 민감한 정보가 담긴 사진이라도 밖으로 나가는 것이 없습니다.</p>
+<h3>파일 이름이 masked.png로 저장돼요</h3>
+<p>일부러 그렇게 했습니다. 한글이 섞인 파일명을 자동 내려받기에서 버리는 브라우저가 있어서, 원본이 JPG면 <code>masked.jpg</code>, 그 외에는 <code>masked.png</code>라는 영문 이름으로 저장한 뒤 바꿔 쓰도록 했습니다.</p>
+
+<!--CAT:S--><!--CAT:E-->
+<h2>함께 쓰면 좋은 도구</h2>
+<!--REL:S-->
+<h2>함께 쓰면 좋은 도구</h2>
+<div class="rel">
+  <a href="/tools/screenshot/"><strong>스토어 스크린샷 생성기</strong><span>기기 프레임·피처 그래픽</span></a>
+  <a href="/tools/meme/"><strong>짤 만들기</strong><span>사진에 굵은 텍스트, 움짤 자막</span></a>
+  <a href="/tools/image-compress/"><strong>이미지 용량 줄이기</strong><span>목표 용량에 자동으로 맞춤</span></a>
+</div>
+<p class="rel-all"><a href="/tools/">까치툴 도구 34개 전체 보기 →</a></p>
+<!--REL:E-->
+
+<footer>
+  <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 파일은 전송·저장되지 않습니다. 가리기 강도와 공개 여부에 대한 판단 책임은 사용자에게 있습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const kb=n=>n<1024?n+' B':n<1048576?(n/1024).toFixed(0)+' KB':(n/1048576).toFixed(1)+' MB';
+
+let img=null;            /* {bmp,w,h,jpg,name} */
+let regions=[];          /* {x,y,w,h,fx,pct} — 전부 원본 좌표계 */
+let fx='mosaic';
+let drag=null;           /* {x0,y0,x1,y1} — 미리보기 픽셀 좌표 */
+let pvScale=1, busy=false;
+window.__regions=regions;             /* 검증용 */
+
+function say(cls,html){const s=$('status');s.className='msg '+cls;s.innerHTML=html;}
+function hideSay(){$('status').className='hidden';}
+
+/* ---------- 효과 적용 (미리보기·저장 공용) ----------
+   r은 원본 좌표계, s는 대상 캔버스의 축척. 블록 수를 원본 기준으로
+   먼저 정하므로 미리보기와 저장 결과가 같은 모양이 된다. */
+function applyRegion(ctx,s,r){
+  const cw=ctx.canvas.width, ch=ctx.canvas.height;
+  let x=Math.round(r.x*s), y=Math.round(r.y*s);
+  let w=Math.round(r.w*s), h=Math.round(r.h*s);
+  if(x<0){w+=x;x=0;} if(y<0){h+=y;y=0;}
+  w=Math.min(w,cw-x); h=Math.min(h,ch-y);
+  if(w<1||h<1) return;
+  if(r.fx==='box'){ ctx.fillStyle='#000000'; ctx.fillRect(x,y,w,h); return; }
+  const px=Math.max(2, Math.max(img.w,img.h)*r.pct/100);   /* 원본 기준 블록 한 변 */
+  const nx=Math.max(1,Math.ceil(r.w/px)), ny=Math.max(1,Math.ceil(r.h/px));
+  const t=document.createElement('canvas'); t.width=nx; t.height=ny;
+  const tc=t.getContext('2d');
+  if(r.fx==='mosaic'){
+    tc.imageSmoothingEnabled=true;
+    tc.drawImage(ctx.canvas,x,y,w,h,0,0,nx,ny);
+    ctx.imageSmoothingEnabled=false;                       /* 또렷한 블록 */
+    ctx.drawImage(t,0,0,nx,ny,x,y,w,h);
+    ctx.imageSmoothingEnabled=true;
+  }else{                                                   /* blur: 다운샘플 후 확대 */
+    let sc=document.createElement('canvas'); sc.width=w; sc.height=h;
+    sc.getContext('2d').drawImage(ctx.canvas,x,y,w,h,0,0,w,h);
+    let cw2=w, ch2=h;
+    while(cw2>nx*2 && ch2>ny*2){                           /* 단계적 축소로 뭉개기 */
+      const hw=Math.max(nx,Math.floor(cw2/2)), hh=Math.max(ny,Math.floor(ch2/2));
+      const t2=document.createElement('canvas'); t2.width=hw; t2.height=hh;
+      t2.getContext('2d').drawImage(sc,0,0,cw2,ch2,0,0,hw,hh);
+      sc=t2; cw2=hw; ch2=hh;
+    }
+    tc.imageSmoothingEnabled=true;
+    tc.drawImage(sc,0,0,cw2,ch2,0,0,nx,ny);
+    ctx.imageSmoothingEnabled=true;                        /* 부드럽게 확대 */
+    ctx.drawImage(t,0,0,nx,ny,x,y,w,h);
+  }
+}
+
+/* ---------- 미리보기 ---------- */
+function render(){
+  if(!img) return;
+  const c=$('pv'), ctx=c.getContext('2d');
+  ctx.drawImage(img.bmp,0,0,c.width,c.height);
+  for(const r of regions) applyRegion(ctx,pvScale,r);
+  if(drag){
+    const b=normDrag();
+    ctx.save();
+    ctx.fillStyle='rgba(180,83,9,.15)';
+    ctx.fillRect(b.x,b.y,b.w,b.h);
+    ctx.setLineDash([6,4]); ctx.lineWidth=2;
+    ctx.strokeStyle='#ffffff'; ctx.strokeRect(b.x+.5,b.y+.5,b.w,b.h);
+    ctx.lineDashOffset=5;
+    ctx.strokeStyle='#b45309'; ctx.strokeRect(b.x+.5,b.y+.5,b.w,b.h);
+    ctx.restore();
+  }
+}
+function setupCanvas(){
+  const c=$('pv');
+  pvScale=Math.min(1,760/img.w,520/img.h);
+  c.width=Math.max(1,Math.round(img.w*pvScale));
+  c.height=Math.max(1,Math.round(img.h*pvScale));
+  render();
+}
+function updateUI(){
+  const n=regions.length;
+  $('go').disabled=busy||n===0;
+  $('undo').disabled=busy||n===0;
+  $('clear').disabled=busy||n===0;
+  $('zeroNote').classList.toggle('hidden',n>0);
+  $('go').textContent='저장 (masked.'+(img&&img.jpg?'jpg':'png')+')';
+  if(img){
+    $('pvcap').innerHTML='지정한 영역 <strong>'+n+'개</strong> · 저장은 원본 <strong>'
+      +img.w.toLocaleString('ko-KR')+'×'+img.h.toLocaleString('ko-KR')
+      +'px</strong> 해상도에서 다시 적용합니다'
+      +(pvScale<1?' · 미리보기는 '+Math.round(pvScale*100)+'%로 줄여서 표시':'');
+  }
+}
+function refresh(){ render(); updateUI(); }
+
+/* ---------- 드래그 (마우스 + 터치) ---------- */
+function canvasXY(clientX,clientY){
+  const c=$('pv'), rc=c.getBoundingClientRect();
+  if(!rc.width||!rc.height) return {x:0,y:0};
+  const x=(clientX-rc.left)*c.width/rc.width;
+  const y=(clientY-rc.top)*c.height/rc.height;
+  return {x:Math.max(0,Math.min(c.width,x)), y:Math.max(0,Math.min(c.height,y))};
+}
+function normDrag(){
+  const x=Math.min(drag.x0,drag.x1), y=Math.min(drag.y0,drag.y1);
+  return {x:x, y:y, w:Math.abs(drag.x1-drag.x0), h:Math.abs(drag.y1-drag.y0)};
+}
+function dragStart(cx,cy){
+  if(!img||busy) return;
+  const p=canvasXY(cx,cy);
+  drag={x0:p.x,y0:p.y,x1:p.x,y1:p.y};
+  render();
+}
+function dragMove(cx,cy){
+  if(!drag) return;
+  const p=canvasXY(cx,cy);
+  drag.x1=p.x; drag.y1=p.y;
+  render();
+}
+function dragEnd(){
+  if(!drag) return;
+  const b=normDrag(); drag=null;
+  if(b.w>=4&&b.h>=4){
+    regions.push({x:b.x/pvScale, y:b.y/pvScale, w:b.w/pvScale, h:b.h/pvScale,
+      fx:fx, pct:parseFloat($('str').value)||1.5});
+    $('done').className='hidden';
+  }
+  refresh();
+}
+const pv=$('pv');
+pv.addEventListener('mousedown',e=>{ e.preventDefault(); dragStart(e.clientX,e.clientY); });
+window.addEventListener('mousemove',e=>{ if(drag) dragMove(e.clientX,e.clientY); });
+window.addEventListener('mouseup',()=>dragEnd());
+pv.addEventListener('touchstart',e=>{
+  e.preventDefault();                                     /* 스크롤 방지 */
+  const t=e.touches[0]; if(t) dragStart(t.clientX,t.clientY);
+},{passive:false});
+pv.addEventListener('touchmove',e=>{
+  e.preventDefault();
+  const t=e.touches[0]; if(t) dragMove(t.clientX,t.clientY);
+},{passive:false});
+pv.addEventListener('touchend',e=>{ e.preventDefault(); dragEnd(); },{passive:false});
+pv.addEventListener('touchcancel',()=>{ drag=null; render(); },{passive:false});
+
+/* ---------- 파일 읽기 ---------- */
+async function toBitmap(blob){
+  try{ return await createImageBitmap(blob,{imageOrientation:'from-image'}); }
+  catch(e){ try{ return await createImageBitmap(blob); }catch(e2){ return null; } }
+}
+function closeBmp(b){ if(b&&b.close) try{b.close();}catch(e){} }
+async function addImg(f){
+  const bmp=await toBitmap(f);
+  if(!bmp || !bmp.width || !bmp.height){
+    say('m-bad','<strong>'+esc(f.name||'파일')+'</strong>은 이미지로 읽지 못했습니다. PNG · JPG · WebP 파일을 골라주세요. 아이폰 HEIC는 크롬에서 열리지 않습니다.');
+    return;
+  }
+  if(img) closeBmp(img.bmp);
+  const jpg=(f.type==='image/jpeg')||/\.jpe?g$/i.test(f.name||'');
+  img={bmp,w:bmp.width,h:bmp.height,jpg,name:f.name||'image'};
+  regions.length=0; drag=null;
+  say('m-ok','<strong>'+esc(img.name)+'</strong> ('+img.w.toLocaleString('ko-KR')+'×'+img.h.toLocaleString('ko-KR')+'px)를 불러왔습니다. 가릴 곳을 드래그하세요.');
+  $('ed').classList.remove('hidden');
+  $('drop').classList.add('hidden');
+  $('done').className='hidden';
+  setupCanvas();
+  updateUI();
+}
+
+/* ---------- 저장 ---------- */
+function download(url,fn){
+  const a=document.createElement('a');
+  a.href=url; a.download=fn; document.body.appendChild(a); a.click(); a.remove();
+}
+async function save(){
+  if(busy||!img||!regions.length) return;
+  busy=true; updateUI();
+  try{
+    const c=document.createElement('canvas');
+    c.width=img.w; c.height=img.h;
+    const ctx=c.getContext('2d');
+    ctx.drawImage(img.bmp,0,0);
+    for(const r of regions) applyRegion(ctx,1,r);          /* 원본 해상도에서 재적용 */
+    const blob=await new Promise(res=>c.toBlob(res, img.jpg?'image/jpeg':'image/png', img.jpg?0.92:undefined));
+    c.width=c.height=1;
+    if(!blob) throw new Error('encode');
+    const fn='masked.'+(img.jpg?'jpg':'png');
+    window.__lastBlob=blob; window.__lastName=fn;          /* 검증용 */
+    const u=URL.createObjectURL(blob);
+    download(u,fn);
+    setTimeout(()=>URL.revokeObjectURL(u),4000);
+    $('done').className='msg m-ok';
+    $('done').innerHTML='<strong>'+fn+'</strong> ('+kb(blob.size)+') 을(를) 저장했습니다. 영역 '+regions.length+'개를 원본 '
+      +img.w.toLocaleString('ko-KR')+'×'+img.h.toLocaleString('ko-KR')
+      +'px 해상도에서 적용했고, 위치정보 등 EXIF 메타데이터는 제거되었습니다.';
+  }catch(err){
+    $('done').className='msg m-bad';
+    $('done').innerHTML='저장 중 문제가 생겼습니다. 사진을 다시 불러와 시도해 보세요. ('+esc(err&&err.message||err)+')';
+  }finally{
+    busy=false; updateUI();
+  }
+}
+
+/* ---------- UI 배선 ---------- */
+$('drop').addEventListener('click',()=>$('file').click());
+$('file').addEventListener('change',e=>{
+  const f=e.target.files&&e.target.files[0];
+  e.target.value='';
+  if(f) addImg(f);
+});
+['dragenter','dragover'].forEach(t=>$('drop').addEventListener(t,e=>{e.preventDefault();$('drop').classList.add('over');}));
+['dragleave','drop'].forEach(t=>$('drop').addEventListener(t,e=>{e.preventDefault();$('drop').classList.remove('over');}));
+$('drop').addEventListener('drop',e=>{
+  const f=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0];
+  if(f) addImg(f);
+});
+document.querySelectorAll('#fxSeg button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('#fxSeg button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); fx=b.dataset.v;
+  $('str').disabled=(fx==='box');
+}));
+$('str').addEventListener('input',()=>{ $('strV').textContent=$('str').value; });
+$('undo').addEventListener('click',()=>{
+  if(busy||!regions.length) return;
+  regions.pop(); $('done').className='hidden'; refresh();
+});
+$('clear').addEventListener('click',()=>{
+  if(busy||!regions.length) return;
+  regions.length=0; drag=null; $('done').className='hidden'; refresh();
+});
+$('go').addEventListener('click',save);
+$('swap').addEventListener('click',()=>{ if(!busy) $('file').click(); });
+})();
+</script>
+</body>
+</html>
