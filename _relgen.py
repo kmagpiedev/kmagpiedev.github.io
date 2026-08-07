@@ -165,6 +165,23 @@ HEAD_BLOCK = """<!--HEAD:S-->
 <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
 <meta property="og:site_name" content="까치툴">
+<link rel="manifest" href="/tools/manifest.json">
+<meta name="theme-color" content="#faf9f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#171614" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="까치툴">
+<script>/*PWA*/(function(){var L=document.documentElement.lang==='en';
+if('serviceWorker' in navigator)addEventListener('load',function(){navigator.serviceWorker.register('/sw.js',{scope:'/'})['catch'](function(){})});
+var p=null;addEventListener('beforeinstallprompt',function(e){e.preventDefault();p=e;show()});
+addEventListener('appinstalled',function(){p=null;var b=document.getElementById('pwaBtn');if(b)b.remove()});
+function show(){if(document.getElementById('pwaBtn'))return;
+var a=document.querySelector('.sub')||document.querySelector('h1');if(!a)return;
+var b=document.createElement('button');b.id='pwaBtn';b.type='button';
+b.textContent=L?'\u2b07 Install as an app':'📲 \uc571\uc73c\ub85c \uc124\uce58';
+b.style.cssText='display:inline-block;margin:0 0 22px;padding:8px 15px;border-radius:9px;font:600 13.5px/1.4 inherit;cursor:pointer;background:transparent;color:var(--accent,#b45309);border:1px solid var(--accent,#b45309)';
+b.title=L?'Works offline once installed':'\uc124\uce58\ud558\uba74 \uc778\ud130\ub137 \uc5c6\uc774\ub3c4 \uc4f8 \uc218 \uc788\uc2b5\ub2c8\ub2e4';
+b.onclick=function(){if(!p)return;p.prompt();p.userChoice.then(function(){p=null;b.remove()})};
+a.insertAdjacentElement('afterend',b)}})();</script>
 <!--HEAD:E-->"""
 
 def patch_head(s, nl):
@@ -410,6 +427,23 @@ EN_HEAD_BLOCK = """<!--HEAD:S-->
 <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
 <meta property="og:site_name" content="Kmagpie Tools">
+<link rel="manifest" href="/en/tools/manifest.json">
+<meta name="theme-color" content="#faf9f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#171614" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="K-magpie">
+<script>/*PWA*/(function(){var L=document.documentElement.lang==='en';
+if('serviceWorker' in navigator)addEventListener('load',function(){navigator.serviceWorker.register('/sw.js',{scope:'/'})['catch'](function(){})});
+var p=null;addEventListener('beforeinstallprompt',function(e){e.preventDefault();p=e;show()});
+addEventListener('appinstalled',function(){p=null;var b=document.getElementById('pwaBtn');if(b)b.remove()});
+function show(){if(document.getElementById('pwaBtn'))return;
+var a=document.querySelector('.sub')||document.querySelector('h1');if(!a)return;
+var b=document.createElement('button');b.id='pwaBtn';b.type='button';
+b.textContent=L?'\u2b07 Install as an app':'📲 \uc571\uc73c\ub85c \uc124\uce58';
+b.style.cssText='display:inline-block;margin:0 0 22px;padding:8px 15px;border-radius:9px;font:600 13.5px/1.4 inherit;cursor:pointer;background:transparent;color:var(--accent,#b45309);border:1px solid var(--accent,#b45309)';
+b.title=L?'Works offline once installed':'\uc124\uce58\ud558\uba74 \uc778\ud130\ub137 \uc5c6\uc774\ub3c4 \uc4f8 \uc218 \uc788\uc2b5\ub2c8\ub2e4';
+b.onclick=function(){if(!p)return;p.prompt();p.userChoice.then(function(){p=null;b.remove()})};
+a.insertAdjacentElement('afterend',b)}})();</script>
 <!--HEAD:E-->"""
 
 LANG_CSS = """/*LANG:S*/

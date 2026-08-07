@@ -1,0 +1,27 @@
+{
+  "name": "K-magpie Tools — Free, In-Browser Utilities",
+  "short_name": "K-magpie",
+  "description": "Image, PDF and calculation tools that run entirely in your browser. Files are never uploaded.",
+  "id": "/en/tools/",
+  "start_url": "/en/tools/",
+  "scope": "/en/tools/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#faf9f7",
+  "theme_color": "#faf9f7",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["utilities", "productivity", "photo"],
+  "icons": [
+    { "src": "/images/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/images/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/images/icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/images/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Compress Images", "short_name": "Compress", "url": "/en/tools/image-compress/", "icons": [{ "src": "/images/icon-192.png", "sizes": "192x192" }] },
+    { "name": "PDF Editor", "short_name": "PDF", "url": "/en/tools/pdf/", "icons": [{ "src": "/images/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Remove Background", "short_name": "Remove BG", "url": "/en/tools/remove-bg/", "icons": [{ "src": "/images/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Meme Generator", "short_name": "Meme", "url": "/en/tools/meme/", "icons": [{ "src": "/images/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

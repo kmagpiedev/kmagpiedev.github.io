@@ -1,0 +1,27 @@
+{
+  "name": "까치툴 — 브라우저에서 끝내는 무료 도구",
+  "short_name": "까치툴",
+  "description": "이미지·PDF·계산 도구 모음. 파일은 서버로 전송되지 않고 전부 브라우저 안에서 처리됩니다.",
+  "id": "/tools/",
+  "start_url": "/tools/",
+  "scope": "/tools/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#faf9f7",
+  "theme_color": "#faf9f7",
+  "lang": "ko",
+  "dir": "ltr",
+  "categories": ["utilities", "productivity", "photo"],
+  "icons": [
+    { "src": "/images/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/images/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/images/icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/images/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "이미지 압축", "short_name": "이미지 압축", "url": "/tools/image-compress/", "icons": [{ "src": "/images/icon-192.png", "sizes": "192x192" }] },
+    { "name": "PDF 합치기", "short_name": "PDF", "url": "/tools/pdf/", "icons": [{ "src": "/images/icon-192.png", "sizes": "192x192" }] },
+    { "name": "배경 지우기", "short_name": "배경 지우기", "url": "/tools/remove-bg/", "icons": [{ "src": "/images/icon-192.png", "sizes": "192x192" }] },
+    { "name": "짤 만들기", "short_name": "짤 만들기", "url": "/tools/meme/", "icons": [{ "src": "/images/icon-192.png", "sizes": "192x192" }] }
+  ]
+}
