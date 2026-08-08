@@ -4,6 +4,7 @@
 도구를 추가할 때는 아래 TOOLS 에 한 줄 넣고 REL 에 짝을 적은 뒤 이 스크립트를 돌리면 된다.
 마커 사이만 갈아끼우므로 몇 번을 돌려도 결과가 같다.
 """
+import json
 import re, sys, pathlib
 
 ROOT = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else '/home/claude/tools')
@@ -221,6 +222,7 @@ def patch(slug):
     else:
         s = r
 
+    s = patch_ld(s, nl, slug, 'ko')
     s = patch_footer(s, 'ko', slug in CALC)
     open(p, 'w', encoding='utf-8', newline='').write(s)
     return len(s.encode())
@@ -474,6 +476,64 @@ def lang_block(slug, lang):
     return f'<!--LANG:S-->\n<p class="langsw">{a}</p>\n<!--LANG:E-->'
 
 
+
+# ── 구조화 데이터(JSON-LD) ─────────────────────────────────────────
+LD_RE = re.compile(r'[ \t]*<!--LD:S-->.*?<!--LD:E-->\r?\n?', re.S)
+
+def ld_block(slug, lang):
+    """도구 페이지용 WebApplication + BreadcrumbList"""
+    if lang == 'en':
+        base, name, _tag, desc = 'https://www.kmagpie.com/en/tools/', *EN_TOOLS[slug][1:]
+        home, hub, hub_name = 'https://www.kmagpie.com/', base, 'Tools'
+    else:
+        base, name, _tag, desc = 'https://www.kmagpie.com/tools/', *TOOLS[slug][1:]
+        home, hub, hub_name = 'https://www.kmagpie.com/', base, '까치툴'
+    url = base + slug + '/'
+    d = {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "@id": url + "#app",
+                "name": name,
+                "url": url,
+                "description": desc,
+                "applicationCategory": "UtilitiesApplication",
+                "operatingSystem": "Any",
+                "browserRequirements": "Requires JavaScript",
+                "isAccessibleForFree": True,
+                "inLanguage": lang,
+                "offers": {"@type": "Offer", "price": "0",
+                           "priceCurrency": "USD" if lang == 'en' else "KRW"},
+                "publisher": {"@type": "Organization", "name": "K-magpie", "url": home},
+            },
+            {
+                "@type": "BreadcrumbList",
+                "@id": url + "#crumb",
+                "itemListElement": [
+                    {"@type": "ListItem", "position": 1, "name": "K-magpie", "item": home},
+                    {"@type": "ListItem", "position": 2, "name": hub_name, "item": hub},
+                    {"@type": "ListItem", "position": 3, "name": name, "item": url},
+                ],
+            },
+        ],
+    }
+    body = json.dumps(d, ensure_ascii=False, separators=(',', ':'))
+    return ('<!--LD:S-->\n<script type="application/ld+json">' + body +
+            '</script>\n<!--LD:E-->')
+
+
+def patch_ld(s, nl, slug, lang):
+    blk = ld_block(slug, lang).replace('\n', nl)
+    r = put(s, '<!--LD:S-->', '<!--LD:E-->', blk)
+    if r is not None:
+        return r
+    s = LD_RE.sub('', s)
+    i = s.find('<!--HEAD:E-->')
+    assert i > 0, f'{lang}/{slug}: HEAD 마커 없음'
+    i += len('<!--HEAD:E-->')
+    return s[:i] + nl + blk + s[i:]
+
 def patch_alt(s, nl, slug):
     """head 에 hreflang 3종을 마커로 넣는다 (마커 없는 기존 줄은 걷어낸다)"""
     blk = alt_block(slug).replace('\n', nl)
@@ -540,6 +600,7 @@ def patch_en(slug):
 
     s = patch_alt(s, nl, slug)
     s = patch_lang(s, nl, slug, 'en')
+    s = patch_ld(s, nl, slug, 'en')
 
     r = put(s, '<!--REL:S-->', '<!--REL:E-->', blk.strip())
     if r is None:
