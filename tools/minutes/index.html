@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>회의록 작성기 — 무료 양식, 자동 저장, 워드 저장까지 | 까치툴</title>
+<meta name="description" content="회의록 양식과 업무일지 양식을 채우면 정돈된 문서로 만들어 주는 무료 도구입니다. 입력하는 대로 실시간 미리보기, 브라우저 임시저장, 워드(.docx)·마크다운 저장, 클립보드 복사, 인쇄까지. 작성 내용은 서버로 전송되지 않고 전부 브라우저 안에서 처리됩니다.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/minutes/">
+<meta property="og:title" content="회의록 작성기 — 무료 양식, 자동 저장, 워드 저장까지">
+<meta property="og:description" content="회의록·업무일지 양식을 채우면 정돈된 문서로. 워드(.docx)·마크다운 저장, 자동 임시저장, 서버 전송 없이 브라우저에서.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/minutes/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  .row{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start}
+  .col{flex:1;min-width:150px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
+  input[type=text],input[type=date],input[type=datetime-local],textarea{padding:10px 12px;border:1px solid var(--line);border-radius:9px;
+    background:var(--surface);color:var(--ink);font-size:15px;font-family:inherit;width:100%;display:block}
+  textarea{resize:vertical;min-height:62px;line-height:1.6}
+  textarea:focus,input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:12px 0 0}
+  .seg{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+  .seg button{flex:1;background:transparent;border:0;padding:10px 6px;font-size:13.5px;font-weight:600;
+    color:var(--ink-2);cursor:pointer;font-family:inherit;transition:.12s}
+  .seg button.on{background:var(--accent);color:#fff}
+  .fld{margin-top:18px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:12px 20px;border-radius:10px;
+    border:1px solid var(--accent);background:var(--accent);color:#fff;font-size:15px;font-weight:700;
+    font-family:inherit;cursor:pointer;transition:.14s;text-decoration:none}
+  .btn:hover{filter:brightness(1.06)}
+  .btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+  .btn.g{background:transparent;color:var(--accent)}
+  .btn.sm{padding:8px 14px;font-size:13.5px;font-weight:600}
+  .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center}
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .m-ok{background:var(--good-soft);border-color:var(--good)}
+  .hidden{display:none}
+  code{background:var(--line-soft);padding:1px 5px;border-radius:4px;font-size:12.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+
+  /* --- 이 도구 전용 --- */
+  .layout{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+  #pvPane{position:sticky;top:14px}
+  @media (max-width:920px){
+    .layout{grid-template-columns:1fr}
+    #pvPane{position:static}
+  }
+  .savebar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:12px 0 0;font-size:13px;color:var(--ink-3)}
+  .savebar b{color:var(--good);font-weight:600}
+  .dl{margin:0}
+  .dlr{display:flex;gap:6px;margin:0 0 7px;align-items:flex-start}
+  .dlr input{flex:1;min-width:0}
+  .dlr.act{flex-wrap:wrap}
+  .dlr.act .a-t{flex:1 1 100%}
+  .dlr.act .a-o{flex:1 1 34%}
+  .dlr.act .a-d{flex:1 1 34%}
+  .rm{flex:none;width:38px;height:41px;border:1px solid var(--line);border-radius:9px;background:var(--surface);
+    color:var(--ink-3);font-size:17px;cursor:pointer;line-height:1;font-family:inherit}
+  .rm:hover{color:var(--bad);border-color:var(--bad)}
+  .add{margin-top:2px}
+  .lblrow{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+  .lblrow label.f{margin:0}
+  .mic{border:1px solid var(--line);background:var(--surface);color:var(--ink-2);border-radius:9px;
+    padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:.14s}
+  .mic:hover{border-color:var(--accent);color:var(--accent)}
+  .mic.on{background:var(--bad);border-color:var(--bad);color:#fff;animation:micpulse 1.4s infinite}
+  @keyframes micpulse{0%,100%{opacity:1}50%{opacity:.72}}
+  .interim{font-size:14px;color:var(--ink-3);font-style:italic;padding:6px 12px;border:1px dashed var(--line);
+    border-radius:9px;margin-top:6px;min-height:0}
+  .micnote{font-size:12.5px;color:var(--ink-3);margin:6px 0 0;line-height:1.55}
+  .micnote.local{color:var(--good)}
+  .linkstat{font-size:13px;color:var(--ink-3)}
+  .linkstat b{color:var(--good);font-weight:600}
+
+  .doc{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:26px 28px;font-size:14.5px;min-height:220px}
+  .doc .d-title{font-size:20px;font-weight:800;text-align:center;margin:0 0 16px;letter-spacing:-.02em;line-height:1.4}
+  .doc table{width:100%;border-collapse:collapse;margin:0 0 16px;font-size:13.5px;table-layout:fixed}
+  .doc th,.doc td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top;word-break:break-word}
+  .doc th{background:var(--line-soft);font-weight:600;white-space:nowrap;width:88px}
+  .doc table.acts th{width:auto;white-space:normal;text-align:center}
+  .doc table.acts col.c-t{width:50%}
+  .doc .d-sec{font-size:15px;font-weight:700;margin:18px 0 8px;padding-bottom:4px;border-bottom:2px solid var(--ink)}
+  .doc ol{margin:0 0 14px;padding-left:24px}
+  .doc ol li{margin:0 0 4px}
+  .doc .d-p{margin:0 0 12px;white-space:pre-wrap;word-break:break-word}
+  .doc .d-empty{color:var(--ink-3);font-size:14px;text-align:center;padding:48px 0}
+  .pvhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:0 0 8px}
+  .pvhead .f{margin:0}
+  .pvhead span{font-size:12.5px;color:var(--ink-3)}
+
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .panel{padding:18px 15px}
+    .doc{padding:18px 15px}
+  }
+  @media print{
+    body{background:#fff;color:#000}
+    .no-print,.crumb,h1,.sub,.gist,details.fold,footer,.seg,.langsw,#pwaBtn{display:none!important}
+    .wrap{max-width:none;padding:0}
+    .layout{display:block}
+    #pvPane{position:static}
+    .doc{border:0;border-radius:0;padding:0;background:#fff;color:#000;font-size:12.5pt;min-height:0}
+    .doc th,.doc td{border-color:#000}
+    .doc th{background:#f0f0f0}
+    .doc .d-sec{border-bottom-color:#000}
+  }
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
+</style>
+<!--ALT:S--><!--ALT:E-->
+<!--HEAD:S-->
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
+<meta property="og:site_name" content="까치툴">
+<link rel="manifest" href="/tools/manifest.json">
+<meta name="theme-color" content="#faf9f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#171614" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="까치툴">
+<script>/*PWA*/(function(){var L=document.documentElement.lang==='en';
+if('serviceWorker' in navigator)addEventListener('load',function(){navigator.serviceWorker.register('/sw.js',{scope:'/'})['catch'](function(){})});
+var p=null;addEventListener('beforeinstallprompt',function(e){e.preventDefault();p=e;show()});
+addEventListener('appinstalled',function(){p=null;var b=document.getElementById('pwaBtn');if(b)b.remove()});
+function show(){if(document.getElementById('pwaBtn'))return;
+var a=document.querySelector('.sub')||document.querySelector('h1');if(!a)return;
+var b=document.createElement('button');b.id='pwaBtn';b.type='button';
+b.textContent=L?'⬇ Install as an app':'📲 앱으로 설치';
+b.style.cssText='display:inline-block;margin:0 0 22px;padding:8px 15px;border-radius:9px;font:600 13.5px/1.4 inherit;cursor:pointer;background:transparent;color:var(--accent,#b45309);border:1px solid var(--accent,#b45309)';
+b.title=L?'Works offline once installed':'설치하면 인터넷 없이도 쓸 수 있습니다';
+b.onclick=function(){if(!p)return;p.prompt();p.userChoice.then(function(){p=null;b.remove()})};
+a.insertAdjacentElement('afterend',b)}})();</script>
+<!--HEAD:E-->
+<!--LD:S-->
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://www.kmagpie.com/tools/minutes/#app","name":"회의록 작성기","url":"https://www.kmagpie.com/tools/minutes/","description":"회의록·업무일지 양식을 채우면 정돈된 문서로 만들어 줍니다. 자동 임시저장과 음성 받아쓰기를 지원하고, 워드(.docx)·마크다운 저장과 인쇄까지 작성 내용이 서버로 전송되지 않습니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"inLanguage":"ko","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"K-magpie","url":"https://www.kmagpie.com/"}},{"@type":"BreadcrumbList","@id":"https://www.kmagpie.com/tools/minutes/#crumb","itemListElement":[{"@type":"ListItem","position":1,"name":"K-magpie","item":"https://www.kmagpie.com/"},{"@type":"ListItem","position":2,"name":"까치툴","item":"https://www.kmagpie.com/tools/"},{"@type":"ListItem","position":3,"name":"회의록 작성기","item":"https://www.kmagpie.com/tools/minutes/"}]}]}</script>
+<!--LD:E-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › 회의록 작성기</p>
+<!--LANG:S--><!--LANG:E-->
+
+<h1>회의록 작성기</h1>
+<p class="sub">빈 문서 앞에서 헤매지 않도록 <strong>회의록 양식과 업무일지 양식</strong>을 준비했습니다. 칸을 채우면 오른쪽에 정돈된 문서가 실시간으로 만들어지고, 워드(.docx)·마크다운으로 저장하거나 복사·인쇄할 수 있어요. <strong>작성 내용은 서버로 전송되지 않고</strong> 전부 브라우저 안에서 처리됩니다.</p>
+
+<div class="seg no-print" id="tabSeg" style="margin:0 0 4px;max-width:420px">
+  <button data-v="m" class="on">회의록</button>
+  <button data-v="w">업무일지</button>
+</div>
+
+<div class="savebar no-print">
+  <span id="saveStat">아직 저장된 내용이 없습니다</span>
+  <button class="btn g sm" id="newDoc" type="button">새로 쓰기</button>
+</div>
+<div class="msg m-warn no-print" style="margin:12px 0 4px">임시저장은 <strong>이 브라우저에만</strong> 남습니다. 브라우저 데이터를 지우면 함께 사라지니, 중요한 기록은 아래에서 파일로 내보내 보관하세요.</div>
+
+<div class="layout">
+<div class="no-print" id="formPane">
+
+  <!-- 회의록 폼 -->
+  <div class="panel" id="formM" style="margin-top:12px">
+    <div>
+      <label class="f" for="mTitle">회의 제목</label>
+      <input type="text" id="mTitle" placeholder="예: 8월 마케팅 주간회의">
+    </div>
+    <div class="row fld">
+      <div class="col">
+        <label class="f" for="mDt">일시</label>
+        <input type="datetime-local" id="mDt">
+      </div>
+      <div class="col">
+        <label class="f" for="mPlace">장소·방식</label>
+        <input type="text" id="mPlace" placeholder="예: 3층 회의실 / 화상">
+      </div>
+    </div>
+    <div class="row fld">
+      <div class="col">
+        <label class="f" for="mAtt">참석자</label>
+        <input type="text" id="mAtt" placeholder="예: 김OO, 이OO, 박OO">
+      </div>
+      <div class="col">
+        <label class="f" for="mWriter">작성자</label>
+        <input type="text" id="mWriter" placeholder="예: 김OO">
+      </div>
+    </div>
+    <div class="fld">
+      <label class="f">안건</label>
+      <div class="dl" id="mAgenda"></div>
+      <button class="btn g sm add" type="button" data-list="mAgenda" data-kind="txt" data-ph="안건">+ 안건 추가</button>
+    </div>
+    <div class="fld">
+      <div class="lblrow">
+        <label class="f" for="mDisc">논의 내용</label>
+        <button class="mic" type="button" id="mMic" data-ta="mDisc">🎤 받아쓰기</button>
+      </div>
+      <textarea id="mDisc" rows="7" placeholder="안건별로 오간 이야기를 적으세요. 줄바꿈이 문서에 그대로 반영됩니다."></textarea>
+      <div class="interim hidden" id="mDiscInterim"></div>
+      <p class="micnote hidden" id="mDiscNote"></p>
+    </div>
+    <div class="fld">
+      <label class="f">결정사항</label>
+      <div class="dl" id="mDec"></div>
+      <button class="btn g sm add" type="button" data-list="mDec" data-kind="txt" data-ph="결정된 내용">+ 결정사항 추가</button>
+    </div>
+    <div class="fld">
+      <label class="f">액션아이템</label>
+      <div class="dl" id="mActs"></div>
+      <button class="btn g sm add" type="button" data-list="mActs" data-kind="act">+ 액션아이템 추가</button>
+    </div>
+    <div class="fld">
+      <label class="f" for="mNext">다음 회의 <span style="text-transform:none;letter-spacing:0;font-weight:400">(선택)</span></label>
+      <input type="text" id="mNext" placeholder="예: 8/17 (월) 10:00, 같은 장소">
+    </div>
+  </div>
+
+  <!-- 업무일지 폼 -->
+  <div class="panel hidden" id="formW" style="margin-top:12px">
+    <div class="row">
+      <div class="col">
+        <label class="f" for="wDate">날짜</label>
+        <input type="date" id="wDate">
+      </div>
+      <div class="col">
+        <label class="f" for="wWriter">작성자</label>
+        <input type="text" id="wWriter" placeholder="예: 김OO">
+      </div>
+    </div>
+    <div class="fld">
+      <label class="f">오늘 한 일</label>
+      <div class="dl" id="wDone"></div>
+      <button class="btn g sm add" type="button" data-list="wDone" data-kind="txt" data-ph="한 일">+ 항목 추가</button>
+    </div>
+    <div class="fld">
+      <div class="lblrow">
+        <label class="f" for="wIssue">이슈·특이사항</label>
+        <button class="mic" type="button" id="wMic" data-ta="wIssue">🎤 받아쓰기</button>
+      </div>
+      <textarea id="wIssue" rows="5" placeholder="막힌 일, 공유할 일, 도움이 필요한 일을 적으세요."></textarea>
+      <div class="interim hidden" id="wIssueInterim"></div>
+      <p class="micnote hidden" id="wIssueNote"></p>
+    </div>
+    <div class="fld">
+      <label class="f">내일 할 일</label>
+      <div class="dl" id="wTodo"></div>
+      <button class="btn g sm add" type="button" data-list="wTodo" data-kind="txt" data-ph="할 일">+ 항목 추가</button>
+    </div>
+  </div>
+
+  <!-- 내보내기 -->
+  <div class="panel">
+    <label class="f">내보내기·보관</label>
+    <div class="btns" style="margin-top:8px">
+      <button class="btn" id="exDocx" type="button">워드로 저장 (.docx)</button>
+      <button class="btn g" id="exMd" type="button">마크다운 (.md)</button>
+      <button class="btn g" id="exCopy" type="button">클립보드 복사</button>
+      <button class="btn g" id="exPrint" type="button">인쇄 / PDF</button>
+    </div>
+    <div class="btns hidden" id="linkBox">
+      <button class="btn g sm" id="linkBtn" type="button">파일에 연결해 자동 저장 (.md)</button>
+      <span class="linkstat" id="linkStat"></span>
+    </div>
+    <div id="exMsg" class="hidden"></div>
+    <p class="note">작성 내용은 서버로 전송되지 않습니다. 파일 생성과 저장까지 전부 이 브라우저 안에서 일어납니다.</p>
+  </div>
+
+</div>
+
+<div id="pvPane">
+  <div class="pvhead no-print">
+    <label class="f">미리보기</label>
+    <span>빈 항목은 문서에서 빠집니다</span>
+  </div>
+  <div class="doc" id="doc"></div>
+</div>
+</div>
+
+<p class="gist">회의록·업무일지 양식을 채우면 정돈된 문서로 만들어 워드(.docx)·마크다운으로 저장하거나 복사·인쇄할 수 있습니다. 입력하는 대로 자동 임시저장되고, 크로미움 브라우저에서는 파일에 연결해 두면 수정할 때마다 알아서 덮어씁니다. 작성 내용은 서버로 전송되지 않고 전부 브라우저 안에서 처리됩니다.</p>
+
+<details class="fold"><summary><h2>회의록에 꼭 들어가야 하는 것</h2></summary><div class="fx">
+<p>회의록을 녹취록처럼 쓰려다 지치는 경우가 많은데, 방향이 반대입니다. 한 달 뒤에 회의록을 다시 여는 사람은 누가 무슨 말을 했는지가 아니라 <strong>그래서 뭘 하기로 했는지</strong>를 찾습니다. 그래서 회의록의 심장은 결정사항과 액션아이템 두 칸이에요. 결정사항은 "논의했다"가 아니라 "A안으로 간다"처럼 결론 문장으로 적고, 액션아이템은 할 일·담당·기한 세 가지가 다 있어야 일이 실제로 움직입니다. 담당이 비어 있는 할 일은 아무의 일도 아니게 되고, 기한이 없는 일은 다음 회의 때 그대로 다시 올라옵니다.</p>
+<p>이 도구의 회의록 양식이 안건·논의 내용·결정사항·액션아이템을 따로 받는 것도 그 때문입니다. 논의 내용은 흐름을 기억할 정도로만 간추리고, 힘은 결정과 할 일에 쓰세요. 일시·장소·참석자 같은 머리 정보는 나중에 "그 결정에 누가 있었나"를 확인할 때 의외로 중요해집니다.</p>
+</div></details>
+
+<details class="fold"><summary><h2>회의록을 서버에 올리지 않고 쓴다는 것</h2></summary><div class="fx">
+<p>회의록에는 회사의 속살이 담깁니다. 출시 전 제품 이름, 인사 논의, 거래처와의 조건, 아직 공개하면 안 되는 숫자까지. 그래서 사내 문서를 외부 웹 서비스에 붙여 넣는 것을 보안 규정으로 막는 회사가 많습니다. 이 도구는 그 걱정이 없도록 만들었어요. <strong>입력한 글자는 서버로 전송되지 않고</strong>, 미리보기 렌더링과 워드 파일 생성까지 전부 지금 쓰고 있는 브라우저 안에서 일어납니다. 페이지를 한 번 연 뒤에는 인터넷을 끊어도 똑같이 동작합니다.</p>
+<p>예외는 딱 하나, 음성 받아쓰기의 폴백 경로입니다. 브라우저가 기기 내 음성 인식을 지원하지 않으면 브라우저 내장 인식이 제공사 서버를 거칠 수 있는데, 이때는 버튼 아래에 그 사실을 그대로 표시합니다. 키보드로만 작성하면 밖으로 나가는 것이 없습니다.</p>
+</div></details>
+
+<details class="fold"><summary><h2>임시저장의 한계, 파일로 남기는 습관</h2></summary><div class="fx">
+<p>이 도구는 입력이 멈추면 곧바로 브라우저의 localStorage에 임시저장합니다. 탭을 실수로 닫거나 컴퓨터가 꺼져도 다시 열면 쓰던 내용이 돌아와요. 다만 이 저장은 어디까지나 <strong>이 브라우저, 이 컴퓨터에만</strong> 있는 것입니다. 브라우저 데이터를 지우면 같이 사라지고, 시크릿 창에서는 창을 닫는 순간 없어지며, 다른 기기에서는 보이지 않습니다. 동기화되는 클라우드 문서가 아니라, 책상 위에 둔 메모지에 가깝다고 생각하면 정확합니다.</p>
+<p>그래서 회의가 끝나면 파일로 내보내는 습관이 필요합니다. 워드(.docx)는 공유와 결재에, 마크다운(.md)은 노션·깃 같은 곳에 붙이기에 좋습니다. 크롬·엣지라면 <strong>파일에 연결해 자동 저장</strong>을 켜 두는 것이 가장 편한데, 한 번 저장 위치를 정해 두면 내용이 바뀔 때마다 그 파일에 알아서 덮어써서 임시저장의 한계를 그대로 메워 줍니다.</p>
+</div></details>
+
+<details class="fold"><summary><h2>음성 받아쓰기, 되는 것과 안 되는 것</h2></summary><div class="fx">
+<p>논의 내용 칸의 받아쓰기 버튼은 브라우저의 음성 인식을 씁니다. 시작할 때 먼저 <strong>기기 안에서 처리되는 인식</strong>을 시도하고, 되면 "이 기기에서 처리"라고 표시합니다. 이 경우 음성이 외부로 전송되지 않아요. 기기 내 인식이 안 되는 환경에서는 브라우저 내장 인식으로 넘어가는데, 이때는 음성이 브라우저 제공사 서버를 거칠 수 있어 그 사실을 버튼 아래에 밝힙니다. 민감한 회의라면 이 표시를 확인하고 쓰세요. 파이어폭스처럼 음성 인식 API가 없는 브라우저에서는 버튼 자체가 보이지 않습니다.</p>
+<p>기대치도 정직하게 말씀드리면, 이 받아쓰기는 <strong>화자를 구분하지 못합니다</strong>. 여러 사람이 말한 것이 한 덩어리 글로 이어져 나오고, 회의실 소음이나 겹쳐 말하기에도 약합니다. 회의 전체를 자동으로 기록하는 도구라기보다, 회의 직후에 말로 정리해 초안을 빠르게 뽑는 도구로 쓰는 것이 현실적입니다. 확정된 문장만 본문에 들어가고 인식 중인 문장은 회색으로 미리 보이니, 오인식은 그때그때 고치면 됩니다.</p>
+</div></details>
+
+<details class="fold"><summary><h2>업무일지, 짧게 쓰는 요령</h2></summary><div class="fx">
+<p>업무일지 양식은 세 칸이면 충분합니다. 오늘 한 일, 이슈, 내일 할 일. 요령은 "한 일"을 행동이 아니라 결과로 적는 것입니다. "보고서 작업"보다 "보고서 초안 완료, 검토 요청 보냄"이 다음 날의 나와 팀장 모두에게 유용해요. 이슈 칸에는 막힌 일과 도움이 필요한 일을 적는데, 이 칸이 비어 있지 않은 일지가 사실 가장 일 잘하는 일지입니다. 혼자 끙끙대던 문제가 글로 적히는 순간 공유되기 때문입니다.</p>
+<p>내일 할 일은 퇴근 직전에 세 개만 적어 보세요. 다음 날 아침에 무엇부터 할지 고민하는 시간이 사라지고, 어제의 내가 오늘의 나에게 넘겨주는 인수인계서가 됩니다. 매일 파일로 남겨 두면 주간 보고나 인사평가 시즌에 한 일을 긁어모으는 고생도 없어집니다.</p>
+</div></details>
+
+<details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
+<h3>어제 쓰던 내용이 사라졌어요</h3>
+<p>임시저장은 브라우저의 localStorage에만 남습니다. 다른 브라우저나 다른 컴퓨터에서 열었거나, 브라우저 방문 기록·사이트 데이터를 지웠거나, 시크릿 창에서 썼다면 복원되지 않아요. 되찾을 방법은 없으니, 중요한 기록은 쓰고 나서 바로 파일로 내보내거나 파일 연결 자동 저장을 켜 두세요.</p>
+<h3>워드 파일이 회사 서식과 달라요</h3>
+<p>이 도구가 만드는 .docx는 제목·정보 표·항목·액션아이템 표가 갖춰진 깔끔한 기본 문서입니다. 회사 지정 서식이 있다면 워드에서 열어 내용을 복사해 옮기거나, 저장한 파일에 서식만 입히는 편이 빠릅니다. 글꼴은 워드가 기기의 기본 글꼴로 표시합니다.</p>
+<h3>파일 연결 자동 저장 버튼이 안 보여요</h3>
+<p>파일에 직접 덮어쓰는 기능(showSaveFilePicker)은 크롬·엣지 같은 크로미움 계열 브라우저에만 있습니다. 사파리·파이어폭스에서는 버튼이 나타나지 않으니, 마크다운 내려받기나 클립보드 복사를 쓰세요.</p>
+<h3>받아쓰기 버튼이 없거나 눌러도 반응이 없어요</h3>
+<p>버튼이 아예 없다면 브라우저에 음성 인식 API가 없는 경우입니다(파이어폭스 등). 버튼은 있는데 시작되지 않으면 마이크 권한이 거부됐을 가능성이 커요. 주소창 옆 자물쇠 아이콘에서 마이크 권한을 허용으로 바꾼 뒤 다시 눌러 보세요.</p>
+<h3>인쇄하면 입력 칸까지 같이 나오나요</h3>
+<p>아니요. 인쇄/PDF 버튼을 누르면 입력 양식은 빠지고 미리보기의 문서만 종이에 맞게 인쇄됩니다. PDF로 남기고 싶으면 인쇄 대화상자에서 대상을 "PDF로 저장"으로 고르면 됩니다.</p>
+<h3>작성 내용이 서버로 가나요</h3>
+<p>가지 않습니다. 입력·미리보기·파일 생성이 전부 브라우저 안에서 일어나고, 인터넷을 끊어도 동작합니다. 단 하나의 예외는 음성 받아쓰기가 기기 내 인식을 쓰지 못해 브라우저 내장 인식으로 폴백한 경우로, 이때는 음성이 브라우저 제공사 서버를 거칠 수 있으며 화면에 그 사실을 표시합니다.</p>
+</div></details>
+
+<!--CAT:S--><!--CAT:E-->
+<!--REL:S-->
+<h2>함께 쓰면 좋은 도구</h2>
+<div class="rel">
+  <a href="/tools/char-count/"><strong>글자수 세기</strong><span>공백 포함·제외, 바이트, 원고지</span></a>
+  <a href="/tools/img2pdf/"><strong>이미지를 PDF로</strong><span>JPG·PNG 여러 장을 한 파일로</span></a>
+  <a href="/tools/qr/"><strong>QR코드 만들기</strong><span>링크·와이파이·연락처</span></a>
+</div>
+<p class="rel-all"><a href="/tools/">까치툴 도구 34개 전체 보기 →</a></p>
+<!--REL:E-->
+
+<footer>
+  <p>까치툴 · 작성 내용은 서버로 전송·저장되지 않으며, 임시저장은 이 브라우저의 localStorage에만 남습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const hhmm=()=>{const d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');};
+
+/* ---------- 내장 ZIP (store 방식, 압축 없음 — .docx 포장용) ---------- */
+const CRC=(()=>{const t=new Uint32Array(256);
+  for(let i=0;i<256;i++){let c=i;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[i]=c>>>0;}return t;})();
+function crc32(u8){let c=0xFFFFFFFF;for(let i=0;i<u8.length;i++)c=CRC[(c^u8[i])&0xFF]^(c>>>8);return (c^0xFFFFFFFF)>>>0;}
+function zipStore(entries){
+  const enc=new TextEncoder(), d=new Date();
+  const T=((d.getHours()<<11)|(d.getMinutes()<<5)|(d.getSeconds()>>1))&0xFFFF;
+  const D=(((d.getFullYear()-1980)<<9)|((d.getMonth()+1)<<5)|d.getDate())&0xFFFF;
+  const locals=[],centrals=[];let off=0;
+  for(const e of entries){
+    const nm=enc.encode(e.name),da=(e.data instanceof Uint8Array)?e.data:enc.encode(e.data),crc=crc32(da);
+    const lh=new Uint8Array(30+nm.length),lv=new DataView(lh.buffer);
+    lv.setUint32(0,0x04034b50,true);lv.setUint16(4,20,true);lv.setUint16(6,0x0800,true);
+    lv.setUint16(10,T,true);lv.setUint16(12,D,true);lv.setUint32(14,crc,true);
+    lv.setUint32(18,da.length,true);lv.setUint32(22,da.length,true);lv.setUint16(26,nm.length,true);
+    lh.set(nm,30);locals.push(lh,da);
+    const ch=new Uint8Array(46+nm.length),cv=new DataView(ch.buffer);
+    cv.setUint32(0,0x02014b50,true);cv.setUint16(4,20,true);cv.setUint16(6,20,true);
+    cv.setUint16(8,0x0800,true);cv.setUint16(12,T,true);cv.setUint16(14,D,true);
+    cv.setUint32(16,crc,true);cv.setUint32(20,da.length,true);cv.setUint32(24,da.length,true);
+    cv.setUint16(28,nm.length,true);cv.setUint32(42,off,true);
+    ch.set(nm,46);centrals.push(ch);off+=lh.length+da.length;
+  }
+  const cd=centrals.reduce((a,c)=>a+c.length,0);
+  const eo=new Uint8Array(22),ev=new DataView(eo.buffer);
+  ev.setUint32(0,0x06054b50,true);ev.setUint16(8,entries.length,true);ev.setUint16(10,entries.length,true);
+  ev.setUint32(12,cd,true);ev.setUint32(16,off,true);
+  return new Blob([...locals,...centrals,eo],{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+}
+
+/* ---------- 상태 ---------- */
+let tab='m';
+const LS={m:'kmagpie.minutes.m.v1', w:'kmagpie.minutes.w.v1'};
+const lastSaved={m:null,w:null};
+
+function nowDT(){const d=new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')
+    +'T'+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
+function today(){return nowDT().slice(0,10);}
+function fmtDT(v){const m=/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/.exec(v||'');
+  if(!m)return v||'';
+  const wd='일월화수목금토'[new Date(+m[1],m[2]-1,+m[3]).getDay()];
+  return m[1]+'-'+m[2]+'-'+m[3]+' ('+wd+') '+m[4]+':'+m[5];}
+function fmtD(v){const m=/^(\d{4})-(\d{2})-(\d{2})/.exec(v||'');
+  if(!m)return v||'';
+  const wd='일월화수목금토'[new Date(+m[1],m[2]-1,+m[3]).getDay()];
+  return m[1]+'-'+m[2]+'-'+m[3]+' ('+wd+')';}
+
+/* ---------- 동적 목록 ---------- */
+function mkRow(kind,val){
+  const r=document.createElement('div');
+  if(kind==='act'){
+    r.className='dlr act';
+    r.innerHTML='<input type="text" class="a-t" placeholder="할 일">'
+      +'<input type="text" class="a-o" placeholder="담당">'
+      +'<input type="text" class="a-d" placeholder="기한 (예: 8/15)">'
+      +'<button class="rm" type="button" aria-label="항목 삭제" title="삭제">×</button>';
+    if(val){r.querySelector('.a-t').value=val.t||'';r.querySelector('.a-o').value=val.o||'';r.querySelector('.a-d').value=val.d||'';}
+  }else{
+    r.className='dlr';
+    r.innerHTML='<input type="text"><button class="rm" type="button" aria-label="항목 삭제" title="삭제">×</button>';
+    if(typeof val==='string')r.querySelector('input').value=val;
+  }
+  return r;
+}
+function fillList(id,kind,vals,ph){
+  const el=$(id);el.innerHTML='';
+  const arr=(vals&&vals.length)?vals:[kind==='act'?null:''];
+  for(const v of arr){const row=mkRow(kind,v);if(ph)row.querySelectorAll('input[type=text]:not(.a-t):not(.a-o):not(.a-d)').forEach(i=>i.placeholder=ph);el.appendChild(row);}
+}
+function readTxtList(id){return [...$(id).querySelectorAll('.dlr input')].map(i=>i.value.trim()).filter(Boolean);}
+function readActList(id){return [...$(id).querySelectorAll('.dlr.act')].map(r=>({
+    t:r.querySelector('.a-t').value.trim(),o:r.querySelector('.a-o').value.trim(),d:r.querySelector('.a-d').value.trim()
+  })).filter(a=>a.t||a.o||a.d);}
+
+/* ---------- 스냅샷 ---------- */
+function snapM(){return{
+  title:$('mTitle').value.trim(), dt:$('mDt').value, place:$('mPlace').value.trim(),
+  att:$('mAtt').value.trim(), writer:$('mWriter').value.trim(),
+  agenda:readTxtList('mAgenda'), disc:$('mDisc').value.trim(),
+  dec:readTxtList('mDec'), acts:readActList('mActs'), next:$('mNext').value.trim()};}
+function snapW(){return{
+  date:$('wDate').value, writer:$('wWriter').value.trim(),
+  done:readTxtList('wDone'), issue:$('wIssue').value.trim(), todo:readTxtList('wTodo')};}
+
+function resetM(){$('mTitle').value='';$('mDt').value=nowDT();$('mPlace').value='';$('mAtt').value='';
+  $('mWriter').value='';$('mDisc').value='';$('mNext').value='';
+  fillList('mAgenda','txt',null,'안건');fillList('mDec','txt',null,'결정된 내용');fillList('mActs','act',null);}
+function resetW(){$('wDate').value=today();$('wWriter').value='';$('wIssue').value='';
+  fillList('wDone','txt',null,'한 일');fillList('wTodo','txt',null,'할 일');}
+function applyM(s){resetM();
+  $('mTitle').value=s.title||'';if(s.dt)$('mDt').value=s.dt;$('mPlace').value=s.place||'';
+  $('mAtt').value=s.att||'';$('mWriter').value=s.writer||'';$('mDisc').value=s.disc||'';$('mNext').value=s.next||'';
+  fillList('mAgenda','txt',s.agenda,'안건');fillList('mDec','txt',s.dec,'결정된 내용');fillList('mActs','act',s.acts);}
+function applyW(s){resetW();
+  if(s.date)$('wDate').value=s.date;$('wWriter').value=s.writer||'';$('wIssue').value=s.issue||'';
+  fillList('wDone','txt',s.done,'한 일');fillList('wTodo','txt',s.todo,'할 일');}
+
+/* ---------- 미리보기 ---------- */
+function pvM(){
+  const s=snapM();
+  const any=s.title||s.place||s.att||s.writer||s.agenda.length||s.disc||s.dec.length||s.acts.length||s.next;
+  if(!any)return'<div class="d-empty">왼쪽 양식을 채우면 여기에 문서가 만들어집니다.</div>';
+  let h='<div class="d-title">'+esc(s.title||'회의록')+'</div>';
+  const meta=[];
+  if(s.dt)meta.push(['일시',fmtDT(s.dt)]);
+  if(s.place)meta.push(['장소·방식',s.place]);
+  if(s.att)meta.push(['참석자',s.att]);
+  if(s.writer)meta.push(['작성자',s.writer]);
+  if(meta.length)h+='<table><tbody>'+meta.map(r=>'<tr><th>'+esc(r[0])+'</th><td>'+esc(r[1])+'</td></tr>').join('')+'</tbody></table>';
+  if(s.agenda.length)h+='<div class="d-sec">안건</div><ol>'+s.agenda.map(a=>'<li>'+esc(a)+'</li>').join('')+'</ol>';
+  if(s.disc)h+='<div class="d-sec">논의 내용</div><p class="d-p">'+esc(s.disc)+'</p>';
+  if(s.dec.length)h+='<div class="d-sec">결정사항</div><ol>'+s.dec.map(a=>'<li>'+esc(a)+'</li>').join('')+'</ol>';
+  if(s.acts.length){h+='<div class="d-sec">액션아이템</div><table class="acts"><colgroup><col class="c-t"><col><col></colgroup>'
+    +'<thead><tr><th>할 일</th><th>담당</th><th>기한</th></tr></thead><tbody>'
+    +s.acts.map(a=>'<tr><td>'+esc(a.t)+'</td><td>'+esc(a.o)+'</td><td>'+esc(a.d)+'</td></tr>').join('')+'</tbody></table>';}
+  if(s.next)h+='<div class="d-sec">다음 회의</div><p class="d-p">'+esc(s.next)+'</p>';
+  return h;
+}
+function pvW(){
+  const s=snapW();
+  const any=s.writer||s.done.length||s.issue||s.todo.length;
+  if(!any)return'<div class="d-empty">왼쪽 양식을 채우면 여기에 업무일지가 만들어집니다.</div>';
+  let h='<div class="d-title">업무일지</div>';
+  const meta=[];
+  if(s.date)meta.push(['날짜',fmtD(s.date)]);
+  if(s.writer)meta.push(['작성자',s.writer]);
+  if(meta.length)h+='<table><tbody>'+meta.map(r=>'<tr><th>'+esc(r[0])+'</th><td>'+esc(r[1])+'</td></tr>').join('')+'</tbody></table>';
+  if(s.done.length)h+='<div class="d-sec">오늘 한 일</div><ol>'+s.done.map(a=>'<li>'+esc(a)+'</li>').join('')+'</ol>';
+  if(s.issue)h+='<div class="d-sec">이슈·특이사항</div><p class="d-p">'+esc(s.issue)+'</p>';
+  if(s.todo.length)h+='<div class="d-sec">내일 할 일</div><ol>'+s.todo.map(a=>'<li>'+esc(a)+'</li>').join('')+'</ol>';
+  return h;
+}
+function render(){$('doc').innerHTML=tab==='m'?pvM():pvW();}
+
+/* ---------- 마크다운 ---------- */
+const mdesc=s=>String(s).replace(/\|/g,'\\|');
+function mdM(){
+  const s=snapM(),L=[];
+  L.push('# '+(s.title||'회의록'),'');
+  if(s.dt)L.push('- **일시:** '+fmtDT(s.dt));
+  if(s.place)L.push('- **장소·방식:** '+s.place);
+  if(s.att)L.push('- **참석자:** '+s.att);
+  if(s.writer)L.push('- **작성자:** '+s.writer);
+  L.push('');
+  if(s.agenda.length){L.push('## 안건','');s.agenda.forEach((a,i)=>L.push((i+1)+'. '+a));L.push('');}
+  if(s.disc){L.push('## 논의 내용','',s.disc,'');}
+  if(s.dec.length){L.push('## 결정사항','');s.dec.forEach((a,i)=>L.push((i+1)+'. '+a));L.push('');}
+  if(s.acts.length){L.push('## 액션아이템','','| 할 일 | 담당 | 기한 |','| --- | --- | --- |');
+    s.acts.forEach(a=>L.push('| '+mdesc(a.t)+' | '+mdesc(a.o)+' | '+mdesc(a.d)+' |'));L.push('');}
+  if(s.next){L.push('## 다음 회의','',s.next,'');}
+  return L.join('\n').replace(/\n{3,}/g,'\n\n').trim()+'\n';
+}
+function mdW(){
+  const s=snapW(),L=[];
+  L.push('# 업무일지'+(s.date?' — '+fmtD(s.date):''),'');
+  if(s.writer)L.push('- **작성자:** '+s.writer,'');
+  if(s.done.length){L.push('## 오늘 한 일','');s.done.forEach((a,i)=>L.push((i+1)+'. '+a));L.push('');}
+  if(s.issue){L.push('## 이슈·특이사항','',s.issue,'');}
+  if(s.todo.length){L.push('## 내일 할 일','');s.todo.forEach((a,i)=>L.push((i+1)+'. '+a));L.push('');}
+  return L.join('\n').replace(/\n{3,}/g,'\n\n').trim()+'\n';
+}
+const buildMd=()=>tab==='m'?mdM():mdW();
+
+/* ---------- .docx ---------- */
+const XE=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+function xp(text,o){o=o||{};
+  const pPr='<w:pPr>'+(o.center?'<w:jc w:val="center"/>':'')
+    +'<w:spacing w:before="'+(o.before||0)+'" w:after="'+(o.after==null?120:o.after)+'"/>'
+    +(o.rule?'<w:pBdr><w:bottom w:val="single" w:sz="8" w:space="2" w:color="222222"/></w:pBdr>':'')+'</w:pPr>';
+  const rPr='<w:rPr>'+(o.b?'<w:b/>':'')+'<w:sz w:val="'+(o.sz||22)+'"/><w:szCs w:val="'+(o.sz||22)+'"/></w:rPr>';
+  return '<w:p>'+pPr+'<w:r>'+rPr+'<w:t xml:space="preserve">'+XE(text)+'</w:t></w:r></w:p>';}
+function xpMulti(text,o){return String(text).split('\n').map(l=>xp(l,o)).join('');}
+const xhead=t=>xp(t,{b:1,sz:26,before:280,after:120,rule:1});
+const XBORD='<w:tblBorders>'+['top','left','bottom','right','insideH','insideV']
+  .map(k=>'<w:'+k+' w:val="single" w:sz="4" w:space="0" w:color="777777"/>').join('')+'</w:tblBorders>';
+function xtbl(rows,opt){opt=opt||{};
+  const nc=rows[0].length;
+  const widths=opt.widths||rows[0].map(()=>Math.floor(9026/nc));
+  const grid='<w:tblGrid>'+widths.map(w=>'<w:gridCol w:w="'+w+'"/>').join('')+'</w:tblGrid>';
+  const trs=rows.map((r,ri)=>'<w:tr>'+r.map((c,ci)=>{
+    const hd=(opt.headerRow&&ri===0)||(opt.headerCol&&ci===0);
+    const tc='<w:tcPr><w:tcW w:w="'+widths[ci]+'" w:type="dxa"/>'
+      +(hd?'<w:shd w:val="clear" w:color="auto" w:fill="EFEFEF"/>':'')+'</w:tcPr>';
+    const ps=String(c).split('\n').map(l=>'<w:p><w:pPr><w:spacing w:after="40"/></w:pPr><w:r><w:rPr>'
+      +(hd?'<w:b/>':'')+'<w:sz w:val="21"/><w:szCs w:val="21"/></w:rPr><w:t xml:space="preserve">'+XE(l)+'</w:t></w:r></w:p>').join('');
+    return '<w:tc>'+tc+ps+'</w:tc>';
+  }).join('')+'</w:tr>').join('');
+  return '<w:tbl><w:tblPr><w:tblW w:w="5000" w:type="pct"/>'+XBORD
+    +'<w:tblLayout w:type="fixed"/></w:tblPr>'+grid+trs+'</w:tbl><w:p><w:pPr><w:spacing w:after="60"/></w:pPr></w:p>';}
+function docBodyM(){
+  const s=snapM();let b=xp(s.title||'회의록',{b:1,sz:36,center:1,after:280});
+  const meta=[];
+  if(s.dt)meta.push(['일시',fmtDT(s.dt)]);
+  if(s.place)meta.push(['장소·방식',s.place]);
+  if(s.att)meta.push(['참석자',s.att]);
+  if(s.writer)meta.push(['작성자',s.writer]);
+  if(meta.length)b+=xtbl(meta,{headerCol:1,widths:[1650,7376]});
+  if(s.agenda.length){b+=xhead('안건');s.agenda.forEach((a,i)=>{b+=xp((i+1)+'. '+a,{after:80});});}
+  if(s.disc){b+=xhead('논의 내용')+xpMulti(s.disc,{after:80});}
+  if(s.dec.length){b+=xhead('결정사항');s.dec.forEach((a,i)=>{b+=xp((i+1)+'. '+a,{after:80});});}
+  if(s.acts.length){b+=xhead('액션아이템')
+    +xtbl([['할 일','담당','기한']].concat(s.acts.map(a=>[a.t,a.o,a.d])),{headerRow:1,widths:[4514,2256,2256]});}
+  if(s.next){b+=xhead('다음 회의')+xp(s.next,{after:80});}
+  return b;
+}
+function docBodyW(){
+  const s=snapW();let b=xp('업무일지',{b:1,sz:36,center:1,after:280});
+  const meta=[];
+  if(s.date)meta.push(['날짜',fmtD(s.date)]);
+  if(s.writer)meta.push(['작성자',s.writer]);
+  if(meta.length)b+=xtbl(meta,{headerCol:1,widths:[1650,7376]});
+  if(s.done.length){b+=xhead('오늘 한 일');s.done.forEach((a,i)=>{b+=xp((i+1)+'. '+a,{after:80});});}
+  if(s.issue){b+=xhead('이슈·특이사항')+xpMulti(s.issue,{after:80});}
+  if(s.todo.length){b+=xhead('내일 할 일');s.todo.forEach((a,i)=>{b+=xp((i+1)+'. '+a,{after:80});});}
+  return b;
+}
+function buildDocx(){
+  const body=(tab==='m'?docBodyM():docBodyW())
+    +'<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440" w:header="720" w:footer="720"/></w:sectPr>';
+  const doc='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n'
+    +'<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'+body+'</w:body></w:document>';
+  const types='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n'
+    +'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'
+    +'<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>'
+    +'<Default Extension="xml" ContentType="application/xml"/>'
+    +'<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>';
+  const rels='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n'
+    +'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+    +'<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>';
+  return zipStore([{name:'[Content_Types].xml',data:types},{name:'_rels/.rels',data:rels},{name:'word/document.xml',data:doc}]);
+}
+
+/* ---------- 저장·복사·인쇄 ---------- */
+function download(blob,fn){
+  window.__lastBlob=blob;window.__lastName=fn; /* 검증용 */
+  const u=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=u;a.download=fn;document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(u),4000);
+}
+function exSay(cls,html){const m=$('exMsg');m.className='msg '+cls;m.innerHTML=html;
+  clearTimeout(exSay.t);exSay.t=setTimeout(()=>{m.className='hidden';},5000);}
+$('exDocx').addEventListener('click',()=>{
+  const fn=tab==='m'?'minutes.docx':'worklog.docx';
+  download(buildDocx(),fn);
+  exSay('m-ok','<strong>'+fn+'</strong>를 저장했습니다. 워드·한글(2014+)·구글 문서에서 열립니다.');
+});
+$('exMd').addEventListener('click',()=>{
+  const fn=tab==='m'?'minutes.md':'worklog.md';
+  download(new Blob([buildMd()],{type:'text/markdown;charset=utf-8'}),fn);
+  exSay('m-ok','<strong>'+fn+'</strong>를 저장했습니다.');
+});
+$('exCopy').addEventListener('click',async()=>{
+  const t=buildMd();
+  try{
+    if(navigator.clipboard&&navigator.clipboard.writeText)await navigator.clipboard.writeText(t);
+    else{const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();}
+    exSay('m-ok','마크다운 텍스트를 클립보드에 복사했습니다. 노션·메일 등에 붙여 넣으세요.');
+  }catch(e){exSay('m-bad','복사하지 못했습니다. 브라우저의 클립보드 권한을 확인해 주세요.');}
+});
+$('exPrint').addEventListener('click',()=>window.print());
+
+/* ---------- 임시저장 ---------- */
+let lsTimer=null,lsPending=false;
+function saveLS(){
+  lsPending=false;
+  try{
+    const s=tab==='m'?snapMRaw():snapWRaw();
+    s._ts=hhmm();
+    localStorage.setItem(LS[tab],JSON.stringify(s));
+    lastSaved[tab]=s._ts;updateSaveStat();
+  }catch(e){}
+}
+function flushLS(){clearTimeout(lsTimer);if(lsPending)saveLS();}
+function cancelLS(){clearTimeout(lsTimer);lsPending=false;}
+/* 저장은 빈 행까지 보존하지 않고 값만 — 단, textarea·입력 필드는 원본 그대로 */
+function snapMRaw(){const s=snapM();s.disc=$('mDisc').value;return s;}
+function snapWRaw(){const s=snapW();s.issue=$('wIssue').value;return s;}
+function updateSaveStat(){
+  $('saveStat').innerHTML=lastSaved[tab]?'<b>'+lastSaved[tab]+' 임시저장됨</b> · 이 브라우저에만 저장':'아직 저장된 내용이 없습니다';
+}
+function loadLS(){
+  let m=null,w=null;
+  try{m=JSON.parse(localStorage.getItem(LS.m)||'null');}catch(e){}
+  try{w=JSON.parse(localStorage.getItem(LS.w)||'null');}catch(e){}
+  if(m){applyM(m);lastSaved.m=m._ts||null;}else resetM();
+  if(w){applyW(w);lastSaved.w=w._ts||null;}else resetW();
+}
+function onChanged(){
+  render();
+  clearTimeout(lsTimer);lsPending=true;lsTimer=setTimeout(saveLS,450);
+  scheduleFileSave();
+}
+
+/* ---------- 파일 연결 자동 저장 (크로미움) ---------- */
+const FS_OK='showSaveFilePicker' in window;
+const linkHandle={m:null,w:null},linkTime={m:null,w:null};
+let fileTimer=null;
+if(FS_OK)$('linkBox').classList.remove('hidden');
+function updateLinkUI(){
+  if(!FS_OK)return;
+  const h=linkHandle[tab];
+  $('linkBtn').textContent=h?'파일 연결 해제':'파일에 연결해 자동 저장 (.md)';
+  $('linkStat').innerHTML=h?('<b>'+esc(h.name)+'</b>에 연결됨'+(linkTime[tab]?' · 마지막 저장 '+linkTime[tab]:'')):'';
+}
+async function writeLink(t){
+  const h=linkHandle[t];if(!h)return;
+  try{
+    const w=await h.createWritable();
+    await w.write(t===tab?buildMd():(t==='m'?mdM():mdW()));
+    await w.close();
+    linkTime[t]=hhmm();updateLinkUI();
+  }catch(e){
+    linkHandle[t]=null;updateLinkUI();
+    exSay('m-bad','연결된 파일에 저장하지 못해 연결을 해제했습니다. ('+esc(e&&e.message||e)+')');
+  }
+}
+function scheduleFileSave(){
+  if(!FS_OK||!linkHandle[tab])return;
+  const t=tab;
+  clearTimeout(fileTimer);fileTimer=setTimeout(()=>writeLink(t),2000);
+}
+if(FS_OK)$('linkBtn').addEventListener('click',async()=>{
+  if(linkHandle[tab]){linkHandle[tab]=null;linkTime[tab]=null;updateLinkUI();return;}
+  try{
+    const h=await window.showSaveFilePicker({
+      suggestedName:tab==='m'?'minutes.md':'worklog.md',
+      types:[{description:'Markdown',accept:{'text/markdown':['.md']}}]});
+    linkHandle[tab]=h;await writeLink(tab);
+    exSay('m-ok','<strong>'+esc(h.name)+'</strong>에 연결했습니다. 내용이 바뀌면 2초 뒤 자동으로 덮어씁니다.');
+  }catch(e){if(e&&e.name!=='AbortError')exSay('m-bad','파일에 연결하지 못했습니다. ('+esc(e&&e.message||e)+')');}
+});
+
+/* ---------- 음성 받아쓰기 ---------- */
+const SRC=window.SpeechRecognition||window.webkitSpeechRecognition;
+if(!SRC)document.querySelectorAll('.mic').forEach(b=>b.classList.add('hidden'));
+let sp=null; /* {rec,btn,ta,interim,note,pos,active} */
+async function detectLocal(){
+  if(!SRC||typeof SRC.available!=='function')return false;
+  try{
+    const a=await SRC.available({langs:['ko-KR'],processLocally:true});
+    if(a==='available')return true;
+    if(a==='downloadable'&&typeof SRC.install==='function'){
+      if(await SRC.install({langs:['ko-KR'],processLocally:true}))return true;
+    }
+  }catch(e){}
+  return false;
+}
+function micNote(el,txt,local){el.textContent=txt;el.classList.toggle('local',!!local);el.classList.remove('hidden');}
+function stopDictation(){
+  if(!sp)return;
+  sp.active=false;
+  try{sp.rec.stop();}catch(e){}
+  sp.btn.classList.remove('on');sp.btn.textContent='🎤 받아쓰기';
+  sp.interim.textContent='';sp.interim.classList.add('hidden');
+  sp=null;
+}
+function insertFinal(ta,txt){
+  const t=String(txt).trim();if(!t)return;
+  let pos=sp&&sp.ta===ta?sp.pos:ta.value.length;
+  const before=ta.value.slice(0,pos),after=ta.value.slice(pos);
+  const glue=before&&!/\s$/.test(before)?' ':'';
+  const ins=glue+t;
+  ta.value=before+ins+after;
+  pos+=ins.length;
+  if(sp&&sp.ta===ta)sp.pos=pos;
+  try{ta.selectionStart=ta.selectionEnd=pos;}catch(e){}
+  onChanged();
+}
+async function startDictation(btn){
+  const ta=$(btn.dataset.ta),interim=$(btn.dataset.ta+'Interim'),note=$(btn.dataset.ta+'Note');
+  btn.disabled=true;btn.textContent='준비 중…';
+  const local=await detectLocal();
+  btn.disabled=false;
+  let rec;
+  try{rec=new SRC();}catch(e){btn.textContent='🎤 받아쓰기';micNote(note,'음성 인식을 시작하지 못했습니다.',false);return;}
+  rec.lang='ko-KR';rec.continuous=true;rec.interimResults=true;
+  if(local){try{rec.processLocally=true;}catch(e){}}
+  micNote(note,local
+    ?'🔒 이 기기에서 처리 — 음성이 외부로 전송되지 않습니다.'
+    :'음성 인식은 브라우저 내장 기능을 사용하며, 브라우저 제공사 서버를 거칠 수 있습니다.',local);
+  sp={rec,btn,ta,interim,note,pos:(typeof ta.selectionStart==='number'?ta.selectionStart:ta.value.length),active:true};
+  rec.onresult=e=>{
+    if(!sp||sp.rec!==rec)return;
+    let it='';
+    for(let i=e.resultIndex||0;i<e.results.length;i++){
+      const r=e.results[i];
+      if(r.isFinal)insertFinal(ta,r[0].transcript);
+      else it+=r[0].transcript;
+    }
+    sp.interim.textContent=it;
+    sp.interim.classList.toggle('hidden',!it);
+  };
+  rec.onerror=e=>{
+    if(!sp||sp.rec!==rec)return;
+    const err=e&&e.error;
+    if(err==='no-speech'||err==='aborted')return;
+    exSay('m-bad',err==='not-allowed'||err==='service-not-allowed'
+      ?'마이크 권한이 거부되어 받아쓰기를 시작할 수 없습니다. 주소창 옆 자물쇠 아이콘에서 마이크를 허용해 주세요.'
+      :'음성 인식 중 오류가 발생했습니다. ('+esc(err||'unknown')+')');
+    if(err==='not-allowed'||err==='service-not-allowed')stopDictation();
+  };
+  rec.onend=()=>{
+    if(sp&&sp.rec===rec&&sp.active){try{rec.start();}catch(e){}}
+  };
+  try{rec.start();}catch(e){}
+  btn.classList.add('on');btn.textContent='⏹ 받아쓰기 끝내기';
+}
+document.querySelectorAll('.mic').forEach(btn=>btn.addEventListener('click',()=>{
+  if(!SRC)return;
+  if(sp&&sp.btn===btn){stopDictation();return;}
+  if(sp)stopDictation();
+  startDictation(btn);
+}));
+
+/* ---------- 탭·목록·초기화 ---------- */
+document.querySelectorAll('#tabSeg button').forEach(b=>b.addEventListener('click',()=>{
+  if(b.dataset.v===tab)return;
+  if(sp)stopDictation();
+  flushLS(); /* 이전 탭의 대기 중 저장을 그 탭 키로 마무리 */
+  document.querySelectorAll('#tabSeg button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');tab=b.dataset.v;
+  $('formM').classList.toggle('hidden',tab!=='m');
+  $('formW').classList.toggle('hidden',tab!=='w');
+  updateSaveStat();updateLinkUI();render();
+}));
+$('formPane').addEventListener('click',e=>{
+  const add=e.target.closest('.add');
+  if(add){
+    const row=mkRow(add.dataset.kind||'txt');
+    if(add.dataset.ph)row.querySelectorAll('input').forEach(i=>{if(!i.classList.contains('a-o')&&!i.classList.contains('a-d'))i.placeholder=add.dataset.ph;});
+    $(add.dataset.list).appendChild(row);
+    const f=row.querySelector('input');if(f)f.focus();
+    return;
+  }
+  const rm=e.target.closest('.rm');
+  if(rm){
+    const list=rm.closest('.dl'),row=rm.closest('.dlr');
+    row.remove();
+    if(!list.querySelector('.dlr'))list.appendChild(mkRow(list.id==='mActs'?'act':'txt'));
+    onChanged();
+  }
+});
+$('formPane').addEventListener('input',onChanged);
+$('formPane').addEventListener('change',onChanged);
+$('newDoc').addEventListener('click',()=>{
+  if(!confirm((tab==='m'?'회의록':'업무일지')+' 작성 내용을 지우고 새로 시작할까요? 이 브라우저의 임시저장도 함께 삭제됩니다.'))return;
+  if(sp)stopDictation();
+  cancelLS();
+  try{localStorage.removeItem(LS[tab]);}catch(e){}
+  if(tab==='m')resetM();else resetW();
+  lastSaved[tab]=null;updateSaveStat();render();
+});
+
+/* ---------- 시작 ---------- */
+loadLS();
+updateSaveStat();updateLinkUI();render();
+})();
+</script>
+</body>
+</html>
