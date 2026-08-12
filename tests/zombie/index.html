@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>좀비사태가 터지면 나의 역할은? — 사주로 보는 생존률 테스트 | 까치테스트</title>
+<meta name="description" content="생년월일만 넣으면 사주 일간으로 좀비 아포칼립스 속 나의 역할과 생존률(1~99%)을 알려드립니다. 당신은 바리케이드의 설계자? 정보 브로커? 아니면… 좀비 1호? 전체 상위 몇 %인지까지. 지금 확인하고 친구와 비교해 보세요.">
+<link rel="canonical" href="https://www.kmagpie.com/tests/zombie/">
+<meta property="og:title" content="좀비사태가 터지면 나의 역할은? — 사주로 보는 생존률 테스트">
+<meta property="og:description" content="생년월일로 보는 좀비 아포칼립스 생존률. 당신의 역할은 12가지 중 무엇일까요? 혹시… 좀비 1호?">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tests/zombie/">
+<meta property="og:image" content="https://www.kmagpie.com/tests/zombie/img/og.png">
+<style>
+  :root{
+    --bg:#101312; --surface:#181d1b; --line:#2a322e; --line-soft:#222925;
+    --ink:#e8ece8; --ink-2:#a8b2aa; --ink-3:#75807a;
+    --accent:#9be15d; --accent-soft:#1c2618;
+    --blood:#e5484d; --blood-soft:#2a1717;
+    --warn:#e3c266; --warn-soft:#26200f;
+    --card-grad-a:#16241c; --card-grad-b:#0c0f0d;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0c0e0d; --surface:#151917; --line:#2a322e; --line-soft:#202623;
+      --ink:#e8ece8; --ink-2:#a8b2aa; --ink-3:#75807a;
+      --accent:#9be15d; --accent-soft:#1a2415;
+      --blood:#f0666a; --blood-soft:#2a1717;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:680px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:27px;line-height:1.35;margin:0 0 10px;letter-spacing:-.02em;font-weight:800}
+  h1 .zom{color:var(--accent)}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+  .col{flex:1;min-width:90px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
+  input[type=text],select{padding:10px 12px;border:1px solid var(--line);border-radius:9px;
+    background:var(--surface);color:var(--ink);font-size:16px;font-family:inherit;width:100%;
+    font-weight:600;font-variant-numeric:tabular-nums;appearance:none;-webkit-appearance:none}
+  input:focus,select:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:14px 0 0}
+  .go{display:block;width:100%;margin:18px 0 0;padding:15px 10px;border:0;border-radius:12px;
+    background:var(--accent);color:#0c130a;font-size:17px;font-weight:800;font-family:inherit;cursor:pointer;
+    letter-spacing:-.01em;transition:.15s}
+  .go:hover{filter:brightness(1.08);transform:translateY(-1px)}
+
+  /* 결과 */
+  .result{background:var(--surface);border:1px solid var(--accent);border-radius:18px;
+    padding:28px 24px;margin:20px 0;text-align:center}
+  .rk{font-size:13px;font-weight:700;letter-spacing:.12em;color:var(--ink-3);margin:0 0 14px}
+  .roleImg{width:168px;height:168px;margin:0 auto 14px;border-radius:24px;overflow:hidden;position:relative;
+    background:linear-gradient(135deg,var(--g1,#243524),var(--g2,#121a12));display:flex;align-items:center;justify-content:center}
+  .roleImg img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+  .roleImg .fbEmo{font-size:84px;line-height:1;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5))}
+  .roleName{font-size:26px;font-weight:800;letter-spacing:-.02em;margin:0 0 2px}
+  .roleCatch{font-size:14.5px;color:var(--ink-2);margin:0 0 20px}
+  .survBox{margin:0 0 4px}
+  .survNum{font-size:clamp(56px,18vw,84px);font-weight:800;letter-spacing:-.04em;line-height:1.05;
+    color:var(--accent);font-variant-numeric:tabular-nums}
+  .survNum small{font-size:.45em;font-weight:700}
+  .survCap{font-size:13.5px;color:var(--ink-3);margin:0 0 2px}
+  .topPct{display:inline-block;margin:8px 0 0;padding:5px 14px;border-radius:99px;
+    background:var(--accent-soft);color:var(--accent);font-size:14px;font-weight:700}
+  .topPct.badly{background:var(--blood-soft);color:var(--blood)}
+  .ilju{margin:20px 0 0;padding:13px 15px;border:1px dashed var(--line);border-radius:11px;
+    font-size:14px;color:var(--ink-2);text-align:left}
+  .ilju b{color:var(--ink)}
+  .desc{text-align:left;font-size:15px;color:var(--ink-2);margin:18px 0 0}
+  .strat{text-align:left;margin:16px 0 0;padding:12px 15px;border-left:3px solid var(--accent);
+    background:var(--accent-soft);border-radius:0 10px 10px 0;font-size:14.5px}
+  .strat b{color:var(--accent)}
+  .mates{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 0;text-align:left}
+  .mate{border:1px solid var(--line);border-radius:11px;padding:11px 13px;font-size:13.5px}
+  .mate .mk{display:block;font-size:11.5px;font-weight:700;letter-spacing:.08em;margin-bottom:3px}
+  .mate.good .mk{color:var(--accent)}
+  .mate.bad .mk{color:var(--blood)}
+  .mate b{font-size:14.5px}
+  .btns{display:flex;gap:9px;flex-wrap:wrap;margin:24px 0 0}
+  .btns button{flex:1;min-width:140px;padding:13px 8px;border-radius:11px;font-size:14.5px;font-weight:700;
+    font-family:inherit;cursor:pointer;transition:.15s;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+  .btns button:hover{border-color:var(--accent);color:var(--accent)}
+  .btns button.pri{background:var(--accent);border-color:var(--accent);color:#0c130a}
+  .btns button.pri:hover{filter:brightness(1.08);color:#0c130a}
+  .retry{display:block;width:100%;margin:10px 0 0;padding:13px 8px;border-radius:11px;border:1px dashed var(--line);
+    background:transparent;color:var(--ink-2);font-size:14.5px;font-weight:700;font-family:inherit;cursor:pointer}
+  .retry:hover{border-color:var(--accent);color:var(--accent)}
+  .copied{font-size:13px;color:var(--accent);margin:8px 0 0;min-height:20px}
+
+  .basis{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:14px 0}
+  .basis h2{margin:0 0 8px;font-size:17px}
+  .basis p{font-size:14.5px;color:var(--ink-2);margin:0 0 8px}
+  .basis p:last-child{margin:0}
+
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  .hidden{display:none}
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .panel{padding:18px 15px}
+    .result{padding:22px 15px}
+    .roleImg{width:136px;height:136px}
+    .roleImg .fbEmo{font-size:68px}
+    .roleName{font-size:22px}
+    .mates{grid-template-columns:1fr}
+  }
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/tests/">까치테스트</a> › 좀비사태 생존 테스트</p>
+
+<h1>좀비사태가 터지면<br>나의 역할은? <span class="zom">🧟</span></h1>
+<p class="sub">생년월일을 넣으면 <strong>사주 일간</strong>으로 좀비 아포칼립스 속 당신의 역할과 <strong>생존률(1~99%)</strong>을 계산합니다. 만세력 엔진으로 진짜 사주를 뽑아서 보는, 근거 있는(?) 생존 리포트. 당신은 요새를 지키는 쪽일까요, 아니면… 좀비 1호일까요.</p>
+
+<div class="panel" id="inputPanel">
+  <div class="row">
+    <div class="col" style="flex:2;min-width:160px">
+      <label class="f" for="nick">이름·닉네임 (선택)</label>
+      <input type="text" id="nick" maxlength="12" placeholder="결과 카드에 표시돼요" autocomplete="off">
+    </div>
+  </div>
+  <div class="row" style="margin-top:14px">
+    <div class="col"><label class="f" for="by">년</label><select id="by"></select></div>
+    <div class="col"><label class="f" for="bm">월</label><select id="bm"></select></div>
+    <div class="col"><label class="f" for="bd">일</label><select id="bd"></select></div>
+  </div>
+  <div class="row" style="margin-top:14px">
+    <div class="col" style="min-width:160px">
+      <label class="f" for="bt">태어난 시간 (선택)</label>
+      <select id="bt"></select>
+    </div>
+  </div>
+  <button type="button" class="go" id="goBtn">☣️ 내 역할 확인하기</button>
+  <p class="note">양력 생일 기준입니다. 입력값은 어디로도 전송되지 않고 브라우저 안에서만 계산됩니다.</p>
+</div>
+
+<div class="result hidden" id="res">
+  <p class="rk">ZOMBIE SURVIVAL REPORT</p>
+  <div class="roleImg" id="roleImgBox">
+    <span class="fbEmo" id="fbEmo"></span>
+    <img id="roleImg" alt="">
+  </div>
+  <p class="roleName" id="roleName"></p>
+  <p class="roleCatch" id="roleCatch"></p>
+  <div class="survBox">
+    <p class="survCap" id="survCap">예상 생존률</p>
+    <div class="survNum"><span id="survNum">0</span><small>%</small></div>
+    <span class="topPct" id="topPct"></span>
+  </div>
+  <p class="ilju" id="iljuLine"></p>
+  <p class="desc" id="roleDesc"></p>
+  <p class="strat" id="roleStrat"></p>
+  <div class="mates">
+    <div class="mate good"><span class="mk">최고의 동료</span><span id="mateGood"></span></div>
+    <div class="mate bad"><span class="mk">최악의 조합</span><span id="mateBad"></span></div>
+  </div>
+  <div class="btns">
+    <button type="button" id="shareLink">🔗 결과 링크 복사</button>
+    <button type="button" class="pri" id="shareCard">📸 결과 카드 저장</button>
+  </div>
+  <button type="button" class="retry" id="retryBtn">👀 친구는 몇 %일까? 다시 해보기</button>
+  <p class="copied" id="copied"></p>
+</div>
+
+<div class="basis">
+  <h2>이 테스트의 근거</h2>
+  <p>사주에서 태어난 날의 천간을 <strong>일간(日干)</strong>이라 부르고, 명리학은 이 글자를 ‘나 자신’으로 봅니다. 이 테스트는 <a href="/tools/manse/">만세력</a>과 같은 엔진으로 당신의 연주·월주·일주를 실제로 계산한 뒤, 일간 10가지(갑·을·병·정·무·기·경·신·임·계)를 좀비사태 속 역할로 바꿔 읽은 것입니다. 생존률은 일간과 나머지 글자들의 생극 관계를 점수로 환산해 만들었습니다. 물론, 재미로 보세요.</p>
+</div>
+
+<div class="basis">
+  <h2>정확한 사주가 궁금하다면</h2>
+  <p>진짜 내 사주 여덟 글자가 궁금하다면 <a href="/tools/manse/">만세력 도구</a>에서 절입 시각까지 반영한 원국을 뽑아볼 수 있고, 그 여덟 글자의 풀이가 궁금하다면 <a href="https://yaong.kmagpie.com/">야옹명리</a>에서 볼 수 있습니다.</p>
+</div>
+
+<footer>
+  <p>이 테스트는 재미로 보는 콘텐츠입니다. 생존률과 역할은 어떤 사실도 보장하지 않습니다.</p>
+  <p>까치테스트 · 모든 계산은 브라우저 안에서 이루어지며 입력값은 어디로도 전송되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">까치툴</a> · <a href="/tools/about/">소개</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+/*CORE:S*/
+/* ── 만세력 코어 (연·월·일주) — /tools/manse/ 엔진 포팅 ─────────────────
+   절입(12節) 시각 테이블·일주 JDN 공식 동일. 검증: KASI 일진 대조. */
+var JD_ENC="0y0n41s0dy2m0n53h0d74c0l35712m630er6y0it7t03p8n07s9g0yw0503g0y0ws1s0nn2m0wx3h0n34c0v15808k630om6y0sm7t0dj8n0hn9h04t050d50z02q1s0xk2n02q3h0wr4d00k580hy630xy6y11z7t0mx8n0r69h0eh050n40z0cj1t03b2n0ce3i02e4d0a7580rp6403s6z07u7t0wu8n1119h0ob050ww0z0mc1t0d42n0m73i0c74d0k15811k640do6z0hq7u02o8o06t9h0y10602p0y0w41s0my2m0w33h0m24c0tu58078630n96y0ra7t0c88n0ge9h03n050cf0z01s1s0wo2n01v3h0vx4c13p580h3630x46y1147t0m38n0qb9h0dl050m20z0bn1t02f2n0bj3i01i4d099580qn6402o6z06q7t0vr8n1009h0nb050w00z0lb1t0c22n0ly3i0bx4d0jp58116640d96z0ha7u0298o06g9h0xq0601p0y0vr1s0mj2m0vo3h0lp4c0tk58072630n56y0r57t0c18n0g79h03h050c30z01m1s0wf2n01h3h0ve4c133580gf630wf6y10g7t0lf8n0po9h0cz050lw0z0b41t01x2n0az3i00v4d08k580pz640226z0677t0v98n0zh9h0mq050vf0z0li1t0c92n0lc3i0bb4d0j45810l640cp6z0gu7u01v8o0639h0xb0601w0y0v71s0lx2m0v03h0kz4c0sq58063630m46y0q67t0b88n0fi9h02t050bm0z00t1s0vk2n00m3h0uk4c12c580fr630vt6y0zx7t0kz8n0pb9h0cp050l70z0aq1t01c2n0a93i0034d07s580p86401c6z05h7t0ul8n0yy9h0mc050v40z0ke1t0b22n0jy3i09q4d0he580yu640az6z0f57u0088o04i9h0vu0600s0y0ty1s0kp2m0tq3h0jm4c0rb5804q630ku6y0oz7t0a28n0ed9h01p050aa0y13t1s0ul2m13l3h0te4c10z580e8630u76y0yb7t0jg8n0nv9h0ba050k40z09f1t0062n0953h12y4d06l580nx6313y6z0447t0t98n0xo9h0l2050ts0z0j31t09r2n0ir3i08o4d0gf580xv6409y6z0e37t1358o03h9h0uu0513h0y0sw1s0jl2m0sl3h0ig4c0q65803j630jk6y0nm7t08n8n0cy9h00b0509a0y12j1s0ta2m12a3h0s54c0zu580da630td6y0xi7t0il8n0mx9h0ab050it0z08d1s1312n07y3h11q4d05e580mu631316z0397t0sf8n0ws9h0k5050sq0z0i21t08p2n0hl3i07e4d0f2580wh6408o6z0cy7t1248o02h9h0tt0512i0y0rp1s0ic2m0rb3h0h64c0ox5802d630ij6y0ms7t0808n0ce9g13s050850y11q1s0sc2m1163h0qx4c0yi580bu630rw6y0w47t0hd8n0lw9h09f050i60z07i1s1222n06u3h10h4d041580le6311j6z01t7t0r38n0vl9h0j2050rx0z0h51t07p2n0gj3i0684d0dt580v86407g6z0bq7t10y8o01e9h0st0511j0y0qx1s0hk2m0qf3h0g54c0nn5800w630gx6y0l47t06b8n0as9g1280507a0y10f1s0r52m1023h0pr4c0xa580ak630ql6y0us7t0g28n0kk9h083050gr0z0651s10q2n05l3h0za4d02u580k6631096z00h7t0pr8n0ua9h0hs050qk0z0fu1t06e2n0f63i04v4d0cg580ts6405w6z0a37t0za8n13q9h0r6051090y0p91s0fw2m0or3h0ei4c0m65713l630fq6y0jy7t0548n09j9g10z0505n0y0z41s0pq2m0yk3h0o74c0vq58091630p46y0tc7t0el8n0j39h06l050fh0z04p1s0za2n0423h0xo4d016580ii630yo6y1307t0oc8n0su9h0g9050p20z0e51t04p2n0dj3i0394d0av580sa6404j6z08x7t0y98n12r9h0q6050yn0y0o21s0el2m0ne3h0d34c0kn5711y630e16y0ib7t03n8n0879g0zq0504k0y0xr1s0oa2m0x13h0mn4c0u75807j630np6y0s07t0dd8n0i09h05m050e70z03n1s0y22n02q3h0w94c13s580h6630xf6y11u7t0n98n0rw9h0fh050o40z0dk1t0402n0cn3i0244d09k580qw640346z07h7t0wu8n11f9h0oy050y00y0n21s0dm2m0md3h0by4c0jf5710r630cy6y0hc7t02q8n07c9g0yw0503g0y0x11s0nl2m0wc3h0lv4c0t95806g630mi6y0qu7t0ca8n0gz9h04n050de0z02s1s0xb2n01z3h0vi4c12v580g3630w66y10j7t0ly8n0qn9h0e9050n70z0cb1t02t2n0bi3i0144d08n580q0640276z06k7t0vx8n10j9h0o4050wr0y0m81s0cq2m0lg3h0b14c0ii570zr630bt6y0g27t01d8n05y9g0xk0502n0y0vs1s0md2m0v33h0km4c0s15805b630lg6y0pr7t0b58n0fr9h03c050c40z01e1s0vw2n00k3h0u34c11j580ew630v56y0zl7t0l18n0po9h0d8050lu0z0b61t01m2n0aa3h13s4d078580ok6400q6z0557t0uk8n0z79h0mq050vo0y0kn1s0b32m0js3h09d4c0gv570y8630af6y0eu7t00b8n0509g0wl050150y0ul1s0kz2m0tl3h0j14c0qf5803p630jv6y0oa7t09s8n0ek9h02a050b30z00e1s0ur2m1393h0sl4c0zx580d6630td6y0xu7t0jc8n0o39h0bq050ku0z09t1t0072n08r3h1264d05k580mx631376z03q7t0t88n0xy9h0lk050ua0y0jm1s0a32m0ip3h0844c0fg570wn6308r6y0d57s12m8n03d9g0v1050020y0t71s0jp2m0rh3h0gw4c0o75801d630hh6y0lw7t07f8n0c99g13y0509l0y1201s0sd2m10x3h0qc4c0xp580b0630r86y0vq7t0ha8n0m39h09t050ii0z07u1s1272n06p3h1044d03i580ks6310y6z01d7t0qu8n0vk9h0j8050sc0y0hd1s07s2m0gd3h05s4c0d7570ui6306q6y0b67s10o8n01e9g0t20411t0y0r71s0hn2m0q63h0fj4c0mu58003630gb6y0kt7t06d8n0b69g12w0507m0y1101s0rf2m0zx3h0p94c0wi5809q630py6y0ui7t0g48n0kw9h08j050hg0z06h1s10u2n05e3h0yt4d027580jj630zu6z00f7t0q38n0uw9h0ik050r10y0gg1s06t2m0fc3h04r4c0c4570td6305i6y0at7s10f8n01a9g0t2041110y0r51s0hi2m0py3h0fa4c0mj5713r630fy6y0kf7t0628n0az9g12t0507n0y10w1s0r52m0zj3h0os4c0w25809e630pp6y0uc7t0g08n0kw9h08p050hf0z06t1s1142n05i3h0yr4d020580j8630zg6y13z7t0pl8n0uf9h0i5050ra0y0ga1s06p2m0f73h04i4c0bq570sx630556y09o7s0zb8n0069g0rx0410q0y0q21s0gf2m0ox3h0e74c0le5712j630ep6y0j87t04x8n09v9g11q0506i0y0zv1s0q62m0yl3h0nu4c0v058085630ob6y0su7t0eh8n0jd9h076050gc0z0581s0zi2n03x3h0x84d00j580hu630y36y12n7t0oa8n0t59h0gw050pq0y0ez1s05b2m0dr3h0324c0ac570rk6303q6y0877s0xt8m12n9g0qf040zh0y0om1s0ez2m0ne3h0cm4c0js5710y630d66y0hq7t03e8n08a9g101050520y0y21s0ob2m0wo3h0lw4c0t55806f630ms6y0ri7t0db8n0i99h060050el0z03w1s0y42n02h3h0vp4c12y580g7630wh6y1137t0mu8n0rr9h0fj050oi0y0dg1s03p2m0c23h01b4c08j570pr630216y06n7s0wf8m11f9g0pa040y10y0nc1s0dj2m0lt3h0ay4c0i4570zb630bl6y0g97t0238n0769g0z50503w0y0xb1s0ni2m0vq3h0kr4c0ru5804z630l96y0px7t0bq8n0gr9h04m050du0z02s1s0x02n01b3h0uf4c11j580er630v26y0zs7t0lm8n0qn9h0eh050n90y0cl1s02w2m0ba3h00g4c07k570oo6300u6y05g7s0v88m10a9g0o7040x30y0mf1s0cq2m0l33h0a94c0hb570yd630ai6y0f27t00v8n05y9g0xw0502v0y0w01s0m82m0ui3h0jn4c0qt58041630kb6y0p07t0au8n0fx9h03u050ck0z01y1s0w52n00f3h0tl4c10s580e0630u96y0yt7t0kj8n0pi9h0dd050mh0y0bj1s01t2m0a53g13b4c06h570no6213x6y04j7s0u98m0z89g0n3040w10y0l91s0bj2m0jt3h08w4c0g0570x76309i6y0e87t0028n0549g0x00501r0y0v41s0lb2m0tk3h0in4c0pq5802v630j66y0nw7t09r8n0es9h02m050bn0z00j1s0up2m12y3h0s34c0z9580ch630su6y0xm7t0ji8n0ol9h0cg050l50y0ac1s00g2m08q3g11v4c050570m76212g6y0357s0t08m0y59g0m4040uz0y0k81s0ac2m0ii3h07j4c0ek570vp6307y6y0cn7s12j8n03p9g0vp0500s0y0ts1s0ju2m0rw3h0gu4c0nv58013630hh6y0mc7t08c8n0di9h01g050ad0y13j1s0tn2m11r3h0qq4c0xr580ax630r86y0vz7t0hw8n0n19h0ay050k40y0931r13a2m07i3g10i4c03h570kj6210s6y01i7s0rf8m0wm9g0kl040tm0y0iq1s08v2m0h13h0604c0cy570u0630696y0b17s1128n02c9g0ue041390y0sk1s0io2m0qt3h0fr4c0mq5713t630g16y0kr7t06p8n0bw9g13w050940y1201s0s42m1093h0p94c0wa5809g630pr6y0ui7t0gf8n0ll9h09k050il0y07p1r11v2m0613g0z24c023570j8620zi6y0087s0q48m0v99g0ja040s80y0hj1s07q2m0fw3h04u4c0bt570sv630546y09v7s0zt8n00z9g0sz041200y0r11s0h42m0p83h0e64c0l65712d630es6y0jp7t05r8n0b09g12y0507m0y10w1s0qy2m0z23h0o24c0v55808c630op6y0ti7t0fj8n0kr9h08q050hj0y06q1r10s2m04w3g0xw4c00x570i1620yc6x1357s0p58m0ue9g0ih040rc0y0gl1s06l2m0el3h03f4c0ae570ri6303w6y08s7s0yw8n0089g0se041160y0ql1s0gm2m0ol3h0dd4c0k95711d630dq6y0im7t04o8n09y9g120050750y1041s0q72m0y83h0n24c0tz58072630nf6y0sb7t0ee8n0jo9h07p050gp0y05t1r0zx2m0413g0wx4b13u570gv620x46x11y7s0o18m0td9g0hh040qd0y0fo1s05s2m0du3h02p4c09l570qk6302r6y07j7s0xl8m12y9g0r2041080y0p61s0f52m0n53h0bz4c0iw57100630cc6y0h87t03d8n08p9g10t0505s0y0yw1s0ow2m0wv3h0lr4c0sq5805v630m86y0r17t0d18n0ib9h06d050fj0y04j1r0yl2m02m3g0vh4b12e570fh620vr6x10l7s0ml8m0ru9g0fx040p30y0e31s0452m0c43h00v4c07p570or630156y0637s0w98m11n9g0pr040yn0y0nu1s0du2m0lt3h0ak4c0hf570yi630av6y0ft7t0208n07c9g0ze0504g0y0xc1s0nb2m0va3h0k44c0r058043630kg6y0pe7t0bl8n0gz9h052050e10y0321r0x02m00y3g0tr4b10n570dq620u16x0yy7s0l48m0qk9g0es040nq0y0d01s02y2m0av3g13k4c06d570ne6213p6y04l7s0ur8m1079g0oe040xl0y0ml1s0ci2m0kc3h08z4c0fr570wu630996y0ea7t00j8n05z9g0y5050370y0wa1s0m92m0u63h0iw4c0pq5802t630j76y0o57t0ac8n0fq9h03v050cw0y0211r0w32m0033g0su4b0zn570cn620sw6x0xs7s0jy8m0pe9g0dl040mm0y0br1s01q2m09n3g12b4c053570m36212f6y03d7s0to8m0z79g0ng040wc0y0ln1s0bk2m0jf3h0854c0ey570w06308d6y0dc7s13j8n04z9g0x5050290y0va1s0l82m0t43h0hu4c0op5801r630i56y0n37t0998n0eo9h02t050bw0y00y1r0ux2l12t3g0rj4b0yd570bf620rs6x0wr7s0iy8m0oe9g0cl040lk0y0at1s00s2m08p3g11d4c045570l66211j6y02i7s0sr8m0y89g0me040vd0y0ke1s0aa2m0i33h06r4c0di570ul630716y0c57s12i8n0409g0w6050130y0u31s0jx2m0rq3h0gg4c0na5800e630gu6y0lw7t0878n0dq9h01x050au0x13z1r0tu2l11n3g0qb4b0x4570a5620qi6x0vh7s0hr8m0nb9g0bl040kn0y09r1r13k2m0783g0zq4c02e570je620zt6y00w7s0ra8m0wx9g0la040ue0y0jj1s09c2m0h13h05j4c0c6570t76305n6y0ar7s1148n02o9g0ux050050y0t31s0iz2m0qq3h0fa4c0ly5712w630f96y0kb7t06o8n0c89h00h0509p0x12m1r0sj2l10d3g0ox4b0vl5708h620or6x0ts7s0g58m0ls9g0a4040j90y08e1r12b2m0643g0yp4c01c570i9620yj6x13h7s0pt8m0vg9g0js040sz0y0hy1s07r2m0fh3h0414c0aq570rp630436y0947s0zh8n0129g0td0412m0y0rj1s0hd2m0p33h0do4c0kg5711i630dx6y0iy7t0588n0ar9g131050870x1191r0r52l0yy3g0nk4b0ua5707a620no6x0so7s0ey8m0kh9g08q040hu0y06w1r10r2m04h3g0wy4b13k570gj620wz6x1257s0ol8m0u89g0ij040ri0y0gm1s06f2m0e43h02n4c09c570qd6302v6y0827s0yj8n0059g0sf0411b0y0qd1s0g42m0nt3h0ce4c0j457105630cl6y0hq7t0468n09u9g125050740x1051r0pw2l0xk3g0m24b0sp5705p620m46x0r87s0dq8m0jh9g07x040gw0y0651r0zw2m03i3g0vx4b12i570fh620vx6x1127s0nj8m0t99g0hp040qs0y0fw1s05m2m0d63h01j4c083570p16301i6y06q7s0x98m1309g0rd0410k0y0pk1s0fc2m0my3h0bd4c0hz570yx630bd6y0gj7t0318n08q9g114050670x0zb1r0p62l0ww3g0ld4b0rz5704v620l76x0q97s0cq8m0ig9g06v040fy0y0531r0yv2m02h3g0uv4b11d570e8620ul6x0zq7s0m98m0s39g0gk040pr0y0et1s04j2m0c43h00i4c073570o26300i6y05o7s0w58m11v9g0q9040zg0y0og1s0e72m0lt3h0a94c0gw570xv630aa6y0fe7t01t8n07h9g0zu050530x0y11r0nu2l0vg3g0ju4b0qe5703a620jo6x0ot7s0bb8m0h19g05g040eo0y03p1r0xi2m0143g0tj4b102570cz620tf6x0yl7s0l48m0qv9g0f9040ob0y0db1s0302m0ak3g12y4c05i570mg6212x6y0467s0ur8m10k9g0ox040y10y0mw1s0cj2m0k33h08h4c0f4570w46308k6y0ds7t00d8n0669g0yl0503o0x0wo1r0md2l0tx3g0ib4b0ox5701w620ib6x0nh7s0a08m0ft9g04b040de0y02j1r0w62l13l3g0rs4b0y8570b4620rl6x0wv7s0ji8m0pe9g0dx040n80y0c61s01t2m0993g11g4c03x570ku6211e6y02q7s0td8m0z79g0nn040wu0y0ls1s0bi2m0j13h07c4c0du570ur630776y0cg7s1328n04x9g0xc0502h0x0vh1r0l72l0sq3g0h04b0nf57009620gm6x0lt7s08h8m0ee9g02y040c60y0181r0ux2l12f3g0qq4b0x6570a1620qg6x0vo7s0ic8m0o99g0ct040lw0y0b01s00m2m0813g10b4c02s570jp621056y01f7s0s28m0xy9g0mg040vq0y0kn1s0a92m0hp3h05z4c0ch570tg6305x6y0b67s11r8n03l9g0w30501c0x0ud1r0k32l0rm3g0fx4b0mf5613d620fu6x0l27s07o8m0di9g020040b00y0081r0tv2l11b3g0pi4b0vv5708p620p76x0uj7s0ha8m0n89g0br040kw0y09v1r13h2m06w3g0z44c01k570ih620z16y00f7s0r78m0x49g0lm040um0y0jn1s0982m0go3h04y4c0bg570se6304w6y0a77s10x8n02v9g0vf0500f0x0ti1r0j32l0qg3g0em4b0l05611u620ea6x0jk7s06a8m0ca9g00y040aa0x13a1r0sw2l1083g0oc4b0uo5707j620o16x0te7s0g58m0m59g0ar040jy0y0901r12k2m05w3g0y04c00c570h7620xo6x1327s0pu8m0vt9g0kd040tp0y0ik1s0862m0fj3h03p4c0a1570qv6303b6y08m7s0zd8n01d9g0tx0413a0x0s61r0ht2l0pa3g0di4b0jw5610q620d56x0ie7s0548m0b49f13q0408u0x11z1r0rj2l0yv3g0mz4b0ta57062620mh6x0rs7s0ek8m0km9g09a040io0y07j1r1122m04d3g0wg4b12t570fp620w86x11l7s0od8m0uc9g0iw040s90y0h31s06n2m0e03h0264c08m570pj630226y07e7s0y48n0019g0sl0411t0x0qr1r0gd2l0nq3g0bt4b0i4560yw620bd6x0gq7s03i8m09i9f1240407h0x10d1r0py2l0x93g0lc4b0ro5704i620l16x0qh7s0dd8m0jf9g080040h20y0611r0zi2m02s3g0uw4b119570e5620up6x1067s0n38m0t69g0hs040qv0y0ft1s0592m0ch3h00k4c06x570nt6300b6y05p7s0wl8m12p9g0re0410n0x0pl1r0f22l0mc3g0ae4b0gr560xn620a66x0fk7s02f8m08j9f11a0406c0x0zl1r0p22l0w73g0k44b0qc57034620jm6x0p37s0c18m0i79g06y040gb0y05a1r0ys2m01y3g0tv4b102570cu620tf6x0yx7s0lw8m0s09g0go040q00y0ex1s04h2m0br3g13t4c064570mx6213f6y04v7s0vr8m11v9g0qk040zn0x0os1r0ec2l0ln3g09n4b0fu560wi6208w6x0e97s0158m07c9f1040405i0x0yh1r0o02l0v93g0j94b0ph57029620ip6x0o47s0b18m0h79g05y040f60y0461r0xn2m00v3g0sv4b0z6570c1620sk6x0xz7s0kv8m0qz9g0fo040ox0y0dv1s03c2m0ak3g12k4c04u570lo621266y03k7s0ue8m10h9g0p5040yn0x0nf1r0cy2l0k83g08a4b0ek560ve6207y6x0df7s00a8m06e9f0z2040440x0x91r0mp2l0tw3g0ht4b0o05700s620hc6x0mv7s09w8m0g39g04s040e00y02v1r0w92l13d3g0ra4b0xi570ab620qx6x0wi7s0jj8m0pr9g0eg040np0y0cg1s01t2m08y3g10y4c039570k56210r6y02a7s0ta8m0zi9g0o9040xb0x0me1r0bq2l0it3g06o4b0ct560tj620616x0bi7r12i8m04s9f0xn040380x0w01r0le2l0sf3g0g74b0ma56131620fl6x0l67s0898m0ek9g03d040cq0y01m1r0v02l1223g0pv4b0w05708r620pc6x0uy7s0i18m0ob9g0d3040me0y0ba1s00p2m07s3g0zn4c01q570if620yw6y00e7s0rf8m0xp9g0mj040w30x0kt1r0aa2l0hg3g05d4b0bi560s86204p6x0a77r1188m03j9f0wf0401k0x0uq1r0k32l0r53g0ez4b0l25611s620e96x0js7s06v8m0d79g023040bh0y00f1r0ts2l10s3g0ok4b0uo5707g620o06x0tk7s0gl8m0mv9g0bo040l60y09y1r13d2m06g3g0yc4c00k570he620xz6x13k7s0qk8m0ws9g0lk040up0x0ju1r09a2l0ge3g0484b0aa560qz6203g6x0907r1028m02c9f0v70400l0x0ti1r0ix2l0q03g0ds4b0jv5610k620d46x0ir7s05x8m0ca9g013040a80x1361r0si2l0zk3g0nf4b0tl5706f620n16x0sp7s0fv8m0m89g0b2040k20y0941r12e2m05e3g0x84b13d570g5620wo6x1287s0pb8m0vo9g0kl040u00x0iu1r0862l0f63g02y4b092560pu6202f6x0817r0z68m01j9f0uh0313n0x0st1r0i32l0p03g0cn4b0io560ze620bz6x0ho7s04v8m0ba9g0080409k0x12j1r0ru2l0yr3g0me4b0sc57051620lm6x0rb7s0ei8m0kw9g09r040jb0y07y1r11b2m04b3g0w34b126570ew620vh6x1157s0ob8m0uq9g0jl040ss0x0hu1r0762l0e63g01w4b07v560oh6200x6x06h7r0xm8m0039f0t30312m0x0rg1r0gs2l0np3g0bc4b0hb560xy620ag6x0g27s0398m09q9f12o040880x10x1r0q62l0x33g0kt4b0qw5703n620ka6x0py7s0d48m0ji9g08f040hr0y06o1r0zy2m02v3g0ul4b10m570db620tu6x0zf7s0mj8m0sw9g0hs040rh";
+var JY0=1900;
+var GAN="갑을병정무기경신임계", JI="자축인묘진사오미신유술해";
+var GANH="甲乙丙丁戊己庚辛壬癸", JIH="子丑寅卯辰巳午未申酉戌亥";
+function jieOf(y,idx){
+  var s=JD_ENC.substr(((y-JY0)*12+idx)*5,5);
+  var doy=parseInt(s.substr(0,2),36), mn=parseInt(s.substr(2,3),36);
+  var dt=new Date(Date.UTC(y,0,1+doy));
+  return {m:dt.getUTCMonth()+1, d:dt.getUTCDate(), min:mn};
+}
+function cmpJie(y,m,d,mn,idx){
+  var j=jieOf(y,idx);
+  if(m!==j.m) return m>j.m?1:-1;
+  if(d!==j.d) return d>j.d?1:-1;
+  return mn>=j.min?1:-1;
+}
+function yearPillarIdx(y,m,d,mn){
+  var sy=y;
+  if(cmpJie(y,m,d,mn,0)<0) sy=y-1;
+  return {sy:sy, idx:((sy-4)%60+60)%60};
+}
+function monthPillar(y,m,d,mn){
+  var CHRONO=[11,0,1,2,3,4,5,6,7,8,9,10];
+  var mi=-1;
+  for(var k=0;k<12;k++){ var i=CHRONO[k]; if(cmpJie(y,m,d,mn,i)>0) mi=i; else break; }
+  if(mi<0) mi=10;
+  var yp=yearPillarIdx(y,m,d,mn);
+  var yGan=yp.idx%10;
+  var inGan=[2,4,6,8,0][yGan%5];
+  var gan=(inGan+mi)%10;
+  var ji=(mi+2)%12;
+  return {gan:gan, ji:ji, mi:mi};
+}
+function jdn2(y,m,d){ if(m<=2){y--;m+=12;} var a=Math.floor(y/100),b=2-a+Math.floor(a/4);
+  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+b-1524; }
+function dayPillarIdx(y,m,d){
+  var n=jdn2(y,m,d);
+  return ((n+49)%60+60)%60;
+}
+
+/* ── 생존률 산식 ── */
+var ELG=[0,0,1,1,2,2,3,3,4,4];              /* 천간 오행 */
+var ELJ=[4,2,0,0,2,1,1,2,3,3,2,4];          /* 지지 오행 */
+var GWI={4:1,16:1,28:1,34:1,46:1,58:1};     /* 괴강: 무진 경진 임진 무술 경술 임술 */
+var BASE_E=[47,54,51,56,44];                /* 일간 오행별 기본치: 목화토금수 */
+var RELS=[3,0,-1,-8,6];                     /* 비겁 식상 재 관 인 */
+function hash32(s){var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+/* t: 0=시간 모름, 1~12 = 자~해시 */
+function pillarsOf(y,m,d,t){
+  var mn = t ? ((t-1)*120+30)%1440 : 720;
+  var yp=yearPillarIdx(y,m,d,mn);
+  var mp=monthPillar(y,m,d,mn);
+  var dp=dayPillarIdx(y,m,d);
+  return {yp:yp.idx, mp:mp.ji, mpg:mp.gan, dp:dp};
+}
+function survival(y,m,d,t){
+  var P=pillarsOf(y,m,d,t);
+  var dg=P.dp%10, de=ELG[dg];
+  var s=BASE_E[de];
+  function rel(bj){ return RELS[((ELJ[bj]-de)%5+5)%5]; }
+  s += rel(P.yp%12)*1.0 + rel(P.mp)*1.6 + rel(P.dp%12)*1.4;
+  if(t) s += rel(t-1)*0.8;
+  s += (dg%2===0)?2:-2;
+  if(GWI[P.dp]) s += 16;
+  var h=hash32(y+'-'+m+'-'+d+'-'+(t||'x'));
+  s += ((h%4001)/4000-0.5)*46;
+  s += (((h>>>12)%997)/996-0.5)*12;
+  if(s>92) s=92+(s-92)*0.4;
+  if(s<8)  s=8-(8-s)*0.4;
+  s=Math.round(s);
+  return s<1?1:(s>99?99:s);
+}
+/* 상위 % 테이블: 1950-01-01~2010-12-31 전 날짜(시간 모름) 분포에서
+   생존률 v(1~99) 이상인 비율(퍼밀, ‰). 빌드 시 실계산으로 생성. */
+var TOPP=[1000,999,999,998,997,996,994,991,989,987,985,983,980,978,975,971,968,964,959,953,948,942,935,928,920,911,903,893,883,872,860,848,835,822,806,793,779,764,747,728,711,693,674,656,637,619,599,578,557,538,519,500,481,462,445,427,408,390,372,353,334,316,299,283,266,249,233,219,205,191,177,164,152,140,129,118,110,100,92,82,75,67,62,56,51,45,41,36,32,29,26,24,20,14,10,8,5,4,3];
+function topPct(s){ var pm=TOPP[s-1]; var p=Math.round(pm/10); return p<1?1:(p>100?100:p); }
+/*CORE:E*/
+
+/* ── 역할 데이터 ── */
+var ROLES=[
+ {img:1, emo:"🌳", nm:"바리케이드의 설계자", ct:"무너지는 세상에 기둥을 세우는 사람",
+  g:["#2e4b2a","#101a0e"],
+  desc:"갑목(甲木) 일간은 하늘로 곧게 뻗는 큰 나무의 기운입니다. 남들이 비명 지르며 흩어질 때 당신은 책상을 뒤집어 문을 막고 있습니다. 타고난 대장 기질이라 사람들이 자연스럽게 당신 뒤로 모이지만, 고집도 나무줄기급이라 피난 경로를 두고 밤새 언쟁할 수 있습니다. 그래도 이 캠프의 뼈대는 결국 당신이 세운 그 바리케이드입니다.",
+  st:"높은 곳보다 튼튼한 곳. 당신의 자리는 정문입니다.",
+  mate:9, worst:6},
+ {img:2, emo:"🌿", nm:"은신의 달인", ct:"소리 없이 스며들어 끝까지 살아남는다",
+  g:["#274436","#0e1712"],
+  desc:"을목(乙木) 일간은 바위 틈에서도 자라는 덩굴풀의 기운입니다. 정면 승부 대신 담장을 타고, 창고 틈새로 스며들고, 좀비 떼 사이를 소리 없이 빠져나갑니다. 부드러워 보여도 생존 본능은 전원 중 최상위권. 다만 혼자 살겠다고 몰래 비상구를 봐두는 버릇은 동료들에게 들키지 않는 게 좋습니다.",
+  st:"싸우지 말고 감으세요. 덩굴은 도끼를 이길 필요가 없습니다.",
+  mate:8, worst:7},
+ {img:3, emo:"🔥", nm:"돌격대장", ct:"생각은 나중에, 일단 돌파",
+  g:["#4b2a1c","#1a0e08"],
+  desc:"병화(丙火) 일간은 한낮의 태양, 숨길 수 없는 화력입니다. 보급로가 막히면 누군가는 뚫어야 하고, 그 누군가는 언제나 당신입니다. 당신이 앞장서면 캠프의 사기가 오르고 좀비들의 어그로도 오릅니다. 문제는 태양은 연료 게이지를 확인하지 않는다는 것. 후퇴 신호를 정해두면 생존률이 두 배가 됩니다.",
+  st:"돌격 전에 딱 3초만 세세요. 하나, 둘, 퇴로.",
+  mate:0, worst:8},
+ {img:4, emo:"🕯️", nm:"모닥불의 수호자", ct:"불씨가 꺼지지 않는 한 우리는 진 게 아니다",
+  g:["#4a3620","#170f06"],
+  desc:"정화(丁火) 일간은 어둠 속에서 오래 타는 촛불의 기운입니다. 화려하진 않지만 밤샘 경계 근무, 다친 동료 곁 지키기, 무너진 사기 다시 붙이기 같은 일을 조용히 해냅니다. 사람들은 위기 때마다 당신 곁으로 모여듭니다. 따뜻하다고 아무나 다 받아주다 물린 사람까지 숨겨주는 것만 조심하세요.",
+  st:"밤 근무는 당신 담당. 대신 낮잠은 절대 양보하지 마세요.",
+  mate:1, worst:9},
+ {img:5, emo:"🏔️", nm:"요새의 수문장", ct:"이 문은 내가 지킨다, 한 발짝도 못 들어온다",
+  g:["#3d3a2a","#14120c"],
+  desc:"무토(戊土) 일간은 산맥처럼 넓고 단단한 대지의 기운입니다. 좀비 떼가 파도처럼 밀려와도 당신이 지키는 구역은 이상하리만치 조용합니다. 흔들리지 않는 멘탈은 아포칼립스 최고의 자원. 다만 산은 움직이는 걸 싫어해서, 거점을 옮겨야 할 타이밍을 놓치는 게 유일한 약점입니다.",
+  st:"버티는 건 이기는 겁니다. 단, 철수 명령엔 토 달지 말 것.",
+  mate:2, worst:0},
+ {img:6, emo:"🌾", nm:"텃밭의 지배자", ct:"통조림이 떨어져도 우리 캠프는 굶지 않는다",
+  g:["#3f3d1e","#15140a"],
+  desc:"기토(己土) 일간은 곡식을 길러내는 기름진 밭의 기운입니다. 남들이 마트를 털 때 당신은 씨감자를 챙깁니다. 옥상 텃밭, 빗물 저장, 식량 배급표까지 — 석 달 뒤 캠프의 생사는 사실상 당신 손에 달려 있습니다. 문제라면 아끼는 버릇이 과해서 비상식량 위치를 아무에게도 안 알려준다는 것 정도.",
+  st:"첫날 챙길 것: 무기 말고 씨앗. 진짜입니다.",
+  mate:3, worst:1},
+ {img:7, emo:"⚔️", nm:"무기고 관리자", ct:"녹슨 쇠파이프도 내 손을 거치면 명검이 된다",
+  g:["#33383e","#0f1214"],
+  desc:"경금(庚金) 일간은 단단한 원석, 두드릴수록 강해지는 무쇠의 기운입니다. 위기 상황에서 오히려 눈빛이 맑아지는 타입으로, 흩어진 고철을 모아 무기를 만들고 전투 대형을 짭니다. 결단이 빠르고 손속에 망설임이 없어 전선에서 가장 믿음직합니다. 다만 그 칼같은 판단을 사람에게도 휘두르면 캠프가 둘로 쪼개집니다.",
+  st:"무기 점검은 매일 아침. 사람 점검은 조금만 무디게.",
+  mate:4, worst:2},
+ {img:8, emo:"🗡️", nm:"냉정한 저격수", ct:"한 발, 한 놈. 낭비는 없다",
+  g:["#2e3a42","#0d1114"],
+  desc:"신금(辛金) 일간은 세공을 마친 보석이자 잘 벼려진 칼날의 기운입니다. 화려한 돌격보다 정확한 한 수를 선호하고, 탄약 개수와 좀비 동선을 머릿속으로 계산해 둡니다. 예민한 감각 덕에 위험을 가장 먼저 알아채는 것도 당신입니다. 다만 완벽주의가 지나쳐 ‘완벽한 타이밍’을 기다리다 문이 뚫리는 일만 없게 하세요.",
+  st:"80% 확신이면 쏘세요. 100%를 기다리면 이미 물린 뒤입니다.",
+  mate:5, worst:3},
+ {img:9, emo:"🌊", nm:"루트 개척자", ct:"길이 없으면 강처럼 돌아서 간다",
+  g:["#1e3a4a","#0a1218"],
+  desc:"임수(壬水) 일간은 바다로 향하는 큰 강물의 기운입니다. 한곳에 갇히는 걸 못 견디고, 막힌 도로 대신 하수도와 지하상가 루트를 이미 그려두고 있습니다. 스케일 크고 겁이 없어 정찰과 보급 원정의 에이스. 문제는 물이 너무 커서 가끔 캠프 사람들이 ‘쟤 돌아오긴 하는 거지?’라고 불안해한다는 겁니다.",
+  st:"나갈 땐 꼭 귀환 시각을 말하고 나가세요. 지도는 당신 머릿속에만 있으니까.",
+  mate:6, worst:4},
+ {img:10, emo:"🌧️", nm:"정보 브로커", ct:"어느 마트가 안 털렸는지, 나만 안다",
+  g:["#25304a","#0c0f18"],
+  desc:"계수(癸水) 일간은 스며드는 빗물, 조용히 모든 곳에 닿는 기운입니다. 어느 다리가 무너졌고 어느 무리가 위험한지, 소문과 신호를 모아 지도로 만드는 게 당신 특기입니다. 직접 싸우는 일은 드물지만 당신의 정보 한 줄이 열 명을 살립니다. 아는 걸 너무 늦게 푸는 버릇만 고치면 캠프의 두뇌로 오래 살아남습니다.",
+  st:"정보는 유통기한이 있습니다. 오늘 안 팔면 썩어요.",
+  mate:7, worst:5}
+];
+var ROLE_GWI={img:11, emo:"🦾", nm:"최후의 생존자", ct:"엔딩 크레딧에 남는 이름은 하나",
+  g:["#4a1e24","#12080a"],
+  desc:"당신의 일주는 괴강(魁罡) — 명리에서 ‘우두머리 별’이라 부르는 극단의 기운입니다. 평화로운 시대엔 드세다는 소리를 듣지만, 세상이 무너지는 순간 당신의 시대가 시작됩니다. 남들이 최악이라 부르는 상황에서 오히려 침착해지고, 마지막 헬기가 떠난 뒤에도 혼자 시즌 2를 찍고 있는 타입. 좀비들이 당신을 피해 다닌다는 소문도 있습니다.",
+  st:"당신의 최대 위협은 좀비가 아니라 지루함입니다. 살아남는 김에 다 살리세요.",
+  mateTx:"누구든 — 당신이 지켜줄 테니까", worstTx:"없음 — 당신이 최악의 변수니까"};
+var ROLE_Z1={img:12, emo:"🧟", nm:"좀비 1호", ct:"가장 먼저 물리지만, 가장 유명해집니다",
+  g:["#3a2440","#120a14"],
+  desc:"미안합니다. 사주 여덟 글자가 만장일치로 당신을 가리켰습니다. 뉴스 속보의 첫 화면, 다큐멘터리의 오프닝, 백신 연구의 검체 1번 — 전부 당신입니다. 하지만 생각해 보세요. 살아남은 자들은 이름 없이 스쳐가지만 좀비 1호는 역사책에 실립니다. 어쩌면 이것이 가장 확실한 형태의 불멸일지도 모릅니다.",
+  st:"오늘부터 모르는 사람이 팔을 물어보자고 하면 정중히 거절하세요.",
+  mateTx:"백신 연구원 — 당신이 인류의 희망입니다", worstTx:"좀비 2호 — 원조 논쟁이 붙습니다"};
+
+/* 60일주 한줄 코멘트 */
+var ILJU=[
+"얼어붙은 물가에서도 뿌리내리는 개척형","진흙 속에 몸을 낮추고 봄을 기다리는 인내형",
+"숲 전체를 밝히는 횃불, 선봉 돌파형","토끼굴 속 촛불처럼 조용히 오래 버티는 지구력형",
+"산이 용을 품은 형상, 흔들리지 않는 대지형","뱀처럼 유연하게 지형을 읽는 실속형",
+"달궈진 쇠, 위기에서 더 단단해지는 담금질형","마른 흙에서 보석을 골라내는 감별형",
+"원숭이 등에 탄 강물, 기동력 만렙 질주형","새벽 이슬처럼 정확한 타이밍에 움직이는 정밀형",
+"마른 산의 큰 나무, 망루에서 사방을 살피는 파수형","물 위를 떠다니는 덩굴, 어디서든 적응하는 표류형",
+"한겨울의 태양, 절망 속에서 빛나는 희망형","소 등에 얹은 등불, 묵묵히 밤길을 여는 동행형",
+"호랑이가 사는 산, 건드리면 위험한 요새형","텃밭의 토끼처럼 재빠르게 챙기는 알뜰형",
+"용을 벼려 만든 검, 판을 뒤집는 승부형","불 속에서 제련된 보석, 위기에 빛나는 정련형",
+"말달리는 강물, 멈추면 죽는 전진형","마른 땅을 적시는 단비, 팀의 오아시스형",
+"바위 틈에 뿌리내린 나무, 역경에 단련된 강골형","좁은 틈을 귀신같이 찾아내는 탈출형",
+"마른 산의 봉화, 위험을 가장 먼저 알리는 경보형","바다 위 등대, 밤에 더 강해지는 야행형",
+"강을 막은 둑, 흐름을 통제하는 관리형","겨울 논밭처럼 비축해 둔 것이 많은 저장형",
+"호랑이 발톱 같은 쇠, 선제공격형","풀숲의 가위손, 필요한 것만 잘라 가는 채집형",
+"용이 노니는 큰물, 판 전체를 삼키는 대세형","뱀길을 따라 흐르는 실개천, 우회 침투형",
+"말이 끄는 수레의 기둥, 움직이는 거점형","마른 풀숲에 몸을 감추는 위장의 달인형",
+"원숭이 손에 든 횃불, 재주 많은 만능형","촛불에 비친 거울, 디테일 관찰형",
+"개가 지키는 산성, 최후 방어선형","물가의 기름진 밭, 어디서든 먹을 걸 만드는 자급형",
+"얼음물에 담금질한 칼, 냉정 판단형","언 땅에 묻힌 보석, 늦게 빛나는 대기만성형",
+"호랑이를 태운 강, 겁 없는 급류형","봄비에 젖은 토끼풀, 부드러운 생존형",
+"용의 등에 자란 거목, 스케일 큰 대들보형","뱀과 동거하는 덩굴, 위험과 공생하는 배짱형",
+"한낮의 태양, 숨길 수 없는 존재감 폭발형","화롯불 품은 흙, 온기를 나누는 난로형",
+"꾀와 맷집을 겸비한 바위산, 만능 방벽형","닭 모이 주는 밭주인, 루틴으로 버티는 성실형",
+"마른 산의 도끼, 마지막에 꺼내는 비장의 무기형","바닷물에 씻긴 진주, 혼란 속에서도 흐트러짐 없는 청정형",
+"한밤의 대양, 깊이를 알 수 없는 심연형","언 길을 걷는 소걸음, 느려도 끝내 도착하는 완주형",
+"호랑이 숲의 우두머리 나무, 타고난 대장형","덩굴처럼 숨어드는 은신형",
+"용 위에 뜬 태양, 스포트라이트 주인공형","꺼질 듯 꺼지지 않는 불씨, 끈질김의 화신형",
+"열기를 품은 화산, 건드리면 폭발하는 화력 비축형","양 떼를 치는 언덕, 무리를 먹이는 목자형",
+"원숭이 손의 칼, 손재주 만렙 해결사형","거울처럼 날 선 보석, 완벽주의 정비형",
+"개가 지키는 저수지, 등 뒤가 든든한 뒷배형","바다로 돌아가는 빗물, 흐름을 타는 순리형"];
+
+function p60name(i){ return GAN[i%10]+JI[i%12]+"("+GANH[i%10]+JIH[i%12]+")"; }
+function roleOf(y,m,d,t){
+  var s=survival(y,m,d,t);
+  var dp=dayPillarIdx(y,m,d);
+  var r;
+  if(s<5) r=ROLE_Z1;
+  else if(GWI[dp]) r=ROLE_GWI;
+  else r=ROLES[dp%10];
+  return {s:s, dp:dp, role:r, top:topPct(s)};
+}
+
+/* ── UI ── */
+(function(){
+var $=function(id){return document.getElementById(id);};
+var TSLOT=["모름","자시 (23:30~01:30)","축시 (01:30~03:30)","인시 (03:30~05:30)","묘시 (05:30~07:30)",
+ "진시 (07:30~09:30)","사시 (09:30~11:30)","오시 (11:30~13:30)","미시 (13:30~15:30)",
+ "신시 (15:30~17:30)","유시 (17:30~19:30)","술시 (19:30~21:30)","해시 (21:30~23:30)"];
+var cur=null;
+
+function fillSel(el,arr,vals){ var h=''; for(var i=0;i<arr.length;i++) h+='<option value="'+(vals?vals[i]:arr[i])+'">'+arr[i]+'</option>'; el.innerHTML=h; }
+function initInputs(){
+  var ys=[],yv=[]; for(var y=1940;y<=2020;y++){ys.push(y+'년');yv.push(y);}
+  fillSel($('by'),ys,yv); $('by').value=1995;
+  var ms=[],mv=[]; for(var m=1;m<=12;m++){ms.push(m+'월');mv.push(m);}
+  fillSel($('bm'),ms,mv);
+  fillDays();
+  var ts=[],tv=[]; for(var t=0;t<13;t++){ts.push(TSLOT[t]);tv.push(t);}
+  fillSel($('bt'),ts,tv);
+}
+function daysIn(y,m){ return new Date(Date.UTC(y,m,0)).getUTCDate(); }
+function fillDays(){
+  var y=+$('by').value,m=+$('bm').value,old=+$('bd').value||1;
+  var n=daysIn(y,m),ds=[],dv=[];
+  for(var d=1;d<=n;d++){ds.push(d+'일');dv.push(d);}
+  fillSel($('bd'),ds,dv);
+  $('bd').value=Math.min(old,n);
+}
+$('by').addEventListener('change',fillDays);
+$('bm').addEventListener('change',fillDays);
+
+function encodeR(y,m,d,t){ return ((((y-1940)*12+(m-1))*31+(d-1))*13+t).toString(36); }
+function decodeR(str){
+  var v=parseInt(str,36);
+  if(!isFinite(v)||v<0) return null;
+  var t=v%13; v=(v-t)/13;
+  var d=v%31+1; v=(v-(d-1))/31;
+  var m=v%12+1; v=(v-(m-1))/12;
+  var y=v+1940;
+  if(y<1940||y>2020||m<1||m>12||d<1||d>daysIn(y,m)) return null;
+  return {y:y,m:m,d:d,t:t};
+}
+
+var animId=null;
+function countUp(el,target){
+  if(animId)cancelAnimationFrame(animId);
+  var t0=null,DUR=1200;
+  function step(ts){
+    if(!t0)t0=ts;
+    var p=Math.min(1,(ts-t0)/DUR);
+    var e=1-Math.pow(1-p,3);
+    el.textContent=Math.round(target*e);
+    if(p<1)animId=requestAnimationFrame(step); else animId=null;
+  }
+  animId=requestAnimationFrame(step);
+}
+
+function render(y,m,d,t,nick){
+  var R=roleOf(y,m,d,t);
+  cur={y:y,m:m,d:d,t:t,nick:nick||'',R:R};
+  var r=R.role;
+  var box=$('roleImgBox');
+  box.style.setProperty('--g1',r.g[0]);
+  box.style.setProperty('--g2',r.g[1]);
+  $('fbEmo').textContent=r.emo;
+  var im=$('roleImg');
+  im.style.display='';
+  im.onerror=function(){ this.style.display='none'; };
+  im.src='img/role-'+String(r.img).padStart(2,'0')+'.png';
+  $('roleName').textContent=r.nm;
+  $('roleCatch').textContent='“'+r.ct+'”';
+  countUp($('survNum'),R.s);
+  var tp=$('topPct');
+  if(R.top<=50){ tp.className='topPct'; tp.textContent='🏆 전체 상위 '+R.top+'%'; }
+  else { tp.className='topPct badly'; tp.textContent='☠️ 전체 하위 '+(101-R.top)+'%'; }
+  $('iljuLine').innerHTML='당신의 일주: <b>'+p60name(R.dp)+'</b> — '+ILJU[R.dp];
+  $('roleDesc').textContent=r.desc;
+  $('roleStrat').innerHTML='<b>생존 전략</b> — '+r.st;
+  $('mateGood').innerHTML=r.mateTx?r.mateTx:'<b>'+ROLES[r.mate].emo+' '+ROLES[r.mate].nm+'</b> — '+GAN[r.mate]+ELM(r.mate)+' 일간';
+  $('mateBad').innerHTML=r.worstTx?r.worstTx:'<b>'+ROLES[r.worst].emo+' '+ROLES[r.worst].nm+'</b> — '+GAN[r.worst]+ELM(r.worst)+' 일간';
+  $('copied').textContent='';
+  $('res').classList.remove('hidden');
+}
+function ELM(g){ return ['목','목','화','화','토','토','금','금','수','수'][g]; }
+
+$('goBtn').addEventListener('click',function(){
+  var y=+$('by').value,m=+$('bm').value,d=+$('bd').value,t=+$('bt').value;
+  render(y,m,d,t,$('nick').value.trim());
+  var u=new URL(location.href);
+  u.searchParams.set('r',encodeR(y,m,d,t));
+  if($('nick').value.trim()) u.searchParams.set('n',$('nick').value.trim()); else u.searchParams.delete('n');
+  history.replaceState(null,'',u.pathname+u.search);
+  $('res').scrollIntoView({behavior:'smooth',block:'start'});
+});
+$('retryBtn').addEventListener('click',function(){
+  $('res').classList.add('hidden');
+  history.replaceState(null,'',location.pathname);
+  $('inputPanel').scrollIntoView({behavior:'smooth',block:'start'});
+  $('nick').value='';
+});
+$('shareLink').addEventListener('click',function(){
+  if(!cur)return;
+  var u=location.origin+location.pathname+'?r='+encodeR(cur.y,cur.m,cur.d,cur.t)+
+    (cur.nick?'&n='+encodeURIComponent(cur.nick):'');
+  var done=function(){ $('copied').textContent='✅ 링크를 복사했어요. 친구에게 붙여넣으세요!'; };
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(u).then(done,function(){fallbackCopy(u);done();});
+  }else{ fallbackCopy(u); done(); }
+});
+function fallbackCopy(txt){
+  var ta=document.createElement('textarea'); ta.value=txt;
+  ta.style.cssText='position:fixed;opacity:0'; document.body.appendChild(ta);
+  ta.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(ta);
+}
+
+/* ── 결과 카드 (1080×1350) ── */
+function loadImg(src){
+  return new Promise(function(res){
+    var im=new Image();
+    im.onload=function(){res(im);}; im.onerror=function(){res(null);};
+    im.src=src;
+  });
+}
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
+}
+function makeCard(){
+  if(!cur)return Promise.resolve(null);
+  var R=cur.R,r=R.role;
+  var W=1080,H=1350;
+  var c=document.createElement('canvas'); c.width=W; c.height=H;
+  var x=c.getContext('2d');
+  return loadImg('img/role-'+String(r.img).padStart(2,'0')+'.png').then(function(im){
+    /* 배경 */
+    var bg=x.createLinearGradient(0,0,0,H);
+    bg.addColorStop(0,'#131a15'); bg.addColorStop(1,'#080a09');
+    x.fillStyle=bg; x.fillRect(0,0,W,H);
+    /* 상단 라벨 */
+    x.textAlign='center';
+    x.fillStyle='#75807a';
+    x.font='700 34px -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+    x.fillText('☣️ ZOMBIE SURVIVAL REPORT ☣️',W/2,96);
+    if(cur.nick){
+      x.fillStyle='#e8ece8';
+      x.font='700 44px -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+      x.fillText(cur.nick,W/2,168);
+    }
+    /* 역할 이미지/이모지 */
+    var IS=360, ix=(W-IS)/2, iy=cur.nick?190:152;
+    var gr=x.createLinearGradient(ix,iy,ix+IS,iy+IS);
+    gr.addColorStop(0,r.g[0]); gr.addColorStop(1,r.g[1]);
+    roundRect(x,ix,iy,IS,IS,48);
+    x.fillStyle=gr; x.fill();
+    if(im){
+      x.save(); roundRect(x,ix,iy,IS,IS,48); x.clip();
+      x.drawImage(im,ix,iy,IS,IS); x.restore();
+    }else{
+      x.font='196px -apple-system,"Apple Color Emoji","Noto Color Emoji",sans-serif';
+      x.textBaseline='middle';
+      x.fillText(r.emo,W/2,iy+IS/2+14);
+      x.textBaseline='alphabetic';
+    }
+    var yy=iy+IS+80;
+    x.fillStyle='#e8ece8';
+    x.font='800 64px -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+    x.fillText(r.nm,W/2,yy);
+    x.fillStyle='#a8b2aa';
+    x.font='400 34px -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+    x.fillText('“'+r.ct+'”',W/2,yy+56);
+    /* 생존률 대형 숫자 */
+    x.fillStyle='#75807a';
+    x.font='700 32px -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+    x.fillText('예상 생존률',W/2,yy+150);
+    x.fillStyle='#9be15d';
+    x.font='800 250px -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+    x.fillText(R.s+'%',W/2,yy+390);
+    /* 상위 % 뱃지 */
+    var btxt=R.top<=50?('🏆 전체 상위 '+R.top+'%'):('☠️ 전체 하위 '+(101-R.top)+'%');
+    x.font='700 40px -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+    var bw=x.measureText(btxt).width+72;
+    roundRect(x,(W-bw)/2,yy+440,bw,86,43);
+    x.fillStyle='#1c2618'; x.fill();
+    x.fillStyle='#9be15d';
+    x.fillText(btxt,W/2,yy+497);
+    /* 일주 */
+    x.fillStyle='#a8b2aa';
+    x.font='400 33px -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+    var il='일주 '+p60name(R.dp)+' · '+ILJU[R.dp];
+    if(x.measureText(il).width>W-100){ il='일주 '+p60name(R.dp)+' · '+ILJU[R.dp].split(',')[0]; }
+    x.fillText(il,W/2,yy+592);
+    /* 하단 URL */
+    x.fillStyle='#75807a';
+    x.font='700 36px -apple-system,BlinkMacSystemFont,sans-serif';
+    x.fillText('kmagpie.com/tests/zombie',W/2,H-52);
+    return c;
+  });
+}
+function cardBlob(){
+  return makeCard().then(function(c){
+    if(!c)return null;
+    return new Promise(function(res){ c.toBlob(res,'image/png'); });
+  });
+}
+$('shareCard').addEventListener('click',function(){
+  cardBlob().then(function(blob){
+    if(!blob)return;
+    var f=new File([blob],'zombie-result.png',{type:'image/png'});
+    if(navigator.share&&navigator.canShare&&navigator.canShare({files:[f]})){
+      navigator.share({files:[f],title:'좀비사태 생존 리포트',
+        text:'내 생존률은 '+cur.R.s+'%! 너는 몇 %야? https://www.kmagpie.com/tests/zombie/'})
+        .catch(function(){});
+    }else{
+      var a=document.createElement('a');
+      a.href=URL.createObjectURL(blob); a.download='zombie-result.png';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function(){URL.revokeObjectURL(a.href);},4000);
+      $('copied').textContent='✅ 결과 카드를 저장했어요. SNS에 자랑해 보세요!';
+    }
+  });
+});
+
+initInputs();
+/* ?r= 재현 */
+(function(){
+  var q=new URLSearchParams(location.search);
+  var rv=q.get('r');
+  if(!rv)return;
+  var dec=decodeR(rv);
+  if(!dec)return;
+  var nick=(q.get('n')||'').slice(0,12);
+  $('by').value=dec.y; $('bm').value=dec.m; fillDays(); $('bd').value=dec.d; $('bt').value=dec.t;
+  $('nick').value=nick;
+  render(dec.y,dec.m,dec.d,dec.t,nick);
+})();
+
+/* 테스트 훅 */
+window.ZOMBIE={survival:survival,roleOf:roleOf,dayPillarIdx:dayPillarIdx,
+  yearPillarIdx:yearPillarIdx,monthPillar:monthPillar,topPct:topPct,
+  encodeR:encodeR,decodeR:decodeR,makeCard:makeCard,cardBlob:cardBlob,render:render,
+  ROLES:ROLES,ROLE_GWI:ROLE_GWI,ROLE_Z1:ROLE_Z1,ILJU:ILJU,p60name:p60name};
+})();
+</script>
+</body>
+</html>
