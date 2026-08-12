@@ -242,7 +242,7 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 
 <p class="gist">Compresses a scanned PDF to a target size such as 2, 5 or 10MB by automatically searching for the best resolution and quality. Your file is never uploaded — everything runs inside your browser — and you can compare before/after quality on screen. Because pages are re-rendered as images, text selection and search are lost, so keep your original file.</p>
 
-<details class="fold"><summary><h2>Why compress to a target size</h2></summary><div class="fx">
+<details class="fold" open><summary><h2>Why compress to a target size</h2></summary><div class="fx">
 <p>People usually shrink a PDF because they have to submit it somewhere: an email attachment limit, a government portal's "10MB max", a job application's "5MB max". What matters then isn't the percentage saved — it's whether the file <strong>gets under the limit</strong>. So instead of asking you to pick a compression strength, this tool asks for the target size first, then binary-searches for the resolution and quality combination that damages the image least while still fitting. For long documents it first approximates with a few representative pages before encoding everything in one pass, which keeps the number of retries down.</p>
 </div></details>
 

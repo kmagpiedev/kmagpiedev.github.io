@@ -338,7 +338,7 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 
 <p class="gist">사진 여러 장을 이어 붙이거나 한 장에 줌·패닝 효과를 줘 움직이는 GIF를 만듭니다. 인코딩까지 전부 브라우저 안에서 일어나 파일이 서버로 전송되지 않습니다. 용량이 부담되면 긴 변 480px 축소가 가장 효과적입니다.</p>
 
-<details class="fold"><summary><h2>GIF는 왜 이렇게 용량이 큰가</h2></summary><div class="fx">
+<details class="fold" open><summary><h2>GIF는 왜 이렇게 용량이 큰가</h2></summary><div class="fx">
 <p>GIF는 1989년에 만들어진 형식입니다. 그때의 설계가 지금까지 그대로 이어져서, 한 프레임에 <strong>256가지 색만 쓸 수 있고, 그 안에서는 화질을 깎아 용량을 줄이는 손실 압축이 없습니다.</strong> 게다가 대부분의 GIF는 프레임마다 화면 전체를 통째로 다시 저장합니다. 사진 열 장으로 GIF를 만들면 사진 열 장 분량의 데이터가 고스란히 들어간다는 뜻이에요.</p>
 <p>동영상 코덱은 정반대로 동작합니다. mp4에 흔히 쓰이는 H.264 같은 코덱은 앞 프레임과 달라진 부분만 저장하고, 사람 눈이 잘 구분하지 못하는 세부는 과감히 버립니다. 그래서 같은 장면이라면 mp4가 GIF보다 열 배에서 수십 배 작은 게 보통입니다. GIF가 기술적으로 뒤떨어진 형식인 건 사실이지만, 그런데도 살아남은 이유가 있습니다. 이미지 파일이라서 <strong>동영상 플레이어 없이 어디서나 자동으로 재생되고, 소리도 없고, 멈추지도 않기 때문</strong>입니다.</p>
 </div></details>
@@ -396,7 +396,7 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 <footer>
   <p>GIF 인코딩: gifenc (MIT) — 원본과 라이선스는 <a href="/tools/lib/">/tools/lib/</a> 에 있습니다.</p>
   <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 파일은 전송·저장되지 않습니다.</p>
-  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/tools/about/">소개</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
 </footer>
 
 </div>
