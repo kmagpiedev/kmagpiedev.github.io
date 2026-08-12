@@ -590,20 +590,26 @@ function cardBlob(){
     return new Promise(function(res){ c.toBlob(res,'image/png'); });
   });
 }
+function saveBlob(blob){
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download='zombie-result.png';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){URL.revokeObjectURL(a.href);},4000);
+  $('copied').textContent='✅ 결과 카드를 저장했어요. SNS에 자랑해 보세요!';
+}
+var IS_MOBILE=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 $('shareCard').addEventListener('click',function(){
   cardBlob().then(function(blob){
     if(!blob)return;
     var f=new File([blob],'zombie-result.png',{type:'image/png'});
-    if(navigator.share&&navigator.canShare&&navigator.canShare({files:[f]})){
+    /* 데스크톱은 무조건 다운로드. 모바일만 공유 시트를 시도하고,
+       (사용자 취소가 아닌) 실패 시 다운로드로 폴백한다. */
+    if(IS_MOBILE&&navigator.share&&navigator.canShare&&navigator.canShare({files:[f]})){
       navigator.share({files:[f],title:'좀비사태 생존 리포트',
         text:'내 생존률은 '+cur.R.s+'%! 너는 몇 %야? https://www.kmagpie.com/tests/zombie/'})
-        .catch(function(){});
+        .catch(function(err){ if(!err||err.name!=='AbortError') saveBlob(blob); });
     }else{
-      var a=document.createElement('a');
-      a.href=URL.createObjectURL(blob); a.download='zombie-result.png';
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
-      setTimeout(function(){URL.revokeObjectURL(a.href);},4000);
-      $('copied').textContent='✅ 결과 카드를 저장했어요. SNS에 자랑해 보세요!';
+      saveBlob(blob);
     }
   });
 });
