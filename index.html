@@ -6,9 +6,9 @@
     <title>K-magpie | 게임·앱·웹 콘텐츠</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="naver-site-verification" content="bd00db17c88ce5c025640b030216930443e78df6" />
-    <meta name="description" content="K-magpie의 Android 게임·생활 앱과 까치테스트, 야옹명리, 무료 포춘쿠키·타로, 까치툴을 한곳에서 만나보세요." />
+    <meta name="description" content="K-magpie의 Android 게임·생활 앱, 준비 중인 PC 게임 프로젝트와 까치테스트, 야옹명리, 무료 포춘쿠키·타로, 까치툴을 한곳에서 만나보세요." />
     <meta property="og:title" content="K-magpie | 게임·앱·웹 콘텐츠" />
-    <meta property="og:description" content="게임과 생활 앱부터 까치테스트, 야옹명리, 무료 포춘쿠키·타로까지 K-magpie의 콘텐츠를 바로 만나보세요." />
+    <meta property="og:description" content="모바일 게임과 생활 앱부터 준비 중인 PC 게임 프로젝트, 까치테스트, 야옹명리, 무료 포춘쿠키·타로까지 K-magpie의 콘텐츠를 만나보세요." />
     <meta property="og:image" content="https://www.kmagpie.com/images/icon_monbreak.png" />
     <meta property="og:url" content="https://www.kmagpie.com/" />
     <meta name="twitter:card" content="summary" />
@@ -265,6 +265,67 @@
     .web-card { min-width: 0; }
     .web-card .card-icon { width: 84px; height: 84px; border-radius: 20px; }
 
+    .pc-games-section {
+        border-bottom: 1px solid var(--border);
+        background:
+            radial-gradient(circle at 18% 0%, rgba(126, 87, 194, 0.14), transparent 30rem),
+            #09090c;
+    }
+    .pc-game-card {
+        position: relative;
+        min-height: 210px;
+        overflow: hidden;
+        background: linear-gradient(145deg, rgba(29, 27, 36, 0.96), rgba(19, 19, 22, 0.98));
+        border-color: rgba(126, 87, 194, 0.32);
+    }
+    .pc-game-card::after {
+        content: attr(data-project);
+        position: absolute;
+        right: 12px;
+        bottom: -24px;
+        color: rgba(255, 255, 255, 0.035);
+        font-size: 7rem;
+        font-weight: 800;
+        line-height: 1;
+        pointer-events: none;
+    }
+    .pc-game-card > * { position: relative; z-index: 1; }
+    .pc-game-card:hover {
+        transform: none;
+        border-color: rgba(126, 87, 194, 0.32);
+        box-shadow: none;
+    }
+    .pc-game-card h3 {
+        max-width: 92%;
+        margin-bottom: 12px;
+        font-size: 1.08rem;
+        line-height: 1.42;
+    }
+    .project-statuses { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 14px; }
+    .project-status {
+        display: inline-flex;
+        align-items: center;
+        min-height: 29px;
+        padding: 4px 10px;
+        border: 1px solid rgba(168, 129, 230, 0.44);
+        border-radius: 999px;
+        background: rgba(126, 87, 194, 0.14);
+        color: #cbb0f2;
+        font-size: 0.76rem;
+        font-weight: 700;
+    }
+    .project-status.planned {
+        border-color: rgba(111, 180, 214, 0.42);
+        background: rgba(55, 124, 158, 0.14);
+        color: #a8d8ef;
+    }
+    .project-status.award {
+        border-color: rgba(214, 156, 41, 0.48);
+        background: var(--accent-soft);
+        color: #f4c66a;
+    }
+    .pc-game-card .card-text { margin-top: auto; margin-bottom: 0; color: var(--muted); }
+
     .about-list { list-style: none; display: grid; gap: 6px; font-size: 0.9rem; color: var(--muted); }
 
     .contact-box {
@@ -417,8 +478,8 @@
 
         <section id="games" class="section">
             <div class="container">
-                <h2 data-i18n="gamesTitle">게임 & 앱</h2>
-                <p class="section-desc" data-i18n="gamesDesc">앱 소개를 먼저 확인하거나 Google Play에서 바로 설치해보세요.</p>
+                <h2 data-i18n="gamesTitle">모바일 게임 & 앱</h2>
+                <p class="section-desc" data-i18n="gamesDesc">모바일 게임과 앱의 소개를 확인하거나 Google Play에서 바로 설치해보세요.</p>
 
                 <div class="card-grid">
                     <article class="card">
@@ -578,16 +639,51 @@
                 <a class="card-detail-link" href="/tools/" data-i18n="toolsAll">까치툴 전체 보기 →</a>
             </div>
         </section>
+
+        <section id="pc-games" class="section pc-games-section" aria-labelledby="pc-games-title">
+            <div class="container">
+                <h2 id="pc-games-title" data-i18n="pcGamesTitle">PC 게임</h2>
+                <p class="section-desc" data-i18n="pcGamesDesc">새로운 PC 게임을 준비하고 있습니다. 아래 작품은 아직 출시되지 않았으며, 내용과 일정은 개발 상황에 따라 변경될 수 있습니다.</p>
+
+                <div class="card-grid">
+                    <article class="card pc-game-card" data-project="01">
+                        <h3>SAVE US SEOUL</h3>
+                        <div class="project-statuses">
+                            <span class="project-status" data-i18n="pcInDevelopment">개발 중</span>
+                        </div>
+                        <p class="card-text" data-i18n="saveUsSeoulText">현재 개발 중입니다. 자세한 내용은 준비되는 대로 공개합니다.</p>
+                    </article>
+
+                    <article class="card pc-game-card" data-project="02">
+                        <h3 lang="ko">균열을 막아라 : 우주전쟁</h3>
+                        <div class="project-statuses">
+                            <span class="project-status" data-i18n="pcInDevelopment">개발 중</span>
+                        </div>
+                        <p class="card-text" data-i18n="spaceWarText">현재 개발 중입니다. 자세한 내용은 준비되는 대로 공개합니다.</p>
+                    </article>
+
+                    <article class="card pc-game-card" data-project="03">
+                        <h3 lang="ko">멧돼지가 나타났다 농작물을 지켜라</h3>
+                        <div class="project-statuses">
+                            <span class="project-status planned" data-i18n="pcComingLater">추후 공개 예정</span>
+                            <span class="project-status award" data-i18n="pcAwardWinner"><span lang="ko">가짜게임개발자</span> 우승작</span>
+                        </div>
+                        <p class="card-text" data-i18n="boarGameText">가짜게임개발자 우승작을 PC 게임으로 선보이기 위해 준비 중입니다. 자세한 내용은 추후 공개합니다.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
         <section id="about" class="section">
             <div class="container">
                 <h2 data-i18n="aboutTitle">개발자 소개</h2>
                 <p class="section-desc" data-i18n="aboutDesc">
-                    K-magpie는 다양한 아이디어와 빠른 실행력으로 작은 실험부터 완성된 제품까지 꾸준히 만들어가는 1인 개발자입니다.
+                    K-magpie는 모바일 앱을 실제 출시하고 PC 게임 프로젝트를 준비하며, 사용자의 반응을 보며 계속 개선하는 1인 개발자 브랜드입니다.
                 </p>
 
                 <ul class="about-list">
-                    <li data-i18n="aboutItem1">🎮 주요 분야: 모바일 캐주얼 게임, 간단한 유틸리티 앱</li>
-                    <li data-i18n="aboutItem2">📱 플랫폼: Android (Google Play) 중심, 추후 iOS / Windows도 확장 예정</li>
+                    <li data-i18n="aboutItem1">📱 Google Play에 출시한 Android 앱을 꾸준히 업데이트합니다.</li>
+                    <li data-i18n="aboutItem2">🖥️ 모바일 게임과 생활 앱에 더해 새로운 PC 게임 프로젝트도 준비하고 있습니다.</li>
                     <li data-i18n="aboutItem3">🧪 철학: “게임은 재미, 앱은 편리함”을 우선으로 개발합니다.</li>
                     <li data-i18n="aboutItem4">🚀 작은 아이디어도 빠르게 실험하고, 데이터와 유저 피드백으로 개선합니다.</li>
                 </ul>
@@ -642,7 +738,7 @@
         const translations = {
             ko: {
                 title: "K-magpie | 게임·앱·웹 콘텐츠",
-                description: "K-magpie의 Android 게임·생활 앱과 까치테스트, 야옹명리, 무료 포춘쿠키·타로, 까치툴을 한곳에서 만나보세요.",
+                description: "K-magpie의 Android 게임·생활 앱, 준비 중인 PC 게임 프로젝트와 까치테스트, 야옹명리, 무료 포춘쿠키·타로, 까치툴을 한곳에서 만나보세요.",
                 logoAria: "K-magpie 홈으로 이동",
                 logoAlt: "K-magpie 아이콘",
                 navAria: "주요 메뉴",
@@ -687,8 +783,8 @@
                 heroMonBreakCta: "MonBreak 설치하기",
                 heroProof: "앱은 Google Play에서 설치하고, 웹 콘텐츠는 설치 없이 바로 즐길 수 있습니다.",
                 heroAppsAria: "K-magpie Google Play 앱 목록",
-                gamesTitle: "게임 & 앱",
-                gamesDesc: "앱 소개를 먼저 확인하거나 Google Play에서 바로 설치해보세요.",
+                gamesTitle: "모바일 게임 & 앱",
+                gamesDesc: "모바일 게임과 앱의 소개를 확인하거나 Google Play에서 바로 설치해보세요.",
                 monbreakIconAria: "MonBreak 게임 소개 페이지로 이동",
                 monbreakIconAlt: "MonBreak 아이콘",
                 monbreakMeta: "신작 · 모바일 게임",
@@ -716,10 +812,18 @@
                 dragonText: "먹이 버튼과 폭탄버튼 위치가 계속 바뀌는 게임입니다. 드래곤한테 먹이를 주세요.",
                 detailLink: "게임 소개 보기",
                 googlePlayLink: "Google Play에서 설치하기 →",
+                pcGamesTitle: "PC 게임",
+                pcGamesDesc: "새로운 PC 게임을 준비하고 있습니다. 아래 작품은 아직 출시되지 않았으며, 내용과 일정은 개발 상황에 따라 변경될 수 있습니다.",
+                pcInDevelopment: "개발 중",
+                pcComingLater: "추후 공개 예정",
+                pcAwardWinner: '<span lang="ko">가짜게임개발자</span> 우승작',
+                saveUsSeoulText: "현재 개발 중입니다. 자세한 내용은 준비되는 대로 공개합니다.",
+                spaceWarText: "현재 개발 중입니다. 자세한 내용은 준비되는 대로 공개합니다.",
+                boarGameText: "가짜게임개발자 우승작을 PC 게임으로 선보이기 위해 준비 중입니다. 자세한 내용은 추후 공개합니다.",
                 aboutTitle: "개발자 소개",
-                aboutDesc: "K-magpie는 작게 시작한 아이디어를 실제 앱으로 출시하고, 사용자의 반응을 보며 계속 개선하는 1인 개발자 브랜드입니다.",
-                aboutItem1: "Google Play에 실제 출시한 Android 앱을 꾸준히 업데이트합니다.",
-                aboutItem2: "짧게 써보고 바로 가치를 느낄 수 있는 캐주얼 게임과 생활 앱을 만듭니다.",
+                aboutDesc: "K-magpie는 모바일 앱을 실제 출시하고 PC 게임 프로젝트를 준비하며, 사용자의 반응을 보며 계속 개선하는 1인 개발자 브랜드입니다.",
+                aboutItem1: "Google Play에 출시한 Android 앱을 꾸준히 업데이트합니다.",
+                aboutItem2: "모바일 게임과 생활 앱에 더해 새로운 PC 게임 프로젝트도 준비하고 있습니다.",
                 aboutItem3: "설치 전에도 앱의 목적을 빠르게 이해할 수 있도록 가볍고 명확한 경험을 지향합니다.",
                 aboutItem4: "버그 제보와 피드백은 다음 업데이트에 반영할 수 있도록 확인합니다.",
                 contactTitle: "문의",
@@ -733,7 +837,7 @@
             },
             en: {
                 title: "K-magpie | Games, Apps & Web Experiences",
-                description: "Explore K-magpie's Android games and apps, K-magpie Test, Yaong Myeongri, free fortune cookies, cat tarot, and browser tools in one place.",
+                description: "Explore K-magpie's Android games and apps, upcoming PC game projects, K-magpie Test, Yaong Myeongri, free fortune cookies, cat tarot, and browser tools in one place.",
                 logoAria: "Go to K-magpie home",
                 logoAlt: "K-magpie icon",
                 navAria: "Main navigation",
@@ -778,8 +882,8 @@
                 heroMonBreakCta: "Install MonBreak",
                 heroProof: "Install apps from Google Play, or enjoy the web experiences instantly with no installation.",
                 heroAppsAria: "K-magpie Google Play app list",
-                gamesTitle: "Games & Apps",
-                gamesDesc: "Read an app introduction first, or install it directly from Google Play.",
+                gamesTitle: "Mobile Games & Apps",
+                gamesDesc: "Read about our mobile games and apps, or install them directly from Google Play.",
                 monbreakIconAria: "Go to the MonBreak detail page",
                 monbreakIconAlt: "MonBreak icon",
                 monbreakMeta: "New · Mobile Game",
@@ -807,10 +911,18 @@
                 dragonText: "A game where the food and bomb buttons keep changing positions. Feed the dragon carefully.",
                 detailLink: "View game page",
                 googlePlayLink: "Install on Google Play →",
+                pcGamesTitle: "PC Games",
+                pcGamesDesc: "We’re working on new PC games. These titles are not yet available, and details and schedules may change during development.",
+                pcInDevelopment: "In Development",
+                pcComingLater: "Details Coming Later",
+                pcAwardWinner: '<span lang="ko">가짜게임개발자</span> Winner',
+                saveUsSeoulText: "Currently in development. More details will be shared when ready.",
+                spaceWarText: "Currently in development. More details will be shared when ready.",
+                boarGameText: "We’re preparing this award-winning concept as a PC game. More details will be announced later.",
                 aboutTitle: "About the Developer",
-                aboutDesc: "K-magpie is a solo developer brand that ships real apps, watches how people use them, and keeps improving them.",
+                aboutDesc: "K-magpie is a solo developer brand that ships mobile apps, prepares PC game projects, and keeps improving through user feedback.",
                 aboutItem1: "Published Android apps on Google Play are updated steadily.",
-                aboutItem2: "The focus is casual games and everyday apps that feel useful quickly.",
+                aboutItem2: "New PC game projects are being prepared alongside mobile games and everyday apps.",
                 aboutItem3: "Each app is designed to make its purpose clear before you install.",
                 aboutItem4: "Bug reports and user feedback are reviewed for future updates.",
                 contactTitle: "Contact",
@@ -824,7 +936,7 @@
             },
             ja: {
                 title: "K-magpie | ゲーム・アプリ・Webコンテンツ",
-                description: "K-magpieのAndroidゲーム・アプリ、K-magpieテスト、ニャンコ命理、無料フォーチュンクッキー、猫タロット、ブラウザツールをまとめて楽しめます。",
+                description: "K-magpieのAndroidゲーム・アプリ、準備中のPCゲーム企画、K-magpieテスト、ニャンコ命理、無料フォーチュンクッキー、猫タロット、ブラウザツールをまとめて紹介します。",
                 logoAria: "K-magpie ホームへ移動",
                 logoAlt: "K-magpie アイコン",
                 navAria: "メインメニュー",
@@ -869,8 +981,8 @@
                 heroMonBreakCta: "MonBreakをインストール",
                 heroProof: "アプリはGoogle Playからインストールし、Webコンテンツはインストールなしですぐ楽しめます。",
                 heroAppsAria: "K-magpie Google Playアプリ一覧",
-                gamesTitle: "ゲーム & アプリ",
-                gamesDesc: "アプリ紹介を確認するか、Google Playから直接インストールできます。",
+                gamesTitle: "モバイルゲーム & アプリ",
+                gamesDesc: "モバイルゲームとアプリの紹介を見るか、Google Playから直接インストールできます。",
                 monbreakIconAria: "MonBreakの紹介ページへ移動",
                 monbreakIconAlt: "MonBreakアイコン",
                 monbreakMeta: "新作 · モバイルゲーム",
@@ -898,10 +1010,18 @@
                 dragonText: "エサボタンと爆弾ボタンの位置が入れ替わり続けるゲームです。ドラゴンにうまくエサをあげてください。",
                 detailLink: "ゲーム紹介を見る",
                 googlePlayLink: "Google Playでインストール →",
+                pcGamesTitle: "PCゲーム",
+                pcGamesDesc: "新しいPCゲームを準備しています。以下の作品はまだ公開されておらず、内容や予定は開発状況により変更される場合があります。",
+                pcInDevelopment: "開発中",
+                pcComingLater: "詳細は後日公開",
+                pcAwardWinner: '<span lang="ko">가짜게임개발자</span> 優勝作品',
+                saveUsSeoulText: "現在開発中です。詳細は準備が整い次第お知らせします。",
+                spaceWarText: "現在開発中です。詳細は準備が整い次第お知らせします。",
+                boarGameText: "優勝作品をPCゲームとして公開するため準備中です。詳細は後日お知らせします。",
                 aboutTitle: "開発者紹介",
-                aboutDesc: "K-magpieは、小さなアイデアを実際のアプリとして公開し、ユーザーの反応を見ながら改善していく個人開発ブランドです。",
+                aboutDesc: "K-magpieは、モバイルアプリを公開しながらPCゲーム企画も準備し、ユーザーの反応をもとに改善を続ける個人開発ブランドです。",
                 aboutItem1: "Google Playで公開中のAndroidアプリを継続的に更新しています。",
-                aboutItem2: "短時間で価値を感じられるカジュアルゲームと生活アプリを中心に制作しています。",
+                aboutItem2: "モバイルゲームや生活アプリに加えて、新しいPCゲーム企画も準備しています。",
                 aboutItem3: "インストール前にも目的がすぐ伝わる、軽くて分かりやすい体験を目指しています。",
                 aboutItem4: "不具合報告やフィードバックは今後のアップデートの参考にしています。",
                 contactTitle: "お問い合わせ",
