@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>페이지를 찾을 수 없어요 (404) | K-magpie</title>
+  <meta name="description" content="요청하신 페이지를 찾을 수 없습니다. K-magpie 홈, 까치테스트 또는 까치툴로 이동해 주세요.">
+  <meta name="robots" content="noindex,follow">
+  <meta name="theme-color" content="#070907">
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+  <link rel="shortcut icon" type="image/png" href="/images/favicon.png">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-W19XLZW4MB"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-W19XLZW4MB", {
+      page_location: window.location.origin + "/404.html",
+      page_title: document.title
+    });
+    gtag("event", "page_not_found");
+  </script>
+  <style>
+    :root {
+      --bg: #070907;
+      --surface: #111411;
+      --surface-2: #171a17;
+      --text: #fefcf5;
+      --muted: #a8ada8;
+      --border: #2b302b;
+      --gold: #d69c29;
+      --gold-soft: rgba(214, 156, 41, 0.14);
+      --lime: #9be15d;
+      --max-width: 1080px;
+    }
+
+    * { box-sizing: border-box; }
+    html { min-height: 100%; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100svh;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 78% 30%, rgba(155, 225, 93, 0.08), transparent 30rem),
+        radial-gradient(circle at 14% 14%, rgba(214, 156, 41, 0.09), transparent 26rem),
+        var(--bg);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    .container { width: min(calc(100% - 32px), var(--max-width)); margin-inline: auto; }
+    .skip-link { position: fixed; top: -80px; left: 12px; z-index: 100; padding: 10px 14px; border-radius: 9px; background: var(--gold); color: #111; font-weight: 800; }
+    .skip-link:focus { top: 12px; }
+
+    .site-header {
+      border-bottom: 1px solid rgba(43, 48, 43, 0.82);
+      background: rgba(7, 9, 7, 0.88);
+      backdrop-filter: blur(12px);
+    }
+    .header-inner { min-height: 62px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .brand { display: inline-flex; align-items: center; gap: 9px; font-size: .94rem; font-weight: 800; letter-spacing: .045em; }
+    .brand-icon { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; background: #f7f7f2; }
+    .brand-icon img { width: 27px; height: 27px; object-fit: contain; }
+    .header-home { min-height: 44px; display: inline-flex; align-items: center; color: var(--muted); font-size: .86rem; }
+    .header-home:hover { color: var(--gold); }
+
+    main { position: relative; isolation: isolate; overflow: hidden; }
+    .ghost-404 {
+      position: absolute;
+      z-index: -1;
+      top: 2%;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,.018);
+      font-size: clamp(13rem, 38vw, 34rem);
+      font-weight: 900;
+      letter-spacing: -.09em;
+      line-height: 1;
+      user-select: none;
+      pointer-events: none;
+    }
+    .error-shell { min-height: calc(100svh - 150px); display: grid; align-items: center; padding: 50px 0 58px; }
+    .error-grid { display: grid; gap: 42px; align-items: center; }
+    .eyebrow { margin: 0 0 10px; color: var(--lime); font-size: .79rem; font-weight: 850; letter-spacing: .13em; }
+    h1 { max-width: 650px; margin: 0; font-size: clamp(2.4rem, 6.4vw, 5rem); line-height: 1.08; letter-spacing: -.055em; text-wrap: balance; }
+    .description { max-width: 630px; margin: 20px 0 0; color: var(--muted); font-size: clamp(1rem, 1.8vw, 1.08rem); }
+    .requested { max-width: 630px; margin: 17px 0 0; color: #848a84; font-size: .8rem; }
+    .requested code { display: inline; color: #bdc4bd; font: inherit; overflow-wrap: anywhere; }
+    .recovery { margin-top: 30px; }
+    .recovery-label { margin: 0 0 11px; color: #dce1dc; font-size: .86rem; font-weight: 750; }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .button {
+      min-height: 46px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 17px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(17, 20, 17, 0.86);
+      color: #d9ded9;
+      font-size: .89rem;
+      font-weight: 750;
+      transition: transform .14s ease, border-color .14s ease, color .14s ease, box-shadow .14s ease;
+    }
+    .button:hover { transform: translateY(-2px); border-color: var(--gold); color: var(--text); }
+    .button.primary { border-color: transparent; background: var(--gold); color: #15120b; box-shadow: 0 14px 32px rgba(214, 156, 41, .25); }
+    .button.primary:hover { color: #15120b; box-shadow: 0 18px 38px rgba(214, 156, 41, .38); }
+
+    .illustration-wrap { position: relative; width: min(100%, 470px); margin: 0; justify-self: center; }
+    .illustration-wrap::before { content: ""; position: absolute; inset: 10%; z-index: -1; border-radius: 50%; background: rgba(155, 225, 93, .13); filter: blur(52px); }
+    .illustration { width: 100%; height: auto; aspect-ratio: 1; border: 1px solid #273126; border-radius: 28px; object-fit: cover; box-shadow: 0 28px 70px rgba(0,0,0,.46); }
+
+    .site-footer { border-top: 1px solid var(--border); color: #777d77; font-size: .79rem; }
+    .footer-inner { min-height: 76px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 18px; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 14px; }
+    .footer-links a:hover { color: var(--gold); }
+    :focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
+
+    @media (min-width: 800px) {
+      .error-grid { grid-template-columns: minmax(0, 1.1fr) minmax(320px, .9fr); }
+    }
+    @media (max-width: 799px) {
+      .error-shell { padding-top: 38px; }
+      .illustration-wrap { width: min(78vw, 420px); }
+    }
+    @media (max-width: 520px) {
+      .container { width: min(calc(100% - 28px), var(--max-width)); }
+      .header-inner { min-height: 56px; }
+      .brand > span:last-child { display: none; }
+      .error-shell { min-height: 0; padding: 38px 0 48px; }
+      .error-grid { gap: 30px; }
+      .description { margin-top: 15px; }
+      .actions { display: grid; }
+      .button { width: 100%; border-radius: 13px; }
+      .illustration-wrap { width: min(100%, 340px); }
+      .illustration { border-radius: 22px; }
+      .footer-inner { padding: 18px 0; align-items: flex-start; flex-direction: column; }
+    }
+    @media (max-height: 720px) and (min-width: 800px) {
+      .error-shell { min-height: 0; padding-block: 30px; }
+      .illustration-wrap { width: min(42vh, 380px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/" aria-label="K-magpie 홈페이지">
+        <span class="brand-icon"><img src="/images/favicon.png" alt="" width="27" height="27"></span>
+        <span>K-magpie</span>
+      </a>
+      <a class="header-home" href="/" data-destination="home">홈으로 가기 →</a>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <span class="ghost-404" aria-hidden="true">404</span>
+    <section class="error-shell" aria-labelledby="error-title" aria-describedby="error-description">
+      <div class="container error-grid">
+        <div class="error-copy">
+          <p class="eyebrow">404 · PAGE NOT FOUND</p>
+          <h1 id="error-title">까치가 길을 잃었어요…</h1>
+          <p class="description" id="error-description">요청하신 페이지를 찾을 수 없어요. 주소가 잘못 입력되었거나 페이지가 이동 또는 삭제되었을 수 있습니다.</p>
+          <p class="requested">찾으려던 주소: <code id="requested-path">알 수 없는 경로</code></p>
+          <nav class="recovery" aria-label="404 페이지 이동">
+            <p class="recovery-label">어디로 갈까요?</p>
+            <div class="actions">
+              <a class="button primary" href="/" data-destination="home">K-magpie 홈으로 돌아가기</a>
+              <a class="button" href="/tests/" data-destination="tests">까치테스트 둘러보기</a>
+              <a class="button" href="/tools/" data-destination="tools">까치툴 사용하기</a>
+            </div>
+          </nav>
+        </div>
+
+        <figure class="illustration-wrap">
+          <img class="illustration" src="/images/404-lost-magpie.jpg" alt="지도를 들고 갈림길에서 길을 찾는 까치 캐릭터" width="768" height="768">
+        </figure>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>© 2026 K-magpie. All rights reserved.</span>
+      <nav class="footer-links" aria-label="푸터 메뉴">
+        <a href="/privacy-policy.html">개인정보처리방침</a>
+        <a href="mailto:support@kmagpie.com">문의</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    const requestedPath = window.location.pathname.slice(0, 120) || "/";
+    document.getElementById("requested-path").textContent = requestedPath;
+
+    document.querySelectorAll("a[data-destination]").forEach((link) => {
+      link.addEventListener("click", () => {
+        if (typeof gtag === "function") {
+          gtag("event", "not_found_recovery_click", {
+            destination: link.dataset.destination
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
