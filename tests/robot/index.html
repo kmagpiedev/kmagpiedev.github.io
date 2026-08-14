@@ -178,7 +178,6 @@
 </div>
 
 <div class="result hidden" id="res">
-  <span class="seal" aria-hidden="true">까치</span>
   <p class="rk">로봇 기체 감정서</p>
   <div class="roleImg" id="roleImgBox">
     <span class="fbEmo" id="fbEmo"></span>
@@ -507,11 +506,16 @@ function render(y,m,d,t,nick){
   var box=$('roleImgBox');
   box.style.setProperty('--g1',r.g[0]);
   box.style.setProperty('--g2',r.g[1]);
-  $('fbEmo').textContent=r.emo;
+  var fb=$('fbEmo');
+  fb.textContent=r.emo;
+  fb.style.display='';                       /* 이미지 로드 전엔 이모지 폴백 */
   var im=$('roleImg');
   im.style.display='';
-  im.onerror=function(){ this.style.display='none'; };
+  /* 스프라이트가 투명 PNG라서, 로드에 성공하면 뒤의 이모지를 숨겨야 겹쳐 보이지 않는다 */
+  im.onload=function(){ fb.style.display='none'; };
+  im.onerror=function(){ this.style.display='none'; fb.style.display=''; };
   im.src='img/role-'+String(r.img).padStart(2,'0')+'.png';
+  if(im.complete&&im.naturalWidth>0) fb.style.display='none';
   $('roleName').textContent=r.nm;
   $('roleCatch').textContent='“'+r.ct+'”';
   $('gameBadge').textContent=r.img>=11?'🎮 MonBreak 실제 등장 · 보스 기체':'🎮 MonBreak 실제 등장 기체';
