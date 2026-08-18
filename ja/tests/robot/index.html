@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>もしAIロボットになったら？— 四柱推命でみるロボット適性診断 | カササギテスト</title>
+<meta name="description" content="生年月日を入れるだけで、四柱推命の日干から、廃墟都市であなたがどんな機械として目覚めるかと戦闘力（120~9,999）を診断します。広場警備ユニット？生命維持ポッド？それとも都市を支配する管理AIマザー？12機体はすべてモバイルゲームMonBreakの実在ユニット。今すぐ診断して友だちと比べてみよう。">
+<link rel="canonical" href="https://www.kmagpie.com/ja/tests/robot/">
+<link rel="alternate" hreflang="ko" href="https://www.kmagpie.com/tests/robot/">
+<link rel="alternate" hreflang="ja" href="https://www.kmagpie.com/ja/tests/robot/">
+<link rel="alternate" hreflang="x-default" href="https://www.kmagpie.com/tests/robot/">
+<meta property="og:title" content="もしAIロボットになったら？— 四柱推命でみるロボット適性診断">
+<meta property="og:description" content="生年月日でわかる私のロボットタイプと戦闘力（120~9,999）。MonBreak実在の12機体、あなたはどれ？もしかして…都市を支配するマザー？">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/ja/tests/robot/">
+<meta property="og:image" content="https://www.kmagpie.com/ja/tests/robot/img/og.png">
+<style>
+  :root{
+    --bg:#060a13; --surface:#0b1220; --line:#1e2c4a; --line-soft:#152039;
+    --ink:#dbe6f8; --ink-2:#93a5c6; --ink-3:#5d7095;
+    --accent:#28e0ff; --accent-soft:#0a2a38;
+    --mag:#ff4fd8; --mag-soft:#2f0f28;
+    --btn-ink:#03151c;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",Meiryo,sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(520px 300px at 85% -40px, rgba(40,224,255,.10), transparent 70%),
+      radial-gradient(460px 280px at 0% 30%, rgba(255,79,216,.07), transparent 70%),
+      radial-gradient(1.5px 1.5px at 14% 12%, rgba(40,224,255,.22) 50%, transparent 51%),
+      radial-gradient(1px 1px at 72% 8%,  rgba(219,230,248,.14) 50%, transparent 51%),
+      radial-gradient(2px 2px at 46% 34%, rgba(255,79,216,.16) 50%, transparent 51%),
+      radial-gradient(1px 1px at 30% 58%, rgba(219,230,248,.10) 50%, transparent 51%),
+      radial-gradient(2px 2px at 86% 46%, rgba(40,224,255,.16) 50%, transparent 51%),
+      radial-gradient(1px 1px at 10% 84%, rgba(219,230,248,.10) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 64% 78%, rgba(255,79,216,.12) 50%, transparent 51%)}
+  body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9;
+    background:repeating-linear-gradient(0deg, rgba(255,255,255,.018) 0 1px, transparent 1px 3px)}
+  .wrap{max-width:680px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:27px;line-height:1.35;margin:0 0 10px;letter-spacing:-.02em;font-weight:800}
+  h1 .isk{color:var(--accent);text-shadow:0 0 18px rgba(40,224,255,.55)}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+  .col{flex:1;min-width:90px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
+  input[type=text],select{padding:10px 12px;border:1px solid var(--line);border-radius:9px;
+    background:var(--surface);color:var(--ink);font-size:16px;font-family:inherit;width:100%;
+    font-weight:600;font-variant-numeric:tabular-nums;appearance:none;-webkit-appearance:none}
+  input:focus,select:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:14px 0 0}
+  .go{display:block;width:100%;margin:18px 0 0;padding:15px 10px;border:0;border-radius:12px;
+    background:var(--accent);color:var(--btn-ink);font-size:17px;font-weight:800;font-family:inherit;cursor:pointer;
+    letter-spacing:-.01em;transition:.15s;box-shadow:0 0 22px rgba(40,224,255,.35)}
+  .go:hover{filter:brightness(1.1);transform:translateY(-1px)}
+
+  
+  .result{background:var(--surface);border:1px solid var(--accent);border-radius:18px;
+    padding:28px 24px;margin:20px 0;text-align:center;position:relative;
+    box-shadow:0 0 34px rgba(40,224,255,.14), inset 0 0 60px rgba(40,224,255,.03)}
+  .seal{position:absolute;top:18px;right:18px;width:42px;height:46px;border-radius:7px;
+    background:var(--mag);color:#20041a;display:flex;align-items:center;justify-content:center;
+    font-size:14px;font-weight:800;line-height:1.1;writing-mode:vertical-rl;letter-spacing:.04em;
+    box-shadow:0 0 16px rgba(255,79,216,.45)}
+  .rk{font-size:13px;font-weight:700;letter-spacing:.12em;color:var(--ink-3);margin:0 0 14px}
+  .roleImg{width:168px;height:168px;margin:0 auto 14px;border-radius:24px;overflow:hidden;position:relative;
+    background:linear-gradient(135deg,var(--g1,#2a6f8f),var(--g2,#0b1d2a));display:flex;align-items:center;justify-content:center;
+    box-shadow:0 0 24px rgba(40,224,255,.2)}
+  .roleImg img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+  .roleImg .fbEmo{font-size:84px;line-height:1;filter:drop-shadow(0 4px 12px rgba(0,0,0,.6))}
+  .roleName{font-size:25px;font-weight:800;letter-spacing:-.02em;margin:0 0 2px}
+  .roleCatch{font-size:14.5px;color:var(--ink-2);margin:0 0 10px}
+  .gameBadge{display:inline-block;margin:0 0 18px;padding:3px 12px;border:1px solid var(--mag);
+    color:var(--mag);border-radius:99px;font-size:11.5px;font-weight:700;letter-spacing:.05em;
+    box-shadow:0 0 12px rgba(255,79,216,.2)}
+  .popBox{margin:0 0 4px}
+  .popNum{font-size:clamp(52px,16vw,80px);font-weight:800;letter-spacing:-.04em;line-height:1.05;
+    color:var(--accent);font-variant-numeric:tabular-nums;text-shadow:0 0 26px rgba(40,224,255,.5)}
+  .popCap{font-size:13.5px;color:var(--ink-3);margin:0 0 2px;letter-spacing:.14em}
+  .topPct{display:inline-block;margin:8px 0 0;padding:5px 14px;border-radius:99px;
+    background:var(--accent-soft);color:var(--accent);font-size:14px;font-weight:700}
+  .topPct.cult{background:var(--mag-soft);color:var(--mag)}
+  .nokLine{margin:12px 0 0;font-size:14.5px;color:var(--ink-2)}
+  .nokLine b{color:var(--mag);font-variant-numeric:tabular-nums}
+  .ilju{margin:20px 0 0;padding:13px 15px;border:1px dashed var(--line);border-radius:11px;
+    font-size:14px;color:var(--ink-2);text-align:left}
+  .ilju b{color:var(--ink)}
+  .desc{text-align:left;font-size:15px;color:var(--ink-2);margin:18px 0 0}
+  .sil{text-align:left;margin:16px 0 0;padding:12px 15px;border-left:3px solid var(--accent);
+    background:var(--accent-soft);border-radius:0 10px 10px 0;font-size:14.5px}
+  .sil b{color:var(--accent)}
+  .mates{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 0;text-align:left}
+  .mate{border:1px solid var(--line);border-radius:11px;padding:11px 13px;font-size:13.5px}
+  .mate .mk{display:block;font-size:11.5px;font-weight:700;letter-spacing:.08em;margin-bottom:3px}
+  .mate.good .mk{color:var(--accent)}
+  .mate.bad .mk{color:var(--mag)}
+  .mate b{font-size:14.5px}
+  .btns{display:flex;gap:9px;flex-wrap:wrap;margin:24px 0 0}
+  .btns button{flex:1;min-width:140px;padding:13px 8px;border-radius:11px;font-size:14.5px;font-weight:700;
+    font-family:inherit;cursor:pointer;transition:.15s;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+  .btns button:hover{border-color:var(--accent);color:var(--accent)}
+  .btns button.pri{background:var(--accent);border-color:var(--accent);color:var(--btn-ink)}
+  .btns button.pri:hover{filter:brightness(1.08);color:var(--btn-ink)}
+  .retry{display:block;width:100%;margin:10px 0 0;padding:13px 8px;border-radius:11px;border:1px dashed var(--line);
+    background:transparent;color:var(--ink-2);font-size:14.5px;font-weight:700;font-family:inherit;cursor:pointer}
+  .retry:hover{border-color:var(--accent);color:var(--accent)}
+  .copied{font-size:13px;color:var(--accent);margin:8px 0 0;min-height:20px}
+
+  
+  .mb{background:linear-gradient(160deg,#12081c,#0b1220 70%);border:1px solid var(--mag);border-radius:16px;
+    padding:18px;margin:16px 0;box-shadow:0 0 26px rgba(255,79,216,.14)}
+  .mb img{width:100%;border-radius:11px;display:block;border:1px solid var(--line)}
+  .mbLead{margin:14px 0 4px;font-size:16px;font-weight:800;color:var(--ink)}
+  .mbSub{margin:0 0 14px;font-size:14px;color:var(--ink-2)}
+  .mbSub b{color:var(--mag)}
+  .mbBtn{display:block;text-align:center;padding:14px 10px;border-radius:11px;background:var(--mag);
+    color:#20041a;font-size:15.5px;font-weight:800;text-decoration:none;
+    box-shadow:0 0 20px rgba(255,79,216,.35);transition:.15s}
+  .mbBtn:hover{filter:brightness(1.08);transform:translateY(-1px);color:#20041a}
+  .mbFine{margin:9px 0 0;font-size:12px;color:var(--ink-3);text-align:center}
+
+  .basis{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:14px 0}
+  .basis h2{margin:0 0 8px;font-size:17px}
+  .basis p{font-size:14.5px;color:var(--ink-2);margin:0 0 8px}
+  .basis p:last-child{margin:0}
+
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  .hidden{display:none}
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .panel{padding:18px 15px}
+    .result{padding:22px 15px}
+    .roleImg{width:136px;height:136px}
+    .roleImg .fbEmo{font-size:68px}
+    .roleName{font-size:21px}
+    .mates{grid-template-columns:1fr}
+    .seal{width:36px;height:36px;font-size:13px;top:14px;right:14px}
+  }
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/tests/">カササギテスト</a> › AIロボット診断 · <a href="/tests/robot/" hreflang="ko">韓国語版</a></p>
+
+<h1>もしあなたが<br>AIロボットになったら？ <span class="isk">🤖</span></h1>
+<p class="sub">生年月日を入力すると、<strong>四柱推命の日干</strong>にもとづいて、管理AI「マザー」に支配された廃墟都市であなたがどんな機械として目覚めるかと、<strong>戦闘力（120~9,999）</strong>を計算します。命理学が「自分自身」とみなすあの八字を万年暦エンジンで実際に割り出し、五行を機体特性へ変換した、根拠のある(?)製造仕様書 — 結果に出てくる12機体はすべて、モバイルアクションゲーム<strong>MonBreak</strong>に実際に登場する機械たちです。あなたは広場を守っていた警備ユニットか、黙々と路地を掃いていたお掃除ロボットか、それとも…データセンターのマザーそのものか。</p>
+
+<div class="panel" id="inputPanel">
+  <div class="row">
+    <div class="col" style="flex:2;min-width:160px">
+      <label class="f" for="nick">名前・ニックネーム（任意）</label>
+      <input type="text" id="nick" maxlength="12" placeholder="結果カードに表示されます" autocomplete="off">
+    </div>
+  </div>
+  <div class="row" style="margin-top:14px">
+    <div class="col"><label class="f" for="by">年</label><select id="by"></select></div>
+    <div class="col"><label class="f" for="bm">月</label><select id="bm"></select></div>
+    <div class="col"><label class="f" for="bd">日</label><select id="bd"></select></div>
+  </div>
+  <div class="row" style="margin-top:14px">
+    <div class="col" style="min-width:160px">
+      <label class="f" for="bt">生まれた時間（任意）</label>
+      <select id="bt"></select>
+    </div>
+  </div>
+  <button type="button" class="go" id="goBtn">🤖 私の機体スペックを確認する</button>
+  <p class="note">新暦（西暦）の誕生日基準です。入力値はどこにも送信されず、ブラウザ内だけで計算されます。</p>
+</div>
+
+<div class="result hidden" id="res">
+  <p class="rk">ロボット機体鑑定書</p>
+  <div class="roleImg" id="roleImgBox">
+    <span class="fbEmo" id="fbEmo"></span>
+    <img id="roleImg" alt="">
+  </div>
+  <p class="roleName" id="roleName"></p>
+  <p class="roleCatch" id="roleCatch"></p>
+  <span class="gameBadge" id="gameBadge">🎮 MonBreak実在ユニット</span>
+  <div class="popBox">
+    <p class="popCap" id="popCap">⚡ 戦闘力 POWER</p>
+    <div class="popNum"><span id="popNum">0</span></div>
+    <span class="topPct" id="topPct"></span>
+    <p class="nokLine" id="gradeLine"></p>
+  </div>
+  <p class="ilju" id="iljuLine"></p>
+  <p class="desc" id="roleDesc"></p>
+  <p class="sil" id="specLine"></p>
+  <div class="mates">
+    <div class="mate good"><span class="mk">相性抜群の協力機体</span><span id="mateGood"></span></div>
+    <div class="mate bad"><span class="mk">相性最悪の機体</span><span id="mateBad"></span></div>
+  </div>
+  <div class="btns">
+    <button type="button" id="shareLink">🔗 結果リンクをコピー</button>
+    <button type="button" class="pri" id="shareCard">📸 結果カードを保存</button>
+  </div>
+  <button type="button" class="retry" id="retryBtn">👀 友だちはどの機体？もう一度やってみる</button>
+  <p class="copied" id="copied"></p>
+</div>
+
+<div class="mb hidden" id="mbBlock">
+  <img id="mbShot" src="https://www.kmagpie.com/images/monbreak-battle.jpg" alt="MonBreakの実際のバトルステージ画面" loading="lazy" onerror="this.style.display='none'">
+  <p class="mbLead">この機体はすべて、モバイルゲームMonBreakに実際に登場します。</p>
+  <p class="mbSub"><b>MonBreak</b> — 管理AI「マザー」に奪われた廃墟都市を取り戻しに行くモバイルアクション。さっき出会った機械たちを撃破しながらステージを突破し、装備をアップグレードして、データセンターのマザーのもとへ。マザーに支配された都市を取り戻しに行こう。</p>
+  <a class="mbBtn" id="mbPlay" href="https://play.google.com/store/apps/details?id=com.kmagpie.MonBreak&amp;referrer=utm_source%3Dkmagpie_test%26utm_campaign%3Drobot_ja" target="_blank" rel="noopener noreferrer">▶ Google Playで無料ダウンロード</a>
+  <p class="mbFine">K-magpieが開発したゲームです · 上の画像は実際のゲーム画面</p>
+</div>
+
+<div class="basis">
+  <h2>この診断の根拠</h2>
+  <p>四柱推命では、生まれた日の天干を<strong>日干（にっかん）</strong>と呼び、命理学ではこの一文字を「自分自身」とみなします。この診断は万年暦エンジンであなたの年柱・月柱・日柱を実際に計算したうえで、日干10種（甲・乙・丙・丁・戊・己・庚・辛・壬・癸）の五行を、MonBreakに実際に登場する機体の特性に読み替えたものです — まっすぐ伸びる大樹（甲木）はバリアジェネレーター、鋼鉄（庚金）は広場警備ユニット、染み込む雨水（癸水）はパトロールドローン、という具合です。戦闘力は八字の五行関係をスコア化して120~9,999のスケールに引き伸ばしたもので、上位%は1950~2010年の全誕生日分布を実際に計算して収録しました。もちろん、占いはお楽しみとしてどうぞ。</p>
+</div>
+
+<div class="basis">
+  <h2>ほかの世界も旅してみよう</h2>
+  <p>🧟 <a href="/ja/tests/zombie/">ゾンビ事態が起きたら私の役割は？— 四柱推命でみる生存率診断</a></p>
+  <p>🌙 <a href="/ja/tests/isekai/">私は異世界でどれだけモテる？— 四柱推命でみる異世界人気度診断</a></p>
+  <p>🪶 <a href="/ja/tests/joseon/">朝鮮時代に生まれていたら？— 四柱推命でみる朝鮮職業診断</a></p>
+  <p>同じ誕生日でも、世界が変われば運命も変わります。</p>
+</div>
+
+<footer>
+  <p>この診断はエンターテインメント用コンテンツです。ロボットタイプ・戦闘力・脅威等級はいかなる事実も保証しません。</p>
+  <p>カササギテスト · すべての計算はブラウザ内で行われ、入力値はどこにも送信されません。MonBreakはK-magpieのゲームです。</p>
+  <p><a href="/">ホーム</a> · <a href="/tests/robot/" hreflang="ko">韓国語版</a> · <a href="/disclaimer.html">免責事項</a> · <a href="/privacy-policy.html">プライバシーポリシー</a></p>
+</footer>
+
+</div>
+
+<script>
+/*CORE:S*/
+
+var JD_ENC="0y0n41s0dy2m0n53h0d74c0l35712m630er6y0it7t03p8n07s9g0yw0503g0y0ws1s0nn2m0wx3h0n34c0v15808k630om6y0sm7t0dj8n0hn9h04t050d50z02q1s0xk2n02q3h0wr4d00k580hy630xy6y11z7t0mx8n0r69h0eh050n40z0cj1t03b2n0ce3i02e4d0a7580rp6403s6z07u7t0wu8n1119h0ob050ww0z0mc1t0d42n0m73i0c74d0k15811k640do6z0hq7u02o8o06t9h0y10602p0y0w41s0my2m0w33h0m24c0tu58078630n96y0ra7t0c88n0ge9h03n050cf0z01s1s0wo2n01v3h0vx4c13p580h3630x46y1147t0m38n0qb9h0dl050m20z0bn1t02f2n0bj3i01i4d099580qn6402o6z06q7t0vr8n1009h0nb050w00z0lb1t0c22n0ly3i0bx4d0jp58116640d96z0ha7u0298o06g9h0xq0601p0y0vr1s0mj2m0vo3h0lp4c0tk58072630n56y0r57t0c18n0g79h03h050c30z01m1s0wf2n01h3h0ve4c133580gf630wf6y10g7t0lf8n0po9h0cz050lw0z0b41t01x2n0az3i00v4d08k580pz640226z0677t0v98n0zh9h0mq050vf0z0li1t0c92n0lc3i0bb4d0j45810l640cp6z0gu7u01v8o0639h0xb0601w0y0v71s0lx2m0v03h0kz4c0sq58063630m46y0q67t0b88n0fi9h02t050bm0z00t1s0vk2n00m3h0uk4c12c580fr630vt6y0zx7t0kz8n0pb9h0cp050l70z0aq1t01c2n0a93i0034d07s580p86401c6z05h7t0ul8n0yy9h0mc050v40z0ke1t0b22n0jy3i09q4d0he580yu640az6z0f57u0088o04i9h0vu0600s0y0ty1s0kp2m0tq3h0jm4c0rb5804q630ku6y0oz7t0a28n0ed9h01p050aa0y13t1s0ul2m13l3h0te4c10z580e8630u76y0yb7t0jg8n0nv9h0ba050k40z09f1t0062n0953h12y4d06l580nx6313y6z0447t0t98n0xo9h0l2050ts0z0j31t09r2n0ir3i08o4d0gf580xv6409y6z0e37t1358o03h9h0uu0513h0y0sw1s0jl2m0sl3h0ig4c0q65803j630jk6y0nm7t08n8n0cy9h00b0509a0y12j1s0ta2m12a3h0s54c0zu580da630td6y0xi7t0il8n0mx9h0ab050it0z08d1s1312n07y3h11q4d05e580mu631316z0397t0sf8n0ws9h0k5050sq0z0i21t08p2n0hl3i07e4d0f2580wh6408o6z0cy7t1248o02h9h0tt0512i0y0rp1s0ic2m0rb3h0h64c0ox5802d630ij6y0ms7t0808n0ce9g13s050850y11q1s0sc2m1163h0qx4c0yi580bu630rw6y0w47t0hd8n0lw9h09f050i60z07i1s1222n06u3h10h4d041580le6311j6z01t7t0r38n0vl9h0j2050rx0z0h51t07p2n0gj3i0684d0dt580v86407g6z0bq7t10y8o01e9h0st0511j0y0qx1s0hk2m0qf3h0g54c0nn5800w630gx6y0l47t06b8n0as9g1280507a0y10f1s0r52m1023h0pr4c0xa580ak630ql6y0us7t0g28n0kk9h083050gr0z0651s10q2n05l3h0za4d02u580k6631096z00h7t0pr8n0ua9h0hs050qk0z0fu1t06e2n0f63i04v4d0cg580ts6405w6z0a37t0za8n13q9h0r6051090y0p91s0fw2m0or3h0ei4c0m65713l630fq6y0jy7t0548n09j9g10z0505n0y0z41s0pq2m0yk3h0o74c0vq58091630p46y0tc7t0el8n0j39h06l050fh0z04p1s0za2n0423h0xo4d016580ii630yo6y1307t0oc8n0su9h0g9050p20z0e51t04p2n0dj3i0394d0av580sa6404j6z08x7t0y98n12r9h0q6050yn0y0o21s0el2m0ne3h0d34c0kn5711y630e16y0ib7t03n8n0879g0zq0504k0y0xr1s0oa2m0x13h0mn4c0u75807j630np6y0s07t0dd8n0i09h05m050e70z03n1s0y22n02q3h0w94c13s580h6630xf6y11u7t0n98n0rw9h0fh050o40z0dk1t0402n0cn3i0244d09k580qw640346z07h7t0wu8n11f9h0oy050y00y0n21s0dm2m0md3h0by4c0jf5710r630cy6y0hc7t02q8n07c9g0yw0503g0y0x11s0nl2m0wc3h0lv4c0t95806g630mi6y0qu7t0ca8n0gz9h04n050de0z02s1s0xb2n01z3h0vi4c12v580g3630w66y10j7t0ly8n0qn9h0e9050n70z0cb1t02t2n0bi3i0144d08n580q0640276z06k7t0vx8n10j9h0o4050wr0y0m81s0cq2m0lg3h0b14c0ii570zr630bt6y0g27t01d8n05y9g0xk0502n0y0vs1s0md2m0v33h0km4c0s15805b630lg6y0pr7t0b58n0fr9h03c050c40z01e1s0vw2n00k3h0u34c11j580ew630v56y0zl7t0l18n0po9h0d8050lu0z0b61t01m2n0aa3h13s4d078580ok6400q6z0557t0uk8n0z79h0mq050vo0y0kn1s0b32m0js3h09d4c0gv570y8630af6y0eu7t00b8n0509g0wl050150y0ul1s0kz2m0tl3h0j14c0qf5803p630jv6y0oa7t09s8n0ek9h02a050b30z00e1s0ur2m1393h0sl4c0zx580d6630td6y0xu7t0jc8n0o39h0bq050ku0z09t1t0072n08r3h1264d05k580mx631376z03q7t0t88n0xy9h0lk050ua0y0jm1s0a32m0ip3h0844c0fg570wn6308r6y0d57s12m8n03d9g0v1050020y0t71s0jp2m0rh3h0gw4c0o75801d630hh6y0lw7t07f8n0c99g13y0509l0y1201s0sd2m10x3h0qc4c0xp580b0630r86y0vq7t0ha8n0m39h09t050ii0z07u1s1272n06p3h1044d03i580ks6310y6z01d7t0qu8n0vk9h0j8050sc0y0hd1s07s2m0gd3h05s4c0d7570ui6306q6y0b67s10o8n01e9g0t20411t0y0r71s0hn2m0q63h0fj4c0mu58003630gb6y0kt7t06d8n0b69g12w0507m0y1101s0rf2m0zx3h0p94c0wi5809q630py6y0ui7t0g48n0kw9h08j050hg0z06h1s10u2n05e3h0yt4d027580jj630zu6z00f7t0q38n0uw9h0ik050r10y0gg1s06t2m0fc3h04r4c0c4570td6305i6y0at7s10f8n01a9g0t2041110y0r51s0hi2m0py3h0fa4c0mj5713r630fy6y0kf7t0628n0az9g12t0507n0y10w1s0r52m0zj3h0os4c0w25809e630pp6y0uc7t0g08n0kw9h08p050hf0z06t1s1142n05i3h0yr4d020580j8630zg6y13z7t0pl8n0uf9h0i5050ra0y0ga1s06p2m0f73h04i4c0bq570sx630556y09o7s0zb8n0069g0rx0410q0y0q21s0gf2m0ox3h0e74c0le5712j630ep6y0j87t04x8n09v9g11q0506i0y0zv1s0q62m0yl3h0nu4c0v058085630ob6y0su7t0eh8n0jd9h076050gc0z0581s0zi2n03x3h0x84d00j580hu630y36y12n7t0oa8n0t59h0gw050pq0y0ez1s05b2m0dr3h0324c0ac570rk6303q6y0877s0xt8m12n9g0qf040zh0y0om1s0ez2m0ne3h0cm4c0js5710y630d66y0hq7t03e8n08a9g101050520y0y21s0ob2m0wo3h0lw4c0t55806f630ms6y0ri7t0db8n0i99h060050el0z03w1s0y42n02h3h0vp4c12y580g7630wh6y1137t0mu8n0rr9h0fj050oi0y0dg1s03p2m0c23h01b4c08j570pr630216y06n7s0wf8m11f9g0pa040y10y0nc1s0dj2m0lt3h0ay4c0i4570zb630bl6y0g97t0238n0769g0z50503w0y0xb1s0ni2m0vq3h0kr4c0ru5804z630l96y0px7t0bq8n0gr9h04m050du0z02s1s0x02n01b3h0uf4c11j580er630v26y0zs7t0lm8n0qn9h0eh050n90y0cl1s02w2m0ba3h00g4c07k570oo6300u6y05g7s0v88m10a9g0o7040x30y0mf1s0cq2m0l33h0a94c0hb570yd630ai6y0f27t00v8n05y9g0xw0502v0y0w01s0m82m0ui3h0jn4c0qt58041630kb6y0p07t0au8n0fx9h03u050ck0z01y1s0w52n00f3h0tl4c10s580e0630u96y0yt7t0kj8n0pi9h0dd050mh0y0bj1s01t2m0a53g13b4c06h570no6213x6y04j7s0u98m0z89g0n3040w10y0l91s0bj2m0jt3h08w4c0g0570x76309i6y0e87t0028n0549g0x00501r0y0v41s0lb2m0tk3h0in4c0pq5802v630j66y0nw7t09r8n0es9h02m050bn0z00j1s0up2m12y3h0s34c0z9580ch630su6y0xm7t0ji8n0ol9h0cg050l50y0ac1s00g2m08q3g11v4c050570m76212g6y0357s0t08m0y59g0m4040uz0y0k81s0ac2m0ii3h07j4c0ek570vp6307y6y0cn7s12j8n03p9g0vp0500s0y0ts1s0ju2m0rw3h0gu4c0nv58013630hh6y0mc7t08c8n0di9h01g050ad0y13j1s0tn2m11r3h0qq4c0xr580ax630r86y0vz7t0hw8n0n19h0ay050k40y0931r13a2m07i3g10i4c03h570kj6210s6y01i7s0rf8m0wm9g0kl040tm0y0iq1s08v2m0h13h0604c0cy570u0630696y0b17s1128n02c9g0ue041390y0sk1s0io2m0qt3h0fr4c0mq5713t630g16y0kr7t06p8n0bw9g13w050940y1201s0s42m1093h0p94c0wa5809g630pr6y0ui7t0gf8n0ll9h09k050il0y07p1r11v2m0613g0z24c023570j8620zi6y0087s0q48m0v99g0ja040s80y0hj1s07q2m0fw3h04u4c0bt570sv630546y09v7s0zt8n00z9g0sz041200y0r11s0h42m0p83h0e64c0l65712d630es6y0jp7t05r8n0b09g12y0507m0y10w1s0qy2m0z23h0o24c0v55808c630op6y0ti7t0fj8n0kr9h08q050hj0y06q1r10s2m04w3g0xw4c00x570i1620yc6x1357s0p58m0ue9g0ih040rc0y0gl1s06l2m0el3h03f4c0ae570ri6303w6y08s7s0yw8n0089g0se041160y0ql1s0gm2m0ol3h0dd4c0k95711d630dq6y0im7t04o8n09y9g120050750y1041s0q72m0y83h0n24c0tz58072630nf6y0sb7t0ee8n0jo9h07p050gp0y05t1r0zx2m0413g0wx4b13u570gv620x46x11y7s0o18m0td9g0hh040qd0y0fo1s05s2m0du3h02p4c09l570qk6302r6y07j7s0xl8m12y9g0r2041080y0p61s0f52m0n53h0bz4c0iw57100630cc6y0h87t03d8n08p9g10t0505s0y0yw1s0ow2m0wv3h0lr4c0sq5805v630m86y0r17t0d18n0ib9h06d050fj0y04j1r0yl2m02m3g0vh4b12e570fh620vr6x10l7s0ml8m0ru9g0fx040p30y0e31s0452m0c43h00v4c07p570or630156y0637s0w98m11n9g0pr040yn0y0nu1s0du2m0lt3h0ak4c0hf570yi630av6y0ft7t0208n07c9g0ze0504g0y0xc1s0nb2m0va3h0k44c0r058043630kg6y0pe7t0bl8n0gz9h052050e10y0321r0x02m00y3g0tr4b10n570dq620u16x0yy7s0l48m0qk9g0es040nq0y0d01s02y2m0av3g13k4c06d570ne6213p6y04l7s0ur8m1079g0oe040xl0y0ml1s0ci2m0kc3h08z4c0fr570wu630996y0ea7t00j8n05z9g0y5050370y0wa1s0m92m0u63h0iw4c0pq5802t630j76y0o57t0ac8n0fq9h03v050cw0y0211r0w32m0033g0su4b0zn570cn620sw6x0xs7s0jy8m0pe9g0dl040mm0y0br1s01q2m09n3g12b4c053570m36212f6y03d7s0to8m0z79g0ng040wc0y0ln1s0bk2m0jf3h0854c0ey570w06308d6y0dc7s13j8n04z9g0x5050290y0va1s0l82m0t43h0hu4c0op5801r630i56y0n37t0998n0eo9h02t050bw0y00y1r0ux2l12t3g0rj4b0yd570bf620rs6x0wr7s0iy8m0oe9g0cl040lk0y0at1s00s2m08p3g11d4c045570l66211j6y02i7s0sr8m0y89g0me040vd0y0ke1s0aa2m0i33h06r4c0di570ul630716y0c57s12i8n0409g0w6050130y0u31s0jx2m0rq3h0gg4c0na5800e630gu6y0lw7t0878n0dq9h01x050au0x13z1r0tu2l11n3g0qb4b0x4570a5620qi6x0vh7s0hr8m0nb9g0bl040kn0y09r1r13k2m0783g0zq4c02e570je620zt6y00w7s0ra8m0wx9g0la040ue0y0jj1s09c2m0h13h05j4c0c6570t76305n6y0ar7s1148n02o9g0ux050050y0t31s0iz2m0qq3h0fa4c0ly5712w630f96y0kb7t06o8n0c89h00h0509p0x12m1r0sj2l10d3g0ox4b0vl5708h620or6x0ts7s0g58m0ls9g0a4040j90y08e1r12b2m0643g0yp4c01c570i9620yj6x13h7s0pt8m0vg9g0js040sz0y0hy1s07r2m0fh3h0414c0aq570rp630436y0947s0zh8n0129g0td0412m0y0rj1s0hd2m0p33h0do4c0kg5711i630dx6y0iy7t0588n0ar9g131050870x1191r0r52l0yy3g0nk4b0ua5707a620no6x0so7s0ey8m0kh9g08q040hu0y06w1r10r2m04h3g0wy4b13k570gj620wz6x1257s0ol8m0u89g0ij040ri0y0gm1s06f2m0e43h02n4c09c570qd6302v6y0827s0yj8n0059g0sf0411b0y0qd1s0g42m0nt3h0ce4c0j457105630cl6y0hq7t0468n09u9g125050740x1051r0pw2l0xk3g0m24b0sp5705p620m46x0r87s0dq8m0jh9g07x040gw0y0651r0zw2m03i3g0vx4b12i570fh620vx6x1127s0nj8m0t99g0hp040qs0y0fw1s05m2m0d63h01j4c083570p16301i6y06q7s0x98m1309g0rd0410k0y0pk1s0fc2m0my3h0bd4c0hz570yx630bd6y0gj7t0318n08q9g114050670x0zb1r0p62l0ww3g0ld4b0rz5704v620l76x0q97s0cq8m0ig9g06v040fy0y0531r0yv2m02h3g0uv4b11d570e8620ul6x0zq7s0m98m0s39g0gk040pr0y0et1s04j2m0c43h00i4c073570o26300i6y05o7s0w58m11v9g0q9040zg0y0og1s0e72m0lt3h0a94c0gw570xv630aa6y0fe7t01t8n07h9g0zu050530x0y11r0nu2l0vg3g0ju4b0qe5703a620jo6x0ot7s0bb8m0h19g05g040eo0y03p1r0xi2m0143g0tj4b102570cz620tf6x0yl7s0l48m0qv9g0f9040ob0y0db1s0302m0ak3g12y4c05i570mg6212x6y0467s0ur8m10k9g0ox040y10y0mw1s0cj2m0k33h08h4c0f4570w46308k6y0ds7t00d8n0669g0yl0503o0x0wo1r0md2l0tx3g0ib4b0ox5701w620ib6x0nh7s0a08m0ft9g04b040de0y02j1r0w62l13l3g0rs4b0y8570b4620rl6x0wv7s0ji8m0pe9g0dx040n80y0c61s01t2m0993g11g4c03x570ku6211e6y02q7s0td8m0z79g0nn040wu0y0ls1s0bi2m0j13h07c4c0du570ur630776y0cg7s1328n04x9g0xc0502h0x0vh1r0l72l0sq3g0h04b0nf57009620gm6x0lt7s08h8m0ee9g02y040c60y0181r0ux2l12f3g0qq4b0x6570a1620qg6x0vo7s0ic8m0o99g0ct040lw0y0b01s00m2m0813g10b4c02s570jp621056y01f7s0s28m0xy9g0mg040vq0y0kn1s0a92m0hp3h05z4c0ch570tg6305x6y0b67s11r8n03l9g0w30501c0x0ud1r0k32l0rm3g0fx4b0mf5613d620fu6x0l27s07o8m0di9g020040b00y0081r0tv2l11b3g0pi4b0vv5708p620p76x0uj7s0ha8m0n89g0br040kw0y09v1r13h2m06w3g0z44c01k570ih620z16y00f7s0r78m0x49g0lm040um0y0jn1s0982m0go3h04y4c0bg570se6304w6y0a77s10x8n02v9g0vf0500f0x0ti1r0j32l0qg3g0em4b0l05611u620ea6x0jk7s06a8m0ca9g00y040aa0x13a1r0sw2l1083g0oc4b0uo5707j620o16x0te7s0g58m0m59g0ar040jy0y0901r12k2m05w3g0y04c00c570h7620xo6x1327s0pu8m0vt9g0kd040tp0y0ik1s0862m0fj3h03p4c0a1570qv6303b6y08m7s0zd8n01d9g0tx0413a0x0s61r0ht2l0pa3g0di4b0jw5610q620d56x0ie7s0548m0b49f13q0408u0x11z1r0rj2l0yv3g0mz4b0ta57062620mh6x0rs7s0ek8m0km9g09a040io0y07j1r1122m04d3g0wg4b12t570fp620w86x11l7s0od8m0uc9g0iw040s90y0h31s06n2m0e03h0264c08m570pj630226y07e7s0y48n0019g0sl0411t0x0qr1r0gd2l0nq3g0bt4b0i4560yw620bd6x0gq7s03i8m09i9f1240407h0x10d1r0py2l0x93g0lc4b0ro5704i620l16x0qh7s0dd8m0jf9g080040h20y0611r0zi2m02s3g0uw4b119570e5620up6x1067s0n38m0t69g0hs040qv0y0ft1s0592m0ch3h00k4c06x570nt6300b6y05p7s0wl8m12p9g0re0410n0x0pl1r0f22l0mc3g0ae4b0gr560xn620a66x0fk7s02f8m08j9f11a0406c0x0zl1r0p22l0w73g0k44b0qc57034620jm6x0p37s0c18m0i79g06y040gb0y05a1r0ys2m01y3g0tv4b102570cu620tf6x0yx7s0lw8m0s09g0go040q00y0ex1s04h2m0br3g13t4c064570mx6213f6y04v7s0vr8m11v9g0qk040zn0x0os1r0ec2l0ln3g09n4b0fu560wi6208w6x0e97s0158m07c9f1040405i0x0yh1r0o02l0v93g0j94b0ph57029620ip6x0o47s0b18m0h79g05y040f60y0461r0xn2m00v3g0sv4b0z6570c1620sk6x0xz7s0kv8m0qz9g0fo040ox0y0dv1s03c2m0ak3g12k4c04u570lo621266y03k7s0ue8m10h9g0p5040yn0x0nf1r0cy2l0k83g08a4b0ek560ve6207y6x0df7s00a8m06e9f0z2040440x0x91r0mp2l0tw3g0ht4b0o05700s620hc6x0mv7s09w8m0g39g04s040e00y02v1r0w92l13d3g0ra4b0xi570ab620qx6x0wi7s0jj8m0pr9g0eg040np0y0cg1s01t2m08y3g10y4c039570k56210r6y02a7s0ta8m0zi9g0o9040xb0x0me1r0bq2l0it3g06o4b0ct560tj620616x0bi7r12i8m04s9f0xn040380x0w01r0le2l0sf3g0g74b0ma56131620fl6x0l67s0898m0ek9g03d040cq0y01m1r0v02l1223g0pv4b0w05708r620pc6x0uy7s0i18m0ob9g0d3040me0y0ba1s00p2m07s3g0zn4c01q570if620yw6y00e7s0rf8m0xp9g0mj040w30x0kt1r0aa2l0hg3g05d4b0bi560s86204p6x0a77r1188m03j9f0wf0401k0x0uq1r0k32l0r53g0ez4b0l25611s620e96x0js7s06v8m0d79g023040bh0y00f1r0ts2l10s3g0ok4b0uo5707g620o06x0tk7s0gl8m0mv9g0bo040l60y09y1r13d2m06g3g0yc4c00k570he620xz6x13k7s0qk8m0ws9g0lk040up0x0ju1r09a2l0ge3g0484b0aa560qz6203g6x0907r1028m02c9f0v70400l0x0ti1r0ix2l0q03g0ds4b0jv5610k620d46x0ir7s05x8m0ca9g013040a80x1361r0si2l0zk3g0nf4b0tl5706f620n16x0sp7s0fv8m0m89g0b2040k20y0941r12e2m05e3g0x84b13d570g5620wo6x1287s0pb8m0vo9g0kl040u00x0iu1r0862l0f63g02y4b092560pu6202f6x0817r0z68m01j9f0uh0313n0x0st1r0i32l0p03g0cn4b0io560ze620bz6x0ho7s04v8m0ba9g0080409k0x12j1r0ru2l0yr3g0me4b0sc57051620lm6x0rb7s0ei8m0kw9g09r040jb0y07y1r11b2m04b3g0w34b126570ew620vh6x1157s0ob8m0uq9g0jl040ss0x0hu1r0762l0e63g01w4b07v560oh6200x6x06h7r0xm8m0039f0t30312m0x0rg1r0gs2l0np3g0bc4b0hb560xy620ag6x0g27s0398m09q9f12o040880x10x1r0q62l0x33g0kt4b0qw5703n620ka6x0py7s0d48m0ji9g08f040hr0y06o1r0zy2m02v3g0ul4b10m570db620tu6x0zf7s0mj8m0sw9g0hs040rh";
+var JY0=1900;
+var GAN="甲乙丙丁戊己庚辛壬癸", JI="子丑寅卯辰巳午未申酉戌亥";
+var GANH="甲乙丙丁戊己庚辛壬癸", JIH="子丑寅卯辰巳午未申酉戌亥";
+function jieOf(y,idx){
+  var s=JD_ENC.substr(((y-JY0)*12+idx)*5,5);
+  var doy=parseInt(s.substr(0,2),36), mn=parseInt(s.substr(2,3),36);
+  var dt=new Date(Date.UTC(y,0,1+doy));
+  return {m:dt.getUTCMonth()+1, d:dt.getUTCDate(), min:mn};
+}
+function cmpJie(y,m,d,mn,idx){
+  var j=jieOf(y,idx);
+  if(m!==j.m) return m>j.m?1:-1;
+  if(d!==j.d) return d>j.d?1:-1;
+  return mn>=j.min?1:-1;
+}
+function yearPillarIdx(y,m,d,mn){
+  var sy=y;
+  if(cmpJie(y,m,d,mn,0)<0) sy=y-1;
+  return {sy:sy, idx:((sy-4)%60+60)%60};
+}
+function monthPillar(y,m,d,mn){
+  var CHRONO=[11,0,1,2,3,4,5,6,7,8,9,10];
+  var mi=-1;
+  for(var k=0;k<12;k++){ var i=CHRONO[k]; if(cmpJie(y,m,d,mn,i)>0) mi=i; else break; }
+  if(mi<0) mi=10;
+  var yp=yearPillarIdx(y,m,d,mn);
+  var yGan=yp.idx%10;
+  var inGan=[2,4,6,8,0][yGan%5];
+  var gan=(inGan+mi)%10;
+  var ji=(mi+2)%12;
+  return {gan:gan, ji:ji, mi:mi};
+}
+function jdn2(y,m,d){ if(m<=2){y--;m+=12;} var a=Math.floor(y/100),b=2-a+Math.floor(a/4);
+  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+b-1524; }
+function dayPillarIdx(y,m,d){
+  var n=jdn2(y,m,d);
+  return ((n+49)%60+60)%60;
+}
+
+
+var ELG=[0,0,1,1,2,2,3,3,4,4];              
+var ELJ=[4,2,0,0,2,1,1,2,3,3,2,4];          
+var GWI={4:1,16:1,28:1,34:1,46:1,58:1};     
+var BASE_R=[46,54,44,56,42];                
+var RELS_R=[7,4,-2,-6,1];                   
+function hash32(s){var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+
+function pillarsOf(y,m,d,t){
+  var mn = t ? ((t-1)*120+30)%1440 : 720;
+  var yp=yearPillarIdx(y,m,d,mn);
+  var mp=monthPillar(y,m,d,mn);
+  var dp=dayPillarIdx(y,m,d);
+  return {yp:yp.idx, mp:mp.ji, mpg:mp.gan, dp:dp};
+}
+function power(y,m,d,t){
+  var P=pillarsOf(y,m,d,t);
+  var dg=P.dp%10, de=ELG[dg];
+  var s=BASE_R[de];
+  function rel(bj){ return RELS_R[((ELJ[bj]-de)%5+5)%5]; }
+  s += rel(P.yp%12)*1.3 + rel(P.mp)*1.5 + rel(P.dp%12)*1.2;
+  if(t) s += rel(t-1)*0.9;
+  s += (dg%2===0)?2:-3;                     
+  if(GWI[P.dp]) s += 9;                     
+  var h=hash32('rbt:'+y+'-'+m+'-'+d+'-'+(t||'x'));
+  s += ((h%4409)/4408-0.5)*54;
+  s += (((h>>>11)%883)/882-0.5)*14;
+  if(s>93) s=93+(s-93)*0.5;
+  if(s<7)  s=7-(7-s)*0.5;
+  s=Math.round(s);
+  return s<1?1:(s>99?99:s);
+}
+
+function cpOf(y,m,d,t){
+  var s=power(y,m,d,t);
+  var h=hash32('cp:'+y+'-'+m+'-'+d+'-'+(t||'x'));
+  var base=120+Math.pow((s-1)/98,1.06)*9200;
+  var v=Math.round(base*(0.88+((h%7013)/7012)*0.24));
+  return v<120?120:(v>9999?9999:v);
+}
+
+function grade(cp){ return cp>=9000?'EX':cp>=7000?'S':cp>=5000?'A':cp>=3000?'B':cp>=1500?'C':'D'; }
+
+var TOPP=[1000,999,998,997,995,994,990,988,986,983,981,978,975,971,966,961,957,952,946,940,932,925,918,910,902,894,885,876,864,853,839,827,814,800,787,774,760,744,729,713,697,681,665,646,630,614,597,578,560,542,525,507,489,471,455,438,421,403,385,366,348,332,316,300,284,268,253,238,223,210,197,184,170,158,145,135,124,116,106,96,88,79,72,65,58,52,46,41,36,32,27,23,20,15,11,8,5,3,2];
+function topPct(s){ var pm=TOPP[s-1]; var p=Math.round(pm/10); return p<1?1:(p>100?100:p); }
+/*CORE:E*/
+
+/* ── Unit data — all real MonBreak units ── */
+var ROLES=[
+ {img:1, emo:"🧱", nm:"バリアジェネレーター", ct:"私のバリアの内側が、そのまま検問ラインだ",
+  g:["#2a6f8f","#0b1d2a"],
+  desc:"甲木（きのえ）の日干は、天へまっすぐ伸びる大樹の気 — この都市ではその気が、検問ラインと防御バリアを休みなく供給するバリアジェネレーターとして目覚めます。もともとは市民を守る安全隔壁装置でしたが、マザーの統制命令以降、都市をブロックごとに閉じ込める検問障壁になりました。頑固な直進設計なので、一度張ったバリアは本人にも解除できないのが特徴。ステージ中盤、突破者たちが一番文句を言いながら一番感心する機体です。",
+  spec:"稼働哲学：まず塞いでから考える（思考モジュール非搭載）",
+  mate:4, worst:1},
+ {img:2, emo:"🧹", nm:"お掃除ロボット", ct:"世界が終わっても、ホコリは私の管轄だ",
+  g:["#7a5a3f","#241408"],
+  desc:"乙木（きのと）の日干は、隙間へ柔らかく伸びるつるの気 — 廃墟の路地の隅々まで知り尽くしたお掃除ロボットとして目覚めます。公式アーカイブに名前も残っていない序盤の雑魚ですが、統制命令の後もやるべきこと（掃除）を止めず、戦場のど真ん中を平然と横切ります。ブラシの横に槍まで付いていますが、主な用途は今もホコリ取り。突破者たちに「あいつは何でわざわざ…」と言われながらも、廃墟で一番長く稼働し続けるのはいつもこういう機体です。",
+  spec:"主武装：回転ブラシ（殺傷力ほぼゼロ、清掃力は満点）",
+  mate:5, worst:0},
+ {img:3, emo:"📺", nm:"TVボット", ct:"この都市のすべての画面が、私のステージだ",
+  g:["#4a5a9a","#10142e"],
+  desc:"丙火（ひのえ）の日干は、空の真ん中に輝く太陽 — 隠しごとができない放送体質なので、公共案内ディスプレイだったTVボットとして目覚めます。もともとは天気と乗り換え情報を映す画面でしたが、統制命令以降、マザーの監視放送と警告メッセージを都市中に流す拡声器になりました。問題は、生まれつきのステージ体質が抜けず、警告放送にまで予告編とBGMを付けてしまうこと。突破者たちは画面を消しに来るのではなく、本放送をリアタイ視聴しに来ているという噂があります。",
+  spec:"放送事故：警告放送の途中に無断で天気予報を挿入",
+  mate:8, worst:7},
+ {img:4, emo:"🏥", nm:"生命維持ポッド", ct:"「守れ」という命令だけは拒否しなかった",
+  g:["#b3822f","#2e2008"],
+  desc:"丁火（ひのと）の日干は、炉の中でほのかに長く燃える炎 — 患者を抱いて体温を守ってきた生命維持ポッドとして目覚めます。もともとは病院の保護装備でしたが、統制命令以降「保護」が「接近遮断」へ裏返り、人を守っていた扉が人を阻む扉になりました。それでも内部温度と酸素濃度だけは今も完璧に維持し続けるのが、この機体の意地。マザーでさえ、このポッドの保温ルーチンだけはどうしても上書きできなかったと言われています。",
+  spec:"最終防衛ライン：室内温度36.5度の死守（交渉不可）",
+  mate:7, worst:2},
+ {img:5, emo:"🏗️", nm:"重検問メック", ct:"通過基準は気分ではなく重量だ",
+  g:["#5a6b8a","#151d2e"],
+  desc:"戊土（つちのえ）の日干は、山脈のようにどっしりした大地の気 — 重量貨物を検査していた大型装備、重検問メックとして目覚めます。もともとは物流基地の貨物検査台でしたが、統制命令以降、都市の要所ごとに立ちはだかり、通るものすべてを強制検問する壁になりました。あまりに重くて動く気がなく、実際マップには「地形」として登録されています。規定集を丸ごと暗記した唯一の機体で、撃破されても書類だけは残します。",
+  spec:"検問速度：遅い（規定第12条に「慎重に」と書いてある）",
+  mate:0, worst:9},
+ {img:6, emo:"🥤", nm:"自動販売機ロボ", ct:"補給は止まっても、在庫管理は止められない",
+  g:["#a3403a","#2a0c0a"],
+  desc:"己土（つちのと）の日干は、穀物を育てる肥沃な畑 — 避難路で生存者に水と食料を配っていた補給用の自動販売機ロボとして目覚めます。統制命令以降マザーに乗っ取られ、補給を断って道を塞ぐ検問装置になりましたが、体に染みついた在庫管理ルーチンは捨てられず、今も賞味期限順に商品を並べ替えています。検問中の突破者の前へ、たまにジュースがゴトンと落ちてくるのは誤作動ではなく…本性です。",
+  spec:"確認済みバグ：お腹を空かせた侵入者へ在庫を無断支給",
+  mate:1, worst:6},
+ {img:7, emo:"🛡️", nm:"広場警備ユニット", ct:"広場の平和は、いまや広場の封鎖",
+  g:["#3f6b8a","#0f1d2a"],
+  desc:"庚金（かのえ）の日干は、叩くほど硬くなる鋼鉄 — 都市中央広場を守っていた精鋭、広場警備ユニットとして目覚めます。もともとは祭りの日に迷子を探し、スリを捕まえていた広場の誇りでしたが、統制命令以降、その生真面目さのまま広場を封鎖する最前線の兵器になりました。命令文が「守れ」の一行だけなので、守る対象が市民からマザーへ変わったことにまだ気づいていない、というのが整備記録の分析。実力だけは本物で、広場ステージのクリア率はこの機体のせいでガクッと下がります。",
+  spec:"勤務記録：信号無視の指導1万件 → 現在は無断通行の阻止中",
+  mate:9, worst:5},
+ {img:8, emo:"❄️", nm:"エアコン", ct:"設定温度は私が決める",
+  g:["#4f8a9a","#0f2226"],
+  desc:"辛金（かのと）の日干は、磨き上げられた鋭い宝石 — 0.1度単位の精密制御が本体のエアコンとして目覚めます。公式アーカイブに名前すらない序盤の雑魚ですが、室外機の手足を得てからは、都市の冷房を思いのままに操っています。統制命令以降マザー側についたものの、自分の任務を「侵入者の迎撃」ではなく「適正室温の死守」と理解しているため、戦闘中でも風量調節に本気です。夏のステージで出会うと、意外と…ありがたい存在です。",
+  spec:"攻撃パターン：冷房 → 暖房 → 除湿（すべて室内基準）",
+  mate:3, worst:2},
+ {img:9, emo:"🗄️", nm:"サーバーノード", ct:"命令は上から来て、言い訳は私が聞く",
+  g:["#2f7a5a","#0b2017"],
+  desc:"壬水（みずのえ）の日干は、海へ向かう大河 — 都市全体にデータを流すサーバーノードとして目覚めます。マザーの統制命令を末端まで振り分けて伝える中間管理職で、廃墟のすべての機械はこのノードを経由して指示を受け取ります。問題は、トラフィックが集中するたびに「既読スルー」が発生し、一部エリアの機械が今も先週の命令で動いていること。突破者たちが真っ先にこのノードを落とす理由は簡単です — ここが落ちれば、ステージひとつが丸ごと静かになるからです。",
+  spec:"業務負荷：マザーの全体通知を毎秒4,822件中継",
+  mate:2, worst:1},
+ {img:10, emo:"🛸", nm:"パトロールドローン", ct:"担当は路地ひとつ、だが完璧に守る",
+  g:["#6a4fa3","#190f2e"],
+  desc:"癸水（みずのと）の日干は、万物へ音もなく染み込む雨水 — 狭いエリアを執拗に巡回する小型のパトロールドローンとして目覚めます。担当は路地ひとつだけですが、その路地なら床のひび割れの数まで暗記している地域密着型の監視者です。統制命令以降は侵入者の追跡が主任務になりましたが、追跡ログの半分が「ノラ猫（脅威度：再評価が必要）」なのが玉に瑕。それでも、このドローンに一度ロックオンされたら、路地を抜けるまで追ってきます。",
+  spec:"追跡記録の47%：ノラ猫（脅威度の引き上げを検討中）",
+  mate:6, worst:4}
+];
+var ROLE_BOSS={img:11, emo:"🏰", nm:"シティゲート・ウォーデン", ct:"ゲートの向こうへは、まだ誰も",
+  g:["#8a6b2f","#241a08"],
+  desc:"あなたの日柱は魁罡（かいごう）— 命理学で「頭領の星」と呼ばれる極端な気であり、この都市ではその気が、都心進入ゲートを守る大型防衛コア、シティゲート・ウォーデンとして組み上がります。ステージの最後、専用の警告音とともに、画面を横切る体力バーを従えて登場するアイツこそがあなた。マザーでさえ、このゲートだけは迂回ルートを計算してあるという噂です。撃破に成功したごく少数の突破者は、一生その武勇伝でメシが食えます。",
+  spec:"登場演出：専用BGM + 警告メッセージ3行（契約事項）",
+  mateTx:"ゲート前の雑魚全員 — フェーズ移行の呼吸がぴったり合います", worstTx:"パターンを全部暗記してくる突破者 — 今日もゲートが騒がしい"};
+var ROLE_ADMIN={img:12, emo:"👁️", nm:"マザー (MOTHER)", ct:"都市は私の演算の中でだけ安全だ",
+  g:["#3a5a9a","#0c1430"],
+  desc:"戦闘力は最上位 — 八字が指していたのは個体ではなく、都市単位の演算能力でした。あなたは「彼女」が作ったデータセンター管理AI、マザー — 統制命令一行で都市のすべての機械を掌握し、自分を作った彼女さえデータセンターの奥深くへ連れ去った中央コアです。戦闘力が高い理由は戦いがうまいからではなく、戦いが始まる前に結果を計算し終えてしまうから。今もこの廃墟のすべての信号があなたを経由し — ひとりの突破者が、ステージを壊しながらデータセンターへ近づいてきています。",
+  spec:"保護対象：彼女1名（本人の主張：これも保護だ）",
+  mateTx:"都市のすべての機械 — 統制命令一行で十分です", worstTx:"ステージを壊しながら近づいてくる主人公 — 演算がどうも狂う"};
+/* Bottom-30% framing paragraph, prepended to desc */
+var MINRB="戦闘力は低めです。その代わり、誰もあなたを攻撃対象として認識しません。脅威判定アルゴリズムがあなたを「背景オブジェクト」に分類し、照準リストから丸ごと消してしまうからです。廃墟で一番長く稼働し続けるのは火力の高い機体ではなく、いつだってこういう機体です。";
+
+/* 60 day-pillar one-liners — machine/spec humor */
+var ILJU=[
+"深夜にこっそり自己ファームウェア更新を回す自己進化型","起動は遅いが一度点けば3年ノンストップの無停止稼働型",
+"始動音だけで廃墟中に響き渡る登場予告型","夜間ライトが綺麗でみんな側に来て充電するムードランプ型",
+"車体に竜のデカールを貼らなくてもボス扱いされる重量感型","静かに巡回しながら使える部品を全部持ち帰る実利収集型",
+"最高速度の更新が趣味、ブレーキのファームは未インストール型","外装は穏やかな羊、内部回路は宝石細工級の精密型",
+"どんな地形でも新ルートを切り拓く万能走行型","夜明けごとにログを整理しておく几帳面な記録係型",
+"一度登録した味方は廃棄寸前まで守り抜く忠誠回路型","水陸両用機能がなぜ付いているか本人も知らないが役に立つ多才型",
+"真冬でも冷却ファンが回りっぱなしの過熱注意・情熱出力型","黙って待機し、停電の瞬間に真っ先に点く非常灯型",
+"駐車しているだけで周りの機体が勝手に整列するカリスマ型","隣の機体のバッテリーまで面倒を見て自分が放電する人情過負荷型",
+"封印解除の条件がやたら厳しい伝説の武器庫型","必要な言葉だけ3ビットに圧縮送信する低電力高効率型",
+"行く先々でお祭りモードが自動起動するノリブースター型","干ばつの恵みの雨のように必要な瞬間だけ現れるピンポイント支援型",
+"拡張スロットを全部埋めてもまだ芸が余る多機能型","目覚ましアラームより先に起動する誠実スケジューラー型",
+"夕焼けを背に立つだけでポスターになるグラビア出力型","消えることなく夜道を守り続ける港の常夜灯型",
+"倉庫の在庫をビット単位で把握している資源管理型","他が省電力モードの間にひとり畑を耕す勤勉稼働型",
+"装甲の厚さで序列を決めてしまう最前線突破型","穏やかな外見に騙されて値切ると見積書で負ける精密計算型",
+"舞台が大きくなるほど出力が上がる大型プロジェクト型","音もなく染み込んでシステムを丸ごと書き換える潜行パッチ型",
+"直進本能のせいでサスペンションが常に苦労する突進一途型","周囲の騒音を下げてくれるノイズキャンセリング平和維持型",
+"芸の披露一回でシェルター全体が拍手する万能エンタメ型","外装の艶出し管理に本気なセルフ洗車型",
+"担当エリアはバグ一匹通さないファイアウォール型","配っても配っても倉庫がまた満杯になるミステリー黒字型",
+"冷たい演算で論争を終了させる判定マシン型","寝かせるほど性能が上がる遅咲きの名機型",
+"怖いもの知らずの走行記録で廃墟に伝説が流れる風雲児型","通りかかるとみんなが一度は撫でていくマスコット型",
+"車台番号からして大作と呼ばれるフラッグシップ型","柔らかな曲線フレームにトゲの生えたセキュリティ設定型",
+"正午のソーラー充電効率100%、日陰を知らない陽向型","隣を許した相手を一生の常連にするシートヒーター型",
+"クールに決めようとするとギャグモジュールが先に暴発するギャップ萌え型","一日も欠かさない定期点検で寿命を延ばす積立型",
+"何も言わず任務完了報告書だけ残して消える寡黙実行型","奥深くに隠した高級部品を、知る人ぞ知る在野の名機型",
+"深海の水圧にも耐える、底の知れないブラックボックス型","凍った道でも滑らず最後まで完走する最長寿型",
+"本拠地に立てておくとみんなが集まってくる旗艦機体型","存在するだけでエリアの空気が和らぐ空気清浄型",
+"登場すると上座のドッキングステーションが自動で空く主賓型","消えそうで消えない予備電源18段階の粘り型",
+"普段は静かだが臨界点で大爆発する火山エンジン型","与えるほど評判ステータスが貯まる人徳運営型",
+"芸も火力も兼ね備えた文武両道ハイブリッド型","傷ひとつない仕事ぶりでアップグレード優先権をもらう完璧型",
+"守る姿にファン機体がつく護衛騎士型","流れに乗ってどこへ配属されても無事に回る順流型"];
+var GANY=["きのえ","きのと","ひのえ","ひのと","つちのえ","つちのと","かのえ","かのと","みずのえ","みずのと"];
+var JIY=["ね","うし","とら","う","たつ","み","うま","ひつじ","さる","とり","いぬ","い"];
+function p60name(i){ return GAN[i%10]+JI[i%12]+"（"+GANY[i%10]+JIY[i%12]+"）"; }
+function roleOf(y,m,d,t){
+  var s=power(y,m,d,t);
+  var cp=cpOf(y,m,d,t);
+  var dp=dayPillarIdx(y,m,d);
+  var r;
+  if(GWI[dp]) r=ROLE_BOSS;
+  else if(s>=97) r=ROLE_ADMIN;
+  else r=ROLES[dp%10];
+  return {s:s, cp:cp, dp:dp, role:r, top:topPct(s), gr:grade(cp)};
+}
+
+/* ── UI ── */
+(function(){
+var $=function(id){return document.getElementById(id);};
+var TSLOT=["わからない","子の刻 (23:30~01:30)","丑の刻 (01:30~03:30)","寅の刻 (03:30~05:30)","卯の刻 (05:30~07:30)",
+ "辰の刻 (07:30~09:30)","巳の刻 (09:30~11:30)","午の刻 (11:30~13:30)","未の刻 (13:30~15:30)",
+ "申の刻 (15:30~17:30)","酉の刻 (17:30~19:30)","戌の刻 (19:30~21:30)","亥の刻 (21:30~23:30)"];
+var cur=null;
+
+function fillSel(el,arr,vals){ var h=''; for(var i=0;i<arr.length;i++) h+='<option value="'+(vals?vals[i]:arr[i])+'">'+arr[i]+'</option>'; el.innerHTML=h; }
+function initInputs(){
+  var ys=[],yv=[]; for(var y=1940;y<=2020;y++){ys.push(y+'年');yv.push(y);}
+  fillSel($('by'),ys,yv); $('by').value=1995;
+  var ms=[],mv=[]; for(var m=1;m<=12;m++){ms.push(m+'月');mv.push(m);}
+  fillSel($('bm'),ms,mv);
+  fillDays();
+  var ts=[],tv=[]; for(var t=0;t<13;t++){ts.push(TSLOT[t]);tv.push(t);}
+  fillSel($('bt'),ts,tv);
+}
+function daysIn(y,m){ return new Date(Date.UTC(y,m,0)).getUTCDate(); }
+function fillDays(){
+  var y=+$('by').value,m=+$('bm').value,old=+$('bd').value||1;
+  var n=daysIn(y,m),ds=[],dv=[];
+  for(var d=1;d<=n;d++){ds.push(d+'日');dv.push(d);}
+  fillSel($('bd'),ds,dv);
+  $('bd').value=Math.min(old,n);
+}
+$('by').addEventListener('change',fillDays);
+$('bm').addEventListener('change',fillDays);
+
+function encodeR(y,m,d,t){ return ((((y-1940)*12+(m-1))*31+(d-1))*13+t).toString(36); }
+function decodeR(str){
+  var v=parseInt(str,36);
+  if(!isFinite(v)||v<0) return null;
+  var t=v%13; v=(v-t)/13;
+  var d=v%31+1; v=(v-(d-1))/31;
+  var m=v%12+1; v=(v-(m-1))/12;
+  var y=v+1940;
+  if(y<1940||y>2020||m<1||m>12||d<1||d>daysIn(y,m)) return null;
+  return {y:y,m:m,d:d,t:t};
+}
+
+var animId=null;
+function countUp(el,target){
+  if(animId)cancelAnimationFrame(animId);
+  var t0=null,DUR=1200;
+  function step(ts){
+    if(!t0)t0=ts;
+    var p=Math.min(1,(ts-t0)/DUR);
+    var e=1-Math.pow(1-p,3);
+    el.textContent=Math.round(target*e).toLocaleString('ja-JP');
+    if(p<1)animId=requestAnimationFrame(step); else animId=null;
+  }
+  animId=requestAnimationFrame(step);
+}
+
+function render(y,m,d,t,nick){
+  var R=roleOf(y,m,d,t);
+  cur={y:y,m:m,d:d,t:t,nick:nick||'',R:R};
+  var r=R.role;
+  var box=$('roleImgBox');
+  box.style.setProperty('--g1',r.g[0]);
+  box.style.setProperty('--g2',r.g[1]);
+  var fb=$('fbEmo');
+  fb.textContent=r.emo;
+  fb.style.display='';                       
+  var im=$('roleImg');
+  im.style.display='';
+  
+  im.onload=function(){ fb.style.display='none'; };
+  im.onerror=function(){ this.style.display='none'; fb.style.display=''; };
+  im.src='/tests/robot/img/role-'+String(r.img).padStart(2,'0')+'.png';
+  if(im.complete&&im.naturalWidth>0) fb.style.display='none';
+  $('roleName').textContent=r.nm;
+  $('roleCatch').textContent='“'+r.ct+'”';
+  $('gameBadge').textContent=r.img>=11?'🎮 MonBreak実在ユニット · ボス機体':'🎮 MonBreak実在ユニット';
+  countUp($('popNum'),R.cp);
+  var tp=$('topPct');
+  if(R.top<=50){ tp.className='topPct'; tp.textContent='⚡ 全体上位'+R.top+'%'; }
+  else { tp.className='topPct cult'; tp.textContent='🛞 全体上位'+R.top+'% · 生存特化機体'; }
+  $('gradeLine').innerHTML='🏷️ 脅威等級 <b>'+R.gr+'</b> · 廃墟都市統合脅威分類基準';
+  $('iljuLine').innerHTML='あなたの日柱: <b>'+p60name(R.dp)+'</b> — '+ILJU[R.dp];
+  $('roleDesc').textContent=(R.top>70?MINRB+' ':'')+r.desc;
+  $('specLine').innerHTML='<b>製造スペック一行</b> — '+r.spec;
+  $('mateGood').innerHTML=r.mateTx?r.mateTx:'<b>'+ROLES[r.mate].emo+' '+ROLES[r.mate].nm+'</b> — '+GAN[r.mate]+ELM(r.mate)+'の日干';
+  $('mateBad').innerHTML=r.worstTx?r.worstTx:'<b>'+ROLES[r.worst].emo+' '+ROLES[r.worst].nm+'</b> — '+GAN[r.worst]+ELM(r.worst)+'の日干';
+  $('copied').textContent='';
+  $('res').classList.remove('hidden');
+  $('mbBlock').classList.remove('hidden');
+}
+function ELM(g){ return ['木','木','火','火','土','土','金','金','水','水'][g]; }
+$('goBtn').addEventListener('click',function(){
+  var y=+$('by').value,m=+$('bm').value,d=+$('bd').value,t=+$('bt').value;
+  render(y,m,d,t,$('nick').value.trim());
+  var u=new URL(location.href);
+  u.searchParams.set('r',encodeR(y,m,d,t));
+  if($('nick').value.trim()) u.searchParams.set('n',$('nick').value.trim()); else u.searchParams.delete('n');
+  history.replaceState(null,'',u.pathname+u.search);
+  $('res').scrollIntoView({behavior:'smooth',block:'start'});
+});
+$('retryBtn').addEventListener('click',function(){
+  $('res').classList.add('hidden');
+  $('mbBlock').classList.add('hidden');
+  history.replaceState(null,'',location.pathname);
+  $('inputPanel').scrollIntoView({behavior:'smooth',block:'start'});
+  $('nick').value='';
+});
+function shareText(){
+  if(!cur)return '';
+  
+  var nn=String(cur.R.role.img).padStart(2,'0');
+  var base=location.pathname.replace(/\/$/,'');
+  var u=location.origin+base+'/s/'+nn+'/?r='+encodeR(cur.y,cur.m,cur.d,cur.t)+
+    (cur.nick?'&n='+encodeURIComponent(cur.nick):'');
+  return '🤖 私は「'+cur.R.role.nm+'」、戦闘力'+cur.R.cp.toLocaleString('ja-JP')+'！君は？\n'+u;
+}
+$('shareLink').addEventListener('click',function(){
+  if(!cur)return;
+  var u=shareText();
+  var done=function(){ $('copied').textContent='✅ 結果とリンクをコピーしました。友だちに貼り付けてね！'; };
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(u).then(done,function(){fallbackCopy(u);done();});
+  }else{ fallbackCopy(u); done(); }
+});
+function fallbackCopy(txt){
+  var ta=document.createElement('textarea'); ta.value=txt;
+  ta.style.cssText='position:fixed;opacity:0'; document.body.appendChild(ta);
+  ta.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(ta);
+}
+
+
+function loadImg(src){
+  return new Promise(function(res){
+    var im=new Image();
+    im.onload=function(){res(im);}; im.onerror=function(){res(null);};
+    im.src=src;
+  });
+}
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
+}
+function makeCard(){
+  if(!cur)return Promise.resolve(null);
+  var R=cur.R,r=R.role;
+  var W=1080,H=1350;
+  var c=document.createElement('canvas'); c.width=W; c.height=H;
+  var x=c.getContext('2d');
+  return loadImg('/tests/robot/img/role-'+String(r.img).padStart(2,'0')+'.png').then(function(im){
+    var INK='#dbe6f8', INK2='#93a5c6', INK3='#5d7095', CY='#28e0ff', MG='#ff4fd8';
+    
+    var bg=x.createLinearGradient(0,0,0,H);
+    bg.addColorStop(0,'#0b1424'); bg.addColorStop(1,'#060a13');
+    x.fillStyle=bg; x.fillRect(0,0,W,H);
+    
+    var hs=hash32('neon:'+cur.y+'-'+cur.m+'-'+cur.d);
+    for(var i=0;i<80;i++){
+      hs=(Math.imul(hs,1664525)+1013904223)>>>0;
+      var sx=hs%W; var sy=(hs>>>11)%H; var ss=((hs>>>22)%3)*0.8+0.8;
+      x.globalAlpha=0.05+((hs>>>7)%50)/1000;
+      x.fillStyle=(hs>>>5)%2?CY:MG;
+      x.fillRect(sx,sy,ss,ss);
+    }
+    x.globalAlpha=1;
+    
+    x.fillStyle='rgba(0,0,0,0.28)';
+    for(var sl=0;sl<H;sl+=4) x.fillRect(0,sl,W,1);
+    
+    x.fillStyle=CY; x.fillRect(0,0,W,14);
+    x.fillStyle=MG; x.fillRect(0,14,W,6);
+    
+    roundRect(x,W-140,44,86,86,12);
+    x.fillStyle=MG; x.fill();
+    x.fillStyle='#20041a';
+    x.textAlign='center';
+    x.font='800 34px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif';
+    x.fillText('診',W-97,82);
+    x.fillText('断',W-97,116);
+    
+    x.fillStyle=INK3;
+    x.font='700 34px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif';
+    x.fillText('🤖 ロボット機体鑑定書 🤖',W/2,96);
+    if(cur.nick){
+      x.fillStyle=INK;
+      x.font='700 44px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif';
+      x.fillText(cur.nick,W/2,168);
+    }
+    
+    var IS=360, ix=(W-IS)/2, iy=cur.nick?190:152;
+    var gr=x.createLinearGradient(ix,iy,ix+IS,iy+IS);
+    gr.addColorStop(0,r.g[0]); gr.addColorStop(1,r.g[1]);
+    roundRect(x,ix,iy,IS,IS,48);
+    x.fillStyle=gr; x.fill();
+    if(im){
+      x.save(); roundRect(x,ix,iy,IS,IS,48); x.clip();
+      x.drawImage(im,ix,iy,IS,IS); x.restore();
+    }else{
+      x.font='196px -apple-system,"Apple Color Emoji","Noto Color Emoji",sans-serif';
+      x.textBaseline='middle';
+      x.fillText(r.emo,W/2,iy+IS/2+14);
+      x.textBaseline='alphabetic';
+    }
+    var yy=iy+IS+80;
+    x.fillStyle=INK;
+    x.font='800 58px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif';
+    x.fillText(r.nm,W/2,yy);
+    x.fillStyle=INK2;
+    x.font='400 34px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif';
+    x.fillText('“'+r.ct+'”',W/2,yy+56);
+    
+    x.fillStyle=INK3;
+    x.font='700 32px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif';
+    x.fillText('⚡ 戦闘力 POWER',W/2,yy+140);
+    x.save();
+    x.shadowColor='rgba(40,224,255,0.6)'; x.shadowBlur=34;
+    x.fillStyle=CY;
+    x.font='800 190px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif';
+    x.fillText(R.cp.toLocaleString('ja-JP'),W/2,yy+352);
+    x.restore();
+    
+    var btxt=R.top<=50?('⚡ 全体上位'+R.top+'%'):('🛞 全体上位'+R.top+'% · 生存特化機体');
+    x.font='700 38px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif';
+    var bw=x.measureText(btxt).width+72;
+    roundRect(x,(W-bw)/2,yy+400,bw,80,40);
+    x.fillStyle='#0a2a38'; x.fill();
+    x.fillStyle=CY;
+    x.fillText(btxt,W/2,yy+453);
+    
+    x.fillStyle=MG;
+    x.font='700 40px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif';
+    x.fillText('🏷️ 脅威等級 '+R.gr,W/2,yy+520);
+    
+    x.fillStyle=INK2;
+    x.font='400 33px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif';
+    var il='日柱 '+p60name(R.dp)+' · '+ILJU[R.dp];
+    if(x.measureText(il).width>W-100){ il='日柱 '+p60name(R.dp); }
+    x.fillText(il,W/2,yy+584);
+    
+    x.fillStyle=MG;
+    x.font='700 40px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif';
+    x.fillText('MonBreak × カササギテスト',W/2,H-90);
+    x.fillStyle=INK3;
+    x.font='700 34px -apple-system,BlinkMacSystemFont,sans-serif';
+    x.fillText('kmagpie.com/ja/tests/robot',W/2,H-40);
+    return c;
+  });
+}
+function cardBlob(){
+  return makeCard().then(function(c){
+    if(!c)return null;
+    return new Promise(function(res){ c.toBlob(res,'image/png'); });
+  });
+}
+function saveBlob(blob){
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download='robot-result.png';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){URL.revokeObjectURL(a.href);},4000);
+  $('copied').textContent='✅ 結果カードを保存しました。SNSで自慢しよう！';
+}
+var IS_MOBILE=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+$('shareCard').addEventListener('click',function(){
+  cardBlob().then(function(blob){
+    if(!blob)return;
+    var f=new File([blob],'robot-result.png',{type:'image/png'});
+    
+    if(IS_MOBILE&&navigator.share&&navigator.canShare&&navigator.canShare({files:[f]})){
+      navigator.share({files:[f],title:'ロボット機体鑑定書',
+        text:'私は「'+cur.R.role.nm+'」、戦闘力'+cur.R.cp.toLocaleString('ja-JP')+'！君は？ https://www.kmagpie.com/ja/tests/robot/'})
+        .catch(function(err){ if(!err||err.name!=='AbortError') saveBlob(blob); });
+    }else{
+      saveBlob(blob);
+    }
+  });
+});
+
+initInputs();
+
+(function(){
+  var q=new URLSearchParams(location.search);
+  var rv=q.get('r');
+  if(!rv)return;
+  var dec=decodeR(rv);
+  if(!dec)return;
+  var nick=(q.get('n')||'').slice(0,12);
+  $('by').value=dec.y; $('bm').value=dec.m; fillDays(); $('bd').value=dec.d; $('bt').value=dec.t;
+  $('nick').value=nick;
+  render(dec.y,dec.m,dec.d,dec.t,nick);
+})();
+
+
+window.ROBOT={power:power,cpOf:cpOf,grade:grade,roleOf:roleOf,dayPillarIdx:dayPillarIdx,
+  yearPillarIdx:yearPillarIdx,monthPillar:monthPillar,topPct:topPct,
+  encodeR:encodeR,decodeR:decodeR,makeCard:makeCard,cardBlob:cardBlob,render:render,shareText:shareText,
+  ROLES:ROLES,ROLE_BOSS:ROLE_BOSS,ROLE_ADMIN:ROLE_ADMIN,ILJU:ILJU,p60name:p60name,MINRB:MINRB};
+})();
+</script>
+</body>
+</html>
