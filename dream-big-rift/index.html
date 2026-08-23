@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./styles.css?v=20260823-4" />
   <script type="importmap">
   {
     "imports": {
@@ -36,7 +36,7 @@
         <p class="eyebrow" data-i18n="eyebrow">실시간 생성형 우주 미디어아트</p>
         <h1 id="art-title">RIFT <span>:</span> SEAM OF LIGHT</h1>
         <p class="subtitle" data-i18n="subtitle">균열은 파괴의 흔적이 아니라, 빛이 다시 질서를 짜는 틈이 된다.</p>
-        <p class="meta" data-i18n="meta">60초 · 실시간 WebGL · 프로시저럴 셰이더 · 생성형 음향</p>
+        <p class="meta" data-i18n="meta">60초 · 실시간 프로시저럴 비주얼 · 생성형 음향</p>
         <button id="start-button" class="primary-button" type="button" data-i18n="start">작품 시작</button>
         <p class="hint" data-i18n="hint">헤드폰 또는 스피커 사용을 권장합니다.</p>
       </div>
@@ -66,11 +66,11 @@
 
     <div id="progress" aria-hidden="true"><span></span></div>
     <div id="fallback" role="status" hidden>
-      <strong data-i18n="fallbackTitle">WebGL을 사용할 수 없습니다.</strong>
-      <span data-i18n="fallbackBody">최신 Chrome, Edge 또는 Safari에서 다시 열어주세요.</span>
+      <strong>작품을 불러오지 못했습니다.</strong>
+      <span>페이지를 새로고침한 뒤 다시 시도해주세요.</span>
     </div>
   </main>
 
-  <script type="module" src="./app.js"></script>
+  <script type="module" src="./app.js?v=20260823-4"></script>
 </body>
 </html>
