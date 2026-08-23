@@ -157,11 +157,12 @@ def block(slug):
             f'<p class="rel-all"><a href="/tools/">까치툴 도구 {n}개 전체 보기 →</a></p>\n<!--REL:E-->\n\n')
 
 TESTS_CSS = """/*TESTS:S*/
-  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 0;padding:14px 18px;
+  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 0;padding:13px 18px;
     border:1px solid var(--line);border-radius:14px;background:var(--surface);
     text-decoration:none;color:inherit;transition:.14s}
   .tbn:hover{border-color:var(--accent);transform:translateY(-2px)}
-  .tbn .ic{font-size:22px;line-height:1;flex:none}
+  .tbn .ic{width:44px;height:44px;flex:none;border-radius:12px;background:#fff;
+    border:1px solid var(--line);object-fit:contain;padding:2px}
   .tbn .tx{flex:1;min-width:0}
   .tbn .tt{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em}
   .tbn .ds{display:block;font-size:13px;color:var(--ink-3);line-height:1.55;margin-top:2px}
@@ -171,7 +172,7 @@ TESTS_CSS = """/*TESTS:S*/
 
 TESTS_BLOCK = """<!--TESTS:S-->
 <a class="tbn" href="/tests/">
-  <span class="ic">\U0001F426‍⬛</span>
+  <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
   <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 사주로 보는 재미 테스트 4종 — 결과는 친구와 비교해 보세요.</span></span>
   <span class="ar">→</span>
 </a>
@@ -824,6 +825,14 @@ if __name__ == '__main__':
         print(f'  {slug:16} {patch(slug):>7,} bytes')
     idx = sys.argv[2] if len(sys.argv) > 2 else str(ROOT / 'index.html')
     print(f'  {"index":16} {patch_index(idx):>7,} bytes')
+
+    # 소개 페이지는 TOOLS 목록에 없지만 테스트 배너는 같이 유지한다
+    ab = ROOT / 'about' / 'index.html'
+    if ab.exists():
+        t = open(ab, encoding='utf-8', newline='').read()
+        t = patch_tests(t, '\r\n' if '\r\n' in t[:2000] else '\n')
+        open(ab, 'w', encoding='utf-8', newline='').write(t)
+        print(f'  {"about":16} {len(t.encode()):>7,} bytes')
 
     if EN_ROOT.is_dir():
         print('  ── en ──')
