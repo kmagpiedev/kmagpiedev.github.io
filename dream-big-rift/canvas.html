@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#030711" />
+  <meta name="description" content="RIFT : SEAM OF LIGHT — resilient canvas edition by K-MAGPIE." />
+  <title>RIFT : SEAM OF LIGHT — K-MAGPIE</title>
+  <link rel="icon" href="/images/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css?v=20260823-5" />
+  <style>#fallback[hidden]{display:none!important}</style>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.185.1/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <main id="artwork" aria-label="RIFT : SEAM OF LIGHT">
+    <div id="stage" aria-hidden="true"></div>
+    <div id="vignette" aria-hidden="true"></div>
+    <div id="grain" aria-hidden="true"></div>
+    <div id="cycle-fade" aria-hidden="true"></div>
+
+    <section id="intro" class="overlay" aria-labelledby="art-title">
+      <div class="intro-card">
+        <div class="brand-line">
+          <img src="/images/favicon.png" alt="" />
+          <span>K-MAGPIE · MEDIA ART 001</span>
+        </div>
+        <p class="eyebrow" data-i18n="eyebrow">실시간 생성형 우주 미디어아트</p>
+        <h1 id="art-title">RIFT <span>:</span> SEAM OF LIGHT</h1>
+        <p class="subtitle" data-i18n="subtitle">균열은 파괴의 흔적이 아니라, 빛이 다시 질서를 짜는 틈이 된다.</p>
+        <p class="meta" data-i18n="meta">60초 · 실시간 프로시저럴 비주얼 · 생성형 음향</p>
+        <button id="start-button" class="primary-button" type="button" data-i18n="start">작품 시작</button>
+        <p class="hint" data-i18n="hint">헤드폰 또는 스피커 사용을 권장합니다.</p>
+      </div>
+    </section>
+
+    <section id="end-card" aria-hidden="true">
+      <p class="end-kicker">K-MAGPIE · 2026</p>
+      <h2>RIFT <span>:</span> SEAM OF LIGHT</h2>
+      <p data-i18n="endline">혼돈은 사라지지 않는다. 우리는 그 위에 다시 빛을 잇는다.</p>
+    </section>
+
+    <nav id="controls" aria-label="Artwork controls">
+      <button id="replay-button" class="icon-button" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66L20 8M20 4v4h-4"/></svg>
+        <span data-i18n="replay">다시</span>
+      </button>
+      <button id="fullscreen-button" class="icon-button" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg>
+        <span data-i18n="fullscreen">전체화면</span>
+      </button>
+      <button id="mute-button" class="icon-button" type="button">
+        <svg class="sound-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5ZM15 9a4 4 0 0 1 0 6M17.5 6.5a8 8 0 0 1 0 11"/></svg>
+        <svg class="sound-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5ZM16 9l5 6M21 9l-5 6"/></svg>
+        <span data-i18n="mute">음소거</span>
+      </button>
+    </nav>
+
+    <div id="progress" aria-hidden="true"><span></span></div>
+    <div id="fallback" role="status" hidden>
+      <strong>작품을 불러오지 못했습니다.</strong>
+      <span>페이지를 새로고침한 뒤 다시 시도해주세요.</span>
+    </div>
+  </main>
+
+  <script type="module" src="./app.js?v=20260823-5"></script>
+</body>
+</html>
