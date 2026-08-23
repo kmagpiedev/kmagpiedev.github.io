@@ -128,6 +128,17 @@
   .langsw a{color:var(--ink-3);text-decoration:none;border-bottom:1px solid var(--line)}
   .langsw a:hover{color:var(--accent);border-color:var(--accent)}
 /*LANG:E*/
+/*TESTS:S*/
+  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 0;padding:14px 18px;
+    border:1px solid var(--line);border-radius:14px;background:var(--surface);
+    text-decoration:none;color:inherit;transition:.14s}
+  .tbn:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .tbn .ic{font-size:22px;line-height:1;flex:none}
+  .tbn .tx{flex:1;min-width:0}
+  .tbn .tt{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em}
+  .tbn .ds{display:block;font-size:13px;color:var(--ink-3);line-height:1.55;margin-top:2px}
+  .tbn .ar{color:var(--ink-3);font-size:15px;flex:none}
+/*TESTS:E*/
 </style>
 <!--ALT:S-->
 <link rel="alternate" hreflang="ko" href="https://www.kmagpie.com/tools/unemployment/">
@@ -300,6 +311,14 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 </div>
 <p class="rel-all"><a href="/tools/">까치툴 도구 34개 전체 보기 →</a></p>
 <!--REL:E-->
+
+<!--TESTS:S-->
+<a class="tbn" href="/tests/">
+  <span class="ic">🐦‍⬛</span>
+  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 사주로 보는 재미 테스트 4종 — 결과는 친구와 비교해 보세요.</span></span>
+  <span class="ar">→</span>
+</a>
+<!--TESTS:E-->
 
 <footer>
   <!--FOOTNOTE--><p>계산 결과는 참고용 추정치이며 법적 효력이 없습니다. 정확한 금액과 문의처는 <a href="/disclaimer.html">면책조항</a>에서 확인하세요.</p>

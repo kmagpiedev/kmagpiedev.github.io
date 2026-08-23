@@ -55,6 +55,17 @@
   .quick a:hover{border-color:var(--accent);color:var(--accent)}
   footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
   footer a{color:var(--ink-3)}
+/*TESTS:S*/
+  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 0;padding:14px 18px;
+    border:1px solid var(--line);border-radius:14px;background:var(--surface);
+    text-decoration:none;color:inherit;transition:.14s}
+  .tbn:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .tbn .ic{font-size:22px;line-height:1;flex:none}
+  .tbn .tx{flex:1;min-width:0}
+  .tbn .tt{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em}
+  .tbn .ds{display:block;font-size:13px;color:var(--ink-3);line-height:1.55;margin-top:2px}
+  .tbn .ar{color:var(--ink-3);font-size:15px;flex:none}
+/*TESTS:E*/
 /*REL:S*/
 /*REL:E*/
 </style>
@@ -125,6 +136,14 @@
 <a href="mailto:support@kmagpie.com">support@kmagpie.com</a>으로 알려주세요.
 "이런 도구도 있었으면 좋겠다"는 제안도 언제나 환영합니다.
 실제로 지금 있는 도구 중 여럿이 그런 제안에서 나왔습니다.</p>
+
+<!--TESTS:S-->
+<a class="tbn" href="/tests/">
+  <span class="ic">🐦‍⬛</span>
+  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 사주로 보는 재미 테스트 4종 — 결과는 친구와 비교해 보세요.</span></span>
+  <span class="ar">→</span>
+</a>
+<!--TESTS:E-->
 
 <footer>
   <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 파일은 전송·저장되지 않습니다.</p>

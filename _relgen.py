@@ -156,6 +156,47 @@ def block(slug):
     return (f'<!--REL:S-->\n<h2>함께 쓰면 좋은 도구</h2>\n<div class="rel">\n{cards}\n</div>\n'
             f'<p class="rel-all"><a href="/tools/">까치툴 도구 {n}개 전체 보기 →</a></p>\n<!--REL:E-->\n\n')
 
+TESTS_CSS = """/*TESTS:S*/
+  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 0;padding:14px 18px;
+    border:1px solid var(--line);border-radius:14px;background:var(--surface);
+    text-decoration:none;color:inherit;transition:.14s}
+  .tbn:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .tbn .ic{font-size:22px;line-height:1;flex:none}
+  .tbn .tx{flex:1;min-width:0}
+  .tbn .tt{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em}
+  .tbn .ds{display:block;font-size:13px;color:var(--ink-3);line-height:1.55;margin-top:2px}
+  .tbn .ar{color:var(--ink-3);font-size:15px;flex:none}
+/*TESTS:E*/
+"""
+
+TESTS_BLOCK = """<!--TESTS:S-->
+<a class="tbn" href="/tests/">
+  <span class="ic">\U0001F426‍⬛</span>
+  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 사주로 보는 재미 테스트 4종 — 결과는 친구와 비교해 보세요.</span></span>
+  <span class="ar">→</span>
+</a>
+<!--TESTS:E-->
+
+"""
+
+def patch_tests(s, nl):
+    """푸터 바로 위에 까치테스트 배너를 넣는다. 몇 번 돌려도 결과가 같다."""
+    if '/*TESTS:S*/' in s:
+        s = put(s, '/*TESTS:S*/', '/*TESTS:E*/', TESTS_CSS.replace('\n', nl).strip())
+    else:
+        i = s.find('</style>')
+        assert i > 0, 'TESTS: </style> 없음'
+        s = s[:i] + TESTS_CSS.replace('\n', nl) + s[i:]
+
+    blk = TESTS_BLOCK.replace('\n', nl)
+    r = put(s, '<!--TESTS:S-->', '<!--TESTS:E-->', blk.strip())
+    if r is not None:
+        return r
+    i = s.find('<footer>')
+    assert i > 0, 'TESTS: <footer> 없음'
+    return s[:i] + blk + s[i:]
+
+
 def put(text, start, end, new):
     """마커가 있으면 갈아끼우고, 없으면 None 반환"""
     i, j = text.find(start), text.find(end)
@@ -226,6 +267,7 @@ def patch(slug):
         s = r
 
     s = patch_ld(s, nl, slug, 'ko')
+    s = patch_tests(s, nl)
     s = patch_footer(s, 'ko', slug in CALC)
     open(p, 'w', encoding='utf-8', newline='').write(s)
     return len(s.encode())
@@ -341,6 +383,10 @@ def patch_index(path):
              + f'<link rel="alternate" hreflang="x-default" href="https://www.kmagpie.com/tools/">{nl}'
              + s[i:])
 
+    # 예전 인라인 테스트 배너(좀비·이세계 2종 시절 문구)를 공통 컴포넌트로 교체
+    s = re.sub(r'[ \t]*<div style="border:1px solid var\(--line\)[^>]*>\s*<p[^>]*>\U0001F9DF.*?</div>\r?\n?',
+               '', s, flags=re.S)
+    s = patch_tests(s, nl)
     s = patch_footer(s, 'ko')
     open(p, 'w', encoding='utf-8', newline='').write(s)
     return len(s.encode())
