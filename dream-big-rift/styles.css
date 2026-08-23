@@ -122,6 +122,7 @@ body.ui-idle #controls { opacity: .08; }
   position: absolute; z-index: 20; inset: 0; display: grid; place-content: center; gap: 10px; text-align: center; padding: 30px;
   color: var(--ink); background: #030711;
 }
+#fallback[hidden] { display: none !important; }
 #fallback strong { font-size: 20px; }
 #fallback span { color: var(--muted); font-size: 13px; }
 
