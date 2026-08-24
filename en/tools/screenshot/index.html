@@ -299,10 +299,10 @@ a.insertAdjacentElement('afterend',b)}})();</script>
   </tbody>
 </table></div>
 
-<p>Up to ten screenshots per slot, JPEG or PNG, and <strong>no alpha channel</strong> — a transparent PNG is rejected. Exports here always paint an opaque background edge to edge, so nothing shows through. If a store still objects to the alpha channel itself, flatten the files to JPG with the <a href="/en/tools/convert/">image converter</a>.</p>
+<p>Up to ten screenshots per slot, JPEG or PNG, and <strong>no alpha channel</strong> — a transparent PNG is rejected. Files from this tool are written as <strong>24-bit PNG with no alpha channel</strong> and an opaque background edge to edge, so they upload as-is.</p>
 
 <h3>Google Play</h3>
-<p>Play is looser about exact pixels and stricter about ratio. Each image must be JPEG or 24-bit PNG with no alpha, at least 320px and at most 3840px on any side, and — the rule that catches people — <strong>the long side can be at most twice the short side.</strong> You need at least two screenshots to publish and can upload up to eight per device type.</p>
+<p>Play is looser about exact pixels and stricter about ratio. Each image must be JPEG or 24-bit PNG with no alpha, at least 320px and at most 3840px on any side, and — the rule that catches people — <strong>the long side can be at most twice the short side.</strong> You need at least two screenshots to publish and can upload up to eight per device type. This tool encodes every export as a 24-bit PNG with no alpha, so the format side of that rule is already handled.</p>
 
 <div class="tblwrap"><table>
   <thead><tr><th>Asset</th><th class="n">Pixels</th><th>Notes</th></tr></thead>
@@ -336,9 +336,11 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 
 <details class="fold"><summary><h2>Troubleshooting</h2></summary><div class="fx">
 <h3>Play rejected my screenshot for its aspect ratio</h3>
-<p>The long side went past twice the short side. That is almost always a raw 1080 × 2340 capture from a tall phone. Run it through a preset here instead — every Play preset in this tool sits inside the limit.</p>
+<p>The long side went past twice the short side. That is almost always a raw 1080 × 2340 capture from a tall phone. Run it through a preset here instead — every Play screenshot preset in this tool (1080 × 1920, 1080 × 2160, 1600 × 2560) sits at or inside the 2:1 limit.</p>
 <h3>App Store Connect says my screenshot size is wrong</h3>
-<p>Apple matches on exact pixel dimensions, not ratio, and it will not accept a file that is off by a few pixels. Use the 6.9-inch or iPad 13-inch preset rather than resizing by hand. If the complaint is about transparency instead, flatten the PNG to JPG with the <a href="/en/tools/convert/">image converter</a> and upload that.</p>
+<p>Apple matches on exact pixel dimensions, not ratio, and it will not accept a file that is off by a few pixels. Use the 6.9-inch or iPad 13-inch preset rather than resizing by hand.</p>
+<h3>A store rejected my PNG for having an alpha channel</h3>
+<p>That is not something this tool produces any more. Exports are encoded directly as 24-bit PNG (PNG color type 2), which has no alpha channel at all — not merely an opaque one. On a browser without <code>CompressionStream</code>, the export falls back to a quality-95 JPEG, which also has no alpha.</p>
 <h3>My caption is getting cut off</h3>
 <p>Long captions wrap automatically, but they can still overflow the text area. Drop the text size or split the line. What you see in the preview is exactly what gets exported.</p>
 <h3>The screenshot looks soft</h3>
@@ -394,6 +396,51 @@ a.insertAdjacentElement('afterend',b)}})();</script>
     ev.setUint32(0,0x06054b50,true);ev.setUint16(8,entries.length,true);ev.setUint16(10,entries.length,true);
     ev.setUint32(12,cd,true);ev.setUint32(16,off,true);
     return new Blob([...L,...C,eo],{type:'application/zip'});
+  }
+
+  /* ---------- PNG encoder: color type 2 (truecolor, no alpha) ---------- */
+  const CAN_PNG = typeof CompressionStream!=='undefined';
+  function pngChunk(type,data){
+    const out=new Uint8Array(12+data.length),dv=new DataView(out.buffer);
+    dv.setUint32(0,data.length);
+    for(let i=0;i<4;i++) out[4+i]=type.charCodeAt(i);
+    out.set(data,8);
+    dv.setUint32(8+data.length,crc32(out.subarray(4,8+data.length)));
+    return out;
+  }
+  async function deflate(u8){
+    const cs=new CompressionStream('deflate');
+    const w=cs.writable.getWriter();
+    w.write(u8);w.close();
+    return new Uint8Array(await new Response(cs.readable).arrayBuffer());
+  }
+  /* Canvas toBlob always writes RGBA (color type 6). Google Play wants a
+     24-bit PNG with no alpha channel, so we encode the PNG ourselves. */
+  async function encodeOpaque(c){
+    if(!CAN_PNG){
+      const b=await new Promise(r=>c.toBlob(r,'image/jpeg',0.95));
+      return {blob:b,data:new Uint8Array(await b.arrayBuffer()),ext:'jpg'};
+    }
+    const W=c.width,H=c.height;
+    const src=c.getContext('2d').getImageData(0,0,W,H).data;
+    const stride=W*3+1;
+    const raw=new Uint8Array(stride*H);
+    let p=0,q=0;
+    for(let y=0;y<H;y++){
+      raw[p++]=0;                       /* filter type 0 = None */
+      for(let i=0;i<W;i++){raw[p++]=src[q];raw[p++]=src[q+1];raw[p++]=src[q+2];q+=4}
+    }
+    const idat=await deflate(raw);
+    const ihdr=new Uint8Array(13),hv=new DataView(ihdr.buffer);
+    hv.setUint32(0,W);hv.setUint32(4,H);
+    ihdr[8]=8;   /* bit depth  */
+    ihdr[9]=2;   /* color type 2 — truecolor, no alpha */
+    const parts=[new Uint8Array([137,80,78,71,13,10,26,10]),
+      pngChunk('IHDR',ihdr),pngChunk('IDAT',idat),pngChunk('IEND',new Uint8Array(0))];
+    let n=0;for(const s of parts)n+=s.length;
+    const out=new Uint8Array(n);let o=0;
+    for(const s of parts){out.set(s,o);o+=s.length}
+    return {blob:new Blob([out],{type:'image/png'}),data:out,ext:'png'};
   }
 
   const FONT='-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif';
@@ -590,14 +637,16 @@ a.insertAdjacentElement('afterend',b)}})();</script>
     b.classList.add('on');render();
   }));
 
-  const toU8=c=>new Promise(r=>c.toBlob(async b=>r(new Uint8Array(await b.arrayBuffer())),'image/png'));
-
   $('one').addEventListener('click',async()=>{
     saveFields();
-    const c=document.createElement('canvas');draw(c,items[cur]);
-    c.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);
-      a.download=String(cur+1).padStart(2,'0')+'.png';a.click();
-      setTimeout(()=>URL.revokeObjectURL(a.href),3000)},'image/png');
+    const btn=$('one');btn.disabled=true;
+    try{
+      const c=document.createElement('canvas');draw(c,items[cur]);
+      const enc=await encodeOpaque(c);
+      const a=document.createElement('a');a.href=URL.createObjectURL(enc.blob);
+      a.download=String(cur+1).padStart(2,'0')+'.'+enc.ext;a.click();
+      setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+    }finally{btn.disabled=false}
   });
 
   $('zip').addEventListener('click',async()=>{
@@ -606,7 +655,8 @@ a.insertAdjacentElement('afterend',b)}})();</script>
     const entries=[];
     for(let i=0;i<items.length;i++){
       const c=document.createElement('canvas');draw(c,items[i]);
-      entries.push({name:String(i+1).padStart(2,'0')+'.png',data:await toU8(c)});
+      const enc=await encodeOpaque(c);
+      entries.push({name:String(i+1).padStart(2,'0')+'.'+enc.ext,data:enc.data});
       $('stat').textContent=`Rendering ${i+1}/${items.length}`;
       await new Promise(r=>setTimeout(r));
     }

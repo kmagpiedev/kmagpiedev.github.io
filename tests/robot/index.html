@@ -58,6 +58,7 @@
     font-weight:600;font-variant-numeric:tabular-nums;appearance:none;-webkit-appearance:none}
   input:focus,select:focus{outline:2px solid var(--accent);outline-offset:-1px}
   .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:14px 0 0}
+  .note.err{color:var(--mag);border-left-color:var(--mag)}
   .go{display:block;width:100%;margin:18px 0 0;padding:15px 10px;border:0;border-radius:12px;
     background:var(--accent);color:var(--btn-ink);font-size:17px;font-weight:800;font-family:inherit;cursor:pointer;
     letter-spacing:-.01em;transition:.15s;box-shadow:0 0 22px rgba(40,224,255,.35)}
@@ -178,6 +179,7 @@
     </div>
   </div>
   <button type="button" class="go" id="goBtn">🤖 내 기체 사양 확인하기</button>
+  <p class="note err hidden" id="inputErr">년·월·일을 모두 선택해 주세요.</p>
   <p class="note">양력 생일 기준입니다. 입력값은 어디로도 전송되지 않고 브라우저 안에서만 계산됩니다.</p>
 </div>
 
@@ -456,27 +458,41 @@ var TSLOT=["모름","자시 (23:30~01:30)","축시 (01:30~03:30)","인시 (03:30
  "신시 (15:30~17:30)","유시 (17:30~19:30)","술시 (19:30~21:30)","해시 (21:30~23:30)"];
 var cur=null;
 
+var PH_Y='년 선택', PH_M='월 선택', PH_D='일 선택';
+var RETRY_SELF='👀 친구는 무슨 기체일까? 다시 해보기';
+var RETRY_SHARED='🤖 나도 내 기체 확인해보기';
+
 function fillSel(el,arr,vals){ var h=''; for(var i=0;i<arr.length;i++) h+='<option value="'+(vals?vals[i]:arr[i])+'">'+arr[i]+'</option>'; el.innerHTML=h; }
 function initInputs(){
-  var ys=[],yv=[]; for(var y=1940;y<=2020;y++){ys.push(y+'년');yv.push(y);}
-  fillSel($('by'),ys,yv); $('by').value=1995;
-  var ms=[],mv=[]; for(var m=1;m<=12;m++){ms.push(m+'월');mv.push(m);}
-  fillSel($('bm'),ms,mv);
+  var ys=[PH_Y],yv=['']; for(var y=1940;y<=2020;y++){ys.push(y+'년');yv.push(y);}
+  fillSel($('by'),ys,yv); $('by').value='';
+  var ms=[PH_M],mv=['']; for(var m=1;m<=12;m++){ms.push(m+'월');mv.push(m);}
+  fillSel($('bm'),ms,mv); $('bm').value='';
   fillDays();
-  var ts=[],tv=[]; for(var t=0;t<13;t++){ts.push(TSLOT[t]);tv.push(t);}
-  fillSel($('bt'),ts,tv);
+  /* 시각은 '모름'이 곧 빈 값(t=0) — 빈 폼 상태와 자연스럽게 일치시킨다 */
+  var ts=[],tv=[]; for(var t=0;t<13;t++){ts.push(TSLOT[t]);tv.push(t===0?'':t);}
+  fillSel($('bt'),ts,tv); $('bt').value='';
 }
 function daysIn(y,m){ return new Date(Date.UTC(y,m,0)).getUTCDate(); }
 function fillDays(){
-  var y=+$('by').value,m=+$('bm').value,old=+$('bd').value||1;
-  var n=daysIn(y,m),ds=[],dv=[];
+  var ys=$('by').value, ms=$('bm').value, old=$('bd').value;
+  var n=(ys&&ms)?daysIn(+ys,+ms):31;
+  var ds=[PH_D],dv=[''];
   for(var d=1;d<=n;d++){ds.push(d+'일');dv.push(d);}
   fillSel($('bd'),ds,dv);
-  $('bd').value=Math.min(old,n);
+  $('bd').value=(old&&+old<=n)?old:'';
+}
+/* 입력폼을 완전히 빈 상태로 되돌린다 */
+function clearInputs(){
+  $('by').value=''; $('bm').value=''; fillDays(); $('bd').value='';
+  $('bt').value=''; $('nick').value='';
+  $('inputErr').classList.add('hidden');
 }
 $('by').addEventListener('change',fillDays);
 $('bm').addEventListener('change',fillDays);
 
+/* ── 구버전 공유 파라미터 r: 생년월일시를 통째로 담았다.
+   이미 퍼진 링크의 결과 재현용으로만 남겨두고, 새 링크는 절대 만들지 않는다. ── */
 function encodeR(y,m,d,t){ return ((((y-1940)*12+(m-1))*31+(d-1))*13+t).toString(36); }
 function decodeR(str){
   var v=parseInt(str,36);
@@ -488,6 +504,45 @@ function decodeR(str){
   if(y<1940||y>2020||m<1||m>12||d<1||d>daysIn(y,m)) return null;
   return {y:y,m:m,d:d,t:t};
 }
+
+/* ── 공유 파라미터 v — 결과 표시값만 담는다.
+   생년월일·태어난 시각은 물론, 그로부터 날짜를 되돌릴 수 있는 값은 넣지 않는다.
+   담는 값(결과 화면·결과 카드를 그리는 데 실제로 쓰이는 전부):
+     img  기체 번호 1~12   (이름·캐치·해설·스펙·상성·그라데이션·스프라이트·보스 뱃지)
+     cp   전투력 120~9,999 (위협 등급은 여기서 파생)
+     top  전체 상위 1~100% (하위 30% 생존 특화 문단도 여기서 파생)
+     dp   일주 인덱스 0~59 (일주 한 줄 — 60간지 순환값이라 생일이 복원되지 않는다)
+   기여 자릿수를 곱해 하나의 정수로 접고 base36 + 검사 문자 1자로 7자 이내. ── */
+var V_IMG=12, V_TOP=100, V_CP=9880, V_DP=60;
+var V_MAX=V_DP*V_IMG*V_TOP*V_CP;
+function vOK(o){
+  return !!o && o.img>=1&&o.img<=12 && o.cp>=120&&o.cp<=9999 &&
+         o.top>=1&&o.top<=100 && o.dp>=0&&o.dp<=59;
+}
+var V36='0123456789abcdefghijklmnopqrstuvwxyz';
+function vSum(n){ return hash32('v:'+n)%36; }   /* 끝 1자리 검사 문자 */
+function encodeV(o){
+  if(!vOK(o)) return '';
+  var n=o.dp|0;
+  n=n*V_IMG+((o.img|0)-1);
+  n=n*V_TOP+((o.top|0)-1);
+  n=n*V_CP+((o.cp|0)-120);
+  return n.toString(36)+V36.charAt(vSum(n));
+}
+function decodeV(str){
+  if(typeof str!=='string'||!/^[0-9a-z]{2,8}$/.test(str)) return null;
+  var body=str.slice(0,-1), ck=str.slice(-1);
+  var n=parseInt(body,36);
+  if(!isFinite(n)||n<0||n>=V_MAX||Math.floor(n)!==n) return null;
+  if(n.toString(36)!==body) return null;        /* 앞자리 0 등 변형 표기 거부 */
+  if(V36.charAt(vSum(n))!==ck) return null;     /* 검사 문자 불일치 = 손상·조작 */
+  var cp=n%V_CP+120;  n=(n-(cp-120))/V_CP;
+  var top=n%V_TOP+1;  n=(n-(top-1))/V_TOP;
+  var img=n%V_IMG+1;  n=(n-(img-1))/V_IMG;
+  var o={img:img,cp:cp,top:top,dp:n};
+  return vOK(o)?o:null;                          /* 범위 밖이면 결과를 그리지 않는다 */
+}
+function roleByImg(i){ return i===11?ROLE_BOSS:(i===12?ROLE_ADMIN:ROLES[i-1]); }
 
 var animId=null;
 function countUp(el,target){
@@ -503,10 +558,12 @@ function countUp(el,target){
   animId=requestAnimationFrame(step);
 }
 
-function render(y,m,d,t,nick){
-  var R=roleOf(y,m,d,t);
-  cur={y:y,m:m,d:d,t:t,nick:nick||'',R:R};
-  var r=R.role;
+/* 결과값만으로 결과 화면을 그린다 — 생년월일을 알 필요가 없는 경로.
+   V={img,cp,top,dp} · shared=공유 링크로 들어온 방문자인지 */
+function renderV(V,nick,shared){
+  var r=roleByImg(V.img);
+  var gr=grade(V.cp);
+  cur={img:V.img,cp:V.cp,top:V.top,dp:V.dp,nick:nick||'',role:r,gr:gr,shared:!!shared};
   var box=$('roleImgBox');
   box.style.setProperty('--g1',r.g[0]);
   box.style.setProperty('--g2',r.g[1]);
@@ -523,46 +580,59 @@ function render(y,m,d,t,nick){
   $('roleName').textContent=r.nm;
   $('roleCatch').textContent='“'+r.ct+'”';
   $('gameBadge').textContent=r.img>=11?'🎮 MonBreak 실제 등장 · 보스 기체':'🎮 MonBreak 실제 등장 기체';
-  countUp($('popNum'),R.cp);
+  countUp($('popNum'),V.cp);
   var tp=$('topPct');
-  if(R.top<=50){ tp.className='topPct'; tp.textContent='⚡ 전체 상위 '+R.top+'%'; }
-  else { tp.className='topPct cult'; tp.textContent='🛞 전체 상위 '+R.top+'% · 생존 특화 기체'; }
-  $('gradeLine').innerHTML='🏷️ 위협 등급 <b>'+R.gr+'</b> · 폐허 도시 통합 위협 분류 기준';
-  $('iljuLine').innerHTML='당신의 일주: <b>'+p60name(R.dp)+'</b> — '+ILJU[R.dp];
-  $('roleDesc').textContent=(R.top>70?MINRB+' ':'')+r.desc;
+  if(V.top<=50){ tp.className='topPct'; tp.textContent='⚡ 전체 상위 '+V.top+'%'; }
+  else { tp.className='topPct cult'; tp.textContent='🛞 전체 상위 '+V.top+'% · 생존 특화 기체'; }
+  $('gradeLine').innerHTML='🏷️ 위협 등급 <b>'+gr+'</b> · 폐허 도시 통합 위협 분류 기준';
+  $('iljuLine').innerHTML='당신의 일주: <b>'+p60name(V.dp)+'</b> — '+ILJU[V.dp];
+  $('roleDesc').textContent=(V.top>70?MINRB+' ':'')+r.desc;
   $('specLine').innerHTML='<b>제조 스펙 한 줄</b> — '+r.spec;
   $('mateGood').innerHTML=r.mateTx?r.mateTx:'<b>'+ROLES[r.mate].emo+' '+ROLES[r.mate].nm+'</b> — '+GAN[r.mate]+ELM(r.mate)+' 일간';
   $('mateBad').innerHTML=r.worstTx?r.worstTx:'<b>'+ROLES[r.worst].emo+' '+ROLES[r.worst].nm+'</b> — '+GAN[r.worst]+ELM(r.worst)+' 일간';
+  $('retryBtn').textContent=cur.shared?RETRY_SHARED:RETRY_SELF;
   $('copied').textContent='';
   $('res').classList.remove('hidden');
   $('mbBlock').classList.remove('hidden');
 }
+/* 생년월일로 계산하는 기존 경로 — 계산 결과를 공용 렌더에 넘긴다 */
+function render(y,m,d,t,nick){
+  var R=roleOf(y,m,d,t);
+  renderV({img:R.role.img,cp:R.cp,top:R.top,dp:R.dp},nick,false);
+}
 function ELM(g){ return ['목','목','화','화','토','토','금','금','수','수'][g]; }
 $('goBtn').addEventListener('click',function(){
-  var y=+$('by').value,m=+$('bm').value,d=+$('bd').value,t=+$('bt').value;
-  render(y,m,d,t,$('nick').value.trim());
+  var ys=$('by').value, ms=$('bm').value, ds=$('bd').value;
+  if(!ys||!ms||!ds){ $('inputErr').classList.remove('hidden'); return; }
+  $('inputErr').classList.add('hidden');
+  var y=+ys,m=+ms,d=+ds,t=+$('bt').value||0;
+  var nick=$('nick').value.trim();
+  render(y,m,d,t,nick);
   var u=new URL(location.href);
-  u.searchParams.set('r',encodeR(y,m,d,t));
-  if($('nick').value.trim()) u.searchParams.set('n',$('nick').value.trim()); else u.searchParams.delete('n');
+  u.searchParams.delete('r');                /* 생년월일이 실리던 옛 파라미터는 남기지 않는다 */
+  u.searchParams.set('v',encodeV(cur));
+  if(nick) u.searchParams.set('n',nick); else u.searchParams.delete('n');
   history.replaceState(null,'',u.pathname+u.search);
   $('res').scrollIntoView({behavior:'smooth',block:'start'});
 });
 $('retryBtn').addEventListener('click',function(){
   $('res').classList.add('hidden');
   $('mbBlock').classList.add('hidden');
+  cur=null;
+  clearInputs();
   history.replaceState(null,'',location.pathname);
   $('inputPanel').scrollIntoView({behavior:'smooth',block:'start'});
-  $('nick').value='';
 });
 function shareText(){
   if(!cur)return '';
   /* 기체별 공유 스텁(/s/NN/)으로 링크 — 미리보기에 내 기체 카드가 뜬다.
-     스텁이 쿼리를 그대로 본 페이지로 넘겨 결과가 재현된다. */
-  var nn=String(cur.R.role.img).padStart(2,'0');
-  var base=location.pathname.replace(/\/$/,'');
-  var u=location.origin+base+'/s/'+nn+'/?r='+encodeR(cur.y,cur.m,cur.d,cur.t)+
+     스텁이 쿼리를 그대로 본 페이지로 넘겨 결과가 재현된다.
+     쿼리에는 결과값(v)만 싣는다 — 생년월일·태어난 시각은 링크에 실리지 않는다. */
+  var nn=String(cur.img).padStart(2,'0');
+  var base=location.pathname.replace(/\/$/,'').replace(/\/s\/\d{2}$/,'');
+  var u=location.origin+base+'/s/'+nn+'/?v='+encodeV(cur)+
     (cur.nick?'&n='+encodeURIComponent(cur.nick):'');
-  return '🤖 나는 "'+cur.R.role.nm+'", 전투력 '+cur.R.cp.toLocaleString('ko-KR')+'! 너는?\n'+u;
+  return '🤖 나는 "'+cur.role.nm+'", 전투력 '+cur.cp.toLocaleString('ko-KR')+'! 너는?\n'+u;
 }
 $('shareLink').addEventListener('click',function(){
   if(!cur)return;
@@ -593,7 +663,7 @@ function roundRect(ctx,x,y,w,h,r){
 }
 function makeCard(){
   if(!cur)return Promise.resolve(null);
-  var R=cur.R,r=R.role;
+  var r=cur.role;
   var W=1080,H=1350;
   var c=document.createElement('canvas'); c.width=W; c.height=H;
   var x=c.getContext('2d');
@@ -603,8 +673,8 @@ function makeCard(){
     var bg=x.createLinearGradient(0,0,0,H);
     bg.addColorStop(0,'#0b1424'); bg.addColorStop(1,'#060a13');
     x.fillStyle=bg; x.fillRect(0,0,W,H);
-    /* 네온 입자 */
-    var hs=hash32('neon:'+cur.y+'-'+cur.m+'-'+cur.d);
+    /* 네온 입자 — 시드도 결과값만으로 잡는다(공유받은 카드가 원본과 완전히 같아야 하므로) */
+    var hs=hash32('neon:'+cur.dp+'-'+cur.cp+'-'+cur.img);
     for(var i=0;i<80;i++){
       hs=(Math.imul(hs,1664525)+1013904223)>>>0;
       var sx=hs%W; var sy=(hs>>>11)%H; var ss=((hs>>>22)%3)*0.8+0.8;
@@ -666,10 +736,10 @@ function makeCard(){
     x.shadowColor='rgba(40,224,255,0.6)'; x.shadowBlur=34;
     x.fillStyle=CY;
     x.font='800 190px -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
-    x.fillText(R.cp.toLocaleString('ko-KR'),W/2,yy+352);
+    x.fillText(cur.cp.toLocaleString('ko-KR'),W/2,yy+352);
     x.restore();
     /* 상위 % 뱃지 */
-    var btxt=R.top<=50?('⚡ 전체 상위 '+R.top+'%'):('🛞 전체 상위 '+R.top+'% · 생존 특화 기체');
+    var btxt=cur.top<=50?('⚡ 전체 상위 '+cur.top+'%'):('🛞 전체 상위 '+cur.top+'% · 생존 특화 기체');
     x.font='700 38px -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
     var bw=x.measureText(btxt).width+72;
     roundRect(x,(W-bw)/2,yy+400,bw,80,40);
@@ -679,12 +749,12 @@ function makeCard(){
     /* 위협 등급 */
     x.fillStyle=MG;
     x.font='700 40px -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
-    x.fillText('🏷️ 위협 등급 '+R.gr,W/2,yy+520);
+    x.fillText('🏷️ 위협 등급 '+cur.gr,W/2,yy+520);
     /* 일주 */
     x.fillStyle=INK2;
     x.font='400 33px -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
-    var il='일주 '+p60name(R.dp)+' · '+ILJU[R.dp];
-    if(x.measureText(il).width>W-100){ il='일주 '+p60name(R.dp)+' · '+ILJU[R.dp].split(',')[0]; }
+    var il='일주 '+p60name(cur.dp)+' · '+ILJU[cur.dp];
+    if(x.measureText(il).width>W-100){ il='일주 '+p60name(cur.dp)+' · '+ILJU[cur.dp].split(',')[0]; }
     x.fillText(il,W/2,yy+584);
     /* 하단: MonBreak 크로스 라인 + URL */
     x.fillStyle=MG;
@@ -718,7 +788,7 @@ $('shareCard').addEventListener('click',function(){
        (사용자 취소가 아닌) 실패 시 다운로드로 폴백한다. */
     if(IS_MOBILE&&navigator.share&&navigator.canShare&&navigator.canShare({files:[f]})){
       navigator.share({files:[f],title:'로봇 기체 감정서',
-        text:'나는 "'+cur.R.role.nm+'", 전투력 '+cur.R.cp.toLocaleString('ko-KR')+'! 너는? https://www.kmagpie.com/tests/robot/'})
+        text:'나는 "'+cur.role.nm+'", 전투력 '+cur.cp.toLocaleString('ko-KR')+'! 너는? https://www.kmagpie.com/tests/robot/'})
         .catch(function(err){ if(!err||err.name!=='AbortError') saveBlob(blob); });
     }else{
       saveBlob(blob);
@@ -727,23 +797,32 @@ $('shareCard').addEventListener('click',function(){
 });
 
 initInputs();
-/* ?r= 재현 */
+/* 공유 링크 재현 — 어느 경로로 들어오든 입력폼은 절대 채우지 않는다 */
 (function(){
   var q=new URLSearchParams(location.search);
+  var nick=(q.get('n')||'').slice(0,12);
+  var vv=q.get('v');
+  if(vv){
+    var V=decodeV(vv);
+    if(!V) return;              /* 조작·손상된 값 → 결과를 그리지 않고 빈 입력 화면 */
+    renderV(V,nick,true);
+    return;
+  }
+  /* 구버전 ?r= 링크 호환: 결과는 재현하되 폼에는 채우지 않는다 */
   var rv=q.get('r');
   if(!rv)return;
   var dec=decodeR(rv);
   if(!dec)return;
-  var nick=(q.get('n')||'').slice(0,12);
-  $('by').value=dec.y; $('bm').value=dec.m; fillDays(); $('bd').value=dec.d; $('bt').value=dec.t;
-  $('nick').value=nick;
-  render(dec.y,dec.m,dec.d,dec.t,nick);
+  var R=roleOf(dec.y,dec.m,dec.d,dec.t);
+  renderV({img:R.role.img,cp:R.cp,top:R.top,dp:R.dp},nick,true);
 })();
 
 /* 테스트 훅 */
 window.ROBOT={power:power,cpOf:cpOf,grade:grade,roleOf:roleOf,dayPillarIdx:dayPillarIdx,
   yearPillarIdx:yearPillarIdx,monthPillar:monthPillar,topPct:topPct,
-  encodeR:encodeR,decodeR:decodeR,makeCard:makeCard,cardBlob:cardBlob,render:render,shareText:shareText,
+  encodeR:encodeR,decodeR:decodeR,encodeV:encodeV,decodeV:decodeV,roleByImg:roleByImg,
+  makeCard:makeCard,cardBlob:cardBlob,render:render,renderV:renderV,shareText:shareText,
+  clearInputs:clearInputs,cur:function(){return cur;},
   ROLES:ROLES,ROLE_BOSS:ROLE_BOSS,ROLE_ADMIN:ROLE_ADMIN,ILJU:ILJU,p60name:p60name,MINRB:MINRB};
 })();
 </script>

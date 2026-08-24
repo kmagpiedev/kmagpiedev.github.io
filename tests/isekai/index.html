@@ -65,6 +65,8 @@
     font-weight:600;font-variant-numeric:tabular-nums;appearance:none;-webkit-appearance:none}
   input:focus,select:focus{outline:2px solid var(--accent);outline-offset:-1px}
   .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:14px 0 0}
+  .formMsg{font-size:13.5px;font-weight:700;color:var(--warn);margin:10px 0 0;min-height:0}
+  .formMsg:empty{margin:0}
   .go{display:block;width:100%;margin:18px 0 0;padding:15px 10px;border:0;border-radius:12px;
     background:var(--accent);color:#1b1204;font-size:17px;font-weight:800;font-family:inherit;cursor:pointer;
     letter-spacing:-.01em;transition:.15s}
@@ -163,6 +165,7 @@
     </div>
   </div>
   <button type="button" class="go" id="goBtn">✨ 내 포지션 확인하기</button>
+  <p class="formMsg" id="formMsg" role="status"></p>
   <p class="note">양력 생일 기준입니다. 입력값은 어디로도 전송되지 않고 브라우저 안에서만 계산됩니다.</p>
 </div>
 
@@ -426,28 +429,43 @@ var TSLOT=["모름","자시 (23:30~01:30)","축시 (01:30~03:30)","인시 (03:30
  "진시 (07:30~09:30)","사시 (09:30~11:30)","오시 (11:30~13:30)","미시 (13:30~15:30)",
  "신시 (15:30~17:30)","유시 (17:30~19:30)","술시 (19:30~21:30)","해시 (21:30~23:30)"];
 var cur=null;
+var PH='선택';
+var MSG_PICK='생년·월·일을 모두 선택해 주세요.';
+var RETRY_OWN='👀 친구는 몇 %일까? 다시 해보기';
+var RETRY_SHARED='✨ 나도 내 이세계 인기도 확인하기';
 
 function fillSel(el,arr,vals){ var h=''; for(var i=0;i<arr.length;i++) h+='<option value="'+(vals?vals[i]:arr[i])+'">'+arr[i]+'</option>'; el.innerHTML=h; }
 function initInputs(){
-  var ys=[],yv=[]; for(var y=1940;y<=2020;y++){ys.push(y+'년');yv.push(y);}
-  fillSel($('by'),ys,yv); $('by').value=1995;
-  var ms=[],mv=[]; for(var m=1;m<=12;m++){ms.push(m+'월');mv.push(m);}
+  var ys=[PH],yv=['']; for(var y=1940;y<=2020;y++){ys.push(y+'년');yv.push(y);}
+  fillSel($('by'),ys,yv);
+  var ms=[PH],mv=['']; for(var m=1;m<=12;m++){ms.push(m+'월');mv.push(m);}
   fillSel($('bm'),ms,mv);
-  fillDays();
-  var ts=[],tv=[]; for(var t=0;t<13;t++){ts.push(TSLOT[t]);tv.push(t);}
+  /* 0번 슬롯('모름')은 값이 빈 문자열 = 비어 있는 상태이자 '시간 모름' */
+  var ts=[],tv=[]; for(var t=0;t<13;t++){ts.push(TSLOT[t]);tv.push(t===0?'':t);}
   fillSel($('bt'),ts,tv);
+  /* 첫 진입은 언제나 빈 폼 — 기본 생년월일을 넣지 않는다 */
+  clearInputs();
 }
 function daysIn(y,m){ return new Date(Date.UTC(y,m,0)).getUTCDate(); }
 function fillDays(){
-  var y=+$('by').value,m=+$('bm').value,old=+$('bd').value||1;
-  var n=daysIn(y,m),ds=[],dv=[];
+  var yv=$('by').value,mv=$('bm').value,old=$('bd').value;
+  var n=(yv&&mv)?daysIn(+yv,+mv):31;
+  var ds=[PH],dv=[''];
   for(var d=1;d<=n;d++){ds.push(d+'일');dv.push(d);}
   fillSel($('bd'),ds,dv);
-  $('bd').value=Math.min(old,n);
+  $('bd').value=old?String(Math.min(+old,n)):'';
+}
+/* 생년월일·시각·닉네임을 전부 비운다 */
+function clearInputs(){
+  $('by').value=''; $('bm').value=''; $('bd').value='';
+  fillDays();
+  $('bt').value=''; $('nick').value='';
+  $('formMsg').textContent='';
 }
 $('by').addEventListener('change',fillDays);
 $('bm').addEventListener('change',fillDays);
 
+/* ── 옛 링크 호환용 인코딩(생년월일 포함) — 읽기 전용. 새 링크는 절대 만들지 않는다 ── */
 function encodeR(y,m,d,t){ return ((((y-1940)*12+(m-1))*31+(d-1))*13+t).toString(36); }
 function decodeR(str){
   var v=parseInt(str,36);
@@ -459,6 +477,38 @@ function decodeR(str){
   if(y<1940||y>2020||m<1||m>12||d<1||d>daysIn(y,m)) return null;
   return {y:y,m:m,d:d,t:t};
 }
+
+/* ── 결과값 인코딩 (v) ────────────────────────────────────────────────
+   공유 링크에는 결과 화면·결과 카드를 그리는 데 필요한 값만 담는다.
+   생년월일(y/m/d)과 태어난 시각(t)은 담지 않으며, 여기서 역산되지도 않는다.
+     ri : 역할 index 0~11 (0~9=ROLES, 10=마왕, 11=흑막)
+     s  : 인기도 1~99
+     fc : 팬카페 회원 수 3,000~980,000
+     dp : 일주 index 0~59 (일주 이름·한줄평 표시용)
+   전체 상위 %는 topPct(s)로 s에서 그대로 나오므로 따로 담지 않는다.
+   같은 결과 = 같은 v = 같은 URL (생년월일이 달라도 결과가 같으면 링크가 같다). */
+var V_FC_MIN=3000, V_FC_MAX=980000, V_FC_N=V_FC_MAX-V_FC_MIN+1;
+var V_MAX=((11*99+98)*V_FC_N+(V_FC_N-1))*60+59;
+function encodeV(ri,s,fc,dp){
+  return ((((ri*99)+(s-1))*V_FC_N+(fc-V_FC_MIN))*60+dp).toString(36);
+}
+function decodeV(str){
+  if(typeof str!=='string') return null;
+  str=str.toLowerCase();
+  if(!/^[0-9a-z]{1,8}$/.test(str)) return null;
+  var v=parseInt(str,36);
+  if(!isFinite(v)||v<0||v>V_MAX||Math.floor(v)!==v) return null;
+  var dp=v%60; v=(v-dp)/60;
+  var fc=v%V_FC_N+V_FC_MIN; v=(v-(fc-V_FC_MIN))/V_FC_N;
+  var s=v%99+1; v=(v-(s-1))/99;
+  var ri=v;
+  if(!(ri>=0&&ri<=11)) return null;
+  if(!(s>=1&&s<=99)) return null;
+  if(!(fc>=V_FC_MIN&&fc<=V_FC_MAX)) return null;
+  if(!(dp>=0&&dp<=59)) return null;
+  return {ri:ri,s:s,fc:fc,dp:dp};
+}
+function roleByIdx(i){ return i<10?ROLES[i]:(i===10?ROLE_MAOU:ROLE_BLACK); }
 
 var animId=null;
 function countUp(el,target){
@@ -474,10 +524,18 @@ function countUp(el,target){
   animId=requestAnimationFrame(step);
 }
 
-function render(y,m,d,t,nick){
+function setRetryMode(shared){ $('retryBtn').textContent=shared?RETRY_SHARED:RETRY_OWN; }
+
+/* 계산 경로: 생년월일 → 결과값 → 공용 렌더 */
+function render(y,m,d,t,nick,shared){
   var R=roleOf(y,m,d,t);
-  cur={y:y,m:m,d:d,t:t,nick:nick||'',R:R};
-  var r=R.role;
+  renderResult({ri:R.role.img-1,s:R.s,fc:R.fc,dp:R.dp,nick:nick,shared:shared});
+}
+/* 공용 렌더: 결과값만으로 결과 화면을 그린다 (공유 링크 진입도 이 경로) */
+function renderResult(D){
+  var r=roleByIdx(D.ri);
+  var R={s:D.s,fc:D.fc,dp:D.dp,top:topPct(D.s),role:r};
+  cur={ri:D.ri,s:D.s,fc:D.fc,dp:D.dp,top:R.top,nick:D.nick||'',role:r,R:R};
   var box=$('roleImgBox');
   box.style.setProperty('--g1',r.g[0]);
   box.style.setProperty('--g2',r.g[1]);
@@ -499,34 +557,42 @@ function render(y,m,d,t,nick){
   $('mateGood').innerHTML=r.mateTx?r.mateTx:'<b>'+ROLES[r.mate].emo+' '+ROLES[r.mate].nm+'</b> — '+GAN[r.mate]+ELM(r.mate)+' 일간';
   $('mateBad').innerHTML=r.worstTx?r.worstTx:'<b>'+ROLES[r.worst].emo+' '+ROLES[r.worst].nm+'</b> — '+GAN[r.worst]+ELM(r.worst)+' 일간';
   $('copied').textContent='';
+  setRetryMode(!!D.shared);
   $('res').classList.remove('hidden');
 }
 function ELM(g){ return ['목','목','화','화','토','토','금','금','수','수'][g]; }
 $('goBtn').addEventListener('click',function(){
-  var y=+$('by').value,m=+$('bm').value,d=+$('bd').value,t=+$('bt').value;
-  render(y,m,d,t,$('nick').value.trim());
+  var yv=$('by').value,mv=$('bm').value,dv=$('bd').value;
+  if(!yv||!mv||!dv){ $('formMsg').textContent=MSG_PICK; (!yv?$('by'):(!mv?$('bm'):$('bd'))).focus(); return; }
+  $('formMsg').textContent='';
+  var y=+yv,m=+mv,d=+dv,t=+$('bt').value||0;
+  var nick=$('nick').value.trim();
+  render(y,m,d,t,nick,false);
   var u=new URL(location.href);
-  u.searchParams.set('r',encodeR(y,m,d,t));
-  if($('nick').value.trim()) u.searchParams.set('n',$('nick').value.trim()); else u.searchParams.delete('n');
+  u.searchParams.delete('r');
+  u.searchParams.set('v',encodeV(cur.ri,cur.s,cur.fc,cur.dp));
+  if(nick) u.searchParams.set('n',nick); else u.searchParams.delete('n');
   history.replaceState(null,'',u.pathname+u.search);
   $('res').scrollIntoView({behavior:'smooth',block:'start'});
 });
 $('retryBtn').addEventListener('click',function(){
   $('res').classList.add('hidden');
+  cur=null;
   history.replaceState(null,'',location.pathname);
+  clearInputs();
+  setRetryMode(false);
   $('inputPanel').scrollIntoView({behavior:'smooth',block:'start'});
-  $('nick').value='';
 });
 function shareText(){
   if(!cur)return '';
   /* 포지션별 공유 스텁(/s/NN/)으로 링크 — 미리보기에 내 포지션 일러스트가 뜬다.
      스텁이 쿼리를 그대로 본 페이지로 넘겨 결과가 재현된다. */
-  var nn=String(cur.R.role.img).padStart(2,'0');
+  var nn=String(cur.role.img).padStart(2,'0');
   var base=location.pathname.replace(/\/$/,'');
-  var u=location.origin+base+'/s/'+nn+'/?r='+encodeR(cur.y,cur.m,cur.d,cur.t)+
+  var u=location.origin+base+'/s/'+nn+'/?v='+encodeV(cur.ri,cur.s,cur.fc,cur.dp)+
     (cur.nick?'&n='+encodeURIComponent(cur.nick):'');
-  return '🌙 나는 이세계에서 "'+cur.R.role.nm+'", 인기도 '+cur.R.s+'%! 팬카페 회원 '+
-    cur.R.fc.toLocaleString('ko-KR')+'명. 너는 몇 %일까?\n'+u;
+  return '🌙 나는 이세계에서 "'+cur.role.nm+'", 인기도 '+cur.s+'%! 팬카페 회원 '+
+    cur.fc.toLocaleString('ko-KR')+'명. 너는 몇 %일까?\n'+u;
 }
 $('shareLink').addEventListener('click',function(){
   if(!cur)return;
@@ -566,8 +632,8 @@ function makeCard(){
     var bg=x.createLinearGradient(0,0,0,H);
     bg.addColorStop(0,'#1c1642'); bg.addColorStop(1,'#090716');
     x.fillStyle=bg; x.fillRect(0,0,W,H);
-    /* 별 */
-    var hs=hash32('star:'+cur.y+'-'+cur.m+'-'+cur.d);
+    /* 별 — 시드는 결과값에서만 뽑는다(생년월일을 쓰면 카드가 생일을 실어 나른다) */
+    var hs=hash32('star:'+cur.dp+'-'+cur.s+'-'+cur.fc);
     for(var i=0;i<70;i++){
       hs=(Math.imul(hs,1664525)+1013904223)>>>0;
       var sx=hs%W; var sy=(hs>>>11)%H; var ss=((hs>>>22)%3)*0.6+0.6;
@@ -662,7 +728,7 @@ $('shareCard').addEventListener('click',function(){
        (사용자 취소가 아닌) 실패 시 다운로드로 폴백한다. */
     if(IS_MOBILE&&navigator.share&&navigator.canShare&&navigator.canShare({files:[f]})){
       navigator.share({files:[f],title:'이세계 인기도 리포트',
-        text:'내 이세계 인기도는 '+cur.R.s+'%! 너는 몇 %야? https://www.kmagpie.com/tests/isekai/'})
+        text:'내 이세계 인기도는 '+cur.s+'%! 너는 몇 %야? https://www.kmagpie.com/tests/isekai/'})
         .catch(function(err){ if(!err||err.name!=='AbortError') saveBlob(blob); });
     }else{
       saveBlob(blob);
@@ -671,23 +737,34 @@ $('shareCard').addEventListener('click',function(){
 });
 
 initInputs();
-/* ?r= 재현 */
+setRetryMode(false);
+/* 공유 링크 진입 — 어느 경우에도 입력폼은 채우지 않는다 */
 (function(){
   var q=new URLSearchParams(location.search);
+  var nick=(q.get('n')||'').slice(0,12);
+  var vv=q.get('v');
+  if(vv!==null){
+    var dv=decodeV(vv);
+    if(!dv) return;                 /* 검증 실패 → 결과를 그리지 않고 빈 입력 화면 */
+    clearInputs();
+    renderResult({ri:dv.ri,s:dv.s,fc:dv.fc,dp:dv.dp,nick:nick,shared:true});
+    return;
+  }
+  /* 옛 ?r= 링크: 결과는 그대로 재현하되 폼은 절대 채우지 않는다 */
   var rv=q.get('r');
   if(!rv)return;
   var dec=decodeR(rv);
   if(!dec)return;
-  var nick=(q.get('n')||'').slice(0,12);
-  $('by').value=dec.y; $('bm').value=dec.m; fillDays(); $('bd').value=dec.d; $('bt').value=dec.t;
-  $('nick').value=nick;
-  render(dec.y,dec.m,dec.d,dec.t,nick);
+  clearInputs();
+  render(dec.y,dec.m,dec.d,dec.t,nick,true);
 })();
 
 /* 테스트 훅 */
 window.ISEKAI={popularity:popularity,fancafe:fancafe,roleOf:roleOf,dayPillarIdx:dayPillarIdx,
   yearPillarIdx:yearPillarIdx,monthPillar:monthPillar,topPct:topPct,
-  encodeR:encodeR,decodeR:decodeR,makeCard:makeCard,cardBlob:cardBlob,render:render,shareText:shareText,
+  encodeR:encodeR,decodeR:decodeR,encodeV:encodeV,decodeV:decodeV,roleByIdx:roleByIdx,
+  makeCard:makeCard,cardBlob:cardBlob,render:render,renderResult:renderResult,shareText:shareText,
+  clearInputs:clearInputs,setRetryMode:setRetryMode,
   ROLES:ROLES,ROLE_MAOU:ROLE_MAOU,ROLE_BLACK:ROLE_BLACK,ILJU:ILJU,p60name:p60name,CULT:CULT};
 })();
 </script>

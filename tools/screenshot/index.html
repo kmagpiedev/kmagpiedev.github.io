@@ -52,8 +52,8 @@
   #file{display:none}
 
   .stage{display:flex;gap:22px;flex-wrap:wrap;margin-top:18px}
-  .side{flex:1;min-width:290px}
-  .pvbox{width:270px;flex:none}
+  .side{flex:1;min-width:280px}
+  .pvbox{width:270px;max-width:100%;flex:none}
   .pvbox canvas{width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;background:var(--surface)}
   .pvcap{font-size:12px;color:var(--ink-3);text-align:center;margin-top:7px;font-variant-numeric:tabular-nums}
 
@@ -62,7 +62,7 @@
   .fld{margin-bottom:12px}
   .fld:last-child{margin-bottom:0}
   .fld label{display:block;font-size:12.5px;color:var(--ink-3);font-weight:600;margin-bottom:5px}
-  .fld input[type=text],.fld select,.fld textarea{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;
+  .fld input[type=text],.fld select,.fld textarea{width:100%;max-width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;
     background:var(--bg);color:var(--ink);font-size:14px;font-family:inherit}
   .fld textarea{resize:vertical;min-height:52px;line-height:1.5}
   .fld input:focus,.fld select:focus,.fld textarea:focus{outline:0;border-color:var(--accent)}
@@ -97,14 +97,25 @@
   .m-warn{background:var(--warn-soft);border-color:var(--warn)}
   .m-bad{background:var(--bad-soft);border-color:var(--bad)}
   .hidden{display:none}
+  .tblwrap{overflow-x:auto;margin:14px 0}
   table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+  .tblwrap table{margin:0}
   th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line-soft)}
   th{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;border-bottom:1px solid var(--line)}
-  td.n{text-align:right;font-variant-numeric:tabular-nums}
+  td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
   code{background:var(--line-soft);padding:2px 6px;border-radius:5px;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
   .note{font-size:13.5px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:13px;margin:14px 0}
   footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
   footer a{color:var(--ink-3)}
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:24px}
+    table{font-size:13px}
+    th,td{padding:9px 6px}
+    .stage{flex-direction:column}
+    .pvbox{width:100%;max-width:270px;margin:0 auto}
+    .side{min-width:0;width:100%}
+  }
 /*FOLD:S*/
   .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
     padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
@@ -178,7 +189,7 @@ b.onclick=function(){if(!p)return;p.prompt();p.userChoice.then(function(){p=null
 a.insertAdjacentElement('afterend',b)}})();</script>
 <!--HEAD:E-->
 <!--LD:S-->
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://www.kmagpie.com/tools/screenshot/#app","name":"스토어 스크린샷 생성기","url":"https://www.kmagpie.com/tools/screenshot/","description":"앱 화면 캡처에 배경·기기 프레임·홍보 문구를 얹어 Play 스토어 등록 규격에 맞는 이미지로 만들어 ZIP으로 받습니다. 피처 그래픽도 지원합니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"inLanguage":"ko","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"K-magpie","url":"https://www.kmagpie.com/"}},{"@type":"BreadcrumbList","@id":"https://www.kmagpie.com/tools/screenshot/#crumb","itemListElement":[{"@type":"ListItem","position":1,"name":"K-magpie","item":"https://www.kmagpie.com/"},{"@type":"ListItem","position":2,"name":"까치툴","item":"https://www.kmagpie.com/tools/"},{"@type":"ListItem","position":3,"name":"스토어 스크린샷 생성기","item":"https://www.kmagpie.com/tools/screenshot/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://www.kmagpie.com/tools/screenshot/#app","name":"스토어 스크린샷 생성기","url":"https://www.kmagpie.com/tools/screenshot/","description":"앱 화면 캡처에 배경·기기 프레임·홍보 문구를 얹어 Play 스토어와 App Store 등록 규격에 맞는 이미지로 만들어 ZIP으로 받습니다. 알파 없는 24비트 PNG로 내보내고 피처 그래픽도 지원합니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"inLanguage":"ko","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"K-magpie","url":"https://www.kmagpie.com/"}},{"@type":"BreadcrumbList","@id":"https://www.kmagpie.com/tools/screenshot/#crumb","itemListElement":[{"@type":"ListItem","position":1,"name":"K-magpie","item":"https://www.kmagpie.com/"},{"@type":"ListItem","position":2,"name":"까치툴","item":"https://www.kmagpie.com/tools/"},{"@type":"ListItem","position":3,"name":"스토어 스크린샷 생성기","item":"https://www.kmagpie.com/tools/screenshot/"}]}]}</script>
 <!--LD:E-->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
 </head>
@@ -191,7 +202,7 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 <!--LANG:E-->
 
 <h1>스토어 스크린샷 생성기</h1>
-<p class="sub">앱 화면 캡처를 올리면 배경과 기기 프레임, 홍보 문구를 얹어 <strong>Play 스토어 등록 규격에 맞는 이미지</strong>로 만들어 드립니다. 파일이 서버로 전송되지 않고 브라우저 안에서만 처리됩니다.</p>
+<p class="sub">앱 화면 캡처를 올리면 배경과 기기 프레임, 홍보 문구를 얹어 <strong>App Store·Google Play 등록 규격에 맞는 이미지</strong>로 만들어 드립니다. 파일이 서버로 전송되지 않고 브라우저 안에서만 처리됩니다.</p>
 
 <div id="drop">
   <div class="big">앱 화면 캡처를 끌어다 놓거나 클릭해서 선택하세요</div>
@@ -221,12 +232,13 @@ a.insertAdjacentElement('afterend',b)}})();</script>
         <h4>출력 규격</h4>
         <div class="fld">
           <select id="preset">
-            <option value="1080x1920">Play 스토어 휴대전화 · 1080 × 1920 (권장)</option>
-            <option value="1080x2340">휴대전화 길쭉한 화면 · 1080 × 2340</option>
-            <option value="1242x2208">App Store 5.5" · 1242 × 2208</option>
-            <option value="1284x2778">App Store 6.5" · 1284 × 2778</option>
-            <option value="1600x2560">태블릿 10" · 1600 × 2560</option>
-            <option value="1024x500">Play 피처 그래픽 · 1024 × 500</option>
+            <option value="1320x2868">App Store · iPhone 6.9" · 1320 × 2868 (필수)</option>
+            <option value="1284x2778">App Store · iPhone 6.5" · 1284 × 2778 (6.9" 대신 낼 때)</option>
+            <option value="2064x2752">App Store · iPad 13" · 2064 × 2752 (iPad 필수)</option>
+            <option value="1080x1920" selected>Google Play · 휴대전화 · 1080 × 1920 (권장)</option>
+            <option value="1080x2160">Google Play · 휴대전화 길쭉한 화면 · 1080 × 2160 (2:1 한계)</option>
+            <option value="1600x2560">Google Play · 태블릿 10" · 1600 × 2560</option>
+            <option value="1024x500">Google Play · 피처 그래픽 · 1024 × 500</option>
           </select>
         </div>
       </div>
@@ -279,26 +291,44 @@ a.insertAdjacentElement('afterend',b)}})();</script>
   </div>
 </div>
 
-<p class="gist">화면 캡처에 기기 프레임과 문구를 얹어 Play 스토어 규격 스크린샷과 피처 그래픽을 만듭니다. 기본값 1080×1920은 스토어 요건을 모두 만족하는 무난한 규격입니다. 출시 전 앱 화면도 서버로 올라가지 않고 브라우저 안에서만 처리됩니다.</p>
+<p class="gist">화면 캡처에 기기 프레임과 문구를 얹어 App Store·Google Play 등록 규격 스크린샷과 피처 그래픽을 만듭니다. 프리셋은 두 스토어가 지금 실제로 요구하는 크기 — iPhone 6.9", iPad 13", Play 휴대전화·태블릿 — 를 담고 있고, 내보내는 파일은 <strong>알파 채널이 없는 24비트 PNG</strong>입니다. 출시 전 앱 화면도 서버로 올라가지 않고 브라우저 안에서만 처리됩니다.</p>
 
 <details class="fold" open><summary><h2>사용법</h2></summary><div class="fx">
-<p>앱에서 찍은 화면 캡처를 여러 장 올리고, 위쪽 썸네일에서 한 장씩 골라가며 문구를 적어 넣으면 됩니다. 배경과 프레임 설정은 전체 장에 공통으로 적용되므로 한 번만 맞추면 되고, 문구만 장마다 다르게 쓰시면 됩니다. 다 되면 전체를 ZIP으로 받아 Play Console의 그래픽 자료 항목에 순서대로 올리세요.</p>
+<p>앱에서 찍은 화면 캡처를 여러 장 올리고, 위쪽 썸네일에서 한 장씩 골라가며 문구를 적어 넣으면 됩니다. 배경과 프레임 설정은 전체 장에 공통으로 적용되므로 한 번만 맞추면 되고, 문구만 장마다 다르게 쓰시면 됩니다. 다 되면 전체를 ZIP으로 받아 App Store Connect나 Play Console의 그래픽 자료 항목에 순서대로 올리세요.</p>
 <p>모든 처리는 브라우저 안에서 이루어집니다. 출시 전 앱 화면이 외부 서버로 올라가지 않으므로 공개 전 자료도 안심하고 쓰실 수 있습니다.</p>
 </div></details>
 
-<details class="fold"><summary><h2>Play 스토어 스크린샷 규격</h2></summary><div class="fx">
-<p>Google Play는 휴대전화 스크린샷을 <strong>최소 2장, 최대 8장</strong> 요구합니다. 각 이미지는 JPEG 또는 24비트 PNG여야 하고, 가로세로 중 짧은 변이 320px 이상, 긴 변이 3840px 이하여야 하며 <strong>가로세로 비율이 2:1을 넘으면 안 됩니다.</strong> 이 도구의 기본값인 1080 × 1920은 이 조건을 모두 만족하는 가장 무난한 규격입니다.</p>
+<details class="fold"><summary><h2>지금 실제로 필요한 스토어 규격</h2></summary><div class="fx">
+<h3>App Store</h3>
+<p>애플은 요구 목록을 크게 줄였습니다. iPhone 앱은 이제 <strong>6.9인치 세트 하나</strong>만 올리면 되고, 더 작은 기기용은 애플이 알아서 축소해 보여줍니다. 6.9인치를 건너뛰면 App Store Connect가 대신 6.5인치 세트를 요구합니다. iPad 앱은 <strong>13인치 세트</strong>를 따로 올려야 합니다. 5.5인치와 6.5인치 칸도 업로드 화면에 남아 있지만 선택 사항이라 요즘은 대부분 채우지 않습니다.</p>
 
-<table>
+<div class="tblwrap"><table>
+  <thead><tr><th>칸</th><th class="n">크기</th><th>상태</th></tr></thead>
+  <tbody>
+    <tr><td>iPhone 6.9"</td><td class="n">1320 × 2868</td><td>iPhone 앱 필수</td></tr>
+    <tr><td>iPhone 6.5"</td><td class="n">1284 × 2778</td><td>6.9"를 안 낼 때만 필수</td></tr>
+    <tr><td>iPad 13"</td><td class="n">2064 × 2752</td><td>iPad 앱 필수</td></tr>
+    <tr><td>iPhone 5.5"</td><td class="n">1242 × 2208</td><td>레거시, 선택</td></tr>
+  </tbody>
+</table></div>
+
+<p>칸마다 최대 10장, JPEG 또는 PNG여야 하고 <strong>알파 채널이 있으면 안 됩니다.</strong> 투명한 PNG는 반려됩니다. 이 도구가 내보내는 파일은 배경이 가장자리까지 불투명하게 칠해진 <strong>알파 채널 없는 24비트 PNG</strong>라 그대로 올리시면 됩니다.</p>
+
+<h3>Google Play</h3>
+<p>Play는 정확한 픽셀 수에는 관대하고 비율에는 엄격합니다. 각 이미지는 JPEG 또는 <strong>알파 채널이 없는 24비트 PNG</strong>여야 하고, 짧은 변이 320px 이상, 긴 변이 3,840px 이하여야 하며, 사람들이 가장 많이 걸리는 규칙으로 <strong>긴 변이 짧은 변의 2배를 넘으면 안 됩니다.</strong> 게시하려면 최소 2장이 필요하고 기기 유형당 최대 8장까지 올릴 수 있습니다. 이 도구는 모든 결과물을 알파 없는 24비트 PNG로 직접 인코딩하므로 형식 조건은 이미 맞춰져 있습니다.</p>
+
+<div class="tblwrap"><table>
   <thead><tr><th>용도</th><th class="n">크기</th><th>비고</th></tr></thead>
   <tbody>
-    <tr><td>휴대전화 스크린샷</td><td class="n">1080 × 1920</td><td>가장 널리 쓰이는 권장 규격</td></tr>
-    <tr><td>길쭉한 화면 대응</td><td class="n">1080 × 2340</td><td>요즘 기기 비율에 가까움</td></tr>
+    <tr><td>휴대전화</td><td class="n">1080 × 1920</td><td>가장 무난한 기본값, 9:16</td></tr>
+    <tr><td>휴대전화 길쭉한 화면</td><td class="n">1080 × 2160</td><td>2:1 상한에 딱 맞음</td></tr>
     <tr><td>7인치 태블릿</td><td class="n">1200 × 1920</td><td>태블릿 지원 시 별도 등록</td></tr>
     <tr><td>10인치 태블릿</td><td class="n">1600 × 2560</td><td>태블릿 지원 시 별도 등록</td></tr>
-    <tr><td>피처 그래픽</td><td class="n">1024 × 500</td><td>필수 항목, 문구 위주로 구성</td></tr>
+    <tr><td>피처 그래픽</td><td class="n">1024 × 500</td><td>필수 항목, 목록 위쪽에 노출</td></tr>
   </tbody>
-</table>
+</table></div>
+
+<p class="note">요즘 휴대전화 비율을 조심하세요. 19.5:9 기기에서 그대로 찍은 캡처는 1080 × 2340, 즉 2.17:1이라 Play의 2:1 한계를 넘어 반려됩니다. 이 도구의 길쭉한 화면 프리셋이 1080 × 2160에서 멈추는 이유가 그것입니다.</p>
 
 <h3>피처 그래픽은 다르게 만드세요</h3>
 <p>1024 × 500은 가로로 긴 배너라 세로 화면 캡처를 그대로 넣으면 거의 보이지 않습니다. 이 규격을 고르시면 도구가 자동으로 가로 배치로 바꿔서 왼쪽에 문구, 오른쪽에 화면을 놓습니다. 피처 그래픽은 <strong>앱 이름과 한 줄 소개만 크게</strong> 보이는 편이 효과적이고, 스토어 목록에서 잘려 보일 수 있으니 가장자리 가까이에 중요한 내용을 두지 마세요.</p>
@@ -316,10 +346,16 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 </div></details>
 
 <details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
-<h3>업로드했더니 비율이 맞지 않다고 나와요</h3>
-<p>가로세로 비율이 2:1을 넘으면 거부됩니다. 이 도구의 프리셋은 모두 이 조건 안에 들어가니 프리셋을 그대로 쓰시면 됩니다.</p>
+<h3>Play에서 비율이 맞지 않다고 반려됐어요</h3>
+<p>긴 변이 짧은 변의 2배를 넘은 경우입니다. 길쭉한 휴대전화에서 그대로 찍은 1080 × 2340 캡처가 거의 항상 원인입니다. 이 도구의 <strong>Play 스크린샷 프리셋(1080 × 1920, 1080 × 2160, 1600 × 2560)은 모두 2:1 이내</strong>이니 프리셋을 거쳐 내보내세요. 피처 그래픽 1024 × 500은 스크린샷이 아니라 애초에 크기가 정해진 별도 항목이라 이 비율 규칙과 무관합니다. iPhone용 App Store 프리셋(1320 × 2868, 1284 × 2778)은 비율이 2:1을 조금 넘는데, 이는 애플이 지정한 고정 크기이고 Play가 아니라 App Store에 올리는 용도이니 그대로 쓰시면 됩니다.</p>
+<h3>App Store Connect가 크기가 틀렸다고 해요</h3>
+<p>애플은 비율이 아니라 정확한 픽셀 수로 판정하고, 몇 픽셀만 어긋나도 받지 않습니다. 손으로 크기를 조절하지 마시고 6.9인치나 iPad 13인치 프리셋을 그대로 쓰세요.</p>
+<h3>PNG에 알파 채널이 있다고 반려됐어요</h3>
+<p>지금 이 도구에서 나오는 파일에는 해당하지 않습니다. 결과물을 <strong>24비트 PNG(PNG 컬러 타입 2)</strong>로 직접 인코딩하기 때문에 알파 채널이 불투명한 게 아니라 아예 없습니다. <code>CompressionStream</code>을 지원하지 않는 오래된 브라우저에서는 품질 95의 JPEG로 대신 저장되는데, JPEG 역시 알파 채널이 없습니다.</p>
 <h3>글자가 잘려요</h3>
 <p>문구가 길면 자동으로 줄바꿈되지만 영역을 넘어서면 잘릴 수 있습니다. 글자 크기를 줄이거나 문구를 짧게 나누세요. 미리보기에 보이는 그대로 출력됩니다.</p>
+<h3>결과가 흐릿해요</h3>
+<p>원본 캡처가 출력 크기보다 작아 확대된 경우입니다. 해상도가 높은 기기나 시뮬레이터에서 캡처하세요. 6.9인치 프리셋이라면 가로 1290px 이상인 원본이 필요합니다.</p>
 </div></details>
 
 <!--REL:S-->
@@ -381,6 +417,51 @@ a.insertAdjacentElement('afterend',b)}})();</script>
     return new Blob([...L,...C,eo],{type:'application/zip'});
   }
 
+  /* ---------- PNG 인코더: 컬러 타입 2 (트루컬러, 알파 없음) ---------- */
+  const CAN_PNG = typeof CompressionStream!=='undefined';
+  function pngChunk(type,data){
+    const out=new Uint8Array(12+data.length),dv=new DataView(out.buffer);
+    dv.setUint32(0,data.length);
+    for(let i=0;i<4;i++) out[4+i]=type.charCodeAt(i);
+    out.set(data,8);
+    dv.setUint32(8+data.length,crc32(out.subarray(4,8+data.length)));
+    return out;
+  }
+  async function deflate(u8){
+    const cs=new CompressionStream('deflate');
+    const w=cs.writable.getWriter();
+    w.write(u8);w.close();
+    return new Uint8Array(await new Response(cs.readable).arrayBuffer());
+  }
+  /* canvas.toBlob은 언제나 RGBA(컬러 타입 6) PNG를 만든다. Play는 알파 채널이
+     없는 24비트 PNG를 요구하므로 PNG를 직접 인코딩한다. */
+  async function encodeOpaque(c){
+    if(!CAN_PNG){
+      const b=await new Promise(r=>c.toBlob(r,'image/jpeg',0.95));
+      return {blob:b,data:new Uint8Array(await b.arrayBuffer()),ext:'jpg'};
+    }
+    const W=c.width,H=c.height;
+    const src=c.getContext('2d').getImageData(0,0,W,H).data;
+    const stride=W*3+1;
+    const raw=new Uint8Array(stride*H);
+    let p=0,q=0;
+    for(let y=0;y<H;y++){
+      raw[p++]=0;                       /* 필터 타입 0 = None */
+      for(let i=0;i<W;i++){raw[p++]=src[q];raw[p++]=src[q+1];raw[p++]=src[q+2];q+=4}
+    }
+    const idat=await deflate(raw);
+    const ihdr=new Uint8Array(13),hv=new DataView(ihdr.buffer);
+    hv.setUint32(0,W);hv.setUint32(4,H);
+    ihdr[8]=8;   /* 비트 뎁스 */
+    ihdr[9]=2;   /* 컬러 타입 2 — 트루컬러, 알파 없음 */
+    const parts=[new Uint8Array([137,80,78,71,13,10,26,10]),
+      pngChunk('IHDR',ihdr),pngChunk('IDAT',idat),pngChunk('IEND',new Uint8Array(0))];
+    let n=0;for(const s of parts)n+=s.length;
+    const out=new Uint8Array(n);let o=0;
+    for(const s of parts){out.set(s,o);o+=s.length}
+    return {blob:new Blob([out],{type:'image/png'}),data:out,ext:'png'};
+  }
+
   const FONT='"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",-apple-system,sans-serif';
   let items=[],cur=0;
   const drop=$('drop'),file=$('file'),warn=$('warn');
@@ -400,7 +481,7 @@ a.insertAdjacentElement('afterend',b)}})();</script>
       const img=await new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src=URL.createObjectURL(f)});
       if(img) items.push({img,head:'',sub:'',name:f.name});
     }
-    if(items.length>8) msg('warn','Play 스토어 휴대전화 스크린샷은 <strong>최대 8장</strong>까지 등록할 수 있습니다. 현재 '+items.length+'장이니 앞의 8장만 쓰시는 걸 권합니다.');
+    if(items.length>8) msg('warn','Google Play는 기기 유형당 <strong>최대 8장</strong>, App Store는 칸마다 최대 10장까지 등록할 수 있습니다. 현재 '+items.length+'장이니 장수를 줄이시는 걸 권합니다.');
     $('editor').classList.remove('hidden');
     cur=Math.min(cur,items.length-1);
     strip();loadFields();render();
@@ -563,14 +644,16 @@ a.insertAdjacentElement('afterend',b)}})();</script>
     b.classList.add('on');render();
   }));
 
-  const toU8=c=>new Promise(r=>c.toBlob(async b=>r(new Uint8Array(await b.arrayBuffer())),'image/png'));
-
   $('one').addEventListener('click',async()=>{
     saveFields();
-    const c=document.createElement('canvas');draw(c,items[cur]);
-    c.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);
-      a.download=String(cur+1).padStart(2,'0')+'.png';a.click();
-      setTimeout(()=>URL.revokeObjectURL(a.href),3000)},'image/png');
+    const btn=$('one');btn.disabled=true;
+    try{
+      const c=document.createElement('canvas');draw(c,items[cur]);
+      const enc=await encodeOpaque(c);
+      const a=document.createElement('a');a.href=URL.createObjectURL(enc.blob);
+      a.download=String(cur+1).padStart(2,'0')+'.'+enc.ext;a.click();
+      setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+    }finally{btn.disabled=false}
   });
 
   $('zip').addEventListener('click',async()=>{
@@ -579,7 +662,8 @@ a.insertAdjacentElement('afterend',b)}})();</script>
     const entries=[];
     for(let i=0;i<items.length;i++){
       const c=document.createElement('canvas');draw(c,items[i]);
-      entries.push({name:String(i+1).padStart(2,'0')+'.png',data:await toU8(c)});
+      const enc=await encodeOpaque(c);
+      entries.push({name:String(i+1).padStart(2,'0')+'.'+enc.ext,data:enc.data});
       $('stat').textContent=`생성 중 ${i+1}/${items.length}`;
       await new Promise(r=>setTimeout(r));
     }

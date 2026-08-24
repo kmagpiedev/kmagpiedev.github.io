@@ -16,20 +16,17 @@
 <meta property="og:image" content="https://www.kmagpie.com/tests/joseon/img/og.png">
 <style>
   :root{
-    --bg:#f4edda; --surface:#fbf6e8; --line:#d9cdae; --line-soft:#e6dcc2;
-    --ink:#2b2520; --ink-2:#6b6150; --ink-3:#9a8d74;
-    --accent:#b3342c; --accent-soft:#f4e0d8;
-    --mag:#2f6b4f; --mag-soft:#dfeadf;
-    --card-grad-a:#efe6cd; --card-grad-b:#e3d7b8;
-    --btn-ink:#faf3e4;
+    --bg:#14110e; --surface:#1e1a15; --line:#3a322a; --line-soft:#2b2620;
+    --ink:#f2e9d7; --ink-2:#c0b39a; --ink-3:#918571;
+    --accent:#e2685a; --accent-soft:#3a1d18;
+    --mag:#79c39a; --mag-soft:#18291f;
+    --seal:#c0392e; --seal-ink:#f7ecd8;
+    --card-grad-a:#221c16; --card-grad-b:#100d0b;
+    --btn-ink:#1d0f0c;
   }
   @media (prefers-color-scheme:dark){
     :root{
-      --bg:#161310; --surface:#201b15; --line:#3d352a; --line-soft:#2e2820;
-      --ink:#ece4d2; --ink-2:#b6aa90; --ink-3:#8a7e66;
-      --accent:#d9695c; --accent-soft:#3a201b;
-      --mag:#7fbf9a; --mag-soft:#1e2f25;
-      --btn-ink:#241511;
+      --bg:#100d0b; --surface:#1a1613; --line:#3a322a; --line-soft:#262119;
     }
   }
   *{box-sizing:border-box}
@@ -37,13 +34,13 @@
     font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
     line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased;
     background-image:
-      radial-gradient(1.5px 1.5px at 14% 12%, rgba(43,37,32,.10) 50%, transparent 51%),
-      radial-gradient(1px 1px at 72% 8%,  rgba(43,37,32,.08) 50%, transparent 51%),
-      radial-gradient(2px 2px at 46% 30%, rgba(179,52,44,.10) 50%, transparent 51%),
-      radial-gradient(1px 1px at 30% 58%, rgba(43,37,32,.07) 50%, transparent 51%),
-      radial-gradient(2px 2px at 86% 42%, rgba(47,107,79,.12) 50%, transparent 51%),
-      radial-gradient(1px 1px at 10% 84%, rgba(43,37,32,.08) 50%, transparent 51%),
-      radial-gradient(1.5px 1.5px at 64% 76%, rgba(179,52,44,.08) 50%, transparent 51%)}
+      radial-gradient(1.5px 1.5px at 14% 12%, rgba(242,233,215,.13) 50%, transparent 51%),
+      radial-gradient(1px 1px at 72% 8%,  rgba(242,233,215,.10) 50%, transparent 51%),
+      radial-gradient(2px 2px at 46% 30%, rgba(226,104,90,.20) 50%, transparent 51%),
+      radial-gradient(1px 1px at 30% 58%, rgba(242,233,215,.09) 50%, transparent 51%),
+      radial-gradient(2px 2px at 86% 42%, rgba(121,195,154,.20) 50%, transparent 51%),
+      radial-gradient(1px 1px at 10% 84%, rgba(242,233,215,.10) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 64% 76%, rgba(226,104,90,.16) 50%, transparent 51%)}
   .wrap{max-width:680px;margin:0 auto;padding:44px 22px 90px}
   .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
   .crumb a{color:var(--ink-3);text-decoration:none}
@@ -73,9 +70,9 @@
   .result{background:var(--surface);border:1px solid var(--accent);border-radius:18px;
     padding:28px 24px;margin:20px 0;text-align:center;position:relative}
   .seal{position:absolute;top:18px;right:18px;width:42px;height:46px;border-radius:7px;
-    background:var(--accent);color:#f8efe0;display:flex;align-items:center;justify-content:center;
+    background:var(--seal);color:var(--seal-ink);display:flex;align-items:center;justify-content:center;
     font-size:14px;font-weight:800;line-height:1.1;writing-mode:vertical-rl;letter-spacing:.04em;
-    box-shadow:0 1px 0 rgba(0,0,0,.15) inset}
+    box-shadow:0 1px 0 rgba(255,255,255,.14) inset}
   .rk{font-size:13px;font-weight:700;letter-spacing:.12em;color:var(--ink-3);margin:0 0 14px}
   .roleImg{width:168px;height:168px;margin:0 auto 14px;border-radius:24px;overflow:hidden;position:relative;
     background:linear-gradient(135deg,var(--g1,#7c5b35),var(--g2,#3f2c14));display:flex;align-items:center;justify-content:center}
@@ -166,6 +163,7 @@
       <select id="bt"></select>
     </div>
   </div>
+  <p class="note" id="needPick" style="display:none;color:var(--accent)">생년·월·일을 모두 선택해 주세요.</p>
   <button type="button" class="go" id="goBtn">🪶 내 조선 팔자 확인하기</button>
   <p class="note">양력 생일 기준입니다. 입력값은 어디로도 전송되지 않고 브라우저 안에서만 계산됩니다.</p>
 </div>
@@ -322,6 +320,45 @@ function nokWon(n){
    출세지수 v(1~99) 이상인 비율(퍼밀, ‰). 빌드 시 실계산으로 생성. */
 var TOPP=[1000,1000,1000,1000,1000,1000,999,999,999,998,997,997,996,995,994,992,990,989,987,984,981,978,974,970,966,960,954,948,942,935,928,919,909,900,891,880,867,855,842,829,816,802,788,774,758,743,726,709,693,675,656,638,622,603,584,567,549,530,512,493,472,453,436,416,397,378,360,343,326,308,292,276,261,244,228,213,199,184,171,159,148,137,126,116,104,95,86,79,71,63,57,51,45,36,28,21,16,11,9];
 function topPct(s){ var pm=TOPP[s-1]; var p=Math.round(pm/10); return p<1?1:(p>100?100:p); }
+
+/* ── 결과값(V) — 생년월일시를 담지 않는 공유용 표시값 묶음 ─────────────
+   ri  1~10 = ROLES index+1, 11 = 암행어사, 12 = 영의정
+   s   출세지수 1~99 / top 전체 상위 % 1~100 / nok 연 녹봉 20~2500섬
+   dp  일주 index 0~59 (일주 한 줄 표시에만 사용)
+   연봉 환산액은 nokWon(nok)로 언어별로 계산하므로 담지 않는다. */
+function resultOf(y,m,d,t){
+  var s=career(y,m,d,t), dp=dayPillarIdx(y,m,d);
+  var ri=GWI[dp]?11:(s>=97?12:(dp%10)+1);
+  return {ri:ri, s:s, top:topPct(s), nok:nokbong(y,m,d,t), dp:dp};
+}
+var V_RI=12, V_S=99, V_TOP=100, V_NOK=2481, V_DP=60;
+var V_MAX=V_RI*V_S*V_TOP*V_NOK*V_DP-1;      /* 17,684,567,999 → base36 최대 7자 */
+function encodeV(V){
+  var n=V.ri-1;
+  n=n*V_S+(V.s-1);
+  n=n*V_TOP+(V.top-1);
+  n=n*V_NOK+(V.nok-20);
+  n=n*V_DP+V.dp;
+  return n.toString(36);
+}
+function decodeV(str){
+  if(typeof str!=='string'||!/^[0-9a-z]{1,7}$/.test(str)) return null;
+  var n=parseInt(str,36);
+  if(!isFinite(n)||n<0||n>V_MAX||Math.floor(n)!==n) return null;
+  var dp=n%V_DP;  n=(n-dp)/V_DP;
+  var nok=n%V_NOK; n=(n-nok)/V_NOK; nok+=20;
+  var top=n%V_TOP; n=(n-top)/V_TOP; top+=1;
+  var s=n%V_S;    n=(n-s)/V_S;     s+=1;
+  var ri=n+1;
+  if(ri<1||ri>V_RI) return null;
+  if(s<1||s>99) return null;
+  if(top<1||top>100) return null;
+  if(nok<20||nok>2500) return null;
+  if(dp<0||dp>59) return null;
+  return {ri:ri, s:s, top:top, nok:nok, dp:dp};
+}
+/* 결과 카드 한지 질감 시드 — 결과값만으로 만든다(생년월일 미사용) */
+function hanjiSeed(V){ return hash32('hanji:'+V.ri+'-'+V.s+'-'+V.top+'-'+V.nok+'-'+V.dp); }
 /*CORE:E*/
 
 /* ── 직업 데이터 ── */
@@ -424,6 +461,7 @@ var ILJU=[
 "충견과 큰물의 조합, 지키는 모습에 사람이 붙는 호위형","바다로 돌아가는 빗물, 순리를 타서 어디서든 무탈한 순류형"];
 
 function p60name(i){ return GAN[i%10]+JI[i%12]+"("+GANH[i%10]+JIH[i%12]+")"; }
+function roleByImg(i){ return i===11?ROLE_AMHAENG:(i===12?ROLE_YEONG:ROLES[i-1]); }
 function roleOf(y,m,d,t){
   var s=career(y,m,d,t);
   var dp=dayPillarIdx(y,m,d);
@@ -441,24 +479,36 @@ var TSLOT=["모름","자시 (23:30~01:30)","축시 (01:30~03:30)","인시 (03:30
  "진시 (07:30~09:30)","사시 (09:30~11:30)","오시 (11:30~13:30)","미시 (13:30~15:30)",
  "신시 (15:30~17:30)","유시 (17:30~19:30)","술시 (19:30~21:30)","해시 (21:30~23:30)"];
 var cur=null;
+var PH_Y='연도 선택', PH_M='월 선택', PH_D='일 선택';
 
 function fillSel(el,arr,vals){ var h=''; for(var i=0;i<arr.length;i++) h+='<option value="'+(vals?vals[i]:arr[i])+'">'+arr[i]+'</option>'; el.innerHTML=h; }
 function initInputs(){
-  var ys=[],yv=[]; for(var y=1940;y<=2020;y++){ys.push(y+'년');yv.push(y);}
-  fillSel($('by'),ys,yv); $('by').value=1995;
-  var ms=[],mv=[]; for(var m=1;m<=12;m++){ms.push(m+'월');mv.push(m);}
+  var ys=[PH_Y],yv=['']; for(var y=1940;y<=2020;y++){ys.push(y+'년');yv.push(y);}
+  fillSel($('by'),ys,yv);
+  var ms=[PH_M],mv=['']; for(var m=1;m<=12;m++){ms.push(m+'월');mv.push(m);}
   fillSel($('bm'),ms,mv);
-  fillDays();
-  var ts=[],tv=[]; for(var t=0;t<13;t++){ts.push(TSLOT[t]);tv.push(t);}
+  /* 시각은 선택 항목 — '모름' 슬롯의 값을 빈 문자열로 두어
+     빈 폼 상태와 '시간 모름'(t=0)이 그대로 같은 뜻이 되게 한다 */
+  var ts=[],tv=[]; for(var t=0;t<13;t++){ts.push(TSLOT[t]);tv.push(t===0?'':t);}
   fillSel($('bt'),ts,tv);
+  fillDays();
+  /* 첫 진입은 언제나 빈 폼 — 기본 생년월일을 넣지 않는다 */
+  clearInputs();
 }
 function daysIn(y,m){ return new Date(Date.UTC(y,m,0)).getUTCDate(); }
 function fillDays(){
-  var y=+$('by').value,m=+$('bm').value,old=+$('bd').value||1;
-  var n=daysIn(y,m),ds=[],dv=[];
+  var ys=$('by').value, ms=$('bm').value, olds=$('bd').value;
+  /* 연·월이 아직 비어 있으면 31일까지 채워 둔다 — 고르는 순서에 상관없이 일 선택이 가능하도록 */
+  var n=(ys!==''&&ms!=='')?daysIn(+ys,+ms):31,ds=[PH_D],dv=[''];
   for(var d=1;d<=n;d++){ds.push(d+'일');dv.push(d);}
   fillSel($('bd'),ds,dv);
-  $('bd').value=Math.min(old,n);
+  $('bd').value=(olds==='')?'':String(Math.min(+olds||1,n));
+}
+/* 입력폼 전체 초기화 — 각 셀렉트를 플레이스홀더(빈 값)로 되돌린다 */
+function clearInputs(){
+  $('nick').value='';
+  ['by','bm','bd','bt'].forEach(function(id){ $(id).value=''; });
+  $('needPick').style.display='none';
 }
 $('by').addEventListener('change',fillDays);
 $('bm').addEventListener('change',fillDays);
@@ -489,10 +539,13 @@ function countUp(el,target){
   animId=requestAnimationFrame(step);
 }
 
-function render(y,m,d,t,nick){
-  var R=roleOf(y,m,d,t);
-  cur={y:y,m:m,d:d,t:t,nick:nick||'',R:R};
-  var r=R.role;
+/* 결과 화면 렌더 — 결과값(V)만으로 그린다. 생년월일시는 쓰지 않는다.
+   shared=true 면 공유 링크로 들어온 사람 화면. */
+var RETRY_OWN='👀 친구는 무슨 벼슬일까? 다시 해보기';
+var RETRY_SHARED='🪶 나도 내 조선 팔자 확인하기';
+function renderResult(V,nick,shared){
+  var r=roleByImg(V.ri);
+  cur={V:V,role:r,nick:nick||'',shared:!!shared};
   var box=$('roleImgBox');
   box.style.setProperty('--g1',r.g[0]);
   box.style.setProperty('--g2',r.g[1]);
@@ -503,45 +556,60 @@ function render(y,m,d,t,nick){
   im.src='img/role-'+String(r.img).padStart(2,'0')+'.png';
   $('roleName').textContent=r.nm;
   $('roleCatch').textContent='“'+r.ct+'”';
-  countUp($('popNum'),R.s);
+  countUp($('popNum'),V.s);
   var tp=$('topPct');
-  if(R.top<=50){ tp.className='topPct'; tp.textContent='🏆 전체 상위 '+R.top+'%'; }
-  else { tp.className='topPct cult'; tp.textContent='🌾 전체 상위 '+R.top+'% · 저잣거리의 왕'; }
-  $('nokLine').innerHTML='🌾 연 녹봉 쌀 <b>'+R.nok.toLocaleString('ko-KR')+'</b>섬 ≈ 연봉 <b>'+nokWon(R.nok)+'</b>';
-  $('iljuLine').innerHTML='당신의 일주: <b>'+p60name(R.dp)+'</b> — '+ILJU[R.dp];
-  $('roleDesc').textContent=(R.s<30?MINCHO+' ':'')+r.desc;
+  if(V.top<=50){ tp.className='topPct'; tp.textContent='🏆 전체 상위 '+V.top+'%'; }
+  else { tp.className='topPct cult'; tp.textContent='🌾 전체 상위 '+V.top+'% · 저잣거리의 왕'; }
+  $('nokLine').innerHTML='🌾 연 녹봉 쌀 <b>'+V.nok.toLocaleString('ko-KR')+'</b>섬 ≈ 연봉 <b>'+nokWon(V.nok)+'</b>';
+  $('iljuLine').innerHTML='당신의 일주: <b>'+p60name(V.dp)+'</b> — '+ILJU[V.dp];
+  $('roleDesc').textContent=(V.s<30?MINCHO+' ':'')+r.desc;
   $('silLine').innerHTML='<b>실록에 이렇게 남습니다</b> — '+r.sil;
   $('mateGood').innerHTML=r.mateTx?r.mateTx:'<b>'+ROLES[r.mate].emo+' '+ROLES[r.mate].nm+'</b> — '+GAN[r.mate]+ELM(r.mate)+' 일간';
   $('mateBad').innerHTML=r.worstTx?r.worstTx:'<b>'+ROLES[r.worst].emo+' '+ROLES[r.worst].nm+'</b> — '+GAN[r.worst]+ELM(r.worst)+' 일간';
+  $('retryBtn').textContent=cur.shared?RETRY_SHARED:RETRY_OWN;
   $('copied').textContent='';
   $('res').classList.remove('hidden');
 }
+/* 생년월일시 → 결과값 → 렌더 (직접 테스트 경로) */
+function render(y,m,d,t,nick){ renderResult(resultOf(y,m,d,t),nick,false); }
 function ELM(g){ return ['목','목','화','화','토','토','금','금','수','수'][g]; }
 $('goBtn').addEventListener('click',function(){
-  var y=+$('by').value,m=+$('bm').value,d=+$('bd').value,t=+$('bt').value;
-  render(y,m,d,t,$('nick').value.trim());
+  if($('by').value===''||$('bm').value===''||$('bd').value===''){
+    $('needPick').style.display='';
+    ($('by').value===''?$('by'):($('bm').value===''?$('bm'):$('bd'))).focus();
+    return;
+  }
+  $('needPick').style.display='none';
+  var y=+$('by').value,m=+$('bm').value,d=+$('bd').value;
+  var t=$('bt').value===''?0:+$('bt').value;
+  var nick=$('nick').value.trim();
+  var V=resultOf(y,m,d,t);
+  renderResult(V,nick,false);
   var u=new URL(location.href);
-  u.searchParams.set('r',encodeR(y,m,d,t));
-  if($('nick').value.trim()) u.searchParams.set('n',$('nick').value.trim()); else u.searchParams.delete('n');
+  u.searchParams.delete('r');
+  u.searchParams.set('v',encodeV(V));
+  if(nick) u.searchParams.set('n',nick); else u.searchParams.delete('n');
   history.replaceState(null,'',u.pathname+u.search);
   $('res').scrollIntoView({behavior:'smooth',block:'start'});
 });
 $('retryBtn').addEventListener('click',function(){
   $('res').classList.add('hidden');
   history.replaceState(null,'',location.pathname);
+  clearInputs();
+  cur=null;
   $('inputPanel').scrollIntoView({behavior:'smooth',block:'start'});
-  $('nick').value='';
 });
 function shareText(){
   if(!cur)return '';
   /* 직업별 공유 스텁(/s/NN/)으로 링크 — 미리보기에 내 직업 일러스트가 뜬다.
-     스텁이 쿼리를 그대로 본 페이지로 넘겨 결과가 재현된다. */
-  var nn=String(cur.R.role.img).padStart(2,'0');
+     스텁이 쿼리를 그대로 본 페이지로 넘겨 결과가 재현된다.
+     ?v= 에는 결과값만 담기고 생년월일·시각은 절대 실리지 않는다. */
+  var nn=String(cur.role.img).padStart(2,'0');
   var base=location.pathname.replace(/\/$/,'');
-  var u=location.origin+base+'/s/'+nn+'/?r='+encodeR(cur.y,cur.m,cur.d,cur.t)+
+  var u=location.origin+base+'/s/'+nn+'/?v='+encodeV(cur.V)+
     (cur.nick?'&n='+encodeURIComponent(cur.nick):'');
-  return '👑 나는 조선의 "'+cur.R.role.nm+'", 출세지수 '+cur.R.s+'%! 연 녹봉 쌀 '+
-    cur.R.nok.toLocaleString('ko-KR')+'섬. 너는?\n'+u;
+  return '👑 나는 조선의 "'+cur.role.nm+'", 출세지수 '+cur.V.s+'%! 연 녹봉 쌀 '+
+    cur.V.nok.toLocaleString('ko-KR')+'섬. 너는?\n'+u;
 }
 $('shareLink').addEventListener('click',function(){
   if(!cur)return;
@@ -572,22 +640,22 @@ function roundRect(ctx,x,y,w,h,r){
 }
 function makeCard(){
   if(!cur)return Promise.resolve(null);
-  var R=cur.R,r=R.role;
+  var R=cur.V,r=cur.role;
   var W=1080,H=1350;
   var c=document.createElement('canvas'); c.width=W; c.height=H;
   var x=c.getContext('2d');
   return loadImg('img/role-'+String(r.img).padStart(2,'0')+'.png').then(function(im){
-    var INK='#2b2520', INK2='#6b6150', INK3='#9a8d74', RED='#b3342c', GRN='#2f6b4f';
+    var INK='#f2e9d7', INK2='#c0b39a', INK3='#918571', RED='#e2685a', GRN='#79c39a', SEAL='#c0392e';
     /* 배경: 한지 */
     var bg=x.createLinearGradient(0,0,0,H);
-    bg.addColorStop(0,'#f6efdd'); bg.addColorStop(1,'#e9dfc4');
+    bg.addColorStop(0,'#221c16'); bg.addColorStop(1,'#100d0b');
     x.fillStyle=bg; x.fillRect(0,0,W,H);
     /* 한지 질감: 먹 점 */
-    var hs=hash32('hanji:'+cur.y+'-'+cur.m+'-'+cur.d);
+    var hs=hanjiSeed(R);
     for(var i=0;i<90;i++){
       hs=(Math.imul(hs,1664525)+1013904223)>>>0;
       var sx=hs%W; var sy=(hs>>>11)%H; var ss=((hs>>>22)%3)*0.7+0.7;
-      x.globalAlpha=0.04+((hs>>>7)%40)/1000;
+      x.globalAlpha=0.10+((hs>>>7)%40)/400;
       x.fillStyle=INK;
       x.fillRect(sx,sy,ss,ss);
     }
@@ -639,7 +707,7 @@ function makeCard(){
     x.font='700 38px -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
     var bw=x.measureText(btxt).width+72;
     roundRect(x,(W-bw)/2,yy+400,bw,80,40);
-    x.fillStyle=R.top<=50?'#f0ddd2':'#dcE8dc'; x.fill();
+    x.fillStyle=R.top<=50?'#3a1d18':'#18291f'; x.fill();
     x.fillStyle=R.top<=50?RED:GRN;
     x.fillText(btxt,W/2,yy+453);
     /* 녹봉 */
@@ -654,8 +722,8 @@ function makeCard(){
     x.fillText(il,W/2,yy+600);
     /* 낙관 (도장) */
     roundRect(x,W-150,H-176,86,86,12);
-    x.fillStyle=RED; x.fill();
-    x.fillStyle='#f8efe0';
+    x.fillStyle=SEAL; x.fill();
+    x.fillStyle='#f7ecd8';
     x.font='800 34px -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
     x.fillText('까',W-107,H-138);
     x.fillText('치',W-107,H-104);
@@ -689,7 +757,7 @@ $('shareCard').addEventListener('click',function(){
        (사용자 취소가 아닌) 실패 시 다운로드로 폴백한다. */
     if(IS_MOBILE&&navigator.share&&navigator.canShare&&navigator.canShare({files:[f]})){
       navigator.share({files:[f],title:'조선 팔자 감정서',
-        text:'내 조선 직업은 "'+cur.R.role.nm+'", 출세지수 '+cur.R.s+'%! 너는? https://www.kmagpie.com/tests/joseon/'})
+        text:'내 조선 직업은 "'+cur.role.nm+'", 출세지수 '+cur.V.s+'%! 너는? https://www.kmagpie.com/tests/joseon/'})
         .catch(function(err){ if(!err||err.name!=='AbortError') saveBlob(blob); });
     }else{
       saveBlob(blob);
@@ -698,23 +766,32 @@ $('shareCard').addEventListener('click',function(){
 });
 
 initInputs();
-/* ?r= 재현 */
+/* 공유 링크 재현 — ?v=(결과값) 우선, 옛 ?r=(생년월일) 링크도 계속 지원.
+   어느 쪽이든 입력폼은 절대 채우지 않는다. */
 (function(){
   var q=new URLSearchParams(location.search);
-  var rv=q.get('r');
-  if(!rv)return;
+  var nick=(q.get('n')||'').slice(0,12);
+  var vv=q.get('v'), rv=q.get('r');
+  if(vv===null&&rv===null) return;
+  clearInputs();                   /* 공유 링크로 들어온 화면 — 입력폼은 빈 채로 둔다 */
+  if(vv!==null){
+    var V=decodeV(vv);
+    if(!V) return;                 /* 조작·손상된 값 → 결과 없이 빈 입력 화면 */
+    renderResult(V,nick,true);
+    return;
+  }
   var dec=decodeR(rv);
   if(!dec)return;
-  var nick=(q.get('n')||'').slice(0,12);
-  $('by').value=dec.y; $('bm').value=dec.m; fillDays(); $('bd').value=dec.d; $('bt').value=dec.t;
-  $('nick').value=nick;
-  render(dec.y,dec.m,dec.d,dec.t,nick);
+  renderResult(resultOf(dec.y,dec.m,dec.d,dec.t),nick,true);
 })();
 
 /* 테스트 훅 */
 window.JOSEON={career:career,nokbong:nokbong,nokWon:nokWon,roleOf:roleOf,dayPillarIdx:dayPillarIdx,
   yearPillarIdx:yearPillarIdx,monthPillar:monthPillar,topPct:topPct,
   encodeR:encodeR,decodeR:decodeR,makeCard:makeCard,cardBlob:cardBlob,render:render,shareText:shareText,
+  resultOf:resultOf,encodeV:encodeV,decodeV:decodeV,renderResult:renderResult,roleByImg:roleByImg,
+  hanjiSeed:hanjiSeed,clearInputs:clearInputs,RETRY_OWN:RETRY_OWN,RETRY_SHARED:RETRY_SHARED,
+  state:function(){return cur;},
   ROLES:ROLES,ROLE_AMHAENG:ROLE_AMHAENG,ROLE_YEONG:ROLE_YEONG,ILJU:ILJU,p60name:p60name,MINCHO:MINCHO};
 })();
 </script>
