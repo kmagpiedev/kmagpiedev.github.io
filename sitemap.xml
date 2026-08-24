@@ -8,7 +8,7 @@
   </url>
   <url>
     <loc>https://www.kmagpie.com/tools/</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -110,7 +110,7 @@
   </url>
   <url>
     <loc>https://www.kmagpie.com/tools/app-icon/</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -128,43 +128,43 @@
   </url>
   <url>
     <loc>https://www.kmagpie.com/tools/screenshot/</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.kmagpie.com/en/tools/</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.kmagpie.com/en/tools/salary/</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.kmagpie.com/en/tools/severance/</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.kmagpie.com/en/tools/unemployment/</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.kmagpie.com/en/tools/annual-leave/</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.kmagpie.com/en/tools/holiday-pay/</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -284,79 +284,91 @@
   </url>
   <url>
     <loc>https://www.kmagpie.com/en/tools/meme/</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.kmagpie.com/en/tools/gif-maker/</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.kmagpie.com/en/tools/watermark/</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.kmagpie.com/en/tools/image-compress/</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.kmagpie.com/en/tools/resize/</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.kmagpie.com/en/tools/convert/</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.kmagpie.com/en/tools/app-icon/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.kmagpie.com/en/tools/screenshot/</loc>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.kmagpie.com/en/tools/remove-bg/</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.kmagpie.com/en/tools/pdf/</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.kmagpie.com/en/tools/pdf-compress/</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.kmagpie.com/en/tools/pdf-sign/</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.kmagpie.com/en/tools/pdf-to-image/</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.kmagpie.com/en/tools/img2pdf/</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.kmagpie.com/en/tools/qr/</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -368,7 +380,7 @@
   </url>
   <url>
     <loc>https://www.kmagpie.com/tools/about/</loc>
-    <lastmod>2026-08-12</lastmod>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -404,7 +416,7 @@
   </url>
   <url>
     <loc>https://www.kmagpie.com/en/tools/about/</loc>
-    <lastmod>2026-08-16</lastmod>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

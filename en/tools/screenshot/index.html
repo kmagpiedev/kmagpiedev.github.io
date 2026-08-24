@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>스토어 스크린샷 생성기 — 앱 캡처에 프레임과 문구 얹기 | 까치툴</title>
-<meta name="description" content="앱 화면 캡처를 올리면 배경과 기기 프레임, 홍보 문구를 얹어 Google Play·App Store 등록용 스크린샷을 만들어 ZIP으로 받습니다. 서버 전송 없이 브라우저에서 처리됩니다.">
-<link rel="canonical" href="https://www.kmagpie.com/tools/screenshot/">
-<meta property="og:title" content="스토어 스크린샷 생성기 — 앱 캡처에 프레임과 문구 얹기">
-<meta property="og:description" content="Play 스토어 등록용 스크린샷을 브라우저에서 바로 만듭니다.">
+<title>App Store Screenshot Generator — Frames, Captions, Store Sizes | K-magpie</title>
+<meta name="description" content="Turn app screen captures into App Store and Google Play listing screenshots. Add a device frame, gradient background and caption, pick a store size, and download the set as a ZIP. Runs in your browser — no upload, no sign-up, no watermark.">
+<link rel="canonical" href="https://www.kmagpie.com/en/tools/screenshot/">
+<meta property="og:title" content="App Store Screenshot Generator — Frames, Captions, Store Sizes">
+<meta property="og:description" content="Store-ready screenshots and feature graphics, built in your browser. Files are never uploaded.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://www.kmagpie.com/tools/screenshot/">
+<meta property="og:url" content="https://www.kmagpie.com/en/tools/screenshot/">
 <style>
   :root{
     --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
@@ -31,7 +31,7 @@
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);
-    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
   .wrap{max-width:1000px;margin:0 auto;padding:44px 22px 90px}
   .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
@@ -52,8 +52,8 @@
   #file{display:none}
 
   .stage{display:flex;gap:22px;flex-wrap:wrap;margin-top:18px}
-  .side{flex:1;min-width:290px}
-  .pvbox{width:270px;flex:none}
+  .side{flex:1;min-width:280px}
+  .pvbox{width:270px;max-width:100%;flex:none}
   .pvbox canvas{width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block;background:var(--surface)}
   .pvcap{font-size:12px;color:var(--ink-3);text-align:center;margin-top:7px;font-variant-numeric:tabular-nums}
 
@@ -62,7 +62,7 @@
   .fld{margin-bottom:12px}
   .fld:last-child{margin-bottom:0}
   .fld label{display:block;font-size:12.5px;color:var(--ink-3);font-weight:600;margin-bottom:5px}
-  .fld input[type=text],.fld select,.fld textarea{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;
+  .fld input[type=text],.fld select,.fld textarea{width:100%;max-width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;
     background:var(--bg);color:var(--ink);font-size:14px;font-family:inherit}
   .fld textarea{resize:vertical;min-height:52px;line-height:1.5}
   .fld input:focus,.fld select:focus,.fld textarea:focus{outline:0;border-color:var(--accent)}
@@ -97,14 +97,24 @@
   .m-warn{background:var(--warn-soft);border-color:var(--warn)}
   .m-bad{background:var(--bad-soft);border-color:var(--bad)}
   .hidden{display:none}
-  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+  .tblwrap{overflow-x:auto;margin:14px 0}
+  table{width:100%;border-collapse:collapse;font-size:14px}
   th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line-soft)}
   th{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;border-bottom:1px solid var(--line)}
-  td.n{text-align:right;font-variant-numeric:tabular-nums}
+  td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
   code{background:var(--line-soft);padding:2px 6px;border-radius:5px;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
   .note{font-size:13.5px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:13px;margin:14px 0}
   footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
   footer a{color:var(--ink-3)}
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:24px}
+    table{font-size:13px}
+    th,td{padding:9px 6px}
+    .stage{flex-direction:column}
+    .pvbox{width:100%;max-width:270px;margin:0 auto}
+    .side{min-width:0;width:100%}
+  }
 /*FOLD:S*/
   .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
     padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
@@ -130,18 +140,6 @@
   .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
   .rel-all{font-size:14.5px;font-weight:600;margin:0}
 /*REL:E*/
-/*TESTS:S*/
-  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 0;padding:13px 18px;
-    border:1px solid var(--line);border-radius:14px;background:var(--surface);
-    text-decoration:none;color:inherit;transition:.14s}
-  .tbn:hover{border-color:var(--accent);transform:translateY(-2px)}
-  .tbn .ic{width:44px;height:44px;flex:none;border-radius:12px;background:#fff;
-    border:1px solid var(--line);object-fit:contain;padding:2px}
-  .tbn .tx{flex:1;min-width:0}
-  .tbn .tt{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em}
-  .tbn .ds{display:block;font-size:13px;color:var(--ink-3);line-height:1.55;margin-top:2px}
-  .tbn .ar{color:var(--ink-3);font-size:15px;flex:none}
-/*TESTS:E*/
 /*LANG:S*/
   .langsw{font-size:13px;margin:-12px 0 20px}
   .langsw a{color:var(--ink-3);text-decoration:none;border-bottom:1px solid var(--line)}
@@ -158,12 +156,12 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
 <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
-<meta property="og:site_name" content="까치툴">
-<link rel="manifest" href="/tools/manifest.json">
+<meta property="og:site_name" content="Kmagpie Tools">
+<link rel="manifest" href="/en/tools/manifest.json">
 <meta name="theme-color" content="#faf9f7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#171614" media="(prefers-color-scheme: dark)">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="까치툴">
+<meta name="apple-mobile-web-app-title" content="K-magpie">
 <script>/*PWA*/(function(){var L=document.documentElement.lang==='en';
 if('serviceWorker' in navigator)addEventListener('load',function(){navigator.serviceWorker.register('/sw.js',{scope:'/'})['catch'](function(){})});
 var p=null;addEventListener('beforeinstallprompt',function(e){e.preventDefault();p=e;show()});
@@ -178,24 +176,24 @@ b.onclick=function(){if(!p)return;p.prompt();p.userChoice.then(function(){p=null
 a.insertAdjacentElement('afterend',b)}})();</script>
 <!--HEAD:E-->
 <!--LD:S-->
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://www.kmagpie.com/tools/screenshot/#app","name":"스토어 스크린샷 생성기","url":"https://www.kmagpie.com/tools/screenshot/","description":"앱 화면 캡처에 배경·기기 프레임·홍보 문구를 얹어 Play 스토어 등록 규격에 맞는 이미지로 만들어 ZIP으로 받습니다. 피처 그래픽도 지원합니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"inLanguage":"ko","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"K-magpie","url":"https://www.kmagpie.com/"}},{"@type":"BreadcrumbList","@id":"https://www.kmagpie.com/tools/screenshot/#crumb","itemListElement":[{"@type":"ListItem","position":1,"name":"K-magpie","item":"https://www.kmagpie.com/"},{"@type":"ListItem","position":2,"name":"까치툴","item":"https://www.kmagpie.com/tools/"},{"@type":"ListItem","position":3,"name":"스토어 스크린샷 생성기","item":"https://www.kmagpie.com/tools/screenshot/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://www.kmagpie.com/en/tools/screenshot/#app","name":"Store Screenshot Generator","url":"https://www.kmagpie.com/en/tools/screenshot/","description":"Turn raw app captures into store-ready screenshots: pick an App Store or Google Play size, add a device frame, background and a caption, then download the set as a ZIP. Runs entirely in your browser.","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"inLanguage":"en","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"K-magpie","url":"https://www.kmagpie.com/"}},{"@type":"BreadcrumbList","@id":"https://www.kmagpie.com/en/tools/screenshot/#crumb","itemListElement":[{"@type":"ListItem","position":1,"name":"K-magpie","item":"https://www.kmagpie.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://www.kmagpie.com/en/tools/"},{"@type":"ListItem","position":3,"name":"Store Screenshot Generator","item":"https://www.kmagpie.com/en/tools/screenshot/"}]}]}</script>
 <!--LD:E-->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="wrap">
 
-<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › 스토어 스크린샷 생성기</p>
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/en/tools/">Kmagpie Tools</a> › App Store Screenshot Generator</p>
 <!--LANG:S-->
-<p class="langsw"><a href="/en/tools/screenshot/" hreflang="en" lang="en">English version</a></p>
+<p class="langsw"><a href="/tools/screenshot/" hreflang="ko" lang="ko">한국어로 보기</a></p>
 <!--LANG:E-->
 
-<h1>스토어 스크린샷 생성기</h1>
-<p class="sub">앱 화면 캡처를 올리면 배경과 기기 프레임, 홍보 문구를 얹어 <strong>Play 스토어 등록 규격에 맞는 이미지</strong>로 만들어 드립니다. 파일이 서버로 전송되지 않고 브라우저 안에서만 처리됩니다.</p>
+<h1>App Store Screenshot Generator</h1>
+<p class="sub">Drop in your app's screen captures and get back <strong>listing images at the exact sizes the App Store and Google Play ask for</strong> — device frame, background and caption included. Everything is rendered in your browser; nothing is uploaded.</p>
 
 <div id="drop">
-  <div class="big">앱 화면 캡처를 끌어다 놓거나 클릭해서 선택하세요</div>
-  <div class="small">여러 장을 한꺼번에 올릴 수 있습니다 · 장마다 다른 문구를 넣을 수 있어요</div>
+  <div class="big">Drop your app screen captures here, or click to choose files</div>
+  <div class="small">Add as many as you like · each one gets its own caption</div>
   <input type="file" id="file" accept="image/*" multiple>
 </div>
 
@@ -212,137 +210,154 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 
     <div class="side">
       <div class="panel">
-        <h4>이 장의 문구</h4>
-        <div class="fld"><label>큰 문구</label><textarea id="head" placeholder="예: 하루 한 번, 고양이가 뽑아주는 오늘의 운세"></textarea></div>
-        <div class="fld"><label>작은 문구 (선택)</label><input type="text" id="subt" placeholder="예: 매일 아침 새로운 메시지"></div>
+        <h4>Caption for this shot</h4>
+        <div class="fld"><label>Headline</label><textarea id="head" placeholder="e.g. Every subscription in one place"></textarea></div>
+        <div class="fld"><label>Subhead (optional)</label><input type="text" id="subt" placeholder="e.g. Cancel before the next charge"></div>
       </div>
 
       <div class="panel">
-        <h4>출력 규격</h4>
+        <h4>Output size</h4>
         <div class="fld">
           <select id="preset">
-            <option value="1080x1920">Play 스토어 휴대전화 · 1080 × 1920 (권장)</option>
-            <option value="1080x2340">휴대전화 길쭉한 화면 · 1080 × 2340</option>
-            <option value="1242x2208">App Store 5.5" · 1242 × 2208</option>
-            <option value="1284x2778">App Store 6.5" · 1284 × 2778</option>
-            <option value="1600x2560">태블릿 10" · 1600 × 2560</option>
-            <option value="1024x500">Play 피처 그래픽 · 1024 × 500</option>
+            <option value="1320x2868">App Store · iPhone 6.9" · 1320 × 2868 (required)</option>
+            <option value="1284x2778">App Store · iPhone 6.5" · 1284 × 2778 (fallback)</option>
+            <option value="2064x2752">App Store · iPad 13" · 2064 × 2752 (required for iPad)</option>
+            <option value="1080x1920" selected>Google Play · Phone · 1080 × 1920 (recommended)</option>
+            <option value="1080x2160">Google Play · Phone, tall · 1080 × 2160 (2:1 limit)</option>
+            <option value="1600x2560">Google Play · Tablet 10" · 1600 × 2560</option>
+            <option value="1024x500">Google Play · Feature graphic · 1024 × 500</option>
           </select>
         </div>
       </div>
 
       <div class="panel">
-        <h4>배경</h4>
+        <h4>Background</h4>
         <div class="fld">
           <div class="seg" id="bgmode">
-            <button data-m="grad" class="on">그라데이션</button>
-            <button data-m="solid">단색</button>
+            <button data-m="grad" class="on">Gradient</button>
+            <button data-m="solid">Solid</button>
           </div>
         </div>
         <div class="fld inline">
           <input type="color" id="c1" value="#1f6feb">
           <input type="color" id="c2" value="#7c3aed">
-          <label class="opt" style="margin-left:auto"><input type="checkbox" id="diag" checked>대각선</label>
+          <label class="opt" style="margin-left:auto"><input type="checkbox" id="diag" checked>Diagonal</label>
         </div>
       </div>
 
       <div class="panel">
-        <h4>기기 프레임</h4>
-        <label class="opt" style="margin-bottom:11px"><input type="checkbox" id="frame" checked>프레임 씌우기</label>
-        <div class="fld"><label>모서리 둥글기 <span class="val" id="radV">7%</span></label>
+        <h4>Device frame</h4>
+        <label class="opt" style="margin-bottom:11px"><input type="checkbox" id="frame" checked>Add a frame</label>
+        <div class="fld"><label>Corner radius <span class="val" id="radV">7%</span></label>
           <input type="range" id="rad" min="0" max="14" value="7"></div>
-        <div class="fld"><label>화면 크기 <span class="val" id="scaleV">78%</span></label>
+        <div class="fld"><label>Screen size <span class="val" id="scaleV">78%</span></label>
           <input type="range" id="scale" min="45" max="95" value="78"></div>
-        <label class="opt"><input type="checkbox" id="shadow" checked>그림자</label>
+        <label class="opt"><input type="checkbox" id="shadow" checked>Drop shadow</label>
       </div>
 
       <div class="panel">
-        <h4>문구 스타일</h4>
+        <h4>Caption style</h4>
         <div class="fld inline">
           <input type="color" id="tc" value="#ffffff">
-          <span style="font-size:13.5px;color:var(--ink-3)">글자색</span>
+          <span style="font-size:13.5px;color:var(--ink-3)">Text color</span>
         </div>
-        <div class="fld"><label>위치</label>
-          <div class="seg" id="tpos"><button data-p="top" class="on">위</button><button data-p="bottom">아래</button></div>
+        <div class="fld"><label>Position</label>
+          <div class="seg" id="tpos"><button data-p="top" class="on">Top</button><button data-p="bottom">Bottom</button></div>
         </div>
-        <div class="fld"><label>글자 크기 <span class="val" id="tsV">100%</span></label>
+        <div class="fld"><label>Text size <span class="val" id="tsV">100%</span></label>
           <input type="range" id="ts" min="60" max="150" value="100"></div>
       </div>
     </div>
   </div>
 
   <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px">
-    <button class="act primary" id="zip">전체 ZIP으로 받기</button>
-    <button class="act ghost" id="one">이 장만 받기</button>
-    <button class="act ghost" id="reset">처음부터</button>
+    <button class="act primary" id="zip">Download all as ZIP</button>
+    <button class="act ghost" id="one">Download this one</button>
+    <button class="act ghost" id="reset">Start over</button>
     <span id="stat" style="font-size:14px;color:var(--ink-3)"></span>
   </div>
 </div>
 
-<p class="gist">화면 캡처에 기기 프레임과 문구를 얹어 Play 스토어 규격 스크린샷과 피처 그래픽을 만듭니다. 기본값 1080×1920은 스토어 요건을 모두 만족하는 무난한 규격입니다. 출시 전 앱 화면도 서버로 올라가지 않고 브라우저 안에서만 처리됩니다.</p>
+<p class="gist">Wrap your screen captures in a device frame, add a caption, and export at App Store or Google Play listing sizes — feature graphic included. Presets cover the sizes each store actually requires today: iPhone 6.9", iPad 13", and Play's phone and tablet slots. Unreleased app screens never leave your browser.</p>
 
-<details class="fold" open><summary><h2>사용법</h2></summary><div class="fx">
-<p>앱에서 찍은 화면 캡처를 여러 장 올리고, 위쪽 썸네일에서 한 장씩 골라가며 문구를 적어 넣으면 됩니다. 배경과 프레임 설정은 전체 장에 공통으로 적용되므로 한 번만 맞추면 되고, 문구만 장마다 다르게 쓰시면 됩니다. 다 되면 전체를 ZIP으로 받아 Play Console의 그래픽 자료 항목에 순서대로 올리세요.</p>
-<p>모든 처리는 브라우저 안에서 이루어집니다. 출시 전 앱 화면이 외부 서버로 올라가지 않으므로 공개 전 자료도 안심하고 쓰실 수 있습니다.</p>
+<details class="fold" open><summary><h2>How to use</h2></summary><div class="fx">
+<p>Add all your screen captures at once, then click through the thumbnails at the top and write a caption for each one. Background, frame and text styling apply to the whole set, so you only tune those once — the captions are the part that changes shot to shot. When it looks right, download the set as a ZIP and upload the files in order to App Store Connect or the Play Console's store listing section.</p>
+<p>Everything is rendered locally with the Canvas API. Screens from an unreleased build never touch a server, so there is nothing to worry about with pre-launch material. No sign-up, no usage cap, no watermark.</p>
 </div></details>
 
-<details class="fold"><summary><h2>Play 스토어 스크린샷 규격</h2></summary><div class="fx">
-<p>Google Play는 휴대전화 스크린샷을 <strong>최소 2장, 최대 8장</strong> 요구합니다. 각 이미지는 JPEG 또는 24비트 PNG여야 하고, 가로세로 중 짧은 변이 320px 이상, 긴 변이 3840px 이하여야 하며 <strong>가로세로 비율이 2:1을 넘으면 안 됩니다.</strong> 이 도구의 기본값인 1080 × 1920은 이 조건을 모두 만족하는 가장 무난한 규격입니다.</p>
+<details class="fold"><summary><h2>Store sizes that actually matter</h2></summary><div class="fx">
+<h3>App Store</h3>
+<p>Apple has cut the list down hard. For an iPhone app you now only need <strong>one 6.9-inch set</strong>; Apple scales it down for every smaller device. If you skip 6.9-inch, App Store Connect falls back to requiring a 6.5-inch set instead. iPad apps need a separate <strong>13-inch set</strong>. The older 5.5-inch and 6.5-inch slots still exist in the upload form, but supplying them is optional and most teams no longer bother.</p>
 
-<table>
-  <thead><tr><th>용도</th><th class="n">크기</th><th>비고</th></tr></thead>
+<div class="tblwrap"><table>
+  <thead><tr><th>Slot</th><th class="n">Pixels</th><th>Status</th></tr></thead>
   <tbody>
-    <tr><td>휴대전화 스크린샷</td><td class="n">1080 × 1920</td><td>가장 널리 쓰이는 권장 규격</td></tr>
-    <tr><td>길쭉한 화면 대응</td><td class="n">1080 × 2340</td><td>요즘 기기 비율에 가까움</td></tr>
-    <tr><td>7인치 태블릿</td><td class="n">1200 × 1920</td><td>태블릿 지원 시 별도 등록</td></tr>
-    <tr><td>10인치 태블릿</td><td class="n">1600 × 2560</td><td>태블릿 지원 시 별도 등록</td></tr>
-    <tr><td>피처 그래픽</td><td class="n">1024 × 500</td><td>필수 항목, 문구 위주로 구성</td></tr>
+    <tr><td>iPhone 6.9"</td><td class="n">1320 × 2868</td><td>Required for iPhone apps</td></tr>
+    <tr><td>iPhone 6.5"</td><td class="n">1284 × 2778</td><td>Required only if 6.9" is missing</td></tr>
+    <tr><td>iPad 13"</td><td class="n">2064 × 2752</td><td>Required for iPad apps</td></tr>
+    <tr><td>iPhone 5.5"</td><td class="n">1242 × 2208</td><td>Legacy, optional</td></tr>
   </tbody>
-</table>
+</table></div>
 
-<h3>피처 그래픽은 다르게 만드세요</h3>
-<p>1024 × 500은 가로로 긴 배너라 세로 화면 캡처를 그대로 넣으면 거의 보이지 않습니다. 이 규격을 고르시면 도구가 자동으로 가로 배치로 바꿔서 왼쪽에 문구, 오른쪽에 화면을 놓습니다. 피처 그래픽은 <strong>앱 이름과 한 줄 소개만 크게</strong> 보이는 편이 효과적이고, 스토어 목록에서 잘려 보일 수 있으니 가장자리 가까이에 중요한 내용을 두지 마세요.</p>
+<p>Up to ten screenshots per slot, JPEG or PNG, and <strong>no alpha channel</strong> — a transparent PNG is rejected. Exports here always paint an opaque background edge to edge, so nothing shows through. If a store still objects to the alpha channel itself, flatten the files to JPG with the <a href="/en/tools/convert/">image converter</a>.</p>
+
+<h3>Google Play</h3>
+<p>Play is looser about exact pixels and stricter about ratio. Each image must be JPEG or 24-bit PNG with no alpha, at least 320px and at most 3840px on any side, and — the rule that catches people — <strong>the long side can be at most twice the short side.</strong> You need at least two screenshots to publish and can upload up to eight per device type.</p>
+
+<div class="tblwrap"><table>
+  <thead><tr><th>Asset</th><th class="n">Pixels</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td>Phone</td><td class="n">1080 × 1920</td><td>The safe default, 9:16</td></tr>
+    <tr><td>Phone, tall</td><td class="n">1080 × 2160</td><td>Exactly at the 2:1 ceiling</td></tr>
+    <tr><td>Tablet 7"</td><td class="n">1200 × 1920</td><td>Separate slot if you support tablets</td></tr>
+    <tr><td>Tablet 10"</td><td class="n">1600 × 2560</td><td>Separate slot if you support tablets</td></tr>
+    <tr><td>Feature graphic</td><td class="n">1024 × 500</td><td>Required, appears above the listing</td></tr>
+  </tbody>
+</table></div>
+
+<p class="note">Careful with modern phone aspect ratios. A raw capture from a 19.5:9 handset is 1080 × 2340, which is 2.17:1 — over Play's 2:1 limit, and it will be rejected. That is why the tall preset here stops at 1080 × 2160.</p>
+
+<h3>The feature graphic is a different animal</h3>
+<p>1024 × 500 is a wide banner, so a portrait screen capture dropped into it is nearly invisible. Pick that preset and the layout switches automatically: caption on the left, device on the right. Feature graphics work best with just <strong>the app name and a single line of positioning</strong> set large. Play crops the edges in some placements, so keep anything important away from the borders.</p>
 </div></details>
 
-<details class="fold"><summary><h2>스크린샷을 잘 만드는 법</h2></summary><div class="fx">
-<h3>첫 두 장이 전부입니다</h3>
-<p>스토어 목록에서 사용자가 스크롤 없이 보는 건 보통 앞의 두 장뿐입니다. 앱의 가장 큰 매력을 1번과 2번에 배치하고, 설정 화면이나 부가 기능은 뒤로 미루세요.</p>
-<h3>문구는 짧게</h3>
-<p>화면에서 실제로 읽히는 크기는 생각보다 작습니다. 한 장에 한 문장, 길어도 열 몇 글자 정도로 끊는 게 좋습니다. 기능을 나열하지 말고 <strong>사용자가 얻는 것</strong>을 쓰세요. "위젯 지원"보다 "잠금화면에서 바로 확인"이 잘 먹힙니다.</p>
-<h3>캡처는 상태표시줄을 정리하고</h3>
-<p>배터리가 15%거나 알림이 잔뜩 쌓인 캡처는 완성도가 떨어져 보입니다. 안드로이드 개발자 옵션에는 상태표시줄을 깔끔하게 고정해주는 데모 모드가 있으니 캡처 전에 켜두시면 좋습니다.</p>
-<h3>배경색은 앱 아이콘과 맞추세요</h3>
-<p>스토어 목록에서는 아이콘과 스크린샷이 나란히 보입니다. 배경 그라데이션을 아이콘의 주요 색상에서 가져오면 전체가 한 벌처럼 보여 신뢰감이 올라갑니다.</p>
+<details class="fold"><summary><h2>Making screenshots people actually stop for</h2></summary><div class="fx">
+<h3>The first two carry the whole set</h3>
+<p>Most people never scroll the screenshot carousel. Whatever makes your app worth downloading belongs in shots one and two; settings screens and secondary features go at the back, if they go in at all.</p>
+<h3>Keep captions short</h3>
+<p>Text renders smaller in the store than it looks here. One sentence per shot, and shorter is better. Write the <strong>outcome, not the feature</strong> — "See it on your lock screen" beats "Widget support" every time.</p>
+<h3>Clean up the status bar first</h3>
+<p>A capture showing 15% battery and a stack of unread notifications reads as sloppy. Android's developer options include a demo mode that pins the status bar to a clean state; on iOS, the simulator gives you the same thing for free. Turn it on before you capture.</p>
+<h3>Match the background to your icon</h3>
+<p>Your icon and your screenshots sit side by side in search results. Pulling the gradient colors from the icon makes the whole listing read as one deliberate thing rather than a pile of assets, and that reads as trustworthy.</p>
+<h3>Do not just ship raw captures</h3>
+<p>Both stores accept bare screen captures, and plenty of apps ship them. But a framed shot with a caption tells someone what they are looking at in the half-second they give it — a raw capture makes them work it out.</p>
 </div></details>
 
-<details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
-<h3>업로드했더니 비율이 맞지 않다고 나와요</h3>
-<p>가로세로 비율이 2:1을 넘으면 거부됩니다. 이 도구의 프리셋은 모두 이 조건 안에 들어가니 프리셋을 그대로 쓰시면 됩니다.</p>
-<h3>글자가 잘려요</h3>
-<p>문구가 길면 자동으로 줄바꿈되지만 영역을 넘어서면 잘릴 수 있습니다. 글자 크기를 줄이거나 문구를 짧게 나누세요. 미리보기에 보이는 그대로 출력됩니다.</p>
+<details class="fold"><summary><h2>Troubleshooting</h2></summary><div class="fx">
+<h3>Play rejected my screenshot for its aspect ratio</h3>
+<p>The long side went past twice the short side. That is almost always a raw 1080 × 2340 capture from a tall phone. Run it through a preset here instead — every Play preset in this tool sits inside the limit.</p>
+<h3>App Store Connect says my screenshot size is wrong</h3>
+<p>Apple matches on exact pixel dimensions, not ratio, and it will not accept a file that is off by a few pixels. Use the 6.9-inch or iPad 13-inch preset rather than resizing by hand. If the complaint is about transparency instead, flatten the PNG to JPG with the <a href="/en/tools/convert/">image converter</a> and upload that.</p>
+<h3>My caption is getting cut off</h3>
+<p>Long captions wrap automatically, but they can still overflow the text area. Drop the text size or split the line. What you see in the preview is exactly what gets exported.</p>
+<h3>The screenshot looks soft</h3>
+<p>The source capture is smaller than the output size, so it is being scaled up. Capture on a device or simulator with a high-resolution screen — for the 6.9-inch preset you want a source at least 1290px wide.</p>
 </div></details>
 
 <!--REL:S-->
-<h2>함께 쓰면 좋은 도구</h2>
+<h2>Related tools</h2>
 <div class="rel">
-  <a href="/tools/app-icon/"><strong>앱 아이콘 사이즈 생성기</strong><span>안드로이드·iOS·파비콘</span></a>
-  <a href="/tools/privacy-policy/"><strong>개인정보처리방침 생성기</strong><span>Play 스토어 심사용</span></a>
-  <a href="/tools/image-compress/"><strong>이미지 용량 줄이기</strong><span>목표 용량에 자동으로 맞춤</span></a>
+  <a href="/en/tools/app-icon/"><strong>App Icon Generator</strong><span>Every Android and iOS size, one ZIP</span></a>
+  <a href="/en/tools/resize/"><strong>Resize Images</strong><span>Exact pixels, ratio crops, batch</span></a>
+  <a href="/en/tools/image-compress/"><strong>Compress Images</strong><span>Auto-fit a target file size</span></a>
 </div>
-<p class="rel-all"><a href="/tools/">까치툴 도구 34개 전체 보기 →</a></p>
+<p class="rel-all"><a href="/en/tools/">See all 20 English tools →</a></p>
 <!--REL:E-->
 
-<!--TESTS:S-->
-<a class="tbn" href="/tests/">
-  <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
-  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 사주로 보는 재미 테스트 4종 — 결과는 친구와 비교해 보세요.</span></span>
-  <span class="ar">→</span>
-</a>
-<!--TESTS:E-->
-
 <footer>
-  <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 파일은 업로드되지 않습니다.</p>
-  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/tools/about/">소개</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+  <p>Kmagpie Tools · Everything runs in your browser. Files are never uploaded.</p>
+  <p><a href="/">Home</a> · <a href="/en/tools/">Other tools</a> · <a href="/en/disclaimer.html">Disclaimer</a> · <a href="/privacy-policy.html">Privacy Policy</a></p>
 </footer>
 
 </div>
@@ -351,7 +366,7 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 (function(){
   const $=id=>document.getElementById(id);
 
-  /* ---------- 내장 ZIP (store) ---------- */
+  /* ---------- built-in ZIP (store) ---------- */
   const CRC=(()=>{const t=new Uint32Array(256);
     for(let i=0;i<256;i++){let c=i;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[i]=c>>>0;}return t;})();
   function crc32(u8){let c=0xFFFFFFFF;for(let i=0;i<u8.length;i++)c=CRC[(c^u8[i])&0xFF]^(c>>>8);return (c^0xFFFFFFFF)>>>0;}
@@ -381,7 +396,7 @@ a.insertAdjacentElement('afterend',b)}})();</script>
     return new Blob([...L,...C,eo],{type:'application/zip'});
   }
 
-  const FONT='"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",-apple-system,sans-serif';
+  const FONT='-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif';
   let items=[],cur=0;
   const drop=$('drop'),file=$('file'),warn=$('warn');
 
@@ -394,13 +409,13 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 
   async function add(list){
     const fs=[...list].filter(f=>f.type.startsWith('image/'));
-    if(!fs.length){msg('bad','이미지 파일이 없습니다.');return}
+    if(!fs.length){msg('bad','No image files found.');return}
     warn.classList.add('hidden');
     for(const f of fs){
       const img=await new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src=URL.createObjectURL(f)});
       if(img) items.push({img,head:'',sub:'',name:f.name});
     }
-    if(items.length>8) msg('warn','Play 스토어 휴대전화 스크린샷은 <strong>최대 8장</strong>까지 등록할 수 있습니다. 현재 '+items.length+'장이니 앞의 8장만 쓰시는 걸 권합니다.');
+    if(items.length>8) msg('warn','Google Play accepts <strong>up to 8 screenshots</strong> per device type, and the App Store up to 10. You have '+items.length+' — consider trimming the set.');
     $('editor').classList.remove('hidden');
     cur=Math.min(cur,items.length-1);
     strip();loadFields();render();
@@ -410,7 +425,7 @@ a.insertAdjacentElement('afterend',b)}})();</script>
     const s=$('strip');s.innerHTML='';
     items.forEach((it,i)=>{
       const d=document.createElement('div');d.className='th'+(i===cur?' on':'');
-      d.innerHTML=`<img src="${it.img.src}" alt=""><b>${i+1}</b><button class="x" title="삭제">×</button>`;
+      d.innerHTML=`<img src="${it.img.src}" alt=""><b>${i+1}</b><button class="x" title="Remove">×</button>`;
       d.addEventListener('click',e=>{
         if(e.target.classList.contains('x')){
           e.stopPropagation();items.splice(i,1);
@@ -433,14 +448,26 @@ a.insertAdjacentElement('afterend',b)}})();</script>
     else{x.moveTo(cx+r,cy);x.arcTo(cx+w,cy,cx+w,cy+h,r);x.arcTo(cx+w,cy+h,cx,cy+h,r);
          x.arcTo(cx,cy+h,cx,cy,r);x.arcTo(cx,cy,cx+w,cy,r);x.closePath()}
   }
+  /* word-aware wrapping; falls back to per-character for words wider than the box */
+  function wrapWord(x,word,maxW,out){
+    let line='';
+    for(const ch of word){
+      if(x.measureText(line+ch).width>maxW && line){out.push(line);line=ch}
+      else line+=ch;
+    }
+    return line;
+  }
   function wrap(x,text,maxW){
     const out=[];
     for(const para of String(text).split('\n')){
       if(!para.trim()){out.push('');continue}
       let line='';
-      for(const ch of para){
-        if(x.measureText(line+ch).width>maxW && line){out.push(line);line=ch}
-        else line+=ch;
+      for(const word of para.trim().split(/\s+/)){
+        const test=line?line+' '+word:word;
+        if(x.measureText(test).width<=maxW){line=test;continue}
+        if(line){out.push(line);line=''}
+        if(x.measureText(word).width>maxW) line=wrapWord(x,word,maxW,out);
+        else line=word;
       }
       if(line) out.push(line);
     }
@@ -580,13 +607,13 @@ a.insertAdjacentElement('afterend',b)}})();</script>
     for(let i=0;i<items.length;i++){
       const c=document.createElement('canvas');draw(c,items[i]);
       entries.push({name:String(i+1).padStart(2,'0')+'.png',data:await toU8(c)});
-      $('stat').textContent=`생성 중 ${i+1}/${items.length}`;
+      $('stat').textContent=`Rendering ${i+1}/${items.length}`;
       await new Promise(r=>setTimeout(r));
     }
     const a=document.createElement('a');
     a.href=URL.createObjectURL(zipStore(entries));a.download='store-screenshots.zip';a.click();
     setTimeout(()=>URL.revokeObjectURL(a.href),4000);
-    $('stat').textContent=`완료 — ${items.length}장`;btn.disabled=false;
+    $('stat').textContent=`Done — ${items.length} image(s)`;btn.disabled=false;
   });
 
   $('reset').addEventListener('click',()=>{

@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>앱 아이콘 사이즈 생성기 — 안드로이드·iOS 전체 규격 한 번에 | 까치툴</title>
-<meta name="description" content="이미지 하나로 안드로이드 mipmap 전 해상도, 적응형 아이콘, Play 스토어 512px, iOS AppIcon, 파비콘까지 한 번에 만들어 ZIP으로 받으세요. 서버 전송 없이 브라우저에서 처리됩니다.">
-<link rel="canonical" href="https://www.kmagpie.com/tools/app-icon/">
-<meta property="og:title" content="앱 아이콘 사이즈 생성기 — 안드로이드·iOS 전체 규격 한 번에">
-<meta property="og:description" content="이미지 하나로 모든 앱 아이콘 규격을 생성합니다. 서버 전송 없이 브라우저에서 처리.">
+<title>App Icon Generator — Every Android &amp; iOS Icon Size at Once | K-magpie</title>
+<meta name="description" content="Turn one square image into every Android mipmap density, adaptive icon layers, the Play Store 512px icon, the iOS AppIcon set and web favicons, all in one ZIP. Runs in your browser — no upload, no sign-up, no watermark.">
+<link rel="canonical" href="https://www.kmagpie.com/en/tools/app-icon/">
+<meta property="og:title" content="App Icon Generator — Every Android &amp; iOS Icon Size at Once">
+<meta property="og:description" content="One image in, a full Android, iOS and favicon icon set out. Everything runs in your browser — files are never uploaded.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://www.kmagpie.com/tools/app-icon/">
+<meta property="og:url" content="https://www.kmagpie.com/en/tools/app-icon/">
 <style>
   :root{
     --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
@@ -31,7 +31,7 @@
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);
-    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
   .wrap{max-width:940px;margin:0 auto;padding:44px 22px 90px}
   .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
@@ -62,7 +62,7 @@
   .opt .d{font-size:12.5px;color:var(--ink-3);display:block;line-height:1.5}
   input[type=range]{width:100%;accent-color:var(--accent)}
   input[type=color]{width:44px;height:32px;padding:2px;border:1px solid var(--line);border-radius:7px;background:var(--surface);cursor:pointer;vertical-align:middle}
-  .inline{display:flex;align-items:center;gap:10px;font-size:14px}
+  .inline{display:flex;align-items:center;gap:10px;font-size:14px;flex-wrap:wrap}
   .val{font-variant-numeric:tabular-nums;font-weight:600;color:var(--accent);min-width:42px;display:inline-block}
 
   button{font-family:inherit;font-size:15px;font-weight:600;padding:12px 22px;border-radius:10px;border:1px solid transparent;cursor:pointer;transition:.12s}
@@ -76,7 +76,7 @@
   .pv{text-align:center}
   .pv canvas{border-radius:8px;background:
     conic-gradient(#0000 90deg,#8883 0 180deg,#0000 0 270deg,#8883 0) 0 0/14px 14px;
-    border:1px solid var(--line);display:block}
+    border:1px solid var(--line);display:block;max-width:100%}
   .pv .cap{font-size:11.5px;color:var(--ink-3);margin-top:5px;font-variant-numeric:tabular-nums}
 
   .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
@@ -85,18 +85,28 @@
   .m-good{background:var(--good-soft);border-color:var(--good)}
   .hidden{display:none}
 
-  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+  .tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:14px 0}
+  table{width:100%;border-collapse:collapse;margin:0;font-size:14px}
   th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line-soft)}
   th{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;border-bottom:1px solid var(--line)}
-  td.n{text-align:right;font-variant-numeric:tabular-nums}
-  code{background:var(--line-soft);padding:2px 6px;border-radius:5px;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  code{background:var(--line-soft);padding:2px 6px;border-radius:5px;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;overflow-wrap:anywhere}
   pre{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:13px 15px;overflow-x:auto;font-size:12.5px;line-height:1.65;margin:12px 0}
-  pre code{background:none;padding:0}
+  pre code{background:none;padding:0;overflow-wrap:normal}
   .note{font-size:13.5px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:13px;margin:14px 0}
   footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
   footer a{color:var(--ink-3)}
   .bar{height:5px;background:var(--line-soft);border-radius:99px;overflow:hidden;margin-top:12px}
   .bar>i{display:block;height:100%;width:0;background:var(--accent);transition:width .18s}
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:24px}
+    .panel{padding:18px 16px}
+    #drop{padding:34px 16px}
+    table{font-size:13px}
+    th,td{padding:9px 7px}
+    .preview{gap:12px}
+  }
 /*FOLD:S*/
   .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
     padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
@@ -122,18 +132,6 @@
   .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
   .rel-all{font-size:14.5px;font-weight:600;margin:0}
 /*REL:E*/
-/*TESTS:S*/
-  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 0;padding:13px 18px;
-    border:1px solid var(--line);border-radius:14px;background:var(--surface);
-    text-decoration:none;color:inherit;transition:.14s}
-  .tbn:hover{border-color:var(--accent);transform:translateY(-2px)}
-  .tbn .ic{width:44px;height:44px;flex:none;border-radius:12px;background:#fff;
-    border:1px solid var(--line);object-fit:contain;padding:2px}
-  .tbn .tx{flex:1;min-width:0}
-  .tbn .tt{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em}
-  .tbn .ds{display:block;font-size:13px;color:var(--ink-3);line-height:1.55;margin-top:2px}
-  .tbn .ar{color:var(--ink-3);font-size:15px;flex:none}
-/*TESTS:E*/
 /*LANG:S*/
   .langsw{font-size:13px;margin:-12px 0 20px}
   .langsw a{color:var(--ink-3);text-decoration:none;border-bottom:1px solid var(--line)}
@@ -150,12 +148,12 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
 <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
-<meta property="og:site_name" content="까치툴">
-<link rel="manifest" href="/tools/manifest.json">
+<meta property="og:site_name" content="Kmagpie Tools">
+<link rel="manifest" href="/en/tools/manifest.json">
 <meta name="theme-color" content="#faf9f7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#171614" media="(prefers-color-scheme: dark)">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="까치툴">
+<meta name="apple-mobile-web-app-title" content="K-magpie">
 <script>/*PWA*/(function(){var L=document.documentElement.lang==='en';
 if('serviceWorker' in navigator)addEventListener('load',function(){navigator.serviceWorker.register('/sw.js',{scope:'/'})['catch'](function(){})});
 var p=null;addEventListener('beforeinstallprompt',function(e){e.preventDefault();p=e;show()});
@@ -170,24 +168,24 @@ b.onclick=function(){if(!p)return;p.prompt();p.userChoice.then(function(){p=null
 a.insertAdjacentElement('afterend',b)}})();</script>
 <!--HEAD:E-->
 <!--LD:S-->
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://www.kmagpie.com/tools/app-icon/#app","name":"앱 아이콘 사이즈 생성기","url":"https://www.kmagpie.com/tools/app-icon/","description":"이미지 하나로 안드로이드 mipmap 전 해상도, 적응형 아이콘, Play 스토어 512px, iOS AppIcon, 파비콘까지 한 번에 만들어 ZIP으로 받습니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"inLanguage":"ko","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"K-magpie","url":"https://www.kmagpie.com/"}},{"@type":"BreadcrumbList","@id":"https://www.kmagpie.com/tools/app-icon/#crumb","itemListElement":[{"@type":"ListItem","position":1,"name":"K-magpie","item":"https://www.kmagpie.com/"},{"@type":"ListItem","position":2,"name":"까치툴","item":"https://www.kmagpie.com/tools/"},{"@type":"ListItem","position":3,"name":"앱 아이콘 사이즈 생성기","item":"https://www.kmagpie.com/tools/app-icon/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://www.kmagpie.com/en/tools/app-icon/#app","name":"App Icon Generator","url":"https://www.kmagpie.com/en/tools/app-icon/","description":"Drop in one square image and get every Android mipmap density, the adaptive-icon layers, the 512px Play Store icon, the iOS AppIcon set and web favicons — all packaged as a ZIP. Nothing is uploaded.","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"inLanguage":"en","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"K-magpie","url":"https://www.kmagpie.com/"}},{"@type":"BreadcrumbList","@id":"https://www.kmagpie.com/en/tools/app-icon/#crumb","itemListElement":[{"@type":"ListItem","position":1,"name":"K-magpie","item":"https://www.kmagpie.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://www.kmagpie.com/en/tools/"},{"@type":"ListItem","position":3,"name":"App Icon Generator","item":"https://www.kmagpie.com/en/tools/app-icon/"}]}]}</script>
 <!--LD:E-->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="wrap">
 
-<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › 앱 아이콘 생성기</p>
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/en/tools/">Kmagpie Tools</a> › App Icon Generator</p>
 <!--LANG:S-->
-<p class="langsw"><a href="/en/tools/app-icon/" hreflang="en" lang="en">English version</a></p>
+<p class="langsw"><a href="/tools/app-icon/" hreflang="ko" lang="ko">한국어로 보기</a></p>
 <!--LANG:E-->
 
-<h1>앱 아이콘 사이즈 생성기</h1>
-<p class="sub">이미지 하나로 안드로이드 mipmap 전 해상도, 적응형 아이콘, Play 스토어 512px, iOS AppIcon, 파비콘까지 만들어 ZIP으로 받습니다. <strong>파일이 서버로 전송되지 않고 브라우저 안에서만 처리</strong>됩니다.</p>
+<h1>App Icon Generator</h1>
+<p class="sub">One square image becomes every Android mipmap density, adaptive icon layers, the Play Store 512px icon, the iOS AppIcon set and web favicons — packed into a ZIP with the folder structure already in place. <strong>Files never leave your browser</strong> — no upload, no sign-up.</p>
 
 <div id="drop">
-  <div class="big">이미지를 여기에 끌어다 놓거나 클릭해서 선택하세요</div>
-  <div class="small">PNG 권장 · 1024×1024 정사각형이 가장 좋습니다</div>
+  <div class="big">Drop an image here, or click to choose one</div>
+  <div class="small">PNG recommended · a 1024×1024 square gives the best results</div>
   <input type="file" id="file" accept="image/png,image/jpeg,image/webp,image/svg+xml">
 </div>
 
@@ -198,117 +196,131 @@ a.insertAdjacentElement('afterend',b)}})();</script>
   <div class="panel">
     <div class="row">
       <div class="col">
-        <label class="f">생성할 규격</label>
+        <label class="f">What to generate</label>
         <div class="opts">
-          <label class="opt"><input type="checkbox" id="pAnd" checked><span>안드로이드 런처 아이콘<span class="d">mipmap-mdpi ~ xxxhdpi (48·72·96·144·192px)</span></span></label>
-          <label class="opt"><input type="checkbox" id="pAdapt" checked><span>안드로이드 적응형 아이콘<span class="d">전경·배경 레이어 108dp 기준, 세이프존 자동 적용</span></span></label>
-          <label class="opt"><input type="checkbox" id="pPlay" checked><span>Play 스토어 등록용 512px<span class="d">32비트 PNG</span></span></label>
-          <label class="opt"><input type="checkbox" id="pIos"><span>iOS AppIcon 세트<span class="d">20~1024px 13종 + Contents.json</span></span></label>
-          <label class="opt"><input type="checkbox" id="pWeb"><span>웹 파비콘<span class="d">16·32·48·96·180·192·512px + manifest 예시</span></span></label>
+          <label class="opt"><input type="checkbox" id="pAnd" checked><span>Android launcher icons<span class="d">mipmap-mdpi through xxxhdpi (48 · 72 · 96 · 144 · 192 px)</span></span></label>
+          <label class="opt"><input type="checkbox" id="pAdapt" checked><span>Android adaptive icons<span class="d">108dp foreground and background layers, safe zone applied for you</span></span></label>
+          <label class="opt"><input type="checkbox" id="pPlay" checked><span>Play Store listing icon, 512px<span class="d">32-bit PNG</span></span></label>
+          <label class="opt"><input type="checkbox" id="pIos"><span>iOS AppIcon set<span class="d">13 sizes from 20 to 1024 px, plus Contents.json</span></span></label>
+          <label class="opt"><input type="checkbox" id="pWeb"><span>Web favicons<span class="d">16 · 32 · 48 · 96 · 180 · 192 · 512 px, plus a manifest and head snippet</span></span></label>
         </div>
       </div>
       <div class="col">
-        <label class="f">여백 <span class="val" id="padV">0%</span></label>
+        <label class="f">Padding <span class="val" id="padV">0%</span></label>
         <input type="range" id="pad" min="0" max="30" value="0">
-        <p class="note" style="margin-top:8px">아이콘이 꽉 차 보이면 여백을 주세요. 적응형 아이콘에는 세이프존 여백이 <strong>따로 자동 적용</strong>되니 여기서 또 줄 필요 없습니다.</p>
+        <p class="note" style="margin-top:8px">Add padding if the artwork looks cramped against the edges. Adaptive icon layers get their safe-zone inset <strong>applied separately and automatically</strong>, so there is no need to account for it here.</p>
 
-        <label class="f" style="margin-top:20px">배경</label>
+        <label class="f" style="margin-top:20px">Background</label>
         <div class="inline">
-          <label class="opt" style="margin:0"><input type="checkbox" id="bgOn"><span>단색 배경 채우기</span></label>
+          <label class="opt" style="margin:0"><input type="checkbox" id="bgOn"><span>Fill with a solid color</span></label>
           <input type="color" id="bgColor" value="#ffffff">
         </div>
-        <p class="note" style="margin-top:8px">iOS App Store 아이콘(1024px)은 <strong>투명도를 허용하지 않습니다.</strong> 원본에 투명 영역이 있으면 배경을 켜세요.</p>
+        <p class="note" style="margin-top:8px">The iOS App Store icon (1024px) <strong>must not contain an alpha channel.</strong> If your source has transparent areas, turn the background on.</p>
 
-        <label class="f" style="margin-top:20px">모서리</label>
-        <label class="opt"><input type="checkbox" id="round"><span>둥글게 깎기<span class="d">기본은 꺼두세요. 안드로이드와 iOS 모두 시스템이 알아서 마스킹합니다</span></span></label>
+        <label class="f" style="margin-top:20px">Corners</label>
+        <label class="opt"><input type="checkbox" id="round"><span>Round the corners<span class="d">Leave this off. Android, iOS and the stores all apply their own mask</span></span></label>
       </div>
     </div>
   </div>
 
   <div class="panel">
-    <label class="f">미리보기</label>
+    <label class="f">Preview</label>
     <div class="preview" id="pv"></div>
   </div>
 
   <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-    <button class="primary" id="go">ZIP으로 내려받기</button>
-    <button class="ghost" id="reset">다른 이미지 선택</button>
+    <button class="primary" id="go">Download ZIP</button>
+    <button class="ghost" id="reset">Choose a different image</button>
     <span id="stat" style="font-size:14px;color:var(--ink-3)"></span>
   </div>
   <div class="bar hidden" id="barWrap"><i id="bar"></i></div>
 </div>
 
-<p class="gist">1024px 정사각 PNG 한 장으로 안드로이드·iOS·파비콘 규격 아이콘을 폴더 구조가 갖춰진 ZIP으로 만듭니다. 적응형 아이콘의 세이프존 비율은 자동으로 적용됩니다. 출시 전 아이콘도 서버 전송 없이 브라우저 안에서만 처리되어 유출 걱정이 없습니다.</p>
+<p class="gist">One 1024px square PNG turns into a full Android, iOS and favicon icon set, delivered as a ZIP with the folder structure already laid out. The adaptive icon layers get the safe-zone inset applied for you, so nothing gets clipped on a round launcher mask. Nothing is uploaded — unreleased artwork never leaves your machine.</p>
 
-<details class="fold" open><summary><h2>사용법</h2></summary><div class="fx">
-<p>1024×1024 크기의 정사각형 PNG를 준비해 위에 올리세요. 원본이 클수록 축소 품질이 좋아지므로, 가능하면 벡터에서 1024px로 내보낸 파일을 쓰시는 게 가장 깔끔합니다. 생성할 규격을 고르고 내려받기를 누르면 폴더 구조가 갖춰진 ZIP이 만들어집니다. 안드로이드 파일은 압축을 풀어 <code>app/src/main/res/</code> 아래에 그대로 덮어쓰면 되고, iOS는 <code>AppIcon.appiconset</code> 폴더를 통째로 교체하면 됩니다.</p>
-<p>이 도구는 이미지를 서버로 보내지 않습니다. 브라우저의 Canvas API로 처리하기 때문에 인터넷 연결이 끊겨도 동작하고, 출시 전 아이콘이 외부로 유출될 걱정이 없습니다.</p>
+<details class="fold" open><summary><h2>How to use</h2></summary><div class="fx">
+<p>Start with a 1024×1024 square PNG. The bigger the source, the cleaner every downscale, so exporting 1024px straight out of your vector tool gives the sharpest result. Pick the sets you want, press download, and you get a ZIP with the folders already in place. Drop the Android files into <code>app/src/main/res/</code>, and on iOS replace the whole <code>AppIcon.appiconset</code> folder inside your asset catalog.</p>
+<p>Nothing is sent anywhere. All the resizing happens through your browser's Canvas API, so the tool keeps working with the network off and an unreleased icon never leaves your machine. No sign-up, no limits, no watermark.</p>
 </div></details>
 
-<details class="fold"><summary><h2>안드로이드 아이콘 규격 정리</h2></summary><div class="fx">
-<p>안드로이드는 화면 밀도별로 아이콘을 따로 넣습니다. 기준은 48dp이고 밀도 배율에 따라 실제 픽셀 크기가 달라집니다.</p>
+<details class="fold"><summary><h2>Android icon sizes, explained</h2></summary><div class="fx">
+<p>Android ships a separate bitmap per screen density. The baseline launcher icon is 48dp, and each density bucket multiplies that to get the real pixel size.</p>
+<div class="tw">
 <table>
-  <thead><tr><th>폴더</th><th class="n">배율</th><th class="n">런처 아이콘</th><th class="n">적응형 레이어</th></tr></thead>
+  <thead><tr><th>Folder</th><th class="n">Scale</th><th class="n">Launcher icon</th><th class="n">Adaptive layer</th></tr></thead>
   <tbody>
     <tr><td><code>mipmap-mdpi</code></td><td class="n">1.0×</td><td class="n">48px</td><td class="n">108px</td></tr>
     <tr><td><code>mipmap-hdpi</code></td><td class="n">1.5×</td><td class="n">72px</td><td class="n">162px</td></tr>
     <tr><td><code>mipmap-xhdpi</code></td><td class="n">2.0×</td><td class="n">96px</td><td class="n">216px</td></tr>
     <tr><td><code>mipmap-xxhdpi</code></td><td class="n">3.0×</td><td class="n">144px</td><td class="n">324px</td></tr>
     <tr><td><code>mipmap-xxxhdpi</code></td><td class="n">4.0×</td><td class="n">192px</td><td class="n">432px</td></tr>
-    <tr><td>Play 스토어 등록정보</td><td class="n">—</td><td class="n">512px</td><td class="n">—</td></tr>
+    <tr><td>Play Store listing</td><td class="n">—</td><td class="n">512px</td><td class="n">—</td></tr>
   </tbody>
 </table>
+</div>
 
-<h3>적응형 아이콘의 세이프존</h3>
-<p>안드로이드 8.0부터는 제조사마다 아이콘을 원형, 스퀘어클, 물방울 등 다른 모양으로 잘라냅니다. 그래서 전체 108dp 중 <strong>가운데 66dp 안에만 실제 로고가 들어가야</strong> 어떤 모양으로 잘려도 잘리지 않습니다. 바깥 영역은 잘려나갈 수 있다는 전제로 배경만 채워두는 자리예요.</p>
-<p>많은 개발자가 이걸 모르고 108px 캔버스에 로고를 꽉 채워 넣었다가, 갤럭시에서는 멀쩡한데 픽셀 기기에서 로고 가장자리가 잘리는 문제를 겪습니다. 이 도구는 적응형 레이어를 만들 때 <strong>세이프존 비율(66/108 ≈ 61%)을 자동으로 적용</strong>하므로 따로 계산하지 않으셔도 됩니다.</p>
+<h3>The adaptive icon safe zone</h3>
+<p>Since Android 8.0 the launcher, not your app, decides the icon's outline — a circle, a squircle, a rounded square or a teardrop, depending on the device and the launcher. Each layer is <strong>108×108 dp</strong>, but only the middle <strong>72×72 dp</strong> ever falls inside the mask, and only a centered <strong>66 dp</strong> area is guaranteed to survive every mask shape. Google's current guidance is to keep the logo itself between 48 and 66 dp. The outer 18 dp on each side is background the mask may eat — it is also what slides during the launcher's parallax effect.</p>
+<p>The classic mistake is filling all 108px with the logo: it looks right on the phone on your desk and comes back with clipped edges from a tester on a different device. This tool scales the adaptive foreground to the 66/108 safe-zone ratio (about 61%) automatically, so you do not have to do the math.</p>
 
-<h3>적응형 아이콘 XML</h3>
-<p>ZIP에 아래 파일이 <code>mipmap-anydpi-v26/ic_launcher.xml</code>로 함께 들어갑니다. 배경을 단색으로 쓰시려면 <code>colors.xml</code>에 색을 정의하고 <code>@color/ic_launcher_background</code>로 바꿔 쓰셔도 됩니다.</p>
+<h3>The adaptive icon XML</h3>
+<p>The ZIP includes this file as <code>mipmap-anydpi-v26/ic_launcher.xml</code>. If you would rather use a flat color for the background, define it in <code>colors.xml</code> and point the background at <code>@color/ic_launcher_background</code> instead.</p>
 <pre><code>&lt;?xml version="1.0" encoding="utf-8"?&gt;
 &lt;adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android"&gt;
     &lt;background android:drawable="@mipmap/ic_launcher_background" /&gt;
     &lt;foreground android:drawable="@mipmap/ic_launcher_foreground" /&gt;
 &lt;/adaptive-icon&gt;</code></pre>
+
+<h3>Themed icons on Android 13 and up</h3>
+<p>Android 13 added themed icons: when the user turns them on, the launcher tints your icon to match the wallpaper. That needs a third <code>monochrome</code> layer — a single-color silhouette of your logo, not a recolored version of the full artwork. A photographic or multi-color source cannot be flattened into one automatically, so this tool does not generate it; draw the silhouette yourself, drop it in as a drawable, and add one line:</p>
+<pre><code>&lt;adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android"&gt;
+    &lt;background android:drawable="@mipmap/ic_launcher_background" /&gt;
+    &lt;foreground android:drawable="@mipmap/ic_launcher_foreground" /&gt;
+    &lt;monochrome android:drawable="@drawable/ic_launcher_monochrome" /&gt;
+&lt;/adaptive-icon&gt;</code></pre>
+<p>Without it your icon simply keeps its normal colors when themed icons are on — it does not break, it just stands out next to the tinted ones.</p>
 </div></details>
 
-<details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
-<h3>Play 스토어에서 아이콘이 거부돼요</h3>
-<p>등록정보용 아이콘은 512×512, 32비트 PNG여야 하고 <strong>모서리를 직접 둥글게 깎으면 안 됩니다.</strong> 스토어가 알아서 마스킹하기 때문에, 미리 깎아두면 이중으로 잘려서 어색해집니다. 이 도구의 모서리 옵션을 꺼둔 채로 쓰시면 됩니다.</p>
-<h3>아이콘이 다른 앱보다 작아 보여요</h3>
-<p>적응형 아이콘 세이프존 때문에 시각적으로 작아 보이는 건 정상입니다. 그래도 작다면 로고 자체를 키워서 원본을 다시 내보내세요. 여백 값을 음수로 줄 수는 없습니다.</p>
-<h3>iOS 아이콘이 검게 나와요</h3>
-<p>App Store용 1024px 아이콘에 알파 채널이 있으면 심사에서 거부되거나 검은 배경으로 합성됩니다. 위의 배경 채우기를 켜고 브랜드 색을 지정하세요.</p>
+<details class="fold"><summary><h2>iOS: do you still need all 13 sizes?</h2></summary><div class="fx">
+<p>Often not. Since Xcode 14, the AppIcon asset has a <strong>Single Size</strong> slot: drop in one 1024×1024 image and Xcode produces everything else at build time. If that is your setup, take just the 1024px file out of the ZIP and ignore the rest.</p>
+<p>The full set still matters when your asset catalog is set to <em>All Sizes</em>, when you are on an older Xcode or an older deployment target, or when a cross-platform toolchain — React Native, Flutter, Capacitor, Unity — expects the individual PNGs and a <code>Contents.json</code> on disk. That is what this tool writes, so the folder drops straight into <code>Assets.xcassets</code>.</p>
+<h3>Liquid Glass and Icon Composer</h3>
+<p>iOS 26 introduced layered Liquid Glass icons and Apple's Icon Composer app, which builds a <code>.icon</code> file with light, dark and tinted variants. It is optional: a flat 1024px PNG still ships and the system applies its own highlight and mask on top. If you want to art-direct the layered look, do that in Icon Composer — and use this tool for the flat set plus everything on the Android and web side.</p>
+<h3>No transparency in the 1024px icon</h3>
+<p>The App Store marketing icon must be fully opaque. An alpha channel gets it rejected at upload, so if your source art has transparent areas, turn on the background fill above and pick your brand color.</p>
+</div></details>
+
+<details class="fold"><summary><h2>Troubleshooting</h2></summary><div class="fx">
+<h3>Play Store rejected my icon</h3>
+<p>The listing icon has to be 512×512, a 32-bit PNG, and under 1024 KB. Just as important: <strong>do not round the corners or add a drop shadow yourself.</strong> Play applies its own mask and shadow, so a pre-baked one gets cut twice and looks wrong. Leave the corner option off.</p>
+<h3>My icon looks smaller than everyone else's</h3>
+<p>Some of that is the adaptive icon safe zone doing its job, and it is normal. If it still reads small next to other apps, scale the logo up inside your source file and export again — padding here only goes one way, it cannot be negative.</p>
+<h3>My iOS icon came out black</h3>
+<p>An alpha channel in the 1024px App Store icon is either rejected in review or composited onto black. Turn on the background fill and set a solid color.</p>
+<h3>The small sizes look muddy</h3>
+<p>Detailed artwork does not survive being shrunk to 32 or 48 px. Icons that read well at that size are built from a few bold shapes, and fine lines, gradients and small text are the first things to go. If your source is smaller than 1024px to begin with, re-export it larger before generating.</p>
 </div></details>
 
 <!--REL:S-->
-<h2>함께 쓰면 좋은 도구</h2>
+<h2>Related tools</h2>
 <div class="rel">
-  <a href="/tools/screenshot/"><strong>스토어 스크린샷 생성기</strong><span>기기 프레임·피처 그래픽</span></a>
-  <a href="/tools/privacy-policy/"><strong>개인정보처리방침 생성기</strong><span>Play 스토어 심사용</span></a>
-  <a href="/tools/image-compress/"><strong>이미지 용량 줄이기</strong><span>목표 용량에 자동으로 맞춤</span></a>
+  <a href="/en/tools/screenshot/"><strong>Store Screenshot Generator</strong><span>Device frames and captions, store sizes</span></a>
+  <a href="/en/tools/convert/"><strong>Convert Images</strong><span>PNG, JPG, WebP, BMP, ICO</span></a>
+  <a href="/en/tools/resize/"><strong>Resize Images</strong><span>Exact pixels, ratio crops, batch</span></a>
 </div>
-<p class="rel-all"><a href="/tools/">까치툴 도구 34개 전체 보기 →</a></p>
+<p class="rel-all"><a href="/en/tools/">See all 20 English tools →</a></p>
 <!--REL:E-->
 
-<!--TESTS:S-->
-<a class="tbn" href="/tests/">
-  <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
-  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 사주로 보는 재미 테스트 4종 — 결과는 친구와 비교해 보세요.</span></span>
-  <span class="ar">→</span>
-</a>
-<!--TESTS:E-->
-
 <footer>
-  <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 파일은 업로드되지 않습니다.</p>
-  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/tools/about/">소개</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+  <p>Kmagpie Tools · Everything runs in your browser. Files are never uploaded.</p>
+  <p><a href="/">Home</a> · <a href="/en/tools/">Other tools</a> · <a href="/en/disclaimer.html">Disclaimer</a> · <a href="/privacy-policy.html">Privacy Policy</a></p>
 </footer>
 
 </div>
 
 <script>
 (function(){
-  /* ---------- 내장 ZIP (store 방식, 외부 라이브러리 없음) ---------- */
+  /* ---------- built-in ZIP (store method, no external library) ---------- */
   const CRC=(()=>{const t=new Uint32Array(256);
     for(let i=0;i<256;i++){let c=i;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[i]=c>>>0;}
     return t;})();
@@ -370,8 +382,8 @@ a.insertAdjacentElement('afterend',b)}})();</script>
   function msg(kind,html){ warn.className='msg m-'+kind; warn.innerHTML=html; warn.classList.remove('hidden'); }
 
   function load(f){
-    if(!f.type.startsWith('image/')){ msg('bad','이미지 파일이 아닙니다.'); return; }
-    baseName = (f.name.replace(/\.[^.]+$/,'') || 'icon').replace(/[^\w\-가-힣]/g,'_');
+    if(!f.type.startsWith('image/')){ msg('bad','That is not an image file.'); return; }
+    baseName = (f.name.replace(/\.[^.]+$/,'') || 'icon').replace(/[^\p{L}\p{N}_-]/gu,'_');
     const img=new Image();
     img.onload=()=>{
       const w=img.naturalWidth||1024, h=img.naturalHeight||1024;
@@ -383,8 +395,8 @@ a.insertAdjacentElement('afterend',b)}})();</script>
       srcHasAlpha=detectAlpha(c);
 
       const notes=[];
-      if(w!==h) notes.push(`원본이 정사각형이 아니라서(${w}×${h}) 가운데 정렬 후 여백을 채웠습니다.`);
-      if(side<1024) notes.push(`원본이 ${side}px입니다. 512·1024px 아이콘이 흐릿해질 수 있으니 가능하면 1024px 이상을 쓰세요.`);
+      if(w!==h) notes.push(`Your image is not square (${w}×${h}), so it was centered on a square canvas and the rest left empty.`);
+      if(side<1024) notes.push(`Your image is only ${side}px. The 512px and 1024px icons may look soft — use a 1024px or larger source if you can.`);
       if(notes.length) msg('warn', notes.join('<br>')); else { warn.classList.add('hidden'); }
 
       if(srcHasAlpha){ $('bgOn').checked=false; }
@@ -392,7 +404,7 @@ a.insertAdjacentElement('afterend',b)}})();</script>
       render();
       editor.scrollIntoView({behavior:'smooth',block:'nearest'});
     };
-    img.onerror=()=>msg('bad','이미지를 읽지 못했습니다. PNG나 JPG로 다시 시도해 주세요.');
+    img.onerror=()=>msg('bad','That image could not be read. Try a PNG or JPG instead.');
     img.src=URL.createObjectURL(f);
   }
 
@@ -457,7 +469,7 @@ a.insertAdjacentElement('afterend',b)}})();</script>
     if(!srcCanvas) return;
     $('padV').textContent=$('pad').value+'%';
     pv.innerHTML='';
-    [[192,'런처 192px'],[108,'적응형 전경'],[64,'64px'],[32,'32px']].forEach(([s,cap],i)=>{
+    [[192,'Launcher 192px'],[108,'Adaptive foreground'],[64,'64px'],[32,'32px']].forEach(([s,cap],i)=>{
       const box=document.createElement('div'); box.className='pv';
       const c = i===1 ? make(s,{scale:SAFE*(1-$('pad').value/100)*1.0, noRound:true}) : make(s);
       const d=document.createElement('canvas'); d.width=d.height=Math.min(s,192);
@@ -531,36 +543,39 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 `);
     }
 
-    if(!jobs.length){ msg('warn','생성할 규격을 하나 이상 선택하세요.'); btn.disabled=false; $('barWrap').classList.add('hidden'); return; }
+    if(!jobs.length){ msg('warn','Pick at least one set to generate.'); btn.disabled=false; $('barWrap').classList.add('hidden'); return; }
 
     for(let i=0;i<jobs.length;i++){
       const j=jobs[i];
       entries.push({name:j.p, data: await toU8(make(j.s,j.o))});
       $('bar').style.width=Math.round((i+1)/jobs.length*100)+'%';
-      $('stat').textContent=`생성 중 ${i+1}/${jobs.length}`;
+      $('stat').textContent=`Generating ${i+1}/${jobs.length}`;
       if(i%4===0) await new Promise(r=>setTimeout(r));
     }
 
     zip.file('README.txt',
-`앱 아이콘 세트 — kmagpie.com/tools/app-icon/
+`App icon set - kmagpie.com/en/tools/app-icon/
 
-[안드로이드]
-android/res/ 안의 폴더를 app/src/main/res/ 에 그대로 덮어쓰세요.
-적응형 아이콘을 쓰신다면 mipmap-anydpi-v26/ 도 함께 복사해야 합니다.
-적응형 전경 레이어에는 세이프존(66/108)이 이미 적용되어 있습니다.
+[ANDROID]
+Copy the folders inside android/res/ into app/src/main/res/, overwriting what is there.
+If you are using adaptive icons, copy mipmap-anydpi-v26/ as well.
+The adaptive foreground layers already have the safe zone (66/108) applied.
+For Android 13+ themed icons, add your own monochrome drawable and a
+<monochrome> line to ic_launcher.xml.
 
-[Play 스토어]
-android/playstore/ic_launcher-512.png 를 스토어 등록정보에 올리세요.
-모서리는 직접 깎지 마세요. 스토어가 자동으로 마스킹합니다.
+[PLAY STORE]
+Upload android/playstore/ic_launcher-512.png as your store listing icon.
+Do not round the corners yourself - Play applies its own mask and shadow.
 
 [iOS]
-ios/AppIcon.appiconset 폴더를 Assets.xcassets 안의 같은 이름 폴더와 교체하세요.
+Replace the AppIcon.appiconset folder inside Assets.xcassets with ios/AppIcon.appiconset.
+On Xcode 14 and later you can instead use the single 1024px icon on its own.
 
-[웹]
-web/ 안의 파일을 사이트 루트에 올리고 head-snippet.html 내용을 <head>에 넣으세요.
+[WEB]
+Upload the files in web/ to your site root and paste head-snippet.html into <head>.
 `);
 
-    $('stat').textContent='압축 중…';
+    $('stat').textContent='Packing…';
     await new Promise(r=>setTimeout(r,10));
     const out=zipStore(entries);
     const a=document.createElement('a');
@@ -569,7 +584,7 @@ web/ 안의 파일을 사이트 루트에 올리고 head-snippet.html 내용을 
     a.click();
     setTimeout(()=>URL.revokeObjectURL(a.href),4000);
 
-    $('stat').textContent=`완료 — 파일 ${jobs.length}개`;
+    $('stat').textContent=`Done — ${jobs.length} files`;
     $('barWrap').classList.add('hidden'); $('bar').style.width='0';
     btn.disabled=false;
   });
