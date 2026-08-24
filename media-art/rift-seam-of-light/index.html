@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#030816" />
+  <meta name="description" content="균열: 빛의 오작교 — 꽃살문, 오방색, 민화 까치, 전통 매듭과 단청 연화문으로 재해석한 K-MAGPIE의 실시간 미디어아트." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="균열: 빛의 오작교 — K-MAGPIE" />
+  <meta property="og:description" content="달빛이 꽃살문을 지나 오방의 빛실이 되고, 까치가 우주의 균열 위에 오작교를 놓는다." />
+  <meta property="og:url" content="https://www.kmagpie.com/media-art/rift-seam-of-light/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <title>균열: 빛의 오작교 — K-MAGPIE</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23030816'/%3E%3Cpath d='M10 37c9-2 15-8 18-16 6 1 10 3 13 7 5-2 9-1 13 2-5 0-9 2-12 5 4 2 7 6 9 10-6-3-11-4-16-3-5 4-12 6-22 5l11-5-14-5Zm12 7-11 10 15-7m3-1-6 12 13-10' fill='none' stroke='%23e2ae42' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="./styles.css?v=20260824-2" />
+</head>
+<body>
+  <main id="artwork" aria-label="균열: 빛의 오작교">
+    <canvas id="art-canvas" aria-label="실시간 프로시저럴 미디어아트 화면"></canvas>
+    <div class="film-vignette" aria-hidden="true"></div>
+    <div class="film-grain" aria-hidden="true"></div>
+
+    <header id="playing-title" aria-hidden="true">
+      <span>K-MAGPIE · MEDIA ART 002</span>
+      <strong data-i18n="shortTitle">빛의 오작교</strong>
+    </header>
+
+    <section id="intro" class="overlay" aria-labelledby="main-title">
+      <div class="intro-content">
+        <div class="brand-mark">
+          <span class="brand-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="15"/><path d="M5.8 19.2c4.4-.8 6.8-3.8 8.4-7.2 2.7.2 4.7 1.2 6.1 3.2 2.4-.8 4.3-.5 5.9.6-2.5.2-4.2 1-5.4 2.4 1.7 1.1 3 2.7 3.8 4.8-2.6-1.6-5.1-2.2-7.4-1.8-2.5 2.1-6.2 3.1-10.9 2.6l5.3-2.5-5.8-2.1Z"/><path d="m9.9 22.3-5.2 4.2 7.1-2.5m1.1-.5-3.1 5.1 5.8-4.3"/></svg></span>
+          <span>K-MAGPIE · MEDIA ART 002</span>
+        </div>
+        <p class="eyebrow" data-i18n="eyebrow">한국의 빛으로 다시 잇는 우주</p>
+        <h1 id="main-title" data-i18n="title">균열: 빛의 오작교</h1>
+        <p class="english-title">RIFT: OJAKGYO OF LIGHT</p>
+        <p class="statement" data-i18n="statement">달빛이 꽃살문을 지나 오방의 빛실이 되고,<br class="wide-only" /> 까치가 그 빛으로 우주의 균열 위에 오작교를 놓는다.</p>
+        <p class="work-meta" data-i18n="meta">60초 · 실시간 프로시저럴 3D · 생성형 음향</p>
+        <button id="start-button" class="start-button" type="button" disabled>
+          <span data-i18n="preparing">작품 준비 중</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 7 6-7 6V6Z" /></svg>
+        </button>
+        <p class="sound-hint" data-i18n="soundHint">헤드폰 또는 스피커 사용을 권장합니다.</p>
+      </div>
+    </section>
+
+    <section id="end-card" aria-hidden="true">
+      <p>K-MAGPIE · 2026</p>
+      <h2 data-i18n="title">균열: 빛의 오작교</h2>
+      <span>RIFT: OJAKGYO OF LIGHT</span>
+      <blockquote data-i18n="endline">균열은 끝이 아니라, 서로 다른 빛이 만나는 자리였다.</blockquote>
+    </section>
+
+    <nav id="controls" aria-label="작품 제어">
+      <button id="replay-button" class="control-button" type="button" data-i18n-aria="replayAria">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66L20 8M20 4v4h-4" /></svg>
+        <span data-i18n="replay">다시</span>
+      </button>
+      <button id="mute-button" class="control-button" type="button" data-i18n-aria="muteAria">
+        <svg class="sound-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5ZM15 9a4 4 0 0 1 0 6M17.5 6.5a8 8 0 0 1 0 11" /></svg>
+        <svg class="sound-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5ZM16 9l5 6M21 9l-5 6" /></svg>
+        <span data-i18n="mute">음소거</span>
+      </button>
+      <button id="fullscreen-button" class="control-button" type="button" data-i18n-aria="fullscreenAria">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5" /></svg>
+        <span data-i18n="fullscreen">전체화면</span>
+      </button>
+    </nav>
+
+    <div id="progress" aria-hidden="true"><span></span></div>
+
+    <aside id="debug-panel" hidden>
+      <div><strong>RIFT DEBUG</strong><span id="debug-fps">— FPS</span></div>
+      <label><span id="debug-time">0.00s</span><input id="time-slider" type="range" min="0" max="60" step="0.01" value="0" /></label>
+      <pre id="debug-stats"></pre>
+    </aside>
+
+    <section id="error-panel" role="alert" hidden>
+      <strong data-i18n="errorTitle">작품을 실행할 수 없습니다.</strong>
+      <p data-i18n="errorBody">WebGL 2를 지원하는 최신 브라우저와 그래픽 가속 환경에서 다시 열어주세요.</p>
+      <code id="error-code"></code>
+      <button id="reload-button" type="button" data-i18n="reload">새로고침</button>
+    </section>
+  </main>
+
+  <script type="module" src="./main.js?v=20260824-2"></script>
+</body>
+</html>
