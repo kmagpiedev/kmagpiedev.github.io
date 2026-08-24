@@ -1,0 +1,132 @@
+:root {
+  --bg: #050b16;
+  --ink: #f4efe5;
+  --muted: rgba(244, 239, 229, .58);
+  --gold: #e0ae4f;
+  --gold-soft: #f4d58c;
+  --line: rgba(224, 174, 79, .28);
+  --fade: 0;
+}
+* { box-sizing: border-box; }
+html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: var(--bg); }
+body {
+  color: var(--ink);
+  font-family: Pretendard, "Noto Sans KR", "Apple SD Gothic Neo", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  touch-action: manipulation;
+}
+button { font: inherit; }
+#artwork { position: fixed; inset: 0; isolation: isolate; contain: strict; background: #050b16; }
+#gl-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; outline: none; }
+#grain {
+  position: absolute; inset: -35%; z-index: 2; pointer-events: none; opacity: .052;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.88' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light;
+  animation: grain .26s steps(2) infinite;
+}
+@keyframes grain { 0%{transform:translate(-2%,-1%)} 33%{transform:translate(1%,2%)} 66%{transform:translate(2%,-2%)} 100%{transform:translate(-2%,-1%)} }
+#vignette {
+  position: absolute; inset: 0; z-index: 3; pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 47%, transparent 0 45%, rgba(0,0,0,.14) 69%, rgba(0,0,0,.62) 125%),
+    linear-gradient(180deg, rgba(2,5,11,.05), rgba(2,5,11,.24));
+}
+#fade { position: absolute; inset: 0; z-index: 8; pointer-events: none; background: #030711; opacity: var(--fade); }
+.overlay {
+  position: absolute; inset: 0; z-index: 10; display: grid; place-items: center;
+  padding: max(24px, env(safe-area-inset-top)) max(22px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(22px, env(safe-area-inset-left));
+  background: radial-gradient(circle at 50% 42%, rgba(24,51,82,.22), rgba(2,5,12,.88) 72%);
+  transition: opacity .9s ease, visibility .9s ease;
+}
+.overlay.is-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.intro-card { width: min(900px, 100%); text-align: center; }
+.brand {
+  display: inline-flex; align-items: center; gap: 9px; margin-bottom: 27px;
+  padding: 7px 12px 7px 8px; border: 1px solid var(--line); border-radius: 999px;
+  background: rgba(3,7,17,.38); color: rgba(244,239,229,.68); backdrop-filter: blur(14px);
+  font-size: 11px; font-weight: 650; letter-spacing: .18em;
+}
+.brand img { width: 22px; height: 22px; border-radius: 50%; }
+.eyebrow { margin: 0 0 14px; color: var(--gold-soft); font-size: clamp(11px, 1.05vw, 14px); letter-spacing: .14em; }
+h1 { margin: 0; line-height: .9; font-weight: 400; }
+h1 .ko-title, #end-card h2 span {
+  font-family: "AppleMyungjo", "Nanum Myeongjo", Batang, serif;
+  font-size: clamp(70px, 11vw, 152px); font-weight: 700; letter-spacing: -.08em;
+  text-shadow: 0 0 50px rgba(111,178,255,.18);
+}
+h1 small { color: var(--gold); font-size: clamp(36px, 5.5vw, 72px); vertical-align: .15em; }
+h1 [data-i18n="title"] { font-family: "AppleMyungjo", "Nanum Myeongjo", Batang, serif; font-size: clamp(40px, 6.5vw, 90px); font-weight: 600; letter-spacing: -.05em; }
+.en-title { margin: 15px 0 0; color: rgba(244,239,229,.46); font-size: 11px; font-weight: 600; letter-spacing: .31em; }
+.statement { max-width: 720px; margin: 27px auto 0; color: rgba(244,239,229,.84); font-size: clamp(14px, 1.55vw, 19px); font-weight: 300; line-height: 1.88; }
+.meta { margin: 15px 0 0; color: var(--muted); font-size: 12px; letter-spacing: .05em; }
+#start {
+  margin-top: 33px; min-width: 172px; min-height: 52px; padding: 0 25px;
+  border: 1px solid rgba(244,213,140,.72); border-radius: 999px; cursor: pointer;
+  color: #141008; background: linear-gradient(135deg, #f4d58c, #d99c32);
+  font-weight: 750; box-shadow: 0 16px 52px rgba(215,157,47,.22), inset 0 1px rgba(255,255,255,.42);
+  transition: transform .2s ease, filter .2s ease, box-shadow .2s ease;
+}
+#start:hover { transform: translateY(-2px); filter: brightness(1.06); box-shadow: 0 20px 58px rgba(215,157,47,.31); }
+.hint { margin: 13px 0 0; color: rgba(244,239,229,.40); font-size: 11px; }
+#controls {
+  position: absolute; z-index: 7; right: max(18px, env(safe-area-inset-right)); bottom: max(18px, env(safe-area-inset-bottom));
+  display: flex; gap: 8px; opacity: 0; pointer-events: none; transform: translateY(7px); transition: opacity .3s ease, transform .3s ease;
+}
+body.is-playing #controls { opacity: 1; pointer-events: auto; transform: none; }
+body.ui-idle #controls { opacity: .12; }
+#controls button {
+  width: 40px; height: 40px; padding: 0; display: grid; place-items: center;
+  border: 1px solid rgba(244,239,229,.14); border-radius: 50%; cursor: pointer;
+  color: rgba(244,239,229,.78); background: rgba(3,7,17,.34); backdrop-filter: blur(16px);
+}
+#controls button:hover { color: #fff; border-color: rgba(224,174,79,.48); background: rgba(3,7,17,.68); }
+#controls svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+#sound .off { display: none; }
+#sound.is-muted .on { display: none; }
+#sound.is-muted .off { display: block; }
+#progress { position: absolute; z-index: 7; left: 0; right: 0; bottom: 0; height: 2px; background: rgba(255,255,255,.025); opacity: .5; }
+#progress span { display: block; width: 100%; height: 100%; transform: scaleX(0); transform-origin: left; background: linear-gradient(90deg, rgba(59,164,217,.35), var(--gold)); box-shadow: 0 0 9px rgba(224,174,79,.4); }
+#end-card {
+  position: absolute; z-index: 6; left: 50%; top: 50%; width: min(900px, calc(100% - 40px));
+  text-align: center; opacity: 0; pointer-events: none; transform: translate(-50%, -47%);
+}
+#end-card > p { margin: 0 0 11px; color: var(--gold-soft); font-size: 11px; font-weight: 650; letter-spacing: .2em; }
+#end-card h2 { margin: 0; font-family: "AppleMyungjo", "Nanum Myeongjo", Batang, serif; font-size: clamp(34px, 5.8vw, 78px); font-weight: 500; }
+#end-card h2 span { font-size: inherit; color: var(--ink); }
+#end-card h2 b { color: var(--ink); font-weight: 500; }
+#end-card em { display: block; margin: 17px auto 0; color: rgba(244,239,229,.68); font-size: clamp(12px, 1.25vw, 16px); font-style: normal; font-weight: 300; }
+#error {
+  position: absolute; z-index: 30; inset: 0; display: grid; place-content: center; gap: 9px; padding: 30px; text-align: center; background: #050b16;
+}
+#error[hidden] { display: none !important; }
+#error strong { font-size: 19px; }
+#error span { color: var(--muted); font-size: 13px; }
+#error code { max-width: min(720px, 90vw); margin-top: 8px; color: rgba(255,180,180,.72); font-size: 11px; white-space: pre-wrap; }
+#debug {
+  position: absolute; z-index: 20; left: 12px; top: 12px; min-width: 210px; padding: 10px 12px;
+  color: #dbeafe; background: rgba(0,0,0,.62); border: 1px solid rgba(255,255,255,.16); border-radius: 8px;
+  font: 11px/1.55 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre;
+}
+body.capture-mode #intro, body.capture-mode #controls, body.capture-mode #progress, body.capture-mode #grain { display: none !important; }
+body.capture-mode { cursor: none; }
+@media (max-width: 650px) {
+  .brand { margin-bottom: 22px; }
+  .statement { max-width: 520px; }
+  .meta { max-width: 330px; margin-left: auto; margin-right: auto; line-height: 1.7; }
+}
+@media (prefers-reduced-motion: reduce) { #grain { animation: none; } .overlay, #controls, #start { transition-duration: .01ms; } }
+
+body.quality-low #grain { opacity: .022; animation: none; }
+body.quality-medium #grain { opacity: .038; animation-duration: .38s; }
+@media (max-width: 650px) {
+  .overlay { padding-inline: 20px; }
+  .intro-card { width: min(100%, 520px); }
+  .eyebrow { max-width: 360px; margin-inline: auto; line-height: 1.55; }
+  h1 .ko-title { font-size: clamp(62px, 19vw, 92px); }
+  h1 [data-i18n="title"] { font-size: clamp(34px, 10.4vw, 54px); }
+  h1 small { font-size: clamp(30px, 8vw, 48px); }
+  .en-title { letter-spacing: .23em; }
+  .statement { margin-top: 23px; font-size: 14px; line-height: 1.72; }
+  #start { margin-top: 27px; min-height: 50px; }
+  #grain { opacity: .034; }
+}
