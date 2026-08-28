@@ -218,15 +218,17 @@ HEAD_BLOCK = """<!--HEAD:S-->
 <meta name="apple-mobile-web-app-title" content="까치툴">
 <script>/*PWA*/(function(){var L=document.documentElement.lang==='en';
 if('serviceWorker' in navigator)addEventListener('load',function(){navigator.serviceWorker.register('/sw.js',{scope:'/'})['catch'](function(){})});
-var p=null;addEventListener('beforeinstallprompt',function(e){e.preventDefault();p=e;show()});
-addEventListener('appinstalled',function(){p=null;var b=document.getElementById('pwaBtn');if(b)b.remove()});
+var p=null,armed=false;addEventListener('beforeinstallprompt',function(e){e.preventDefault();p=e;arm()});
+function arm(){if(armed)return;armed=true;var h=function(){removeEventListener('pointerdown',h,true);removeEventListener('keydown',h,true);show()};
+addEventListener('pointerdown',h,true);addEventListener('keydown',h,true)}
+addEventListener('appinstalled',function(){p=null;var b=document.getElementById('pwaBtn');if(b)b.style.visibility='hidden'});
 function show(){if(document.getElementById('pwaBtn'))return;
 var a=document.querySelector('.sub')||document.querySelector('h1');if(!a)return;
 var b=document.createElement('button');b.id='pwaBtn';b.type='button';
 b.textContent=L?'\u2b07 Install as an app':'📲 \uc571\uc73c\ub85c \uc124\uce58';
 b.style.cssText='display:inline-block;margin:0 0 22px;padding:8px 15px;border-radius:9px;font:600 13.5px/1.4 inherit;cursor:pointer;background:transparent;color:var(--accent,#b45309);border:1px solid var(--accent,#b45309)';
 b.title=L?'Works offline once installed':'\uc124\uce58\ud558\uba74 \uc778\ud130\ub137 \uc5c6\uc774\ub3c4 \uc4f8 \uc218 \uc788\uc2b5\ub2c8\ub2e4';
-b.onclick=function(){if(!p)return;p.prompt();p.userChoice.then(function(){p=null;b.remove()})};
+b.onclick=function(){if(!p)return;p.prompt();p.userChoice.then(function(){p=null;b.style.visibility='hidden'})};
 a.insertAdjacentElement('afterend',b)}})();</script>
 <!--HEAD:E-->"""
 
@@ -495,15 +497,17 @@ EN_HEAD_BLOCK = """<!--HEAD:S-->
 <meta name="apple-mobile-web-app-title" content="K-magpie">
 <script>/*PWA*/(function(){var L=document.documentElement.lang==='en';
 if('serviceWorker' in navigator)addEventListener('load',function(){navigator.serviceWorker.register('/sw.js',{scope:'/'})['catch'](function(){})});
-var p=null;addEventListener('beforeinstallprompt',function(e){e.preventDefault();p=e;show()});
-addEventListener('appinstalled',function(){p=null;var b=document.getElementById('pwaBtn');if(b)b.remove()});
+var p=null,armed=false;addEventListener('beforeinstallprompt',function(e){e.preventDefault();p=e;arm()});
+function arm(){if(armed)return;armed=true;var h=function(){removeEventListener('pointerdown',h,true);removeEventListener('keydown',h,true);show()};
+addEventListener('pointerdown',h,true);addEventListener('keydown',h,true)}
+addEventListener('appinstalled',function(){p=null;var b=document.getElementById('pwaBtn');if(b)b.style.visibility='hidden'});
 function show(){if(document.getElementById('pwaBtn'))return;
 var a=document.querySelector('.sub')||document.querySelector('h1');if(!a)return;
 var b=document.createElement('button');b.id='pwaBtn';b.type='button';
 b.textContent=L?'\u2b07 Install as an app':'📲 \uc571\uc73c\ub85c \uc124\uce58';
 b.style.cssText='display:inline-block;margin:0 0 22px;padding:8px 15px;border-radius:9px;font:600 13.5px/1.4 inherit;cursor:pointer;background:transparent;color:var(--accent,#b45309);border:1px solid var(--accent,#b45309)';
 b.title=L?'Works offline once installed':'\uc124\uce58\ud558\uba74 \uc778\ud130\ub137 \uc5c6\uc774\ub3c4 \uc4f8 \uc218 \uc788\uc2b5\ub2c8\ub2e4';
-b.onclick=function(){if(!p)return;p.prompt();p.userChoice.then(function(){p=null;b.remove()})};
+b.onclick=function(){if(!p)return;p.prompt();p.userChoice.then(function(){p=null;b.style.visibility='hidden'})};
 a.insertAdjacentElement('afterend',b)}})();</script>
 <!--HEAD:E-->"""
 
