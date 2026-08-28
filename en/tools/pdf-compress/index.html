@@ -246,24 +246,24 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 <p>People usually shrink a PDF because they have to submit it somewhere: an email attachment limit, a government portal's "10MB max", a job application's "5MB max". What matters then isn't the percentage saved — it's whether the file <strong>gets under the limit</strong>. So instead of asking you to pick a compression strength, this tool asks for the target size first, then binary-searches for the resolution and quality combination that damages the image least while still fitting. For long documents it first approximates with a few representative pages before encoding everything in one pass, which keeps the number of retries down.</p>
 </div></details>
 
-<details class="fold"><summary><h2>Scanned PDFs and text PDFs compress differently</h2></summary><div class="fx">
+<details class="fold" open><summary><h2>Scanned PDFs and text PDFs compress differently</h2></summary><div class="fx">
 <p>A PDF made by scanning paper or photographing it with a phone stores each page as one big picture. Pictures shrink dramatically when you lower the resolution and adjust JPEG quality, so these files respond well to the <strong>re-rendering approach</strong> this tool uses — redrawing each page as an image and assembling a new PDF from those images.</p>
 <p>A PDF exported straight from Word or Google Docs is different: its text is stored as fonts and coordinates, which is tiny to begin with. Re-render a file like that and a few dozen kilobytes of text data become a full-page image — <strong>the file can actually get bigger</strong>, and text selection, search and copying disappear. That's why this tool analyses the first pages the moment you open a file, checking the amount of real text and the file size per page to judge whether it's a scan or a text document, and warns you clearly before proceeding if it's the latter. The evidence behind the verdict is shown on screen too.</p>
 </div></details>
 
-<details class="fold"><summary><h2>The trade-off: text selection and search are lost</h2></summary><div class="fx">
+<details class="fold" open><summary><h2>The trade-off: text selection and search are lost</h2></summary><div class="fx">
 <p>After re-rendering, every page of the PDF is an image. You can't drag to select text in a viewer, in-document search finds nothing, and text can't be copied or read aloud by a screen reader. If the original was a scan, those features never existed and you lose nothing; if it was a text PDF, this is a real loss. Either way, <strong>keep the original file</strong> and treat the compressed copy as a submission-only version.</p>
 </div></details>
 
-<details class="fold"><summary><h2>Why phone photos of documents are so large</h2></summary><div class="fx">
+<details class="fold" open><summary><h2>Why phone photos of documents are so large</h2></summary><div class="fx">
 <p>Modern phone cameras shoot at 12 megapixels or more, so a single photo is around 4,000×3,000 pixels — higher resolution than a Letter or A4 page scanned at 300dpi, when roughly 150dpi is plenty for reading a document. In other words, a photographed document that weighs 3–5MB per page is almost always a case of <strong>resolution overkill</strong>. Re-rendering trims that excess, so the file shrinks a lot without hurting legibility. After compressing, zoom into the before/after preview and make sure the text is still crisp.</p>
 </div></details>
 
-<details class="fold"><summary><h2>When compression won't help</h2></summary><div class="fx">
+<details class="fold" open><summary><h2>When compression won't help</h2></summary><div class="fx">
 <p>A file that was already produced at low resolution with strong compression has almost nothing left to give. Feed in a scan that has been compressed once before and the saving may be tiny — or re-encoding losses may even make it bigger. If the result comes out larger than the original, just use the original. Text-heavy PDFs often won't shrink this way either, for the reasons above. And if you set the target too small, even the lowest settings (72dpi, low quality) may not reach it — in that case the tool shows the result along with an honest notice that the target was missed.</p>
 </div></details>
 
-<details class="fold"><summary><h2>Troubleshooting</h2></summary><div class="fx">
+<details class="fold" open><summary><h2>Troubleshooting</h2></summary><div class="fx">
 <h3>The file won't open</h3>
 <p>Password-protected PDFs can't be opened. If a viewer asks for a password when you open the file, you'll need an unprotected copy first. Damaged files, or files that merely have a .pdf extension, won't open either.</p>
 <h3>The result is slightly over the target</h3>

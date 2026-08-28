@@ -343,31 +343,31 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 <p>Video codecs work the opposite way. H.264, the codec behind most mp4 files, stores only what changed since the previous frame and boldly discards detail the human eye can't distinguish. That is why the same clip as an mp4 is routinely ten to fifty times smaller than as a GIF. Yes, GIF is technically outdated — but there is a reason it survives. Because it is an image file, <strong>it plays automatically everywhere with no video player, no sound, and no pausing.</strong></p>
 </div></details>
 
-<details class="fold"><summary><h2>When a GIF fits, and when a video is better</h2></summary><div class="fx">
+<details class="fold" open><summary><h2>When a GIF fits, and when a video is better</h2></summary><div class="fx">
 <p>For a short scene of a few seconds looping forever, a GIF is still the convenient choice. Reaction GIFs in chat, a short demo clip inside a blog post, a forum signature or banner — <strong>anywhere an image slot needs motion</strong> is GIF territory. Since it counts as an image, it is rarely blocked as an attachment, and nobody has to press play.</p>
 <p>Once the clip runs past a few seconds or the scene count climbs, make a video instead. Thirty photos at one-second intervals is really a slideshow video, and forcing it into a GIF only inflates the size while degrading the quality. If you need sound, GIF is not even an option — the format simply has no way to carry audio. This tool is tuned for the territory inside that boundary: <strong>a handful to a dozen or so photos on a short loop</strong>.</p>
 </div></details>
 
-<details class="fold"><summary><h2>Why photos look grainy in a GIF</h2></summary><div class="fx">
+<details class="fold" open><summary><h2>Why photos look grainy in a GIF</h2></summary><div class="fx">
 <p>The 256-color limit is kind to graphics and cruel to photographs. Logos, screenshots and simple illustrations use only a few dozen distinct colors, so they fit inside 256 with room to spare and look nearly identical to the original. But <strong>smooth gradients</strong> — sky, sunsets, skin — are another story. Tens of thousands of in-between shades must be squeezed into 256, so similar colors get merged and a once-smooth sky develops contour-line stripes. That artifact is called banding.</p>
 <p>This tool computes a dedicated best-fit 256-color palette for every single frame to minimize the damage, but the format's ceiling can't be avoided. It is also why colors can shimmer slightly between frames when your photos were shot under different lighting. If the graininess bothers you in a photo-heavy result, switching to a video format is the real fix; if it has to be a GIF, shrinking the output also makes the speckling less visible.</p>
 </div></details>
 
-<details class="fold"><summary><h2>What the frame delay decides</h2></summary><div class="fx">
+<details class="fold" open><summary><h2>What the frame delay decides</h2></summary><div class="fx">
 <p>A 0.1-second delay means 10 frames per second; 0.5 seconds means 2 per second. For a hand-flipped slideshow feel, 0.5 to 1 second reads naturally; to create motion from burst-shot photos, 0.1 to 0.2 seconds works better. Smoothness ultimately comes from frame count, so <strong>for the same duration, a shorter delay means more frames and a proportionally bigger file.</strong></p>
 <p>There is a floor on how fast you can go. GIF measures time in hundredths of a second, and when the delay drops near 0.01 seconds, most browsers ignore it and play at 0.1 seconds instead — a convention left over from blocking abusive flashing ads in the early web. So this tool <strong>never goes below 0.02 seconds</strong>. At 50 frames per second, motion already looks perfectly smooth to the eye.</p>
 </div></details>
 
-<details class="fold"><summary><h2>Posting to chat apps, Discord and blogs</h2></summary><div class="fx">
+<details class="fold" open><summary><h2>Posting to chat apps, Discord and blogs</h2></summary><div class="fx">
 <p>How big your GIF may be depends entirely on where it is going. Messaging apps typically cap animated images at a few dozen MB and either convert oversized ones to video or refuse them. Discord's upload cap for free accounts was famously 8MB for years and still sits in the tens of MB, blog platforms commonly allow a few MB to a few dozen MB per image, and forums vary wildly. Limits shift with each service's policy, so the practical rule is simple: <strong>keep it under 10MB and it will post almost anywhere.</strong></p>
 <p>The order for cutting size is fixed: dimensions first, frame count second, delay third. Pixel count multiplies across width and height, so halving the long side cuts the file to roughly a quarter — which is exactly why 480px, not the original size, is the default recommendation. Still too big? Drop near-duplicate frames to reduce the count, and finally stretch the delay a little to keep the total duration the same.</p>
 </div></details>
 
-<details class="fold"><summary><h2>Motion from a single photo</h2></summary><div class="fx">
+<details class="fold" open><summary><h2>Motion from a single photo</h2></summary><div class="fx">
 <p>Motion doesn't have to come from multiple shots. The <strong>single photo</strong> mode takes one still image and adds a slow zoom-in, a sideways pan, or a heartbeat-style pulse, turning it into an animated GIF. It suits <strong>spots where you want to hold the eye</strong> — a thumbnail, a product or portrait highlight, or a single dramatic frame dropped into chat. Note this is different from AI animation that makes the person in the photo actually move; here the whole frame moves like a camera, nothing more.</p>
 </div></details>
 
-<details class="fold"><summary><h2>Troubleshooting</h2></summary><div class="fx">
+<details class="fold" open><summary><h2>Troubleshooting</h2></summary><div class="fx">
 <h3>My GIF is too big</h3>
 <p>Check the output size. Left at Original, a single phone-photo frame can weigh several MB. Shrinking to <strong>480px on the long side</strong> cuts the size dramatically, and 480px is plenty big in chat or a blog post. If it is still too large, reducing the frame count is the next lever.</p>
 <h3>The colors look different from my originals</h3>

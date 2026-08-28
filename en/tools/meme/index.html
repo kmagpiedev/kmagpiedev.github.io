@@ -263,27 +263,27 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 <p>The heavy typeface matters for the same reason. Put an outline on a thin font and the border swallows the strokes, turning the letters to mush. Only a fat sans-serif keeps its interior after the border goes on. This tool uses the <strong>heaviest sans-serif font already on your device</strong>, so there is no web font to download and the page stays light and fast. Letterforms may differ slightly between devices as a result, but for meme purposes the difference never matters.</p>
 </div></details>
 
-<details class="fold"><summary><h2>Where the text should go</h2></summary><div class="fx">
+<details class="fold" open><summary><h2>Where the text should go</h2></summary><div class="fx">
 <p>The default spots are the top and bottom edges. The eye goes to the middle of a photo — the face or the subject — and text laid over that kills both the picture and the caption. That is how the meme grammar settled into <strong>setup on top, punchline on the bottom</strong>. This tool pins the captions to those edges and wraps any line that grows past 90% of the width. You can still drag either block anywhere you like in the preview.</p>
 <p>Text size is set not in pixels but as <strong>a percentage of the image's longer side</strong>. Use the same pixel size on a 4,000-pixel original and an 800-pixel screenshot and one is invisible while the other covers the frame. The 7% default is about the smallest size that reads crisply on a phone screen. If your caption is long, shortening the sentence beats enlarging the text. Once a caption passes three lines the photo starts losing to the words, so this tool never shrinks your text behind your back — it just tells you when you are over three lines. Whether to trim the wording or lower the size is your call.</p>
 </div></details>
 
-<details class="fold"><summary><h2>File size and dimensions for chat and social media</h2></summary><div class="fx">
+<details class="fold" open><summary><h2>File size and dimensions for chat and social media</h2></summary><div class="fx">
 <p>Your meme is saved at the original resolution. If the source was a PNG or WebP it is saved as a lossless PNG; if the source was a JPG it stays a JPG, because converting a photo to PNG only multiplies the file size for no visible gain.</p>
 <p>Think about where the meme is going and you will see there is no need to chase resolution. Messaging apps recompress and shrink images on their own, and Reddit, Discord, X and most forums display posts at a fixed column width — 1,080 pixels on the long side is plenty everywhere. If your original is huge, run the finished meme through an image resizer or compressor afterwards. The reverse is also true: upscaling a tiny image buys you nothing. The text stays sharp because this tool redraws it at full resolution when you save, but the underlying photo can never get better than its source.</p>
 </div></details>
 
-<details class="fold"><summary><h2>Using images you didn't make</h2></summary><div class="fx">
+<details class="fold" open><summary><h2>Using images you didn't make</h2></summary><div class="fx">
 <p>This tool ships no meme templates. <strong>You bring the image, and judging whether you may use it is your responsibility.</strong> TV frames, film stills and other people's artwork are copyrighted, and the people in a photo have rights over their own likeness. The tool only draws text — it has no idea whether an image is fair game.</p>
 <p>This is not meant to scare you. A meme traded for laughs in a group chat carries very different weight from an image used in an ad, a product page or a monetized channel. The former almost never draws attention; the latter is exactly where rights holders do act. For anything public-facing or commercial, you will sleep better using photos you took, art you drew, or free stock images whose license terms are spelled out.</p>
 </div></details>
 
-<details class="fold"><summary><h2>Why captioning a GIF makes it bigger</h2></summary><div class="fx">
+<details class="fold" open><summary><h2>Why captioning a GIF makes it bigger</h2></summary><div class="fx">
 <p>Most GIFs floating around the internet are compressed rather cleverly. Instead of storing every frame in full, they store <strong>only the pixels that changed from the previous frame</strong>, and often share a single color palette across the whole animation. To draw a caption, though, every frame has to be unpacked, painted on, and re-encoded from scratch. That undoes those optimizations, which is why the same clip frequently comes out larger than the original.</p>
 <p>Quality also takes one hit. A GIF frame can hold only 256 colors, so every re-encode involves reducing the palette again. This tool computes the best-fitting palette for each frame individually to keep the loss down, but the format's ceiling is what it is. That is why <strong>Shrink to 480px on the long side</strong> is on by default: pixel count multiplies across both dimensions, so shrinking is by far the most effective way to control size, and 480px is plenty for chat and forum posts. Turn it off only when you truly need the original dimensions. Frame count, per-frame timing and infinite looping are all preserved exactly.</p>
 </div></details>
 
-<details class="fold"><summary><h2>Troubleshooting</h2></summary><div class="fx">
+<details class="fold" open><summary><h2>Troubleshooting</h2></summary><div class="fx">
 <h3>It says my text is over three lines</h3>
 <p>A long sentence stacks up through auto-wrapping and starts hiding the photo. This tool never shrinks your text automatically, so when the notice appears, trim the caption or lower the size slider. Splitting the wording between the top and bottom captions also works.</p>
 <h3>The GIF captions button won't click</h3>

@@ -65,6 +65,7 @@
     background:var(--accent);color:var(--btn-ink);font-size:17px;font-weight:800;font-family:inherit;cursor:pointer;
     letter-spacing:-.01em;transition:.15s}
   .go:hover{filter:brightness(1.08);transform:translateY(-1px)}
+  .go:disabled{cursor:default;opacity:.68;transform:none;filter:none}
 
   /* 결과 */
   .result{background:var(--surface);border:1px solid var(--accent);border-radius:18px;
@@ -122,6 +123,27 @@
   footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
   footer a{color:var(--ink-3)}
   .hidden{display:none}
+
+  /* 본문 접기 */
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 10px}
+  .fold .fx>:first-child{margin-top:4px}
+  .fold .fx p{font-size:14.5px;color:var(--ink-2)}
+  .fold .fx p strong{color:var(--ink)}
+  .fold .fx h3{font-size:15.5px;color:var(--ink);font-weight:700;
+    margin:22px 0 6px;letter-spacing:-.01em}
+
   @media (max-width:560px){
     .wrap{padding:32px 16px 70px}
     h1{font-size:23px}
@@ -132,6 +154,9 @@
     .roleName{font-size:22px}
     .mates{grid-template-columns:1fr}
     .seal{width:36px;height:36px;font-size:13px;top:14px;right:14px}
+    .fold summary{padding:14px 15px}
+    .fold summary h2{font-size:15.5px}
+    .fold .fx{padding:0 15px 10px}
   }
 </style>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
@@ -198,15 +223,94 @@
   <p class="copied" id="copied"></p>
 </div>
 
-<div class="basis">
-  <h2>이 테스트의 근거</h2>
-  <p>사주에서 태어난 날의 천간을 <strong>일간(日干)</strong>이라 부르고, 명리학은 이 글자를 ‘나 자신’으로 봅니다. 조선 사람들이 혼담과 벼슬길을 앞두고 관상가·명리가에게 물어보던 것이 바로 이 여덟 글자입니다. 이 테스트는 <a href="/tools/manse/">만세력</a>과 같은 엔진으로 당신의 연주·월주·일주를 실제로 계산한 뒤, 일간 10가지(갑·을·병·정·무·기·경·신·임·계)를 조선의 직업으로 바꿔 읽은 것입니다. 출세지수는 벼슬 운을 뜻하는 관성(官星)과 나머지 글자들의 관계를 점수로 환산해 만들었습니다. 물론, 재미로 보세요.</p>
-</div>
+<p class="gist">이 테스트는 생년월일을 만세력으로 계산해 태어난 날의 기둥인 <strong>일주(日柱)</strong>를 뽑고, 그 윗글자인 <strong>일간</strong> 10가지를 조선의 직업으로 바꿔 읽습니다. 출세지수는 일간과 나머지 글자들의 관계 — 그중에서도 벼슬 운을 뜻하는 <strong>관성(官星)</strong> — 을 점수로 환산한 값이고, ‘전체 상위 N%’는 1950~2010년 22,280일의 실제 분포에서 뽑은 백분위입니다. 계산에 무작위 함수가 없어서 같은 생년월일은 언제 눌러도 같은 결과가 나옵니다.</p>
 
-<div class="basis">
-  <h2>정확한 사주가 궁금하다면</h2>
-  <p>진짜 내 사주 여덟 글자가 궁금하다면 <a href="/tools/manse/">만세력 도구</a>에서 절입 시각까지 반영한 원국을 뽑아볼 수 있고, 그 여덟 글자의 풀이가 궁금하다면 <a href="https://yaong.kmagpie.com/">야옹명리</a>에서 볼 수 있습니다.</p>
-</div>
+<details class="fold" open><summary><h2>사주 여덟 글자와 일주, 그리고 조선</h2></summary><div class="fx">
+<p>사주(四柱)는 태어난 <strong>연·월·일·시</strong> 네 기둥을 각각 두 글자로 옮겨 적은 것입니다. 위에 오는 글자를 천간(天干)이라 하고 갑·을·병·정·무·기·경·신·임·계 열 개, 아래에 오는 글자를 지지(地支)라 하고 자·축·인·묘·진·사·오·미·신·유·술·해 열두 개입니다. 네 기둥에 두 글자씩이니 모두 여덟 글자, 그래서 사주팔자라고 부릅니다. 천간과 지지를 순서대로 하나씩 짝지어 나가면 갑자·을축·병인… 하고 예순 번 만에 처음으로 돌아오는데, 이 예순 가지 조합이 <strong>60갑자</strong>입니다. 『조선왕조실록』이 날짜를 “임진일”처럼 간지로 적어 둔 것과 같은 표기법입니다.</p>
+<p>그중 태어난 날에 해당하는 기둥이 <strong>일주(日柱)</strong>이고, 일주의 윗글자가 <strong>일간(日干)</strong>입니다. 명리학은 여덟 글자 가운데 이 일간 한 글자를 ‘나 자신’으로 놓고, 나머지 일곱 글자를 나를 둘러싼 환경으로 읽습니다. 이 테스트가 생년월일만 받고도 직업을 정할 수 있는 이유가 여기 있습니다. 직업은 일간 한 글자에서 나오고, 일간은 태어난 날짜만 있으면 정해지기 때문입니다.</p>
+<p>조선에서 이런 계산은 저잣거리의 잡술만은 아니었습니다. 천문과 역법을 맡은 관청인 <strong>관상감(觀象監)</strong> 안에는 천문학·지리학과 나란히 <strong>명과학(命課學)</strong> 분과가 있었고, 왕실 행사의 날짜와 시각을 고르는 택일(擇日)·택시(擇時)가 그 일이었습니다. 관원은 <strong>음양과(陰陽科)</strong>라는 과거 시험으로 뽑았습니다. 개인의 팔자를 봐주는 자리는 아니었지만, 간지와 절기를 다루는 지식 자체가 나라의 관청 업무였던 셈입니다.</p>
+<p>다만 그 여덟 글자를 어떻게 읽을지는 유파마다 갈립니다. 아래의 직업 배정도 명리학의 정설이 아니라 이 페이지가 정한 규칙입니다. 계산된 여덟 글자 자체가 궁금하다면 <a href="/tools/manse/">만세력 도구</a>에서 절입 시각까지 반영한 원국을 볼 수 있습니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>일간 10가지와 조선의 직업 12가지</h2></summary><div class="fx">
+<p>천간 열 글자는 목·화·토·금·수 다섯 오행을 각각 양(陽)과 음(陰)으로 나눈 것입니다. 같은 나무라도 양목인 갑과 음목인 을은 성질이 다릅니다. 아래는 각 일간을 명리에서 어떤 기운으로 보는지, 그리고 이 테스트가 그 성질을 조선의 어떤 자리로 옮겼는지입니다.</p>
+
+<h3>갑목(甲木)·을목(乙木) — 나무의 기운</h3>
+<p><strong>갑목</strong>은 하늘로 곧게 자라는 큰 나무, 기둥과 들보가 되는 동량지목(棟梁之木)에 비유합니다. 위로 뻗는 힘과 우두머리 기질이 강하고, 한번 방향을 정하면 잘 굽히지 않습니다. 이 글자를 <strong>궁궐 짓는 도편수</strong>로 읽은 것은 말 그대로 동량, 곧 대들보를 세우는 자리이기 때문입니다.</p>
+<p><strong>을목</strong>은 화초와 덩굴, 그리고 약초입니다. 큰 나무처럼 정면으로 밀지 않고 담을 타고 돌아 올라가며, 밟혀도 다시 일어섭니다. 사람 몸의 막힌 데를 살살 풀어내는 손과 겹쳐 읽어 <strong>한양 제일 의원</strong>이 되었습니다.</p>
+
+<h3>병화(丙火)·정화(丁火) — 불의 기운</h3>
+<p><strong>병화</strong>는 한낮의 태양입니다. 숨길 수 없고 멀리까지 퍼지며 뒤끝이 없습니다. 사람 앞에 서야 제 몫을 하는 글자라, 저잣거리에서 소설을 읽어 주던 이야기꾼 <strong>전기수</strong>로 배정했습니다.</p>
+<p><strong>정화</strong>는 등불이고 아궁이 불입니다. 태양처럼 넓게 퍼지는 대신 한곳을 오래 데우고 불 다루는 손이 섬세합니다. 궁중 부엌에서 수라를 짓는 <strong>수라간 숙수</strong>가 여기서 나왔습니다.</p>
+
+<h3>무토(戊土)·기토(己土) — 흙의 기운</h3>
+<p><strong>무토</strong>는 산이고 제방입니다. 넓고 두터워 잘 흔들리지 않고 쌓아 두는 데 능합니다. 땅 그 자체와 가장 가까운 글자라 <strong>만석꾼 대지주</strong>로 읽었습니다.</p>
+<p><strong>기토</strong>는 밭과 논의 흙입니다. 산처럼 막아서는 대신 무언가를 길러내고 품습니다. 사람이 절로 모여드는 터의 기운이라, 팔도 소문이 하룻밤 자고 가는 <strong>주막 대방</strong>이 되었습니다.</p>
+
+<h3>경금(庚金)·신금(辛金) — 쇠의 기운</h3>
+<p><strong>경금</strong>은 아직 다듬지 않은 무쇠이자 도끼입니다. 두드릴수록 단단해지고 결단이 빠릅니다. 활과 칼을 잡는 <strong>무과 장원 무관</strong>입니다.</p>
+<p><strong>신금</strong>은 세공을 마친 보석이자 바늘, 잘 벼려진 칼날입니다. 예민하고 정밀하며 흐트러진 것을 못 견딥니다. 장부의 획 하나를 끝까지 따지는 <strong>사헌부 감찰</strong>이 여기서 나왔습니다.</p>
+
+<h3>임수(壬水)·계수(癸水) — 물의 기운</h3>
+<p><strong>임수</strong>는 바다이고 큰 강입니다. 스케일이 크고 한곳에 갇히는 것을 못 견딥니다. 팔도를 걸어 물건과 물건을 잇는 <strong>보부상 대방</strong>으로 읽었습니다.</p>
+<p><strong>계수</strong>는 빗물과 이슬, 샘물입니다. 소리 없이 스며들어 남이 못 보는 것을 읽어냅니다. 얼굴 한 번 보고 사람을 가리는 <strong>한양 최고 관상가</strong>입니다.</p>
+
+<h3>열한 번째와 열두 번째 — 괴강과 출세지수 97</h3>
+<p>직업이 10가지가 아니라 12가지인 것은 일간 위에 두 가지 조건이 더 얹히기 때문입니다. 첫째는 <strong>괴강(魁罡)</strong>입니다. 60갑자 중 무진·경진·임진·무술·경술·임술 여섯 일주를 가리키며, 명리에서는 ‘우두머리 별’이라 하여 극단적이고 강한 기운으로 봅니다. 이 여섯 일주로 태어나면 일간과 상관없이 <strong>암행어사</strong>가 되고, 출세지수도 12점 더 받습니다. 1950~2010년 22,280일 중 정확히 10%인 2,228일이 여기 해당합니다. 여섯 일주가 전부 무·경·임 일간이라, 사람이 빠져나가는 자리는 대지주·무관·보부상 셋뿐입니다.</p>
+<p>둘째는 <strong>영의정</strong>입니다. 이쪽은 일주가 아니라 점수로 정해집니다. 괴강이 아니면서 출세지수가 97 이상이면 직업이 영의정으로 바뀝니다. 같은 기간 22,280일 중 132일, 약 0.59%에서만 나옵니다. 뽑기 어려운 쪽이라는 뜻입니다.</p>
+<p>결과 아래에 뜨는 <strong>잘 맞는 동료</strong>와 <strong>한양 바닥의 앙숙</strong>은 오행의 생극 관계가 아니라, 두 직업이 조선의 저잣거리에서 실제로 어떻게 얽히는지로 짝지었습니다. 의원에게는 약과 음식이 통하는 숙수가 동료이고 술을 파는 주막 대방이 앙숙이며, 전기수에게는 이야기판이 서는 주막 대방이 동료이고 소란을 단속하는 사헌부 감찰이 앙숙인 식입니다. 오행으로 딱 떨어지지 않는 조합이 섞여 있는 것은 그래서입니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>출세지수 1~99는 어떻게 계산되나</h2></summary><div class="fx">
+<p>출세지수는 아래 순서로 만들어집니다. 조선이라는 세계관에 맞춰 임의로 정한 규칙이지만, 누구에게나 같은 규칙이 적용됩니다.</p>
+<p><strong>1. 기본 점수</strong> — 일간의 오행에 따라 출발점이 다릅니다. 목 50, 화 46, 토 57, 금 53, 수 49점에서 시작합니다. 재물과 곳간을 뜻하는 토가 가장 높고, 튀는 기운인 화가 가장 낮습니다.</p>
+<p><strong>2. 나머지 글자와의 관계</strong> — 연지·월지·일지(태어난 시간을 넣었다면 시지까지)의 오행이 내 일간과 맺는 관계를 점수로 바꿉니다. 나를 다스리는 <strong>관성(官星)이 +8</strong>로 가장 큰 가점이고, 이어서 내가 치는 재성 +4, 나를 낳아주는 인성 +2, 내가 낳는 식상 −1, 나와 같은 오행인 비겁 −5입니다. 관성은 명리에서 벼슬·직책·규율을 뜻하는 글자이므로 조선 세계관에서 최대 가점으로 두었고, 비겁은 같은 자리를 놓고 겨루는 형제와 경쟁자를 뜻해 감점입니다. 참고로 <a href="/tests/zombie/">좀비사태 생존 테스트</a>에서는 규율이 발목을 잡는다고 보아 관성이 정반대로 최대 감점입니다. 같은 여덟 글자라도 세계가 바뀌면 점수가 뒤집힙니다.</p>
+<p><strong>3. 자리별 가중치</strong> — 월지에 1.6배, 연지에 1.4배, 일지에 1.1배, 시지에 0.8배를 곱합니다. 태어난 달의 지지인 월지를 가장 무겁게 보는 것은 명리에서 월령(月令), 곧 태어난 계절을 사주의 뿌리로 치는 관례를 따른 것입니다. 연지를 일지보다 무겁게 둔 것은 연주를 조상과 가문의 자리로 보기 때문인데, 문벌이 벼슬길을 좌우한 조선이 배경이니 집안 자리에 힘을 실은 설정입니다.</p>
+<p><strong>4. 음양과 괴강</strong> — 갑·병·무·경·임 같은 양간이면 +3, 을·정·기·신·계 같은 음간이면 −2. 위의 괴강 여섯 일주라면 여기에 +12가 더 붙습니다.</p>
+<p><strong>5. 흩뿌림</strong> — 여기까지만 계산하면 같은 일주끼리 점수가 거의 붙어버립니다. 그래서 생년월일 문자열을 고정된 해시 함수에 넣어 나온 값으로 최대 ±26과 ±6 범위의 편차 두 개를 더합니다. 난수가 아니라 날짜에서 계산되는 값이라, 같은 날짜는 언제나 같은 편차를 받습니다.</p>
+<p>마지막으로 93을 넘거나 7 아래로 내려간 부분은 절반으로 눌러 1~99 사이로 자릅니다. 1950~2010년 전 날짜로 돌려보면 평균 59.0, 중앙값 59가 나오고, 양 끝인 1과 99도 실제로 나옵니다. 출세지수가 30 미만이면 결과 해설 앞에 위로 문단이 하나 자동으로 붙는데, 전 날짜의 6.5%가 여기 해당합니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>녹봉 — 조선의 진짜 봉급과 이 화면의 숫자</h2></summary><div class="fx">
+<p>결과에 뜨는 ‘연 녹봉 쌀 ○○섬’ 이야기를 하기 전에, 실제 제도를 먼저 짚겠습니다. <strong>녹봉(祿俸)</strong>은 조선이 관리에게 준 봉급입니다. 품계에 따라 등급을 나눠 지급했고 이 등급표를 <strong>녹과(祿科)</strong>라 하는데, 1439년(세종 21)부터 18등급으로 운영하다가 1647년에 12등급, 1721년에 13등급으로 바뀌었습니다.</p>
+<p>주는 시기도 달라졌습니다. 처음에는 정월 초이레와 칠월 초이레에 한 해 두 번 주다가, 정월·4월·7월·10월 네 번에 나눠 주는 <strong>사맹삭(四孟朔) 반록</strong>으로 바뀌었고, 조선 후기에는 산료제(散料制)로 옮겨 가 달마다 주는 월급이 되었습니다. 받는 절차는 이조나 병조에서 <strong>녹패(祿牌)</strong>를 받아 <strong>광흥창(廣興倉)</strong>에서 현물로 타 오는 것이었습니다.</p>
+<p>품목도 쌀만이 아니었습니다. 중미·조미·전미 같은 쌀 종류에 콩(황두)과 밀(소맥)이 섞이고, 여기에 명주와 정포 같은 옷감, 종이돈인 저화가 함께 나왔습니다. 조선 전기 기준으로 <strong>정1품이 1년에 받은 곡식이 97석, 삼베 21필, 저화 10장</strong>이었고, <strong>종9품은 곡식 12석, 삼베 2필, 저화 1장</strong>이었습니다. 나라 전체의 녹봉 지출은 건국 초 연 10만~12만 석에서 세조·성종 때 14만 석까지 늘었는데, 이는 그해 전세 수세액의 절반을 넘는 규모였습니다. 관리에게 땅을 나눠 주던 과전법·직전법이 1556년에 끊기면서, 그 뒤로는 녹봉이 유일한 보수가 됩니다.</p>
+<p>그러면 이 화면의 숫자는 무엇인가. 이 테스트의 녹봉은 <strong>출세지수에서 만들어집니다</strong>. 출세지수를 p라 할 때 기준값이 20 + (p÷99)의 1.7제곱 × 2,350섬이고, 여기에 생년월일 해시로 만든 0.85~1.15배의 흔들림을 곱한 뒤 20섬에서 2,500섬 사이로 자릅니다. 지수가 높을수록 가파르게 늘도록 1.7제곱을 씌운 것이라, 출세지수 50이면 대략 750섬, 90이면 2,000섬 언저리가 나옵니다. 1950~2010년 전 날짜의 중앙값은 991섬입니다.</p>
+<p>현대 연봉 환산은 <strong>쌀 한 섬을 24만 원으로 잡은</strong> 단순 곱셈입니다. 1,000섬이면 2억 4,000만 원이 되는 식입니다. 오늘날 한 섬은 열 말, 부피로 180리터, 쌀 무게로 약 144kg에 해당합니다. 다만 이 환산율은 이 페이지가 정한 값이지 쌀 시세도, 조선의 물가도 아닙니다.</p>
+<p>눈치채셨겠지만 이 눈금은 실제 녹봉과 자릿수가 다릅니다. 정1품조차 곡식 97석을 받던 시대에 2,500섬은 있을 수 없는 봉급입니다. 게다가 열두 직업 중 만석꾼 대지주·주막 대방·보부상 대방·전기수·관상가는 애초에 나라에서 녹을 받는 자리가 아닙니다. 그러니 이 숫자는 벼슬 녹봉과 전답 소출, 장사 수완까지 한 눈금에 뭉뚱그려 얹은 ‘조선에서의 벌이’ 정도로 읽어 주세요.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>‘전체 상위 N%’는 어디서 나온 숫자인가</h2></summary><div class="fx">
+<p>결과 화면의 ‘전체 상위 N%’는 이 테스트를 해본 다른 사람들과 비교한 값이 아닙니다. 입력값을 어디로도 보내지 않으므로 그럴 방법이 없습니다. 대신 이 페이지 안에 미리 계산해 둔 백분위 표가 들어 있습니다.</p>
+<p>표는 이렇게 만들었습니다. <strong>1950년 1월 1일부터 2010년 12월 31일까지 22,280일</strong> 전부에 대해, 태어난 시간을 모른다고 놓고 출세지수를 계산합니다. 그다음 출세지수 1부터 99까지 각각에 대해 ‘그 값 이상이 나오는 날짜가 전체의 몇 퍼밀(‰)인지’를 세어 99칸짜리 표로 저장해 두었습니다. 결과 화면은 당신의 출세지수로 이 표를 찾아 백분율로 바꿔 보여줄 뿐입니다.</p>
+<p>그래서 이 숫자는 ‘이 테스트를 해본 사람들 중 상위 N%’가 아니라 <strong>‘가능한 생년월일 전체 중 상위 N%’</strong>로 읽어야 정확합니다. 기준점을 몇 개 적어두면, 출세지수 60이 상위 49%로 딱 절반 언저리이고 70이면 상위 31%, 80이면 상위 16%, 90이면 상위 6%, 97이면 상위 2%입니다. 상위 50%보다 아래로 내려가면 표시가 초록색으로 바뀌면서 ‘저잣거리의 왕’이 붙는데, 전 날짜의 50.7%가 여기 해당합니다. 절반은 벼슬길과 인연이 없다는 뜻이니 너무 억울해하지 않으셔도 됩니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>왜 같은 생일이면 항상 같은 결과가 나오나</h2></summary><div class="fx">
+<p>이 페이지는 결과를 뽑는 과정에서 무작위 함수를 한 번도 쓰지 않습니다. 화면에 뜨는 모든 값이 생년월일(과 선택한 시간)에서 계산되어 나옵니다.</p>
+<p>순서는 이렇습니다. 먼저 생년월일을 연속된 날짜 번호로 바꾼 뒤 60으로 나눈 나머지를 구하면 그날의 일주가 정해집니다. 60갑자는 예순 날마다 한 바퀴 도는 규칙적인 순환이라 이 계산에는 예외가 없습니다. 연주와 월주는 사정이 다릅니다. 사주에서 한 해가 바뀌는 기준은 양력 1월 1일도 음력 설날도 아닌 <strong>입춘</strong>이고, 달은 경칩·청명 같은 12절(節)을 지날 때마다 넘어갑니다. 이 페이지에는 1900년부터의 절입 시각이 분 단위로 담긴 표가 들어 있어서, 2월 초에 태어난 사람의 연주가 아직 전년인지 이미 새해인지를 시각까지 따져서 가릅니다.</p>
+<p>이렇게 나온 여덟(시간을 모르면 여섯) 글자에 앞의 산식을 적용하면 점수가 나오고, 마지막 편차도 녹봉의 흔들림도 모두 생년월일 문자열의 해시에서 나옵니다. 결과적으로 어느 날 어느 기기에서 눌러도 같은 생년월일은 같은 직업과 같은 숫자를 냅니다. 친구와 결과를 비교하는 일이 의미가 있으려면 이 성질이 꼭 필요합니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>자주 묻는 것</h2></summary><div class="fx">
+<h3>음력 생일인데 그대로 넣어도 되나요</h3>
+<p>안 됩니다. 입력은 양력(그레고리력) 기준입니다. 음력 생일만 알고 있다면 <a href="/tools/lunar/">음력 양력 변환</a>에서 양력 날짜로 바꾼 뒤에 넣으세요. 만세력 계산은 음력 날짜가 아니라 태양의 위치인 절기를 기준으로 하므로, 음력 날짜를 그대로 넣으면 한 달 가까이 어긋난 사주로 계산됩니다.</p>
+<h3>태어난 시간을 모르면 결과가 달라지나요</h3>
+<p>직업은 대개 그대로입니다. 직업은 일주에서 정해지고, 일주는 날짜만으로 결정되기 때문입니다. 달라지는 것은 출세지수 쪽입니다. 시간을 넣으면 시지 한 글자가 0.8배 가중치로 더 들어오고, 편차를 만드는 해시의 입력값도 함께 바뀝니다. 실제로 돌려보면 시간을 넣고 안 넣고에 따라 출세지수가 평균 18 정도 움직입니다. 시간을 고르지 않으면 정오(낮 12시)를 대표값으로 씁니다. 예외는 영의정입니다. 출세지수 97이라는 문턱을 시간이 넘겨버릴 수 있어서, 1950~2010년 날짜의 약 8%는 태어난 시간에 따라 영의정이 되기도 하고 안 되기도 합니다.</p>
+<h3>다른 만세력과 결과가 다릅니다</h3>
+<p>이 테스트는 옵션 없이 한 가지 기준으로만 계산합니다. 시간은 두 시간짜리 12지지 구간으로만 받아 각 구간의 한가운데 시각을 대표로 쓰고, 표준시 30분 보정이나 야자시(밤 11시 이후를 다음 날 일주로 볼지) 같은 유파 설정은 두지 않았습니다. 일주도 시간과 무관하게 날짜로만 정합니다. 그래서 밤 11시 전후나 절입 당일에 태어났다면 정통 만세력과 갈릴 수 있습니다. 이런 경계 조건까지 따진 정확한 원국이 필요하면 <a href="/tools/manse/">만세력 도구</a>를 쓰세요. 절입 시각을 분 단위로 반영하고, 표준시 보정과 야자시를 각각 켜고 끌 수 있습니다.</p>
+<h3>출세지수가 너무 낮게 나왔습니다</h3>
+<p>산식에서 감점이 가장 큰 항목은 비겁(比劫), 즉 내 일간과 같은 오행이 지지에 놓인 경우로 한 글자당 −5점입니다. 여기에 관성이 하나도 없으면 점수가 올라갈 길이 좁아집니다. 다만 이 눈금이 보는 것은 ‘벼슬길에 유리한가’ 하나뿐이라는 점을 기억하세요. 명리에서 비겁은 나쁜 글자가 아니라 형제·동료·자기 힘을 뜻하고, 관성이 약한 사주는 조직 밖에서 제 몫을 하는 그림으로 읽는 것이 보통입니다. 조선에서도 인구의 대부분은 벼슬과 무관하게 살았습니다. 실제 사주에서 그 글자들이 어떤 뜻인지 궁금하다면 <a href="https://yaong.kmagpie.com/">야옹명리</a>에서 여덟 글자의 풀이를 볼 수 있습니다.</p>
+<h3>결과 링크에 제 생년월일이 들어가나요</h3>
+<p>들어가지 않습니다. 공유 링크에 담기는 값은 직업 번호, 출세지수, 상위 %, 녹봉 섬 수, 일주 번호 다섯 가지를 하나의 숫자로 묶은 것뿐입니다. 생년월일과 태어난 시각은 담기지 않고, 담긴 값에서 역산되지도 않습니다. 링크를 받은 사람은 당신의 결과 화면만 보게 됩니다.</p>
+<h3>직업이 왜 12가지뿐인가요</h3>
+<p>일간이 10가지이기 때문입니다. 여기에 괴강 일주와 출세지수 97 이상 조건이 더해져 12가지가 됩니다. 대신 그 안에서 출세지수(1~99), 상위 %, 녹봉 섬 수, 60가지 일주별 한 줄 풀이가 조합되므로 같은 직업이 나와도 결과 화면은 사람마다 다릅니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>이 결과를 어디까지 믿어야 하나</h2></summary><div class="fx">
+<p>여기까지 읽었다면 짐작하시겠지만, 이 테스트는 <strong>재미로 보는 콘텐츠</strong>입니다. 만세력 부분은 실제 절기 데이터로 돌아가는 진짜 계산이 맞고 위에 적은 녹봉 제도도 사료에 남아 있는 내용이지만, 그 여덟 글자를 조선의 직업으로 바꾸고 출세에 퍼센트를 매기고 쌀 몇 섬을 얹는 규칙은 전부 이 페이지가 임의로 정한 것입니다. 명리학에 ‘조선 출세지수’라는 개념은 없습니다.</p>
+<p>하나 덧붙이면, 조선에서 직업은 사주로 정해지지 않았습니다. 실제로는 신분과 가문이 거의 전부였고, 과거에 응시할 수 있는지부터 태어날 때 이미 갈렸습니다. 이 테스트가 누구에게나 영의정 자리를 열어두는 것은 그 점에서 아주 현대적인 상상입니다. 사주 쪽이 궁금해졌다면 <a href="/tools/manse/">만세력 도구</a>에서 자기 여덟 글자를 확인하고, 그 글자들이 무슨 뜻인지는 <a href="https://yaong.kmagpie.com/">야옹명리</a>에서 보면 됩니다.</p>
+</div></details>
 
 <div class="basis">
   <h2>좀비 세상과 이세계도 다녀오세요</h2>
@@ -573,7 +677,37 @@ function renderResult(V,nick,shared){
 /* 생년월일시 → 결과값 → 렌더 (직접 테스트 경로) */
 function render(y,m,d,t,nick){ renderResult(resultOf(y,m,d,t),nick,false); }
 function ELM(g){ return ['목','목','화','화','토','토','금','금','수','수'][g]; }
+/* INP: 누른 즉시 버튼 상태만 바꿔 한 프레임 그려주고,
+   무거운 만세력 계산과 결과 렌더는 다음 프레임으로 미룬다. 산출 로직은 그대로. */
+var GO_BUSY_TX='🪶 사주 짚는 중…', GO_BUSY_MIN=280, goBusy=false;
+function setGoBusy(on){
+  var b=$('goBtn');
+  if(on){
+    b.dataset.idle=b.textContent; b.textContent=GO_BUSY_TX;
+    b.dataset.hadFocus=(document.activeElement===b)?'1':'';
+    b.disabled=true;
+  }else{
+    if(b.dataset.idle) b.textContent=b.dataset.idle;
+    b.disabled=false;
+    if(b.dataset.hadFocus){ try{ b.focus({preventScroll:true}); }catch(e){} }
+  }
+}
+function runDeferred(fn){
+  if(goBusy) return;
+  goBusy=true;
+  var t0=Date.now();
+  setGoBusy(true);
+  requestAnimationFrame(function(){ setTimeout(function(){
+    try{ fn(); }
+    finally{
+      /* 빠른 기기에서 "계산 중"이 깜빡이며 스쳐가지 않도록 최소 노출 시간을 지킨다 */
+      var rest=GO_BUSY_MIN-(Date.now()-t0);
+      setTimeout(function(){ setGoBusy(false); goBusy=false; }, rest>0?rest:0);
+    }
+  },0); });
+}
 $('goBtn').addEventListener('click',function(){
+  if(goBusy) return;
   if($('by').value===''||$('bm').value===''||$('bd').value===''){
     $('needPick').style.display='';
     ($('by').value===''?$('by'):($('bm').value===''?$('bm'):$('bd'))).focus();
@@ -583,14 +717,16 @@ $('goBtn').addEventListener('click',function(){
   var y=+$('by').value,m=+$('bm').value,d=+$('bd').value;
   var t=$('bt').value===''?0:+$('bt').value;
   var nick=$('nick').value.trim();
-  var V=resultOf(y,m,d,t);
-  renderResult(V,nick,false);
-  var u=new URL(location.href);
-  u.searchParams.delete('r');
-  u.searchParams.set('v',encodeV(V));
-  if(nick) u.searchParams.set('n',nick); else u.searchParams.delete('n');
-  history.replaceState(null,'',u.pathname+u.search);
-  $('res').scrollIntoView({behavior:'smooth',block:'start'});
+  runDeferred(function(){
+    var V=resultOf(y,m,d,t);
+    renderResult(V,nick,false);
+    var u=new URL(location.href);
+    u.searchParams.delete('r');
+    u.searchParams.set('v',encodeV(V));
+    if(nick) u.searchParams.set('n',nick); else u.searchParams.delete('n');
+    history.replaceState(null,'',u.pathname+u.search);
+    $('res').scrollIntoView({behavior:'smooth',block:'start'});
+  });
 });
 $('retryBtn').addEventListener('click',function(){
   $('res').classList.add('hidden');

@@ -243,7 +243,7 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 <p>Nothing is sent anywhere. All the resizing happens through your browser's Canvas API, so the tool keeps working with the network off and an unreleased icon never leaves your machine. No sign-up, no limits, no watermark.</p>
 </div></details>
 
-<details class="fold"><summary><h2>Android icon sizes, explained</h2></summary><div class="fx">
+<details class="fold" open><summary><h2>Android icon sizes, explained</h2></summary><div class="fx">
 <p>Android ships a separate bitmap per screen density. The baseline launcher icon is 48dp, and each density bucket multiplies that to get the real pixel size.</p>
 <div class="tw">
 <table>
@@ -281,7 +281,7 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 <p>Without it your icon simply keeps its normal colors when themed icons are on — it does not break, it just stands out next to the tinted ones.</p>
 </div></details>
 
-<details class="fold"><summary><h2>iOS: do you still need all 13 sizes?</h2></summary><div class="fx">
+<details class="fold" open><summary><h2>iOS: do you still need all 13 sizes?</h2></summary><div class="fx">
 <p>Often not. Since Xcode 14, the AppIcon asset has a <strong>Single Size</strong> slot: drop in one 1024×1024 image and Xcode produces everything else at build time. If that is your setup, take just the 1024px file out of the ZIP and ignore the rest.</p>
 <p>The full set still matters when your asset catalog is set to <em>All Sizes</em>, when you are on an older Xcode or an older deployment target, or when a cross-platform toolchain — React Native, Flutter, Capacitor, Unity — expects the individual PNGs and a <code>Contents.json</code> on disk. That is what this tool writes, so the folder drops straight into <code>Assets.xcassets</code>.</p>
 <h3>Liquid Glass and Icon Composer</h3>
@@ -290,7 +290,7 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 <p>The App Store marketing icon must be fully opaque. An alpha channel gets it rejected at upload, so if your source art has transparent areas, turn on the background fill above and pick your brand color.</p>
 </div></details>
 
-<details class="fold"><summary><h2>Troubleshooting</h2></summary><div class="fx">
+<details class="fold" open><summary><h2>Troubleshooting</h2></summary><div class="fx">
 <h3>Play Store rejected my icon</h3>
 <p>The listing icon has to be 512×512, a 32-bit PNG, and under 1024 KB. Just as important: <strong>do not round the corners or add a drop shadow yourself.</strong> Play applies its own mask and shadow, so a pre-baked one gets cut twice and looks wrong. Leave the corner option off.</p>
 <h3>My icon looks smaller than everyone else's</h3>

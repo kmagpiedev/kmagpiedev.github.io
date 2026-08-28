@@ -257,7 +257,7 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 <p>이 도구는 이미지를 서버로 보내지 않습니다. 브라우저의 Canvas API로 처리하기 때문에 인터넷 연결이 끊겨도 동작하고, 출시 전 아이콘이 외부로 유출될 걱정이 없습니다.</p>
 </div></details>
 
-<details class="fold"><summary><h2>안드로이드 아이콘 규격 정리</h2></summary><div class="fx">
+<details class="fold" open><summary><h2>안드로이드 아이콘 규격 정리</h2></summary><div class="fx">
 <p>안드로이드는 화면 밀도별로 아이콘을 따로 넣습니다. 기준은 48dp이고 밀도 배율에 따라 실제 픽셀 크기가 달라집니다.</p>
 <div class="tw">
 <table>
@@ -302,7 +302,7 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 <p>넣지 않아도 앱이 깨지지는 않습니다. 테마 아이콘을 켠 화면에서 혼자 원래 색을 유지할 뿐입니다.</p>
 </div></details>
 
-<details class="fold"><summary><h2>iOS — 아직도 13종이 다 필요한가</h2></summary><div class="fx">
+<details class="fold" open><summary><h2>iOS — 아직도 13종이 다 필요한가</h2></summary><div class="fx">
 <p>대개는 아닙니다. Xcode 14부터 에셋 카탈로그의 AppIcon에 <strong>Single Size</strong> 슬롯이 생겼습니다. 1024×1024 한 장만 넣어두면 나머지 크기는 빌드할 때 Xcode가 알아서 만듭니다. 이 방식이라면 ZIP에서 1024px 파일 하나만 꺼내 쓰고 나머지는 무시하셔도 됩니다.</p>
 <p>13종 전체가 필요한 경우는 이렇습니다. 에셋 카탈로그를 <em>All Sizes</em>로 두고 쓸 때, 구버전 Xcode나 낮은 배포 타깃을 유지할 때, 그리고 React Native·Flutter·Capacitor·Unity 같은 크로스플랫폼 툴체인이 개별 PNG와 <code>Contents.json</code>이 디스크에 있는 것을 전제할 때입니다. 이 도구가 만드는 것이 바로 그 형태라서, 폴더째 <code>Assets.xcassets</code>에 넣으면 그대로 동작합니다.</p>
 
@@ -313,7 +313,7 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 <p>App Store 마케팅 아이콘은 완전히 불투명해야 합니다. 알파 채널이 있으면 업로드 단계에서 거부되니, 원본에 투명 영역이 있다면 위의 배경 채우기를 켜고 브랜드 색을 지정하세요.</p>
 </div></details>
 
-<details class="fold"><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
+<details class="fold" open><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
 <h3>Play 스토어에서 아이콘이 거부돼요</h3>
 <p>등록정보용 아이콘은 512×512, 32비트 PNG, <strong>용량 1024KB 이하</strong>여야 합니다. 알파 채널은 허용됩니다. 대신 <strong>모서리를 직접 깎거나 그림자를 미리 넣으면 안 됩니다.</strong> Play가 자체 마스크와 그림자를 함께 입히기 때문에, 미리 넣어두면 두 번 겹쳐서 어색해집니다. 이 도구의 모서리 옵션은 꺼둔 채로 쓰세요.</p>
 <h3>아이콘이 다른 앱보다 작아 보여요</h3>

@@ -26,9 +26,9 @@
   .crumb a{color:var(--ink-3);text-decoration:none}
   .crumb a:hover{color:var(--accent)}
   h1{font-size:30px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:800}
-  .sub{color:var(--ink-2);margin:0 0 30px;font-size:15.5px;word-break:keep-all}
+  .sub{color:var(--ink-2);margin:0 0 30px;font-size:15.5px;word-break:normal;overflow-wrap:anywhere}
   h2{font-size:19px;margin:46px 0 12px;letter-spacing:-.015em;font-weight:700}
-  p{margin:0 0 14px;word-break:keep-all}
+  p{margin:0 0 14px;word-break:normal;overflow-wrap:anywhere}
   a{color:var(--accent)}
 
   .tcard{display:block;border:1px solid var(--line);border-radius:18px;overflow:hidden;
@@ -47,6 +47,26 @@
   .tag.r{background:#0e2030;color:#5ad7e0}
   .soon{border:1px dashed var(--line);border-radius:18px;padding:22px;color:var(--ink-3);
     font-size:14px;text-align:center;margin:0 0 18px}
+    .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:34px 0 20px;line-height:1.85}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 10px}
+  .fold .fx>:first-child{margin-top:4px}
+  .fold .fx h3{font-size:15px;margin:18px 0 6px;letter-spacing:-.01em}
+  .tblwrap{overflow-x:auto;margin:12px 0}
+  table.cmp{border-collapse:collapse;width:100%;min-width:460px;font-size:14px}
+  table.cmp th,table.cmp td{border:1px solid var(--line);padding:8px 10px;text-align:left;
+    vertical-align:top}
+  table.cmp th{background:var(--surface);font-weight:700;color:var(--ink-2)}
   footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
   footer a{color:var(--ink-3)}
 </style>
@@ -106,12 +126,58 @@
 
 <div class="soon">🔮 次の診断を準備中</div>
 
-<h2>どうやって計算しているの？</h2>
-<p>すべての診断は<a href="/tools/manse/">万年暦ツール（韓国語）</a>と同じエンジンで、節気の境界まで反映して四柱を割り出し、日干・日柱の気質を各世界観にマッピングして結果を作ります。入力した生年月日はサーバーに送信されず、ブラウザの中だけで計算されます。もちろん結果はエンタメとしてお楽しみください — 本格的な鑑定は<a href="https://yaong.kmagpie.com/">ヤオン命理（韓国語）</a>へ。</p>
+<p class="gist">カササギ診断は質問に答えるタイプの診断ではなく、生年月日を六十干支に置き換える万年暦の計算の上に組み立てた診断シリーズです。4つの診断は同じエンジンを使いながら、世界観ごとに別々の計算式を通します。乱数を使っていないので、同じ誕生日ならいつ試しても同じ結果になります。</p>
+
+<details class="fold" open><summary><h2>質問のない診断</h2></summary><div class="fx">
+<p>よくある性格診断は12〜16問に答えると、その答えを組み合わせてタイプを出します。答えを変えれば結果も変わるので、狙った結果に寄せることもできてしまいます。カササギ診断はその仕組みを使いません。<strong>聞くのは生年月日だけ</strong>。その日付を東洋の暦の表記に変換し、出てきた八文字を世界観に当てはめます。</p>
+<p>だから結果を操作できません。欲しい役割があっても、誕生日を変えない限り出てきません。そのかわり<strong>友だちと並べて比べやすい</strong>のが特徴です。誕生日が違えば違う根拠から出た結果ですし、同じ日に生まれた人なら本当に同じ結果になります。</p>
+<p>四柱推命の八文字そのものは占いの託宣ではなく、<strong>暦のデータ</strong>です。カレンダーに甲子・乙丑といった干支が書かれているのと同じで、生まれた年・月・日・時をそれぞれ二文字ずつの干支に書き写したものが命式です。その八文字をどう読むかは次の話で、カササギ診断はその読み方を本格的な鑑定ではなく世界観遊びとして扱います。</p>
+</div></details>
+
+<details class="fold" open><summary><h2>4つの診断は何が違うのか</h2></summary><div class="fx">
+<p>4つとも<strong>日干（生まれた日の天干）10種</strong>を骨組みにして、そこに特殊条件を2つ加えて結果を12種類にしています。ただし、どの気質を高く評価するかは世界観ごとに違います。ゾンビの世界で有利な気質と、朝鮮王朝の役所で有利な気質が同じである理由はないからです。</p>
+<div class="tblwrap"><table class="cmp">
+<tr><th>診断</th><th>出てくる数字</th><th>特殊結果2種</th><th>この世界観が評価するもの</th></tr>
+<tr><td>ゾンビパニック</td><td>生存率 1〜99%</td><td>魁罡日柱・ゾンビ1号</td><td>耐える力（印星・比劫）</td></tr>
+<tr><td>異世界</td><td>人気度 1〜99%<br>ファンクラブ会員数</td><td>魔王・黒幕</td><td>表に出る魅力（食傷）</td></tr>
+<tr><td>朝鮮王朝</td><td>出世指数 1〜99<br>年俸（米の石数）</td><td>暗行御史・領議政</td><td>官職に向かう気（官星）</td></tr>
+<tr><td>AIロボット</td><td>戦闘力 120〜9,999<br>脅威等級</td><td>魁罡機体・マザー</td><td>押し切る力（比劫・食傷）</td></tr>
+</table></div>
+<p>同じ人が4つとも試すと、この違いがはっきり出ます。ゾンビ生存率が高いのに朝鮮の出世指数は低い、ということも珍しくありません。どちらが良い結果という話ではなく、<strong>世界観が求める資質が違う</strong>ということです。</p>
+<p>それぞれの診断が日干10種をどんな役割に置き換えたのか、数字をどの定数で計算しているのかは、各診断ページの本文にすべて書いてあります。</p>
+</div></details>
+
+<details class="fold" open><summary><h2>同じエンジン、違う数字</h2></summary><div class="fx">
+<p>4つの診断は<a href="/tools/manse/">万年暦ツール（韓国語）</a>と<strong>同じ計算エンジン</strong>を使っています。年柱は1月1日でも旧正月でもなく<strong>立春の節入り時刻</strong>で切り替わり、月柱は啓蟄・清明といった十二節を越えるたびに移ります。節入りは日付ではなく時刻なので、たとえば2026年の立春は2月4日の午前5時2分です。同じ2月4日生まれでも、その時刻の前後で年柱が分かれます。日柱はユリウス通日を60で割った余りで決まります。</p>
+<p>エンジンが同じなのに結果が重ならないのは、<strong>診断ごとに計算式の基準値と重みを別々に設定している</strong>からです。同じ誕生日を4つに入れたときに数字がたまたま近くなる確率が5%未満になるよう調整しています。4つの結果がそれぞれ違う話をしてくれるほうが面白いからです。</p>
+<p>結果に付く<strong>「全体で上位N%」</strong>はおおよその値ではありません。1950年1月1日から2010年12月31日までの<strong>22,280日</strong>をすべて計算した分布表がページの中に入っていて、そこからあなたの数値が何番目かを引いています。</p>
+</div></details>
+
+<details class="fold" open><summary><h2>生年月日はどこにも送られません</h2></summary><div class="fx">
+<p>入力した生年月日は<strong>サーバーに送信されません。</strong>計算はすべてブラウザの中で完結し、保存する場所もありません。会員登録もなく、結果を見るために何かを入力させることもありません。</p>
+<p>結果リンクをコピーして共有するときも同じです。リンクに入るのは<strong>計算し終わった結果の値だけ</strong>で、生年月日は含まれません。誕生日が違っても結果が同じならリンクは完全に一致します。リンクを受け取った人には結果だけが表示され、入力欄は空のまま開きます。</p>
+<p>結果カードの画像もブラウザの中で描いて保存します。どこにもアップロードされません。</p>
+</div></details>
+
+<details class="fold" open><summary><h2>よくある質問</h2></summary><div class="fx">
+<h3>旧暦の誕生日しか分かりません</h3>
+<p>診断には<strong>新暦（グレゴリオ暦）の日付</strong>を入れてください。旧暦しか分からない場合は、まず新暦に変換してからその日付を入力してください。</p>
+<h3>生まれた時間が分からなくても大丈夫ですか</h3>
+<p>大丈夫です。時間を空欄にすると時柱を除いた六文字で計算します。年柱・月柱・日柱は時刻がなくても決まるので、結果の骨組みはそのままです。ただし数字は少し変わり、夜11時前後や節入り当日に生まれた場合は結果自体が分かれることもあります。</p>
+<h3>他の四柱推命アプリと日柱が違います</h3>
+<p>多くの場合<strong>標準時の補正と夜子時の扱い</strong>の違いです。韓国の標準時は東経135度基準で実際の太陽時より約30分早く、これを補正する流派としない流派があります。日本標準時も同じ東経135度基準なので、日本生まれの方はこの補正を入れない計算が実際の太陽時に近くなります。</p>
+<h3>結果が気に入りません</h3>
+<p>4つの診断とも<strong>ハズレの結果を用意していません。</strong>生存率が低ければ別の才能が付きますし、ゾンビ1号や魔王のような一見負け役に見える役割は、むしろ珍しく出るように作ってあります。数字が低く出たなら、別の世界観でどう出るかを見るほうが楽しめます。</p>
+<h3>診断は増えますか</h3>
+<p>追加しています。新しい診断が出るとこのページの一番上に並びます。</p>
+</div></details>
+
+<h2>本格的な鑑定が気になったら</h2>
+<p>カササギ診断は計算は本当にやりますが、解釈は遊びとして扱います。割り出された八文字そのものが気になる方は<a href="/tools/manse/">万年暦ツール（韓国語）</a>で節入り時刻まで反映した命式を見られます。八文字の意味についての本格的な鑑定は姉妹サービスの<a href="https://yaong.kmagpie.com/">ヤオン命理（韓国語）</a>で扱っています。</p>
 
 <footer>
   <p>カササギ診断 · 入力した情報はサーバーに送信されません。結果はエンタメコンテンツです。</p>
-  <p><a href="/">ホーム</a> · <a href="/tests/">카사사기 진단(한국어)</a> · <a href="/privacy-policy.html">プライバシーポリシー</a></p>
+  <p><a href="/">ホーム</a> · <a href="/tests/">カササギ診断（韓国語）</a> · <a href="/privacy-policy.html">プライバシーポリシー</a></p>
 </footer>
 
 </div>

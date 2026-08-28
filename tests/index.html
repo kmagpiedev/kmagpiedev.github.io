@@ -47,6 +47,26 @@
   .tag.r{background:#0e2030;color:#5ad7e0}
   .soon{border:1px dashed var(--line);border-radius:18px;padding:22px;color:var(--ink-3);
     font-size:14px;text-align:center;margin:0 0 18px}
+    .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:34px 0 20px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 10px}
+  .fold .fx>:first-child{margin-top:4px}
+  .fold .fx h3{font-size:15px;margin:18px 0 6px;letter-spacing:-.01em}
+  .tblwrap{overflow-x:auto;margin:12px 0}
+  table.cmp{border-collapse:collapse;width:100%;min-width:460px;font-size:14px}
+  table.cmp th,table.cmp td{border:1px solid var(--line);padding:8px 10px;text-align:left;
+    vertical-align:top;word-break:keep-all}
+  table.cmp th{background:var(--surface);font-weight:700;color:var(--ink-2)}
   footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
   footer a{color:var(--ink-3)}
 </style>
@@ -106,8 +126,54 @@
 
 <div class="soon">🔮 다음 테스트 준비 중</div>
 
-<h2>어떻게 계산하나요</h2>
-<p>모든 테스트는 <a href="/tools/manse/">까치툴 만세력</a>과 같은 엔진으로 절기 경계까지 반영해 사주를 뽑고, 일간·일주의 기운을 각 세계관에 매핑해 결과를 만듭니다. 입력한 생년월일은 서버로 전송되지 않고 브라우저 안에서만 계산됩니다. 물론 결과는 재미로 보는 콘텐츠입니다 — 진지한 풀이가 궁금하다면 <a href="https://yaong.kmagpie.com/">야옹명리</a>로 오세요.</p>
+<p class="gist">까치테스트는 문항에 답하는 심리테스트가 아니라, 생년월일을 60갑자로 옮겨 적는 만세력 계산 위에 세운 재미 테스트 모음입니다. 네 테스트가 같은 엔진을 쓰되 세계관마다 다른 산식을 태우기 때문에, 한 사람이 네 개를 다 해도 숫자가 서로 다르게 나옵니다. 무작위 요소가 없어서 같은 생일이면 언제 해도 같은 결과가 나옵니다.</p>
+
+<details class="fold" open><summary><h2>문항이 없는 테스트</h2></summary><div class="fx">
+<p>흔히 보는 성격 테스트는 12~16개 문항에 답하면 그 답을 조합해 유형을 내놓습니다. 답을 바꾸면 결과가 바뀌고, 원하는 결과가 있으면 그쪽으로 답할 수도 있습니다. 까치테스트는 그 구조를 쓰지 않습니다. <strong>물어보는 것은 생년월일 하나뿐</strong>이고, 그 날짜를 옛 역법의 표기로 바꾼 뒤 나온 여덟 글자를 세계관에 대입합니다.</p>
+<p>그래서 결과를 조작할 수 없습니다. 내가 원하는 역할이 있어도 생일을 바꾸지 않는 한 나오지 않습니다. 대신 <strong>친구와 나란히 놓고 비교하기가 쉽습니다</strong>. 서로 다른 생일이면 서로 다른 근거에서 나온 결과이고, 같은 날 태어난 사람이라면 정말로 같은 결과가 나옵니다.</p>
+<p>사주 여덟 글자 자체는 점괘가 아니라 <strong>달력 데이터</strong>입니다. 달력에 갑자일·을축일 하는 일진이 적혀 있듯, 태어난 연·월·일·시를 60갑자 두 글자씩으로 옮겨 적은 것이 원국입니다. 그 여덟 글자를 어떻게 읽을지는 그다음 문제이고, 까치테스트는 그 읽기를 진지한 감정이 아니라 세계관 놀이로 가져갑니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>네 테스트는 무엇이 다른가</h2></summary><div class="fx">
+<p>네 테스트 모두 <strong>일간(태어난 날의 천간) 10가지</strong>를 뼈대로 삼고, 여기에 특수 조건 두 가지를 더해 결과를 12종으로 만듭니다. 다만 어떤 기운을 높게 치는지가 세계관마다 다릅니다. 좀비 세상에서 유리한 기운과 조선 관가에서 유리한 기운이 같을 이유가 없기 때문입니다.</p>
+<div class="tblwrap"><table class="cmp">
+<tr><th>테스트</th><th>내놓는 숫자</th><th>특수 결과 2종</th><th>이 세계관이 높게 치는 것</th></tr>
+<tr><td>좀비사태</td><td>생존률 1~99%</td><td>괴강 일주 · 좀비 1호</td><td>버티는 힘(인성·비겁)</td></tr>
+<tr><td>이세계</td><td>인기도 1~99%<br>팬카페 회원 수</td><td>마왕 · 흑막</td><td>드러나는 매력(식상)</td></tr>
+<tr><td>조선시대</td><td>출세지수 1~99<br>연 녹봉 섬 수</td><td>암행어사 · 영의정</td><td>벼슬로 가는 기운(관성)</td></tr>
+<tr><td>AI 로봇</td><td>전투력 120~9,999<br>위협 등급</td><td>괴강 기체 · 마더</td><td>밀어붙이는 힘(비겁·식상)</td></tr>
+</table></div>
+<p>같은 사람이 네 테스트를 다 해보면 이 차이가 드러납니다. 좀비 생존률이 높은데 조선 출세지수는 낮을 수 있고, 그 반대도 흔합니다. 어느 쪽이 좋은 결과라는 뜻이 아니라, <strong>세계관이 요구하는 기질이 다르다</strong>는 뜻입니다.</p>
+<p>각 테스트가 일간 10가지를 어떤 역할로 옮겼는지, 숫자를 어떤 상수로 계산하는지는 각 테스트 페이지 본문에 전부 적어 두었습니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>같은 엔진, 다른 숫자</h2></summary><div class="fx">
+<p>네 테스트는 <a href="/tools/manse/">까치툴 만세력</a>과 <strong>같은 계산 엔진</strong>을 씁니다. 연주는 1월 1일도 설날도 아닌 <strong>입춘 절입 시각</strong>에 바뀌고, 월주는 경칩·청명 같은 12절을 지날 때마다 넘어갑니다. 절입은 날짜가 아니라 시각이라, 예를 들어 2026년 입춘은 2월 4일 새벽 5시 2분입니다. 같은 2월 4일생이라도 그 시각 전후로 연주가 갈립니다. 일주는 율리우스 적일(JDN)을 60으로 나눈 나머지로 정해집니다.</p>
+<p>엔진이 같은데 결과가 겹치지 않는 이유는 <strong>테스트마다 산식의 기준값과 가중치를 따로 두었기</strong> 때문입니다. 같은 생일을 네 테스트에 넣었을 때 숫자가 우연히 비슷해지는 경우가 5% 미만이 되도록 맞춰 두었습니다. 네 결과가 서로 다른 이야기를 하는 편이 재미있기 때문입니다.</p>
+<p>결과에 붙는 <strong>‘전체 상위 N%’</strong>는 어림값이 아닙니다. 1950년 1월 1일부터 2010년 12월 31일까지 <strong>22,280일</strong>을 전부 계산해 만든 분포표가 페이지 안에 들어 있고, 거기서 당신의 값이 몇 번째인지 찾아 보여줍니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>생년월일은 어디로도 가지 않습니다</h2></summary><div class="fx">
+<p>입력한 생년월일은 <strong>서버로 전송되지 않습니다.</strong> 계산은 전부 브라우저 안에서 끝나고, 저장하는 곳도 없습니다. 까치테스트에는 회원가입이 없고, 결과를 보기 위해 무언가를 입력하라고 요구하지도 않습니다.</p>
+<p>결과 링크를 복사해 공유할 때도 마찬가지입니다. 링크에는 <strong>계산이 끝난 결과값만</strong> 담기고 생년월일은 들어가지 않습니다. 서로 다른 생일이라도 결과가 같으면 링크가 완전히 같아집니다. 링크를 받은 사람에게는 결과만 보이고, 입력칸은 비어 있는 상태로 열립니다.</p>
+<p>결과 카드 이미지도 브라우저 안에서 그려서 내려받습니다. 어디에도 업로드되지 않습니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>자주 묻는 것</h2></summary><div class="fx">
+<h3>음력 생일만 아는데요</h3>
+<p>테스트에는 <strong>양력 날짜</strong>를 넣어야 합니다. 음력 생일밖에 모른다면 <a href="/tools/lunar/">음력 양력 변환</a>에서 양력으로 바꾼 뒤 그 날짜를 넣으세요. 주민등록상 생일이 음력으로 올라간 경우가 종종 있으니, 결과가 예상과 다르면 이쪽을 먼저 확인해 볼 만합니다.</p>
+<h3>태어난 시간을 몰라도 되나요</h3>
+<p>됩니다. 시간을 비워 두면 시주를 빼고 여섯 글자로 계산합니다. 연주·월주·일주는 시각 없이도 정해지므로 결과의 뼈대는 그대로입니다. 다만 숫자는 조금 달라지고, 밤 11시 전후나 절입 당일에 태어났다면 시각에 따라 결과 자체가 갈릴 수 있습니다.</p>
+<h3>다른 사주 앱과 일주가 다르게 나옵니다</h3>
+<p>대개 <strong>표준시 보정과 야자시 설정</strong>의 차이입니다. 한국 표준시는 동경 135도 기준이라 실제 태양시보다 약 30분 빠른데, 이걸 보정하는 유파와 하지 않는 유파가 있습니다. 자세한 내용은 <a href="/tools/manse/">만세력</a> 페이지에 정리해 두었습니다.</p>
+<h3>결과가 마음에 안 드는데요</h3>
+<p>네 테스트 모두 <strong>나쁜 결과를 두지 않았습니다.</strong> 생존률이 낮으면 대신 다른 쪽 재능이 붙고, 좀비 1호나 마왕처럼 언뜻 지는 자리로 보이는 역할은 오히려 희소하게 나오도록 만들었습니다. 숫자가 낮게 나왔다면 다른 세계관에서 어떻게 나오는지 보는 편이 재미있습니다.</p>
+<h3>테스트는 더 늘어나나요</h3>
+<p>추가하고 있습니다. 새 테스트가 나오면 이 페이지 맨 위에 올라옵니다.</p>
+</div></details>
+
+<h2>진지한 풀이가 궁금하다면</h2>
+<p>까치테스트는 계산은 진짜로 하지만 해석은 놀이로 합니다. 뽑힌 여덟 글자 자체가 궁금하다면 <a href="/tools/manse/">까치툴 만세력</a>에서 절입 시각까지 반영한 원국을 볼 수 있고, 그 여덟 글자가 무슨 뜻인지에 대한 제대로 된 풀이는 자매 서비스 <a href="https://yaong.kmagpie.com/">야옹명리</a>에서 다룹니다.</p>
 
 <footer>
   <p>까치테스트 · 입력한 정보는 서버로 전송되지 않으며, 결과는 재미로 보는 콘텐츠입니다.</p>

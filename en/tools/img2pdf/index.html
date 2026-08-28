@@ -252,32 +252,32 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 <p>Email is easier too. Seven photos mean seven downloads and seven clicks for whoever receives them; a PDF is one click and a scroll. Same for printing — image files go through the print dialog one at a time, while a PDF prints end to end in one pass.</p>
 </div></details>
 
-<details class="fold"><summary><h2>Original size vs. fitting to A4</h2></summary><div class="fx">
+<details class="fold" open><summary><h2>Original size vs. fitting to A4</h2></summary><div class="fx">
 <p><strong>Match image size</strong> uses each image's pixel dimensions as the page size — a 1200-pixel-wide photo becomes a 1200 pt-wide page. Nothing is cropped and no white space appears, so for documents that will only ever be viewed on screen, this is the cleaner choice. The trade-off: every page can be a different size, and a modern 3000×4000-pixel phone photo produces a nominal page over a metre tall. Viewers scale it to fit so you'd never notice on screen, but when printing you must pick "Fit to page" in the print dialog to land it on a single sheet.</p>
 <p>Choose <strong>A4</strong> or <strong>Letter</strong> and every page comes out the same size — the safe option for anything meant to be printed or filed. Just don't expect photo and paper proportions to match: A4 is roughly 1:1.414 while phone photos are usually 3:4, so a 3:4 photo on a portrait A4 page leaves white bands top and bottom. This tool never crops the image to fill that space. <strong>In a document photo, cropping means losing content</strong>, so a fill-the-page mode was deliberately left out.</p>
 <p>With orientation set to <strong>Auto</strong>, wide photos land on landscape pages and tall ones on portrait pages — the least wasted space when portrait documents and landscape receipts are mixed together. If the PDF is headed for a printer and a binder, though, alternating orientations are a nuisance; lock it to portrait or landscape instead.</p>
 <p>Margins are converted precisely. PDF measures in points, and <code>1mm = 72/25.4pt</code>, so a 10mm margin goes in as 28.3465 pt. That said, <strong>what lands on paper is decided by your printer settings.</strong> If "Fit to page" or "Fit to printable area" is on, the printer shrinks the whole page a few percent to dodge its unprintable edge, and your 10mm margin prints closer to 12mm. When physical size matters, choose <strong>"Actual size"</strong> or 100% scale in the print dialog. This tool only guarantees the coordinates inside the PDF — the rest is up to the printer. It also doesn't follow archival profiles like PDF/A, so if a recipient mandates a specific standard, use the method they prescribe.</p>
 </div></details>
 
-<details class="fold"><summary><h2>A PDF will not make your files smaller</h2></summary><div class="fx">
+<details class="fold" open><summary><h2>A PDF will not make your files smaller</h2></summary><div class="fx">
 <p>This is misunderstood remarkably often. PDF is not a compression format — it's a <strong>container</strong>. Your photos aren't recompressed; the original JPEG data is dropped in whole, with an instruction attached saying "draw this picture here, at this size". Five 4MB photos therefore make a PDF of roughly 20MB — slightly more, in fact, once the PDF scaffolding is added. That's a feature, not a flaw: recompressing would have smeared the text.</p>
 <p>PNG behaves a little differently. PNGs are re-encoded losslessly, and the result can end up larger than the original file — especially when the PNG holds a photograph. Photos were never a good fit for PNG to begin with, and putting them in a PDF makes them bigger still. For anything that's a <strong>photo rather than text or line art, JPG beats PNG on every count</strong>.</p>
 <p>If you're bumping into an upload size limit, flip the order of operations. There's no good way to shrink a PDF after the fact. Run the photos through the <a href="/en/tools/image-compress/">image compressor</a> first, then combine the results here. Five pages against a 10MB cap means about 1.5MB per photo with room to spare — document photos stay perfectly legible even at fairly aggressive compression.</p>
 </div></details>
 
-<details class="fold"><summary><h2>Making it look like a real scan</h2></summary><div class="fx">
+<details class="fold" open><summary><h2>Making it look like a real scan</h2></summary><div class="fx">
 <p>Camera angle matters most. Shoot from directly above with the camera parallel to the paper and the sheet comes out as a proper rectangle. Shoot at an angle and it skews into a trapezoid — and this tool <strong>does not straighten perspective for you.</strong> The photo goes onto the page exactly as taken, so reshooting is the quickest fix. Put the paper on a desk rather than the floor, keep a window to your side so your body doesn't cast a shadow, and it will usually come out square.</p>
 <p>Margins make a surprising difference too. A PDF filled edge to edge looks bold on screen but loses its borders on most home printers, which physically can't print the outer 3–5mm of the sheet. Even <strong>Narrow (10mm)</strong> eliminates the problem — and makes the result look much more like a flatbed scan, which always leaves white space around the original.</p>
 <p>Tidy the background as well. Wood grain or a stray fingertip in frame gives the photo away no matter how straight it is. White paper on a plain dark surface gives crisp edges — better looking, and easier to crop later.</p>
 </div></details>
 
-<details class="fold"><summary><h2>Why the order gets shuffled</h2></summary><div class="fx">
+<details class="fold" open><summary><h2>Why the order gets shuffled</h2></summary><div class="fx">
 <p>When you pick several files in the file dialog, the order the browser hands them over is <strong>usually file-name order, not the order you clicked them</strong>. Click 1, 3, 2 and they still arrive as 1, 2, 3 — and if the order you want doesn't match the names, there's nothing you can do about it at that stage. The exact behaviour even varies by operating system and browser.</p>
 <p>Worse, plain file-name sorting doesn't match how people count. It compares character by character, so <code>IMG_10</code> comes before <code>IMG_2</code>, and <code>1.jpg</code> is followed by <code>10.jpg</code> and only then <code>2.jpg</code>. This tool's "Sort by file name" compares the numbers inside names as numbers, giving you 1, 2, 10. If you're still on the camera's default file names, that one button usually fixes everything.</p>
 <p>If anything is still out of place, use the up/down arrows in the list. Drag-and-drop was left out on purpose: <strong>on a phone, dragging list items fights with page scrolling</strong>, and photographing a document and submitting it on the spot almost always happens on a phone. So: buttons.</p>
 </div></details>
 
-<details class="fold"><summary><h2>Troubleshooting</h2></summary><div class="fx">
+<details class="fold" open><summary><h2>Troubleshooting</h2></summary><div class="fx">
 <h3>It says my WebP will lose a little quality</h3>
 <p>The PDF specification has no slot for WebP. JPEG and PNG can be embedded byte-for-byte, but WebP can't, so WebP files — and only those — are <strong>converted once to JPEG at quality 92</strong> on the way in. For a document photo the difference won't be visible, but it isn't strictly lossless. If you have the original JPG, use that instead. WebP transparency is filled with white.</p>
 <h3>My iPhone HEIC photos won't load</h3>

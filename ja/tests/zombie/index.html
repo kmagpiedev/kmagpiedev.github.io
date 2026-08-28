@@ -66,6 +66,7 @@
     background:var(--accent);color:#0c130a;font-size:17px;font-weight:800;font-family:inherit;cursor:pointer;
     letter-spacing:-.01em;transition:.15s}
   .go:hover{filter:brightness(1.08);transform:translateY(-1px)}
+  .go:disabled{cursor:default;opacity:.68;transform:none;filter:none}
 
   /* 結果 */
   .result{background:var(--surface);border:1px solid var(--accent);border-radius:18px;
@@ -117,6 +118,27 @@
   footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
   footer a{color:var(--ink-3)}
   .hidden{display:none}
+
+  /* 本文アコーディオン */
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 10px}
+  .fold .fx>:first-child{margin-top:4px}
+  .fold .fx p{font-size:14.5px;color:var(--ink-2)}
+  .fold .fx p strong{color:var(--ink)}
+  .fold .fx h3{font-size:15.5px;color:var(--ink);font-weight:700;
+    margin:22px 0 6px;letter-spacing:-.01em}
+
   @media (max-width:560px){
     .wrap{padding:32px 16px 70px}
     h1{font-size:23px}
@@ -126,6 +148,9 @@
     .roleImg .fbEmo{font-size:68px}
     .roleName{font-size:22px}
     .mates{grid-template-columns:1fr}
+    .fold summary{padding:14px 15px}
+    .fold summary h2{font-size:15.5px}
+    .fold .fx{padding:0 15px 10px}
   }
 </style>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
@@ -190,19 +215,90 @@
   <p class="copied" id="copied"></p>
 </div>
 
-<div class="basis">
-  <h2>この診断の根拠</h2>
-  <p>四柱推命では、生まれた日の天干を<strong>日干（にっかん）</strong>と呼び、この一文字を「自分自身」とみなします。この診断は<a href="/tools/manse/">万年暦ツール（韓国語）</a>と同じエンジンであなたの年柱・月柱・日柱を実際に計算し、10種類の日干（甲・乙・丙・丁・戊・己・庚・辛・壬・癸）をゾンビパニックの中での役割に読み替えたものです。生存率は、日干と残りの文字たちの相生・相剋の関係をスコアに換算して作りました。もちろん、お遊びとしてどうぞ。</p>
-</div>
+<p class="gist">この診断は、生年月日から万年暦で生まれた日の柱＝<strong>日柱（にっちゅう）</strong>を割り出し、その上の一文字である<strong>日干</strong>10種類をゾンビアポカリプスでの役割に読み替えています。生存率は日干と残りの文字との相生・相剋をスコアに換算した値で、「全体の上位N%」は1950〜2010年の22,280日分の実際の分布から出した順位です。結果を出す過程に乱数がないので、同じ生年月日ならいつ押しても必ず同じ結果になります。</p>
+
+<details class="fold" open><summary><h2>四柱推命の八字と「日柱」とは</h2></summary><div class="fx">
+<p>四柱推命の「四柱」とは、生まれた<strong>年・月・日・時</strong>という四本の柱のことです。それぞれの柱を二文字で表します。上に来る文字が<strong>十干</strong>（甲・乙・丙・丁・戊・己・庚・辛・壬・癸の10種類）、下に来る文字が<strong>十二支</strong>（子・丑・寅・卯・辰・巳・午・未・申・酉・戌・亥）です。四本の柱に二文字ずつなので合わせて八文字、これを命式、あるいは八字と呼びます。十干と十二支を順に組み合わせていくと、甲子・乙丑・丙寅…と進んで60回目で最初に戻ります。この60通りの組み合わせが<strong>六十干支</strong>です。年賀状でおなじみの「えと」は、このうち十二支だけを取り出したものにあたります。</p>
+<p>このうち生まれた<strong>日</strong>の柱が<strong>日柱</strong>で、日柱の上の文字が<strong>日干</strong>です。四柱推命では八文字のうちこの日干一文字を「自分自身」とみなし、残りの七文字を自分を取り巻く環境として読みます。この診断が生年月日だけで役割を決められるのはそのためです。役割は日干という一文字から出てきますし、日干は生まれた日付さえ分かれば決まります。</p>
+<p>八文字そのものは、占いの結果というより<strong>カレンダーのデータ</strong>に近いものです。昔の暦に「甲子の日」「乙丑の日」と日ごとの干支が書かれていたように、命式は生まれた瞬間を古い暦の表記に書き写しただけのものです。それをどう読むかが解釈で、ここから先は流派によって分かれます。下に書いたゾンビ役割の割り当ても、そうした解釈のひとつであって四柱推命の定説ではなく、この診断が決めたルールです。計算された八文字そのものが気になる方は、<a href="/tools/manse/">万年暦ツール（韓国語）</a>で節入り時刻まで反映した命式をそのまま見ることができます。</p>
+</div></details>
+
+<details class="fold" open><summary><h2>日干10種類と、12の役割</h2></summary><div class="fx">
+<p>十干の10文字は、木・火・土・金・水という五行を、それぞれ陽と陰に分けたものです。日本語の読みで言えば「きのえ・きのと」「ひのえ・ひのと」のように、同じ木でも兄（え＝陽）と弟（と＝陰）で性質が違います。以下は、それぞれの日干を四柱推命でどんな気とみなすか、そしてこの診断がその性質をゾンビパニックのどの持ち場に置き換えたかです。</p>
+
+<h3>甲（きのえ・陽の木）・乙（きのと・陰の木）</h3>
+<p><strong>甲</strong>は、まっすぐ天へ伸びる大木、建物の柱になる木にたとえられます。上へ伸びる性質から、物事を始める力とリーダー気質が強く、そのぶん一度決めた方向はなかなか曲げません。だからこの診断では甲を<strong>バリケードの設計者</strong>と読みました。崩れていく建物に柱を立てる仕事、つまり構造をつくる持ち場です。</p>
+<p><strong>乙</strong>は草花やつる草です。大木のように正面から押さず、塀を伝って回り込み、踏まれてもまた起き上がります。柔らかさがそのまま生存力になる文字なので<strong>隠密の達人</strong>に割り当てました。つる草は斧に勝つ必要がない、というのが乙のやり方です。</p>
+
+<h3>丙（ひのえ・陽の火）・丁（ひのと・陰の火）</h3>
+<p><strong>丙</strong>は真昼の太陽です。隠すことができず遠くまで届き、あとを引きませんが、燃料を節約する芸当は持っていません。先頭に立って道を開く<strong>突撃隊長</strong>と読んだ理由です。</p>
+<p><strong>丁</strong>は灯火やろうそくの火です。太陽ほど明るくはなくても、暗いときほど役に立ち、一か所を長く照らします。徹夜の見張りやけが人の付き添いのように、静かに長く続ける仕事が似合うので<strong>焚き火の守り手</strong>になりました。</p>
+
+<h3>戊（つちのえ・陽の土）・己（つちのと・陰の土）</h3>
+<p><strong>戊</strong>は山であり堤防です。広く厚く、簡単には揺れないかわりに、動くことを嫌います。耐えることがそのまま勝ちになる持ち場、<strong>要塞の門番</strong>です。</p>
+<p><strong>己</strong>は畑や田んぼの土です。山のように立ちはだかるかわりに、何かを育てて蓄えます。缶詰が尽きたあとのキャンプを食べさせる<strong>菜園の支配者</strong>と読みました。</p>
+
+<h3>庚（かのえ・陽の金）・辛（かのと・陰の金）</h3>
+<p><strong>庚</strong>は、まだ加工されていない鉱石であり、鉄の塊であり、斧です。叩かれるほど硬くなり、決断が早い。散らばったスクラップを集めて武器に変える<strong>武器庫の管理人</strong>です。</p>
+<p><strong>辛</strong>は磨き上げた宝石であり、針であり、研ぎ澄まされた刃です。繊細で精密、乱れたものを我慢できません。一発で仕留める<strong>冷静なスナイパー</strong>はここから出てきました。</p>
+
+<h3>壬（みずのえ・陽の水）・癸（みずのと・陰の水）</h3>
+<p><strong>壬</strong>は海であり大河です。スケールが大きく、一か所に閉じ込められることに耐えられません。塞がれた道路のかわりに新しい経路を探しに行く<strong>ルート開拓者</strong>と読みました。</p>
+<p><strong>癸</strong>は雨や露、湧き水です。音もなくしみ込み、どこにでも届きます。うわさや信号を集めて地図に変える<strong>情報ブローカー</strong>です。</p>
+
+<h3>11番目と12番目 — 魁罡とゾンビ1号</h3>
+<p>役割が10種類ではなく12種類あるのは、日干の上にさらに二つの特殊条件が乗るからです。ひとつめは<strong>魁罡（かいごう）</strong>。六十干支のうち戊辰・庚辰・壬辰・戊戌・庚戌・壬戌という六つの日柱を指し、四柱推命では「頭領星」と呼ばれる極端で強い気とみなされます。この六つの日柱で生まれた人は日干に関係なく<strong>最後の生存者</strong>になり、生存率のスコアも16点上乗せされます。1950〜2010年の日付のちょうど10%がこれに当たります。</p>
+<p>ふたつめは<strong>ゾンビ1号</strong>。こちらは日柱ではなくスコアで決まります。計算された生存率が5%未満だと、役割がゾンビ1号に置き換わります。同じ期間の22,280日のうち63日、およそ0.28%でしか出ません。当てるほうが難しい役です。</p>
+<p>結果画面に出る<strong>最高の相棒</strong>と<strong>最悪の組み合わせ</strong>も、同じ原理で決めています。最高の相棒は自分の日干を生んでくれる五行、つまり印星にあたる日干（甲には水、丙には木）で、最悪の組み合わせは自分を剋す五行である官星の日干（甲には金、丙には水）です。次に出てくる生存率の計算式でも、印星が最大の加点、官星が最大の減点になっていて、基準は同じです。</p>
+</div></details>
+
+<details class="fold" open><summary><h2>生存率1〜99%はどう計算しているか</h2></summary><div class="fx">
+<p>生存率は次の順番で組み立てられます。ゾンビという世界観に合わせて勝手に決めたルールですが、誰にでも同じルールが当てはまります。</p>
+<p><strong>1. 基礎点</strong> — 日干の五行によって出発点が違います。木は47、火は54、土は51、金は56、水は44点から始まります。</p>
+<p><strong>2. 残りの文字との関係</strong> — 年支・月支・日支（生まれた時間を入れた場合は時支まで）の五行が、自分の日干とどんな関係になるかを点数に換算します。自分と同じ五行の比劫が+3、自分が生む食傷が0、自分が剋す財星が−1、自分を剋す官星が−8、自分を生んでくれる印星が+6です。そのうえで、生まれた月の支である月支には1.6倍、日支には1.4倍、年支には1.0倍、時支には0.8倍の重みをつけます。月支をいちばん重く見るのは、四柱推命で月令（生まれた季節）を命式の根とみなす慣例に合わせたものです。</p>
+<p><strong>3. 陰陽</strong> — 甲・丙・戊・庚・壬のような陽干なら+2、乙・丁・己・辛・癸のような陰干なら−2。正面からぶつかる世界観なので、陽干を有利にした設定です。</p>
+<p><strong>4. 魁罡</strong> — 上の六つの日柱なら+16。この一項目だけで、ほかのどの項目よりも大きく動きます。</p>
+<p><strong>5. ばらつき</strong> — ここまでだけだと、同じ日柱の人どうしで点数がほぼ重なってしまいます。そこで生年月日の文字列を固定のハッシュ関数に通し、その値から最大±23と±6の二つの偏差を足しています。乱数ではなく日付から計算される値なので、同じ日付には必ず同じ偏差がつきます。</p>
+<p>最後に、92を超えた分と8を下回った分はゆるやかに押し戻し、1〜99の範囲に収めます。1950〜2010年の全日付で回すと平均51.9、中央値52になり、両端の1%と99%も実際に出ます。</p>
+</div></details>
+
+<details class="fold" open><summary><h2>「全体の上位N%」の根拠</h2></summary><div class="fx">
+<p>結果画面の「全体の上位N%」は、この診断を受けた他の人と比べた数字ではありません。入力内容をどこにも送信していないので、そもそも比べようがないのです。かわりに、このページの中にあらかじめ計算しておいた順位表が入っています。</p>
+<p>表はこうやって作りました。<strong>1950年1月1日から2010年12月31日までの22,280日</strong>すべてについて、生まれた時間は不明として生存率を計算します。そのうえで生存率1から99までのそれぞれについて「その値以上になる日付が全体の何パーミル（‰）か」を数え、99マスの表として保存してあります。結果画面は、あなたの生存率でこの表を引き、パーセントに直して出しているだけです。</p>
+<p>ですからこの数字は「この診断を受けた人の中で上位N%」ではなく、<strong>「ありうる生年月日全体の中で上位N%」</strong>と読むのが正確です。目安をいくつか挙げておくと、生存率52%がちょうど上位50%で、70%なら上位19%、80%なら上位8%、90%なら上位3%です。上位50%より下がると、表示が「全体の下位N%」に変わります。</p>
+</div></details>
+
+<details class="fold" open><summary><h2>同じ誕生日ならなぜいつも同じ結果なのか</h2></summary><div class="fx">
+<p>このページは、結果を出す過程で乱数を一度も使っていません。画面に出るすべての値が、生年月日（と選んだ時間）から計算されて出てきます。</p>
+<p>順番はこうです。まず生年月日を連続した日付番号に変換し、60で割った余りを求めると、その日の日柱が決まります。六十干支は60日ごとに一周する規則的な繰り返しなので、この計算に例外はありません。年柱と月柱は少し事情が違います。四柱推命で一年が変わる基準は1月1日でも旧正月でもなく<strong>立春</strong>で、月は啓蟄・清明といった十二の「節」を過ぎるたびに切り替わります。日本で節分の翌日が立春なのと同じ節目です。このページには1900年以降の節入り時刻が分単位で入った表が組み込まれていて、2月上旬生まれの人の年柱がまだ前年なのか、もう新年なのかを、時刻まで見て判定します。</p>
+<p>こうして出た八文字（時間が分からなければ六文字）に前述の計算式を当てはめるとスコアが出て、最後の偏差までもが生年月日の文字列のハッシュから出てきます。結果として、いつどの端末で押しても、同じ生年月日なら同じ役割と同じ数字になります。友達と結果を見せ合うことに意味があるためには、この性質が欠かせません。</p>
+</div></details>
+
+<details class="fold" open><summary><h2>よくある質問</h2></summary><div class="fx">
+<h3>旧暦の誕生日をそのまま入れてもいいですか</h3>
+<p>いいえ。入力は新暦（グレゴリオ暦）が基準です。ふだんカレンダーで使っている誕生日をそのまま入れてください。旧暦の日付しか分からない場合は、<a href="/tools/lunar/">旧暦・新暦変換ツール（韓国語）</a>で新暦に直してから入力します。万年暦の計算は旧暦の日付ではなく太陽の位置、つまり二十四節気を基準にしているので、旧暦の日付をそのまま入れると1か月近くずれた命式で計算されてしまいます。</p>
+<h3>生まれた時間が分からないと結果が変わりますか</h3>
+<p>役割は変わりません。役割は日柱から決まり、日柱は日付だけで決まるからです。変わるのは生存率の数字のほうです。時間を入れると時支という文字がもう一つ加わって0.8倍の重みで計算に参加し、偏差をつくるハッシュの入力も変わります。実際に回してみると、時間を入れるか入れないかで生存率は平均16ほど動きます。時間を選ばなかった場合は正午（12時）を代表値として使います。ただし生存率が5%前後という、ごく少数の日付では、時間によってゾンビ1号になるかどうかが分かれることがあります。</p>
+<h3>ほかの万年暦アプリと結果が違います</h3>
+<p>この診断はオプションを持たず、一つの基準だけで計算しています。時間は2時間ずつの十二支の区間でしか受け取らず、各区間の真ん中の時刻を代表として使います。標準時の30分補正や、夜子時（夜11時以降を翌日の日柱とみなすかどうか）といった流派ごとの設定も置いていません。日柱も、時間とは無関係に日付だけで決めます。そのため、夜11時前後や節入り当日に生まれた方は、本格的な万年暦と食い違うことがあります。こうした境目まで詰めた正確な命式が必要なら<a href="/tools/manse/">万年暦ツール（韓国語）</a>をお使いください。節入り時刻を分単位で反映し、標準時補正と夜子時をそれぞれオン・オフできます。</p>
+<h3>生存率が低く出てしまいました</h3>
+<p>計算式でいちばん減点が大きいのは官星、つまり自分の日干を剋す五行が地支に来た場合で、一文字あたり−8点です。命式に官星が複数あると点数ははっきり下がります。ただし四柱推命で官星は悪い文字ではなく、規律・責任・組織を表す文字です。ゾンビが走り回る世界では規律が足かせになるとみなして減点にしただけで、これは四柱推命の判断ではなく、この診断の設定にすぎません。実際の命式でその文字がどんな意味を持つのかは、<a href="https://yaong.kmagpie.com/">ヤオン命理（韓国語）</a>の鑑定で読むことができます。</p>
+<h3>結果リンクに私の生年月日は含まれますか</h3>
+<p>含まれません。共有リンクに入るのは、役割の番号・生存率・上位%・日柱の番号という四つの値を一つの数字にまとめたものだけです。生年月日と生まれた時刻は入っていませんし、入っている値から逆算することもできません。リンクを受け取った人には、あなたの結果画面だけが表示されます。</p>
+<h3>役割が12種類しかないのはなぜですか</h3>
+<p>日干が10種類だからです。そこに魁罡の日柱とゾンビ1号の条件が加わって12種類になります。そのかわり、その中で生存率（1〜99）・上位%・60種類ある日柱ごとの一言解説が組み合わさるので、同じ役割が出ても結果画面は人によって違います。</p>
+</div></details>
+
+<details class="fold" open><summary><h2>この結果をどこまで信じるか</h2></summary><div class="fx">
+<p>ここまで読んだ方はお察しのとおり、この診断は<strong>お遊びのコンテンツ</strong>です。万年暦の部分は実際の節気データで動く本物の計算ですが、その八文字をゾンビパニックの役割に置き換え、生存確率にパーセントをつけるルールは、すべてこのページが勝手に決めたものです。四柱推命に「ゾンビアポカリプス生存率」という概念はありません。</p>
+<p>もうひとつ、生存率の数字は現実のどんなリスクも予測していません。低く出たからといって心配する理由も、高く出たからといって油断する理由もありません。友達と画面を並べて、誰が最初に噛まれるかを決める用途に使ってください。四柱推命そのものが気になった方は、<a href="/tools/manse/">万年暦ツール（韓国語）</a>で自分の八文字を確かめ、その文字の意味は<a href="https://yaong.kmagpie.com/">ヤオン命理（韓国語）</a>で読んでみるとよいと思います。</p>
+</div></details>
 
 <div class="basis">
   <h2>ほかの世界も気になったら</h2>
   <p>🏰 <a href="/ja/tests/isekai/">異世界で私はどれだけモテる？— 異世界人気度診断</a>もどうぞ。ゾンビの世界を生き延びたあなた、異世界では意外とスターかもしれません。</p>
   <p>🪶 <a href="/ja/tests/joseon/">朝鮮時代に生まれていたら？— 四柱推命でみる朝鮮のお仕事診断</a>もあります。同じ命式で、過去の運命まで占います。</p>
   <p>🤖 <a href="/ja/tests/robot/">もしAIロボットになったら？— 四柱推命でみるロボットタイプ診断</a>もおすすめ。生き残った後の未来まで見ておきましょう。</p>
-
-  <h2>本格的な四柱推命が気になったら</h2>
-  <p>自分の命式八字をきちんと知りたい方は、<a href="/tools/manse/">万年暦ツール（韓国語）</a>で節入り時刻まで反映した命式を立てられます。その八字の読み解きが気になる方は<a href="https://yaong.kmagpie.com/">ヤオン命理（韓国語）</a>でどうぞ。</p>
 </div>
 
 <footer>
@@ -532,7 +628,37 @@ function renderResult(R,nick,shared){
 function render(y,m,d,t,nick){ renderResult(roleOf(y,m,d,t),nick,false); }
 function ELM(g){ return ['木','木','火','火','土','土','金','金','水','水'][g]; }
 
+/* INP: 押した瞬間はボタンの状態だけ描き替えて1フレーム返し、
+   重い万年暦の計算と結果レンダリングは次のフレームに回す。算出ロジックは不変。 */
+var GO_BUSY_TX='☣️ 分析中…', GO_BUSY_MIN=280, goBusy=false;
+function setGoBusy(on){
+  var b=$('goBtn');
+  if(on){
+    b.dataset.idle=b.textContent; b.textContent=GO_BUSY_TX;
+    b.dataset.hadFocus=(document.activeElement===b)?'1':'';
+    b.disabled=true;
+  }else{
+    if(b.dataset.idle) b.textContent=b.dataset.idle;
+    b.disabled=false;
+    if(b.dataset.hadFocus){ try{ b.focus({preventScroll:true}); }catch(e){} }
+  }
+}
+function runDeferred(fn){
+  if(goBusy) return;
+  goBusy=true;
+  var t0=Date.now();
+  setGoBusy(true);
+  requestAnimationFrame(function(){ setTimeout(function(){
+    try{ fn(); }
+    finally{
+      /* 速い端末で「計算中」が一瞬だけちらつかないよう最小表示時間を守る */
+      var rest=GO_BUSY_MIN-(Date.now()-t0);
+      setTimeout(function(){ setGoBusy(false); goBusy=false; }, rest>0?rest:0);
+    }
+  },0); });
+}
 $('goBtn').addEventListener('click',function(){
+  if(goBusy) return;
   if(!$('by').value||!$('bm').value||!$('bd').value){
     $('inpErr').textContent='生年月日をすべて選択してください。';
     return;
@@ -540,14 +666,16 @@ $('goBtn').addEventListener('click',function(){
   $('inpErr').textContent='';
   var y=+$('by').value,m=+$('bm').value,d=+$('bd').value,t=+$('bt').value||0;
   var nick=$('nick').value.trim();
-  var R=roleOf(y,m,d,t);
-  renderResult(R,nick,false);
-  var u=new URL(location.href);
-  u.searchParams.delete('r');
-  u.searchParams.set('v',encodeV(R));
-  if(nick) u.searchParams.set('n',nick); else u.searchParams.delete('n');
-  history.replaceState(null,'',u.pathname+u.search);
-  $('res').scrollIntoView({behavior:'smooth',block:'start'});
+  runDeferred(function(){
+    var R=roleOf(y,m,d,t);
+    renderResult(R,nick,false);
+    var u=new URL(location.href);
+    u.searchParams.delete('r');
+    u.searchParams.set('v',encodeV(R));
+    if(nick) u.searchParams.set('n',nick); else u.searchParams.delete('n');
+    history.replaceState(null,'',u.pathname+u.search);
+    $('res').scrollIntoView({behavior:'smooth',block:'start'});
+  });
 });
 $('retryBtn').addEventListener('click',function(){
   $('res').classList.add('hidden');
