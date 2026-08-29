@@ -173,7 +173,7 @@ TESTS_CSS = """/*TESTS:S*/
 TESTS_BLOCK = """<!--TESTS:S-->
 <a class="tbn" href="/tests/">
   <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
-  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 사주로 보는 재미 테스트 4종 — 결과는 친구와 비교해 보세요.</span></span>
+  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 사주로 보는 재미 테스트 5종 — 결과는 친구와 비교해 보세요.</span></span>
   <span class="ar">→</span>
 </a>
 <!--TESTS:E-->

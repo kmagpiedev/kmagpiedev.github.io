@@ -304,7 +304,7 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 <!--TESTS:S-->
 <a class="tbn" href="/tests/">
   <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
-  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 사주로 보는 재미 테스트 4종 — 결과는 친구와 비교해 보세요.</span></span>
+  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 사주로 보는 재미 테스트 5종 — 결과는 친구와 비교해 보세요.</span></span>
   <span class="ar">→</span>
 </a>
 <!--TESTS:E-->
@@ -349,7 +349,14 @@ async function open(f){
   }
   fileSize=f.size;
   say('m-warn','분석 중…');
-  $('verdict').className='hidden'; $('bigWarn').className='hidden'; $('result').className='hidden';
+  /* CLS 방지: 레이아웃 변화는 입력 이벤트 직후(면제 구간)에 미리 끝내고,
+     비동기 완료 시에는 이미 열린 상자의 내용만 바꾼다 */
+  doc=null; updateGo();
+  const v0=$('verdict'); v0.className='msg m-warn';
+  v0.innerHTML='문서 유형을 판별하는 중…<br>첫 페이지들의 텍스트 양과 페이지당 용량을 확인하고 있습니다.';
+  $('bigWarn').className='hidden'; $('result').className='hidden';
+  $('opts').classList.remove('hidden');
+  $('drop').classList.add('hidden');
   let buf;
   try{
     buf=new Uint8Array(await f.arrayBuffer());
@@ -360,6 +367,9 @@ async function open(f){
       say('m-bad','암호로 보호된 PDF입니다. 이 도구는 암호를 풀 수 없어요. 암호를 해제한 파일로 다시 시도해 주세요.');
     else
       say('m-bad','파일을 열지 못했습니다. 손상됐거나 PDF가 아닌 파일일 수 있어요.');
+    $('verdict').className='hidden';
+    $('opts').classList.add('hidden');
+    $('drop').classList.remove('hidden');
     return;
   }
   N=doc.numPages;

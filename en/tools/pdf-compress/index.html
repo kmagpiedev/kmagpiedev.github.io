@@ -329,7 +329,14 @@ async function open(f){
   }
   fileSize=f.size;
   say('m-warn','Analyzing…');
-  $('verdict').className='hidden'; $('bigWarn').className='hidden'; $('result').className='hidden';
+  /* CLS 방지: 레이아웃 변화는 입력 이벤트 직후(면제 구간)에 미리 끝내고,
+     비동기 완료 시에는 이미 열린 상자의 내용만 바꾼다 */
+  doc=null; updateGo();
+  const v0=$('verdict'); v0.className='msg m-warn';
+  v0.innerHTML='Working out what kind of document this is…<br>Checking the text density of the first pages and the size per page.';
+  $('bigWarn').className='hidden'; $('result').className='hidden';
+  $('opts').classList.remove('hidden');
+  $('drop').classList.add('hidden');
   let buf;
   try{
     buf=new Uint8Array(await f.arrayBuffer());
@@ -340,6 +347,9 @@ async function open(f){
       say('m-bad','This PDF is password-protected and the tool cannot decrypt it. Please try again with an unprotected copy.');
     else
       say('m-bad','Could not open the file. It may be damaged or not actually a PDF.');
+    $('verdict').className='hidden';
+    $('opts').classList.add('hidden');
+    $('drop').classList.remove('hidden');
     return;
   }
   N=doc.numPages;

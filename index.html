@@ -6,9 +6,9 @@
     <title>K-magpie | 게임·앱·웹 콘텐츠</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="naver-site-verification" content="bd00db17c88ce5c025640b030216930443e78df6" />
-    <meta name="description" content="K-magpie의 Android 게임·앱, 역사까치 한국사 퀴즈, 까치테스트, 야옹명리와 무료 브라우저 도구를 한곳에서 만나보세요." />
+    <meta name="description" content="K-magpie의 Android 게임·앱과 까치테스트, 야옹명리, 무료 포춘쿠키·타로, 까치툴을 한곳에서 만나보세요." />
     <meta property="og:title" content="K-magpie | 게임·앱·웹 콘텐츠" />
-    <meta property="og:description" content="모바일 게임과 생활 앱부터 역사까치 한국사 퀴즈, 까치테스트, 야옹명리와 무료 도구까지 K-magpie의 콘텐츠를 만나보세요." />
+    <meta property="og:description" content="모바일 게임과 생활 앱부터 준비 중인 PC 게임 프로젝트, 까치테스트, 야옹명리, 무료 포춘쿠키·타로까지 K-magpie의 콘텐츠를 만나보세요." />
     <meta property="og:image" content="https://www.kmagpie.com/images/icon_monbreak.png" />
     <meta property="og:url" content="https://www.kmagpie.com/" />
     <meta name="twitter:card" content="summary" />
@@ -70,7 +70,7 @@
 
     .header-actions { display: flex; align-items: center; gap: 14px; }
 
-    .nav { display: flex; flex-wrap: wrap; gap: 16px; font-size: 0.9rem; }
+    .nav { display: flex; gap: 16px; font-size: 0.9rem; }
     .nav a { color: var(--muted); padding: 4px 0; border-bottom: 1px solid transparent; }
     .nav a:hover { color: var(--text); border-color: var(--accent); }
 
@@ -261,42 +261,9 @@
             radial-gradient(circle at 88% 12%, rgba(214, 156, 41, 0.13), transparent 28rem),
             #0c0c0f;
     }
-    .study-section {
-        border-block: 1px solid var(--border);
-        background:
-            radial-gradient(circle at 12% 18%, rgba(51, 101, 255, 0.16), transparent 30rem),
-            #080b17;
-    }
     .web-grid { display: grid; gap: 16px; }
     .web-card { min-width: 0; }
     .web-card .card-icon { width: 84px; height: 84px; border-radius: 20px; }
-    .history-feature {
-        display: grid;
-        grid-template-columns: minmax(260px, 0.9fr) minmax(0, 1.1fr);
-        min-height: 260px;
-        margin-bottom: 18px;
-        overflow: hidden;
-        border: 1px solid rgba(51, 101, 255, 0.58);
-        border-radius: 22px;
-        color: var(--text);
-        background: linear-gradient(135deg, rgba(8, 15, 44, 0.98), rgba(10, 10, 14, 0.98));
-        box-shadow: 0 22px 54px rgba(0, 0, 0, 0.3);
-        transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
-    }
-    .history-feature:hover {
-        transform: translateY(-2px);
-        border-color: rgba(255, 232, 0, 0.8);
-        box-shadow: 0 26px 64px rgba(8, 42, 160, 0.28);
-    }
-    .history-feature-media { position: relative; min-height: 230px; overflow: hidden; background: #05091b; }
-    .history-feature-media::after { content: ""; position: absolute; inset: 0; box-shadow: inset -40px 0 48px rgba(5, 9, 27, 0.72); pointer-events: none; }
-    .history-feature-media img { width: 100%; height: 100%; display: block; object-fit: cover; }
-    .history-feature-body { padding: 30px; display: flex; flex-direction: column; justify-content: center; }
-    .history-feature-kicker { color: #ffe800; font-size: 0.76rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
-    .history-feature h3 { margin: 8px 0 5px; font-size: clamp(1.4rem, 3vw, 2.15rem); line-height: 1.2; letter-spacing: -0.035em; }
-    .history-feature-meta { margin-bottom: 13px; color: #8fb0ff; font-size: 0.84rem; font-weight: 700; }
-    .history-feature-text { color: #d7def1; font-size: 0.94rem; line-height: 1.75; }
-    .history-feature-cta { align-self: flex-start; margin-top: 20px; padding-bottom: 3px; border-bottom: 2px solid #ffe800; color: #ffe800; font-size: 0.88rem; }
 
     .pc-games-section {
         border-bottom: 1px solid var(--border);
@@ -395,16 +362,12 @@
         section[id] { scroll-margin-top: 112px; }
         .header-inner { align-items: flex-start; flex-direction: column; }
         .header-actions { width: 100%; justify-content: space-between; gap: 10px; }
-        .nav { gap: 8px 12px; font-size: 0.85rem; }
+        .nav { gap: 12px; font-size: 0.85rem; }
         .lang-btn { padding: 4px 7px; }
         .hero-apps { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 260px; }
         .hero-app-icon { width: 58px; height: 58px; border-radius: 14px; }
         .card-icon { width: 64px; height: 64px; border-radius: 16px; }
         .web-card .card-icon { width: 76px; height: 76px; border-radius: 18px; }
-        .history-feature { grid-template-columns: 1fr; }
-        .history-feature-media { min-height: 180px; }
-        .history-feature-media::after { box-shadow: inset 0 -32px 40px rgba(5, 9, 27, 0.66); }
-        .history-feature-body { padding: 24px 20px 26px; }
     }
 
     @media (min-width: 768px) {
@@ -447,7 +410,6 @@
             <div class="header-actions">
                 <nav class="nav" aria-label="Main navigation" data-i18n-attr="aria-label:navAria">
                     <a href="#games" data-i18n="navGames">게임/앱</a>
-                    <a href="#study" data-i18n="navStudy">공부·학습</a>
                     <a href="/tools/" data-i18n="navTools">까치툴</a>
                     <a href="#about" data-i18n="navAbout">소개</a>
                     <a href="#contact" data-i18n="navContact">문의</a>
@@ -600,25 +562,6 @@
         </section>
 
 
-        <section id="study" class="section study-section">
-            <div class="container">
-                <h2 data-i18n="studyTitle">공부·학습</h2>
-                <p class="section-desc" data-i18n="studyDesc">시험 준비와 반복 학습을 돕는 K-magpie의 학습 서비스입니다.</p>
-
-                <a class="history-feature" href="https://history.kmagpie.com/" target="_blank" rel="noopener noreferrer" aria-label="역사까치 한국사 퀴즈 열기" data-i18n-attr="aria-label:historyQuestAria" data-web-service="history-magpie">
-                    <span class="history-feature-media"><img src="/images/web-history-magpie.png" alt="연표 두루마리에 앉은 역사까치 한국사 퀴즈 마스코트" width="1672" height="941" loading="lazy" decoding="async" /></span>
-                    <span class="history-feature-body">
-                        <span class="history-feature-kicker" data-i18n="historyQuestKicker">한국사 학습 · 무료 웹</span>
-                        <h3 data-i18n="historyQuestTitle">역사까치</h3>
-                        <span class="history-feature-meta" data-i18n="historyQuestMeta">500문항 · 시대별 학습 · 오답 복습</span>
-                        <span class="history-feature-text" data-i18n="historyQuestText">까치와 함께 500문항, 해설, 연표와 자동 오답 복습으로 한국사의 흐름을 잡아보세요.</span>
-                        <strong class="history-feature-cta" data-i18n="historyQuestLink">한국사 문제 풀기 →</strong>
-                    </span>
-                </a>
-            </div>
-        </section>
-
-
         <section id="web" class="section web-section">
             <div class="container">
                 <h2 data-i18n="webTitle">웹에서 바로 즐기기</h2>
@@ -631,7 +574,7 @@
                         </a>
                         <h3 data-i18n="kmagpieTestTitle">까치테스트</h3>
                         <p class="card-meta" data-i18n="kmagpieTestMeta">무료 재미 테스트 모음 · 웹</p>
-                        <p class="card-text" data-i18n="kmagpieTestText">좀비 생존률, 이세계 인기도, 조선시대 직업, AI 로봇 전투력. 생년월일만 넣으면 만세력 엔진이 30초 만에 결과를 뽑아줍니다.</p>
+                        <p class="card-text" data-i18n="kmagpieTestText">전생과 환생 횟수, 좀비 생존률, 이세계 인기도, 조선시대 직업, AI 로봇 전투력. 생년월일만 넣으면 만세력 엔진이 30초 만에 결과를 뽑아줍니다.</p>
                         <a class="card-link" href="/tests/" data-i18n="kmagpieTestLink" data-i18n-attr="href:kmagpieTestHref" data-web-service="kmagpie-test">테스트 둘러보기 →</a>
                     </article>
 
@@ -795,36 +738,27 @@
         const translations = {
             ko: {
                 title: "K-magpie | 게임·앱·웹 콘텐츠",
-                description: "K-magpie의 Android 게임·생활 앱, 역사까치 한국사 퀴즈, 까치테스트, 야옹명리와 무료 브라우저 도구를 한곳에서 만나보세요.",
+                description: "K-magpie의 Android 게임·생활 앱, 준비 중인 PC 게임 프로젝트와 까치테스트, 야옹명리, 무료 포춘쿠키·타로, 까치툴을 한곳에서 만나보세요.",
                 logoAria: "K-magpie 홈으로 이동",
                 logoAlt: "K-magpie 아이콘",
                 navAria: "주요 메뉴",
                 langAria: "언어 선택",
                 navGames: "게임/앱",
-                navStudy: "공부·학습",
                 navTools: "까치툴",
                 navAbout: "소개",
                 navContact: "문의",
                 toolsTitle: "까치툴 — 무료 온라인 도구",
                 toolsDesc: "가입 없이 쓰는 무료 도구입니다. 파일은 서버로 전송되지 않고 전부 내 브라우저 안에서 처리되며, 사용 횟수 제한도 워터마크도 없습니다.",
                 toolsAll: "까치툴 전체 보기 →",
-                studyTitle: "공부·학습",
-                studyDesc: "시험 준비와 반복 학습을 돕는 K-magpie의 학습 서비스입니다.",
                 webTitle: "웹에서 바로 즐기기",
                 webDesc: "설치 없이 바로 시작하는 K-magpie의 테스트와 운세 콘텐츠입니다.",
                 webBrowseCta: "웹에서 바로 즐기기",
                 webOpenLink: "바로가기 →",
-                historyQuestAria: "역사까치 한국사 퀴즈 열기",
-                historyQuestKicker: "한국사 학습 · 무료 웹",
-                historyQuestTitle: "역사까치",
-                historyQuestMeta: "500문항 · 시대별 학습 · 오답 복습",
-                historyQuestText: "까치와 함께 500문항, 해설, 연표와 자동 오답 복습으로 한국사의 흐름을 잡아보세요.",
-                historyQuestLink: "한국사 문제 풀기 →",
                 kmagpieTestAria: "까치테스트 모음 둘러보기",
                 kmagpieTestAlt: "까치테스트 따봉 까치 로고",
                 kmagpieTestTitle: "까치테스트",
                 kmagpieTestMeta: "무료 재미 테스트 모음 · 웹",
-                kmagpieTestText: "좀비 생존률, 이세계 인기도, 조선시대 직업, AI 로봇 전투력. 생년월일만 넣으면 만세력 엔진이 30초 만에 결과를 뽑아줍니다.",
+                kmagpieTestText: "전생과 환생 횟수, 좀비 생존률, 이세계 인기도, 조선시대 직업, AI 로봇 전투력. 생년월일만 넣으면 만세력 엔진이 30초 만에 결과를 뽑아줍니다.",
                 kmagpieTestLink: "테스트 둘러보기 →",
                 kmagpieTestHref: "/tests/",
                 yaongAria: "야옹명리 홈페이지 열기",
@@ -904,36 +838,27 @@
             },
             en: {
                 title: "K-magpie | Games, Apps & Web Experiences",
-                description: "Explore K-magpie's Android games and apps, History Magpie Korean History Quiz, K-magpie Test, Yaong Myeongri, and free browser tools in one place.",
+                description: "Explore K-magpie's Android games and apps, upcoming PC game projects, K-magpie Test, Yaong Myeongri, free fortune cookies, cat tarot, and browser tools in one place.",
                 logoAria: "Go to K-magpie home",
                 logoAlt: "K-magpie icon",
                 navAria: "Main navigation",
                 langAria: "Language selector",
                 navGames: "Games/Apps",
-                navStudy: "Study",
                 navTools: "Tools",
                 navAbout: "About",
                 navContact: "Contact",
                 toolsTitle: "Tools — free browser utilities",
                 toolsDesc: "Korean-language tools that run entirely in your browser. No sign-up, your files never leave your device, no usage limits.",
                 toolsAll: "See all tools →",
-                studyTitle: "Study & Learning",
-                studyDesc: "K-magpie learning services for focused practice, review, and exam preparation. Linked learning services are currently available in Korean.",
                 webTitle: "Play Instantly on the Web",
-                webDesc: "K-magpie test and fortune experiences you can start right away with no installation. Linked experiences are currently available in Korean.",
+                webDesc: "K-magpie tests and fortune experiences you can start right away with no installation. Linked experiences are currently available in Korean.",
                 webBrowseCta: "Explore web experiences",
                 webOpenLink: "Open now →",
-                historyQuestAria: "Open History Magpie Korean history quiz in Korean",
-                historyQuestKicker: "Korean history study · Free web",
-                historyQuestTitle: "History Magpie",
-                historyQuestMeta: "500 questions · Era guides · Smart review",
-                historyQuestText: "Follow History Magpie through 500 questions, explanations, timelines, and automatic mistake review. Available in Korean.",
-                historyQuestLink: "Start the Korean quiz →",
                 kmagpieTestAria: "Browse the K-magpie Test collection in Korean",
                 kmagpieTestAlt: "K-magpie Test thumbs-up magpie logo",
                 kmagpieTestTitle: "K-magpie Test",
                 kmagpieTestMeta: "Free fun tests · Web · Korean",
-                kmagpieTestText: "Zombie survival rate, isekai popularity, a Joseon-era job, an AI robot's combat power — a real saju engine works the result out from your birth date alone. Korean-language.",
+                kmagpieTestText: "Your past life, zombie survival rate, isekai popularity, a Joseon-era job, an AI robot's combat power — a real saju engine works the result out from your birth date alone. Korean-language.",
                 kmagpieTestLink: "Browse Korean tests →",
                 kmagpieTestHref: "/tests/",
                 yaongAria: "Open the Yaong Myeongri website",
@@ -1013,31 +938,22 @@
             },
             ja: {
                 title: "K-magpie | ゲーム・アプリ・Webコンテンツ",
-                description: "K-magpieのAndroidゲーム・アプリ、歴史カササギ韓国史クイズ、K-magpieテスト、ニャンコ命理、無料ブラウザツールをまとめて紹介します。",
+                description: "K-magpieのAndroidゲーム・アプリ、準備中のPCゲーム企画、K-magpieテスト、ニャンコ命理、無料フォーチュンクッキー、猫タロット、ブラウザツールをまとめて紹介します。",
                 logoAria: "K-magpie ホームへ移動",
                 logoAlt: "K-magpie アイコン",
                 navAria: "メインメニュー",
                 langAria: "言語選択",
                 navGames: "ゲーム/アプリ",
-                navStudy: "学習",
                 navTools: "ツール",
                 navAbout: "紹介",
                 navContact: "お問い合わせ",
                 toolsTitle: "ツール — 無料オンラインツール",
                 toolsDesc: "韓国語のブラウザ完結型ツールです。登録不要、ファイルはサーバーに送信されず、利用回数の制限もありません。",
                 toolsAll: "すべてのツールを見る →",
-                studyTitle: "勉強・学習",
-                studyDesc: "試験対策と反復学習を支えるK-magpieの学習サービスです。リンク先の学習サービスは現在、韓国語で提供しています。",
                 webTitle: "Webですぐ楽しむ",
                 webDesc: "インストールなしですぐ始められるK-magpieのテストと占いコンテンツです。リンク先のコンテンツは現在、韓国語で提供しています。",
                 webBrowseCta: "Webコンテンツを楽しむ",
                 webOpenLink: "今すぐ開く →",
-                historyQuestAria: "韓国語の歴史カササギ韓国史クイズを開く",
-                historyQuestKicker: "韓国史学習 · 無料Web",
-                historyQuestTitle: "歴史カササギ",
-                historyQuestMeta: "500問 · 時代別学習 · 復習",
-                historyQuestText: "先史時代から現代まで、時代別クイズ、50問の実戦モード、解説で韓国史を復習できます。韓国語で提供しています。",
-                historyQuestLink: "韓国史クイズを始める →",
                 kmagpieTestAria: "カササギ診断の一覧を見る",
                 kmagpieTestAlt: "カササギ診断のサムズアップするカササギロゴ",
                 kmagpieTestTitle: "カササギ診断",
