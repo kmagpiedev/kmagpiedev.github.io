@@ -16,16 +16,16 @@
 <meta property="og:site_name" content="까치테스트">
 <style>
   :root{
-    --bg:#180612; --surface:#23091a; --line:#4d1634; --line-soft:#340f24;
-    --ink:#f9e9f2; --ink-2:#dcadc8; --ink-3:#b3819c;
-    --accent:#ff5fae; --accent-soft:#3c0e28;
+    --bg:#0f0b15; --surface:#171221; --line:#332a44; --line-soft:#241d31;
+    --ink:#f1edf6; --ink-2:#bab0ca; --ink-3:#8b8099;
+    --accent:#ff5fae; --accent-soft:#31142a;
     --vio:#c9a9ff; --vio-soft:#251341;
-    --card-grad-a:#2c0b1f; --card-grad-b:#14040e;
+    --card-grad-a:#1c1428; --card-grad-b:#0b0710;
     --btn-ink:#33041d;
   }
   @media (prefers-color-scheme:dark){
     :root{
-      --bg:#130409; --surface:#1d0713; --line:#4d1634; --line-soft:#2b0c1d;
+      --bg:#0b0810; --surface:#130e1c; --line:#332a44; --line-soft:#1d1728;
     }
   }
   *{box-sizing:border-box}
@@ -745,10 +745,10 @@ function makeCard(){
   var c=document.createElement('canvas'); c.width=W; c.height=H;
   var x=c.getContext('2d');
   return loadImg('img/role-'+String(r.img).padStart(2,'0')+'.png').then(function(im){
-    var INK='#f9e9f2', INK2='#dcadc8', INK3='#b3819c', PK='#ff5fae', VI='#c9a9ff';
+    var INK='#f1edf6', INK2='#bab0ca', INK3='#8b8099', PK='#ff5fae', VI='#c9a9ff';
     /* 배경: 무대 위 핑크 조명 */
     var bg=x.createLinearGradient(0,0,0,H);
-    bg.addColorStop(0,'#2c0b1f'); bg.addColorStop(1,'#14040e');
+    bg.addColorStop(0,'#1c1428'); bg.addColorStop(1,'#0b0710');
     x.fillStyle=bg; x.fillRect(0,0,W,H);
     /* 응원봉 불빛 — 결과값 시드로 결정론 배치 */
     var hs=cheerSeed(R);
@@ -815,7 +815,7 @@ function makeCard(){
     x.font='700 38px -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
     var bw=x.measureText(btxt).width+72;
     roundRect(x,(W-bw)/2,yy+452,bw,80,40);
-    x.fillStyle=R.top<=50?'#3c0e28':'#251341'; x.fill();
+    x.fillStyle=R.top<=50?'#31142a':'#251341'; x.fill();
     x.fillStyle=R.top<=50?PK:VI;
     x.fillText(btxt,W/2,yy+505);
     /* 일주 */
