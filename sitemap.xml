@@ -398,7 +398,7 @@
   </url>
   <url>
     <loc>https://www.kmagpie.com/tests/</loc>
-    <lastmod>2026-08-29</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -411,6 +411,12 @@
   <url>
     <loc>https://www.kmagpie.com/tests/pastlife/</loc>
     <lastmod>2026-08-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.kmagpie.com/tests/idol/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
