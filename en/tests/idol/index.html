@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>K-pop Idol Position Test — What's Your Debut Rank? | Magpie Tests</title>
+<meta name="description" content="Enter your birthday and a real Korean saju (Four Pillars) engine reads your day master to assign one of 12 idol positions — plus your final debut-survival rank (#1–99). Main vocal? Main dancer? Stage-destroying center? Or the one who walks into the audition and ends up in the judges' seats as an agency CEO? See what percent of all contestants you'd beat, then challenge your friends.">
+<link rel="canonical" href="https://www.kmagpie.com/en/tests/idol/">
+<link rel="alternate" hreflang="ko" href="https://www.kmagpie.com/tests/idol/">
+<link rel="alternate" hreflang="ja" href="https://www.kmagpie.com/ja/tests/idol/">
+<link rel="alternate" hreflang="en" href="https://www.kmagpie.com/en/tests/idol/">
+<link rel="alternate" hreflang="x-default" href="https://www.kmagpie.com/tests/idol/">
+<meta property="og:title" content="K-pop Idol Position Test — What's Your Debut Rank?">
+<meta property="og:description" content="Your idol position and final debut-survival rank, computed from your birthday with real Korean saju. 12 positions — which one are you? Maybe… the agency CEO?">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/en/tests/idol/">
+<meta property="og:image" content="https://www.kmagpie.com/en/tests/idol/img/og.png">
+<meta property="og:site_name" content="Magpie Tests">
+<style>
+  :root{
+    --bg:#0f0b15; --surface:#171221; --line:#332a44; --line-soft:#241d31;
+    --ink:#f1edf6; --ink-2:#bab0ca; --ink-3:#8b8099;
+    --accent:#ff5fae; --accent-soft:#31142a;
+    --vio:#c9a9ff; --vio-soft:#251341;
+    --card-grad-a:#1c1428; --card-grad-b:#0b0710;
+    --btn-ink:#33041d;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0b0810; --surface:#130e1c; --line:#332a44; --line-soft:#1d1728;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(1.5px 1.5px at 12% 10%, rgba(255,95,174,.24) 50%, transparent 51%),
+      radial-gradient(1px 1px at 70% 7%,  rgba(249,233,242,.10) 50%, transparent 51%),
+      radial-gradient(2px 2px at 44% 28%, rgba(255,95,174,.16) 50%, transparent 51%),
+      radial-gradient(1px 1px at 28% 56%, rgba(249,233,242,.09) 50%, transparent 51%),
+      radial-gradient(2px 2px at 88% 40%, rgba(201,169,255,.20) 50%, transparent 51%),
+      radial-gradient(1px 1px at 8% 82%,  rgba(249,233,242,.10) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 62% 74%, rgba(255,95,174,.15) 50%, transparent 51%)}
+  .wrap{max-width:680px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  .langsw{font-size:13px;margin:-12px 0 20px}
+  .langsw a{color:var(--ink-3);text-decoration:none;border-bottom:1px solid var(--line)}
+  .langsw a:hover{color:var(--accent);border-color:var(--accent)}
+  h1{font-size:27px;line-height:1.35;margin:0 0 10px;letter-spacing:-.02em;font-weight:800}
+  h1 .pk{color:var(--accent)}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+  .col{flex:1;min-width:90px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
+  input[type=text],select{padding:10px 12px;border:1px solid var(--line);border-radius:9px;
+    background:var(--surface);color:var(--ink);font-size:16px;font-family:inherit;width:100%;
+    font-weight:600;font-variant-numeric:tabular-nums;appearance:none;-webkit-appearance:none}
+  input:focus,select:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:14px 0 0}
+  .go{display:block;width:100%;margin:18px 0 0;padding:15px 10px;border:0;border-radius:12px;
+    background:var(--accent);color:var(--btn-ink);font-size:17px;font-weight:800;font-family:inherit;cursor:pointer;
+    letter-spacing:-.01em;transition:.15s}
+  .go:hover{filter:brightness(1.08);transform:translateY(-1px)}
+  .go:disabled{cursor:default;opacity:.68;transform:none;filter:none}
+
+  /* result */
+  .result{background:var(--surface);border:1px solid var(--accent);border-radius:18px;
+    padding:28px 24px;margin:20px 0;text-align:center}
+  .rk{font-size:13px;font-weight:700;letter-spacing:.12em;color:var(--ink-3);margin:0 0 14px}
+  .roleImg{width:168px;height:168px;margin:0 auto 14px;border-radius:24px;overflow:hidden;position:relative;
+    background:linear-gradient(135deg,var(--g1,#6b2248),var(--g2,#2b0a1c));display:flex;align-items:center;justify-content:center}
+  .roleImg img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+  .roleImg .fbEmo{font-size:84px;line-height:1;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5))}
+  .roleName{font-size:26px;font-weight:800;letter-spacing:-.02em;margin:0 0 2px}
+  .roleCatch{font-size:14.5px;color:var(--ink-2);margin:0 0 20px}
+  .popBox{margin:0 0 4px}
+  .popNum{font-size:clamp(52px,16vw,80px);font-weight:800;letter-spacing:-.04em;line-height:1.05;
+    color:var(--accent);font-variant-numeric:tabular-nums}
+  .popNum small{font-size:.6em;font-weight:800}
+  .popCap{font-size:13.5px;color:var(--ink-3);margin:0 0 2px}
+  .tier{font-size:15px;font-weight:800;color:var(--ink);margin:6px 0 0}
+  .topPct{display:inline-block;margin:8px 0 0;padding:5px 14px;border-radius:99px;
+    background:var(--accent-soft);color:var(--accent);font-size:14px;font-weight:700}
+  .topPct.late{background:var(--vio-soft);color:var(--vio)}
+  .ilju{margin:20px 0 0;padding:13px 15px;border:1px dashed var(--line);border-radius:11px;
+    font-size:14px;color:var(--ink-2);text-align:left}
+  .ilju b{color:var(--ink)}
+  .desc{text-align:left;font-size:15px;color:var(--ink-2);margin:18px 0 0}
+  .trace{text-align:left;margin:16px 0 0;padding:12px 15px;border-left:3px solid var(--accent);
+    background:var(--accent-soft);border-radius:0 10px 10px 0;font-size:14.5px}
+  .trace b{color:var(--accent)}
+  .mates{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 0;text-align:left}
+  .mate{border:1px solid var(--line);border-radius:11px;padding:11px 13px;font-size:13.5px}
+  .mate .mk{display:block;font-size:11.5px;font-weight:700;letter-spacing:.08em;margin-bottom:3px}
+  .mate.good .mk{color:var(--vio)}
+  .mate.bad .mk{color:var(--accent)}
+  .mate b{font-size:14.5px}
+  .btns{display:flex;gap:9px;flex-wrap:wrap;margin:24px 0 0}
+  .btns button{flex:1;min-width:140px;padding:13px 8px;border-radius:11px;font-size:14.5px;font-weight:700;
+    font-family:inherit;cursor:pointer;transition:.15s;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+  .btns button:hover{border-color:var(--accent);color:var(--accent)}
+  .btns button.pri{background:var(--accent);border-color:var(--accent);color:var(--btn-ink)}
+  .btns button.pri:hover{filter:brightness(1.08);color:var(--btn-ink)}
+  .retry{display:block;width:100%;margin:10px 0 0;padding:13px 8px;border-radius:11px;border:1px dashed var(--line);
+    background:transparent;color:var(--ink-2);font-size:14.5px;font-weight:700;font-family:inherit;cursor:pointer}
+  .retry:hover{border-color:var(--accent);color:var(--accent)}
+  .copied{font-size:13px;color:var(--vio);margin:8px 0 0;min-height:20px}
+
+  .basis{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:14px 0}
+  .basis h2{margin:0 0 8px;font-size:17px}
+  .basis p{font-size:14.5px;color:var(--ink-2);margin:0 0 8px}
+  .basis p:last-child{margin:0}
+
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  .hidden{display:none}
+
+  /* collapsible body */
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 10px}
+  .fold .fx>:first-child{margin-top:4px}
+  .fold .fx p{font-size:14.5px;color:var(--ink-2)}
+  .fold .fx p strong{color:var(--ink)}
+  .fold .fx h3{font-size:15.5px;color:var(--ink);font-weight:700;
+    margin:22px 0 6px;letter-spacing:-.01em}
+
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .panel{padding:18px 15px}
+    .result{padding:22px 15px}
+    .roleImg{width:136px;height:136px}
+    .roleImg .fbEmo{font-size:68px}
+    .roleName{font-size:22px}
+    .mates{grid-template-columns:1fr}
+    .fold summary{padding:14px 15px}
+    .fold summary h2{font-size:15.5px}
+    .fold .fx{padding:0 15px 10px}
+  }
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/en/tests/">Magpie Tests</a> › Idol Position Test</p>
+<p class="langsw"><a href="/tests/idol/" hreflang="ko">View in Korean</a></p>
+
+<h1>If you debuted as a K-pop idol,<br>what would your position be? <span class="pk">🎤</span></h1>
+<p class="sub">Enter your birthday and this page computes your idol position and your <strong>final debut-survival rank (#1–99)</strong> from your <strong>saju day master</strong> — the "you" character in Korean Four Pillars astrology. The same eight characters old fortune-tellers read from a birth date are pulled by a real manse-ryeok (Korean almanac) engine and audited for stage DNA: a debut evaluation with actual(?) receipts. You'll also see what percent of all contestants you'd beat. Are you the 2 a.m. ballad main vocal, the main dancer who absorbs every spotlight, or… the one who walks into the audition and ends up in the judges' seats as an <strong>agency CEO</strong>?</p>
+
+<div class="panel" id="inputPanel">
+  <div class="row">
+    <div class="col" style="flex:2;min-width:160px">
+      <label class="f" for="nick">Name / nickname (optional)</label>
+      <input type="text" id="nick" maxlength="12" placeholder="Shown on your result card" autocomplete="off">
+    </div>
+  </div>
+  <div class="row" style="margin-top:14px">
+    <div class="col"><label class="f" for="by">Year</label><select id="by"></select></div>
+    <div class="col"><label class="f" for="bm">Month</label><select id="bm"></select></div>
+    <div class="col"><label class="f" for="bd">Day</label><select id="bd"></select></div>
+  </div>
+  <div class="row" style="margin-top:14px">
+    <div class="col" style="min-width:160px">
+      <label class="f" for="bt">Birth time (optional)</label>
+      <select id="bt"></select>
+    </div>
+  </div>
+  <p class="note" id="needPick" style="display:none;color:var(--accent)">Please select your birth year, month and day.</p>
+  <button type="button" class="go" id="goBtn">🎤 Reveal my position</button>
+  <p class="note">Use your solar (Gregorian) birthday. Nothing you enter is sent anywhere — everything is computed inside your browser.</p>
+</div>
+
+<div class="result hidden" id="res">
+  <p class="rk">IDOL POSITION REPORT</p>
+  <div class="roleImg" id="roleImgBox">
+    <span class="fbEmo" id="fbEmo"></span>
+    <img id="roleImg" alt="">
+  </div>
+  <p class="roleName" id="roleName"></p>
+  <p class="roleCatch" id="roleCatch"></p>
+  <div class="popBox">
+    <p class="popCap" id="popCap">Debut survival — final rank</p>
+    <div class="popNum"><small>#</small><span id="popNum">0</span></div>
+    <p class="tier" id="tierLine"></p>
+    <span class="topPct" id="topPct"></span>
+  </div>
+  <p class="ilju" id="iljuLine"></p>
+  <p class="desc" id="roleDesc"></p>
+  <p class="trace" id="traceLine"></p>
+  <div class="mates">
+    <div class="mate good"><span class="mk">BEST ON-TEAM CHEMISTRY</span><span id="mateGood"></span></div>
+    <div class="mate bad"><span class="mk">DORM BICKERING PARTNER</span><span id="mateBad"></span></div>
+  </div>
+  <div class="btns">
+    <button type="button" id="shareLink">🔗 Copy result link</button>
+    <button type="button" class="pri" id="shareCard">📸 Save result card</button>
+  </div>
+  <button type="button" class="retry" id="retryBtn">👀 What would your friend get? Try again</button>
+  <p class="copied" id="copied"></p>
+</div>
+
+<p class="gist">This test runs your birthday through a Korean almanac (manse-ryeok) engine to find your <strong>day pillar</strong> — the two characters assigned to the day you were born — and reads its top character, the <strong>day master</strong>, as one of 12 K-pop group positions. Your final debut-survival rank is a "stage-presence score" flipped upside down, built mostly from <strong>sik-sang (食傷)</strong>, the energy classical saju associates with expression, song and performance. The "top N% of all contestants" badge is a real percentile drawn from all 22,280 days between 1950 and 2010. There is no randomness anywhere in the pipeline, so the same birthday always returns the same position and the same rank.</p>
+
+<details class="fold" open><summary><h2>Saju, the eight characters, and your position</h2></summary><div class="fx">
+<p>Saju (四柱, "four pillars") is Korea's classical system for reading a person from their birth moment — the same family of astrology known as BaZi or Four Pillars of Destiny elsewhere in East Asia. Your birth <strong>year, month, day and hour</strong> each become one pillar, and each pillar is written with two characters: a <strong>heavenly stem</strong> on top (ten of them: Gap, Eul, Byeong, Jeong, Mu, Gi, Gyeong, Sin, Im, Gye) and an <strong>earthly branch</strong> below (twelve of them, the zodiac animals from Rat to Pig). Four pillars, two characters each — eight characters in all, which is why Koreans call a person's fate their "palja" (eight characters). Pairing stems and branches in order produces a repeating cycle of sixty combinations, the famous <strong>sexagenary cycle</strong>.</p>
+<p>The pillar for the day you were born is the <strong>day pillar</strong>, and its top character is the <strong>day master (ilgan, 日干)</strong>. Classical saju treats this one character as "you," and the other seven characters as the environment around you. That is why this test can assign a position from nothing but a birth date: the position comes from the day master, and the day master is fixed the moment you know the date.</p>
+<p>If you think about it, the idol-position concept runs on the same logic as saju. Seven members stand on one stage, but each has a different seat, and the leader's lines are not the main vocal's lines. Where saju looks for "you" among eight characters, an agency looks for your seat in the group inside a trainee's temperament. This page simply hands that casting meeting over to the almanac. If you want to see your actual eight characters, the <a href="/tools/manse/">manse-ryeok calculator</a> (Korean) computes the full chart down to the minute of each solar term.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>How the ten day masters become positions</h2></summary><div class="fx">
+<p>The ten heavenly stems are the five elements — Wood, Fire, Earth, Metal, Water — each split into a yang and a yin form. The same Wood behaves differently as yang Wood (Gap) and yin Wood (Eul). Below is how classical saju characterizes each day master, and which seat in the group this test cast it into. The same day master becomes a past life in the <a href="/en/tests/pastlife/">Past Life Test</a> and a Joseon-era job in the <a href="/en/tests/joseon/">Joseon Test</a> — change the world, and the role changes.</p>
+
+<h3>Gap (甲) &amp; Eul (乙) — the Wood day masters</h3>
+<p><strong>Gap</strong>, yang Wood, is the great tree growing straight toward the sky — timber for pillars and beams. Its upward drive and chief-of-the-pack temperament make it <strong>the Leader</strong>: the one who books the practice room, gives the award-show speech, and calls the group meeting when the team wobbles.</p>
+<p><strong>Eul</strong>, yin Wood, is the flower and the vine. It doesn't push head-on; it climbs around the wall, and it survives wherever it's planted. That flexibility reads as <strong>the Variety Star</strong> — drop this member on any show and they come back with screen time and new fans for the whole group.</p>
+
+<h3>Byeong (丙) &amp; Jeong (丁) — the Fire day masters</h3>
+<p><strong>Byeong</strong>, yang Fire, is the midday sun: a presence that cannot be hidden and carries far. On stage that is <strong>the Main Dancer</strong> — the member the choreography videos can't stop following, the one the comments say "I only see them."</p>
+<p><strong>Jeong</strong>, yin Fire, is the lantern and the candle. Instead of spreading wide like the sun, it shines on one spot, long and deep. That's <strong>the Main Vocal</strong> — the 2 a.m. acoustic live that silences a whole arena with one high note.</p>
+
+<h3>Mu (戊) &amp; Gi (己) — the Earth day masters</h3>
+<p><strong>Mu</strong>, yang Earth, is the mountain and the levee: broad, thick, hard to shake. Not the flashiest seat, but the one that keeps the whole stage balanced — <strong>the Sub Vocal &amp; Pillar</strong> of the group. When the members burn out, this is who they lean on.</p>
+<p><strong>Gi</strong>, yin Earth, is farm soil — the energy that grows and nurtures. It becomes <strong>the Fan Service Ace</strong>, the member who remembers every fan's username, runs every fansign into overtime, and single-handedly earns the fandom's favorite boast: "our group has the best personalities."</p>
+
+<h3>Gyeong (庚) &amp; Sin (辛) — the Metal day masters</h3>
+<p><strong>Gyeong</strong>, yang Metal, is raw iron, ore not yet refined — the kind that only gets harder when hammered. That's <strong>the Main Rapper</strong>: no trend-chasing, just a verse forged from raw stone that shifts the center of gravity of the whole track.</p>
+<p><strong>Sin</strong>, yin Metal, is the finished jewel — completed brilliance itself. It becomes <strong>the Visual</strong>: airport photos that make the news, face captures that circulate faster than the stage fancams.</p>
+
+<h3>Im (壬) &amp; Gye (癸) — the Water day masters</h3>
+<p><strong>Im</strong>, yang Water, is the sea and the great river: huge in scale, allergic to being boxed in. Vocals, dance, self-produced B-sides — that's <strong>the All-Rounder</strong>, the name that appears most often in the album credits.</p>
+<p><strong>Gye</strong>, yin Water, is rain, dew and night fog — the energy that seeps in silently. It becomes <strong>the Tone Fairy</strong>: eight bars in the second verse, and those eight bars refuse to leave your ears. The member behind every "skip to 3:12 and thank me later" comment.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>The eleventh and twelfth — the Center and the Agency CEO</h2></summary><div class="fx">
+<p>There are 12 positions rather than 10 because two extra conditions sit on top of the day master. The first is <strong>gwaegang (魁罡)</strong> — six specific day pillars out of the sixty (Mu-jin, Gyeong-jin, Im-jin, Mu-sul, Gyeong-sul, Im-sul) that classical saju calls "the chief star," an extreme and forceful energy. Born on one of these six day pillars, you are cast as <strong>the Stage-Destroying Center</strong> regardless of your day master — the ace who seizes the stage on charisma alone — and the formula adds 9 bonus points to your stage-presence score. Center energy pushes your rank up on paper too. Across the 22,280 days from 1950 to 2010, exactly 10% — 2,228 days — qualify.</p>
+<p>The second is <strong>the Agency CEO</strong>. This one is decided not by the day pillar but by the score itself: if your computed stage-presence score reaches 98 or higher, the test rules that you have too much star power to be an idol at all. You walk into the audition wearing a contestant number, and after a huddle, the judges pull out a chair for you at their table. Not one of the ninety-nine on stage — the one who casts the ninety-nine. Only 53 of the 22,280 days (about 0.2%) produce this, making it the rarest result in the test; if you drew the CEO, consider it a jackpot. Even a gwaegang day pillar becomes the CEO instead of the Center when the score clears 98 — you didn't just destroy the stage, you bought it.</p>
+<p>The <strong>best on-team chemistry</strong> and <strong>dorm bickering partner</strong> pairings under your result aren't element theory — they're matched by how two positions would actually rub against each other in one group. The Leader's best chemistry is the quiet Pillar who backs them up, and their bickering partner is the Main Rapper writing verses through the team meeting; the Main Vocal harmonizes with the Tone Fairy and gets their moody midnight live crashed by the Variety Star, and so on.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>How the final rank #1–99 is calculated</h2></summary><div class="fx">
+<p>The rank starts with a "stage-presence score," then flips it: <strong>rank = 100 − score</strong>. A score of 99 means final rank #1; a score of 1 means #99. This is the only test in the series where a low number is the good result, so read everything below in score terms. The rules are invented for this world — but they are the same rules for everyone.</p>
+<p><strong>1. Base score</strong> — your starting point depends on your day master's element: Wood 47, Fire 53, Earth 40, Metal 44, Water 49. The stage is a world of lights and heat, so Fire starts highest and steady Earth lowest. Earth day masters get the longevity talent instead — no reason to sulk about the starting line.</p>
+<p><strong>2. Relations with the other characters</strong> — the elements of your year, month and day branches (plus the hour branch, if you entered a birth time) are scored by their classical relation to your day master. <strong>Sik-sang (食傷), the energy you give birth to, is worth +8</strong> — the biggest bonus. In saju it stands for speech, song and expression, everything that moves from inside you to the outside, and no character maps to stage presence better. Then jae-seong (wealth, the element you control) +3 — the pull that gathers fandom and ticket sales; bi-geop (peers, your own element) +2 — teamwork; gwan-seong (authority, the element that controls you) −3 — the model student who freezes on camera; and in-seong (the element that gives birth to you) −5. In-seong is the character of desks and deep thought, a liability on a stage that demands a new expression every three seconds. For contrast, the <a href="/en/tests/pastlife/">Past Life Test</a> gives that same in-seong its maximum +7. Best asset for past-life memory, worst for stage instincts — the same character flips signs when the world changes.</p>
+<p><strong>3. Positional weights</strong> — the month branch is weighted ×1.8, the day branch ×1.2, the hour branch ×0.9, the year branch ×0.7. The month branch is the season of your birth and, in saju, the seat of your youth — and idol careers are bets placed on youth, so the month weighs most here. The year branch, the ancestral seat, weighs least for the same reason: survival shows don't ask about your family.</p>
+<p><strong>4. Yang/yin and gwaegang</strong> — yang day masters (Gap, Byeong, Mu, Gyeong, Im) get +3; yin day masters (Eul, Jeong, Gi, Sin, Gye) get −2. Yang stems radiate outward — stage constitution. The six gwaegang day pillars above add another +9.</p>
+<p><strong>5. Scatter</strong> — with only the steps above, identical day pillars would bunch together. So the birth-date string is fed through a fixed hash function to produce two offsets, up to ±27 and ±6. These are not random numbers — they are computed from the date, so the same date always gets the same offsets.</p>
+<p>Finally, anything above 93 points is compressed to 0.45×, and anything below 8 is halved, clamping the score into 1–99. The top is squeezed harder because 98+ triggers the CEO verdict — the threshold is meant to stay rare. Subtract the score from 100 and you have your final rank. Run over every date from 1950 to 2010, the mean rank is #48.3 and the median #48, and both extremes — #1 and #99 — genuinely occur.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>Where "top N% of all contestants" comes from</h2></summary><div class="fx">
+<p>The "top N% of all contestants" on your result screen is not a comparison with other people who took this test. Your input never leaves the browser, so there would be no way to build one. Instead, a precomputed percentile table ships inside this page.</p>
+<p>Here's how it was built. For <strong>every one of the 22,280 days from January 1, 1950 to December 31, 2010</strong>, the final rank was computed with birth time unknown. Then for each rank from #1 to #99, we counted what share of all dates (in permille) lands at that rank or better, and stored the 99 numbers. Your result screen just looks your rank up in that table. Since a smaller rank number is the better result in this test, a smaller number means a higher "top N%."</p>
+<p>A few reference points: final rank #48 sits right at the median; 8.9% of all dates make the top 20, 2.7% the top 10, 1% the top 5. Drop below the top 50% — rank numbers greater than 50 — and the badge turns violet and flips into "top N% comeback potential." The lower half of the leaderboard is classified as the slow-burn comeback type that flips the charts three years after debut, so on that side, the bigger your rank number, the higher your comeback-potential percentile. Either way, you have something to brag about.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>Why the same birthday always gets the same result</h2></summary><div class="fx">
+<p>No random function is used anywhere in producing your result. Every value on the screen is computed from your birth date (and the optional birth time).</p>
+<p>The sequence: your birth date is converted to a running day number, and its remainder mod 60 fixes the day pillar — the sexagenary cycle repeats every sixty days without exception. The year and month pillars are trickier. In saju, the year changes not on January 1 and not on Lunar New Year but at <strong>ipchun</strong>, the "start of spring" solar term, and the month rolls over at each of the twelve major solar terms. This page embeds a table of solar-term times, minute-precise, from 1900 onward — so for someone born in early February, it checks the clock, not just the calendar, to decide whether their year pillar is still the old year or already the new one.</p>
+<p>Apply the formula above to the resulting eight (or six, without a birth time) characters and the score falls out; the final scatter offsets also come from a hash of the date string. The upshot: any day, any device, the same birthday produces the same position and the same rank. Which is exactly what you need if racking your rank against your friends is going to mean anything.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>FAQ</h2></summary><div class="fx">
+<h3>My birthday is on the lunar calendar. Can I enter it as-is?</h3>
+<p>No — the input expects the solar (Gregorian) date. If you only know a lunar birthday, convert it to a solar date first (the Korean <a href="/tools/lunar/">lunar–solar converter</a> can do it). The almanac math runs on solar terms — the sun's position — not lunar dates, so feeding it a lunar date shifts the whole chart by up to a month.</p>
+<h3>Does not knowing my birth time change the result?</h3>
+<p>The position usually stays put: it's decided by the day pillar, and the day pillar depends only on the date. The rank is what moves. Enter a time and the hour branch joins the formula at ×0.9 weight, and the hash input that generates the scatter changes too. In practice the rank shifts by about 18 places on average with versus without a time. Leave it blank and noon is used as the representative time. The exception is the Agency CEO: the birth time can push a score across the 98-point threshold, so on some dates the CEO verdict comes and goes with the hour.</p>
+<h3>Another saju calculator gives me a different chart</h3>
+<p>This test computes with exactly one convention and no options. Birth time is taken only as one of twelve two-hour branches, using each slot's midpoint; there is no 30-minute standard-time correction and no late-Rat-hour school setting (whether 11 p.m.+ counts as the next day's pillar). The day pillar is fixed by the date alone, regardless of time. So if you were born around 11 p.m. or on the day of a solar term, a full-featured almanac may disagree. For a boundary-accurate chart use the <a href="/tools/manse/">manse-ryeok calculator</a> (Korean) — it applies term times to the minute and lets you toggle both conventions.</p>
+<h3>My rank came out way at the back (a big number)</h3>
+<p>The items that push a rank backward are in-seong (the element that gives birth to your day master, −5 per character) and gwan-seong (the element that controls it, −3). The more thoughtful and rule-abiding the chart, the worse it fares in front of survival-show cameras — that's the setting. But a back-row rank on this scale is not elimination. As debut-survival history keeps proving, the finale leaderboard and the charts three years later are different questions. From #51 down you're classified as the <strong>slow-burn comeback type</strong> — the one whose old fancam rides the algorithm three years post-debut and flips the charts — and your badge flips to "top N% comeback potential" accordingly.</p>
+<h3>Does the share link contain my birthday?</h3>
+<p>No. The link carries a single number that packs exactly four display values: position id, final rank, top %, and day-pillar index. Your birth date and time are not in it and cannot be reverse-engineered from it. Whoever opens your link sees only your result screen.</p>
+<h3>I'm preparing for a real audition. Should I factor this in?</h3>
+<p>Please don't. This test has zero connection to real auditions, casting or aptitude. The rank and position are just numbers from the formula published above, and no agency casts trainees by almanac (probably). The almanac part itself is real, though — the day pillar on your screen is genuine calendar data. What an audition needs is a practice room, not a birth chart; what this page guarantees is only the fun of racking ranks with friends between practice sessions.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>How seriously should you take this?</h2></summary><div class="fx">
+<p>If you've read this far you've guessed: this is <strong>entertainment content</strong>. The almanac layer is a real computation over real solar-term data, but every rule that turns eight characters into idol positions and survival ranks was invented by this page. There is no "stage-presence score" in classical saju, and no school of it computes debut rankings. Results have nothing to do with real auditions, casting, aptitude or career choices.</p>
+<p>One more thing: there are no losers among these 12 positions. Leader, Tone Fairy or CEO — every seat is one a group can't function without, and even #99 is not elimination but episode one of a comeback arc. That's what a debut evaluation is for — nobody shares a report card that says "neither pass nor fail." If the saju side hooked you, the <a href="/tools/manse/">manse-ryeok calculator</a> (Korean) will show you your actual eight characters.</p>
+</div></details>
+
+<div class="basis">
+  <h2>Visit your other lives while you're here</h2>
+  <p>🐉 <a href="/en/tests/guardian/">Which divine beast protects you? — Guardian Spirit Test</a></p>
+  <p>🔮 <a href="/en/tests/pastlife/">Who were you in your past life? — Past Life Test</a></p>
+  <p>🪶 <a href="/en/tests/joseon/">Born in the Joseon Dynasty, what would you be? — Joseon Job Test</a></p>
+  <p>🧟 <a href="/en/tests/zombie/">When the zombie outbreak hits, what's your role? — Survival Rate Test</a></p>
+  <p>🌙 <a href="/en/tests/isekai/">How popular would you be in another world? — Isekai Popularity Test</a></p>
+  <p>🤖 <a href="/en/tests/robot/">If you woke up as an AI robot? — Robot Type Test</a></p>
+  <p>Same birthday, different world — different fate.</p>
+</div>
+
+<footer>
+  <p>This test is entertainment content. Positions, ranks and percentages have no connection to real auditions or aptitude and guarantee nothing.</p>
+  <p>Magpie Tests · All computation happens in your browser; nothing you enter is transmitted anywhere.</p>
+  <p><a href="/">Home</a> · <a href="/en/tests/">All tests</a> · <a href="/en/tools/">Tools</a> · <a href="/en/disclaimer.html">Disclaimer</a> · <a href="/privacy-policy.html">Privacy Policy</a></p>
+</footer>
+
+</div>
+
+<script>
+/*CORE:S*/
+/* -- Manse-ryeok core (year/month/day pillars) -- ported from the /tools/manse/ engine.
+   Same solar-term time table and JDN day-pillar formula. Verified against KASI day records. */
+var JD_ENC="0y0n41s0dy2m0n53h0d74c0l35712m630er6y0it7t03p8n07s9g0yw0503g0y0ws1s0nn2m0wx3h0n34c0v15808k630om6y0sm7t0dj8n0hn9h04t050d50z02q1s0xk2n02q3h0wr4d00k580hy630xy6y11z7t0mx8n0r69h0eh050n40z0cj1t03b2n0ce3i02e4d0a7580rp6403s6z07u7t0wu8n1119h0ob050ww0z0mc1t0d42n0m73i0c74d0k15811k640do6z0hq7u02o8o06t9h0y10602p0y0w41s0my2m0w33h0m24c0tu58078630n96y0ra7t0c88n0ge9h03n050cf0z01s1s0wo2n01v3h0vx4c13p580h3630x46y1147t0m38n0qb9h0dl050m20z0bn1t02f2n0bj3i01i4d099580qn6402o6z06q7t0vr8n1009h0nb050w00z0lb1t0c22n0ly3i0bx4d0jp58116640d96z0ha7u0298o06g9h0xq0601p0y0vr1s0mj2m0vo3h0lp4c0tk58072630n56y0r57t0c18n0g79h03h050c30z01m1s0wf2n01h3h0ve4c133580gf630wf6y10g7t0lf8n0po9h0cz050lw0z0b41t01x2n0az3i00v4d08k580pz640226z0677t0v98n0zh9h0mq050vf0z0li1t0c92n0lc3i0bb4d0j45810l640cp6z0gu7u01v8o0639h0xb0601w0y0v71s0lx2m0v03h0kz4c0sq58063630m46y0q67t0b88n0fi9h02t050bm0z00t1s0vk2n00m3h0uk4c12c580fr630vt6y0zx7t0kz8n0pb9h0cp050l70z0aq1t01c2n0a93i0034d07s580p86401c6z05h7t0ul8n0yy9h0mc050v40z0ke1t0b22n0jy3i09q4d0he580yu640az6z0f57u0088o04i9h0vu0600s0y0ty1s0kp2m0tq3h0jm4c0rb5804q630ku6y0oz7t0a28n0ed9h01p050aa0y13t1s0ul2m13l3h0te4c10z580e8630u76y0yb7t0jg8n0nv9h0ba050k40z09f1t0062n0953h12y4d06l580nx6313y6z0447t0t98n0xo9h0l2050ts0z0j31t09r2n0ir3i08o4d0gf580xv6409y6z0e37t1358o03h9h0uu0513h0y0sw1s0jl2m0sl3h0ig4c0q65803j630jk6y0nm7t08n8n0cy9h00b0509a0y12j1s0ta2m12a3h0s54c0zu580da630td6y0xi7t0il8n0mx9h0ab050it0z08d1s1312n07y3h11q4d05e580mu631316z0397t0sf8n0ws9h0k5050sq0z0i21t08p2n0hl3i07e4d0f2580wh6408o6z0cy7t1248o02h9h0tt0512i0y0rp1s0ic2m0rb3h0h64c0ox5802d630ij6y0ms7t0808n0ce9g13s050850y11q1s0sc2m1163h0qx4c0yi580bu630rw6y0w47t0hd8n0lw9h09f050i60z07i1s1222n06u3h10h4d041580le6311j6z01t7t0r38n0vl9h0j2050rx0z0h51t07p2n0gj3i0684d0dt580v86407g6z0bq7t10y8o01e9h0st0511j0y0qx1s0hk2m0qf3h0g54c0nn5800w630gx6y0l47t06b8n0as9g1280507a0y10f1s0r52m1023h0pr4c0xa580ak630ql6y0us7t0g28n0kk9h083050gr0z0651s10q2n05l3h0za4d02u580k6631096z00h7t0pr8n0ua9h0hs050qk0z0fu1t06e2n0f63i04v4d0cg580ts6405w6z0a37t0za8n13q9h0r6051090y0p91s0fw2m0or3h0ei4c0m65713l630fq6y0jy7t0548n09j9g10z0505n0y0z41s0pq2m0yk3h0o74c0vq58091630p46y0tc7t0el8n0j39h06l050fh0z04p1s0za2n0423h0xo4d016580ii630yo6y1307t0oc8n0su9h0g9050p20z0e51t04p2n0dj3i0394d0av580sa6404j6z08x7t0y98n12r9h0q6050yn0y0o21s0el2m0ne3h0d34c0kn5711y630e16y0ib7t03n8n0879g0zq0504k0y0xr1s0oa2m0x13h0mn4c0u75807j630np6y0s07t0dd8n0i09h05m050e70z03n1s0y22n02q3h0w94c13s580h6630xf6y11u7t0n98n0rw9h0fh050o40z0dk1t0402n0cn3i0244d09k580qw640346z07h7t0wu8n11f9h0oy050y00y0n21s0dm2m0md3h0by4c0jf5710r630cy6y0hc7t02q8n07c9g0yw0503g0y0x11s0nl2m0wc3h0lv4c0t95806g630mi6y0qu7t0ca8n0gz9h04n050de0z02s1s0xb2n01z3h0vi4c12v580g3630w66y10j7t0ly8n0qn9h0e9050n70z0cb1t02t2n0bi3i0144d08n580q0640276z06k7t0vx8n10j9h0o4050wr0y0m81s0cq2m0lg3h0b14c0ii570zr630bt6y0g27t01d8n05y9g0xk0502n0y0vs1s0md2m0v33h0km4c0s15805b630lg6y0pr7t0b58n0fr9h03c050c40z01e1s0vw2n00k3h0u34c11j580ew630v56y0zl7t0l18n0po9h0d8050lu0z0b61t01m2n0aa3h13s4d078580ok6400q6z0557t0uk8n0z79h0mq050vo0y0kn1s0b32m0js3h09d4c0gv570y8630af6y0eu7t00b8n0509g0wl050150y0ul1s0kz2m0tl3h0j14c0qf5803p630jv6y0oa7t09s8n0ek9h02a050b30z00e1s0ur2m1393h0sl4c0zx580d6630td6y0xu7t0jc8n0o39h0bq050ku0z09t1t0072n08r3h1264d05k580mx631376z03q7t0t88n0xy9h0lk050ua0y0jm1s0a32m0ip3h0844c0fg570wn6308r6y0d57s12m8n03d9g0v1050020y0t71s0jp2m0rh3h0gw4c0o75801d630hh6y0lw7t07f8n0c99g13y0509l0y1201s0sd2m10x3h0qc4c0xp580b0630r86y0vq7t0ha8n0m39h09t050ii0z07u1s1272n06p3h1044d03i580ks6310y6z01d7t0qu8n0vk9h0j8050sc0y0hd1s07s2m0gd3h05s4c0d7570ui6306q6y0b67s10o8n01e9g0t20411t0y0r71s0hn2m0q63h0fj4c0mu58003630gb6y0kt7t06d8n0b69g12w0507m0y1101s0rf2m0zx3h0p94c0wi5809q630py6y0ui7t0g48n0kw9h08j050hg0z06h1s10u2n05e3h0yt4d027580jj630zu6z00f7t0q38n0uw9h0ik050r10y0gg1s06t2m0fc3h04r4c0c4570td6305i6y0at7s10f8n01a9g0t2041110y0r51s0hi2m0py3h0fa4c0mj5713r630fy6y0kf7t0628n0az9g12t0507n0y10w1s0r52m0zj3h0os4c0w25809e630pp6y0uc7t0g08n0kw9h08p050hf0z06t1s1142n05i3h0yr4d020580j8630zg6y13z7t0pl8n0uf9h0i5050ra0y0ga1s06p2m0f73h04i4c0bq570sx630556y09o7s0zb8n0069g0rx0410q0y0q21s0gf2m0ox3h0e74c0le5712j630ep6y0j87t04x8n09v9g11q0506i0y0zv1s0q62m0yl3h0nu4c0v058085630ob6y0su7t0eh8n0jd9h076050gc0z0581s0zi2n03x3h0x84d00j580hu630y36y12n7t0oa8n0t59h0gw050pq0y0ez1s05b2m0dr3h0324c0ac570rk6303q6y0877s0xt8m12n9g0qf040zh0y0om1s0ez2m0ne3h0cm4c0js5710y630d66y0hq7t03e8n08a9g101050520y0y21s0ob2m0wo3h0lw4c0t55806f630ms6y0ri7t0db8n0i99h060050el0z03w1s0y42n02h3h0vp4c12y580g7630wh6y1137t0mu8n0rr9h0fj050oi0y0dg1s03p2m0c23h01b4c08j570pr630216y06n7s0wf8m11f9g0pa040y10y0nc1s0dj2m0lt3h0ay4c0i4570zb630bl6y0g97t0238n0769g0z50503w0y0xb1s0ni2m0vq3h0kr4c0ru5804z630l96y0px7t0bq8n0gr9h04m050du0z02s1s0x02n01b3h0uf4c11j580er630v26y0zs7t0lm8n0qn9h0eh050n90y0cl1s02w2m0ba3h00g4c07k570oo6300u6y05g7s0v88m10a9g0o7040x30y0mf1s0cq2m0l33h0a94c0hb570yd630ai6y0f27t00v8n05y9g0xw0502v0y0w01s0m82m0ui3h0jn4c0qt58041630kb6y0p07t0au8n0fx9h03u050ck0z01y1s0w52n00f3h0tl4c10s580e0630u96y0yt7t0kj8n0pi9h0dd050mh0y0bj1s01t2m0a53g13b4c06h570no6213x6y04j7s0u98m0z89g0n3040w10y0l91s0bj2m0jt3h08w4c0g0570x76309i6y0e87t0028n0549g0x00501r0y0v41s0lb2m0tk3h0in4c0pq5802v630j66y0nw7t09r8n0es9h02m050bn0z00j1s0up2m12y3h0s34c0z9580ch630su6y0xm7t0ji8n0ol9h0cg050l50y0ac1s00g2m08q3g11v4c050570m76212g6y0357s0t08m0y59g0m4040uz0y0k81s0ac2m0ii3h07j4c0ek570vp6307y6y0cn7s12j8n03p9g0vp0500s0y0ts1s0ju2m0rw3h0gu4c0nv58013630hh6y0mc7t08c8n0di9h01g050ad0y13j1s0tn2m11r3h0qq4c0xr580ax630r86y0vz7t0hw8n0n19h0ay050k40y0931r13a2m07i3g10i4c03h570kj6210s6y01i7s0rf8m0wm9g0kl040tm0y0iq1s08v2m0h13h0604c0cy570u0630696y0b17s1128n02c9g0ue041390y0sk1s0io2m0qt3h0fr4c0mq5713t630g16y0kr7t06p8n0bw9g13w050940y1201s0s42m1093h0p94c0wa5809g630pr6y0ui7t0gf8n0ll9h09k050il0y07p1r11v2m0613g0z24c023570j8620zi6y0087s0q48m0v99g0ja040s80y0hj1s07q2m0fw3h04u4c0bt570sv630546y09v7s0zt8n00z9g0sz041200y0r11s0h42m0p83h0e64c0l65712d630es6y0jp7t05r8n0b09g12y0507m0y10w1s0qy2m0z23h0o24c0v55808c630op6y0ti7t0fj8n0kr9h08q050hj0y06q1r10s2m04w3g0xw4c00x570i1620yc6x1357s0p58m0ue9g0ih040rc0y0gl1s06l2m0el3h03f4c0ae570ri6303w6y08s7s0yw8n0089g0se041160y0ql1s0gm2m0ol3h0dd4c0k95711d630dq6y0im7t04o8n09y9g120050750y1041s0q72m0y83h0n24c0tz58072630nf6y0sb7t0ee8n0jo9h07p050gp0y05t1r0zx2m0413g0wx4b13u570gv620x46x11y7s0o18m0td9g0hh040qd0y0fo1s05s2m0du3h02p4c09l570qk6302r6y07j7s0xl8m12y9g0r2041080y0p61s0f52m0n53h0bz4c0iw57100630cc6y0h87t03d8n08p9g10t0505s0y0yw1s0ow2m0wv3h0lr4c0sq5805v630m86y0r17t0d18n0ib9h06d050fj0y04j1r0yl2m02m3g0vh4b12e570fh620vr6x10l7s0ml8m0ru9g0fx040p30y0e31s0452m0c43h00v4c07p570or630156y0637s0w98m11n9g0pr040yn0y0nu1s0du2m0lt3h0ak4c0hf570yi630av6y0ft7t0208n07c9g0ze0504g0y0xc1s0nb2m0va3h0k44c0r058043630kg6y0pe7t0bl8n0gz9h052050e10y0321r0x02m00y3g0tr4b10n570dq620u16x0yy7s0l48m0qk9g0es040nq0y0d01s02y2m0av3g13k4c06d570ne6213p6y04l7s0ur8m1079g0oe040xl0y0ml1s0ci2m0kc3h08z4c0fr570wu630996y0ea7t00j8n05z9g0y5050370y0wa1s0m92m0u63h0iw4c0pq5802t630j76y0o57t0ac8n0fq9h03v050cw0y0211r0w32m0033g0su4b0zn570cn620sw6x0xs7s0jy8m0pe9g0dl040mm0y0br1s01q2m09n3g12b4c053570m36212f6y03d7s0to8m0z79g0ng040wc0y0ln1s0bk2m0jf3h0854c0ey570w06308d6y0dc7s13j8n04z9g0x5050290y0va1s0l82m0t43h0hu4c0op5801r630i56y0n37t0998n0eo9h02t050bw0y00y1r0ux2l12t3g0rj4b0yd570bf620rs6x0wr7s0iy8m0oe9g0cl040lk0y0at1s00s2m08p3g11d4c045570l66211j6y02i7s0sr8m0y89g0me040vd0y0ke1s0aa2m0i33h06r4c0di570ul630716y0c57s12i8n0409g0w6050130y0u31s0jx2m0rq3h0gg4c0na5800e630gu6y0lw7t0878n0dq9h01x050au0x13z1r0tu2l11n3g0qb4b0x4570a5620qi6x0vh7s0hr8m0nb9g0bl040kn0y09r1r13k2m0783g0zq4c02e570je620zt6y00w7s0ra8m0wx9g0la040ue0y0jj1s09c2m0h13h05j4c0c6570t76305n6y0ar7s1148n02o9g0ux050050y0t31s0iz2m0qq3h0fa4c0ly5712w630f96y0kb7t06o8n0c89h00h0509p0x12m1r0sj2l10d3g0ox4b0vl5708h620or6x0ts7s0g58m0ls9g0a4040j90y08e1r12b2m0643g0yp4c01c570i9620yj6x13h7s0pt8m0vg9g0js040sz0y0hy1s07r2m0fh3h0414c0aq570rp630436y0947s0zh8n0129g0td0412m0y0rj1s0hd2m0p33h0do4c0kg5711i630dx6y0iy7t0588n0ar9g131050870x1191r0r52l0yy3g0nk4b0ua5707a620no6x0so7s0ey8m0kh9g08q040hu0y06w1r10r2m04h3g0wy4b13k570gj620wz6x1257s0ol8m0u89g0ij040ri0y0gm1s06f2m0e43h02n4c09c570qd6302v6y0827s0yj8n0059g0sf0411b0y0qd1s0g42m0nt3h0ce4c0j457105630cl6y0hq7t0468n09u9g125050740x1051r0pw2l0xk3g0m24b0sp5705p620m46x0r87s0dq8m0jh9g07x040gw0y0651r0zw2m03i3g0vx4b12i570fh620vx6x1127s0nj8m0t99g0hp040qs0y0fw1s05m2m0d63h01j4c083570p16301i6y06q7s0x98m1309g0rd0410k0y0pk1s0fc2m0my3h0bd4c0hz570yx630bd6y0gj7t0318n08q9g114050670x0zb1r0p62l0ww3g0ld4b0rz5704v620l76x0q97s0cq8m0ig9g06v040fy0y0531r0yv2m02h3g0uv4b11d570e8620ul6x0zq7s0m98m0s39g0gk040pr0y0et1s04j2m0c43h00i4c073570o26300i6y05o7s0w58m11v9g0q9040zg0y0og1s0e72m0lt3h0a94c0gw570xv630aa6y0fe7t01t8n07h9g0zu050530x0y11r0nu2l0vg3g0ju4b0qe5703a620jo6x0ot7s0bb8m0h19g05g040eo0y03p1r0xi2m0143g0tj4b102570cz620tf6x0yl7s0l48m0qv9g0f9040ob0y0db1s0302m0ak3g12y4c05i570mg6212x6y0467s0ur8m10k9g0ox040y10y0mw1s0cj2m0k33h08h4c0f4570w46308k6y0ds7t00d8n0669g0yl0503o0x0wo1r0md2l0tx3g0ib4b0ox5701w620ib6x0nh7s0a08m0ft9g04b040de0y02j1r0w62l13l3g0rs4b0y8570b4620rl6x0wv7s0ji8m0pe9g0dx040n80y0c61s01t2m0993g11g4c03x570ku6211e6y02q7s0td8m0z79g0nn040wu0y0ls1s0bi2m0j13h07c4c0du570ur630776y0cg7s1328n04x9g0xc0502h0x0vh1r0l72l0sq3g0h04b0nf57009620gm6x0lt7s08h8m0ee9g02y040c60y0181r0ux2l12f3g0qq4b0x6570a1620qg6x0vo7s0ic8m0o99g0ct040lw0y0b01s00m2m0813g10b4c02s570jp621056y01f7s0s28m0xy9g0mg040vq0y0kn1s0a92m0hp3h05z4c0ch570tg6305x6y0b67s11r8n03l9g0w30501c0x0ud1r0k32l0rm3g0fx4b0mf5613d620fu6x0l27s07o8m0di9g020040b00y0081r0tv2l11b3g0pi4b0vv5708p620p76x0uj7s0ha8m0n89g0br040kw0y09v1r13h2m06w3g0z44c01k570ih620z16y00f7s0r78m0x49g0lm040um0y0jn1s0982m0go3h04y4c0bg570se6304w6y0a77s10x8n02v9g0vf0500f0x0ti1r0j32l0qg3g0em4b0l05611u620ea6x0jk7s06a8m0ca9g00y040aa0x13a1r0sw2l1083g0oc4b0uo5707j620o16x0te7s0g58m0m59g0ar040jy0y0901r12k2m05w3g0y04c00c570h7620xo6x1327s0pu8m0vt9g0kd040tp0y0ik1s0862m0fj3h03p4c0a1570qv6303b6y08m7s0zd8n01d9g0tx0413a0x0s61r0ht2l0pa3g0di4b0jw5610q620d56x0ie7s0548m0b49f13q0408u0x11z1r0rj2l0yv3g0mz4b0ta57062620mh6x0rs7s0ek8m0km9g09a040io0y07j1r1122m04d3g0wg4b12t570fp620w86x11l7s0od8m0uc9g0iw040s90y0h31s06n2m0e03h0264c08m570pj630226y07e7s0y48n0019g0sl0411t0x0qr1r0gd2l0nq3g0bt4b0i4560yw620bd6x0gq7s03i8m09i9f1240407h0x10d1r0py2l0x93g0lc4b0ro5704i620l16x0qh7s0dd8m0jf9g080040h20y0611r0zi2m02s3g0uw4b119570e5620up6x1067s0n38m0t69g0hs040qv0y0ft1s0592m0ch3h00k4c06x570nt6300b6y05p7s0wl8m12p9g0re0410n0x0pl1r0f22l0mc3g0ae4b0gr560xn620a66x0fk7s02f8m08j9f11a0406c0x0zl1r0p22l0w73g0k44b0qc57034620jm6x0p37s0c18m0i79g06y040gb0y05a1r0ys2m01y3g0tv4b102570cu620tf6x0yx7s0lw8m0s09g0go040q00y0ex1s04h2m0br3g13t4c064570mx6213f6y04v7s0vr8m11v9g0qk040zn0x0os1r0ec2l0ln3g09n4b0fu560wi6208w6x0e97s0158m07c9f1040405i0x0yh1r0o02l0v93g0j94b0ph57029620ip6x0o47s0b18m0h79g05y040f60y0461r0xn2m00v3g0sv4b0z6570c1620sk6x0xz7s0kv8m0qz9g0fo040ox0y0dv1s03c2m0ak3g12k4c04u570lo621266y03k7s0ue8m10h9g0p5040yn0x0nf1r0cy2l0k83g08a4b0ek560ve6207y6x0df7s00a8m06e9f0z2040440x0x91r0mp2l0tw3g0ht4b0o05700s620hc6x0mv7s09w8m0g39g04s040e00y02v1r0w92l13d3g0ra4b0xi570ab620qx6x0wi7s0jj8m0pr9g0eg040np0y0cg1s01t2m08y3g10y4c039570k56210r6y02a7s0ta8m0zi9g0o9040xb0x0me1r0bq2l0it3g06o4b0ct560tj620616x0bi7r12i8m04s9f0xn040380x0w01r0le2l0sf3g0g74b0ma56131620fl6x0l67s0898m0ek9g03d040cq0y01m1r0v02l1223g0pv4b0w05708r620pc6x0uy7s0i18m0ob9g0d3040me0y0ba1s00p2m07s3g0zn4c01q570if620yw6y00e7s0rf8m0xp9g0mj040w30x0kt1r0aa2l0hg3g05d4b0bi560s86204p6x0a77r1188m03j9f0wf0401k0x0uq1r0k32l0r53g0ez4b0l25611s620e96x0js7s06v8m0d79g023040bh0y00f1r0ts2l10s3g0ok4b0uo5707g620o06x0tk7s0gl8m0mv9g0bo040l60y09y1r13d2m06g3g0yc4c00k570he620xz6x13k7s0qk8m0ws9g0lk040up0x0ju1r09a2l0ge3g0484b0aa560qz6203g6x0907r1028m02c9f0v70400l0x0ti1r0ix2l0q03g0ds4b0jv5610k620d46x0ir7s05x8m0ca9g013040a80x1361r0si2l0zk3g0nf4b0tl5706f620n16x0sp7s0fv8m0m89g0b2040k20y0941r12e2m05e3g0x84b13d570g5620wo6x1287s0pb8m0vo9g0kl040u00x0iu1r0862l0f63g02y4b092560pu6202f6x0817r0z68m01j9f0uh0313n0x0st1r0i32l0p03g0cn4b0io560ze620bz6x0ho7s04v8m0ba9g0080409k0x12j1r0ru2l0yr3g0me4b0sc57051620lm6x0rb7s0ei8m0kw9g09r040jb0y07y1r11b2m04b3g0w34b126570ew620vh6x1157s0ob8m0uq9g0jl040ss0x0hu1r0762l0e63g01w4b07v560oh6200x6x06h7r0xm8m0039f0t30312m0x0rg1r0gs2l0np3g0bc4b0hb560xy620ag6x0g27s0398m09q9f12o040880x10x1r0q62l0x33g0kt4b0qw5703n620ka6x0py7s0d48m0ji9g08f040hr0y06o1r0zy2m02v3g0ul4b10m570db620tu6x0zf7s0mj8m0sw9g0hs040rh";
+var JY0=1900;
+var GAN=["Gap","Eul","Byeong","Jeong","Mu","Gi","Gyeong","Sin","Im","Gye"],
+    JI=["ja","chuk","in","myo","jin","sa","o","mi","sin","yu","sul","hae"];
+var GANH="甲乙丙丁戊己庚辛壬癸", JIH="子丑寅卯辰巳午未申酉戌亥";
+function jieOf(y,idx){
+  var s=JD_ENC.substr(((y-JY0)*12+idx)*5,5);
+  var doy=parseInt(s.substr(0,2),36), mn=parseInt(s.substr(2,3),36);
+  var dt=new Date(Date.UTC(y,0,1+doy));
+  return {m:dt.getUTCMonth()+1, d:dt.getUTCDate(), min:mn};
+}
+function cmpJie(y,m,d,mn,idx){
+  var j=jieOf(y,idx);
+  if(m!==j.m) return m>j.m?1:-1;
+  if(d!==j.d) return d>j.d?1:-1;
+  return mn>=j.min?1:-1;
+}
+function yearPillarIdx(y,m,d,mn){
+  var sy=y;
+  if(cmpJie(y,m,d,mn,0)<0) sy=y-1;
+  return {sy:sy, idx:((sy-4)%60+60)%60};
+}
+function monthPillar(y,m,d,mn){
+  var CHRONO=[11,0,1,2,3,4,5,6,7,8,9,10];
+  var mi=-1;
+  for(var k=0;k<12;k++){ var i=CHRONO[k]; if(cmpJie(y,m,d,mn,i)>0) mi=i; else break; }
+  if(mi<0) mi=10;
+  var yp=yearPillarIdx(y,m,d,mn);
+  var yGan=yp.idx%10;
+  var inGan=[2,4,6,8,0][yGan%5];
+  var gan=(inGan+mi)%10;
+  var ji=(mi+2)%12;
+  return {gan:gan, ji:ji, mi:mi};
+}
+function jdn2(y,m,d){ if(m<=2){y--;m+=12;} var a=Math.floor(y/100),b=2-a+Math.floor(a/4);
+  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+b-1524; }
+function dayPillarIdx(y,m,d){
+  var n=jdn2(y,m,d);
+  return ((n+49)%60+60)%60;
+}
+
+/* -- stage-presence score & final-rank formula (weights/seed distinct from the other 5 tests) -- */
+var ELG=[0,0,1,1,2,2,3,3,4,4];              /* stem elements */
+var ELJ=[4,2,0,0,2,1,1,2,3,3,2,4];          /* branch elements */
+var GWI={4:1,16:1,28:1,34:1,46:1,58:1};     /* gwaegang: Mujin Gyeongjin Imjin Musul Gyeongsul Imsul */
+var BASE_K=[47,53,40,44,49];                /* base score per day-master element: Wood Fire Earth Metal Water -- stage Fire tops */
+var RELS_K=[2,8,3,-3,-5];                   /* peers / output / wealth / authority / resource -- sik-sang (expression) is the source of stage DNA */
+function hash32(s){var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+/* t: 0 = time unknown, 1..12 = Rat..Pig hours */
+function pillarsOf(y,m,d,t){
+  var mn = t ? ((t-1)*120+30)%1440 : 720;
+  var yp=yearPillarIdx(y,m,d,mn);
+  var mp=monthPillar(y,m,d,mn);
+  var dp=dayPillarIdx(y,m,d);
+  return {yp:yp.idx, mp:mp.ji, mpg:mp.gan, dp:dp};
+}
+/* stage-presence score 1-99 -- higher = more stage DNA */
+function talent(y,m,d,t){
+  var P=pillarsOf(y,m,d,t);
+  var dg=P.dp%10, de=ELG[dg];
+  var s=BASE_K[de];
+  function rel(bj){ return RELS_K[((ELJ[bj]-de)%5+5)%5]; }
+  s += rel(P.mp)*1.8 + rel(P.dp%12)*1.2 + rel(P.yp%12)*0.7;
+  if(t) s += rel(t-1)*0.9;
+  s += (dg%2===0)?3:-2;                     /* yang stems radiate outward */
+  if(GWI[P.dp]) s += 9;                     /* gwaegang -- the Center's charisma gets formula backing too */
+  var h=hash32('id:'+y+'-'+m+'-'+d+'-'+(t||'x'));
+  s += ((h%3989)/3988-0.5)*54;
+  s += (((h>>>11)%1013)/1012-0.5)*12;
+  if(s>93) s=93+(s-93)*0.45;                /* squeeze the top so the CEO (98+) stays rare */
+  if(s<8)  s=8-(8-s)*0.5;
+  s=Math.round(s);
+  return s<1?1:(s>99?99:s);
+}
+/* final rank 1-99 -- the score flipped; the only series number where lower is better */
+function rankOf(y,m,d,t){ return 100-talent(y,m,d,t); }
+/* top-% table: share (permille) of all dates 1950-01-01..2010-12-31 (time unknown)
+   at final rank r (1-99) or better. Generated by real computation at build time. */
+var TOPP=[2,2,4,6,10,14,18,21,24,27,32,37,42,46,52,59,66,74,81,89,99,109,118,129,140,152,166,179,192,206,219,233,248,262,279,296,313,328,344,359,377,395,412,430,447,466,485,503,521,539,556,572,590,609,627,643,661,679,695,710,725,740,755,770,785,799,813,826,839,853,865,876,887,896,905,914,922,930,937,944,950,957,962,967,972,976,980,984,986,988,990,993,996,998,998,999,1000,1000,1000];
+function topPct(r){ var pm=TOPP[r-1]; var p=Math.round(pm/10); return p<1?1:(p>100?100:p); }
+
+/* -- result value (V): shareable display bundle that never contains the birth date --
+   ri  1-10 = ROLES index+1, 11 = Center, 12 = Agency CEO
+   n   final rank 1-99 / top: top % of contestants 1-100
+   dp  day-pillar index 0-59 (used only for the one-line day-pillar note) */
+function resultOf(y,m,d,t){
+  var g=talent(y,m,d,t), n=100-g, dp=dayPillarIdx(y,m,d);
+  var ri=g>=98?12:(GWI[dp]?11:(dp%10)+1);
+  return {ri:ri, n:n, top:topPct(n), dp:dp};
+}
+var V_RI=12, V_N=99, V_TOP=100, V_DP=60;
+var V_MAX=V_RI*V_N*V_TOP*V_DP-1;            /* 7,127,999 -> base36 max 5 chars */
+function encodeV(V){
+  var n=V.ri-1;
+  n=n*V_N+(V.n-1);
+  n=n*V_TOP+(V.top-1);
+  n=n*V_DP+V.dp;
+  return n.toString(36);
+}
+function decodeV(str){
+  if(typeof str!=='string') return null;
+  str=str.toLowerCase();
+  if(!/^[0-9a-z]{1,5}$/.test(str)) return null;
+  var v=parseInt(str,36);
+  if(!isFinite(v)||v<0||v>V_MAX||Math.floor(v)!==v) return null;
+  var dp=v%V_DP;  v=(v-dp)/V_DP;
+  var top=v%V_TOP; v=(v-top)/V_TOP; top+=1;
+  var n=v%V_N;    v=(v-n)/V_N;     n+=1;
+  var ri=v+1;
+  if(ri<1||ri>V_RI) return null;
+  if(n<1||n>99) return null;
+  if(top<1||top>100) return null;
+  if(dp<0||dp>59) return null;
+  return {ri:ri, n:n, top:top, dp:dp};
+}
+/* lightstick-glow seed for the result card -- built from the result value only (no birth date) */
+function cheerSeed(V){ return hash32('cheer:'+V.ri+'-'+V.n+'-'+V.top+'-'+V.dp); }
+/*CORE:E*/
+
+/* -- position data -- */
+var ROLES=[
+ {img:1, emo:"👑", nm:"The Leader", ct:"The first words that steady a shaken team",
+  g:["#7a3050","#2b0f1c"],
+  desc:"A Gap (yang Wood) day master carries the energy of a great tree growing straight into the sky — in a practice room of seven flailing trainees, this chart simply becomes the pillar. You're drafting the practice schedule before the debut lineup is even announced, and at team dinners you grill the maknae's share first. Your refusal to bend on a concept — even when the CEO objects — makes meetings run long, but you're also the one holding the mic in tears at the award show, and the one the comments mean by \"this group got so lucky with its leader.\" Leading from the front is your constitution: the moment the team loses its way, every eye turns to you.",
+  st:"Somehow you're always the one posting the group-chat announcements. That's leader fate.",
+  mate:4, worst:6},
+ {img:2, emo:"🤹", nm:"The Variety Star", ct:"Delivers screen time wherever you point them",
+  g:["#7a5a20","#2b1f0a"],
+  desc:"An Eul (yin Wood) day master has the energy of vines and flowers — trampled and rising again, climbing whatever wall is nearest, surviving wherever it's planted. In a group, this chart is the variety star. During the nugu era you go on a cable quiz show alone, land in the highlight reel three weeks running, and that one clip puts the whole group on the map. You build banter with a first-time MC inside ten minutes, keep smiling through the mud-flag missions, and quietly top every producer's booking wishlist. Feeding the group from off-stage is a talent too — this position is the proof.",
+  st:"When you skip a hangout the whole room goes quiet. You're already the variety star.",
+  mate:5, worst:7},
+ {img:3, emo:"🕺", nm:"The Main Dancer", ct:"The spotlight only follows you",
+  g:["#8a3a1e","#33120a"],
+  desc:"A Byeong (yang Fire) day master is the midday sun — a presence that cannot be hidden no matter what. In a group, this chart is the main dancer. Twelve members run the same choreography, yet your fancam views carry an extra digit, and the fandom's standing theory is that the spotlight doesn't follow you — you absorb it. One three-second killing-part move flips social media upside down, and then you say \"I just danced like usual,\" deflating the members twice over. This is a character that earns its keep shining in front of a crowd: you genuinely dance better on stage than in the mirror.",
+  st:"Your body launching itself during the karaoke interlude — that's a main dancer's occupational disease.",
+  mate:6, worst:9},
+ {img:4, emo:"🎤", nm:"The Main Vocal", ct:"The 2 a.m. live that pierces every heart",
+  g:["#5a3070","#1e1030"],
+  desc:"A Jeong (yin Fire) day master is lantern fire — instead of spreading wide like the sun, it lights one spot long and deep. In a group, this chart is the main vocal. Not the high-note showoff type: yours is the unaccompanied 2 a.m. ballad on a live broadcast that tops the trending searches by morning. In the studio you re-sing one line thirty times and make the engineer cry (in both senses), and the final note of the concert encore becomes the video fans keep forever. Like a lantern that matters more as the night gets darker, yours is the voice that shines loudest on the quietest stage.",
+  st:"When you sing something sad, the person next to you goes suddenly quiet. It's the voice.",
+  mate:9, worst:1},
+ {img:5, emo:"🗿", nm:"The Sub Vocal & Pillar", ct:"The reason this team hasn't collapsed",
+  g:["#4a4a56","#1a1a20"],
+  desc:"A Mu (yang Earth) day master carries the weight of a mountain range — no character is better at holding and supporting. In a group, this chart is the sub vocal and the pillar. Your part is eight bars after the chorus, but those eight bars keep the entire stage balanced. You're the one who absorbs a part on the spot when a member's voice gives out, and the one who ends a near-disbandment night with \"ramen first, talk later\" until everyone's at the dorm table. The fandom's nickname for you is \"the silent load-bearing wall\" — and only after the group's tenth anniversary does everyone realize the team's real center was its center of gravity.",
+  st:"Friends bring their problems specifically to you. That's pillar fate.",
+  mate:0, worst:2},
+ {img:6, emo:"💌", nm:"The Fan Service Ace", ct:"Remembers every single fan's username",
+  g:["#356048","#102418"],
+  desc:"A Gi (yin Earth) day master is fertile farm soil — the energy of a ground that feeds and raises things. In a group, this chart is the fan service ace. At fansigns you recall last year's visitor's username and the exact conversation you had, reducing them to tears, and at 3 a.m. you materialize in the fan community to leave a long, careful reply under someone's worry post. Your fans can't leave the fandom — quitting would feel like walking out on an old friend, not a celebrity. Most of the fandom's proudest boast — \"our group has the best personalities in the industry\" — is your doing.",
+  st:"Remembering the tiny preferences of someone you met once and stunning them with it — an ace's habit.",
+  mate:1, worst:8},
+ {img:7, emo:"🎙️", nm:"The Main Rapper", ct:"One verse moves the whole song's center of gravity",
+  g:["#2e3560","#101228"],
+  desc:"A Gyeong (yang Metal) day master is unrefined iron — raw ore that hardens with every blow of the hammer. In a group, this chart is the main rapper. Instead of chasing whatever flow is trending, you fill three notebooks forging your own, and the sixteen bars you got on the debut single grow into the gravitational center of the third album. You drop a mixtape with zero notice, earn the \"this broke every idol-rap prejudice\" reviews, then say almost nothing off stage and catch fans twice with the gap. Only iron that survives the quenching becomes a famous blade — this position proves it in verse form.",
+  st:"Redoing work you're unhappy with even when everyone says it's fine — iron's stubbornness.",
+  mate:2, worst:0},
+ {img:8, emo:"💎", nm:"The Visual", ct:"A photoshoot just by existing",
+  g:["#5a4470","#201830"],
+  desc:"A Sin (yin Metal) day master is the jewel after cutting — completed brilliance itself. In a group, this chart is the visual. Your airport departure photos make the news as \"an unscheduled pictorial,\" and your expression captures circulate faster than the stage fancams. Advertisers queue with contracts, while you personally take forty minutes to pick one selfie because your eye can't forgive a 0.1-millimeter flaw. The \"only picked for the face\" hate comments quietly evaporate three years later alongside your acting reviews — a gem is a gem from every cutting angle.",
+  st:"Coming out of group photos looking personally lit — that's just the chart you were born with.",
+  mate:6, worst:1},
+ {img:9, emo:"🎼", nm:"The All-Rounder", ct:"Vocals, dance, production — nothing missing",
+  g:["#1e4a5e","#0a1c24"],
+  desc:"An Im (yang Water) day master is the great river running to the sea — vast in scale, incapable of staying penned in. In a group, this chart is the all-rounder. While the vocal coach argues you're a vocalist and the choreographer claims you for dance, you're quietly teaching yourself MIDI and turning in a B-side. Yours is the name that appears most often in the album credits, and the year you also directed the concert VCR, fans opened a worry account titled \"resting is also work.\" As the sea refuses no river, this chart refuses no genre.",
+  st:"Hobbies that somehow reach semi-pro level — the habit of big water.",
+  mate:4, worst:5},
+ {img:10, emo:"🧚", nm:"The Tone Fairy", ct:"Eight bars that refuse to leave your ears",
+  g:["#38653f","#132818"],
+  desc:"A Gye (yin Water) day master is rain, dew and night fog — the energy that seeps in silently and stays. In a group, this chart is the tone fairy. Your part is eight bars in the second verse's bridge, and the music video comments are wall-to-wall \"3:12 on infinite repeat.\" Instead of pushing volume you shift the temperature of a song with half breath, half timbre, and producers arrive holding demos, insisting \"this track doesn't work without that voice.\" Dew never falls loudly — your voice seeps in quietly and stays the longest.",
+  st:"Getting complimented on your voice more often than your face — evidence of a fairy.",
+  mate:3, worst:2}
+];
+var ROLE_CENTER={img:11, emo:"🌟", nm:"The Stage-Destroying Center", ct:"The screaming doesn't stop when the stage does",
+  g:["#8a1e3c","#330a16"],
+  desc:"Your day pillar is gwaegang (魁罡) — the configuration classical saju calls \"the chief star,\" charisma at its extreme. Put that energy on a stage and the position debate becomes pointless. Not the singing seat, not the dancing seat: the seat that seizes the stage itself — the Center. Your three-second ending fairy moment spawns hundreds of fan-conversion videos, and even rival fandoms type \"okay, the stage is undeniable.\" Broadcast camera directors don't need to memorize the blocking; following you is the correct answer. Gwaegang even gets formula backing — 9 bonus points of stage presence. A Center is different from the paperwork up.",
+  st:"Ending up dead-center in candid group photos — a center's instinct.",
+  mateTx:"The whole team — a center's stage is completed by six members' covering fire", worstTx:"The camera director — has fallen over more than once chasing your blocking"};
+var ROLE_CEO={img:12, emo:"🕶️", nm:"The Agency CEO", ct:"Walked in to audition, sat down with the judges",
+  g:["#6e5a1e","#241d08"],
+  desc:"Congratulations — your stage-presence score was so high your name got pulled from the contestant list. You walked into the audition hall wearing a number tag, the judges huddled, and then they pulled out a chair for you on their side of the table. On stage you're not merely good: you watch three seconds of someone else's stage and see exactly what to fix to make it chart. That's not an idol's talent — that's the talent of the person who makes idols. The golden buzzer is yours to press, the debut lineup is yours to sign off, and the group that wins this whole survival show is signed to your company. The only person to take an idol position test and not come out an idol — how rare a jackpot that is, is written up in the formula disclosure below.",
+  st:"Catching yourself coaching mid-song while a friend sings karaoke — a CEO's occupational disease.",
+  mateTx:"Every trainee — the raw gems that catch your eye are the next debut lineup", worstTx:"The rival agency's CEO — a years-long staring contest over front-row audition seats"};
+/* rank 51+ (big numbers): comeback framing paragraph, auto-prepended to the description */
+var LATEBLOOM="The back of the leaderboard is not an elimination list. In this survival show, everything below #51 is the slow-burn comeback type — you get three seconds of screen time in the finale broadcast, and then three years after debut an old fancam rides the algorithm and flips the charts upside down. Shows that reveal everything in episode one never last. Your highlight isn't the ranking ceremony; it's the day your song re-enters the charts.";
+
+/* 60 day-pillar one-liners -- debut-evaluation flavored */
+var ILJU=[
+"a great tree by the midnight lake, star presence with a fanclub before debut","a pine crossing the snowfield, grit type who survives seven trainee years to debut",
+"morning sun over a tiger's back, protagonist type who owns the screen in three seconds","a lantern in the rabbit burrow, caretaker type checking members' condition backstage",
+"a mountain range cradling a dragon, late-bloomer whose presence grows with the years","spring soil warmed by a snake, savvy type famous for reading the settlement sheet",
+"a blade forged on horseback, competitor who rearranges every contest song","a jade bead among the flock, noble type who looks expensively raised",
+"a river carrying a monkey, wanderer type happiest on overseas tour","dew on a rooster's comb at dawn, precision type who drills choreo frame by frame",
+"a dog guarding an old tree, loyal type who stays until the last day","petals drifting downstream, in-demand type called into every unit",
+"winter sun over the water, heater type who warms a slumping team","an oil lamp in the barn, steady wick who never misses a stage",
+"a great mountain where tigers live, dignity type juniors bow deeper to","a spring field of rabbits, likable type whose specialty is having no antis",
+"a sword forged by a dragon, clutch type whose real skill shows in finals","a gem guarded by a snake, hidden-track type only real fans know",
+"a wide river at full gallop, crowd-pleaser who turns concerts into festivals","sweet rain on dry fields, closer type who steps up in every crisis",
+"a giant tree monkeys climb, elder type talented juniors flock to","a morning glory by the coop, diligent type first to light the practice room",
+"a bonfire on a sunset hill, cozy type who gathers fans with vlog warmth","a harbor lighthouse, guide type who mentors lost trainees",
+"a mountain the mouse knows by heart, instinct type who calls trends early","an ox plowing the winter field, honest type who practices while others rest",
+"iron in a tiger's claws, raw-talent type the judges spot first","silver trinkets in the clover, soft-faced negotiator who lands every part",
+"deep water where dragons play, big-stage type who grows with the venue","a stream along the snake path, quiet strategist who shifts the team's course",
+"a zelkova where horses rest, salon type whose waiting room draws a crowd","wildflowers on a sheep hill, easygoing type no team can dislike",
+"sunlight in a monkey's hand, entertainer who writes legends on reality shows","a rooster's comb in candlelight, style icon famous for wearing anything well",
+"a dog guarding the fortress, gatekeeper who never drops an assigned part","a rich field that raised pigs, generous type whose giving keeps popularity flowing",
+"a blade quenched in winter water, cool judge who sharpens the team's monitoring","jade in frozen ground, late-luck type re-evaluated year after year",
+"a river carrying a tiger, daredevil type who trends on fearless challenges","clover wet with spring rain, springtime type every fan wants to protect",
+"a great tree grown on a dragon's back, pillar type who holds up the group's lore","a flower living with a snake, thorned charm nobody handles carelessly",
+"noon sun on a galloping horse, fame type whose name circulates every comeback","a campfire beside the flock, warm type who turns one fan into a lifetime fan",
+"a rocky hill where monkeys play, gap-charm type who breaks out on variety","a farmer feeding the hens, saver type built on never-skipped daily content",
+"a white blade with loyal hounds, silent type who proves it on stage only","a pearl in deep water, hidden master discovered through cover videos",
+"the open sea at midnight, deep-sea type whose mystery is not a concept","an ox on a frozen road, longest-runner who stays after everyone quits and debuts",
+"the chief tree of a tiger forest, natural captain of every joint stage","a spring meadow full of clover, peacemaker who softens the whole team",
+"the sun above a dragon, guest of honor always seated center at award shows","a candle guarded by a snake, stubborn wick who survives every canceled debut",
+"a volcano holding its fire, sleeping-dragon type who erupts after long obscurity","a hillside field that fed the flock, generous type with a staff fandom",
+"a famed sword in a monkey's hand, double-threat who raps and dances","jade polished like a mirror, perfectionist remembered for flawless stages",
+"a loyal hound by deep water, bodyguard type whose protectiveness draws more fans","rain returning to the sea, homecoming type who always returns to the full group"];
+
+function p60name(i){ return GAN[i%10]+JI[i%12]+" ("+GANH[i%10]+JIH[i%12]+")"; }
+function roleByImg(i){ return i===11?ROLE_CENTER:(i===12?ROLE_CEO:ROLES[i-1]); }
+function roleOf(y,m,d,t){
+  var g=talent(y,m,d,t), n=100-g;
+  var dp=dayPillarIdx(y,m,d);
+  var r;
+  if(g>=98) r=ROLE_CEO;
+  else if(GWI[dp]) r=ROLE_CENTER;
+  else r=ROLES[dp%10];
+  return {n:n, g:g, dp:dp, role:r, top:topPct(n)};
+}
+
+/* -- UI -- */
+(function(){
+var $=function(id){return document.getElementById(id);};
+var TSLOT=["Unknown","Rat hour (23:30–01:30)","Ox hour (01:30–03:30)","Tiger hour (03:30–05:30)","Rabbit hour (05:30–07:30)",
+ "Dragon hour (07:30–09:30)","Snake hour (09:30–11:30)","Horse hour (11:30–13:30)","Goat hour (13:30–15:30)",
+ "Monkey hour (15:30–17:30)","Rooster hour (17:30–19:30)","Dog hour (19:30–21:30)","Pig hour (21:30–23:30)"];
+var MON=["January","February","March","April","May","June","July","August","September","October","November","December"];
+var cur=null;
+var PH_Y='Year', PH_M='Month', PH_D='Day';
+
+function fillSel(el,arr,vals){ var h=''; for(var i=0;i<arr.length;i++) h+='<option value="'+(vals?vals[i]:arr[i])+'">'+arr[i]+'</option>'; el.innerHTML=h; }
+function initInputs(){
+  var ys=[PH_Y],yv=['']; for(var y=1940;y<=2020;y++){ys.push(String(y));yv.push(y);}
+  fillSel($('by'),ys,yv);
+  var ms=[PH_M],mv=['']; for(var m=1;m<=12;m++){ms.push(MON[m-1]);mv.push(m);}
+  fillSel($('bm'),ms,mv);
+  /* birth time is optional -- the "Unknown" slot's value stays an empty string so
+     an untouched form and "time unknown" (t=0) mean exactly the same thing */
+  var ts=[],tv=[]; for(var t=0;t<13;t++){ts.push(TSLOT[t]);tv.push(t===0?'':t);}
+  fillSel($('bt'),ts,tv);
+  fillDays();
+  /* first visit is always a blank form -- no default birthday */
+  clearInputs();
+}
+function daysIn(y,m){ return new Date(Date.UTC(y,m,0)).getUTCDate(); }
+function fillDays(){
+  var ys=$('by').value, ms=$('bm').value, olds=$('bd').value;
+  /* while year/month are blank, offer 31 days so any selection order works */
+  var n=(ys!==''&&ms!=='')?daysIn(+ys,+ms):31,ds=[PH_D],dv=[''];
+  for(var d=1;d<=n;d++){ds.push(String(d));dv.push(d);}
+  fillSel($('bd'),ds,dv);
+  $('bd').value=(olds==='')?'':String(Math.min(+olds||1,n));
+}
+/* full form reset -- return every select to its placeholder (empty value) */
+function clearInputs(){
+  $('nick').value='';
+  ['by','bm','bd','bt'].forEach(function(id){ $(id).value=''; });
+  $('needPick').style.display='none';
+}
+$('by').addEventListener('change',fillDays);
+$('bm').addEventListener('change',fillDays);
+
+var animId=null;
+function countUp(el,target){
+  if(animId)cancelAnimationFrame(animId);
+  var t0=null,DUR=1200;
+  function step(ts){
+    if(!t0)t0=ts;
+    var p=Math.min(1,(ts-t0)/DUR);
+    var e=1-Math.pow(1-p,3);
+    el.textContent=Math.max(1,Math.round(target*e));
+    if(p<1)animId=requestAnimationFrame(step); else animId=null;
+  }
+  animId=requestAnimationFrame(step);
+}
+
+/* rank-band framing -- the series' only scale where lower is better */
+function tierOf(n){
+  if(n<=15) return '🏆 Straight into the debut lineup';
+  if(n<=50) return '🔥 Made the finale';
+  return '🚀 Slow-burn comeback type — flips the charts in 3 years';
+}
+
+/* render the result screen from the result value (V) alone -- never from the birth date.
+   shared=true means the viewer arrived via a share link. */
+var RETRY_OWN='👀 What would your friend get? Try again';
+var RETRY_SHARED='🎤 Find my own position';
+function renderResult(V,nick,shared){
+  var r=roleByImg(V.ri);
+  cur={V:V,role:r,nick:nick||'',shared:!!shared};
+  var box=$('roleImgBox');
+  box.style.setProperty('--g1',r.g[0]);
+  box.style.setProperty('--g2',r.g[1]);
+  $('fbEmo').textContent=r.emo;
+  var im=$('roleImg');
+  im.style.display='';
+  $('fbEmo').style.display='';
+  im.onload=function(){ $('fbEmo').style.display='none'; };
+  im.onerror=function(){ this.style.display='none'; $('fbEmo').style.display=''; };
+  im.src='/tests/idol/img/role-'+String(r.img).padStart(2,'0')+'.png';
+  $('roleName').textContent=r.nm;
+  $('roleCatch').textContent='“'+r.ct+'”';
+  countUp($('popNum'),V.n);
+  $('tierLine').textContent=tierOf(V.n);
+  var tp=$('topPct');
+  if(V.top<=50){ tp.className='topPct'; tp.textContent='📈 Top '+V.top+'% of all contestants'; }
+  else { tp.className='topPct late'; tp.textContent='🚀 Top '+(101-V.top)+'% comeback potential'; }
+  $('iljuLine').innerHTML='Your day pillar: <b>'+p60name(V.dp)+'</b> — '+ILJU[V.dp];
+  $('roleDesc').textContent=(V.n>=51?LATEBLOOM+' ':'')+r.desc;
+  $('traceLine').innerHTML='<b>Post-debut sightings</b> — '+r.st;
+  $('mateGood').innerHTML=r.mateTx?r.mateTx:'<b>'+ROLES[r.mate].emo+' '+ROLES[r.mate].nm+'</b> — '+GAN[r.mate]+' ('+ELM(r.mate)+') day master';
+  $('mateBad').innerHTML=r.worstTx?r.worstTx:'<b>'+ROLES[r.worst].emo+' '+ROLES[r.worst].nm+'</b> — '+GAN[r.worst]+' ('+ELM(r.worst)+') day master';
+  $('retryBtn').textContent=cur.shared?RETRY_SHARED:RETRY_OWN;
+  $('copied').textContent='';
+  $('res').classList.remove('hidden');
+}
+/* birth date/time -> result value -> render (direct test path) */
+function render(y,m,d,t,nick){ renderResult(resultOf(y,m,d,t),nick,false); }
+function ELM(g){ return ['Wood','Wood','Fire','Fire','Earth','Earth','Metal','Metal','Water','Water'][g]; }
+/* INP: on click, only flip the button state and let one frame paint;
+   the heavy almanac math and result render run on the next frame. Same output logic. */
+var GO_BUSY_TX='🎤 Judges are scoring…', GO_BUSY_MIN=280, goBusy=false;
+function setGoBusy(on){
+  var b=$('goBtn');
+  if(on){
+    b.dataset.idle=b.textContent; b.textContent=GO_BUSY_TX;
+    b.dataset.hadFocus=(document.activeElement===b)?'1':'';
+    b.disabled=true;
+  }else{
+    if(b.dataset.idle) b.textContent=b.dataset.idle;
+    b.disabled=false;
+    if(b.dataset.hadFocus){ try{ b.focus({preventScroll:true}); }catch(e){} }
+  }
+}
+function runDeferred(fn){
+  if(goBusy) return;
+  goBusy=true;
+  var t0=Date.now();
+  setGoBusy(true);
+  requestAnimationFrame(function(){ setTimeout(function(){
+    try{ fn(); }
+    finally{
+      /* keep the busy label visible briefly so it doesn't flicker on fast devices */
+      var rest=GO_BUSY_MIN-(Date.now()-t0);
+      setTimeout(function(){ setGoBusy(false); goBusy=false; }, rest>0?rest:0);
+    }
+  },0); });
+}
+$('goBtn').addEventListener('click',function(){
+  if(goBusy) return;
+  if($('by').value===''||$('bm').value===''||$('bd').value===''){
+    $('needPick').style.display='';
+    ($('by').value===''?$('by'):($('bm').value===''?$('bm'):$('bd'))).focus();
+    return;
+  }
+  $('needPick').style.display='none';
+  var y=+$('by').value,m=+$('bm').value,d=+$('bd').value;
+  var t=$('bt').value===''?0:+$('bt').value;
+  var nick=$('nick').value.trim();
+  runDeferred(function(){
+    var V=resultOf(y,m,d,t);
+    renderResult(V,nick,false);
+    var u=new URL(location.href);
+    u.searchParams.set('v',encodeV(V));
+    if(nick) u.searchParams.set('n',nick); else u.searchParams.delete('n');
+    history.replaceState(null,'',u.pathname+u.search);
+    $('res').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
+$('retryBtn').addEventListener('click',function(){
+  $('res').classList.add('hidden');
+  history.replaceState(null,'',location.pathname);
+  clearInputs();
+  cur=null;
+  $('inputPanel').scrollIntoView({behavior:'smooth',block:'start'});
+});
+function shareText(){
+  if(!cur)return '';
+  /* link goes to the per-position share stub (/s/NN/) so the preview shows the right illustration.
+     The stub forwards the query back to this page and the result is reproduced.
+     ?v= carries only the result value -- never the birth date or time. */
+  var nn=String(cur.role.img).padStart(2,'0');
+  var base=location.pathname.replace(/\/$/,'');
+  var u=location.origin+base+'/s/'+nn+'/?v='+encodeV(cur.V)+
+    (cur.nick?'&n='+encodeURIComponent(cur.nick):'');
+  return '🎤 I got "'+cur.role.nm+'" — final debut-survival rank #'+cur.V.n+'! What rank are you?\n'+u;
+}
+$('shareLink').addEventListener('click',function(){
+  if(!cur)return;
+  var u=shareText();
+  var done=function(){ $('copied').textContent='✅ Result and link copied. Paste it to a friend!'; };
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(u).then(done,function(){fallbackCopy(u);done();});
+  }else{ fallbackCopy(u); done(); }
+});
+function fallbackCopy(txt){
+  var ta=document.createElement('textarea'); ta.value=txt;
+  ta.style.cssText='position:fixed;opacity:0'; document.body.appendChild(ta);
+  ta.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(ta);
+}
+
+/* -- result card (1080x1350) -- */
+function loadImg(src){
+  return new Promise(function(res){
+    var im=new Image();
+    im.onload=function(){res(im);}; im.onerror=function(){res(null);};
+    im.src=src;
+  });
+}
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
+}
+function makeCard(){
+  if(!cur)return Promise.resolve(null);
+  var R=cur.V,r=cur.role;
+  var W=1080,H=1350;
+  var c=document.createElement('canvas'); c.width=W; c.height=H;
+  var x=c.getContext('2d');
+  return loadImg('/tests/idol/img/role-'+String(r.img).padStart(2,'0')+'.png').then(function(im){
+    var INK='#f1edf6', INK2='#bab0ca', INK3='#8b8099', PK='#ff5fae', VI='#c9a9ff';
+    /* background: pink stage lighting */
+    var bg=x.createLinearGradient(0,0,0,H);
+    bg.addColorStop(0,'#1c1428'); bg.addColorStop(1,'#0b0710');
+    x.fillStyle=bg; x.fillRect(0,0,W,H);
+    /* lightstick glow -- deterministic placement from the result-value seed */
+    var hs=cheerSeed(R);
+    for(var i=0;i<110;i++){
+      hs=(Math.imul(hs,1664525)+1013904223)>>>0;
+      var sx=hs%W; var sy=(hs>>>11)%H; var ss=((hs>>>22)%3)*0.8+0.8;
+      x.globalAlpha=0.08+((hs>>>7)%40)/400;
+      x.fillStyle=(hs>>>5)%6===0?VI:PK;
+      x.fillRect(sx,sy,ss,ss);
+    }
+    x.globalAlpha=1;
+    /* top label */
+    x.textAlign='center';
+    x.fillStyle=INK3;
+    x.font='700 34px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif';
+    x.fillText('🎤 IDOL POSITION REPORT 🎤',W/2,96);
+    if(cur.nick){
+      x.fillStyle=INK;
+      x.font='700 44px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif';
+      x.fillText(cur.nick,W/2,168);
+    }
+    /* position image / emoji */
+    var IS=360, ix=(W-IS)/2, iy=cur.nick?190:152;
+    var gr=x.createLinearGradient(ix,iy,ix+IS,iy+IS);
+    gr.addColorStop(0,r.g[0]); gr.addColorStop(1,r.g[1]);
+    roundRect(x,ix,iy,IS,IS,48);
+    x.fillStyle=gr; x.fill();
+    if(im){
+      x.save(); roundRect(x,ix,iy,IS,IS,48); x.clip();
+      x.drawImage(im,ix,iy,IS,IS); x.restore();
+    }else{
+      x.font='196px -apple-system,"Apple Color Emoji","Noto Color Emoji",sans-serif';
+      x.textBaseline='middle';
+      x.fillText(r.emo,W/2,iy+IS/2+14);
+      x.textBaseline='alphabetic';
+    }
+    var yy=iy+IS+80;
+    x.fillStyle=INK;
+    var nmFont=r.nm.length<=16?'800 62px':'800 52px';
+    x.font=nmFont+' -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif';
+    x.fillText(r.nm,W/2,yy);
+    x.fillStyle=INK2;
+    var ctFont=r.ct.length<=40?'400 32px':'400 27px';
+    x.font=ctFont+' -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif';
+    x.fillText('“'+r.ct+'”',W/2,yy+56);
+    /* big final rank -- '#' + number */
+    x.fillStyle=INK3;
+    x.font='700 32px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif';
+    x.fillText('DEBUT SURVIVAL — FINAL RANK',W/2,yy+140);
+    x.fillStyle=PK;
+    x.font='800 200px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif';
+    x.fillText('#'+R.n,W/2,yy+340);
+    /* band + top-% badge */
+    var tt=R.n<=15?'🏆 Straight into the debut lineup':(R.n<=50?'🔥 Made the finale':'🚀 Slow-burn comeback type');
+    x.fillStyle=INK;
+    x.font='700 40px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif';
+    x.fillText(tt,W/2,yy+420);
+    var btxt=R.top<=50?('📈 Top '+R.top+'% of all contestants'):('🚀 Top '+(101-R.top)+'% comeback potential');
+    x.font='700 38px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif';
+    var bw=x.measureText(btxt).width+72;
+    roundRect(x,(W-bw)/2,yy+452,bw,80,40);
+    x.fillStyle=R.top<=50?'#31142a':'#251341'; x.fill();
+    x.fillStyle=R.top<=50?PK:VI;
+    x.fillText(btxt,W/2,yy+505);
+    /* day pillar */
+    x.fillStyle=INK2;
+    x.font='400 30px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif';
+    var il='Day pillar '+p60name(R.dp)+' · '+ILJU[R.dp];
+    if(x.measureText(il).width>W-100){ il='Day pillar '+p60name(R.dp)+' ·'+ILJU[R.dp].split(',')[0]; }
+    if(x.measureText(il).width>W-100){ il='Day pillar '+p60name(R.dp); }
+    x.fillText(il,W/2,yy+580);
+    /* bottom URL */
+    x.fillStyle=INK3;
+    x.font='700 36px -apple-system,BlinkMacSystemFont,sans-serif';
+    x.fillText('kmagpie.com/en/tests/idol',W/2,H-48);
+    return c;
+  });
+}
+function cardBlob(){
+  return makeCard().then(function(c){
+    if(!c)return null;
+    return new Promise(function(res){ c.toBlob(res,'image/png'); });
+  });
+}
+function saveBlob(blob){
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download='idol-result.png';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){URL.revokeObjectURL(a.href);},4000);
+  $('copied').textContent='✅ Result card saved. Go show it off!';
+}
+var IS_MOBILE=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+$('shareCard').addEventListener('click',function(){
+  cardBlob().then(function(blob){
+    if(!blob)return;
+    var f=new File([blob],'idol-result.png',{type:'image/png'});
+    /* desktop always downloads. Only mobile tries the share sheet,
+       falling back to download on (non-cancel) failure. */
+    if(IS_MOBILE&&navigator.share&&navigator.canShare&&navigator.canShare({files:[f]})){
+      navigator.share({files:[f],title:'Debut evaluation',
+        text:'🎤 I got "'+cur.role.nm+'" — final rank #'+cur.V.n+' in the debut survival! You? https://www.kmagpie.com/en/tests/idol/'})
+        .catch(function(err){ if(!err||err.name!=='AbortError') saveBlob(blob); });
+    }else{
+      saveBlob(blob);
+    }
+  });
+});
+
+initInputs();
+/* share-link reproduction -- reads only ?v= (the result value). Never fills the form. */
+(function(){
+  try{
+    var q=new URLSearchParams(location.search);
+    var nick=(q.get('n')||'').slice(0,12);
+    var vv=q.get('v');
+    if(vv===null) return;
+    clearInputs();                 /* arrived via share link -- leave the form blank */
+    var V=decodeV(vv);
+    if(!V) return;                 /* tampered/corrupt value -> blank input screen, no result */
+    renderResult(V,nick,true);
+  }catch(e){}
+})();
+
+/* test hooks */
+window.IDOL={talent:talent,rankOf:rankOf,roleOf:roleOf,dayPillarIdx:dayPillarIdx,
+  yearPillarIdx:yearPillarIdx,monthPillar:monthPillar,topPct:topPct,TOPP:TOPP,
+  resultOf:resultOf,encodeV:encodeV,decodeV:decodeV,V_MAX:V_MAX,renderResult:renderResult,roleByImg:roleByImg,
+  makeCard:makeCard,cardBlob:cardBlob,render:render,shareText:shareText,tierOf:tierOf,
+  cheerSeed:cheerSeed,clearInputs:clearInputs,RETRY_OWN:RETRY_OWN,RETRY_SHARED:RETRY_SHARED,
+  state:function(){return cur;},
+  ROLES:ROLES,ROLE_CENTER:ROLE_CENTER,ROLE_CEO:ROLE_CEO,ILJU:ILJU,p60name:p60name,LATEBLOOM:LATEBLOOM};
+})();
+</script>
+</body>
+</html>

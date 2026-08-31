@@ -180,7 +180,18 @@ TESTS_BLOCK = """<!--TESTS:S-->
 
 """
 
-def patch_tests(s, nl):
+EN_TESTS_BLOCK = """<!--TESTS:S-->
+<a class="tbn" href="/en/tests/">
+  <img class="ic" src="/images/kmagpie-test-icon.png" alt="Magpie Tests logo — a magpie giving a thumbs up" width="44" height="44" loading="lazy" decoding="async">
+  <span class="tx"><span class="tt">Try the Magpie Tests</span><span class="ds">Your birth date is the only input and it takes 30 seconds — zombie survival rate, past life, idol position, guardian spirit. Made to compare with friends.</span></span>
+  <span class="ar">&rarr;</span>
+</a>
+<!--TESTS:E-->
+
+"""
+
+
+def patch_tests(s, nl, tests_block=None):
     """푸터 바로 위에 까치테스트 배너를 넣는다. 몇 번 돌려도 결과가 같다."""
     if '/*TESTS:S*/' in s:
         s = put(s, '/*TESTS:S*/', '/*TESTS:E*/', TESTS_CSS.replace('\n', nl).strip())
@@ -189,7 +200,7 @@ def patch_tests(s, nl):
         assert i > 0, 'TESTS: </style> 없음'
         s = s[:i] + TESTS_CSS.replace('\n', nl) + s[i:]
 
-    blk = TESTS_BLOCK.replace('\n', nl)
+    blk = (tests_block or TESTS_BLOCK).replace('\n', nl)
     r = put(s, '<!--TESTS:S-->', '<!--TESTS:E-->', blk.strip())
     if r is not None:
         return r
@@ -673,6 +684,7 @@ def patch_en(slug):
     else:
         s = r
 
+    s = patch_tests(s, nl, EN_TESTS_BLOCK)
     s = patch_footer(s, 'en', slug in CALC)
     open(p, 'w', encoding='utf-8', newline='').write(s)
     return len(s.encode())
@@ -800,6 +812,7 @@ def patch_en_index():
     s = put(s, '<!--CAT:S-->', '<!--CAT:E-->', en_index_grid().replace('\n', nl))
     blkh = EN_HEAD_BLOCK.replace('\n', nl)
     s = put(s, '<!--HEAD:S-->', '<!--HEAD:E-->', blkh)
+    s = patch_tests(s, nl, EN_TESTS_BLOCK)
     s = patch_footer(s, 'en')
     open(p, 'w', encoding='utf-8', newline='').write(s)
     return len(s.encode())

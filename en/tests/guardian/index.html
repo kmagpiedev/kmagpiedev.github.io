@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guardian Spirit Test — Which Divine Beast Protects You? | Magpie Tests</title>
+<meta name="description" content="Enter your birthday and a real Korean saju (Four Pillars) engine reveals which of 12 East Asian guardian spirits protects you — Azure Dragon, White Tiger, Vermilion Bird, Black Tortoise, the nine-tailed fox (gumiho), the haetae and more — plus how many generations (3–99) it has watched over your family. The four directional beasts follow the authentic Five-Elements mapping. And there's a rare twist: you might turn out to be the guardian.">
+<link rel="canonical" href="https://www.kmagpie.com/en/tests/guardian/">
+<link rel="alternate" hreflang="ko" href="https://www.kmagpie.com/tests/guardian/">
+<link rel="alternate" hreflang="ja" href="https://www.kmagpie.com/ja/tests/guardian/">
+<link rel="alternate" hreflang="en" href="https://www.kmagpie.com/en/tests/guardian/">
+<link rel="alternate" hreflang="x-default" href="https://www.kmagpie.com/tests/guardian/">
+<meta property="og:title" content="Guardian Spirit Test — Which Divine Beast Protects You?">
+<meta property="og:description" content="Your guardian spirit and how many generations it has watched your family, computed from your birthday with real Korean saju. Azure Dragon? White Tiger? Nine-tailed fox? Or… are you the guardian?">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/en/tests/guardian/">
+<meta property="og:image" content="https://www.kmagpie.com/en/tests/guardian/img/og.png">
+<meta property="og:site_name" content="Magpie Tests">
+<style>
+  :root{
+    --bg:#071410; --surface:#0d211a; --line:#23503f; --line-soft:#16362a;
+    --ink:#eaf7f0; --ink-2:#b7d9c8; --ink-3:#8fb3a2;
+    --accent:#46d9a0; --accent-soft:#0e3527;
+    --gld:#e9c46a; --gld-soft:#31270e;
+    --card-grad-a:#0e2b21; --card-grad-b:#050f0b;
+    --btn-ink:#04231a;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#050e0a; --surface:#0a1b15; --line:#23503f; --line-soft:#122c22;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(1.5px 1.5px at 12% 10%, rgba(70,217,160,.22) 50%, transparent 51%),
+      radial-gradient(1px 1px at 70% 7%,  rgba(234,247,240,.10) 50%, transparent 51%),
+      radial-gradient(2px 2px at 44% 28%, rgba(233,196,106,.16) 50%, transparent 51%),
+      radial-gradient(1px 1px at 28% 56%, rgba(234,247,240,.09) 50%, transparent 51%),
+      radial-gradient(2px 2px at 88% 40%, rgba(70,217,160,.18) 50%, transparent 51%),
+      radial-gradient(1px 1px at 8% 82%,  rgba(233,196,106,.12) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 62% 74%, rgba(70,217,160,.14) 50%, transparent 51%)}
+  .wrap{max-width:680px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  .langsw{font-size:13px;margin:-12px 0 20px}
+  .langsw a{color:var(--ink-3);text-decoration:none;border-bottom:1px solid var(--line)}
+  .langsw a:hover{color:var(--accent);border-color:var(--accent)}
+  h1{font-size:27px;line-height:1.35;margin:0 0 10px;letter-spacing:-.02em;font-weight:800}
+  h1 .jd{color:var(--accent)}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+  .col{flex:1;min-width:90px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
+  input[type=text],select{padding:10px 12px;border:1px solid var(--line);border-radius:9px;
+    background:var(--surface);color:var(--ink);font-size:16px;font-family:inherit;width:100%;
+    font-weight:600;font-variant-numeric:tabular-nums;appearance:none;-webkit-appearance:none}
+  input:focus,select:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:14px 0 0}
+  .go{display:block;width:100%;margin:18px 0 0;padding:15px 10px;border:0;border-radius:12px;
+    background:var(--accent);color:var(--btn-ink);font-size:17px;font-weight:800;font-family:inherit;cursor:pointer;
+    letter-spacing:-.01em;transition:.15s}
+  .go:hover{filter:brightness(1.08);transform:translateY(-1px)}
+  .go:disabled{cursor:default;opacity:.68;transform:none;filter:none}
+
+  /* result */
+  .result{background:var(--surface);border:1px solid var(--accent);border-radius:18px;
+    padding:28px 24px;margin:20px 0;text-align:center}
+  .rk{font-size:13px;font-weight:700;letter-spacing:.12em;color:var(--ink-3);margin:0 0 14px}
+  .roleImg{width:168px;height:168px;margin:0 auto 14px;border-radius:24px;overflow:hidden;position:relative;
+    background:linear-gradient(135deg,var(--g1,#1e5e7a),var(--g2,#0a1c28));display:flex;align-items:center;justify-content:center}
+  .roleImg img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+  .roleImg .fbEmo{font-size:84px;line-height:1;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5))}
+  .roleName{font-size:26px;font-weight:800;letter-spacing:-.02em;margin:0 0 2px}
+  .roleCatch{font-size:14.5px;color:var(--ink-2);margin:0 0 20px}
+  .popBox{margin:0 0 4px}
+  .popNum{font-size:clamp(52px,16vw,80px);font-weight:800;letter-spacing:-.04em;line-height:1.05;
+    color:var(--accent);font-variant-numeric:tabular-nums}
+  .popNum small{font-size:.32em;font-weight:700}
+  .popCap{font-size:13.5px;color:var(--ink-3);margin:0 0 2px}
+  .tier{font-size:15px;font-weight:800;color:var(--ink);margin:6px 0 0}
+  .topPct{display:inline-block;margin:8px 0 0;padding:5px 14px;border-radius:99px;
+    background:var(--accent-soft);color:var(--accent);font-size:14px;font-weight:700}
+  .topPct.young{background:var(--gld-soft);color:var(--gld)}
+  .ilju{margin:20px 0 0;padding:13px 15px;border:1px dashed var(--line);border-radius:11px;
+    font-size:14px;color:var(--ink-2);text-align:left}
+  .ilju b{color:var(--ink)}
+  .desc{text-align:left;font-size:15px;color:var(--ink-2);margin:18px 0 0}
+  .trace{text-align:left;margin:16px 0 0;padding:12px 15px;border-left:3px solid var(--accent);
+    background:var(--accent-soft);border-radius:0 10px 10px 0;font-size:14.5px}
+  .trace b{color:var(--accent)}
+  .mates{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 0;text-align:left}
+  .mate{border:1px solid var(--line);border-radius:11px;padding:11px 13px;font-size:13.5px}
+  .mate .mk{display:block;font-size:11.5px;font-weight:700;letter-spacing:.08em;margin-bottom:3px}
+  .mate.good .mk{color:var(--gld)}
+  .mate.bad .mk{color:var(--accent)}
+  .mate b{font-size:14.5px}
+  .btns{display:flex;gap:9px;flex-wrap:wrap;margin:24px 0 0}
+  .btns button{flex:1;min-width:140px;padding:13px 8px;border-radius:11px;font-size:14.5px;font-weight:700;
+    font-family:inherit;cursor:pointer;transition:.15s;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+  .btns button:hover{border-color:var(--accent);color:var(--accent)}
+  .btns button.pri{background:var(--accent);border-color:var(--accent);color:var(--btn-ink)}
+  .btns button.pri:hover{filter:brightness(1.08);color:var(--btn-ink)}
+  .retry{display:block;width:100%;margin:10px 0 0;padding:13px 8px;border-radius:11px;border:1px dashed var(--line);
+    background:transparent;color:var(--ink-2);font-size:14.5px;font-weight:700;font-family:inherit;cursor:pointer}
+  .retry:hover{border-color:var(--accent);color:var(--accent)}
+  .copied{font-size:13px;color:var(--gld);margin:8px 0 0;min-height:20px}
+
+  .basis{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:14px 0}
+  .basis h2{margin:0 0 8px;font-size:17px}
+  .basis p{font-size:14.5px;color:var(--ink-2);margin:0 0 8px}
+  .basis p:last-child{margin:0}
+
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  .hidden{display:none}
+
+  /* collapsible body */
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 10px}
+  .fold .fx>:first-child{margin-top:4px}
+  .fold .fx p{font-size:14.5px;color:var(--ink-2)}
+  .fold .fx p strong{color:var(--ink)}
+  .fold .fx h3{font-size:15.5px;color:var(--ink);font-weight:700;
+    margin:22px 0 6px;letter-spacing:-.01em}
+
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .panel{padding:18px 15px}
+    .result{padding:22px 15px}
+    .roleImg{width:136px;height:136px}
+    .roleImg .fbEmo{font-size:68px}
+    .roleName{font-size:22px}
+    .mates{grid-template-columns:1fr}
+    .fold summary{padding:14px 15px}
+    .fold summary h2{font-size:15.5px}
+    .fold .fx{padding:0 15px 10px}
+  }
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/en/tests/">Magpie Tests</a> › Guardian Spirit Test</p>
+<p class="langsw">🌏 <a href="/tests/guardian/" hreflang="ko">Korean</a> · <a href="/ja/tests/guardian/" hreflang="ja">Japanese</a></p>
+
+<h1>Which <span class="jd">divine beast</span> protects you? 🐉</h1>
+<p class="sub">Enter your birthday and this page computes which of 12 East Asian guardian spirits protects you — read from your <strong>saju day master</strong> — plus <strong>how many generations (3–99) it has been watching over your family</strong>. The four directional beasts — Azure Dragon, Vermilion Bird, White Tiger, Black Tortoise — sit exactly where two thousand years of Five-Elements cosmology put them; few guardian tests care this much about citing their sources. A real manse-ryeok (Korean almanac) engine pulls the same eight characters old fortune-tellers read from a birth date, and issues you a guardianship contract, including what percent of all bonds run deeper than yours. Is the Azure Dragon of the East at your back, or the nine-tailed fox of the night fog? Or… will the search for your guardian end with the discovery that <strong>you are the guardian</strong>?</p>
+
+<div class="panel" id="inputPanel">
+  <div class="row">
+    <div class="col" style="flex:2;min-width:160px">
+      <label class="f" for="nick">Name / nickname (optional)</label>
+      <input type="text" id="nick" maxlength="12" placeholder="Shown on your result card" autocomplete="off">
+    </div>
+  </div>
+  <div class="row" style="margin-top:14px">
+    <div class="col"><label class="f" for="by">Year</label><select id="by"></select></div>
+    <div class="col"><label class="f" for="bm">Month</label><select id="bm"></select></div>
+    <div class="col"><label class="f" for="bd">Day</label><select id="bd"></select></div>
+  </div>
+  <div class="row" style="margin-top:14px">
+    <div class="col" style="min-width:160px">
+      <label class="f" for="bt">Birth time (optional)</label>
+      <select id="bt"></select>
+    </div>
+  </div>
+  <p class="note" id="needPick" style="display:none;color:var(--accent)">Please select your birth year, month and day.</p>
+  <button type="button" class="go" id="goBtn">🐉 Reveal my guardian</button>
+  <p class="note">Use your solar (Gregorian) birthday. Nothing you enter is sent anywhere — everything is computed inside your browser.</p>
+</div>
+
+<div class="result hidden" id="res">
+  <p class="rk">GUARDIAN SPIRIT REPORT</p>
+  <div class="roleImg" id="roleImgBox">
+    <span class="fbEmo" id="fbEmo"></span>
+    <img id="roleImg" alt="" width="168" height="168">
+  </div>
+  <p class="roleName" id="roleName"></p>
+  <p class="roleCatch" id="roleCatch"></p>
+  <div class="popBox">
+    <p class="popCap" id="popCap">This guardian has watched your family for</p>
+    <div class="popNum"><span id="popNum">0</span> <small>generations</small></div>
+    <p class="tier" id="tierLine"></p>
+    <span class="topPct" id="topPct"></span>
+  </div>
+  <p class="ilju" id="iljuLine"></p>
+  <p class="desc" id="roleDesc"></p>
+  <p class="trace" id="traceLine"></p>
+  <div class="mates">
+    <div class="mate good"><span class="mk">BEST-MATCHED FELLOW GUARDIAN</span><span id="mateGood"></span></div>
+    <div class="mate bad"><span class="mk">RIVAL GUARDIAN</span><span id="mateBad"></span></div>
+  </div>
+  <div class="btns">
+    <button type="button" id="shareLink">🔗 Copy result link</button>
+    <button type="button" class="pri" id="shareCard">📸 Save result card</button>
+  </div>
+  <button type="button" class="retry" id="retryBtn">👀 Who guards your friend? Try again</button>
+  <p class="copied" id="copied"></p>
+</div>
+
+<p class="gist">This test runs your birthday through a Korean almanac (manse-ryeok) engine to find your <strong>day pillar</strong> — the two characters assigned to the day you were born — and reads its top character, the <strong>day master</strong>, as one of 12 guardian spirits. The four directional beasts — Azure Dragon, Vermilion Bird, White Tiger, Black Tortoise — follow the <strong>authentic Five-Elements directional mapping</strong>, unchanged. "Watching your family for N generations" (3–99) comes from a formula that weights <strong>in-seong (印星)</strong>, the energy that gives birth to and shelters you, and <strong>gwan-seong (官星)</strong>, the fence around you, most heavily; the "top N% deepest bonds" badge is a real percentile drawn from all 22,280 days between 1950 and 2010. There is no randomness anywhere in the pipeline, so the same birthday always returns the same guardian and the same generation count.</p>
+
+<details class="fold" open><summary><h2>Saju, the eight characters, and your guardian</h2></summary><div class="fx">
+<p>Saju (四柱, "four pillars") is Korea's classical system for reading a person from their birth moment — the same family of astrology known as BaZi or Four Pillars of Destiny elsewhere in East Asia. Your birth <strong>year, month, day and hour</strong> each become one pillar, and each pillar is written with two characters: a <strong>heavenly stem</strong> on top (ten of them: Gap, Eul, Byeong, Jeong, Mu, Gi, Gyeong, Sin, Im, Gye) and an <strong>earthly branch</strong> below (twelve of them, the zodiac animals from Rat to Pig). Four pillars, two characters each — eight characters in all, which is why Koreans call a person's fate their "palja" (eight characters). Pairing stems and branches in order produces a repeating cycle of sixty combinations, the famous <strong>sexagenary cycle</strong>.</p>
+<p>The pillar for the day you were born is the <strong>day pillar</strong>, and its top character is the <strong>day master (ilgan, 日干)</strong>. Classical saju treats this one character as "you," and the other seven as the environment around you. That is why this test can name your guardian from nothing but a birth date: the guardian comes from the day master, and the day master is fixed the moment you know the date.</p>
+<p>The guardian-beast idea itself is genuinely ancient in East Asia. The four walls of Goguryeo-era tomb murals carry the four directional guardians; haetae statues stand before palace gates; village entrances got their own guardian posts. A worldview that assigns a protector to every direction, every plot of land, every family — this page simply wires an almanac into it and answers, by computation, the question "so who exactly is assigned to my house?" If you want to see your actual eight characters, the <a href="/tools/manse/">manse-ryeok calculator</a> (Korean) computes the full chart down to the minute of each solar term.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>The ten day masters and their beasts — the four directions are canon</h2></summary><div class="fx">
+<p>The ten heavenly stems are the five elements — Wood, Fire, Earth, Metal, Water — each split into a yang and a yin form. And the four directional beasts have been Five-Elements guardians from the very beginning: the Azure Dragon of Wood in the East, the Vermilion Bird of Fire in the South, the White Tiger of Metal in the West, the Black Tortoise of Water in the North — with the Yellow Dragon of Earth in the Center. So the five yang stems (Gap, Byeong, Mu, Gyeong, Im) don't need any creative matchmaking: <strong>each simply receives the beast of its own element</strong>. Gap Wood being the Azure Dragon wasn't decided by this page; it was decided two thousand years ago. The five yin stems are paired with the traditional beast of the same element whose character fits the stem best. The same day master becomes a past life in the <a href="/en/tests/pastlife/">Past Life Test</a> and an idol position in the <a href="/en/tests/idol/">Idol Test</a> — change the world, and the role changes.</p>
+
+<h3>Gap (甲) &amp; Eul (乙) — Wood, the East</h3>
+<p><strong>Gap</strong> is the great tree growing straight into the sky. Its element is eastern Wood, and the guardian of the eastern sky is the <strong>Azure Dragon (青龍)</strong> — the dragon whose body is the seven eastern constellations, ruler of spring, wind and rain, the very dragon painted on the east walls of Goguryeo tombs.</p>
+<p><strong>Eul</strong> is the flower and the vine — bending in the wind, never breaking. That supple, graceful energy is paired with the <strong>Thousand-Year Crane (千年鶴)</strong>: centerpiece of the ten-longevity-symbols folding screens, the bird said to turn azure after a thousand years and carry immortals on its back.</p>
+
+<h3>Byeong (丙) &amp; Jeong (丁) — Fire, the South</h3>
+<p><strong>Byeong</strong> is the midday sun. Its element is southern Fire, and the guardian of the southern sky is the <strong>Vermilion Bird (朱雀)</strong> — the scarlet bird whose wings are the seven southern constellations, ruler of summer's blaze. Again, canon mapping, untouched.</p>
+<p><strong>Jeong</strong> is lantern light and hearth fire, the ember that never quite goes out. It is paired with <strong>Bonghwang (鳳凰)</strong>, the East Asian phoenix — the sovereign's bird that roosts only in paulownia trees and appears only in ages of peace, and the firebird reborn out of its own flame.</p>
+
+<h3>Mu (戊) &amp; Gi (己) — Earth, the Center</h3>
+<p><strong>Mu</strong> is mountain ranges and bedrock. In directional cosmology Earth is the Center, and the beast that commands the four directions from the middle is the <strong>Yellow Dragon (黃龍)</strong> — the same logic that makes yellow the center of the five cardinal colors and the king's robe a yellow dragon's. The fifth piece of the directional set, also canon.</p>
+<p><strong>Gi</strong> is the cultivated field — soil that holds, feeds and sorts. It is paired with the <strong>Haetae (獬豸)</strong>: the justice beast that can tell right from wrong and rams the guilty party with its horn, and the fire-suppressing stone guardian placed in front of Gwanghwamun Gate to protect the palace grounds.</p>
+
+<h3>Gyeong (庚) &amp; Sin (辛) — Metal, the West</h3>
+<p><strong>Gyeong</strong> is unrefined iron. Its element is western Metal, and the guardian of the western sky is the <strong>White Tiger (白虎)</strong> — claws hooked into the seven western constellations, ruler of autumn's killing air, the fiercest seat among the four.</p>
+<p><strong>Sin</strong> is the finished jewel. It is paired with the <strong>Girin (麒麟)</strong>, the East Asian unicorn — dragon-faced, deer-bodied, so gentle it refuses to step on a living blade of grass, and said to appear only when a sage is born. As auspicious as a gem, and just as rare.</p>
+
+<h3>Im (壬) &amp; Gye (癸) — Water, the North</h3>
+<p><strong>Im</strong> is the sea and the great river. Its element is northern Water, and the guardian of the northern sky is the <strong>Black Tortoise (玄武)</strong> — tortoise entwined with snake, ruler of winter and deep knowing. With this, all four directional seats have gone to the day masters of their own elements.</p>
+<p><strong>Gye</strong> is rain, dew and night fog. It is paired with the <strong>Nine-Tailed Fox (九尾狐)</strong> — the gumiho. A monster, you say? Trace the legend back and the nine-tailed fox first appears in the Classic of Mountains and Seas as an auspicious beast of peaceful ages; the seductress image was layered on much later. A fox that lived a thousand years to earn nine tails, master of transformation and foresight — no beast matches the quietly seeping Gye Water better.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>The eleventh and twelfth — the Three-Legged Crow and the Divine Magpie</h2></summary><div class="fx">
+<p>There are 12 guardians rather than 10 because two extra conditions sit on top of the day master. The first is <strong>gwaegang (魁罡)</strong> — six specific day pillars out of the sixty (Mu-jin, Gyeong-jin, Im-jin, Mu-sul, Gyeong-sul, Im-sul) that classical saju calls "the chief star," an extreme and forceful energy. Born on one of these, you're judged too much for any directional beast to handle, and you're assigned the guardian of the sun itself — the <strong>Three-Legged Crow (三足烏, samjok-o)</strong>: the three-legged crow that lives inside the sun and carries it across the sky, the bird at the center of the Goguryeo banners. Gwaegang's extreme charisma earns 10 bonus generations in the formula, too. Across the 22,280 days from 1950 to 2010, exactly 10% — 2,228 days — qualify.</p>
+<p>The second is the <strong>Divine Magpie (神鵲)</strong>. This one is decided not by the day pillar but by the bond itself: the moment your computed generation count clears 98, the test flips its verdict. You climbed the almanac looking for the guardian of your family — and what you found at the top of the family tree wasn't an ancestor who made a contract with a guardian. It was <strong>the guardian itself: you</strong>. The Divine Magpie is the legendary good-news bird of Korean folklore — the magpie that bridged the Milky Way with its own body for the two separated lovers of the Chilseok legend, and whose morning cry means a welcome guest is coming. It is also, you may have noticed, the bird on this site's nameplate. So yes: you took the magpie's own test and drew the magpie. It appears on just 85 of the 22,280 days — about 0.38% — the rarest result in this test. Even a gwaegang day pillar becomes the Divine Magpie instead of the Three-Legged Crow once the count clears 98: you carried the sun so hard you became the good news yourself.</p>
+<p>The <strong>best-matched fellow guardian</strong> and <strong>rival guardian</strong> under your result are paired by element cycles and the beasts' own lore. The Azure Dragon's best match is the Black Tortoise because northern Water feeds eastern Wood; its rival is the White Tiger, its staring-contest partner across two thousand years of "dragon on the left, tiger on the right" gate guardianship. The Vermilion Bird and Black Tortoise clash as fire and water; the nine-tailed fox and the haetae — a beguiling spirit versus a judge of right and wrong — do not exchange warm looks.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>How "watching your family for N generations" is calculated</h2></summary><div class="fx">
+<p>The generation count is a value from 3 to 99 measuring the <strong>depth of the bond</strong> between the guardian and your family — the bigger the number, the older the contract. The rules are invented for this world, but they are the same rules for everyone.</p>
+<p><strong>1. Base count</strong> — your starting point depends on your day master's element: Wood 48, Fire 42, Earth 56, Metal 50, Water 53. The guardian world is a world of home ground, so ground-keeping Earth starts highest and flare-and-fade Fire lowest. Fire day masters get the flashiest, most visible protection in exchange — no reason to sulk.</p>
+<p><strong>2. Relations with the other characters</strong> — the elements of your year, month and day branches (plus the hour branch, if you entered a birth time) are scored by their classical relation to your day master. <strong>In-seong (印星), the element that gives birth to you, is worth +8</strong> — the biggest bonus. In saju it is the energy that nurtures and shelters you; for a test that counts protectors, no character is more on the nose. Next, gwan-seong (the element that controls you) is +5. It usually sits in the penalty column, but this world reads it as the fence and the threshold around you — protection (in-seong) and enclosure (gwan-seong) ranking high together is this formula's personality. Bi-geop (your own element) is +1 — siblings standing guard with you; jae-seong (the element you control) is −2; and sik-sang, the element you pour outward, is −4: the more you radiate, the shallower the guardianship. For contrast, the <a href="/en/tests/pastlife/">Past Life Test</a> also gives in-seong its maximum (+7), but there sik-sang is +1 and gwan-seong +3 — even when two worlds prize the same character, their scales differ.</p>
+<p><strong>3. Positional weights</strong> — the year branch is weighted ×1.9, the day branch ×1.4, the month branch ×1.1, the hour branch ×0.8. The year branch is the ancestral seat in saju, and this is a test that counts a family bond — so for the first time in this series, <strong>the year branch weighs the most</strong>. It is the exact mirror of the <a href="/en/tests/idol/">Idol Test</a>, where the youth-seat month branch dominates: survival shows never ask about your family, but a guardian spirit asks about nothing else first.</p>
+<p><strong>4. Yang/yin and gwaegang</strong> — yang day masters (Gap, Byeong, Mu, Gyeong, Im) get −2; yin day masters (Eul, Jeong, Gi, Sin, Gye) get +3. Guarding is quiet, unshowy yin work, so the seeping yin stems get the edge. The six gwaegang day pillars above add another +10.</p>
+<p><strong>5. Scatter</strong> — with only the steps above, identical day pillars would bunch together. So the birth-date string is fed through a fixed hash function to produce two offsets, up to ±27.5 and ±6. These are not random numbers — they are computed from the date, so the same date always gets the same offsets.</p>
+<p>Finally, anything above 93 is compressed to 0.27×, and anything below 9 to 0.55×, clamping the count into 3–99. The top is squeezed hard because 98+ triggers the Divine Magpie verdict — the threshold is meant to stay rare. Run over every date from 1950 to 2010, the mean is 58.1 generations, the median 58, and both extremes — 3 and 99 — genuinely occur. A single-digit count (3–9) shows up on less than 1% of all dates and is read not as an inherited contract but as <strong>a brand-new bond the guardian chose you for, personally, this lifetime</strong> — details in the FAQ below.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>Where "top N% deepest bonds" comes from</h2></summary><div class="fx">
+<p>The "top N% deepest bonds" badge on your result screen is not a comparison with other people who took this test. Your input never leaves the browser, so there would be no way to build one. Instead, a precomputed percentile table ships inside this page.</p>
+<p>Here's how it was built. For <strong>every one of the 22,280 days from January 1, 1950 to December 31, 2010</strong>, the generation count was computed with birth time unknown. Then for each count from 3 to 99, we counted what share of all dates (in permille) lands at that count or deeper, and stored the 97 numbers. Your result screen just looks your count up in that table.</p>
+<p>A few reference points: 58 generations sits right at the median; 24% of all dates reach 75+, 8% reach 90+, 3% reach 95+. At the other end — bonds shallower than the top 50% — the badge turns gold and flips into "top N% newest picks." On the freshly-bonded side, the lower the count — the newer the contract — the higher your pick ranking. An old guardianship is your family tree's pride; a new one is yours personally. Either way, you have something to brag about.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>Why the same birthday always gets the same result</h2></summary><div class="fx">
+<p>No random function is used anywhere in producing your result. Every value on the screen is computed from your birth date (and the optional birth time).</p>
+<p>The sequence: your birth date is converted to a running day number, and its remainder mod 60 fixes the day pillar — the sexagenary cycle repeats every sixty days without exception. The year and month pillars are trickier. In saju, the year changes not on January 1 and not on Lunar New Year but at <strong>ipchun</strong>, the "start of spring" solar term, and the month rolls over at each of the twelve major solar terms. This page embeds a table of solar-term times, minute-precise, from 1900 onward — so for someone born in early February, it checks the clock, not just the calendar, to decide whether their year pillar is still the old year or already the new one.</p>
+<p>Apply the formula above to the resulting eight (or six, without a birth time) characters and the count falls out; the final scatter offsets also come from a hash of the date string. The upshot: any day, any device, the same birthday produces the same guardian and the same generation count. A guardianship contract that changed daily wouldn't be much of a contract.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>FAQ</h2></summary><div class="fx">
+<h3>My birthday is on the lunar calendar. Can I enter it as-is?</h3>
+<p>No — the input expects the solar (Gregorian) date. If you only know a lunar birthday, convert it to a solar date first (the Korean <a href="/tools/lunar/">lunar–solar converter</a> can do it). The almanac math runs on solar terms — the sun's position — not lunar dates, so feeding it a lunar date shifts the whole chart by up to a month.</p>
+<h3>Does not knowing my birth time change the result?</h3>
+<p>The guardian usually stays put: it's decided by the day pillar, and the day pillar depends only on the date. The generation count is what moves. Enter a time and the hour branch joins the formula at ×0.8 weight, and the hash input that generates the scatter changes too. In practice the count shifts by about 18 generations on average with versus without a time. Leave it blank and noon is used as the representative time. The exception is the Divine Magpie: the birth time can push a count across the 98 threshold, so on some dates the magpie verdict comes and goes with the hour.</p>
+<h3>Another saju calculator gives me a different chart</h3>
+<p>This test computes with exactly one convention and no options. Birth time is taken only as one of twelve two-hour branches, using each slot's midpoint; there is no 30-minute standard-time correction and no late-Rat-hour school setting (whether 11 p.m.+ counts as the next day's pillar). The day pillar is fixed by the date alone, regardless of time. So if you were born around 11 p.m. or on the day of a solar term, a full-featured almanac may disagree. For a boundary-accurate chart use the <a href="/tools/manse/">manse-ryeok calculator</a> (Korean) — it applies term times to the minute and lets you toggle both conventions.</p>
+<h3>My count came out single-digit (3–9 generations)</h3>
+<p>Nothing to be sad about. The items that shave the count are sik-sang (the element you pour outward, −4 per character) and jae-seong (−2) — charts strong in those energies are movers and dealmakers, not the type to sit still and be watched over, so ancient contracts don't stick to them. In exchange, 3–9 generations occurs on less than 1% of all dates, and this test reads it as <strong>a young guardian who bonded with you this lifetime</strong>. Not a centuries-old contract inherited with the family register — a guardian that looked across countless families and picked you, personally, to write a fresh contract with. Old guardianship attaches to a house; young guardianship attaches to you. Your badge flips to "top N% newest picks" accordingly.</p>
+<h3>Does the share link contain my birthday?</h3>
+<p>No. The link carries a single number that packs exactly four display values: guardian id, generation count, top %, and day-pillar index. Your birth date and time are not in it and cannot be reverse-engineered from it. Whoever opens your link sees only your result screen.</p>
+<h3>Is a divine beast really protecting my house?</h3>
+<p>No. This test is entertainment with no connection to real belief, folklore practice or feng shui, and the guardian, count and percentages are just numbers from the formula published above. No tradition anywhere contains a "guardian-spirit generation formula" (we made it up just now). The almanac part is real, though — the day pillar on your screen is genuine calendar data. What actually protects a house is insurance and a door lock; what this page guarantees is only that the commute feels a little sturdier once you've decided there's an Azure Dragon at your back.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>How seriously should you take this?</h2></summary><div class="fx">
+<p>If you've read this far you've guessed: this is <strong>entertainment content</strong>. The almanac layer is a real computation over real solar-term data, and the four directional beasts really do follow the traditional element-direction mapping — but every rule that extracts a guardian and a generation count from eight characters was invented by this page. Classical saju has no concept of "guardian beasts," and the results have nothing to do with real belief, folklore, feng shui or fortune. Drawing the Azure Dragon does not mean you should move east, and drawing the nine-tailed fox does not require giving up fried chicken.</p>
+<p>One more thing: there are no blanks among these 12 guardians. Directional beast, nine-tailed fox or young newcomer — every one of them is a protector at its post, and 3 generations is not a shallow bond but generation one of a new one. That's what a guardianship contract is for — nobody shares a contract that reads "no guardian assigned." If the saju side hooked you, the <a href="/tools/manse/">manse-ryeok calculator</a> (Korean) will show you your actual eight characters.</p>
+</div></details>
+
+<div class="basis">
+  <h2>Visit your other lives while you're here</h2>
+  <p>🎤 <a href="/en/tests/idol/">If you debuted as a K-pop idol? — Idol Position Test</a></p>
+  <p>🔮 <a href="/en/tests/pastlife/">Who were you in your past life? — Past Life Test</a></p>
+  <p>🪶 <a href="/en/tests/joseon/">Born in the Joseon Dynasty, what would you be? — Joseon Job Test</a></p>
+  <p>🧟 <a href="/en/tests/zombie/">When the zombie outbreak hits, what's your role? — Survival Rate Test</a></p>
+  <p>🌙 <a href="/en/tests/isekai/">How popular would you be in another world? — Isekai Popularity Test</a></p>
+  <p>🤖 <a href="/en/tests/robot/">If you woke up as an AI robot? — Robot Type Test</a></p>
+  <p>Same birthday, different world — different fate.</p>
+</div>
+
+<footer>
+  <p>This test is entertainment content. Guardians, generation counts and percentages have no connection to real belief, folklore or feng shui and guarantee nothing.</p>
+  <p>Magpie Tests · All computation happens in your browser; nothing you enter is transmitted anywhere.</p>
+  <p><a href="/">Home</a> · <a href="/en/tests/">All tests</a> · <a href="/en/tools/">Tools</a> · <a href="/en/disclaimer.html">Disclaimer</a> · <a href="/privacy-policy.html">Privacy Policy</a></p>
+</footer>
+
+</div>
+
+<script>
+/*CORE:S*/
+/* ── manse-ryeok core (year / month / day pillars) — ported from the /tools/manse/ engine.
+   Identical solar-term (12 major terms) minute table and identical JDN day-pillar formula.
+   Verified against KASI day-sign data. Do not "improve" any of this. ── */
+var JD_ENC="0y0n41s0dy2m0n53h0d74c0l35712m630er6y0it7t03p8n07s9g0yw0503g0y0ws1s0nn2m0wx3h0n34c0v15808k630om6y0sm7t0dj8n0hn9h04t050d50z02q1s0xk2n02q3h0wr4d00k580hy630xy6y11z7t0mx8n0r69h0eh050n40z0cj1t03b2n0ce3i02e4d0a7580rp6403s6z07u7t0wu8n1119h0ob050ww0z0mc1t0d42n0m73i0c74d0k15811k640do6z0hq7u02o8o06t9h0y10602p0y0w41s0my2m0w33h0m24c0tu58078630n96y0ra7t0c88n0ge9h03n050cf0z01s1s0wo2n01v3h0vx4c13p580h3630x46y1147t0m38n0qb9h0dl050m20z0bn1t02f2n0bj3i01i4d099580qn6402o6z06q7t0vr8n1009h0nb050w00z0lb1t0c22n0ly3i0bx4d0jp58116640d96z0ha7u0298o06g9h0xq0601p0y0vr1s0mj2m0vo3h0lp4c0tk58072630n56y0r57t0c18n0g79h03h050c30z01m1s0wf2n01h3h0ve4c133580gf630wf6y10g7t0lf8n0po9h0cz050lw0z0b41t01x2n0az3i00v4d08k580pz640226z0677t0v98n0zh9h0mq050vf0z0li1t0c92n0lc3i0bb4d0j45810l640cp6z0gu7u01v8o0639h0xb0601w0y0v71s0lx2m0v03h0kz4c0sq58063630m46y0q67t0b88n0fi9h02t050bm0z00t1s0vk2n00m3h0uk4c12c580fr630vt6y0zx7t0kz8n0pb9h0cp050l70z0aq1t01c2n0a93i0034d07s580p86401c6z05h7t0ul8n0yy9h0mc050v40z0ke1t0b22n0jy3i09q4d0he580yu640az6z0f57u0088o04i9h0vu0600s0y0ty1s0kp2m0tq3h0jm4c0rb5804q630ku6y0oz7t0a28n0ed9h01p050aa0y13t1s0ul2m13l3h0te4c10z580e8630u76y0yb7t0jg8n0nv9h0ba050k40z09f1t0062n0953h12y4d06l580nx6313y6z0447t0t98n0xo9h0l2050ts0z0j31t09r2n0ir3i08o4d0gf580xv6409y6z0e37t1358o03h9h0uu0513h0y0sw1s0jl2m0sl3h0ig4c0q65803j630jk6y0nm7t08n8n0cy9h00b0509a0y12j1s0ta2m12a3h0s54c0zu580da630td6y0xi7t0il8n0mx9h0ab050it0z08d1s1312n07y3h11q4d05e580mu631316z0397t0sf8n0ws9h0k5050sq0z0i21t08p2n0hl3i07e4d0f2580wh6408o6z0cy7t1248o02h9h0tt0512i0y0rp1s0ic2m0rb3h0h64c0ox5802d630ij6y0ms7t0808n0ce9g13s050850y11q1s0sc2m1163h0qx4c0yi580bu630rw6y0w47t0hd8n0lw9h09f050i60z07i1s1222n06u3h10h4d041580le6311j6z01t7t0r38n0vl9h0j2050rx0z0h51t07p2n0gj3i0684d0dt580v86407g6z0bq7t10y8o01e9h0st0511j0y0qx1s0hk2m0qf3h0g54c0nn5800w630gx6y0l47t06b8n0as9g1280507a0y10f1s0r52m1023h0pr4c0xa580ak630ql6y0us7t0g28n0kk9h083050gr0z0651s10q2n05l3h0za4d02u580k6631096z00h7t0pr8n0ua9h0hs050qk0z0fu1t06e2n0f63i04v4d0cg580ts6405w6z0a37t0za8n13q9h0r6051090y0p91s0fw2m0or3h0ei4c0m65713l630fq6y0jy7t0548n09j9g10z0505n0y0z41s0pq2m0yk3h0o74c0vq58091630p46y0tc7t0el8n0j39h06l050fh0z04p1s0za2n0423h0xo4d016580ii630yo6y1307t0oc8n0su9h0g9050p20z0e51t04p2n0dj3i0394d0av580sa6404j6z08x7t0y98n12r9h0q6050yn0y0o21s0el2m0ne3h0d34c0kn5711y630e16y0ib7t03n8n0879g0zq0504k0y0xr1s0oa2m0x13h0mn4c0u75807j630np6y0s07t0dd8n0i09h05m050e70z03n1s0y22n02q3h0w94c13s580h6630xf6y11u7t0n98n0rw9h0fh050o40z0dk1t0402n0cn3i0244d09k580qw640346z07h7t0wu8n11f9h0oy050y00y0n21s0dm2m0md3h0by4c0jf5710r630cy6y0hc7t02q8n07c9g0yw0503g0y0x11s0nl2m0wc3h0lv4c0t95806g630mi6y0qu7t0ca8n0gz9h04n050de0z02s1s0xb2n01z3h0vi4c12v580g3630w66y10j7t0ly8n0qn9h0e9050n70z0cb1t02t2n0bi3i0144d08n580q0640276z06k7t0vx8n10j9h0o4050wr0y0m81s0cq2m0lg3h0b14c0ii570zr630bt6y0g27t01d8n05y9g0xk0502n0y0vs1s0md2m0v33h0km4c0s15805b630lg6y0pr7t0b58n0fr9h03c050c40z01e1s0vw2n00k3h0u34c11j580ew630v56y0zl7t0l18n0po9h0d8050lu0z0b61t01m2n0aa3h13s4d078580ok6400q6z0557t0uk8n0z79h0mq050vo0y0kn1s0b32m0js3h09d4c0gv570y8630af6y0eu7t00b8n0509g0wl050150y0ul1s0kz2m0tl3h0j14c0qf5803p630jv6y0oa7t09s8n0ek9h02a050b30z00e1s0ur2m1393h0sl4c0zx580d6630td6y0xu7t0jc8n0o39h0bq050ku0z09t1t0072n08r3h1264d05k580mx631376z03q7t0t88n0xy9h0lk050ua0y0jm1s0a32m0ip3h0844c0fg570wn6308r6y0d57s12m8n03d9g0v1050020y0t71s0jp2m0rh3h0gw4c0o75801d630hh6y0lw7t07f8n0c99g13y0509l0y1201s0sd2m10x3h0qc4c0xp580b0630r86y0vq7t0ha8n0m39h09t050ii0z07u1s1272n06p3h1044d03i580ks6310y6z01d7t0qu8n0vk9h0j8050sc0y0hd1s07s2m0gd3h05s4c0d7570ui6306q6y0b67s10o8n01e9g0t20411t0y0r71s0hn2m0q63h0fj4c0mu58003630gb6y0kt7t06d8n0b69g12w0507m0y1101s0rf2m0zx3h0p94c0wi5809q630py6y0ui7t0g48n0kw9h08j050hg0z06h1s10u2n05e3h0yt4d027580jj630zu6z00f7t0q38n0uw9h0ik050r10y0gg1s06t2m0fc3h04r4c0c4570td6305i6y0at7s10f8n01a9g0t2041110y0r51s0hi2m0py3h0fa4c0mj5713r630fy6y0kf7t0628n0az9g12t0507n0y10w1s0r52m0zj3h0os4c0w25809e630pp6y0uc7t0g08n0kw9h08p050hf0z06t1s1142n05i3h0yr4d020580j8630zg6y13z7t0pl8n0uf9h0i5050ra0y0ga1s06p2m0f73h04i4c0bq570sx630556y09o7s0zb8n0069g0rx0410q0y0q21s0gf2m0ox3h0e74c0le5712j630ep6y0j87t04x8n09v9g11q0506i0y0zv1s0q62m0yl3h0nu4c0v058085630ob6y0su7t0eh8n0jd9h076050gc0z0581s0zi2n03x3h0x84d00j580hu630y36y12n7t0oa8n0t59h0gw050pq0y0ez1s05b2m0dr3h0324c0ac570rk6303q6y0877s0xt8m12n9g0qf040zh0y0om1s0ez2m0ne3h0cm4c0js5710y630d66y0hq7t03e8n08a9g101050520y0y21s0ob2m0wo3h0lw4c0t55806f630ms6y0ri7t0db8n0i99h060050el0z03w1s0y42n02h3h0vp4c12y580g7630wh6y1137t0mu8n0rr9h0fj050oi0y0dg1s03p2m0c23h01b4c08j570pr630216y06n7s0wf8m11f9g0pa040y10y0nc1s0dj2m0lt3h0ay4c0i4570zb630bl6y0g97t0238n0769g0z50503w0y0xb1s0ni2m0vq3h0kr4c0ru5804z630l96y0px7t0bq8n0gr9h04m050du0z02s1s0x02n01b3h0uf4c11j580er630v26y0zs7t0lm8n0qn9h0eh050n90y0cl1s02w2m0ba3h00g4c07k570oo6300u6y05g7s0v88m10a9g0o7040x30y0mf1s0cq2m0l33h0a94c0hb570yd630ai6y0f27t00v8n05y9g0xw0502v0y0w01s0m82m0ui3h0jn4c0qt58041630kb6y0p07t0au8n0fx9h03u050ck0z01y1s0w52n00f3h0tl4c10s580e0630u96y0yt7t0kj8n0pi9h0dd050mh0y0bj1s01t2m0a53g13b4c06h570no6213x6y04j7s0u98m0z89g0n3040w10y0l91s0bj2m0jt3h08w4c0g0570x76309i6y0e87t0028n0549g0x00501r0y0v41s0lb2m0tk3h0in4c0pq5802v630j66y0nw7t09r8n0es9h02m050bn0z00j1s0up2m12y3h0s34c0z9580ch630su6y0xm7t0ji8n0ol9h0cg050l50y0ac1s00g2m08q3g11v4c050570m76212g6y0357s0t08m0y59g0m4040uz0y0k81s0ac2m0ii3h07j4c0ek570vp6307y6y0cn7s12j8n03p9g0vp0500s0y0ts1s0ju2m0rw3h0gu4c0nv58013630hh6y0mc7t08c8n0di9h01g050ad0y13j1s0tn2m11r3h0qq4c0xr580ax630r86y0vz7t0hw8n0n19h0ay050k40y0931r13a2m07i3g10i4c03h570kj6210s6y01i7s0rf8m0wm9g0kl040tm0y0iq1s08v2m0h13h0604c0cy570u0630696y0b17s1128n02c9g0ue041390y0sk1s0io2m0qt3h0fr4c0mq5713t630g16y0kr7t06p8n0bw9g13w050940y1201s0s42m1093h0p94c0wa5809g630pr6y0ui7t0gf8n0ll9h09k050il0y07p1r11v2m0613g0z24c023570j8620zi6y0087s0q48m0v99g0ja040s80y0hj1s07q2m0fw3h04u4c0bt570sv630546y09v7s0zt8n00z9g0sz041200y0r11s0h42m0p83h0e64c0l65712d630es6y0jp7t05r8n0b09g12y0507m0y10w1s0qy2m0z23h0o24c0v55808c630op6y0ti7t0fj8n0kr9h08q050hj0y06q1r10s2m04w3g0xw4c00x570i1620yc6x1357s0p58m0ue9g0ih040rc0y0gl1s06l2m0el3h03f4c0ae570ri6303w6y08s7s0yw8n0089g0se041160y0ql1s0gm2m0ol3h0dd4c0k95711d630dq6y0im7t04o8n09y9g120050750y1041s0q72m0y83h0n24c0tz58072630nf6y0sb7t0ee8n0jo9h07p050gp0y05t1r0zx2m0413g0wx4b13u570gv620x46x11y7s0o18m0td9g0hh040qd0y0fo1s05s2m0du3h02p4c09l570qk6302r6y07j7s0xl8m12y9g0r2041080y0p61s0f52m0n53h0bz4c0iw57100630cc6y0h87t03d8n08p9g10t0505s0y0yw1s0ow2m0wv3h0lr4c0sq5805v630m86y0r17t0d18n0ib9h06d050fj0y04j1r0yl2m02m3g0vh4b12e570fh620vr6x10l7s0ml8m0ru9g0fx040p30y0e31s0452m0c43h00v4c07p570or630156y0637s0w98m11n9g0pr040yn0y0nu1s0du2m0lt3h0ak4c0hf570yi630av6y0ft7t0208n07c9g0ze0504g0y0xc1s0nb2m0va3h0k44c0r058043630kg6y0pe7t0bl8n0gz9h052050e10y0321r0x02m00y3g0tr4b10n570dq620u16x0yy7s0l48m0qk9g0es040nq0y0d01s02y2m0av3g13k4c06d570ne6213p6y04l7s0ur8m1079g0oe040xl0y0ml1s0ci2m0kc3h08z4c0fr570wu630996y0ea7t00j8n05z9g0y5050370y0wa1s0m92m0u63h0iw4c0pq5802t630j76y0o57t0ac8n0fq9h03v050cw0y0211r0w32m0033g0su4b0zn570cn620sw6x0xs7s0jy8m0pe9g0dl040mm0y0br1s01q2m09n3g12b4c053570m36212f6y03d7s0to8m0z79g0ng040wc0y0ln1s0bk2m0jf3h0854c0ey570w06308d6y0dc7s13j8n04z9g0x5050290y0va1s0l82m0t43h0hu4c0op5801r630i56y0n37t0998n0eo9h02t050bw0y00y1r0ux2l12t3g0rj4b0yd570bf620rs6x0wr7s0iy8m0oe9g0cl040lk0y0at1s00s2m08p3g11d4c045570l66211j6y02i7s0sr8m0y89g0me040vd0y0ke1s0aa2m0i33h06r4c0di570ul630716y0c57s12i8n0409g0w6050130y0u31s0jx2m0rq3h0gg4c0na5800e630gu6y0lw7t0878n0dq9h01x050au0x13z1r0tu2l11n3g0qb4b0x4570a5620qi6x0vh7s0hr8m0nb9g0bl040kn0y09r1r13k2m0783g0zq4c02e570je620zt6y00w7s0ra8m0wx9g0la040ue0y0jj1s09c2m0h13h05j4c0c6570t76305n6y0ar7s1148n02o9g0ux050050y0t31s0iz2m0qq3h0fa4c0ly5712w630f96y0kb7t06o8n0c89h00h0509p0x12m1r0sj2l10d3g0ox4b0vl5708h620or6x0ts7s0g58m0ls9g0a4040j90y08e1r12b2m0643g0yp4c01c570i9620yj6x13h7s0pt8m0vg9g0js040sz0y0hy1s07r2m0fh3h0414c0aq570rp630436y0947s0zh8n0129g0td0412m0y0rj1s0hd2m0p33h0do4c0kg5711i630dx6y0iy7t0588n0ar9g131050870x1191r0r52l0yy3g0nk4b0ua5707a620no6x0so7s0ey8m0kh9g08q040hu0y06w1r10r2m04h3g0wy4b13k570gj620wz6x1257s0ol8m0u89g0ij040ri0y0gm1s06f2m0e43h02n4c09c570qd6302v6y0827s0yj8n0059g0sf0411b0y0qd1s0g42m0nt3h0ce4c0j457105630cl6y0hq7t0468n09u9g125050740x1051r0pw2l0xk3g0m24b0sp5705p620m46x0r87s0dq8m0jh9g07x040gw0y0651r0zw2m03i3g0vx4b12i570fh620vx6x1127s0nj8m0t99g0hp040qs0y0fw1s05m2m0d63h01j4c083570p16301i6y06q7s0x98m1309g0rd0410k0y0pk1s0fc2m0my3h0bd4c0hz570yx630bd6y0gj7t0318n08q9g114050670x0zb1r0p62l0ww3g0ld4b0rz5704v620l76x0q97s0cq8m0ig9g06v040fy0y0531r0yv2m02h3g0uv4b11d570e8620ul6x0zq7s0m98m0s39g0gk040pr0y0et1s04j2m0c43h00i4c073570o26300i6y05o7s0w58m11v9g0q9040zg0y0og1s0e72m0lt3h0a94c0gw570xv630aa6y0fe7t01t8n07h9g0zu050530x0y11r0nu2l0vg3g0ju4b0qe5703a620jo6x0ot7s0bb8m0h19g05g040eo0y03p1r0xi2m0143g0tj4b102570cz620tf6x0yl7s0l48m0qv9g0f9040ob0y0db1s0302m0ak3g12y4c05i570mg6212x6y0467s0ur8m10k9g0ox040y10y0mw1s0cj2m0k33h08h4c0f4570w46308k6y0ds7t00d8n0669g0yl0503o0x0wo1r0md2l0tx3g0ib4b0ox5701w620ib6x0nh7s0a08m0ft9g04b040de0y02j1r0w62l13l3g0rs4b0y8570b4620rl6x0wv7s0ji8m0pe9g0dx040n80y0c61s01t2m0993g11g4c03x570ku6211e6y02q7s0td8m0z79g0nn040wu0y0ls1s0bi2m0j13h07c4c0du570ur630776y0cg7s1328n04x9g0xc0502h0x0vh1r0l72l0sq3g0h04b0nf57009620gm6x0lt7s08h8m0ee9g02y040c60y0181r0ux2l12f3g0qq4b0x6570a1620qg6x0vo7s0ic8m0o99g0ct040lw0y0b01s00m2m0813g10b4c02s570jp621056y01f7s0s28m0xy9g0mg040vq0y0kn1s0a92m0hp3h05z4c0ch570tg6305x6y0b67s11r8n03l9g0w30501c0x0ud1r0k32l0rm3g0fx4b0mf5613d620fu6x0l27s07o8m0di9g020040b00y0081r0tv2l11b3g0pi4b0vv5708p620p76x0uj7s0ha8m0n89g0br040kw0y09v1r13h2m06w3g0z44c01k570ih620z16y00f7s0r78m0x49g0lm040um0y0jn1s0982m0go3h04y4c0bg570se6304w6y0a77s10x8n02v9g0vf0500f0x0ti1r0j32l0qg3g0em4b0l05611u620ea6x0jk7s06a8m0ca9g00y040aa0x13a1r0sw2l1083g0oc4b0uo5707j620o16x0te7s0g58m0m59g0ar040jy0y0901r12k2m05w3g0y04c00c570h7620xo6x1327s0pu8m0vt9g0kd040tp0y0ik1s0862m0fj3h03p4c0a1570qv6303b6y08m7s0zd8n01d9g0tx0413a0x0s61r0ht2l0pa3g0di4b0jw5610q620d56x0ie7s0548m0b49f13q0408u0x11z1r0rj2l0yv3g0mz4b0ta57062620mh6x0rs7s0ek8m0km9g09a040io0y07j1r1122m04d3g0wg4b12t570fp620w86x11l7s0od8m0uc9g0iw040s90y0h31s06n2m0e03h0264c08m570pj630226y07e7s0y48n0019g0sl0411t0x0qr1r0gd2l0nq3g0bt4b0i4560yw620bd6x0gq7s03i8m09i9f1240407h0x10d1r0py2l0x93g0lc4b0ro5704i620l16x0qh7s0dd8m0jf9g080040h20y0611r0zi2m02s3g0uw4b119570e5620up6x1067s0n38m0t69g0hs040qv0y0ft1s0592m0ch3h00k4c06x570nt6300b6y05p7s0wl8m12p9g0re0410n0x0pl1r0f22l0mc3g0ae4b0gr560xn620a66x0fk7s02f8m08j9f11a0406c0x0zl1r0p22l0w73g0k44b0qc57034620jm6x0p37s0c18m0i79g06y040gb0y05a1r0ys2m01y3g0tv4b102570cu620tf6x0yx7s0lw8m0s09g0go040q00y0ex1s04h2m0br3g13t4c064570mx6213f6y04v7s0vr8m11v9g0qk040zn0x0os1r0ec2l0ln3g09n4b0fu560wi6208w6x0e97s0158m07c9f1040405i0x0yh1r0o02l0v93g0j94b0ph57029620ip6x0o47s0b18m0h79g05y040f60y0461r0xn2m00v3g0sv4b0z6570c1620sk6x0xz7s0kv8m0qz9g0fo040ox0y0dv1s03c2m0ak3g12k4c04u570lo621266y03k7s0ue8m10h9g0p5040yn0x0nf1r0cy2l0k83g08a4b0ek560ve6207y6x0df7s00a8m06e9f0z2040440x0x91r0mp2l0tw3g0ht4b0o05700s620hc6x0mv7s09w8m0g39g04s040e00y02v1r0w92l13d3g0ra4b0xi570ab620qx6x0wi7s0jj8m0pr9g0eg040np0y0cg1s01t2m08y3g10y4c039570k56210r6y02a7s0ta8m0zi9g0o9040xb0x0me1r0bq2l0it3g06o4b0ct560tj620616x0bi7r12i8m04s9f0xn040380x0w01r0le2l0sf3g0g74b0ma56131620fl6x0l67s0898m0ek9g03d040cq0y01m1r0v02l1223g0pv4b0w05708r620pc6x0uy7s0i18m0ob9g0d3040me0y0ba1s00p2m07s3g0zn4c01q570if620yw6y00e7s0rf8m0xp9g0mj040w30x0kt1r0aa2l0hg3g05d4b0bi560s86204p6x0a77r1188m03j9f0wf0401k0x0uq1r0k32l0r53g0ez4b0l25611s620e96x0js7s06v8m0d79g023040bh0y00f1r0ts2l10s3g0ok4b0uo5707g620o06x0tk7s0gl8m0mv9g0bo040l60y09y1r13d2m06g3g0yc4c00k570he620xz6x13k7s0qk8m0ws9g0lk040up0x0ju1r09a2l0ge3g0484b0aa560qz6203g6x0907r1028m02c9f0v70400l0x0ti1r0ix2l0q03g0ds4b0jv5610k620d46x0ir7s05x8m0ca9g013040a80x1361r0si2l0zk3g0nf4b0tl5706f620n16x0sp7s0fv8m0m89g0b2040k20y0941r12e2m05e3g0x84b13d570g5620wo6x1287s0pb8m0vo9g0kl040u00x0iu1r0862l0f63g02y4b092560pu6202f6x0817r0z68m01j9f0uh0313n0x0st1r0i32l0p03g0cn4b0io560ze620bz6x0ho7s04v8m0ba9g0080409k0x12j1r0ru2l0yr3g0me4b0sc57051620lm6x0rb7s0ei8m0kw9g09r040jb0y07y1r11b2m04b3g0w34b126570ew620vh6x1157s0ob8m0uq9g0jl040ss0x0hu1r0762l0e63g01w4b07v560oh6200x6x06h7r0xm8m0039f0t30312m0x0rg1r0gs2l0np3g0bc4b0hb560xy620ag6x0g27s0398m09q9f12o040880x10x1r0q62l0x33g0kt4b0qw5703n620ka6x0py7s0d48m0ji9g08f040hr0y06o1r0zy2m02v3g0ul4b10m570db620tu6x0zf7s0mj8m0sw9g0hs040rh";
+var JY0=1900;
+var GAN="갑을병정무기경신임계", JI="자축인묘진사오미신유술해";
+var GANH="甲乙丙丁戊己庚辛壬癸", JIH="子丑寅卯辰巳午未申酉戌亥";
+function jieOf(y,idx){
+  var s=JD_ENC.substr(((y-JY0)*12+idx)*5,5);
+  var doy=parseInt(s.substr(0,2),36), mn=parseInt(s.substr(2,3),36);
+  var dt=new Date(Date.UTC(y,0,1+doy));
+  return {m:dt.getUTCMonth()+1, d:dt.getUTCDate(), min:mn};
+}
+function cmpJie(y,m,d,mn,idx){
+  var j=jieOf(y,idx);
+  if(m!==j.m) return m>j.m?1:-1;
+  if(d!==j.d) return d>j.d?1:-1;
+  return mn>=j.min?1:-1;
+}
+function yearPillarIdx(y,m,d,mn){
+  var sy=y;
+  if(cmpJie(y,m,d,mn,0)<0) sy=y-1;
+  return {sy:sy, idx:((sy-4)%60+60)%60};
+}
+function monthPillar(y,m,d,mn){
+  var CHRONO=[11,0,1,2,3,4,5,6,7,8,9,10];
+  var mi=-1;
+  for(var k=0;k<12;k++){ var i=CHRONO[k]; if(cmpJie(y,m,d,mn,i)>0) mi=i; else break; }
+  if(mi<0) mi=10;
+  var yp=yearPillarIdx(y,m,d,mn);
+  var yGan=yp.idx%10;
+  var inGan=[2,4,6,8,0][yGan%5];
+  var gan=(inGan+mi)%10;
+  var ji=(mi+2)%12;
+  return {gan:gan, ji:ji, mi:mi};
+}
+function jdn2(y,m,d){ if(m<=2){y--;m+=12;} var a=Math.floor(y/100),b=2-a+Math.floor(a/4);
+  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+b-1524; }
+function dayPillarIdx(y,m,d){
+  var n=jdn2(y,m,d);
+  return ((n+49)%60+60)%60;
+}
+
+/* ── generation-count formula (weights and seeds differ from the other six tests) ── */
+var ELG=[0,0,1,1,2,2,3,3,4,4];              /* elements of the ten heavenly stems */
+var ELJ=[4,2,0,0,2,1,1,2,3,3,2,4];          /* elements of the twelve earthly branches */
+var GWI={4:1,16:1,28:1,34:1,46:1,58:1};     /* gwaegang day pillars: Mu-jin Gyeong-jin Im-jin Mu-sul Gyeong-sul Im-sul */
+var BASE_G=[48,42,56,50,53];                /* base count by day-master element: Wood Fire Earth Metal Water — ground-keeping Earth highest */
+var RELS_G=[1,-4,-2,5,8];                   /* bi-geop sik-sang jae gwan in — in-seong (shelter) + gwan-seong (fence) buy the deepest bonds */
+function hash32(s){var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+/* t: 0 = birth time unknown, 1–12 = Ja hour through Hae hour */
+function pillarsOf(y,m,d,t){
+  var mn = t ? ((t-1)*120+30)%1440 : 720;
+  var yp=yearPillarIdx(y,m,d,mn);
+  var mp=monthPillar(y,m,d,mn);
+  var dp=dayPillarIdx(y,m,d);
+  return {yp:yp.idx, mp:mp.ji, mpg:mp.gan, dp:dp};
+}
+/* generation count 3–99 — the bigger the number, the older the guardianship contract */
+function gens(y,m,d,t){
+  var P=pillarsOf(y,m,d,t);
+  var dg=P.dp%10, de=ELG[dg];
+  var s=BASE_G[de];
+  function rel(bj){ return RELS_G[((ELJ[bj]-de)%5+5)%5]; }
+  s += rel(P.yp%12)*1.9 + rel(P.dp%12)*1.4 + rel(P.mp)*1.1;
+  if(t) s += rel(t-1)*0.8;
+  s += (dg%2===0)?-2:3;                     /* guarding is quiet, unshowy yin work */
+  if(GWI[P.dp]) s += 10;                    /* gwaegang — the star that carries the sun bonds deeply too */
+  var h=hash32('gd:'+y+'-'+m+'-'+d+'-'+(t||'x'));
+  s += ((h%4241)/4240-0.5)*55;
+  s += (((h>>>12)%947)/946-0.5)*12;
+  if(s>93) s=93+(s-93)*0.27;                /* squeeze the top so the Divine Magpie (98+) stays rare */
+  if(s<9)  s=9-(9-s)*0.55;
+  s=Math.round(s);
+  return s<3?3:(s>99?99:s);
+}
+/* top-% table: for every date from 1950-01-01 to 2010-12-31 (birth time unknown),
+   the share (in permille, ‰) of dates whose count is n (3–99) or deeper.
+   Generated by real computation at build time. */
+var TOPP=[1000,999,999,998,997,996,993,992,990,988,987,985,982,979,976,973,969,965,961,956,950,944,938,932,924,918,910,901,893,883,874,864,854,844,832,822,809,797,784,770,754,740,725,709,693,680,665,650,633,616,600,582,565,550,533,516,498,482,466,450,433,417,400,382,366,349,333,318,303,287,272,257,243,231,217,205,193,180,168,156,145,133,123,114,104,96,88,79,72,64,57,44,28,16,9,4,2];
+function topPct(n){ var pm=TOPP[n-3]; var p=Math.round(pm/10); return p<1?1:(p>100?100:p); }
+
+/* ── result value (V) — the shareable display bundle. It never contains the birth
+   date or time, and the birth date cannot be recovered from it.
+   ri  1–10 = ROLES index+1, 11 = Three-Legged Crow, 12 = Divine Magpie
+   n   generation count 3–99 / top = "top N% deepest bonds", 1–100
+   dp  day-pillar index 0–59 (used only for the one-line day-pillar note) ── */
+function resultOf(y,m,d,t){
+  var n=gens(y,m,d,t), dp=dayPillarIdx(y,m,d);
+  var ri=n>=98?12:(GWI[dp]?11:(dp%10)+1);
+  return {ri:ri, n:n, top:topPct(n), dp:dp};
+}
+var V_RI=12, V_N=97, V_TOP=100, V_DP=60;
+var V_MAX=V_RI*V_N*V_TOP*V_DP-1;            /* 6,983,999 → at most 5 base36 characters */
+function encodeV(V){
+  var n=V.ri-1;
+  n=n*V_N+(V.n-3);
+  n=n*V_TOP+(V.top-1);
+  n=n*V_DP+V.dp;
+  return n.toString(36);
+}
+function decodeV(str){
+  if(typeof str!=='string') return null;
+  str=str.toLowerCase();
+  if(!/^[0-9a-z]{1,5}$/.test(str)) return null;
+  var v=parseInt(str,36);
+  if(!isFinite(v)||v<0||v>V_MAX||Math.floor(v)!==v) return null;
+  var dp=v%V_DP;  v=(v-dp)/V_DP;
+  var top=v%V_TOP; v=(v-top)/V_TOP; top+=1;
+  var n=v%V_N;    v=(v-n)/V_N;     n+=3;
+  var ri=v+1;
+  if(ri<1||ri>V_RI) return null;
+  if(n<3||n>99) return null;
+  if(top<1||top>100) return null;
+  if(dp<0||dp>59) return null;
+  return {ri:ri, n:n, top:top, dp:dp};
+}
+/* result-card wisp/gold-fleck seed — built from result values only, never the birth date */
+function spiritSeed(V){ return hash32('spirit:'+V.ri+'-'+V.n+'-'+V.top+'-'+V.dp); }
+/*CORE:E*/
+
+/* ── guardian data ── */
+var ROLES=[
+ {img:1, emo:"🐉", nm:"Azure Dragon", ct:"the great dragon of the eastern sky, ruler of wind and rain",
+  g:["#1e5e7a","#0a1c28"],
+  desc:"A Gap Wood (甲木) day master is the great tree growing straight into the sky — eastern Wood in the Five Elements, and the guardian of the eastern sky is the Azure Dragon. Not one gram of adaptation went into this mapping. The dragon on the east wall of the Goguryeo tomb murals, whose body is the seven eastern constellations and who rules spring, wind and rain, is the one assigned to you. A house the Azure Dragon guards never runs dry, they said — the kind of family where the morning of an important day goes strangely smoothly, and where someone useful turns up out of nowhere whenever something big is coming. True to Gap Wood's chieftain streak, the direction this family takes for the next hundred years gets decided in your generation.",
+  st:"Every time you go to view a place to move into, the weather is absurdly good — that is the Azure Dragon sweeping the sky ahead of you.",
+  mate:8, worst:6},
+ {img:2, emo:"🦢", nm:"Thousand-Year Crane", ct:"the white crane that lives a thousand years and carries immortals",
+  g:["#57707c","#161f24"],
+  desc:"An Eul Wood (乙木) day master is the vine and the flowering plant — energy that bends in the wind and never breaks. The beast for that supple, graceful current is the Thousand-Year Crane: centerpiece of the ten-longevity folding screens, the bird said to turn azure after a millennium and carry immortals on its back. A house a crane has settled in is never in a hurry. Starting a beat later than everyone else and still arriving first — that timing luck is this family's inheritance. The reason your friendships last unusually long, and elders take to you on sight, is that you grew up under a crane's wing.",
+  st:"The bus you thought you had missed sits at the light and waits for you — the crane nudged time back half a beat.",
+  mate:7, worst:9},
+ {img:3, emo:"🦅", nm:"Vermilion Bird", ct:"the scarlet firebird of the southern sky",
+  g:["#8a3a1e","#33120a"],
+  desc:"A Byeong Fire (丙火) day master is the midday sun — southern Fire, and the guardian of the southern sky is the Vermilion Bird. Canon mapping again, untouched. The scarlet bird that spreads the seven southern constellations as wings and rules the blaze of a summer noon is your beast. A house the Vermilion Bird nests in cannot stay dark: gatherings get loud with laughter first, celebrations go suspiciously well, and a flat room warms up the moment you walk in. Like Byeong Fire's unhideable presence, this guardian's protection is the obvious, unmistakable kind.",
+  st:"Only the gatherings you join turn oddly warm and easy — the Vermilion Bird is fanning the fire behind you.",
+  mate:0, worst:8},
+ {img:4, emo:"🦚", nm:"Bonghwang", ct:"the ember that never dies, the phoenix that roosts only in paulownia",
+  g:["#8a5a1e","#2b1a08"],
+  desc:"A Jeong Fire (丁火) day master is lantern light and hearth fire — the flame that looks about to go out and holds its post all night. Its beast is the Bonghwang, the East Asian phoenix: the sovereign's bird that roosts only in paulownia and eats only bamboo seed, appearing solely in ages of peace, and the firebird reborn out of its own flame. A house the Bonghwang guards never loses its ember. However bad the crisis, there is always one flame left in some corner to build back from, and the person who was quietly keeping that flame is usually you. Protection that lasts rather than blazes — very Jeong Fire.",
+  st:"Something everyone had written off quietly comes back to life in your hands — the Bonghwang carried the ember over in its beak.",
+  mate:5, worst:6},
+ {img:5, emo:"🐲", nm:"Yellow Dragon", ct:"the great dragon at the center of the sky, Earth of the middle",
+  g:["#7a6420","#28200a"],
+  desc:"A Mu Earth (戊土) day master is mountain range and bedrock — the Earth of the Center in directional cosmology. The beast that commands the four directions from that middle seat is the Yellow Dragon, by the same logic that makes yellow the center of the five cardinal colors and puts a yellow dragon on the king's robe: canon, once again. A house the Yellow Dragon settles on can be shaken but not toppled. Storms come from all four sides and something at the center still pulls everything back; the house where the whole scattered family somehow reassembles every holiday is usually this one. Authority that never announces itself — that is the character of this protection.",
+  st:"Every meetup somehow ends up in your neighborhood — the Yellow Dragon put the center of the world where you are standing.",
+  mate:2, worst:0},
+ {img:6, emo:"🦁", nm:"Haetae", ct:"the palace guardian that judges right from wrong and holds the ground",
+  g:["#4a6a30","#182410"],
+  desc:"A Gi Earth (己土) day master is the cultivated field — soil that holds, feeds and sorts. Its beast is the Haetae: the justice creature said to tell right from wrong and ram the guilty party with its horn, and the same stone beast set in front of Gwanghwamun Gate to press down fire energy and keep the palace safe. Houses the Haetae guards are strangely hard to defraud. Shady offers get filtered at the threshold, and wrongs done to you come around and get corrected eventually — slow protection, but certain. Your knack for sensing that something is off about a thing is the Haetae's horn at work.",
+  st:"The contract you skipped because it felt vaguely wrong turns out later to have been a scam — the Haetae pushed the paperwork away with its horn.",
+  mate:3, worst:9},
+ {img:7, emo:"🐯", nm:"White Tiger", ct:"the white tiger of the western sky",
+  g:["#5a5a66","#1c1c22"],
+  desc:"A Gyeong Metal (庚金) day master is raw iron that hardens the more it is struck — western Metal, and the guardian of the western sky is the White Tiger. Canon mapping, and the fiercest of the four seats is the one assigned to you: the tiger with the seven western constellations hooked in its claws, ruler of autumn's killing air, called Lord of the Mountain, the beast that evil spirits flee at the mere sound of its name. A house the White Tiger guards gets a reputation as the house you do not mess with. Rough things happening outside curve around you, and people who once took you lightly quietly adjust their attitude — because of the shadow standing behind you.",
+  st:"Nobody ever picks a fight with you on a dark street — the white tiger at your back is invisible only to you.",
+  mate:4, worst:0},
+ {img:8, emo:"🦌", nm:"Girin", ct:"the benevolent beast that will not tread on a living blade of grass",
+  g:["#6a4a7a","#221630"],
+  desc:"A Sin Metal (辛金) day master is the finished jewel — the energy of completed brilliance. Its beast is the Girin: not the giraffe, but the East Asian unicorn with a dragon's face, a deer's body and an ox's tail, so gentle it refuses to step on a living blade of grass and said to appear only when a sage is born — auspiciousness at its limit. Houses a Girin visits collect rare things. Objects, people, connections: the uncommon ones pass through this house, and your unusually accurate eye is simply a gem recognizing gems. Protection that shines without making noise — very Sin Metal.",
+  st:"Everything you idly pick out gets you asked later where you bought it — the Girin pointed at it with a hoof.",
+  mate:1, worst:6},
+ {img:9, emo:"🐢", nm:"Black Tortoise", ct:"the tortoise-and-snake guardian of the northern sky",
+  g:["#1e4a5e","#0a1c24"],
+  desc:"An Im Water (壬水) day master is the sea and the great river — northern Water, and the guardian of the northern sky is the Black Tortoise. The last piece of the directional set, also canon. Tortoise entwined with snake, ruling the seven northern constellations, winter, and deep knowing — reckoned the longest-lived and best-read of the four. A house the Black Tortoise guards has a deep floor. Nothing flashy happens right away, but large unplanned expenses miss you by a hair, and big decisions sort themselves out overnight — protection as thick as a carapace. True to Im Water's scale, this beast is not planning around your generation but your grandchildren's.",
+  st:"The impulse buy is sold out, then goes half price the next month — the Black Tortoise blocked the checkout with its shell.",
+  mate:6, worst:2},
+ {img:10, emo:"🦊", nm:"Nine-Tailed Fox", ct:"the gumiho — nine tails of wisdom, seeping in like night fog",
+  g:["#5e3070","#1e1030"],
+  desc:"A Gye Water (癸水) day master is rain, dew and night fog — water that seeps in without a sound. Its beast is the Nine-Tailed Fox, the gumiho. A monster, you say? Trace the tradition back and the nine-tailed fox is originally an auspicious animal of peaceful ages in the Classic of Mountains and Seas; the man-beguiling image was painted on much later. A fox that lived a thousand years to earn nine tails, a spirit of wisdom fluent in shapeshifting and foresight — and one of those nine tails is hooked over your family. People in a house the gumiho guards read a room differently. They notice what was not said, filter out dangerous people at first impression, and get help at the exact moment they need it, as if someone had been charmed into offering. The quietest and deepest protection of the twelve, exactly as Gye Water should be.",
+  st:"You catch a stranger's lie with no evidence at all — one of the nine tails is wrapped around your sixth sense.",
+  mate:8, worst:5}
+];
+var ROLE_SAMJOK={img:11, emo:"☀️", nm:"Three-Legged Crow", ct:"the three-legged crow that carries the sun across the sky",
+  g:["#8a4a14","#2b1606"],
+  desc:"Your day pillar is gwaegang (魁罡) — what classical saju calls the chief star, charisma at its extreme. No directional beast is a big enough vessel for that energy, so you are assigned the guardian of the sun itself rather than of a direction: the Three-Legged Crow, the samjok-o that lives inside the sun and carries it across the sky on its back, the bird at the center of Goguryeo banners and tomb murals. Shade over a house the Three-Legged Crow guards never lasts long. Hit bottom and the sun comes up on your side of the street; what other people call a lucky break is just a weekday morning at your house. True to gwaegang's extremity this protection is not gentle but blazing — and the formula hands it 10 extra generations, too.",
+  st:"During the rainy season only your neighborhood clears up in time for the outdoor plan — the three-legged crow carried the sun over.",
+  mateTx:"All four directional beasts — when the sun rises, every direction brightens", worstTx:"Your duvet — the crow insists on getting up with the sunrise, so sleeping in is off the table"};
+var ROLE_MAGPIE={img:12, emo:"🐦‍⬛", nm:"Divine Magpie", ct:"you came looking for your guardian, and the guardian was you",
+  g:["#7a641e","#282008"],
+  desc:"Congratulations — this is the twist. The moment the depth of the bond clears the 98-generation threshold, this test reverses its verdict. You climbed the almanac looking for the beast that guards your family, and what you found at the top of the family tree was not an ancestor who signed a contract with a guardian. It was the guardian itself: you. The Divine Magpie (神鵲) is the legendary good-news bird — the magpie that laid its own body across the Milky Way as a bridge for the two separated lovers, and whose morning cry means a welcome guest is on the way. It is also, as you may have noticed, the bird on this site's nameplate. Which is to say: you took the magpie's own test and drew the magpie. 85 days out of 22,280 — 0.38% — the rarest result here. Just by being nearby, you have already started doing guardian duty for the people around you.",
+  st:"Everywhere you have been, someone later says things went strangely well that day — the Divine Magpie is a good omen simply by existing.",
+  mateTx:"Everyone, humans included — good news does not pick sides", worstTx:"Sleeping in — you are supposed to cry at dawn to announce the guest, and you snoozed the alarm three times"};
+/* counts of 3–9 (young guardian): new-bond framing paragraph, auto-prefixed to the reading */
+var YOUNG="A single-digit count is nothing to feel short-changed about. Three to nine generations means a young guardian that bonded with you in this lifetime — not a centuries-old contract inherited along with the family register, but a guardian that looked across countless households and picked you, personally, to sign a fresh one with. Old protection attaches to a house; young protection attaches to you. It is a rare start, occurring on less than 1% of all dates, and you are generation one of however many decades of bond come after.";
+
+/* 60 day-pillar one-liners — read as guardianship-contract flavor */
+var ILJU=[
+"a great tree rooted by a midnight lake — the night-watch type that guards the sleeping house until dawn","a sprout in a snow-covered field — the deep-reserve type that endures the freeze and lifts the family come spring",
+"the morning sun rising on a tiger's back — the gatekeeper type whose sheer presence drives spirits off the doorstep","a lantern lighting a rabbit burrow — the beacon type that lights every family member's way home",
+"a mountain range cradling a dragon — the bedrock type whose very plot of land becomes auspicious ground","spring soil warmed by a snake — the housekeeping type that never lets the storeroom run empty",
+"a blade forged on horseback — the vanguard type, first out the door when trouble finds the family","a jade bead among the sheep — the keeper type that recognizes what is precious and puts it somewhere safe",
+"a river carrying a monkey downstream — the courier type that ferries news of family members far from home","dew on a dawn rooster's comb — the cleansing type that shakes off misfortune like morning dew",
+"a dog guarding an old tree — the loyal type that keeps every bond it ever made to the very end","a petal afloat on water — the with-the-current type that drifts and still arrives exactly where it meant to",
+"a midwinter sun over the water — the hearth type that warms a house gone cold","an oil lamp in the barn — the steady-wick type: never showy, never once gone out",
+"the great mountain where the tiger lives — the imposing type nothing dangerous dares come near","a spring field where rabbits play — the peacemaker type that softens the whole household by existing",
+"a treasured sword forged by a dragon — the last-resort type that leaves the scabbard only at the decisive moment","a jewel guarded by a snake — the heirloom type, a masterpiece only the initiated recognize",
+"a great river with horses galloping alongside — the showman type that turns every family occasion into a feast","sweet rain on a parched field — the rescue type that steps in as fixer at every family crisis",
+"a giant tree a monkey has climbed — the elder type around whom the family's talented gather on their own","a morning glory by the henhouse — the diligent type that gathers luck from first light",
+"a bonfire on a sunset hill — the fireside type that makes even passing luck sit down and stay","a harbor lighthouse — the guide type that calls a lost family member home",
+"a mountain whose paths the rat knows — the instinct type that spots the good ground before anyone else","an ox plowing a winter field — the honest type that works while others rest and laughs come spring",
+"iron in a tiger's claw — the raw-timber type the elders single out first","silver ornaments in a clover field — the negotiator type that takes the whole profit wearing a mild face",
+"deep water where a dragon plays — the big-stage type that comes alive as the stakes grow","a thread of a stream wetting the snake's path — the strategist type that changes the family's direction without a sound",
+"the zelkova where the horse is tethered — the gathering-room type people converge on for every occasion","a wildflower on a sheep hill — the untroubled type nobody dislikes in any room",
+"sunlight in a monkey's hand — the entertainer type that lays laughter on the banquet table","a rooster's comb lit by candlelight — the stylish type that looks best of all at family events",
+"a dog holding a mountain fortress — the gate-warden type that never loses the post it was given","the rich field that fattened the pig — the blessing-field type that refills no matter how much it gives away",
+"a blade quenched in winter water — the clear-headed judge type that protects the family by cold decision","jade in frozen ground — the late-blooming type whose worth climbs with the years",
+"a river carrying a tiger — the pioneer type that widens the family line with fearless bets","clover soaked in spring rain — the spring-sunlight type everyone instinctively wants to look after",
+"a giant tree grown on a dragon's back — the load-bearing type that becomes the family's central pillar","a flower living alongside a snake — the thorned-charm type nobody handles carelessly",
+"the noon sun at a full gallop — the reputation type whose name arrives before it does","a campfire beside the flock — the ondol type: attach once, warm for life",
+"a rocky peak where monkeys play — the twist type that keeps a straight face until the party breaks it","the farmer feeding the chickens — the savings-account type, built from care never skipped a single day",
+"a white blade with a dog at heel — the knight-errant type that protects by action, not speech","a pearl in deep water — the hidden-master type: quiet, then decisive, then luminous",
+"the great sea at midnight — the deep-water type whose bottom nobody has ever sounded","an ox walking a frozen road — the longest-serving type, still at the house when everyone else has gone",
+"the head tree of a tiger's forest — the chieftain type that becomes home base wherever it stands","a spring meadow thick with clover — the resting type that settles everyone's nerves just by being nearby",
+"the sun risen above a dragon — the guest-of-honor type for whom the head seat is always left empty","a candle guarded by a snake — the stubborn-wick type that relights no matter how often it is snuffed",
+"a volcano holding its fire — the sleeping-dragon type: quiet for years, then enormous","the hill field that fed the flock — the generous type that gathers people around a full table",
+"a famed sword in a monkey's hand — the scholar-and-soldier type, cunning and strength in one","jade polished to a mirror — the pride-of-the-house type, kept without a single flaw",
+"loyal dog and deep water together — the escort type that draws more people simply by standing guard","rainwater returning to the sea — the homecoming type: whatever luck left eventually comes back"];
+
+var GANR=["Gap","Eul","Byeong","Jeong","Mu","Gi","Gyeong","Sin","Im","Gye"];
+var JIR=["ja","chuk","in","myo","jin","sa","o","mi","sin","yu","sul","hae"];
+function p60name(i){ return GANR[i%10]+"-"+JIR[i%12]+" ("+GANH[i%10]+JIH[i%12]+")"; }
+function roleByImg(i){ return i===11?ROLE_SAMJOK:(i===12?ROLE_MAGPIE:ROLES[i-1]); }
+function roleOf(y,m,d,t){
+  var n=gens(y,m,d,t);
+  var dp=dayPillarIdx(y,m,d);
+  var r;
+  if(n>=98) r=ROLE_MAGPIE;
+  else if(GWI[dp]) r=ROLE_SAMJOK;
+  else r=ROLES[dp%10];
+  return {n:n, dp:dp, role:r, top:topPct(n)};
+}
+
+/* ── UI ── */
+(function(){
+var $=function(id){return document.getElementById(id);};
+var TSLOT=["Not sure","Ja hour (23:30–01:30)","Chuk hour (01:30–03:30)","In hour (03:30–05:30)","Myo hour (05:30–07:30)",
+ "Jin hour (07:30–09:30)","Sa hour (09:30–11:30)","O hour (11:30–13:30)","Mi hour (13:30–15:30)",
+ "Sin hour (15:30–17:30)","Yu hour (17:30–19:30)","Sul hour (19:30–21:30)","Hae hour (21:30–23:30)"];
+var cur=null;
+var PH_Y='Year', PH_M='Month', PH_D='Day';
+
+function fillSel(el,arr,vals){ var h=''; for(var i=0;i<arr.length;i++) h+='<option value="'+(vals?vals[i]:arr[i])+'">'+arr[i]+'</option>'; el.innerHTML=h; }
+function initInputs(){
+  var ys=[PH_Y],yv=['']; for(var y=1940;y<=2020;y++){ys.push(String(y));yv.push(y);}
+  fillSel($('by'),ys,yv);
+  var ms=[PH_M],mv=['']; for(var m=1;m<=12;m++){ms.push(String(m));mv.push(m);}
+  fillSel($('bm'),ms,mv);
+  /* birth time is optional — the "Not sure" slot carries an empty value so that
+     the empty-form state and "time unknown" (t=0) mean exactly the same thing */
+  var ts=[],tv=[]; for(var t=0;t<13;t++){ts.push(TSLOT[t]);tv.push(t===0?'':t);}
+  fillSel($('bt'),ts,tv);
+  fillDays();
+  /* first load is always an empty form — no default birth date is ever filled in */
+  clearInputs();
+}
+function daysIn(y,m){ return new Date(Date.UTC(y,m,0)).getUTCDate(); }
+function fillDays(){
+  var ys=$('by').value, ms=$('bm').value, olds=$('bd').value;
+  /* while year/month are still empty, offer 31 days so the day can be picked in any order */
+  var n=(ys!==''&&ms!=='')?daysIn(+ys,+ms):31,ds=[PH_D],dv=[''];
+  for(var d=1;d<=n;d++){ds.push(String(d));dv.push(d);}
+  fillSel($('bd'),ds,dv);
+  $('bd').value=(olds==='')?'':String(Math.min(+olds||1,n));
+}
+/* reset the whole input form — every select returns to its placeholder (empty value) */
+function clearInputs(){
+  $('nick').value='';
+  ['by','bm','bd','bt'].forEach(function(id){ $(id).value=''; });
+  $('needPick').style.display='none';
+}
+$('by').addEventListener('change',fillDays);
+$('bm').addEventListener('change',fillDays);
+
+var animId=null;
+function countUp(el,target){
+  if(animId)cancelAnimationFrame(animId);
+  var t0=null,DUR=1200;
+  function step(ts){
+    if(!t0)t0=ts;
+    var p=Math.min(1,(ts-t0)/DUR);
+    var e=1-Math.pow(1-p,3);
+    el.textContent=Math.max(1,Math.round(target*e));
+    if(p<1)animId=requestAnimationFrame(step); else animId=null;
+  }
+  animId=requestAnimationFrame(step);
+}
+
+/* generation-count tiers */
+function tierOf(n){
+  if(n>=80) return '🏯 Founding-minister class — a bond since the first ancestor';
+  if(n>=40) return '🛡️ Pedigreed guardianship — carried down the family register';
+  if(n>=10) return '🌿 A bond that settled in across generations';
+  return '🌱 A young guardian, newly contracted this lifetime';
+}
+
+/* Render the result screen from the result value (V) alone — the birth date and time
+   are never used here. shared=true means the viewer arrived through a share link. */
+var RETRY_OWN='👀 Who guards your friend? Try again';
+var RETRY_SHARED='🐉 Try it yourself — find my own guardian';
+function renderResult(V,nick,shared){
+  var r=roleByImg(V.ri);
+  cur={V:V,role:r,nick:nick||'',shared:!!shared};
+  var box=$('roleImgBox');
+  box.style.setProperty('--g1',r.g[0]);
+  box.style.setProperty('--g2',r.g[1]);
+  $('fbEmo').textContent=r.emo;
+  var im=$('roleImg');
+  im.style.display='';
+  $('fbEmo').style.display='';
+  im.onload=function(){ $('fbEmo').style.display='none'; };
+  im.onerror=function(){ this.style.display='none'; $('fbEmo').style.display=''; };
+  im.alt=r.nm;
+  /* guardian illustrations are shared across languages — absolute path, no /en/ prefix */
+  im.src='/tests/guardian/img/role-'+String(r.img).padStart(2,'0')+'.png';
+  $('roleName').textContent=r.nm;
+  $('roleCatch').textContent='“'+r.ct+'”';
+  countUp($('popNum'),V.n);
+  $('tierLine').textContent=tierOf(V.n);
+  var tp=$('topPct');
+  if(V.top<=50){ tp.className='topPct'; tp.textContent='🔗 Top '+V.top+'% deepest bonds'; }
+  else { tp.className='topPct young'; tp.textContent='✨ Top '+(101-V.top)+'% newest picks'; }
+  $('iljuLine').innerHTML='Your day pillar: <b>'+p60name(V.dp)+'</b> — '+ILJU[V.dp];
+  $('roleDesc').textContent=(V.n<=9?YOUNG+' ':'')+r.desc;
+  $('traceLine').innerHTML='<b>Guardian sighting</b> — '+r.st;
+  $('mateGood').innerHTML=r.mateTx?r.mateTx:'<b>'+ROLES[r.mate].emo+' '+ROLES[r.mate].nm+'</b> — '+GANR[r.mate]+' ('+ELM(r.mate)+') day master';
+  $('mateBad').innerHTML=r.worstTx?r.worstTx:'<b>'+ROLES[r.worst].emo+' '+ROLES[r.worst].nm+'</b> — '+GANR[r.worst]+' ('+ELM(r.worst)+') day master';
+  $('retryBtn').textContent=cur.shared?RETRY_SHARED:RETRY_OWN;
+  $('copied').textContent='';
+  $('res').classList.remove('hidden');
+}
+/* birth date/time → result value → render (the direct test path) */
+function render(y,m,d,t,nick){ renderResult(resultOf(y,m,d,t),nick,false); }
+function ELM(g){ return ['Wood','Wood','Fire','Fire','Earth','Earth','Metal','Metal','Water','Water'][g]; }
+/* INP: on press, flip only the button state so one frame paints, then defer the heavy
+   almanac math and the result render to the next frame. The computation is unchanged. */
+var GO_BUSY_TX='🔮 Summoning your guardian…', GO_BUSY_MIN=280, goBusy=false;
+function setGoBusy(on){
+  var b=$('goBtn');
+  if(on){
+    b.dataset.idle=b.textContent; b.textContent=GO_BUSY_TX;
+    b.dataset.hadFocus=(document.activeElement===b)?'1':'';
+    b.disabled=true;
+  }else{
+    if(b.dataset.idle) b.textContent=b.dataset.idle;
+    b.disabled=false;
+    if(b.dataset.hadFocus){ try{ b.focus({preventScroll:true}); }catch(e){} }
+  }
+}
+function runDeferred(fn){
+  if(goBusy) return;
+  goBusy=true;
+  var t0=Date.now();
+  setGoBusy(true);
+  requestAnimationFrame(function(){ setTimeout(function(){
+    try{ fn(); }
+    finally{
+      /* hold a minimum busy time so "summoning" does not flicker past on fast devices */
+      var rest=GO_BUSY_MIN-(Date.now()-t0);
+      setTimeout(function(){ setGoBusy(false); goBusy=false; }, rest>0?rest:0);
+    }
+  },0); });
+}
+$('goBtn').addEventListener('click',function(){
+  if(goBusy) return;
+  if($('by').value===''||$('bm').value===''||$('bd').value===''){
+    $('needPick').style.display='';
+    ($('by').value===''?$('by'):($('bm').value===''?$('bm'):$('bd'))).focus();
+    return;
+  }
+  $('needPick').style.display='none';
+  var y=+$('by').value,m=+$('bm').value,d=+$('bd').value;
+  var t=$('bt').value===''?0:+$('bt').value;
+  var nick=$('nick').value.trim();
+  runDeferred(function(){
+    var V=resultOf(y,m,d,t);
+    renderResult(V,nick,false);
+    var u=new URL(location.href);
+    u.searchParams.set('v',encodeV(V));
+    if(nick) u.searchParams.set('n',nick); else u.searchParams.delete('n');
+    history.replaceState(null,'',u.pathname+u.search);
+    $('res').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
+$('retryBtn').addEventListener('click',function(){
+  $('res').classList.add('hidden');
+  history.replaceState(null,'',location.pathname);
+  clearInputs();
+  cur=null;
+  $('inputPanel').scrollIntoView({behavior:'smooth',block:'start'});
+});
+function shareText(){
+  if(!cur)return '';
+  /* Link to the per-guardian share stub (/s/NN/) so the link preview shows your beast.
+     The stub forwards the query untouched to this page and the result is reproduced.
+     ?v= carries result values only — the birth date and time are never in it. */
+  var nn=String(cur.role.img).padStart(2,'0');
+  var base=location.pathname.replace(/\/$/,'');
+  var u=location.origin+base+'/s/'+nn+'/?v='+encodeV(cur.V)+
+    (cur.nick?'&n='+encodeURIComponent(cur.nick):'');
+  return cur.role.emo+' My guardian spirit is the "'+cur.role.nm+'", and it has been guarding my family for '+cur.V.n+' generations! Who guards you?\n'+u;
+}
+$('shareLink').addEventListener('click',function(){
+  if(!cur)return;
+  var u=shareText();
+  var done=function(){ $('copied').textContent='✅ Result and link copied. Paste them to a friend!'; };
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(u).then(done,function(){fallbackCopy(u);done();});
+  }else{ fallbackCopy(u); done(); }
+});
+function fallbackCopy(txt){
+  var ta=document.createElement('textarea'); ta.value=txt;
+  ta.style.cssText='position:fixed;opacity:0'; document.body.appendChild(ta);
+  ta.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(ta);
+}
+
+/* ── result card (1080×1350) ── */
+function loadImg(src){
+  return new Promise(function(res){
+    var im=new Image();
+    im.onload=function(){res(im);}; im.onerror=function(){res(null);};
+    im.src=src;
+  });
+}
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
+}
+var CF='-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif';
+/* shrink a line until it fits the card width (English names run longer than Korean) */
+function fitFont(x,txt,weight,size,max){
+  while(size>22){ x.font=weight+' '+size+'px '+CF; if(x.measureText(txt).width<=max) break; size-=3; }
+  return size;
+}
+function makeCard(){
+  if(!cur)return Promise.resolve(null);
+  var R=cur.V,r=cur.role;
+  var W=1080,H=1350;
+  var c=document.createElement('canvas'); c.width=W; c.height=H;
+  var x=c.getContext('2d');
+  return loadImg('/tests/guardian/img/role-'+String(r.img).padStart(2,'0')+'.png').then(function(im){
+    var INK='#eaf7f0', INK2='#b7d9c8', INK3='#8fb3a2', JD='#46d9a0', GL='#e9c46a';
+    /* background: wisps and gold flecks over jade darkness */
+    var bg=x.createLinearGradient(0,0,0,H);
+    bg.addColorStop(0,'#0e2b21'); bg.addColorStop(1,'#050f0b');
+    x.fillStyle=bg; x.fillRect(0,0,W,H);
+    /* wisps and gold specks — deterministic placement seeded from result values only */
+    var hs=spiritSeed(R);
+    for(var i=0;i<110;i++){
+      hs=(Math.imul(hs,1664525)+1013904223)>>>0;
+      var sx=hs%W; var sy=(hs>>>11)%H; var ss=((hs>>>22)%3)*0.8+0.8;
+      x.globalAlpha=0.08+((hs>>>7)%40)/400;
+      x.fillStyle=(hs>>>5)%5===0?GL:JD;
+      x.fillRect(sx,sy,ss,ss);
+    }
+    x.globalAlpha=1;
+    /* top label */
+    x.textAlign='center';
+    x.fillStyle=INK3;
+    x.font='700 34px '+CF;
+    x.fillText('🐉 GUARDIAN SPIRIT REPORT 🐉',W/2,96);
+    if(cur.nick){
+      x.fillStyle=INK;
+      x.font='700 44px '+CF;
+      x.fillText(cur.nick,W/2,168);
+    }
+    /* guardian image / emoji */
+    var IS=360, ix=(W-IS)/2, iy=cur.nick?190:152;
+    var gr=x.createLinearGradient(ix,iy,ix+IS,iy+IS);
+    gr.addColorStop(0,r.g[0]); gr.addColorStop(1,r.g[1]);
+    roundRect(x,ix,iy,IS,IS,48);
+    x.fillStyle=gr; x.fill();
+    if(im){
+      x.save(); roundRect(x,ix,iy,IS,IS,48); x.clip();
+      x.drawImage(im,ix,iy,IS,IS); x.restore();
+    }else{
+      x.font='196px -apple-system,"Apple Color Emoji","Noto Color Emoji",sans-serif';
+      x.textBaseline='middle';
+      x.fillText(r.emo,W/2,iy+IS/2+14);
+      x.textBaseline='alphabetic';
+    }
+    var yy=iy+IS+80;
+    x.fillStyle=INK;
+    fitFont(x,r.nm,'800',64,W-120);
+    x.fillText(r.nm,W/2,yy);
+    x.fillStyle=INK2;
+    fitFont(x,'“'+r.ct+'”','400',34,W-90);
+    x.fillText('“'+r.ct+'”',W/2,yy+56);
+    /* the big number — N large, "generations" small */
+    x.fillStyle=INK3;
+    x.font='700 32px '+CF;
+    x.fillText('THIS GUARDIAN HAS WATCHED YOUR FAMILY FOR',W/2,yy+140);
+    var numFont='800 210px '+CF;
+    var sufFont='800 74px '+CF;
+    x.font=numFont; var nw=x.measureText(String(R.n)).width;
+    x.font=sufFont; var sw=x.measureText('generations').width;
+    var tx=(W-(nw+18+sw))/2;
+    x.textAlign='left';
+    x.fillStyle=JD;
+    x.font=numFont; x.fillText(String(R.n),tx,yy+348);
+    x.font=sufFont; x.fillText('generations',tx+nw+18,yy+348);
+    x.textAlign='center';
+    /* tier line + top-% badge */
+    var tt=R.n>=80?'🏯 Founding-minister class':(R.n>=40?'🛡️ Pedigreed guardianship':(R.n>=10?'🌿 A bond across generations':'🌱 A freshly signed young guardian'));
+    x.fillStyle=INK;
+    fitFont(x,tt,'700',40,W-100);
+    x.fillText(tt,W/2,yy+420);
+    var btxt=R.top<=50?('🔗 Top '+R.top+'% deepest bonds'):('✨ Top '+(101-R.top)+'% newest picks');
+    x.font='700 38px '+CF;
+    var bw=x.measureText(btxt).width+72;
+    roundRect(x,(W-bw)/2,yy+452,bw,80,40);
+    x.fillStyle=R.top<=50?'#0e3527':'#31270e'; x.fill();
+    x.fillStyle=R.top<=50?JD:GL;
+    x.fillText(btxt,W/2,yy+505);
+    /* day pillar */
+    x.fillStyle=INK2;
+    x.font='400 33px '+CF;
+    var il='Day pillar '+p60name(R.dp)+' · '+ILJU[R.dp];
+    if(x.measureText(il).width>W-100){ il='Day pillar '+p60name(R.dp)+' · '+ILJU[R.dp].split('—')[0].trim(); }
+    if(x.measureText(il).width>W-100){ il='Day pillar '+p60name(R.dp); }
+    x.fillText(il,W/2,yy+580);
+    /* footer URL */
+    x.fillStyle=INK3;
+    x.font='700 36px -apple-system,BlinkMacSystemFont,sans-serif';
+    x.fillText('kmagpie.com/en/tests/guardian',W/2,H-48);
+    return c;
+  });
+}
+function cardBlob(){
+  return makeCard().then(function(c){
+    if(!c)return null;
+    return new Promise(function(res){ c.toBlob(res,'image/png'); });
+  });
+}
+function saveBlob(blob){
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download='guardian-result.png';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){URL.revokeObjectURL(a.href);},4000);
+  $('copied').textContent='✅ Result card saved. Show it off on social media!';
+}
+var IS_MOBILE=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+$('shareCard').addEventListener('click',function(){
+  cardBlob().then(function(blob){
+    if(!blob)return;
+    var f=new File([blob],'guardian-result.png',{type:'image/png'});
+    /* desktop always downloads; only mobile tries the share sheet,
+       falling back to download on a (non-cancel) failure */
+    if(IS_MOBILE&&navigator.share&&navigator.canShare&&navigator.canShare({files:[f]})){
+      navigator.share({files:[f],title:'Guardianship contract',
+        text:cur.role.emo+' My guardian spirit is the "'+cur.role.nm+'", guarding my family for '+cur.V.n+' generations! Who guards you? https://www.kmagpie.com/en/tests/guardian/'})
+        .catch(function(err){ if(!err||err.name!=='AbortError') saveBlob(blob); });
+    }else{
+      saveBlob(blob);
+    }
+  });
+});
+
+initInputs();
+/* share-link reproduction — only ?v= (result values) is read. The form is never filled. */
+(function(){
+  try{
+    var q=new URLSearchParams(location.search);
+    var nick=(q.get('n')||'').slice(0,12);
+    var vv=q.get('v');
+    if(vv===null) return;
+    clearInputs();                 /* arrived through a share link — leave the form empty */
+    var V=decodeV(vv);
+    if(!V) return;                 /* tampered or corrupt value → empty form, no result */
+    renderResult(V,nick,true);
+  }catch(e){}
+})();
+
+/* test hooks */
+window.GUARDIAN={gens:gens,roleOf:roleOf,dayPillarIdx:dayPillarIdx,
+  yearPillarIdx:yearPillarIdx,monthPillar:monthPillar,pillarsOf:pillarsOf,topPct:topPct,TOPP:TOPP,
+  resultOf:resultOf,encodeV:encodeV,decodeV:decodeV,V_MAX:V_MAX,renderResult:renderResult,roleByImg:roleByImg,
+  makeCard:makeCard,cardBlob:cardBlob,render:render,shareText:shareText,tierOf:tierOf,
+  spiritSeed:spiritSeed,clearInputs:clearInputs,RETRY_OWN:RETRY_OWN,RETRY_SHARED:RETRY_SHARED,
+  state:function(){return cur;},
+  ROLES:ROLES,ROLE_SAMJOK:ROLE_SAMJOK,ROLE_MAGPIE:ROLE_MAGPIE,ILJU:ILJU,p60name:p60name,YOUNG:YOUNG};
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>アイドルポジション診断 — 四柱推命でみる私のポジションとデビュー順位 | カササギ診断</title>
+<meta name="description" content="生年月日を入れるだけで、四柱推命の日干からあなたのアイドルポジション12種類とデビューサバイバルの最終順位（1〜99位）を診断します。メインボーカル？メインダンサー？ステージを制すセンター？それとも…オーディションを受けに行ったら審査員席に座ることになる事務所の社長？参加者全体の上位何%かまでわかります。今すぐチェックして友達と順位を競おう。">
+<link rel="canonical" href="https://www.kmagpie.com/ja/tests/idol/">
+<link rel="alternate" hreflang="ko" href="https://www.kmagpie.com/tests/idol/">
+<link rel="alternate" hreflang="en" href="https://www.kmagpie.com/en/tests/idol/">
+<link rel="alternate" hreflang="ja" href="https://www.kmagpie.com/ja/tests/idol/">
+<link rel="alternate" hreflang="x-default" href="https://www.kmagpie.com/tests/idol/">
+<meta property="og:title" content="アイドルポジション診断 — 四柱推命でみる私のポジションとデビュー順位">
+<meta property="og:description" content="生年月日でみるアイドルポジションとデビューサバイバル最終順位。12種類のうちあなたはどれ？もしかして…オーディションを受けに行ったら審査員席に座る事務所の社長？">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/ja/tests/idol/">
+<meta property="og:image" content="https://www.kmagpie.com/ja/tests/idol/img/og.png">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="カササギ診断">
+<style>
+  :root{
+    --bg:#0f0b15; --surface:#171221; --line:#332a44; --line-soft:#241d31;
+    --ink:#f1edf6; --ink-2:#bab0ca; --ink-3:#8b8099;
+    --accent:#ff5fae; --accent-soft:#31142a;
+    --vio:#c9a9ff; --vio-soft:#251341;
+    --card-grad-a:#1c1428; --card-grad-b:#0b0710;
+    --btn-ink:#33041d;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0b0810; --surface:#130e1c; --line:#332a44; --line-soft:#1d1728;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic UI",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased;overflow-wrap:anywhere;
+    background-image:
+      radial-gradient(1.5px 1.5px at 12% 10%, rgba(255,95,174,.24) 50%, transparent 51%),
+      radial-gradient(1px 1px at 70% 7%,  rgba(249,233,242,.10) 50%, transparent 51%),
+      radial-gradient(2px 2px at 44% 28%, rgba(255,95,174,.16) 50%, transparent 51%),
+      radial-gradient(1px 1px at 28% 56%, rgba(249,233,242,.09) 50%, transparent 51%),
+      radial-gradient(2px 2px at 88% 40%, rgba(201,169,255,.20) 50%, transparent 51%),
+      radial-gradient(1px 1px at 8% 82%,  rgba(249,233,242,.10) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 62% 74%, rgba(255,95,174,.15) 50%, transparent 51%)}
+  .wrap{max-width:680px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 6px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  .langsw{font-size:12.5px;color:var(--ink-3);margin:0 0 18px}
+  .langsw a{color:var(--ink-3);text-decoration:none;border:1px solid var(--line);border-radius:99px;padding:2px 10px}
+  .langsw a:hover{color:var(--accent);border-color:var(--accent)}
+  h1{font-size:27px;line-height:1.35;margin:0 0 10px;letter-spacing:-.02em;font-weight:800}
+  h1 .pk{color:var(--accent)}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+  .col{flex:1;min-width:90px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
+  input[type=text],select{padding:10px 12px;border:1px solid var(--line);border-radius:9px;
+    background:var(--surface);color:var(--ink);font-size:16px;font-family:inherit;width:100%;
+    font-weight:600;font-variant-numeric:tabular-nums;appearance:none;-webkit-appearance:none}
+  input:focus,select:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:14px 0 0}
+  .go{display:block;width:100%;margin:18px 0 0;padding:15px 10px;border:0;border-radius:12px;
+    background:var(--accent);color:var(--btn-ink);font-size:17px;font-weight:800;font-family:inherit;cursor:pointer;
+    letter-spacing:-.01em;transition:.15s}
+  .go:hover{filter:brightness(1.08);transform:translateY(-1px)}
+  .go:disabled{cursor:default;opacity:.68;transform:none;filter:none}
+
+  /* 結果 */
+  .result{background:var(--surface);border:1px solid var(--accent);border-radius:18px;
+    padding:28px 24px;margin:20px 0;text-align:center}
+  .rk{font-size:13px;font-weight:700;letter-spacing:.12em;color:var(--ink-3);margin:0 0 14px}
+  .roleImg{width:168px;height:168px;margin:0 auto 14px;border-radius:24px;overflow:hidden;position:relative;
+    background:linear-gradient(135deg,var(--g1,#6b2248),var(--g2,#2b0a1c));display:flex;align-items:center;justify-content:center}
+  .roleImg img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+  .roleImg .fbEmo{font-size:84px;line-height:1;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5))}
+  .roleName{font-size:26px;font-weight:800;letter-spacing:-.02em;margin:0 0 2px}
+  .roleCatch{font-size:14.5px;color:var(--ink-2);margin:0 0 20px}
+  .popBox{margin:0 0 4px}
+  .popNum{font-size:clamp(52px,16vw,80px);font-weight:800;letter-spacing:-.04em;line-height:1.05;
+    color:var(--accent);font-variant-numeric:tabular-nums}
+  .popNum small{font-size:.42em;font-weight:700}
+  .popCap{font-size:13.5px;color:var(--ink-3);margin:0 0 2px}
+  .tier{font-size:15px;font-weight:800;color:var(--ink);margin:6px 0 0}
+  .topPct{display:inline-block;margin:8px 0 0;padding:5px 14px;border-radius:99px;
+    background:var(--accent-soft);color:var(--accent);font-size:14px;font-weight:700}
+  .topPct.late{background:var(--vio-soft);color:var(--vio)}
+  .ilju{margin:20px 0 0;padding:13px 15px;border:1px dashed var(--line);border-radius:11px;
+    font-size:14px;color:var(--ink-2);text-align:left}
+  .ilju b{color:var(--ink)}
+  .desc{text-align:left;font-size:15px;color:var(--ink-2);margin:18px 0 0}
+  .trace{text-align:left;margin:16px 0 0;padding:12px 15px;border-left:3px solid var(--accent);
+    background:var(--accent-soft);border-radius:0 10px 10px 0;font-size:14.5px}
+  .trace b{color:var(--accent)}
+  .mates{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 0;text-align:left}
+  .mate{border:1px solid var(--line);border-radius:11px;padding:11px 13px;font-size:13.5px}
+  .mate .mk{display:block;font-size:11.5px;font-weight:700;letter-spacing:.08em;margin-bottom:3px}
+  .mate.good .mk{color:var(--vio)}
+  .mate.bad .mk{color:var(--accent)}
+  .mate b{font-size:14.5px}
+  .btns{display:flex;gap:9px;flex-wrap:wrap;margin:24px 0 0}
+  .btns button{flex:1;min-width:140px;padding:13px 8px;border-radius:11px;font-size:14.5px;font-weight:700;
+    font-family:inherit;cursor:pointer;transition:.15s;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+  .btns button:hover{border-color:var(--accent);color:var(--accent)}
+  .btns button.pri{background:var(--accent);border-color:var(--accent);color:var(--btn-ink)}
+  .btns button.pri:hover{filter:brightness(1.08);color:var(--btn-ink)}
+  .retry{display:block;width:100%;margin:10px 0 0;padding:13px 8px;border-radius:11px;border:1px dashed var(--line);
+    background:transparent;color:var(--ink-2);font-size:14.5px;font-weight:700;font-family:inherit;cursor:pointer}
+  .retry:hover{border-color:var(--accent);color:var(--accent)}
+  .copied{font-size:13px;color:var(--vio);margin:8px 0 0;min-height:20px}
+
+  .basis{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:14px 0}
+  .basis h2{margin:0 0 8px;font-size:17px}
+  .basis p{font-size:14.5px;color:var(--ink-2);margin:0 0 8px}
+  .basis p:last-child{margin:0}
+
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  .hidden{display:none}
+
+  /* 本文アコーディオン */
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 10px}
+  .fold .fx>:first-child{margin-top:4px}
+  .fold .fx p{font-size:14.5px;color:var(--ink-2)}
+  .fold .fx p strong{color:var(--ink)}
+  .fold .fx h3{font-size:15.5px;color:var(--ink);font-weight:700;
+    margin:22px 0 6px;letter-spacing:-.01em}
+
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .panel{padding:18px 15px}
+    .result{padding:22px 15px}
+    .roleImg{width:136px;height:136px}
+    .roleImg .fbEmo{font-size:68px}
+    .roleName{font-size:22px}
+    .mates{grid-template-columns:1fr}
+    .fold summary{padding:14px 15px}
+    .fold summary h2{font-size:15.5px}
+    .fold .fx{padding:0 15px 10px}
+  }
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/ja/tests/">カササギ診断</a> › アイドルポジション診断</p>
+<p class="langsw"><a href="/tests/idol/" hreflang="ko" lang="ko">韓国語版</a> · <a href="/en/tests/idol/" hreflang="en" lang="en">English</a></p>
+
+<h1>もし私がアイドルになったら、<br>私のポジションは？ <span class="pk">🎤</span></h1>
+<p class="sub">生年月日を入れると、<strong>四柱推命の日干</strong>からあなたのアイドルポジションと<strong>デビューサバイバルの最終順位（1〜99位）</strong>を計算します。昔の人が生まれた日の八文字で運命を読んだように、同じ八文字を万年暦エンジンで実際に立てて「ステージ体質」を鑑定する、根拠のある（？）デビュー評価書。参加者全体の上位何%かまでお知らせします。あなたは深夜の感性を歌うメインボーカルでしょうか、照明をすべて吸い込むメインダンサーでしょうか、それとも…オーディションを受けに行ったら審査員席に座ることになる<strong>事務所の社長</strong>でしょうか。</p>
+
+<div class="panel" id="inputPanel">
+  <div class="row">
+    <div class="col" style="flex:2;min-width:160px">
+      <label class="f" for="nick">名前・ニックネーム（任意）</label>
+      <input type="text" id="nick" maxlength="12" placeholder="結果カードに表示されます" autocomplete="off">
+    </div>
+  </div>
+  <div class="row" style="margin-top:14px">
+    <div class="col"><label class="f" for="by">年</label><select id="by"></select></div>
+    <div class="col"><label class="f" for="bm">月</label><select id="bm"></select></div>
+    <div class="col"><label class="f" for="bd">日</label><select id="bd"></select></div>
+  </div>
+  <div class="row" style="margin-top:14px">
+    <div class="col" style="min-width:160px">
+      <label class="f" for="bt">生まれた時間（任意）</label>
+      <select id="bt"></select>
+    </div>
+  </div>
+  <p class="note" id="needPick" style="display:none;color:var(--accent)">生年月日をすべて選択してください。</p>
+  <button type="button" class="go" id="goBtn">🎤 私のポジションをチェック</button>
+  <p class="note">新暦（グレゴリオ暦）の誕生日基準です。入力内容はどこにも送信されず、ブラウザの中だけで計算されます。</p>
+</div>
+
+<div class="result hidden" id="res">
+  <p class="rk">IDOL POSITION REPORT</p>
+  <div class="roleImg" id="roleImgBox">
+    <span class="fbEmo" id="fbEmo"></span>
+    <img id="roleImg" alt="">
+  </div>
+  <p class="roleName" id="roleName"></p>
+  <p class="roleCatch" id="roleCatch"></p>
+  <div class="popBox">
+    <p class="popCap" id="popCap">デビューサバイバル — 最終</p>
+    <div class="popNum"><span id="popNum">0</span><small>位</small></div>
+    <p class="tier" id="tierLine"></p>
+    <span class="topPct" id="topPct"></span>
+  </div>
+  <p class="ilju" id="iljuLine"></p>
+  <p class="desc" id="roleDesc"></p>
+  <p class="trace" id="traceLine"></p>
+  <div class="mates">
+    <div class="mate good"><span class="mk">同じチーム最高のケミ</span><span id="mateGood"></span></div>
+    <div class="mate bad"><span class="mk">宿舎で小競り合うメンバー</span><span id="mateBad"></span></div>
+  </div>
+  <div class="btns">
+    <button type="button" id="shareLink">🔗 結果リンクをコピー</button>
+    <button type="button" class="pri" id="shareCard">📸 結果カードを保存</button>
+  </div>
+  <button type="button" class="retry" id="retryBtn">👀 友達はどのポジション？もう一度診断する</button>
+  <p class="copied" id="copied"></p>
+</div>
+
+<p class="gist">この診断は、生年月日を万年暦で計算して生まれた日の柱＝<strong>日柱（にっちゅう）</strong>を割り出し、その上の一文字である<strong>日干</strong>10種類を、アイドルグループのポジション12種類に読み替えます。デビューサバイバルの最終順位は、日干と残りの文字との関係——中でも「ステージで放つ表現力」を意味するものとして設定した<strong>食傷（しょくしょう）</strong>——を「華スコア」に換算してひっくり返した値で、「参加者全体の上位N%」は1950〜2010年の22,280日分の実際の分布から出したパーセンタイルです。計算に乱数がないので、同じ生年月日ならいつ押しても同じ結果になります。</p>
+
+<details class="fold" open><summary><h2>四柱推命の八字と日柱、そしてポジション</h2></summary><div class="fx">
+<p>四柱推命の「四柱」とは、生まれた<strong>年・月・日・時</strong>という四本の柱を、それぞれ二文字で書き写したものです。上に来る文字が天干（てんかん）で、甲・乙・丙・丁・戊・己・庚・辛・壬・癸の10種類。下に来る文字が地支（ちし）で、子・丑・寅・卯・辰・巳・午・未・申・酉・戌・亥の12種類です。四本の柱に二文字ずつなので合わせて八文字、これを命式、あるいは八字と呼びます。天干と地支を順にひとつずつ組み合わせていくと、甲子・乙丑・丙寅…と進んで60回目で最初に戻ります。この60通りの組み合わせが<strong>六十干支</strong>です。</p>
+<p>このうち生まれた日にあたる柱が<strong>日柱（にっちゅう）</strong>で、日柱の上の文字が<strong>日干（にっかん）</strong>です。四柱推命は八文字のうちこの日干一文字を「自分自身」と置き、残りの七文字を自分を取り巻く環境として読みます。この診断が生年月日だけでポジションを決められる理由はここにあります。ポジションは日干という一文字から出てきますし、日干は生まれた日付さえ分かれば決まるからです。</p>
+<p>アイドルグループのポジションという概念も、考えてみれば四柱推命の発想と似ています。7人が同じステージに立っても、それぞれの持ち場は違い、同じ曲でもリーダーが歌うパートとメインボーカルが歌うパートは違います。命理学が八文字の中に「自分」の席を探すように、事務所は練習生の気質の中にグループでの席を探します。このページは、そのキャスティング会議を万年暦に任せてみようという想像から始まりました。計算された八文字そのものが気になる方は、<a href="/tools/manse/">万年暦ツール（韓国語）</a>で節入り時刻まで反映した命式を見ることができます。</p>
+</div></details>
+
+<details class="fold" open><summary><h2>日干10種類は、それぞれどのポジションになるのか</h2></summary><div class="fx">
+<p>天干の10文字は、木・火・土・金・水の五行をそれぞれ陽と陰に分けたものです。同じ木でも、陽の木である甲と陰の木である乙は性質が違います。以下は、それぞれの日干を命理学でどんな気とみなすか、そしてこの診断がその性質をグループのどの席にキャスティングしたかです。同じ日干が<a href="/tests/pastlife/">前世診断（韓国語）</a>では世界文明の前世になり、<a href="/ja/tests/joseon/">朝鮮時代のお仕事診断</a>では朝鮮の職業になります——世界が変われば配役が変わります。</p>
+
+<h3>甲（きのえ・陽の木）・乙（きのと・陰の木）</h3>
+<p><strong>甲</strong>は天へまっすぐ伸びる大樹、柱や梁になる棟梁の木です。上へ伸びる力とリーダー気質が強く、グループでは<strong>リーダー</strong>。練習室のレンタル時間を決めるのも、授賞式でコメントを言うのも、メンバーが揺れるときに全体ミーティングを招集するのも、この文字の仕事です。</p>
+<p><strong>乙</strong>は草花とつる草です。正面から押さず、塀を伝って回り込んで登り、どこに植えても生き残ります。その柔軟さを<strong>バラエティ担当</strong>と読みました。observe系でもクイズ番組でも、どこに出しても存在感をかっさらってきて、グループの名前を世に広めるメンバーです。</p>
+
+<h3>丙（ひのえ・陽の火）・丁（ひのと・陰の火）</h3>
+<p><strong>丙</strong>は真昼の太陽です。隠しようがなく、遠くまで届く存在感なので、ステージの照明をすべて吸い込む<strong>メインダンサー</strong>になりました。ダンス動画に「あのメンバーしか見えない」というコメントがつく席です。</p>
+<p><strong>丁</strong>は灯火であり、ろうそくです。太陽のように広く照らす代わりに、一点を長く、深く照らします。深夜2時の感性ライブで胸を打つ<strong>メインボーカル</strong>はここから出てきました。高音ひとつでコンサート会場を静まり返らせる歌声です。</p>
+
+<h3>戊（つちのえ・陽の土）・己（つちのと・陰の土）</h3>
+<p><strong>戊</strong>は山であり堤防です。広く厚く、簡単には揺れません。華やかな席ではなくても、ステージ全体のバランスを取る<strong>サブボーカル兼グループの大黒柱</strong>です。メンバーが疲れたときに寄りかかるのは、結局この文字です。</p>
+<p><strong>己</strong>は畑や田んぼの土です。何かを育てて抱える気なので、ファン一人ひとりのニックネームを覚えている<strong>ファンサの達人</strong>になりました。サイン会の時間がいつも延びるのも、ファンが「うちのグループは人柄だけは確かだ」と自慢するのも、このメンバーのおかげです。</p>
+
+<h3>庚（かのえ・陽の金）・辛（かのと・陰の金）</h3>
+<p><strong>庚</strong>はまだ鍛えていない鉄であり、原石です。叩くほど硬くなるその性質が<strong>メインラッパー</strong>になりました。流行を追わず、原石を鍛え上げた重いラップで、ワンバースで曲の重心を動かします。</p>
+<p><strong>辛</strong>は細工を終えた宝石です。完成された輝きそのものなので、存在するだけでグラビアになる<strong>ビジュアル</strong>です。空港の出国写真がニュースになり、ステージのチッケムより表情のキャプチャが先に出回るメンバーです。</p>
+
+<h3>壬（みずのえ・陽の水）・癸（みずのと・陰の水）</h3>
+<p><strong>壬</strong>は海であり大河です。スケールが大きく、一か所に閉じ込められることに耐えられません。ボーカルもダンスもこなし、自作曲まで書いてくる<strong>オールラウンダー</strong>と読みました。フルアルバムのクレジットにいちばん多く名前が載る席です。</p>
+<p><strong>癸</strong>は雨と露、夜霧です。音もなく染み込む気なので、パートはたった8小節なのにその8小節が耳から離れない<strong>音色の妖精</strong>になりました。「3分12秒から聴いてみて」というコメントの主人公です。</p>
+</div></details>
+
+<details class="fold" open><summary><h2>11番目と12番目 — センターと事務所の社長</h2></summary><div class="fx">
+<p>ポジションが10種類ではなく12種類あるのは、日干の上にさらに二つの条件が乗るからです。ひとつめは<strong>魁罡（かいごう）</strong>。六十干支のうち戊辰・庚辰・壬辰・戊戌・庚戌・壬戌という六つの日柱を指し、命理学では「頭領の星」と呼ばれる極端で強い気とみなされます。この六つの日柱で生まれた人は、日干に関係なくポジションが<strong>ステージを制すセンター</strong>——カリスマでステージを掌握するエース——になり、華スコアも9点のボーナスをもらいます。センターの気は計算式でも順位を前へ押し上げる、という設定です。1950〜2010年の22,280日のうち、ちょうど10%にあたる2,228日がこれに該当します。</p>
+<p>ふたつめは<strong>事務所の社長</strong>です。こちらは日柱ではなく華スコアで決まります。計算された華スコアが98点以上だと、この人はアイドルになるには華がありすぎると判定されます。オーディション会場に番号札をつけて入ったのに、審査員たちが会議の末に隣の席を空けてくれるという展開です。アイドルではなく、アイドルを作る側——ステージの上の99人ではなく、その99人をキャスティングする1人です。同じ期間の22,280日のうち53日、約0.2%でしか出ない最レア結果なので、この診断で社長が出たなら、くじ引きで言えば大当たりです。魁罡の日柱でも華スコアが98を超えるとセンターではなく社長になります——ステージを制するどころか、ステージごと買い取ったという意味です。</p>
+<p>結果の下に出る<strong>同じチーム最高のケミ</strong>と<strong>宿舎で小競り合うメンバー</strong>は、五行の相生・相剋ではなく、二つのポジションが同じグループで実際にどうぶつかり合うかで組み合わせました。リーダーにとっては黙って背中を支えてくれるグループの大黒柱がケミで、会議中にラップの歌詞ばかり書いているメインラッパーが小競り合いの相手。メインボーカルにとってはハモリを重ねてくれる音色の妖精がケミで、感性たっぷりのライブ配信に乱入してくるバラエティ担当が小競り合いの相手、という具合です。</p>
+</div></details>
+
+<details class="fold" open><summary><h2>デビューサバイバル最終順位1〜99位はどう計算しているか</h2></summary><div class="fx">
+<p>順位はまず「華スコア」を作り、そのスコアをひっくり返して得ます。<strong>順位 = 100 − 華スコア</strong>。華が99点なら最終1位、華が1点なら最終99位です。このシリーズで「小さい数字が良い結果」なのはこの診断が初めてなので、以下の計算式はすべて華スコア基準で読んでください。アイドルという世界観に合わせて勝手に決めたルールですが、誰にでも同じルールが当てはまります。</p>
+<p><strong>1. 基礎点</strong> — 日干の五行によって出発点が違います。木は47、火は53、土は40、金は44、水は49点から始まります。ステージは照明と熱気の世界なので火がいちばん高く、どっしり構える土がいちばん低い出発点です。土の日干はその代わりグループを長続きさせる側の才能なので、出発点が低いからといって悲しむことはありません。</p>
+<p><strong>2. 残りの文字との関係</strong> — 年支・月支・日支（生まれた時間を入れた場合は時支まで）の五行が、自分の日干とどんな関係を結ぶかを点数に換算します。自分が生む<strong>食傷（しょくしょう）が+8</strong>で最大の加点です。食傷は命理学で言葉・歌・表現、つまり自分の中のものを外へ取り出す気なので、ステージの上の華としてこれほど正確な文字はありません。続いて、自分が扱う財星が+3（ファンダムとヒットを呼ぶ気）、自分と同じ比劫が+2（チームワーク、一緒に走る仲間）、自分を律する官星が−3（カメラの前で体が固まる優等生の気）、自分を生んでくれる印星が−5です。印星は机と思考の文字なので、3秒で表情を切り替えるステージではむしろ足を引っ張るとみなしました。ちなみに<a href="/tests/pastlife/">前世診断（韓国語）</a>では同じ印星が+7で最大の加点です。前世の記憶としては最高、ステージの上の華としては最下位——同じ文字でも、世界が変われば点数がひっくり返ります。</p>
+<p><strong>3. 位置ごとの重み</strong> — 月支に1.8倍、日支に1.2倍、時支に0.9倍、年支に0.7倍を掛けます。月支は生まれた季節であり、命理学で青年期の席とされる場所ですが、アイドルは青春をステージに賭ける職業なので、この診断では月支がいちばん重くなっています。先祖の席である年支がいちばん軽いのも同じ理由です——サバイバルのステージで家柄は聞かれません。</p>
+<p><strong>4. 陰陽と魁罡</strong> — 甲・丙・戊・庚・壬のような陽干なら+3、乙・丁・己・辛・癸のような陰干なら−2。陽干は外へ放つ発散の気なので、ステージ体質の側に置きました。上の魁罡の六つの日柱なら、ここにさらに+9が乗ります。</p>
+<p><strong>5. ばらつき</strong> — ここまでだけだと、同じ日柱の人どうしでスコアがほぼ重なってしまいます。そこで生年月日の文字列を固定のハッシュ関数に通し、その値から最大±27と±6の二つの偏差を足します。乱数ではなく日付から計算される値なので、同じ日付には必ず同じ偏差がつきます。</p>
+<p>最後に、93点を超えた分は0.45倍に、8点を下回った分は半分に押し戻して1〜99の範囲に収めます。上側を強めに押さえるのは、98点から社長判定なので敷居を高くしたためです。こうして出た華スコアを100から引けば最終順位です。1950〜2010年の全日付で回すと順位の平均は48.3位、中央値は48位になり、両端の1位と99位も実際に出ます。</p>
+</div></details>
+
+<details class="fold" open><summary><h2>「参加者全体の上位N%」はどこから出た数字か</h2></summary><div class="fx">
+<p>結果画面の「参加者全体の上位N%」は、この診断を受けた他の人と比べた数字ではありません。入力内容をどこにも送信していないので、そもそも比べようがないのです。かわりに、このページの中にあらかじめ計算しておいたパーセンタイル表が入っています。</p>
+<p>表はこうやって作りました。<strong>1950年1月1日から2010年12月31日までの22,280日</strong>すべてについて、生まれた時間は不明として最終順位を計算します。そのうえで順位1位から99位までのそれぞれについて「その順位以下（良い側）になる日付が全体の何パーミル（‰）か」を数え、99マスの表として保存してあります。結果画面は、あなたの順位でこの表を引き、パーセントに直して見せているだけです。この診断は順位の数字が小さいほど良い結果なので、数字が小さいほど「参加者全体の上位」になります。</p>
+<p>目安をいくつか挙げておくと、最終48位がちょうど真ん中あたりで、20位以内に入る日付は全体の8.9%、10位以内は2.7%、5位以内は1%です。上位50%より下——つまり順位の数字が大きい側——へ下がると、バッジが紫色に変わって「逆走行ポテンシャル上位N%」がつきます。サバイバルの下位圏はデビュー3年後にチャートをひっくり返す大器晩成の逆走行型に分類されるので、逆走行の側では順位の数字が大きいほどポテンシャル順位が上がる、というわけです。どちらが出ても自慢できるものはあります。</p>
+</div></details>
+
+<details class="fold" open><summary><h2>同じ誕生日ならなぜいつも同じ結果なのか</h2></summary><div class="fx">
+<p>このページは、結果を出す過程で乱数を一度も使っていません。画面に出るすべての値が、生年月日（と選んだ時間）から計算されて出てきます。</p>
+<p>順番はこうです。まず生年月日を連続した日付番号に変換し、60で割った余りを求めると、その日の日柱が決まります。六十干支は60日ごとに一周する規則的な繰り返しなので、この計算に例外はありません。年柱と月柱は少し事情が違います。四柱推命で一年が変わる基準は新暦1月1日でも旧正月でもなく<strong>立春</strong>で、月は啓蟄・清明といった十二の「節」を過ぎるたびに切り替わります。このページには1900年以降の節入り時刻が分単位で入った表が組み込まれていて、2月上旬生まれの人の年柱がまだ前年なのか、もう新年なのかを、時刻まで見て判定します。</p>
+<p>こうして出た八文字（時間が分からなければ六文字）に前述の計算式を当てはめると華スコアが出て、最後の偏差までもが生年月日の文字列のハッシュから出てきます。結果として、いつどの端末で押しても、同じ生年月日なら同じポジションと同じ順位になります。友達と順位を競うことに意味があるためには、この性質が欠かせません。</p>
+</div></details>
+
+<details class="fold" open><summary><h2>よくある質問</h2></summary><div class="fx">
+<h3>旧暦の誕生日をそのまま入れてもいいですか</h3>
+<p>いいえ。入力は新暦（グレゴリオ暦）が基準です。ふだんカレンダーで使っている誕生日をそのまま入れてください。旧暦の日付しか分からない場合は、<a href="/tools/lunar/">旧暦・新暦変換ツール（韓国語）</a>で新暦の日付に直してから入力します。万年暦の計算は旧暦の日付ではなく太陽の位置である節気を基準にしているので、旧暦の日付をそのまま入れると1か月近くずれた命式で計算されてしまいます。</p>
+<h3>生まれた時間が分からないと結果が変わりますか</h3>
+<p>ポジションはたいてい変わりません。ポジションは日柱から決まり、日柱は日付だけで決まるからです。変わるのは順位のほうです。時間を入れると時支という一文字が0.9倍の重みで計算に加わり、偏差を作るハッシュの入力も一緒に変わります。実際に回してみると、時間を入れるか入れないかで順位は平均18段ほど動きます。時間を選ばなかった場合は正午（昼12時）を代表値として使います。例外は事務所の社長です。華スコア98点という敷居を時間が越えさせてしまうことがあり、生まれた時間によって社長になったりならなかったりする日付が一部あります。</p>
+<h3>ほかの万年暦アプリと結果が違います</h3>
+<p>この診断はオプションを持たず、一つの基準だけで計算しています。時間は2時間ずつの十二支の区間でしか受け取らず、各区間の真ん中の時刻を代表として使い、標準時の30分補正や夜子時（夜11時以降を翌日の日柱とみなすかどうか）といった流派ごとの設定は置いていません。日柱も、時間とは無関係に日付だけで決めます。そのため、夜11時前後や節入り当日に生まれた方は、本格的な万年暦と食い違うことがあります。こうした境目まで詰めた正確な命式が必要なら<a href="/tools/manse/">万年暦ツール（韓国語）</a>をお使いください。節入り時刻を分単位で反映し、標準時補正と夜子時をそれぞれオン・オフできます。</p>
+<h3>順位がずいぶん後ろ（大きい数字）に出ました</h3>
+<p>計算式で順位を後ろへ押すのは、印星（自分の日干を生んでくれる五行、一文字あたり−5）と官星（自分を律する五行、−3）です。考えが深く、規律を守る命式ほど、サバイバルのカメラの前では損をするという設定です。ただし、この目盛りで後ろの順位は脱落ではありません。デビューサバイバルの歴史が証明するとおり、最終回の順位と3年後のチャート順位は別の問題です。51位からは<strong>大器晩成の逆走行型</strong>——デビュー3年後にチャートをひっくり返すタイプ——に分類され、バッジも「逆走行ポテンシャル上位N%」と順位を逆さまにして表示します。実際の四柱推命で印星と官星がどんな意味を持つのかは、<a href="https://yaong.kmagpie.com/">ヤオン命理（韓国語）</a>で八文字の解説を読むことができます。</p>
+<h3>結果リンクに私の生年月日は含まれますか</h3>
+<p>含まれません。共有リンクに入るのは、ポジションの番号・最終順位・上位%・日柱の番号という四つの値を一つの数字にまとめたものだけです。生年月日と生まれた時刻は入っていませんし、入っている値から逆算することもできません。リンクを受け取った人には、あなたの結果画面だけが表示されます。</p>
+<h3>実際にオーディションを準備中ですが、参考にしてもいいですか</h3>
+<p>参考にしないでください。この診断は実際のオーディション・キャスティング・適性とは何の関係もありません。順位とポジションは上で公開した計算式が吐き出す数字にすぎず、どの事務所も万年暦で練習生を選んだりはしません（おそらく）。ただし万年暦の計算そのものは本物です——画面に出る日柱は実際の暦のデータであり、その八文字から命理学が何を読むのかは<a href="https://yaong.kmagpie.com/">ヤオン命理（韓国語）</a>で見ることができます。オーディションの準備に必要なのは四柱推命ではなく練習室ですが、練習の休憩時間に友達と順位を競う楽しさは保証します。</p>
+</div></details>
+
+<details class="fold" open><summary><h2>この結果をどこまで信じるか</h2></summary><div class="fx">
+<p>ここまで読んだ方はお察しのとおり、この診断は<strong>お遊びのコンテンツ</strong>です。万年暦の部分は実際の節気データで動く本物の計算ですが、その八文字をアイドルのポジションに置き換え、サバイバルの順位をつけるルールは、すべてこのページが勝手に決めたものです。命理学に「華スコア」という概念はありませんし、どの流派も四柱推命でデビュー順位を計算したりはしません。結果は実際のオーディション・キャスティング・適性・職業選択とは無関係です。</p>
+<p>ひとつ付け加えると、この診断の12ポジションに負け役はいません。リーダーでも音色の妖精でも社長でも、すべてグループに欠かせない席ですし、順位が99位でも、それは脱落ではなく逆走行の物語の第1話です。デビュー評価書とは本来そういうものです——「合格でも不合格でもない」と書かれた評価書は、誰も共有しませんから。四柱推命そのものが気になった方は、<a href="/tools/manse/">万年暦ツール（韓国語）</a>で自分の八文字を確かめ、その文字の意味は<a href="https://yaong.kmagpie.com/">ヤオン命理（韓国語）</a>で読んでみてください。</p>
+</div></details>
+
+<div class="basis">
+  <h2>ほかの世界も気になったら</h2>
+  <p>🧟 <a href="/ja/tests/zombie/">ゾンビパニックが起きたら、私の役割は？— 四柱推命でみる生存率診断</a></p>
+  <p>🏰 <a href="/ja/tests/isekai/">異世界で私はどれだけモテる？— 四柱推命でみる異世界人気度診断</a></p>
+  <p>🪶 <a href="/ja/tests/joseon/">朝鮮時代に生まれていたら？— 四柱推命でみる朝鮮のお仕事診断</a></p>
+  <p>🤖 <a href="/ja/tests/robot/">もしAIロボットになったら？— 四柱推命でみるロボットタイプ診断</a></p>
+  <p>同じ誕生日でも、世界が変われば運命が変わります。</p>
+</div>
+
+<footer>
+  <p>この診断はエンターテインメントコンテンツです。ポジション・順位・上位%は実際のオーディションや適性とは無関係で、いかなる事実も保証しません。</p>
+  <p>カササギ診断 · すべての計算はブラウザの中で行われ、入力内容はどこにも送信されません。</p>
+  <p><a href="/">ホーム</a> · <a href="/tests/idol/" hreflang="ko">韓国語版</a> · <a href="/disclaimer.html">免責事項（韓国語）</a> · <a href="/privacy-policy.html">プライバシーポリシー（韓国語）</a></p>
+</footer>
+
+</div>
+
+<script>
+/*CORE:S*/
+/* ── 만세력 코어 (연·월·일주) — /tools/manse/ 엔진 포팅 ─────────────────
+   절입(12節) 시각 테이블·일주 JDN 공식 동일. 검증: KASI 일진 대조. */
+var JD_ENC="0y0n41s0dy2m0n53h0d74c0l35712m630er6y0it7t03p8n07s9g0yw0503g0y0ws1s0nn2m0wx3h0n34c0v15808k630om6y0sm7t0dj8n0hn9h04t050d50z02q1s0xk2n02q3h0wr4d00k580hy630xy6y11z7t0mx8n0r69h0eh050n40z0cj1t03b2n0ce3i02e4d0a7580rp6403s6z07u7t0wu8n1119h0ob050ww0z0mc1t0d42n0m73i0c74d0k15811k640do6z0hq7u02o8o06t9h0y10602p0y0w41s0my2m0w33h0m24c0tu58078630n96y0ra7t0c88n0ge9h03n050cf0z01s1s0wo2n01v3h0vx4c13p580h3630x46y1147t0m38n0qb9h0dl050m20z0bn1t02f2n0bj3i01i4d099580qn6402o6z06q7t0vr8n1009h0nb050w00z0lb1t0c22n0ly3i0bx4d0jp58116640d96z0ha7u0298o06g9h0xq0601p0y0vr1s0mj2m0vo3h0lp4c0tk58072630n56y0r57t0c18n0g79h03h050c30z01m1s0wf2n01h3h0ve4c133580gf630wf6y10g7t0lf8n0po9h0cz050lw0z0b41t01x2n0az3i00v4d08k580pz640226z0677t0v98n0zh9h0mq050vf0z0li1t0c92n0lc3i0bb4d0j45810l640cp6z0gu7u01v8o0639h0xb0601w0y0v71s0lx2m0v03h0kz4c0sq58063630m46y0q67t0b88n0fi9h02t050bm0z00t1s0vk2n00m3h0uk4c12c580fr630vt6y0zx7t0kz8n0pb9h0cp050l70z0aq1t01c2n0a93i0034d07s580p86401c6z05h7t0ul8n0yy9h0mc050v40z0ke1t0b22n0jy3i09q4d0he580yu640az6z0f57u0088o04i9h0vu0600s0y0ty1s0kp2m0tq3h0jm4c0rb5804q630ku6y0oz7t0a28n0ed9h01p050aa0y13t1s0ul2m13l3h0te4c10z580e8630u76y0yb7t0jg8n0nv9h0ba050k40z09f1t0062n0953h12y4d06l580nx6313y6z0447t0t98n0xo9h0l2050ts0z0j31t09r2n0ir3i08o4d0gf580xv6409y6z0e37t1358o03h9h0uu0513h0y0sw1s0jl2m0sl3h0ig4c0q65803j630jk6y0nm7t08n8n0cy9h00b0509a0y12j1s0ta2m12a3h0s54c0zu580da630td6y0xi7t0il8n0mx9h0ab050it0z08d1s1312n07y3h11q4d05e580mu631316z0397t0sf8n0ws9h0k5050sq0z0i21t08p2n0hl3i07e4d0f2580wh6408o6z0cy7t1248o02h9h0tt0512i0y0rp1s0ic2m0rb3h0h64c0ox5802d630ij6y0ms7t0808n0ce9g13s050850y11q1s0sc2m1163h0qx4c0yi580bu630rw6y0w47t0hd8n0lw9h09f050i60z07i1s1222n06u3h10h4d041580le6311j6z01t7t0r38n0vl9h0j2050rx0z0h51t07p2n0gj3i0684d0dt580v86407g6z0bq7t10y8o01e9h0st0511j0y0qx1s0hk2m0qf3h0g54c0nn5800w630gx6y0l47t06b8n0as9g1280507a0y10f1s0r52m1023h0pr4c0xa580ak630ql6y0us7t0g28n0kk9h083050gr0z0651s10q2n05l3h0za4d02u580k6631096z00h7t0pr8n0ua9h0hs050qk0z0fu1t06e2n0f63i04v4d0cg580ts6405w6z0a37t0za8n13q9h0r6051090y0p91s0fw2m0or3h0ei4c0m65713l630fq6y0jy7t0548n09j9g10z0505n0y0z41s0pq2m0yk3h0o74c0vq58091630p46y0tc7t0el8n0j39h06l050fh0z04p1s0za2n0423h0xo4d016580ii630yo6y1307t0oc8n0su9h0g9050p20z0e51t04p2n0dj3i0394d0av580sa6404j6z08x7t0y98n12r9h0q6050yn0y0o21s0el2m0ne3h0d34c0kn5711y630e16y0ib7t03n8n0879g0zq0504k0y0xr1s0oa2m0x13h0mn4c0u75807j630np6y0s07t0dd8n0i09h05m050e70z03n1s0y22n02q3h0w94c13s580h6630xf6y11u7t0n98n0rw9h0fh050o40z0dk1t0402n0cn3i0244d09k580qw640346z07h7t0wu8n11f9h0oy050y00y0n21s0dm2m0md3h0by4c0jf5710r630cy6y0hc7t02q8n07c9g0yw0503g0y0x11s0nl2m0wc3h0lv4c0t95806g630mi6y0qu7t0ca8n0gz9h04n050de0z02s1s0xb2n01z3h0vi4c12v580g3630w66y10j7t0ly8n0qn9h0e9050n70z0cb1t02t2n0bi3i0144d08n580q0640276z06k7t0vx8n10j9h0o4050wr0y0m81s0cq2m0lg3h0b14c0ii570zr630bt6y0g27t01d8n05y9g0xk0502n0y0vs1s0md2m0v33h0km4c0s15805b630lg6y0pr7t0b58n0fr9h03c050c40z01e1s0vw2n00k3h0u34c11j580ew630v56y0zl7t0l18n0po9h0d8050lu0z0b61t01m2n0aa3h13s4d078580ok6400q6z0557t0uk8n0z79h0mq050vo0y0kn1s0b32m0js3h09d4c0gv570y8630af6y0eu7t00b8n0509g0wl050150y0ul1s0kz2m0tl3h0j14c0qf5803p630jv6y0oa7t09s8n0ek9h02a050b30z00e1s0ur2m1393h0sl4c0zx580d6630td6y0xu7t0jc8n0o39h0bq050ku0z09t1t0072n08r3h1264d05k580mx631376z03q7t0t88n0xy9h0lk050ua0y0jm1s0a32m0ip3h0844c0fg570wn6308r6y0d57s12m8n03d9g0v1050020y0t71s0jp2m0rh3h0gw4c0o75801d630hh6y0lw7t07f8n0c99g13y0509l0y1201s0sd2m10x3h0qc4c0xp580b0630r86y0vq7t0ha8n0m39h09t050ii0z07u1s1272n06p3h1044d03i580ks6310y6z01d7t0qu8n0vk9h0j8050sc0y0hd1s07s2m0gd3h05s4c0d7570ui6306q6y0b67s10o8n01e9g0t20411t0y0r71s0hn2m0q63h0fj4c0mu58003630gb6y0kt7t06d8n0b69g12w0507m0y1101s0rf2m0zx3h0p94c0wi5809q630py6y0ui7t0g48n0kw9h08j050hg0z06h1s10u2n05e3h0yt4d027580jj630zu6z00f7t0q38n0uw9h0ik050r10y0gg1s06t2m0fc3h04r4c0c4570td6305i6y0at7s10f8n01a9g0t2041110y0r51s0hi2m0py3h0fa4c0mj5713r630fy6y0kf7t0628n0az9g12t0507n0y10w1s0r52m0zj3h0os4c0w25809e630pp6y0uc7t0g08n0kw9h08p050hf0z06t1s1142n05i3h0yr4d020580j8630zg6y13z7t0pl8n0uf9h0i5050ra0y0ga1s06p2m0f73h04i4c0bq570sx630556y09o7s0zb8n0069g0rx0410q0y0q21s0gf2m0ox3h0e74c0le5712j630ep6y0j87t04x8n09v9g11q0506i0y0zv1s0q62m0yl3h0nu4c0v058085630ob6y0su7t0eh8n0jd9h076050gc0z0581s0zi2n03x3h0x84d00j580hu630y36y12n7t0oa8n0t59h0gw050pq0y0ez1s05b2m0dr3h0324c0ac570rk6303q6y0877s0xt8m12n9g0qf040zh0y0om1s0ez2m0ne3h0cm4c0js5710y630d66y0hq7t03e8n08a9g101050520y0y21s0ob2m0wo3h0lw4c0t55806f630ms6y0ri7t0db8n0i99h060050el0z03w1s0y42n02h3h0vp4c12y580g7630wh6y1137t0mu8n0rr9h0fj050oi0y0dg1s03p2m0c23h01b4c08j570pr630216y06n7s0wf8m11f9g0pa040y10y0nc1s0dj2m0lt3h0ay4c0i4570zb630bl6y0g97t0238n0769g0z50503w0y0xb1s0ni2m0vq3h0kr4c0ru5804z630l96y0px7t0bq8n0gr9h04m050du0z02s1s0x02n01b3h0uf4c11j580er630v26y0zs7t0lm8n0qn9h0eh050n90y0cl1s02w2m0ba3h00g4c07k570oo6300u6y05g7s0v88m10a9g0o7040x30y0mf1s0cq2m0l33h0a94c0hb570yd630ai6y0f27t00v8n05y9g0xw0502v0y0w01s0m82m0ui3h0jn4c0qt58041630kb6y0p07t0au8n0fx9h03u050ck0z01y1s0w52n00f3h0tl4c10s580e0630u96y0yt7t0kj8n0pi9h0dd050mh0y0bj1s01t2m0a53g13b4c06h570no6213x6y04j7s0u98m0z89g0n3040w10y0l91s0bj2m0jt3h08w4c0g0570x76309i6y0e87t0028n0549g0x00501r0y0v41s0lb2m0tk3h0in4c0pq5802v630j66y0nw7t09r8n0es9h02m050bn0z00j1s0up2m12y3h0s34c0z9580ch630su6y0xm7t0ji8n0ol9h0cg050l50y0ac1s00g2m08q3g11v4c050570m76212g6y0357s0t08m0y59g0m4040uz0y0k81s0ac2m0ii3h07j4c0ek570vp6307y6y0cn7s12j8n03p9g0vp0500s0y0ts1s0ju2m0rw3h0gu4c0nv58013630hh6y0mc7t08c8n0di9h01g050ad0y13j1s0tn2m11r3h0qq4c0xr580ax630r86y0vz7t0hw8n0n19h0ay050k40y0931r13a2m07i3g10i4c03h570kj6210s6y01i7s0rf8m0wm9g0kl040tm0y0iq1s08v2m0h13h0604c0cy570u0630696y0b17s1128n02c9g0ue041390y0sk1s0io2m0qt3h0fr4c0mq5713t630g16y0kr7t06p8n0bw9g13w050940y1201s0s42m1093h0p94c0wa5809g630pr6y0ui7t0gf8n0ll9h09k050il0y07p1r11v2m0613g0z24c023570j8620zi6y0087s0q48m0v99g0ja040s80y0hj1s07q2m0fw3h04u4c0bt570sv630546y09v7s0zt8n00z9g0sz041200y0r11s0h42m0p83h0e64c0l65712d630es6y0jp7t05r8n0b09g12y0507m0y10w1s0qy2m0z23h0o24c0v55808c630op6y0ti7t0fj8n0kr9h08q050hj0y06q1r10s2m04w3g0xw4c00x570i1620yc6x1357s0p58m0ue9g0ih040rc0y0gl1s06l2m0el3h03f4c0ae570ri6303w6y08s7s0yw8n0089g0se041160y0ql1s0gm2m0ol3h0dd4c0k95711d630dq6y0im7t04o8n09y9g120050750y1041s0q72m0y83h0n24c0tz58072630nf6y0sb7t0ee8n0jo9h07p050gp0y05t1r0zx2m0413g0wx4b13u570gv620x46x11y7s0o18m0td9g0hh040qd0y0fo1s05s2m0du3h02p4c09l570qk6302r6y07j7s0xl8m12y9g0r2041080y0p61s0f52m0n53h0bz4c0iw57100630cc6y0h87t03d8n08p9g10t0505s0y0yw1s0ow2m0wv3h0lr4c0sq5805v630m86y0r17t0d18n0ib9h06d050fj0y04j1r0yl2m02m3g0vh4b12e570fh620vr6x10l7s0ml8m0ru9g0fx040p30y0e31s0452m0c43h00v4c07p570or630156y0637s0w98m11n9g0pr040yn0y0nu1s0du2m0lt3h0ak4c0hf570yi630av6y0ft7t0208n07c9g0ze0504g0y0xc1s0nb2m0va3h0k44c0r058043630kg6y0pe7t0bl8n0gz9h052050e10y0321r0x02m00y3g0tr4b10n570dq620u16x0yy7s0l48m0qk9g0es040nq0y0d01s02y2m0av3g13k4c06d570ne6213p6y04l7s0ur8m1079g0oe040xl0y0ml1s0ci2m0kc3h08z4c0fr570wu630996y0ea7t00j8n05z9g0y5050370y0wa1s0m92m0u63h0iw4c0pq5802t630j76y0o57t0ac8n0fq9h03v050cw0y0211r0w32m0033g0su4b0zn570cn620sw6x0xs7s0jy8m0pe9g0dl040mm0y0br1s01q2m09n3g12b4c053570m36212f6y03d7s0to8m0z79g0ng040wc0y0ln1s0bk2m0jf3h0854c0ey570w06308d6y0dc7s13j8n04z9g0x5050290y0va1s0l82m0t43h0hu4c0op5801r630i56y0n37t0998n0eo9h02t050bw0y00y1r0ux2l12t3g0rj4b0yd570bf620rs6x0wr7s0iy8m0oe9g0cl040lk0y0at1s00s2m08p3g11d4c045570l66211j6y02i7s0sr8m0y89g0me040vd0y0ke1s0aa2m0i33h06r4c0di570ul630716y0c57s12i8n0409g0w6050130y0u31s0jx2m0rq3h0gg4c0na5800e630gu6y0lw7t0878n0dq9h01x050au0x13z1r0tu2l11n3g0qb4b0x4570a5620qi6x0vh7s0hr8m0nb9g0bl040kn0y09r1r13k2m0783g0zq4c02e570je620zt6y00w7s0ra8m0wx9g0la040ue0y0jj1s09c2m0h13h05j4c0c6570t76305n6y0ar7s1148n02o9g0ux050050y0t31s0iz2m0qq3h0fa4c0ly5712w630f96y0kb7t06o8n0c89h00h0509p0x12m1r0sj2l10d3g0ox4b0vl5708h620or6x0ts7s0g58m0ls9g0a4040j90y08e1r12b2m0643g0yp4c01c570i9620yj6x13h7s0pt8m0vg9g0js040sz0y0hy1s07r2m0fh3h0414c0aq570rp630436y0947s0zh8n0129g0td0412m0y0rj1s0hd2m0p33h0do4c0kg5711i630dx6y0iy7t0588n0ar9g131050870x1191r0r52l0yy3g0nk4b0ua5707a620no6x0so7s0ey8m0kh9g08q040hu0y06w1r10r2m04h3g0wy4b13k570gj620wz6x1257s0ol8m0u89g0ij040ri0y0gm1s06f2m0e43h02n4c09c570qd6302v6y0827s0yj8n0059g0sf0411b0y0qd1s0g42m0nt3h0ce4c0j457105630cl6y0hq7t0468n09u9g125050740x1051r0pw2l0xk3g0m24b0sp5705p620m46x0r87s0dq8m0jh9g07x040gw0y0651r0zw2m03i3g0vx4b12i570fh620vx6x1127s0nj8m0t99g0hp040qs0y0fw1s05m2m0d63h01j4c083570p16301i6y06q7s0x98m1309g0rd0410k0y0pk1s0fc2m0my3h0bd4c0hz570yx630bd6y0gj7t0318n08q9g114050670x0zb1r0p62l0ww3g0ld4b0rz5704v620l76x0q97s0cq8m0ig9g06v040fy0y0531r0yv2m02h3g0uv4b11d570e8620ul6x0zq7s0m98m0s39g0gk040pr0y0et1s04j2m0c43h00i4c073570o26300i6y05o7s0w58m11v9g0q9040zg0y0og1s0e72m0lt3h0a94c0gw570xv630aa6y0fe7t01t8n07h9g0zu050530x0y11r0nu2l0vg3g0ju4b0qe5703a620jo6x0ot7s0bb8m0h19g05g040eo0y03p1r0xi2m0143g0tj4b102570cz620tf6x0yl7s0l48m0qv9g0f9040ob0y0db1s0302m0ak3g12y4c05i570mg6212x6y0467s0ur8m10k9g0ox040y10y0mw1s0cj2m0k33h08h4c0f4570w46308k6y0ds7t00d8n0669g0yl0503o0x0wo1r0md2l0tx3g0ib4b0ox5701w620ib6x0nh7s0a08m0ft9g04b040de0y02j1r0w62l13l3g0rs4b0y8570b4620rl6x0wv7s0ji8m0pe9g0dx040n80y0c61s01t2m0993g11g4c03x570ku6211e6y02q7s0td8m0z79g0nn040wu0y0ls1s0bi2m0j13h07c4c0du570ur630776y0cg7s1328n04x9g0xc0502h0x0vh1r0l72l0sq3g0h04b0nf57009620gm6x0lt7s08h8m0ee9g02y040c60y0181r0ux2l12f3g0qq4b0x6570a1620qg6x0vo7s0ic8m0o99g0ct040lw0y0b01s00m2m0813g10b4c02s570jp621056y01f7s0s28m0xy9g0mg040vq0y0kn1s0a92m0hp3h05z4c0ch570tg6305x6y0b67s11r8n03l9g0w30501c0x0ud1r0k32l0rm3g0fx4b0mf5613d620fu6x0l27s07o8m0di9g020040b00y0081r0tv2l11b3g0pi4b0vv5708p620p76x0uj7s0ha8m0n89g0br040kw0y09v1r13h2m06w3g0z44c01k570ih620z16y00f7s0r78m0x49g0lm040um0y0jn1s0982m0go3h04y4c0bg570se6304w6y0a77s10x8n02v9g0vf0500f0x0ti1r0j32l0qg3g0em4b0l05611u620ea6x0jk7s06a8m0ca9g00y040aa0x13a1r0sw2l1083g0oc4b0uo5707j620o16x0te7s0g58m0m59g0ar040jy0y0901r12k2m05w3g0y04c00c570h7620xo6x1327s0pu8m0vt9g0kd040tp0y0ik1s0862m0fj3h03p4c0a1570qv6303b6y08m7s0zd8n01d9g0tx0413a0x0s61r0ht2l0pa3g0di4b0jw5610q620d56x0ie7s0548m0b49f13q0408u0x11z1r0rj2l0yv3g0mz4b0ta57062620mh6x0rs7s0ek8m0km9g09a040io0y07j1r1122m04d3g0wg4b12t570fp620w86x11l7s0od8m0uc9g0iw040s90y0h31s06n2m0e03h0264c08m570pj630226y07e7s0y48n0019g0sl0411t0x0qr1r0gd2l0nq3g0bt4b0i4560yw620bd6x0gq7s03i8m09i9f1240407h0x10d1r0py2l0x93g0lc4b0ro5704i620l16x0qh7s0dd8m0jf9g080040h20y0611r0zi2m02s3g0uw4b119570e5620up6x1067s0n38m0t69g0hs040qv0y0ft1s0592m0ch3h00k4c06x570nt6300b6y05p7s0wl8m12p9g0re0410n0x0pl1r0f22l0mc3g0ae4b0gr560xn620a66x0fk7s02f8m08j9f11a0406c0x0zl1r0p22l0w73g0k44b0qc57034620jm6x0p37s0c18m0i79g06y040gb0y05a1r0ys2m01y3g0tv4b102570cu620tf6x0yx7s0lw8m0s09g0go040q00y0ex1s04h2m0br3g13t4c064570mx6213f6y04v7s0vr8m11v9g0qk040zn0x0os1r0ec2l0ln3g09n4b0fu560wi6208w6x0e97s0158m07c9f1040405i0x0yh1r0o02l0v93g0j94b0ph57029620ip6x0o47s0b18m0h79g05y040f60y0461r0xn2m00v3g0sv4b0z6570c1620sk6x0xz7s0kv8m0qz9g0fo040ox0y0dv1s03c2m0ak3g12k4c04u570lo621266y03k7s0ue8m10h9g0p5040yn0x0nf1r0cy2l0k83g08a4b0ek560ve6207y6x0df7s00a8m06e9f0z2040440x0x91r0mp2l0tw3g0ht4b0o05700s620hc6x0mv7s09w8m0g39g04s040e00y02v1r0w92l13d3g0ra4b0xi570ab620qx6x0wi7s0jj8m0pr9g0eg040np0y0cg1s01t2m08y3g10y4c039570k56210r6y02a7s0ta8m0zi9g0o9040xb0x0me1r0bq2l0it3g06o4b0ct560tj620616x0bi7r12i8m04s9f0xn040380x0w01r0le2l0sf3g0g74b0ma56131620fl6x0l67s0898m0ek9g03d040cq0y01m1r0v02l1223g0pv4b0w05708r620pc6x0uy7s0i18m0ob9g0d3040me0y0ba1s00p2m07s3g0zn4c01q570if620yw6y00e7s0rf8m0xp9g0mj040w30x0kt1r0aa2l0hg3g05d4b0bi560s86204p6x0a77r1188m03j9f0wf0401k0x0uq1r0k32l0r53g0ez4b0l25611s620e96x0js7s06v8m0d79g023040bh0y00f1r0ts2l10s3g0ok4b0uo5707g620o06x0tk7s0gl8m0mv9g0bo040l60y09y1r13d2m06g3g0yc4c00k570he620xz6x13k7s0qk8m0ws9g0lk040up0x0ju1r09a2l0ge3g0484b0aa560qz6203g6x0907r1028m02c9f0v70400l0x0ti1r0ix2l0q03g0ds4b0jv5610k620d46x0ir7s05x8m0ca9g013040a80x1361r0si2l0zk3g0nf4b0tl5706f620n16x0sp7s0fv8m0m89g0b2040k20y0941r12e2m05e3g0x84b13d570g5620wo6x1287s0pb8m0vo9g0kl040u00x0iu1r0862l0f63g02y4b092560pu6202f6x0817r0z68m01j9f0uh0313n0x0st1r0i32l0p03g0cn4b0io560ze620bz6x0ho7s04v8m0ba9g0080409k0x12j1r0ru2l0yr3g0me4b0sc57051620lm6x0rb7s0ei8m0kw9g09r040jb0y07y1r11b2m04b3g0w34b126570ew620vh6x1157s0ob8m0uq9g0jl040ss0x0hu1r0762l0e63g01w4b07v560oh6200x6x06h7r0xm8m0039f0t30312m0x0rg1r0gs2l0np3g0bc4b0hb560xy620ag6x0g27s0398m09q9f12o040880x10x1r0q62l0x33g0kt4b0qw5703n620ka6x0py7s0d48m0ji9g08f040hr0y06o1r0zy2m02v3g0ul4b10m570db620tu6x0zf7s0mj8m0sw9g0hs040rh";
+var JY0=1900;
+var GAN="갑을병정무기경신임계", JI="자축인묘진사오미신유술해";
+var GANH="甲乙丙丁戊己庚辛壬癸", JIH="子丑寅卯辰巳午未申酉戌亥";
+function jieOf(y,idx){
+  var s=JD_ENC.substr(((y-JY0)*12+idx)*5,5);
+  var doy=parseInt(s.substr(0,2),36), mn=parseInt(s.substr(2,3),36);
+  var dt=new Date(Date.UTC(y,0,1+doy));
+  return {m:dt.getUTCMonth()+1, d:dt.getUTCDate(), min:mn};
+}
+function cmpJie(y,m,d,mn,idx){
+  var j=jieOf(y,idx);
+  if(m!==j.m) return m>j.m?1:-1;
+  if(d!==j.d) return d>j.d?1:-1;
+  return mn>=j.min?1:-1;
+}
+function yearPillarIdx(y,m,d,mn){
+  var sy=y;
+  if(cmpJie(y,m,d,mn,0)<0) sy=y-1;
+  return {sy:sy, idx:((sy-4)%60+60)%60};
+}
+function monthPillar(y,m,d,mn){
+  var CHRONO=[11,0,1,2,3,4,5,6,7,8,9,10];
+  var mi=-1;
+  for(var k=0;k<12;k++){ var i=CHRONO[k]; if(cmpJie(y,m,d,mn,i)>0) mi=i; else break; }
+  if(mi<0) mi=10;
+  var yp=yearPillarIdx(y,m,d,mn);
+  var yGan=yp.idx%10;
+  var inGan=[2,4,6,8,0][yGan%5];
+  var gan=(inGan+mi)%10;
+  var ji=(mi+2)%12;
+  return {gan:gan, ji:ji, mi:mi};
+}
+function jdn2(y,m,d){ if(m<=2){y--;m+=12;} var a=Math.floor(y/100),b=2-a+Math.floor(a/4);
+  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+b-1524; }
+function dayPillarIdx(y,m,d){
+  var n=jdn2(y,m,d);
+  return ((n+49)%60+60)%60;
+}
+
+/* ── 끼 점수·최종 순위 산식 (시리즈 5종과 다른 가중치·시드) ───────────── */
+var ELG=[0,0,1,1,2,2,3,3,4,4];              /* 천간 오행 */
+var ELJ=[4,2,0,0,2,1,1,2,3,3,2,4];          /* 지지 오행 */
+var GWI={4:1,16:1,28:1,34:1,46:1,58:1};     /* 괴강: 무진 경진 임진 무술 경술 임술 */
+var BASE_K=[47,53,40,44,49];                /* 일간 오행별 기본 끼: 목화토금수 — 무대의 불이 최고점 */
+var RELS_K=[2,8,3,-3,-5];                   /* 비겁 식상 재 관 인 — 식상(표현력)이 끼의 원천 */
+function hash32(s){var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+/* t: 0=시간 모름, 1~12 = 자~해시 */
+function pillarsOf(y,m,d,t){
+  var mn = t ? ((t-1)*120+30)%1440 : 720;
+  var yp=yearPillarIdx(y,m,d,mn);
+  var mp=monthPillar(y,m,d,mn);
+  var dp=dayPillarIdx(y,m,d);
+  return {yp:yp.idx, mp:mp.ji, mpg:mp.gan, dp:dp};
+}
+/* 끼 점수 1~99 — 높을수록 무대 체질 */
+function talent(y,m,d,t){
+  var P=pillarsOf(y,m,d,t);
+  var dg=P.dp%10, de=ELG[dg];
+  var s=BASE_K[de];
+  function rel(bj){ return RELS_K[((ELJ[bj]-de)%5+5)%5]; }
+  s += rel(P.mp)*1.8 + rel(P.dp%12)*1.2 + rel(P.yp%12)*0.7;
+  if(t) s += rel(t-1)*0.9;
+  s += (dg%2===0)?3:-2;                     /* 양간 = 무대에서 뿜는 발산형 */
+  if(GWI[P.dp]) s += 9;                     /* 괴강 — 센터의 카리스마는 산식도 밀어준다 */
+  var h=hash32('id:'+y+'-'+m+'-'+d+'-'+(t||'x'));
+  s += ((h%3989)/3988-0.5)*54;
+  s += (((h>>>11)%1013)/1012-0.5)*12;
+  if(s>93) s=93+(s-93)*0.45;                /* 위쪽을 더 눌러 대표(98+)를 희귀하게 */
+  if(s<8)  s=8-(8-s)*0.5;
+  s=Math.round(s);
+  return s<1?1:(s>99?99:s);
+}
+/* 최종 순위 1~99위 — 끼 점수를 뒤집는다. 낮을수록 좋은 유일한 시리즈 숫자 */
+function rankOf(y,m,d,t){ return 100-talent(y,m,d,t); }
+/* 상위 % 테이블: 1950-01-01~2010-12-31 전 날짜(시간 모름) 분포에서
+   최종 순위 r(1~99) 이하(더 좋은 쪽)인 비율(퍼밀, ‰). 빌드 시 실계산으로 생성. */
+var TOPP=[2,2,4,6,10,14,18,21,24,27,32,37,42,46,52,59,66,74,81,89,99,109,118,129,140,152,166,179,192,206,219,233,248,262,279,296,313,328,344,359,377,395,412,430,447,466,485,503,521,539,556,572,590,609,627,643,661,679,695,710,725,740,755,770,785,799,813,826,839,853,865,876,887,896,905,914,922,930,937,944,950,957,962,967,972,976,980,984,986,988,990,993,996,998,998,999,1000,1000,1000];
+function topPct(r){ var pm=TOPP[r-1]; var p=Math.round(pm/10); return p<1?1:(p>100?100:p); }
+
+/* ── 결과값(V) — 생년월일시를 담지 않는 공유용 표시값 묶음 ─────────────
+   ri  1~10 = ROLES index+1, 11 = 센터, 12 = 기획사 대표
+   n   최종 순위 1~99 / top 전체 참가자 상위 % 1~100
+   dp  일주 index 0~59 (일주 한 줄 표시에만 사용) */
+function resultOf(y,m,d,t){
+  var g=talent(y,m,d,t), n=100-g, dp=dayPillarIdx(y,m,d);
+  var ri=g>=98?12:(GWI[dp]?11:(dp%10)+1);
+  return {ri:ri, n:n, top:topPct(n), dp:dp};
+}
+var V_RI=12, V_N=99, V_TOP=100, V_DP=60;
+var V_MAX=V_RI*V_N*V_TOP*V_DP-1;            /* 7,127,999 → base36 최대 5자 */
+function encodeV(V){
+  var n=V.ri-1;
+  n=n*V_N+(V.n-1);
+  n=n*V_TOP+(V.top-1);
+  n=n*V_DP+V.dp;
+  return n.toString(36);
+}
+function decodeV(str){
+  if(typeof str!=='string') return null;
+  str=str.toLowerCase();
+  if(!/^[0-9a-z]{1,5}$/.test(str)) return null;
+  var v=parseInt(str,36);
+  if(!isFinite(v)||v<0||v>V_MAX||Math.floor(v)!==v) return null;
+  var dp=v%V_DP;  v=(v-dp)/V_DP;
+  var top=v%V_TOP; v=(v-top)/V_TOP; top+=1;
+  var n=v%V_N;    v=(v-n)/V_N;     n+=1;
+  var ri=v+1;
+  if(ri<1||ri>V_RI) return null;
+  if(n<1||n>99) return null;
+  if(top<1||top>100) return null;
+  if(dp<0||dp>59) return null;
+  return {ri:ri, n:n, top:top, dp:dp};
+}
+/* 결과 카드 응원봉 불빛 시드 — 결과값만으로 만든다(생년월일 미사용) */
+function cheerSeed(V){ return hash32('cheer:'+V.ri+'-'+V.n+'-'+V.top+'-'+V.dp); }
+/*CORE:E*/
+
+/* ── 日干の読み（表示用） ── */
+var GANR=["きのえ","きのと","ひのえ","ひのと","つちのえ","つちのと","かのえ","かのと","みずのえ","みずのと"];
+var JIR=["ね","うし","とら","う","たつ","み","うま","ひつじ","さる","とり","いぬ","い"];
+
+/* ── ポジションデータ ── */
+var ROLES=[
+ {img:1, emo:"👑", nm:"リーダー", ct:"揺れるチームを立て直す第一声",
+  g:["#7a3050","#2b0f1c"],
+  desc:"甲木（きのえ）の日干は、天へまっすぐ伸びる大樹の気——7人がうろうろする練習室で、この命式はそれだけで柱になります。デビューメンバーの発表前から練習のスケジュール表を組み、打ち上げでは真っ先に末っ子の分の肉を焼く人です。一度決めたコンセプトは社長に反対されても曲げない頑固さのせいで会議は長引きますが、授賞式でマイクを握って泣くのも、「このチームはリーダーに恵まれた」というコメントをもらうのも、結局あなたです。先頭に立って引っ張るのが体質なので、チームが道に迷った瞬間、全員の目があなたを見ます。",
+  st:"グループLINEのお知らせをいつの間にかあなたが送っているのは、リーダーの命式だからです。",
+  mate:4, worst:6},
+ {img:2, emo:"🤹", nm:"バラエティ担当", ct:"どこに出しても爆笑をかっさらってくる",
+  g:["#7a5a20","#2b1f0a"],
+  desc:"乙木（きのと）の日干はつる草と草花の気——踏まれても起き上がり、どんな塀でも伝って登る柔軟さです。グループでこの命式はバラエティ担当。無名時代にケーブルのクイズ番組へひとりで出演して3週連続ハイライトを飾り、そのクリップでグループ全体の名を売るメンバーです。初対面のMCとも10分で息が合い、罰ゲームでも笑いを絶やさないので、制作陣の間では「キャスティング最優先」リストに載っています。ステージの外でグループを食べさせるのも才能だということを、このポジションが証明します。",
+  st:"あなたが欠けると集まりが一斉に静かになるのは、もうバラエティ担当だからです。",
+  mate:5, worst:7},
+ {img:3, emo:"🕺", nm:"メインダンサー", ct:"ステージの照明があなただけを追いかける",
+  g:["#8a3a1e","#33120a"],
+  desc:"丙火（ひのえ）の日干は真昼の太陽——隠そうとしても隠せない存在感の気です。グループでこの命式はメインダンサー。12人が同じ振り付けを踊っても、あなたのチッケム（推しカメラ）だけ再生回数の桁が違い、「照明があなたを追いかけるのではなく、あなたが照明を吸い込む」というのがファンダムの定説です。キリングパートの3秒の動きひとつでSNSをひっくり返し、当の本人は「いつも通り踊っただけですけど」と言ってメンバーを二度脱力させます。万人の前で輝いてこそ本領を発揮する文字なので、練習室の鏡の前よりステージの上のほうが上手く踊れます。",
+  st:"カラオケの間奏で体が先に動くのは、メインダンサーの職業病です。",
+  mate:6, worst:9},
+ {img:4, emo:"🎤", nm:"メインボーカル", ct:"深夜2時のライブ配信で胸を打つ",
+  g:["#5a3070","#1e1030"],
+  desc:"丁火（ひのと）の日干は灯火の気——太陽のように広く照らす代わりに、一点を長く、深く照らします。グループでこの命式はメインボーカル。派手な高音自慢の代わりに、深夜2時の感性ライブ配信で伴奏なしに歌ったバラードが、翌日のトレンドに入るタイプです。レコーディングでは1フレーズを30回歌い直す執念でエンジニアを泣かせ（二つの意味で）、コンサートのアンコール最後の一音は、ファンが一生保存する動画になります。暗いほど持ち分が大きくなる灯火のように、静かなステージでいちばん大きく響く歌声です。",
+  st:"悲しい歌を歌うと隣の人が急に黙るのは、その声のせいです。",
+  mate:9, worst:1},
+ {img:5, emo:"🗿", nm:"サブボーカル兼グループの大黒柱", ct:"このチームがまだ崩れていない理由",
+  g:["#4a4a56","#1a1a20"],
+  desc:"戊土（つちのえ）の日干は山脈のように重厚な大地の気——支えて受け止めることにかけて、これ以上の文字はありません。グループでこの命式はサブボーカルであり、グループの大黒柱です。パートはサビの後の8小節だけですが、その8小節がステージ全体のバランスを取ります。メンバーの喉が崩れた日にパートを即興で受け取るのも、解散危機の夜に「とりあえずラーメンでも食べよう」と宿舎の食卓に全員を集めるのもあなたです。ファンダムがつけたあだ名は「寡黙な支え」。そしてグループが10年続いた後になって、みんなようやく気づきます——このチームの本当のセンターは重心だったということに。",
+  st:"友達が悩み相談をなぜかあなたにだけ持ってくるのは、大黒柱の命式だからです。",
+  mate:0, worst:2},
+ {img:6, emo:"💌", nm:"ファンサの達人", ct:"ファン一人ひとりのニックネームを覚えている",
+  g:["#356048","#102418"],
+  desc:"己土（つちのと）の日干は穀物を育てる肥沃な畑——抱えて食べさせる、土台の気です。グループでこの命式はファンサの達人。サイン会で去年来たファンのニックネームと、そのとき交わした会話を思い出してファンを泣かせ、深夜のファンコミュニティにふらりと現れて悩み相談に長文の返事をつけるメンバーです。あなたの担当のファンは推し変ができません——芸能人ではなく、長い付き合いの人を置いていく気分になるからです。「うちのグループは人柄だけは確かだ」というファンダムの自負の持ち分は、ほとんどあなたのものです。",
+  st:"一度会った人のささいな好みを覚えていて驚かせるのは、達人の習慣です。",
+  mate:1, worst:8},
+ {img:7, emo:"🎙️", nm:"メインラッパー", ct:"ワンバースで曲の重心を動かす",
+  g:["#2e3560","#101228"],
+  desc:"庚金（かのえ）の日干はまだ鍛えていない鉄——叩くほど硬くなる原石の気です。グループでこの命式はメインラッパー。流行のフロウを追いかける代わりに、ノート3冊を埋めながら自分のラップを鍛え上げるタイプなので、デビュー曲では16小節だったパートが、3枚目のアルバムでは曲の重心になります。予告なしにミックステープを公開して「アイドルラップの偏見を壊した」と評され、ステージの外では口数が少ないギャップでファンを二度沼に落とします。鍛錬に耐えた鉄だけが名剣になるということを、このポジションはラップで証明します。",
+  st:"気に入らない出来のものは、周りがみんな褒めても作り直すのが、鋼の頑固さです。",
+  mate:2, worst:0},
+ {img:8, emo:"💎", nm:"ビジュアル", ct:"存在するだけでグラビアになる",
+  g:["#5a4470","#201830"],
+  desc:"辛金（かのと）の日干は細工を終えた宝石——完成された輝きそのものの気です。グループでこの命式はビジュアル。空港の出国写真が「もはやグラビア」とニュースになり、ステージのチッケムより表情のキャプチャが先に出回るメンバーです。広告主が契約書を持って列を作りますが、当の本人は0.1ミリの乱れも我慢できない繊細な目のせいで、自撮りを1枚選ぶのに40分かかります。「顔で選ばれたんじゃないか」というアンチコメントは、3年後の演技の好評とともに静かに消えます——宝石はどの角度から削っても宝石ですから。",
+  st:"集合写真で一人だけライトが当たったように写るのは、もともとそういう命式です。",
+  mate:6, worst:1},
+ {img:9, emo:"🎼", nm:"オールラウンダー", ct:"ボーカル・ダンス・作曲、できないものがない",
+  g:["#1e4a5e","#0a1c24"],
+  desc:"壬水（みずのえ）の日干は海へ向かう大河——スケールが大きく、一か所に閉じ込められることに耐えられない大水の気です。グループでこの命式はオールラウンダー。ボーカルトレーナーはボーカルとして育てようと言い、振付師はダンサーとして育てようと言っている間に、本人はこっそり作曲ソフトを覚えてアルバム曲を書いてきます。フルアルバムのクレジットにいちばん多く名前が載るメンバーで、コンサートのVCR監督まで兼ねた年には、ファンが「休むのが仕事」と心配アカウントを作りました。海が川を選ばないように、この命式はジャンルを選びません。",
+  st:"趣味で始めたことがいつの間にかセミプロ級になっているのは、大水の習性です。",
+  mate:4, worst:5},
+ {img:10, emo:"🧚", nm:"音色の妖精", ct:"たった8小節が耳から離れない",
+  g:["#38653f","#132818"],
+  desc:"癸水（みずのと）の日干は雨と露、夜霧——音もなく染み込み、長く残る気です。グループでこの命式は音色の妖精。パートは2番のブリッジ8小節だけなのに、MVのコメント欄は「3分12秒を無限リピート中」で埋め尽くされます。声量で押し切る代わりに、吐息半分・音色半分で曲の温度を変えてしまうタイプなので、プロデューサーたちが「この曲はあの声じゃないとだめだ」とデモを持って訪ねてきます。露が騒がしく降りないように、あなたの声は静かに染み込んで、いちばん長く残ります。",
+  st:"顔より声を褒められることのほうが多いのは、妖精の証です。",
+  mate:3, worst:2}
+];
+var ROLE_CENTER={img:11, emo:"🌟", nm:"ステージを制すセンター", ct:"ステージが終わっても歓声が終わらない",
+  g:["#8a1e3c","#330a16"],
+  desc:"あなたの日柱は魁罡（かいごう）——命理学で「頭領の星」と呼ばれる極端なカリスマです。この気をステージに上げると、ポジション論争は無意味になります。歌担当でもダンス担当でもなく、ステージそのものを掌握するセンター——それがあなたの席です。エンディング妖精の3秒で沼落ち動画を何百本も生み、他グループのファンにさえ「ステージだけは認める」と書かせるエースです。放送局のカメラ監督は動線を覚える必要がありません。あなたを追いかければ、それが正解ですから。魁罡の気は計算式でも華スコア9点のボーナスをもらいます——センターは書類の時点で違うのです。",
+  st:"適当に撮られた写真でも画面のど真ん中に立っているのは、センターの本能です。",
+  mateTx:"グループ全員——センターのステージは6人の援護射撃で完成します", worstTx:"カメラ監督——あなたの動線を追いかけて何度も転びました"};
+var ROLE_CEO={img:12, emo:"🕶️", nm:"事務所の社長", ct:"オーディションを受けに行ったら審査員席に座っていた",
+  g:["#6e5a1e","#241d08"],
+  desc:"おめでとうございます。華スコアが高すぎて、参加者名簿から名前が外されました。オーディション会場に番号札をつけて入ったのに、審査員たちが会議をして隣の席を空けてくれる展開です。ステージに立てば上手いという次元ではなく、他人のステージを3秒見ただけで、何を直せば売れるのかが見えてしまう目——これはアイドルの才能ではなく、アイドルを作る側の才能です。ゴールデンブザーはあなたが押すもの、デビューメンバーの名簿はあなたが決めるもの、このサバイバルの最終優勝グループはあなたの会社の所属です。アイドルポジション診断でアイドルが出なかった唯一の人。それがどれほどレアな大当たりなのかは、下の計算式公開欄に書いておきました。",
+  st:"カラオケで友達の歌を聴きながら、いつの間にかコーチングしているのは、社長の職業病です。",
+  mateTx:"練習生全員——あなたの目に留まった原石が次のデビュー組です", worstTx:"ライバル事務所の社長——オーディション会場の最前列を巡って何年も神経戦です"};
+/* 順位51位以下（大きい数字）：逆走行フレーミングの段落（解説の前に自動で付く） */
+var LATEBLOOM="順位表の後ろのほうは、脱落者名簿ではありません。このサバイバルで51位より下は大器晩成の逆走行型——最終回の放送では画面に3秒しか映らないけれど、デビューから3年後のある日、昔のステージのチッケムがアルゴリズムに乗って、チャートを逆さまにひっくり返すタイプです。初回で全部見せる企画は長く続きません。あなたの物語のハイライトは順位発表式ではなく、逆走行のチャートインです。";
+
+/* 60日柱ひとことコメント — デビュー評価書の観点 */
+var ILJU=[
+"真夜中の湖畔の大樹、デビュー前からファンクラブができる存在感タイプ","雪原を歩く松、練習生7年に耐えてついにデビューする根性タイプ",
+"虎の背に昇る朝日、初登場3秒で画面を食う主人公タイプ","うさぎ穴を照らす灯火、舞台裏でメンバーの体調から気遣う守護タイプ",
+"龍を抱く山脈、年次を重ねるほど存在感が増す大器晩成タイプ","蛇が温めた春の土、精算の達人と噂される実利タイプ",
+"馬上で鍛えた剣、課題曲のたびに編曲を作り替える勝負師タイプ","羊の群れの中の玉、デビュー前から育ちの良さがにじむ貴公子タイプ",
+"猿を乗せた大河、海外ツアーでいちばん生き生きする旅体質タイプ","夜明けの鶏冠の露、振り付けの細部をコマ単位で詰める精密タイプ",
+"古木を守る犬、チームが揺れても最後まで残る義理堅いタイプ","水面を流れる花びら、ユニットのたびに呼ばれる人気コンビタイプ",
+"真冬の水辺の太陽、スランプのチームを温めるストーブタイプ","牛小屋のランプ、派手ではなくてもステージに穴を開けない芯の強さタイプ",
+"虎の棲む大山、後輩のお辞儀の角度が変わる威厳タイプ","うさぎの跳ねる春の畑、アンチができないのが特技の好感度タイプ",
+"龍が鍛えた宝剣、決勝の舞台でだけ本当の実力が出る切り札タイプ","蛇が守った宝石、知る人ぞ知る隠れた名曲のような名品タイプ",
+"馬駆ける大河、コンサートを祭りに変える興行タイプ","乾いた野に降る恵みの雨、チームの危機のたびに登板する救援タイプ",
+"猿が登る巨木、芸達者な後輩が自然と慕う座長タイプ","鶏小屋のそばの朝顔、練習室の明かりを最初につける勤勉タイプ",
+"夕焼けの丘の焚き火、Vlogの感性でファンを集める囲炉裏タイプ","港の灯台、道に迷った練習生のメンターになる道しるべタイプ",
+"ねずみが道を知る山、流行るコンセプトを先に当てる勘タイプ","冬の畑を耕す牛、人が休む間に練習して春に笑う正直タイプ",
+"虎の爪の鋼、審査員のほうが先に見抜く逸材タイプ","クローバー畑の銀細工、柔らかい顔でパートを勝ち取る交渉上手タイプ",
+"龍の遊ぶ大水、ステージが大きいほど生きる大舞台体質タイプ","蛇道を潤す小川、音もなくチームの方向を変える軍師タイプ",
+"馬をつなぐ欅の木、楽屋に人が集まってくるサロンタイプ","羊の丘の野の花、どのチームに入れても嫌われない無難タイプ",
+"猿の手のひらの日差し、リアリティ番組でレジェンド回を作る芸達者タイプ","ろうそくに映る鶏冠、衣装の着こなしで噂になるおしゃれタイプ",
+"山城を守る犬、任されたパートは必ず守り抜く門番タイプ","豚を育てた肥えた畑、与えるほど人気が湧いてくる福畑タイプ",
+"冬の水に浸けた刀、冷静なモニタリングでチームを鍛える名判官タイプ","凍った土の玉、年次を重ねるほど再評価される遅咲きタイプ",
+"虎を乗せた川、怖いもの知らずの挑戦で話題になる風雲児タイプ","春雨に濡れたクローバー、見るファンみんなが世話を焼きたくなる春の陽タイプ",
+"龍の背に育つ巨木、グループの世界観を支える棟梁タイプ","蛇と同居する花、軽々しく扱えない棘の魅力タイプ",
+"正午の太陽が馬を駆る形、カムバックのたびに名前が広まる名声タイプ","羊のそばの焚き火、一度沼に落ちたら一生ファンにさせるオンドルタイプ",
+"猿の遊ぶ岩山、クールに決めてバラエティで大爆発するギャップタイプ","鶏に餌をやる畑の主、1日も欠かさない自主コンテンツで積み立てる貯金タイプ",
+"犬を従えた白い刃、黙ってステージだけで証明する侠客タイプ","深い水底の真珠、カバー動画で先に発掘された在野の実力者タイプ",
+"真夜中の大海、ミステリアスがコンセプトではなく本体の深海タイプ","凍った道をゆく牛、同期がみんな去っても残ってついにデビューする最長寿タイプ",
+"虎の森の主の大樹、合同ステージで自然と大将になる本陣タイプ","クローバーの茂る春の野原、いるだけでチームの空気が和む平和タイプ",
+"龍の上に昇る太陽、授賞式の席順がいつも中央の主賓タイプ","蛇が守ったろうそく、デビュー白紙の危機を何度も越えたしぶとい芯タイプ",
+"火を秘めた火山、無名時代が長いほど大きく爆発する潜龍タイプ","羊を養う丘の畑、ケータリングの気前でスタッフのファンまで作る人徳タイプ",
+"猿の手の名剣、ラップもダンスもいける文武両道タイプ","鏡のように磨かれた玉、傷のないステージで記憶される完璧タイプ",
+"忠犬と大水の組み合わせ、ファンを守る姿にファンが増える護衛タイプ","海へ還る雨水、ソロで出ても結局完全体に帰ってくる帰郷タイプ"];
+
+function p60name(i){ return GANH[i%10]+JIH[i%12]+"（"+GANR[i%10]+JIR[i%12]+"）"; }
+function roleByImg(i){ return i===11?ROLE_CENTER:(i===12?ROLE_CEO:ROLES[i-1]); }
+function roleOf(y,m,d,t){
+  var g=talent(y,m,d,t), n=100-g;
+  var dp=dayPillarIdx(y,m,d);
+  var r;
+  if(g>=98) r=ROLE_CEO;
+  else if(GWI[dp]) r=ROLE_CENTER;
+  else r=ROLES[dp%10];
+  return {n:n, g:g, dp:dp, role:r, top:topPct(n)};
+}
+
+/* ── UI ── */
+(function(){
+var $=function(id){return document.getElementById(id);};
+var TSLOT=["わからない","子の刻 (23:30~01:30)","丑の刻 (01:30~03:30)","寅の刻 (03:30~05:30)","卯の刻 (05:30~07:30)",
+ "辰の刻 (07:30~09:30)","巳の刻 (09:30~11:30)","午の刻 (11:30~13:30)","未の刻 (13:30~15:30)",
+ "申の刻 (15:30~17:30)","酉の刻 (17:30~19:30)","戌の刻 (19:30~21:30)","亥の刻 (21:30~23:30)"];
+var cur=null;
+var PH_Y='年を選択', PH_M='月を選択', PH_D='日を選択';
+
+function fillSel(el,arr,vals){ var h=''; for(var i=0;i<arr.length;i++) h+='<option value="'+(vals?vals[i]:arr[i])+'">'+arr[i]+'</option>'; el.innerHTML=h; }
+function initInputs(){
+  var ys=[PH_Y],yv=['']; for(var y=1940;y<=2020;y++){ys.push(y+'年');yv.push(y);}
+  fillSel($('by'),ys,yv);
+  var ms=[PH_M],mv=['']; for(var m=1;m<=12;m++){ms.push(m+'月');mv.push(m);}
+  fillSel($('bm'),ms,mv);
+  /* 時刻は任意項目 — 「わからない」スロットの値を空文字にして、
+     空のフォーム状態と「時刻わからない」(t=0) が同じ意味になるようにする */
+  var ts=[],tv=[]; for(var t=0;t<13;t++){ts.push(TSLOT[t]);tv.push(t===0?'':t);}
+  fillSel($('bt'),ts,tv);
+  fillDays();
+  /* 初回アクセスは常に空のフォーム — 既定の生年月日は入れない */
+  clearInputs();
+}
+function daysIn(y,m){ return new Date(Date.UTC(y,m,0)).getUTCDate(); }
+function fillDays(){
+  var ys=$('by').value, ms=$('bm').value, olds=$('bd').value;
+  /* 年・月がまだ空なら31日まで埋めておく — 選ぶ順序に関係なく日を選べるように */
+  var n=(ys!==''&&ms!=='')?daysIn(+ys,+ms):31,ds=[PH_D],dv=[''];
+  for(var d=1;d<=n;d++){ds.push(d+'日');dv.push(d);}
+  fillSel($('bd'),ds,dv);
+  $('bd').value=(olds==='')?'':String(Math.min(+olds||1,n));
+}
+/* 入力フォームの初期化 — 各セレクトをプレースホルダー（空値）に戻す */
+function clearInputs(){
+  $('nick').value='';
+  ['by','bm','bd','bt'].forEach(function(id){ $(id).value=''; });
+  $('needPick').style.display='none';
+}
+$('by').addEventListener('change',fillDays);
+$('bm').addEventListener('change',fillDays);
+
+var animId=null;
+function countUp(el,target){
+  if(animId)cancelAnimationFrame(animId);
+  var t0=null,DUR=1200;
+  function step(ts){
+    if(!t0)t0=ts;
+    var p=Math.min(1,(ts-t0)/DUR);
+    var e=1-Math.pow(1-p,3);
+    el.textContent=Math.max(1,Math.round(target*e));
+    if(p<1)animId=requestAnimationFrame(step); else animId=null;
+  }
+  animId=requestAnimationFrame(step);
+}
+
+/* 順位帯のフレーミング — 小さい数字が良い、シリーズ唯一の目盛り */
+function tierOf(n){
+  if(n<=15) return '🏆 デビュー組直行';
+  if(n<=50) return '🔥 ファイナル進出';
+  return '🚀 大器晩成の逆走行型 — 3年後にチャートをひっくり返すタイプ';
+}
+
+/* 結果画面のレンダリング — 結果の値(V)だけで描く。生年月日時は使わない。
+   shared=true なら共有リンクから来た人の画面。 */
+var RETRY_OWN='👀 友達はどのポジション？もう一度診断する';
+var RETRY_SHARED='🎤 私もポジションをチェックする';
+function renderResult(V,nick,shared){
+  var r=roleByImg(V.ri);
+  cur={V:V,role:r,nick:nick||'',shared:!!shared};
+  var box=$('roleImgBox');
+  box.style.setProperty('--g1',r.g[0]);
+  box.style.setProperty('--g2',r.g[1]);
+  $('fbEmo').textContent=r.emo;
+  var im=$('roleImg');
+  im.style.display='';
+  $('fbEmo').style.display='';
+  im.onload=function(){ $('fbEmo').style.display='none'; };
+  im.onerror=function(){ this.style.display='none'; $('fbEmo').style.display=''; };
+  im.src='/tests/idol/img/role-'+String(r.img).padStart(2,'0')+'.png';
+  $('roleName').textContent=r.nm;
+  $('roleCatch').textContent='「'+r.ct+'」';
+  countUp($('popNum'),V.n);
+  $('tierLine').textContent=tierOf(V.n);
+  var tp=$('topPct');
+  if(V.top<=50){ tp.className='topPct'; tp.textContent='📈 参加者全体の上位 '+V.top+'%'; }
+  else { tp.className='topPct late'; tp.textContent='🚀 逆走行ポテンシャル上位 '+(101-V.top)+'%'; }
+  $('iljuLine').innerHTML='あなたの日柱：<b>'+p60name(V.dp)+'</b> — '+ILJU[V.dp];
+  $('roleDesc').textContent=(V.n>=51?LATEBLOOM+' ':'')+r.desc;
+  $('traceLine').innerHTML='<b>デビュー後の目撃談</b> — '+r.st;
+  $('mateGood').innerHTML=r.mateTx?r.mateTx:'<b>'+ROLES[r.mate].emo+' '+ROLES[r.mate].nm+'</b> — '+GANH[r.mate]+ELM(r.mate)+'の日干';
+  $('mateBad').innerHTML=r.worstTx?r.worstTx:'<b>'+ROLES[r.worst].emo+' '+ROLES[r.worst].nm+'</b> — '+GANH[r.worst]+ELM(r.worst)+'の日干';
+  $('retryBtn').textContent=cur.shared?RETRY_SHARED:RETRY_OWN;
+  $('copied').textContent='';
+  $('res').classList.remove('hidden');
+}
+/* 生年月日時 → 結果の値 → レンダリング（直接診断の経路） */
+function render(y,m,d,t,nick){ renderResult(resultOf(y,m,d,t),nick,false); }
+function ELM(g){ return ['木','木','火','火','土','土','金','金','水','水'][g]; }
+/* INP: 押した瞬間はボタンの状態だけ描き替えて1フレーム返し、
+   重い万年暦の計算と結果レンダリングは次のフレームに回す。算出ロジックは不変。 */
+var GO_BUSY_TX='🎤 審査員採点中…', GO_BUSY_MIN=280, goBusy=false;
+function setGoBusy(on){
+  var b=$('goBtn');
+  if(on){
+    b.dataset.idle=b.textContent; b.textContent=GO_BUSY_TX;
+    b.dataset.hadFocus=(document.activeElement===b)?'1':'';
+    b.disabled=true;
+  }else{
+    if(b.dataset.idle) b.textContent=b.dataset.idle;
+    b.disabled=false;
+    if(b.dataset.hadFocus){ try{ b.focus({preventScroll:true}); }catch(e){} }
+  }
+}
+function runDeferred(fn){
+  if(goBusy) return;
+  goBusy=true;
+  var t0=Date.now();
+  setGoBusy(true);
+  requestAnimationFrame(function(){ setTimeout(function(){
+    try{ fn(); }
+    finally{
+      /* 速い端末で「採点中」が一瞬ちらついて消えないよう最小表示時間を守る */
+      var rest=GO_BUSY_MIN-(Date.now()-t0);
+      setTimeout(function(){ setGoBusy(false); goBusy=false; }, rest>0?rest:0);
+    }
+  },0); });
+}
+$('goBtn').addEventListener('click',function(){
+  if(goBusy) return;
+  if($('by').value===''||$('bm').value===''||$('bd').value===''){
+    $('needPick').style.display='';
+    ($('by').value===''?$('by'):($('bm').value===''?$('bm'):$('bd'))).focus();
+    return;
+  }
+  $('needPick').style.display='none';
+  var y=+$('by').value,m=+$('bm').value,d=+$('bd').value;
+  var t=$('bt').value===''?0:+$('bt').value;
+  var nick=$('nick').value.trim();
+  runDeferred(function(){
+    var V=resultOf(y,m,d,t);
+    renderResult(V,nick,false);
+    var u=new URL(location.href);
+    u.searchParams.set('v',encodeV(V));
+    if(nick) u.searchParams.set('n',nick); else u.searchParams.delete('n');
+    history.replaceState(null,'',u.pathname+u.search);
+    $('res').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
+$('retryBtn').addEventListener('click',function(){
+  $('res').classList.add('hidden');
+  history.replaceState(null,'',location.pathname);
+  clearInputs();
+  cur=null;
+  $('inputPanel').scrollIntoView({behavior:'smooth',block:'start'});
+});
+function shareText(){
+  if(!cur)return '';
+  /* ポジション別の共有スタブ（/s/NN/）へリンク — プレビューに自分のポジションのイラストが出る。
+     スタブがクエリをそのまま本ページへ渡すので、結果が再現される。
+     ?v= には結果の値だけが入り、生年月日・時刻は決して載らない。 */
+  var nn=String(cur.role.img).padStart(2,'0');
+  var base=location.pathname.replace(/\/$/,'');
+  var u=location.origin+base+'/s/'+nn+'/?v='+encodeV(cur.V)+
+    (cur.nick?'&n='+encodeURIComponent(cur.nick):'');
+  return '🎤 私は「'+cur.role.nm+'」、デビューサバイバル最終'+cur.V.n+'位！あなたは何位？\n'+u;
+}
+$('shareLink').addEventListener('click',function(){
+  if(!cur)return;
+  var u=shareText();
+  var done=function(){ $('copied').textContent='✅ 結果とリンクをコピーしました。友達に貼り付けて送ろう！'; };
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(u).then(done,function(){fallbackCopy(u);done();});
+  }else{ fallbackCopy(u); done(); }
+});
+function fallbackCopy(txt){
+  var ta=document.createElement('textarea'); ta.value=txt;
+  ta.style.cssText='position:fixed;opacity:0'; document.body.appendChild(ta);
+  ta.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(ta);
+}
+
+/* ── 結果カード (1080×1350) ── */
+function loadImg(src){
+  return new Promise(function(res){
+    var im=new Image();
+    im.onload=function(){res(im);}; im.onerror=function(){res(null);};
+    im.src=src;
+  });
+}
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
+}
+function makeCard(){
+  if(!cur)return Promise.resolve(null);
+  var R=cur.V,r=cur.role;
+  var W=1080,H=1350;
+  var c=document.createElement('canvas'); c.width=W; c.height=H;
+  var x=c.getContext('2d');
+  return loadImg('/tests/idol/img/role-'+String(r.img).padStart(2,'0')+'.png').then(function(im){
+    var INK='#f1edf6', INK2='#bab0ca', INK3='#8b8099', PK='#ff5fae', VI='#c9a9ff';
+    /* 背景：ステージの上のピンクの照明 */
+    var bg=x.createLinearGradient(0,0,0,H);
+    bg.addColorStop(0,'#1c1428'); bg.addColorStop(1,'#0b0710');
+    x.fillStyle=bg; x.fillRect(0,0,W,H);
+    /* ペンライトの光 — 結果の値のシードで決定論的に配置 */
+    var hs=cheerSeed(R);
+    for(var i=0;i<110;i++){
+      hs=(Math.imul(hs,1664525)+1013904223)>>>0;
+      var sx=hs%W; var sy=(hs>>>11)%H; var ss=((hs>>>22)%3)*0.8+0.8;
+      x.globalAlpha=0.08+((hs>>>7)%40)/400;
+      x.fillStyle=(hs>>>5)%6===0?VI:PK;
+      x.fillRect(sx,sy,ss,ss);
+    }
+    x.globalAlpha=1;
+    /* 上部ラベル */
+    x.textAlign='center';
+    x.fillStyle=INK3;
+    x.font='700 34px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif';
+    x.fillText('🎤 IDOL POSITION REPORT 🎤',W/2,96);
+    if(cur.nick){
+      x.fillStyle=INK;
+      x.font='700 44px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif';
+      x.fillText(cur.nick,W/2,168);
+    }
+    /* ポジションのイメージ／絵文字 */
+    var IS=360, ix=(W-IS)/2, iy=cur.nick?190:152;
+    var gr=x.createLinearGradient(ix,iy,ix+IS,iy+IS);
+    gr.addColorStop(0,r.g[0]); gr.addColorStop(1,r.g[1]);
+    roundRect(x,ix,iy,IS,IS,48);
+    x.fillStyle=gr; x.fill();
+    if(im){
+      x.save(); roundRect(x,ix,iy,IS,IS,48); x.clip();
+      x.drawImage(im,ix,iy,IS,IS); x.restore();
+    }else{
+      x.font='196px -apple-system,"Apple Color Emoji","Noto Color Emoji",sans-serif';
+      x.textBaseline='middle';
+      x.fillText(r.emo,W/2,iy+IS/2+14);
+      x.textBaseline='alphabetic';
+    }
+    var yy=iy+IS+80;
+    x.fillStyle=INK;
+    var nmFont=r.nm.length>10?'800 52px':'800 64px';
+    x.font=nmFont+' -apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif';
+    x.fillText(r.nm,W/2,yy);
+    x.fillStyle=INK2;
+    x.font='400 34px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif';
+    x.fillText('「'+r.ct+'」',W/2,yy+56);
+    /* 最終順位の大きな数字 — 「最終」小さく + 数字大きく + 「位」小さく */
+    x.fillStyle=INK3;
+    x.font='700 32px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif';
+    x.fillText('デビューサバイバル — 最終',W/2,yy+140);
+    var numFont='800 220px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif';
+    var sufFont='800 96px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif';
+    x.font=numFont; var nw=x.measureText(String(R.n)).width;
+    x.font=sufFont; var sw=x.measureText('位').width;
+    var tx=(W-(nw+16+sw))/2;
+    x.textAlign='left';
+    x.fillStyle=PK;
+    x.font=numFont; x.fillText(String(R.n),tx,yy+352);
+    x.font=sufFont; x.fillText('位',tx+nw+16,yy+352);
+    x.textAlign='center';
+    /* 順位帯 + 上位%バッジ */
+    var tt=R.n<=15?'🏆 デビュー組直行':(R.n<=50?'🔥 ファイナル進出':'🚀 大器晩成の逆走行型');
+    x.fillStyle=INK;
+    x.font='700 40px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif';
+    x.fillText(tt,W/2,yy+420);
+    var btxt=R.top<=50?('📈 参加者全体の上位 '+R.top+'%'):('🚀 逆走行ポテンシャル上位 '+(101-R.top)+'%');
+    x.font='700 38px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif';
+    var bw=x.measureText(btxt).width+72;
+    roundRect(x,(W-bw)/2,yy+452,bw,80,40);
+    x.fillStyle=R.top<=50?'#31142a':'#251341'; x.fill();
+    x.fillStyle=R.top<=50?PK:VI;
+    x.fillText(btxt,W/2,yy+505);
+    /* 日柱 */
+    x.fillStyle=INK2;
+    x.font='400 33px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif';
+    var il='日柱 '+p60name(R.dp)+' · '+ILJU[R.dp];
+    if(x.measureText(il).width>W-100){ il='日柱 '+p60name(R.dp)+' · '+ILJU[R.dp].split('、')[0]; }
+    x.fillText(il,W/2,yy+580);
+    /* 下部URL */
+    x.fillStyle=INK3;
+    x.font='700 36px -apple-system,BlinkMacSystemFont,sans-serif';
+    x.fillText('kmagpie.com/ja/tests/idol',W/2,H-48);
+    return c;
+  });
+}
+function cardBlob(){
+  return makeCard().then(function(c){
+    if(!c)return null;
+    return new Promise(function(res){ c.toBlob(res,'image/png'); });
+  });
+}
+function saveBlob(blob){
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download='idol-result.png';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){URL.revokeObjectURL(a.href);},4000);
+  $('copied').textContent='✅ 結果カードを保存しました。SNSで自慢しよう！';
+}
+var IS_MOBILE=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+$('shareCard').addEventListener('click',function(){
+  cardBlob().then(function(blob){
+    if(!blob)return;
+    var f=new File([blob],'idol-result.png',{type:'image/png'});
+    /* デスクトップは常にダウンロード。モバイルのみ共有シートを試み、
+       （ユーザーのキャンセル以外の）失敗時はダウンロードにフォールバック。 */
+    if(IS_MOBILE&&navigator.share&&navigator.canShare&&navigator.canShare({files:[f]})){
+      navigator.share({files:[f],title:'アイドルポジション診断',
+        text:'私は「'+cur.role.nm+'」、デビューサバイバル最終'+cur.V.n+'位！あなたは何位？ https://www.kmagpie.com/ja/tests/idol/'})
+        .catch(function(err){ if(!err||err.name!=='AbortError') saveBlob(blob); });
+    }else{
+      saveBlob(blob);
+    }
+  });
+});
+
+initInputs();
+/* 共有リンクの再現 — ?v=(結果の値) だけを読む。入力フォームは決して埋めない。 */
+(function(){
+  try{
+    var q=new URLSearchParams(location.search);
+    var nick=(q.get('n')||'').slice(0,12);
+    var vv=q.get('v');
+    if(vv===null) return;
+    clearInputs();                 /* 共有リンクから来た画面 — 入力フォームは空のまま */
+    var V=decodeV(vv);
+    if(!V) return;                 /* 改ざん・破損した値 → 結果なしの空の入力画面 */
+    renderResult(V,nick,true);
+  }catch(e){}
+})();
+
+/* テストフック */
+window.IDOL={talent:talent,rankOf:rankOf,roleOf:roleOf,dayPillarIdx:dayPillarIdx,
+  yearPillarIdx:yearPillarIdx,monthPillar:monthPillar,topPct:topPct,TOPP:TOPP,
+  resultOf:resultOf,encodeV:encodeV,decodeV:decodeV,V_MAX:V_MAX,renderResult:renderResult,roleByImg:roleByImg,
+  makeCard:makeCard,cardBlob:cardBlob,render:render,shareText:shareText,tierOf:tierOf,
+  cheerSeed:cheerSeed,clearInputs:clearInputs,RETRY_OWN:RETRY_OWN,RETRY_SHARED:RETRY_SHARED,
+  state:function(){return cur;},
+  ROLES:ROLES,ROLE_CENTER:ROLE_CENTER,ROLE_CEO:ROLE_CEO,ILJU:ILJU,p60name:p60name,LATEBLOOM:LATEBLOOM};
+})();
+</script>
+</body>
+</html>

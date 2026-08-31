@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Magpie Tests — Fun Tests Read from Korean Four Pillars (Saju) | K-magpie</title>
+<meta name="description" content="No questionnaires. Enter only your birth date and a real Korean almanac (manse-ryeok) engine pulls your four pillars and computes the result — zombie survival rate, isekai popularity, Joseon-era job, past life, idol position, guardian spirit. 30 seconds, and the same birthday always gives the same answer.">
+<link rel="canonical" href="https://www.kmagpie.com/en/tests/">
+<meta property="og:title" content="Magpie Tests — Fun Tests Read from Korean Four Pillars">
+<meta property="og:description" content="30 seconds from your birth date. Zombie survival rate, isekai popularity, past life, idol debut rank, guardian spirit — all computed by a real Korean almanac engine.">
+<meta property="og:image" content="https://www.kmagpie.com/en/tests/guardian/img/og.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/en/tests/">
+<style>
+  :root{
+    --bg:#12111a; --surface:#1b1a26; --line:#2e2c3f; --line-soft:#242233;
+    --ink:#eceaf2; --ink-2:#aca9bc; --ink-3:#7d7a8e;
+    --accent:#e0b25a; --accent-2:#9be15d;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:30px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:800}
+  .sub{color:var(--ink-2);margin:0 0 30px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 12px;letter-spacing:-.015em;font-weight:700}
+  p{margin:0 0 14px;overflow-wrap:anywhere}
+  a{color:var(--accent)}
+
+  .tcard{display:block;border:1px solid var(--line);border-radius:18px;overflow:hidden;
+    background:var(--surface);text-decoration:none;color:inherit;margin:0 0 18px;
+    transition:.15s}
+  .tcard:hover{border-color:var(--accent);transform:translateY(-3px)}
+  .tcard img{width:100%;height:auto;aspect-ratio:1200/630;display:block;border-bottom:1px solid var(--line)}
+  .tcard .tx{padding:16px 20px 18px}
+  .tcard .nm{font-size:18.5px;font-weight:800;letter-spacing:-.015em;margin:0 0 6px}
+  .tcard .ds{font-size:14px;color:var(--ink-2);margin:0;line-height:1.65}
+  .tcard .tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:99px;
+    margin:0 0 10px}
+  .tag.z{background:#1c2618;color:#9be15d}
+  .tag.i{background:#241c33;color:#c9a3ff}
+  .tag.j{background:#2e1512;color:#f0a08e}
+  .tag.r{background:#0e2030;color:#5ad7e0}
+  .tag.f{background:#2a1f0e;color:#f0c469}
+  .tag.i2{background:#2b0e1e;color:#ff8fc4}
+  .tag.g{background:#0c241a;color:#5fe0ae}
+  .soon{border:1px dashed var(--line);border-radius:18px;padding:22px;color:var(--ink-3);
+    font-size:14px;text-align:center;margin:0 0 18px}
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:34px 0 20px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 10px}
+  .fold .fx>:first-child{margin-top:4px}
+  .fold .fx h3{font-size:15px;margin:18px 0 6px;letter-spacing:-.01em}
+  .tblwrap{overflow-x:auto;margin:12px 0}
+  table.cmp{border-collapse:collapse;width:100%;min-width:560px;font-size:14px}
+  table.cmp th,table.cmp td{border:1px solid var(--line);padding:8px 10px;text-align:left;
+    vertical-align:top}
+  table.cmp th{background:var(--surface);font-weight:700;color:var(--ink-2)}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+</style>
+<link rel="alternate" hreflang="ko" href="https://www.kmagpie.com/tests/">
+<link rel="alternate" hreflang="ja" href="https://www.kmagpie.com/ja/tests/">
+<link rel="alternate" hreflang="en" href="https://www.kmagpie.com/en/tests/">
+<link rel="alternate" hreflang="x-default" href="https://www.kmagpie.com/tests/">
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<meta property="og:site_name" content="Magpie Tests">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › Magpie Tests</p>
+<p style="font-size:13px;margin:-8px 0 14px"><a href="/tests/" hreflang="ko" lang="ko" style="color:var(--ink-3);text-decoration:none;border-bottom:1px solid var(--line)">한국어</a> · <a href="/ja/tests/" hreflang="ja" lang="ja" style="color:var(--ink-3);text-decoration:none;border-bottom:1px solid var(--line)">日本語</a></p>
+
+<h1>Magpie Tests 🐦‍⬛</h1>
+<p class="sub">These are not questionnaires. <strong>You enter one thing — your birth date</strong> — and a real Korean almanac engine converts it into the eight characters of your saju, then runs those characters through the world you picked. It takes 30 seconds, and because nothing is random, the same birthday returns the same result forever. Which is exactly why they're worth comparing with your friends.</p>
+
+<a class="tcard" href="/en/tests/guardian/">
+  <img width="1200" height="630" src="/en/tests/guardian/img/og.png" alt="Guardian Spirit Test — which divine beast protects you?" loading="eager" fetchpriority="high">
+  <div class="tx">
+    <span class="tag g">🐉 Guarding you for N generations · NEW</span>
+    <div class="nm">Which divine beast is guarding you?</div>
+    <p class="ds">The Azure Dragon, White Tiger, Vermilion Bird and Black Tortoise of the four directions — plus the nine-tailed fox, the haetae, and the divine magpie you may turn out to be yourself. 12 guardians, and how many generations yours has stood watch.</p>
+  </div>
+</a>
+
+<a class="tcard" href="/en/tests/idol/">
+  <img width="1200" height="630" src="/en/tests/idol/img/og.png" alt="K-pop Idol Position Test — what's your debut rank?" loading="lazy">
+  <div class="tx">
+    <span class="tag i2">🎤 Debut rank 1st–99th</span>
+    <div class="nm">If you debuted as a K-pop idol, what's your position?</div>
+    <p class="ds">Main vocal, the rapper, the visual, the stage-destroying center — or the agency CEO who ends up on the judging panel instead. 12 positions and your final rank in the survival show.</p>
+  </div>
+</a>
+
+<a class="tcard" href="/en/tests/pastlife/">
+  <img width="1200" height="630" src="/en/tests/pastlife/img/og.png" alt="Past Life Test — who were you before this life?" loading="lazy">
+  <div class="tx">
+    <span class="tag f">🔮 Reincarnation no. 3–99</span>
+    <div class="nm">Who were you in your past life?</div>
+    <p class="ds">From a khan of the steppe to the temple cat worshipped as a god in Egypt — 12 past lives, plus which reincarnation you're currently on. How old is your soul?</p>
+  </div>
+</a>
+
+<a class="tcard" href="/en/tests/zombie/">
+  <img width="1200" height="630" src="/en/tests/zombie/img/og.png" alt="Zombie Survival Test — what's your role when the outbreak hits?" loading="lazy">
+  <div class="tx">
+    <span class="tag z">☣️ Survival rate 1–99%</span>
+    <div class="nm">When the zombie outbreak hits, what's your role?</div>
+    <p class="ds">From the architect who raises the barricade to Zombie No. 1 himself — 12 roles and your survival rate. What percentile does that put you in?</p>
+  </div>
+</a>
+
+<a class="tcard" href="/en/tests/isekai/">
+  <img width="1200" height="630" src="/en/tests/isekai/img/og.png" alt="Isekai Popularity Test — how popular would you be in another world?" loading="lazy">
+  <div class="tx">
+    <span class="tag i">🏰 Popularity 1–99%</span>
+    <div class="nm">How popular would you be in another world?</div>
+    <p class="ds">Everyone's hero, the guild receptionist, and the demon lord who somehow outdraws the protagonist. Includes the member count of your isekai fan club.</p>
+  </div>
+</a>
+
+<a class="tcard" href="/en/tests/joseon/">
+  <img width="1200" height="630" src="/en/tests/joseon/img/og.png" alt="Joseon Dynasty Job Test — what would you have been in old Korea?" loading="lazy">
+  <div class="tx">
+    <span class="tag j">🪶 Success index 1–99</span>
+    <div class="nm">What would you have been in the Joseon Dynasty?</div>
+    <p class="ds">From the Secret Royal Inspector flashing his horse tally to the storyteller of the market square — 12 occupations and a success index, with your annual stipend in sacks of rice converted to a modern salary.</p>
+  </div>
+</a>
+
+<a class="tcard" href="/en/tests/robot/">
+  <img width="1200" height="630" src="/en/tests/robot/img/og.png" alt="AI Robot Test — what's your combat power?" loading="lazy">
+  <div class="tx">
+    <span class="tag r">🤖 Combat power 120–9,999</span>
+    <div class="nm">If you woke up as an AI robot?</div>
+    <p class="ds">From the barrier generator to MOTHER, the final boss — 12 machines that actually appear in the mobile game MonBreak, each with a combat rating. Which one would you wake up as?</p>
+  </div>
+</a>
+
+<div class="soon">🔮 Next test in the works</div>
+
+<p class="gist">Magpie Tests are not personality quizzes built on answer sheets. They sit on top of a manse-ryeok calculation — the Korean almanac tradition of transcribing a date into the sexagenary cycle of sixty stem-branch pairs. All seven tests share one engine but run different formulas on top of it, so a single person can take all seven and get seven numbers that disagree with each other. There is no randomness anywhere, so the same birthday always returns the same result.</p>
+
+<details class="fold" open><summary><h2>A test with no questions</h2></summary><div class="fx">
+<p>The personality tests you usually see hand you 12–16 questions, then combine your answers into a type. Change an answer and the result changes; if you know which outcome you want, you can steer toward it. Magpie Tests don't work that way. <strong>The only thing asked is your birth date</strong>, which is rewritten in the notation of an old calendar system, and the eight characters that come out are dropped into the world you chose.</p>
+<p>That means the result can't be gamed. If there's a role you want, you won't get it unless you were born on a different day. What you get instead is something easier to <strong>line up next to your friends' results</strong>: different birthdays mean the answers came from genuinely different inputs, and two people born on the same day really do land on the same result.</p>
+<p>The eight characters themselves aren't a prophecy — they're <strong>calendar data</strong>. Traditional East Asian calendars label each day with a stem-branch pair the way a Western calendar labels weekdays; your chart is simply the year, month, day and hour of your birth transcribed into four such pairs. What those characters mean is a separate question, and Magpie Tests answer it with world-building rather than fortune-telling.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>What makes the seven tests different</h2></summary><div class="fx">
+<p>All seven are built on the <strong>ten possible day masters</strong> — the heavenly stem of the day you were born — plus two special conditions that expand the outcomes to twelve. What differs is which energies each world rewards. There's no reason the trait that keeps you alive in a zombie outbreak should be the same one that gets you promoted in a Joseon government office.</p>
+<div class="tblwrap"><table class="cmp">
+<tr><th>Test</th><th>Number it gives you</th><th>Two special outcomes</th><th>What this world rewards</th></tr>
+<tr><td>Zombie outbreak</td><td>Survival rate 1–99%</td><td>Goe-gang day pillar · Zombie No. 1</td><td>Endurance (in-seong, bi-geop)</td></tr>
+<tr><td>Isekai</td><td>Popularity 1–99%<br>Fan club members</td><td>Demon Lord · Legendary Mastermind</td><td>Visible charm (sik-sang)</td></tr>
+<tr><td>Joseon Dynasty</td><td>Success index 1–99<br>Annual stipend in rice</td><td>Secret Royal Inspector · Chief State Councillor</td><td>Energy that leads to office (gwan-seong)</td></tr>
+<tr><td>Past life</td><td>Reincarnation no. 3–99<br>Soul-age percentile</td><td>Great Khan of the Steppe · Cat of an Egyptian Temple</td><td>Memory carried over (in-seong)</td></tr>
+<tr><td>Idol</td><td>Final debut rank 1–99<br>Contestant percentile</td><td>Stage-Destroying Center · The Agency CEO</td><td>Raw showmanship (sik-sang)</td></tr>
+<tr><td>Guardian spirit</td><td>Guarded for 3–99 generations<br>Bond-depth percentile</td><td>Three-Legged Crow · Divine Magpie</td><td>Sheltering energy (in-seong)</td></tr>
+<tr><td>AI robot</td><td>Combat power 120–9,999<br>Threat grade</td><td>Goe-gang unit · MOTHER</td><td>Forward drive (bi-geop, sik-sang)</td></tr>
+</table></div>
+<p>Take all seven and the difference shows. A high zombie survival rate can sit next to a low Joseon success index, and the reverse is just as common. Neither is the "good" result — it means <strong>the worlds ask for different temperaments</strong>.</p>
+<p>How each test maps the ten day masters onto its roles, and which constants it uses to compute its number, is written out in full on each test's own page.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>One engine, different numbers</h2></summary><div class="fx">
+<p>All seven tests run the <strong>same calculation engine</strong> as the Korean-language <a href="/tools/manse/" hreflang="ko">manse-ryeok calculator</a> (in Korean). The year pillar turns over not on January 1 and not on Lunar New Year, but at the <strong>exact moment of ipchun</strong>, the solar term that begins spring; the month pillar turns over at each of the twelve solar terms. These are timestamps, not dates — ipchun in 2026 falls at 5:02 a.m. on February 4 — so two people born on the same February 4 can end up with different year pillars. The day pillar comes from the Julian Day Number modulo 60.</p>
+<p>The reason one engine doesn't produce seven identical answers is that <strong>each test carries its own base values and weights</strong>. They're tuned so that feeding one birthday into all seven produces coincidentally similar numbers less than 5% of the time — it's simply more fun when the results argue with each other.</p>
+<p>The <strong>"top N%" badge</strong> on each result isn't an estimate. Every one of the <strong>22,280 days</strong> from January 1, 1950 to December 31, 2010 was computed in advance, and the resulting distribution table ships inside the page. Your value is looked up against that table.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>Your birth date never leaves your browser</h2></summary><div class="fx">
+<p>The birth date you type is <strong>never sent to a server.</strong> The entire computation finishes inside your browser, and nothing is stored. There is no sign-up, and nothing is withheld behind an email box.</p>
+<p>The same holds when you copy a result link to share it. The link carries <strong>only the finished result values</strong> — never your birth date. Two people with different birthdays who land on the same result get byte-identical links. Whoever opens your link sees the result with every input field left empty.</p>
+<p>The shareable result card image is drawn inside your browser and downloaded from there. It is never uploaded anywhere.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>Questions people ask</h2></summary><div class="fx">
+<h3>Do I need a Korean birth date or lunar calendar date?</h3>
+<p>No. Enter your <strong>Gregorian (solar) date</strong> — the one on your passport. If you only know a lunar-calendar birthday, convert it first with the <a href="/tools/lunar/" hreflang="ko">lunar-to-solar converter</a> (in Korean) and enter the converted date.</p>
+<h3>What if I don't know my birth time?</h3>
+<p>Leave it blank. The test then computes with six characters instead of eight, dropping the hour pillar. Year, month and day pillars are fixed without a time, so the backbone of the result is unchanged — the numbers shift slightly, and if you were born around 11 p.m. or on the day a solar term begins, the role itself can change with the time.</p>
+<h3>Another saju app gives me a different day pillar</h3>
+<p>Usually it's a difference in <strong>standard-time correction and the late-Rat-hour convention</strong>. Korea's clock runs on the 135°E meridian, roughly 30 minutes ahead of true local solar time, and schools of practice disagree about correcting for it. The <a href="/tools/manse/" hreflang="ko">manse-ryeok calculator</a> (in Korean) explains both conventions and lets you toggle them.</p>
+<h3>Is any of this a real fortune reading?</h3>
+<p>The calculation is real; the interpretation is a game. Nothing here predicts your future, and no result carries any claim about your life. If you want the eight characters themselves taken seriously, that's what the tools linked above are for.</p>
+<h3>I don't like my result</h3>
+<p>None of the seven tests has a losing outcome. A low survival rate comes attached to a different talent, and the roles that look like defeats — Patient Zero, the Demon Lord — are deliberately the rarest ones to draw. If a number came out low, the interesting move is to see what the other worlds say about you.</p>
+<h3>Will there be more tests?</h3>
+<p>Yes, they're still being added. New ones appear at the top of this page.</p>
+</div></details>
+
+<h2>If you want the serious reading</h2>
+<p>Magpie Tests compute honestly and interpret playfully. If you're curious about the eight characters themselves, the <a href="/tools/manse/" hreflang="ko">manse-ryeok calculator</a> (in Korean) shows the full chart with solar terms applied to the minute, and the deeper interpretation of what those characters mean is handled on the sister site <a href="https://yaong.kmagpie.com/" hreflang="ko">Yaong Myeongri</a> (in Korean).</p>
+
+<footer>
+  <p>Magpie Tests · Nothing you enter is transmitted to a server, and every result is entertainment content.</p>
+  <p><a href="/">Home</a> · <a href="/en/tools/">Magpie Tools</a> · <a href="/en/disclaimer.html">Disclaimer</a> · <a href="/privacy-policy.html">Privacy Policy</a></p>
+</footer>
+
+</div>
+</body>
+</html>

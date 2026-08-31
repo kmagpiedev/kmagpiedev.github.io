@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Joseon Dynasty Job Test — What Would You Have Been in Old Korea? | Magpie Tests</title>
+<meta name="description" content="Enter your birth date and the day master of your Korean Four Pillars (saju) reveals the job you would have held in the Joseon dynasty, plus your success score (1–99%). Secret Royal Inspector? Chief State Councillor? Or the storyteller who owned the marketplace? Includes your yearly rice stipend in seom and what it would be worth today.">
+<link rel="canonical" href="https://www.kmagpie.com/en/tests/joseon/">
+<link rel="alternate" hreflang="ko" href="https://www.kmagpie.com/tests/joseon/">
+<link rel="alternate" hreflang="ja" href="https://www.kmagpie.com/ja/tests/joseon/">
+<link rel="alternate" hreflang="en" href="https://www.kmagpie.com/en/tests/joseon/">
+<link rel="alternate" hreflang="x-default" href="https://www.kmagpie.com/tests/joseon/">
+<meta property="og:title" content="Joseon Dynasty Job Test — What Would You Have Been in Old Korea?">
+<meta property="og:description" content="Your birth date decides your Joseon dynasty job and success score. Which of the 12 fates is yours? Could you be… the Secret Royal Inspector with the royal warrant in his sleeve?">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Magpie Tests">
+<meta property="og:url" content="https://www.kmagpie.com/en/tests/joseon/">
+<meta property="og:image" content="https://www.kmagpie.com/en/tests/joseon/img/og.png">
+<style>
+  :root{
+    --bg:#14110e; --surface:#1e1a15; --line:#3a322a; --line-soft:#2b2620;
+    --ink:#f2e9d7; --ink-2:#c0b39a; --ink-3:#918571;
+    --accent:#e2685a; --accent-soft:#3a1d18;
+    --mag:#79c39a; --mag-soft:#18291f;
+    --seal:#c0392e; --seal-ink:#f7ecd8;
+    --card-grad-a:#221c16; --card-grad-b:#100d0b;
+    --btn-ink:#1d0f0c;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#100d0b; --surface:#1a1613; --line:#3a322a; --line-soft:#262119;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(1.5px 1.5px at 14% 12%, rgba(242,233,215,.13) 50%, transparent 51%),
+      radial-gradient(1px 1px at 72% 8%,  rgba(242,233,215,.10) 50%, transparent 51%),
+      radial-gradient(2px 2px at 46% 30%, rgba(226,104,90,.20) 50%, transparent 51%),
+      radial-gradient(1px 1px at 30% 58%, rgba(242,233,215,.09) 50%, transparent 51%),
+      radial-gradient(2px 2px at 86% 42%, rgba(121,195,154,.20) 50%, transparent 51%),
+      radial-gradient(1px 1px at 10% 84%, rgba(242,233,215,.10) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 64% 76%, rgba(226,104,90,.16) 50%, transparent 51%)}
+  .wrap{max-width:680px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:27px;line-height:1.35;margin:0 0 10px;letter-spacing:-.02em;font-weight:800}
+  h1 .isk{color:var(--accent)}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+  .col{flex:1;min-width:90px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
+  input[type=text],select{padding:10px 12px;border:1px solid var(--line);border-radius:9px;
+    background:var(--surface);color:var(--ink);font-size:16px;font-family:inherit;width:100%;
+    font-weight:600;font-variant-numeric:tabular-nums;appearance:none;-webkit-appearance:none}
+  input:focus,select:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:14px 0 0}
+  .go{display:block;width:100%;margin:18px 0 0;padding:15px 10px;border:0;border-radius:12px;
+    background:var(--accent);color:var(--btn-ink);font-size:17px;font-weight:800;font-family:inherit;cursor:pointer;
+    letter-spacing:-.01em;transition:.15s}
+  .go:hover{filter:brightness(1.08);transform:translateY(-1px)}
+  .go:disabled{cursor:default;opacity:.68;transform:none;filter:none}
+
+  /* result */
+  .result{background:var(--surface);border:1px solid var(--accent);border-radius:18px;
+    padding:28px 24px;margin:20px 0;text-align:center;position:relative}
+  .seal{position:absolute;top:18px;right:18px;width:42px;height:46px;border-radius:7px;
+    background:var(--seal);color:var(--seal-ink);display:flex;align-items:center;justify-content:center;
+    font-size:14px;font-weight:800;line-height:1.1;writing-mode:vertical-rl;letter-spacing:.04em;
+    box-shadow:0 1px 0 rgba(255,255,255,.14) inset}
+  .rk{font-size:13px;font-weight:700;letter-spacing:.12em;color:var(--ink-3);margin:0 0 14px}
+  .roleImg{width:168px;height:168px;margin:0 auto 14px;border-radius:24px;overflow:hidden;position:relative;
+    background:linear-gradient(135deg,var(--g1,#7c5b35),var(--g2,#3f2c14));display:flex;align-items:center;justify-content:center}
+  .roleImg img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+  .roleImg .fbEmo{font-size:84px;line-height:1;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5))}
+  .roleName{font-size:24px;font-weight:800;letter-spacing:-.02em;margin:0 0 2px}
+  .roleCatch{font-size:14.5px;color:var(--ink-2);margin:0 0 20px}
+  .popBox{margin:0 0 4px}
+  .popNum{font-size:clamp(56px,18vw,84px);font-weight:800;letter-spacing:-.04em;line-height:1.05;
+    color:var(--accent);font-variant-numeric:tabular-nums}
+  .popNum small{font-size:.45em;font-weight:700}
+  .popCap{font-size:13.5px;color:var(--ink-3);margin:0 0 2px;letter-spacing:.14em}
+  .topPct{display:inline-block;margin:8px 0 0;padding:5px 14px;border-radius:99px;
+    background:var(--accent-soft);color:var(--accent);font-size:14px;font-weight:700}
+  .topPct.cult{background:var(--mag-soft);color:var(--mag)}
+  .nokLine{margin:12px 0 0;font-size:14.5px;color:var(--ink-2)}
+  .nokLine b{color:var(--accent);font-variant-numeric:tabular-nums}
+  .ilju{margin:20px 0 0;padding:13px 15px;border:1px dashed var(--line);border-radius:11px;
+    font-size:14px;color:var(--ink-2);text-align:left}
+  .ilju b{color:var(--ink)}
+  .desc{text-align:left;font-size:15px;color:var(--ink-2);margin:18px 0 0}
+  .sil{text-align:left;margin:16px 0 0;padding:12px 15px;border-left:3px solid var(--accent);
+    background:var(--accent-soft);border-radius:0 10px 10px 0;font-size:14.5px}
+  .sil b{color:var(--accent)}
+  .mates{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 0;text-align:left}
+  .mate{border:1px solid var(--line);border-radius:11px;padding:11px 13px;font-size:13.5px}
+  .mate .mk{display:block;font-size:11.5px;font-weight:700;letter-spacing:.08em;margin-bottom:3px}
+  .mate.good .mk{color:var(--mag)}
+  .mate.bad .mk{color:var(--accent)}
+  .mate b{font-size:14.5px}
+  .btns{display:flex;gap:9px;flex-wrap:wrap;margin:24px 0 0}
+  .btns button{flex:1;min-width:140px;padding:13px 8px;border-radius:11px;font-size:14.5px;font-weight:700;
+    font-family:inherit;cursor:pointer;transition:.15s;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+  .btns button:hover{border-color:var(--accent);color:var(--accent)}
+  .btns button.pri{background:var(--accent);border-color:var(--accent);color:var(--btn-ink)}
+  .btns button.pri:hover{filter:brightness(1.08);color:var(--btn-ink)}
+  .retry{display:block;width:100%;margin:10px 0 0;padding:13px 8px;border-radius:11px;border:1px dashed var(--line);
+    background:transparent;color:var(--ink-2);font-size:14.5px;font-weight:700;font-family:inherit;cursor:pointer}
+  .retry:hover{border-color:var(--accent);color:var(--accent)}
+  .copied{font-size:13px;color:var(--mag);margin:8px 0 0;min-height:20px}
+
+  .basis{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:14px 0}
+  .basis h2{margin:0 0 8px;font-size:17px}
+  .basis p{font-size:14.5px;color:var(--ink-2);margin:0 0 8px}
+  .basis p:last-child{margin:0}
+
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  .hidden{display:none}
+
+  /* collapsible body copy */
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 10px}
+  .fold .fx>:first-child{margin-top:4px}
+  .fold .fx p{font-size:14.5px;color:var(--ink-2)}
+  .fold .fx p strong{color:var(--ink)}
+  .fold .fx h3{font-size:15.5px;color:var(--ink);font-weight:700;
+    margin:22px 0 6px;letter-spacing:-.01em}
+
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .panel{padding:18px 15px}
+    .result{padding:22px 15px}
+    .roleImg{width:136px;height:136px}
+    .roleImg .fbEmo{font-size:68px}
+    .roleName{font-size:20px}
+    .mates{grid-template-columns:1fr}
+    .seal{width:36px;height:36px;font-size:13px;top:14px;right:14px}
+    .fold summary{padding:14px 15px}
+    .fold summary h2{font-size:15.5px}
+    .fold .fx{padding:0 15px 10px}
+  }
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/en/tests/">Magpie Tests</a> › Joseon Dynasty Job Test</p>
+<p class="crumb" style="margin-top:-12px">🌏 <a href="/tests/joseon/" hreflang="ko" rel="alternate">Korean</a> · <a href="/ja/tests/joseon/" hreflang="ja" rel="alternate">Japanese</a></p>
+
+<h1>If you had been born in<br>the Joseon dynasty <span class="isk">🪶</span></h1>
+<p class="sub">Enter your birth date and this test reads the <strong>day master</strong> of your <strong>Korean Four Pillars (saju)</strong> to decide which job you would have held in Joseon — the five-century kingdom every sageuk is set in — plus your <strong>success score (1–99%)</strong>, and your yearly stipend in <em>seom</em> of rice. Are you the <strong>Secret Royal Inspector (amhaeng-eosa)</strong>, the <strong>Chief State Councillor</strong> who stands one step below the king — or the storyteller who owns the marketplace?</p>
+
+<div class="panel" id="inputPanel">
+  <div class="row">
+    <div class="col" style="flex:2;min-width:160px">
+      <label class="f" for="nick">Name / nickname (optional)</label>
+      <input type="text" id="nick" maxlength="12" placeholder="Shown on your result card" autocomplete="off">
+    </div>
+  </div>
+  <div class="row" style="margin-top:14px">
+    <div class="col"><label class="f" for="by">Year</label><select id="by"></select></div>
+    <div class="col"><label class="f" for="bm">Month</label><select id="bm"></select></div>
+    <div class="col"><label class="f" for="bd">Day</label><select id="bd"></select></div>
+  </div>
+  <div class="row" style="margin-top:14px">
+    <div class="col" style="min-width:160px">
+      <label class="f" for="bt">Time of birth (optional)</label>
+      <select id="bt"></select>
+    </div>
+  </div>
+  <p class="note" id="needPick" style="display:none;color:var(--accent)">Please select your birth year, month and day.</p>
+  <button type="button" class="go" id="goBtn">🪶 Reveal my Joseon fate</button>
+  <p class="note">Use your solar (Gregorian) birthday. Nothing you enter is sent anywhere — everything is calculated inside your browser.</p>
+</div>
+
+<div class="result hidden" id="res">
+  <span class="seal" aria-hidden="true">KM</span>
+  <p class="rk">JOSEON FATE APPRAISAL</p>
+  <div class="roleImg" id="roleImgBox">
+    <span class="fbEmo" id="fbEmo"></span>
+    <img id="roleImg" alt="" width="168" height="168">
+  </div>
+  <p class="roleName" id="roleName"></p>
+  <p class="roleCatch" id="roleCatch"></p>
+  <div class="popBox">
+    <p class="popCap" id="popCap">SUCCESS SCORE</p>
+    <div class="popNum"><span id="popNum">0</span><small>%</small></div>
+    <span class="topPct" id="topPct"></span>
+    <p class="nokLine" id="nokLine"></p>
+  </div>
+  <p class="ilju" id="iljuLine"></p>
+  <p class="desc" id="roleDesc"></p>
+  <p class="sil" id="silLine"></p>
+  <div class="mates">
+    <div class="mate good"><span class="mk">BEST COLLEAGUE</span><span id="mateGood"></span></div>
+    <div class="mate bad"><span class="mk">ARCH-RIVAL IN HANYANG</span><span id="mateBad"></span></div>
+  </div>
+  <div class="btns">
+    <button type="button" id="shareLink">🔗 Copy result link</button>
+    <button type="button" class="pri" id="shareCard">📸 Save result card</button>
+  </div>
+  <button type="button" class="retry" id="retryBtn">👀 What rank would your friend hold? Try again</button>
+  <p class="copied" id="copied"></p>
+</div>
+
+<p class="gist">Your birth date goes through a Korean perpetual calendar (manseryeok) to find the <strong>day pillar</strong>, the two characters of the day you were born. Its upper character, the <strong>day master</strong>, becomes a Joseon occupation, and the relations between it and the other seven — above all the <strong>authority star (官星)</strong>, meaning rank and office — become the success score. "Top N%" is a percentile from the real distribution across 22,280 days, 1950 to 2010. Nothing is random: the same birthday always gives the same result.</p>
+
+<details class="fold" open><summary><h2>Saju's eight characters, and the day pillar</h2></summary><div class="fx">
+<p>Saju (四柱) means "four pillars": the <strong>year, month, day and hour</strong> of a birth, each written as two characters. The upper one is a heavenly stem (天干) — Gap, Eul, Byeong, Jeong, Mu, Gi, Gyeong, Sin, Im, Gye — and the lower an earthly branch (地支) — ja, chuk, in, myo, jin, sa, o, mi, sin, yu, sul, hae. Eight characters in all, hence <em>saju palja</em>. Paired in order they return to the start after sixty combinations: the <strong>sexagenary cycle</strong>, the same notation the <em>Annals of the Joseon Dynasty</em> used for dates — not "the fourteenth day" but "the Imjin day".</p>
+<p>The pillar of your birth day is the <strong>day pillar (日柱)</strong> and its upper character the <strong>day master (日干)</strong>. Korean practice treats that one character as "you yourself" and the other seven as the world around you — which is why a date alone is enough here.</p>
+<p>In Joseon this was not only a street trade: the <strong>Gwansanggam (觀象監)</strong>, the bureau of astronomy and calendars, held a division called <strong>Myeonggwahak (命課學)</strong> that chose auspicious dates for royal ceremonies, staffed through its own examination, the <strong>Eumyanggwa (陰陽科)</strong>. But how to read the characters is interpretation, and the assignments below are rules this page invented. For the characters themselves, use the <a href="/tools/manse/" hreflang="ko">manseryeok tool</a> (in Korean).</p>
+</div></details>
+
+<details class="fold" open><summary><h2>Ten day masters, twelve Joseon occupations</h2></summary><div class="fx">
+<p>The ten stems are the five elements — Wood, Fire, Earth, Metal, Water — each split into yang (陽) and yin (陰). Here is how each reads, and which Joseon seat it was moved into.</p>
+
+<h3>Gap Wood (甲木) · Eul Wood (乙木) — trees</h3>
+<p><strong>Gap Wood</strong> is the great tree that becomes pillars and ridgepoles: it leads and does not bend. Hence the <strong>Royal Palace Master Carpenter (dopyeonsu)</strong>, the master builder who directed every carpenter on a palace rebuild.</p>
+<p><strong>Eul Wood</strong> is the vine and the healing herb — it climbs around the wall and stands up again when trampled. Hence the <strong>Finest Physician in Hanyang</strong>, Hanyang being old Seoul.</p>
+
+<h3>Byeong Fire (丙火) · Jeong Fire (丁火) — fire</h3>
+<p><strong>Byeong Fire</strong> is the midday sun, impossible to hide and useless without an audience: the <strong>Marketplace Storyteller (jeongisu)</strong>, a real Joseon job — reading novels aloud in the street for coins, famously stopping at the worst possible moment.</p>
+<p><strong>Jeong Fire</strong> is the lamp and the hearth, heating one spot a long time: the <strong>Head Chef of the Royal Kitchen (suragan suksu)</strong>, the suragan being the kitchen that prepared the king's table.</p>
+
+<h3>Mu Earth (戊土) · Gi Earth (己土) — earth</h3>
+<p><strong>Mu Earth</strong> is mountain and embankment: broad, unshakable, good at accumulating — the <strong>Ten-Thousand-Sack Landowner</strong> (<em>manseokkun</em>, the Korean idiom for huge rural wealth).</p>
+<p><strong>Gi Earth</strong> is field soil: it raises rather than blocks, and people gather on it. Hence the <strong>Tavern Keeper (jumak daebang)</strong> — the jumak was the roadside inn where every rumour stopped over.</p>
+
+<h3>Gyeong Metal (庚金) · Sin Metal (辛金) — metal</h3>
+<p><strong>Gyeong Metal</strong> is raw iron and the axe, hardening the more it is struck: the <strong>Top Scorer of the Military Examination (mugwa jangwon)</strong> — Joseon examined military officers as it did civil ones.</p>
+<p><strong>Sin Metal</strong> is the cut jewel and the honed blade, intolerant of anything out of place: the <strong>Inspector of the Censorate (Saheonbu gamchal)</strong>, the office that audited officials and impeached the corrupt.</p>
+
+<h3>Im Water (壬水) · Gye Water (癸水) — water</h3>
+<p><strong>Im Water</strong> is sea and great river, too large to be penned in: the <strong>Chief of the Peddlers (bobusang daebang)</strong>, the bobusang being licensed pedlars who carried goods across all eight provinces.</p>
+<p><strong>Gye Water</strong> is rain and dew, seeping in silently: the <strong>Greatest Face Reader in Hanyang (gwansangga)</strong>, who judged a future from one look at a face.</p>
+
+<h3>The eleventh and twelfth — Goegang, and a score of 97</h3>
+<p>Two conditions sit on top of the day master. The first is <strong>Goegang (魁罡)</strong>: six of the sixty day pillars — Mujin, Gyeongjin, Imjin, Musul, Gyeongsul, Imsul — which lore calls the "chief star". Born on one, you become the <strong>Secret Royal Inspector (amhaeng-eosa)</strong> whatever your day master, and take 12 extra points. Every sageuk fan knows him: an official travelling in disguise with the king's horse warrant (mapae), who reveals himself with "The Secret Royal Inspector is here!" and arrests a corrupt magistrate on the spot. Six in sixty is exactly 10% — 2,228 of the 22,280 days from 1950 to 2010 — and since all six carry Mu, Gyeong or Im, only the landowner, the officer and the peddler chief lose people to it.</p>
+<p>The second is the <strong>Chief State Councillor (yeonguijeong)</strong>, head of the State Council and the highest office a subject could hold. It goes by score: not Goegang, and 97 or above — 132 days out of 22,280, or 0.59%.</p>
+<p>The <strong>best colleague</strong> and <strong>arch-rival</strong> are not element cycles but how two jobs would tangle in a Joseon street: the physician's ally is the royal cook, his rival the tavern keeper selling the drink he keeps banning; the storyteller's ally is that same tavern keeper, whose yard the crowd forms in, and his rival the inspector whose job is breaking crowds up.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>How the success score (1–99) is calculated</h2></summary><div class="fx">
+<p>The rules are arbitrary, chosen to fit a Joseon setting, but everyone gets the same ones.</p>
+<p><strong>1. Base score</strong> — by day-master element: Wood 50, Fire 46, Earth 57, Metal 53, Water 49. Earth, meaning property and full granaries, starts highest; Fire, the flashy element, lowest.</p>
+<p><strong>2. Relations</strong> — the elements of the year, month and day branches (plus the hour, if given) are scored against your day master: <strong>authority star (官星)</strong>, which governs you, <strong>+8</strong>; wealth +4, resource +2, output −1, peers (your own element) −5. Authority means office and discipline, so a Joseon world rewards it most; peers are the rivals competing for your seat. In our <a href="/en/tests/zombie/">zombie survival test</a> discipline gets you killed, so the same star is the maximum penalty there.</p>
+<p><strong>3. Weights</strong> — month ×1.6, year ×1.4, day ×1.1, hour ×0.8. Month heaviest follows the convention of treating the birth season (月令) as a chart's root; year above day is Joseon-specific, since the year pillar is the seat of ancestors, and family standing decided who could sit an examination at all.</p>
+<p><strong>4. Yin, yang, Goegang</strong> — yang stems +3, yin stems −2, the six Goegang pillars a further +12.</p>
+<p><strong>5. Scatter</strong> — otherwise people sharing a day pillar would clump, so the date string is hashed and two deviations of up to ±26 and ±6 drawn from it. Not random: the same date always gets the same scatter.</p>
+<p>Above 93 or below 7 is then squashed by half and clipped to 1–99. Across 1950–2010 the mean is 59.0 and the median 59, and both 1 and 99 occur. Under 30 a short consoling paragraph is prefixed to your reading — 6.5% of dates land there.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>Nokbong — real Joseon pay, and the number here</h2></summary><div class="fx">
+<p><strong>Nokbong (祿俸)</strong> was the salary Joseon paid its officials, graded by rank in a table called the <strong>nokgwa (祿科)</strong>: eighteen grades from 1439 under King Sejong, cut to twelve in 1647 and thirteen in 1721. Payment went from twice a year to four times, and monthly late in the dynasty; to collect it an official took a warrant (<strong>nokpae</strong>) to the state granary, the <strong>Gwangheungchang (廣興倉)</strong>, and drew the goods in kind.</p>
+<p>Nor was it only rice: grain mixed with soybeans and wheat, plus silk and hemp cloth and paper money called <em>jeohwa</em>. In the early Joseon period the <strong>highest rank drew 97 seok of grain, 21 bolts of hemp and 10 sheets of paper money a year</strong>; the <strong>lowest of nine ranks drew 12 seok, 2 bolts and 1 sheet</strong>. National salary spending ran 100,000–140,000 seok a year — over half the land tax. After grants of land to officials lapsed in 1556, nokbong was the only pay there was.</p>
+<p>The number on this screen is different: it is <strong>derived from your success score</strong>. With the score as p, the base is 20 + (p ÷ 99)<sup>1.7</sup> × 2,350 seom, times a 0.85–1.15 wobble from a hash of the date, clipped to 20–2,500 seom. A score of 50 gives roughly 750 seom, 90 lands near 2,000, and the median across 1950–2010 is 991.</p>
+<p>A <strong>seom</strong> (or <em>seok</em>) is ten <em>mal</em> — about 180 litres, roughly 144 kg of rice. The modern figure is a flat <strong>180 US dollars per seom</strong>, a rate this page picked, not a rice price.</p>
+<p>The scale is an order of magnitude off the real thing: when the highest rank drew 97 seok, 2,500 seom is impossible, and five of the twelve occupations (landowner, tavern keeper, peddler chief, storyteller, face reader) drew no state salary at all. Read it as "what you would have been making in Joseon", stipend and harvest and trade bundled together.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>Where "top N% of all birthdates" comes from</h2></summary><div class="fx">
+<p>It is not a comparison against other people who took this test — your input never leaves your browser. Instead the page carries a precomputed percentile table: for <strong>every one of the 22,280 days from 1 January 1950 to 31 December 2010</strong> the score was computed with the birth time unknown, and for each score from 1 to 99 we counted what fraction of dates scores at or above it. So it reads as <strong>"top N% of all possible birth dates"</strong>. A score of 60 is top 49%, 70 is top 31%, 80 is top 16%, 90 is top 6%, 97 is top 2%. Below the top 50% the badge turns green and reads "King of the Marketplace", where 50.7% of dates land — half of everyone had no connection to office, so there is little to feel cheated about.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>Why the same birthday always gives the same result</h2></summary><div class="fx">
+<p>No random function is called anywhere; every value comes from the birth date and the hour if you chose one.</p>
+<p>The date becomes a running day number taken modulo 60, which fixes the day pillar — the sexagenary cycle rolls over every sixty days with no exceptions. Year and month pillars are harder: in saju the year turns not on 1 January and not at Lunar New Year but at <strong>Ipchun</strong>, the solar term starting spring, usually 3–5 February, and the month advances at each of the twelve principal solar terms. This page embeds those boundaries minute by minute from 1900 onward, so a birth in early February is checked against the clock to see whether the year pillar is still last year's.</p>
+<p>The scatter and the stipend wobble come from a hash of the date too, so any day, on any device, the same birth date gives the same occupation and the same numbers. Comparing with a friend only means anything because of that.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>Frequently asked</h2></summary><div class="fx">
+<h3>My birthday is lunar — can I enter it as is?</h3>
+<p>No. Input is solar (Gregorian); convert first with the <a href="/tools/lunar/" hreflang="ko">lunar–solar converter</a> (in Korean). The calendar keys on solar terms, not lunar dates, so a lunar date entered as-is is off by nearly a month.</p>
+<h3>Does not knowing my birth time change the result?</h3>
+<p>The occupation usually stays, since it comes from the day pillar and that depends on the date alone. The score moves: a time adds the hour branch at ×0.8 and changes the hash input, shifting it by about 18 points on average. With no time, noon is used. The exception is the Chief State Councillor — a time can push a score across the 97 threshold, so about 8% of dates flip by hour of birth.</p>
+<h3>My result differs from other perpetual calendars</h3>
+<p>This test uses one fixed convention and no options: time only as the twelve two-hour branches at each slot's midpoint, no standard-time correction, no late-night-hour (yajasi) setting, day pillar fixed by date alone. A birth around 11 p.m., or on a term boundary, can therefore diverge from a rigorous chart — the <a href="/tools/manse/" hreflang="ko">manseryeok tool</a> (in Korean) handles those cases.</p>
+<h3>My success score came out very low</h3>
+<p>The heaviest penalty is peers (比劫) — your own element in the branches — at −5 each, and with no authority star there is little road left. But this scale measures one thing: fitness for officialdom. In Four Pillars practice peers mean siblings, colleagues and your own strength, and a chart light on authority usually reads as someone who does well outside an organisation. <a href="https://yaong.kmagpie.com/" hreflang="ko">Yaong Myeongni</a> (in Korean) explains the characters in a real chart.</p>
+<h3>Does the result link contain my birth date?</h3>
+<p>No. It carries five values folded into one number: occupation, success score, top %, stipend in seom and day-pillar number. Your date and hour are not in it and cannot be recovered — the day-pillar number repeats every sixty days, so it identifies nothing alone.</p>
+<h3>Why only 12 occupations?</h3>
+<p>Ten day masters, plus the Goegang and score-97 conditions. In exchange the score, the top %, the stipend and a one-line reading for each of the 60 day pillars combine, so the same occupation still gives different screens.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>How seriously should you take this?</h2></summary><div class="fx">
+<p>This test is <strong>entertainment</strong>. The perpetual-calendar part is a genuine computation on real solar-term data and the salary history is from the record, but the rules that turn eight characters into a Joseon job were invented here. Four Pillars astrology has no "Joseon success score".</p>
+<p>And in Joseon, occupation was not decided by saju but by birth status and family — whether you could sit an examination at all was settled before you were born. A test that leaves the office of Chief State Councillor open to everybody is a thoroughly modern fantasy.</p>
+</div></details>
+
+<div class="basis">
+  <h2>Visit another world</h2>
+  <p>🧟 <a href="/en/tests/zombie/">Zombie Outbreak Test — What Would Your Role Be?</a></p>
+  <p>🌙 <a href="/en/tests/isekai/">Isekai Popularity Test — How Popular Would You Be?</a></p>
+  <p>🤖 <a href="/en/tests/robot/">AI Robot Test — Which Machine Would You Wake Up As?</a></p>
+  <p>Same birthday, different world — a different fate.</p>
+</div>
+
+<footer>
+  <p>This test is entertainment. Occupations, success scores and stipends guarantee nothing about anything.</p>
+  <p>Magpie Tests · All calculations run inside your browser; nothing you enter is sent anywhere.</p>
+  <p><a href="/">Home</a> · <a href="/en/tests/">Magpie Tests</a> · <a href="/en/tools/">Kmagpie Tools</a> · <a href="/en/disclaimer.html">Disclaimer</a> · <a href="/privacy-policy.html">Privacy Policy</a></p>
+</footer>
+
+</div>
+
+<script>
+/*CORE:S*/
+/* Perpetual-calendar core (year/month/day pillars) — ported from the /tools/manse/ engine.
+   Identical solar-term (12 節) minute table and JDN day-pillar formula. Verified against KASI day signs. */
+var JD_ENC="0y0n41s0dy2m0n53h0d74c0l35712m630er6y0it7t03p8n07s9g0yw0503g0y0ws1s0nn2m0wx3h0n34c0v15808k630om6y0sm7t0dj8n0hn9h04t050d50z02q1s0xk2n02q3h0wr4d00k580hy630xy6y11z7t0mx8n0r69h0eh050n40z0cj1t03b2n0ce3i02e4d0a7580rp6403s6z07u7t0wu8n1119h0ob050ww0z0mc1t0d42n0m73i0c74d0k15811k640do6z0hq7u02o8o06t9h0y10602p0y0w41s0my2m0w33h0m24c0tu58078630n96y0ra7t0c88n0ge9h03n050cf0z01s1s0wo2n01v3h0vx4c13p580h3630x46y1147t0m38n0qb9h0dl050m20z0bn1t02f2n0bj3i01i4d099580qn6402o6z06q7t0vr8n1009h0nb050w00z0lb1t0c22n0ly3i0bx4d0jp58116640d96z0ha7u0298o06g9h0xq0601p0y0vr1s0mj2m0vo3h0lp4c0tk58072630n56y0r57t0c18n0g79h03h050c30z01m1s0wf2n01h3h0ve4c133580gf630wf6y10g7t0lf8n0po9h0cz050lw0z0b41t01x2n0az3i00v4d08k580pz640226z0677t0v98n0zh9h0mq050vf0z0li1t0c92n0lc3i0bb4d0j45810l640cp6z0gu7u01v8o0639h0xb0601w0y0v71s0lx2m0v03h0kz4c0sq58063630m46y0q67t0b88n0fi9h02t050bm0z00t1s0vk2n00m3h0uk4c12c580fr630vt6y0zx7t0kz8n0pb9h0cp050l70z0aq1t01c2n0a93i0034d07s580p86401c6z05h7t0ul8n0yy9h0mc050v40z0ke1t0b22n0jy3i09q4d0he580yu640az6z0f57u0088o04i9h0vu0600s0y0ty1s0kp2m0tq3h0jm4c0rb5804q630ku6y0oz7t0a28n0ed9h01p050aa0y13t1s0ul2m13l3h0te4c10z580e8630u76y0yb7t0jg8n0nv9h0ba050k40z09f1t0062n0953h12y4d06l580nx6313y6z0447t0t98n0xo9h0l2050ts0z0j31t09r2n0ir3i08o4d0gf580xv6409y6z0e37t1358o03h9h0uu0513h0y0sw1s0jl2m0sl3h0ig4c0q65803j630jk6y0nm7t08n8n0cy9h00b0509a0y12j1s0ta2m12a3h0s54c0zu580da630td6y0xi7t0il8n0mx9h0ab050it0z08d1s1312n07y3h11q4d05e580mu631316z0397t0sf8n0ws9h0k5050sq0z0i21t08p2n0hl3i07e4d0f2580wh6408o6z0cy7t1248o02h9h0tt0512i0y0rp1s0ic2m0rb3h0h64c0ox5802d630ij6y0ms7t0808n0ce9g13s050850y11q1s0sc2m1163h0qx4c0yi580bu630rw6y0w47t0hd8n0lw9h09f050i60z07i1s1222n06u3h10h4d041580le6311j6z01t7t0r38n0vl9h0j2050rx0z0h51t07p2n0gj3i0684d0dt580v86407g6z0bq7t10y8o01e9h0st0511j0y0qx1s0hk2m0qf3h0g54c0nn5800w630gx6y0l47t06b8n0as9g1280507a0y10f1s0r52m1023h0pr4c0xa580ak630ql6y0us7t0g28n0kk9h083050gr0z0651s10q2n05l3h0za4d02u580k6631096z00h7t0pr8n0ua9h0hs050qk0z0fu1t06e2n0f63i04v4d0cg580ts6405w6z0a37t0za8n13q9h0r6051090y0p91s0fw2m0or3h0ei4c0m65713l630fq6y0jy7t0548n09j9g10z0505n0y0z41s0pq2m0yk3h0o74c0vq58091630p46y0tc7t0el8n0j39h06l050fh0z04p1s0za2n0423h0xo4d016580ii630yo6y1307t0oc8n0su9h0g9050p20z0e51t04p2n0dj3i0394d0av580sa6404j6z08x7t0y98n12r9h0q6050yn0y0o21s0el2m0ne3h0d34c0kn5711y630e16y0ib7t03n8n0879g0zq0504k0y0xr1s0oa2m0x13h0mn4c0u75807j630np6y0s07t0dd8n0i09h05m050e70z03n1s0y22n02q3h0w94c13s580h6630xf6y11u7t0n98n0rw9h0fh050o40z0dk1t0402n0cn3i0244d09k580qw640346z07h7t0wu8n11f9h0oy050y00y0n21s0dm2m0md3h0by4c0jf5710r630cy6y0hc7t02q8n07c9g0yw0503g0y0x11s0nl2m0wc3h0lv4c0t95806g630mi6y0qu7t0ca8n0gz9h04n050de0z02s1s0xb2n01z3h0vi4c12v580g3630w66y10j7t0ly8n0qn9h0e9050n70z0cb1t02t2n0bi3i0144d08n580q0640276z06k7t0vx8n10j9h0o4050wr0y0m81s0cq2m0lg3h0b14c0ii570zr630bt6y0g27t01d8n05y9g0xk0502n0y0vs1s0md2m0v33h0km4c0s15805b630lg6y0pr7t0b58n0fr9h03c050c40z01e1s0vw2n00k3h0u34c11j580ew630v56y0zl7t0l18n0po9h0d8050lu0z0b61t01m2n0aa3h13s4d078580ok6400q6z0557t0uk8n0z79h0mq050vo0y0kn1s0b32m0js3h09d4c0gv570y8630af6y0eu7t00b8n0509g0wl050150y0ul1s0kz2m0tl3h0j14c0qf5803p630jv6y0oa7t09s8n0ek9h02a050b30z00e1s0ur2m1393h0sl4c0zx580d6630td6y0xu7t0jc8n0o39h0bq050ku0z09t1t0072n08r3h1264d05k580mx631376z03q7t0t88n0xy9h0lk050ua0y0jm1s0a32m0ip3h0844c0fg570wn6308r6y0d57s12m8n03d9g0v1050020y0t71s0jp2m0rh3h0gw4c0o75801d630hh6y0lw7t07f8n0c99g13y0509l0y1201s0sd2m10x3h0qc4c0xp580b0630r86y0vq7t0ha8n0m39h09t050ii0z07u1s1272n06p3h1044d03i580ks6310y6z01d7t0qu8n0vk9h0j8050sc0y0hd1s07s2m0gd3h05s4c0d7570ui6306q6y0b67s10o8n01e9g0t20411t0y0r71s0hn2m0q63h0fj4c0mu58003630gb6y0kt7t06d8n0b69g12w0507m0y1101s0rf2m0zx3h0p94c0wi5809q630py6y0ui7t0g48n0kw9h08j050hg0z06h1s10u2n05e3h0yt4d027580jj630zu6z00f7t0q38n0uw9h0ik050r10y0gg1s06t2m0fc3h04r4c0c4570td6305i6y0at7s10f8n01a9g0t2041110y0r51s0hi2m0py3h0fa4c0mj5713r630fy6y0kf7t0628n0az9g12t0507n0y10w1s0r52m0zj3h0os4c0w25809e630pp6y0uc7t0g08n0kw9h08p050hf0z06t1s1142n05i3h0yr4d020580j8630zg6y13z7t0pl8n0uf9h0i5050ra0y0ga1s06p2m0f73h04i4c0bq570sx630556y09o7s0zb8n0069g0rx0410q0y0q21s0gf2m0ox3h0e74c0le5712j630ep6y0j87t04x8n09v9g11q0506i0y0zv1s0q62m0yl3h0nu4c0v058085630ob6y0su7t0eh8n0jd9h076050gc0z0581s0zi2n03x3h0x84d00j580hu630y36y12n7t0oa8n0t59h0gw050pq0y0ez1s05b2m0dr3h0324c0ac570rk6303q6y0877s0xt8m12n9g0qf040zh0y0om1s0ez2m0ne3h0cm4c0js5710y630d66y0hq7t03e8n08a9g101050520y0y21s0ob2m0wo3h0lw4c0t55806f630ms6y0ri7t0db8n0i99h060050el0z03w1s0y42n02h3h0vp4c12y580g7630wh6y1137t0mu8n0rr9h0fj050oi0y0dg1s03p2m0c23h01b4c08j570pr630216y06n7s0wf8m11f9g0pa040y10y0nc1s0dj2m0lt3h0ay4c0i4570zb630bl6y0g97t0238n0769g0z50503w0y0xb1s0ni2m0vq3h0kr4c0ru5804z630l96y0px7t0bq8n0gr9h04m050du0z02s1s0x02n01b3h0uf4c11j580er630v26y0zs7t0lm8n0qn9h0eh050n90y0cl1s02w2m0ba3h00g4c07k570oo6300u6y05g7s0v88m10a9g0o7040x30y0mf1s0cq2m0l33h0a94c0hb570yd630ai6y0f27t00v8n05y9g0xw0502v0y0w01s0m82m0ui3h0jn4c0qt58041630kb6y0p07t0au8n0fx9h03u050ck0z01y1s0w52n00f3h0tl4c10s580e0630u96y0yt7t0kj8n0pi9h0dd050mh0y0bj1s01t2m0a53g13b4c06h570no6213x6y04j7s0u98m0z89g0n3040w10y0l91s0bj2m0jt3h08w4c0g0570x76309i6y0e87t0028n0549g0x00501r0y0v41s0lb2m0tk3h0in4c0pq5802v630j66y0nw7t09r8n0es9h02m050bn0z00j1s0up2m12y3h0s34c0z9580ch630su6y0xm7t0ji8n0ol9h0cg050l50y0ac1s00g2m08q3g11v4c050570m76212g6y0357s0t08m0y59g0m4040uz0y0k81s0ac2m0ii3h07j4c0ek570vp6307y6y0cn7s12j8n03p9g0vp0500s0y0ts1s0ju2m0rw3h0gu4c0nv58013630hh6y0mc7t08c8n0di9h01g050ad0y13j1s0tn2m11r3h0qq4c0xr580ax630r86y0vz7t0hw8n0n19h0ay050k40y0931r13a2m07i3g10i4c03h570kj6210s6y01i7s0rf8m0wm9g0kl040tm0y0iq1s08v2m0h13h0604c0cy570u0630696y0b17s1128n02c9g0ue041390y0sk1s0io2m0qt3h0fr4c0mq5713t630g16y0kr7t06p8n0bw9g13w050940y1201s0s42m1093h0p94c0wa5809g630pr6y0ui7t0gf8n0ll9h09k050il0y07p1r11v2m0613g0z24c023570j8620zi6y0087s0q48m0v99g0ja040s80y0hj1s07q2m0fw3h04u4c0bt570sv630546y09v7s0zt8n00z9g0sz041200y0r11s0h42m0p83h0e64c0l65712d630es6y0jp7t05r8n0b09g12y0507m0y10w1s0qy2m0z23h0o24c0v55808c630op6y0ti7t0fj8n0kr9h08q050hj0y06q1r10s2m04w3g0xw4c00x570i1620yc6x1357s0p58m0ue9g0ih040rc0y0gl1s06l2m0el3h03f4c0ae570ri6303w6y08s7s0yw8n0089g0se041160y0ql1s0gm2m0ol3h0dd4c0k95711d630dq6y0im7t04o8n09y9g120050750y1041s0q72m0y83h0n24c0tz58072630nf6y0sb7t0ee8n0jo9h07p050gp0y05t1r0zx2m0413g0wx4b13u570gv620x46x11y7s0o18m0td9g0hh040qd0y0fo1s05s2m0du3h02p4c09l570qk6302r6y07j7s0xl8m12y9g0r2041080y0p61s0f52m0n53h0bz4c0iw57100630cc6y0h87t03d8n08p9g10t0505s0y0yw1s0ow2m0wv3h0lr4c0sq5805v630m86y0r17t0d18n0ib9h06d050fj0y04j1r0yl2m02m3g0vh4b12e570fh620vr6x10l7s0ml8m0ru9g0fx040p30y0e31s0452m0c43h00v4c07p570or630156y0637s0w98m11n9g0pr040yn0y0nu1s0du2m0lt3h0ak4c0hf570yi630av6y0ft7t0208n07c9g0ze0504g0y0xc1s0nb2m0va3h0k44c0r058043630kg6y0pe7t0bl8n0gz9h052050e10y0321r0x02m00y3g0tr4b10n570dq620u16x0yy7s0l48m0qk9g0es040nq0y0d01s02y2m0av3g13k4c06d570ne6213p6y04l7s0ur8m1079g0oe040xl0y0ml1s0ci2m0kc3h08z4c0fr570wu630996y0ea7t00j8n05z9g0y5050370y0wa1s0m92m0u63h0iw4c0pq5802t630j76y0o57t0ac8n0fq9h03v050cw0y0211r0w32m0033g0su4b0zn570cn620sw6x0xs7s0jy8m0pe9g0dl040mm0y0br1s01q2m09n3g12b4c053570m36212f6y03d7s0to8m0z79g0ng040wc0y0ln1s0bk2m0jf3h0854c0ey570w06308d6y0dc7s13j8n04z9g0x5050290y0va1s0l82m0t43h0hu4c0op5801r630i56y0n37t0998n0eo9h02t050bw0y00y1r0ux2l12t3g0rj4b0yd570bf620rs6x0wr7s0iy8m0oe9g0cl040lk0y0at1s00s2m08p3g11d4c045570l66211j6y02i7s0sr8m0y89g0me040vd0y0ke1s0aa2m0i33h06r4c0di570ul630716y0c57s12i8n0409g0w6050130y0u31s0jx2m0rq3h0gg4c0na5800e630gu6y0lw7t0878n0dq9h01x050au0x13z1r0tu2l11n3g0qb4b0x4570a5620qi6x0vh7s0hr8m0nb9g0bl040kn0y09r1r13k2m0783g0zq4c02e570je620zt6y00w7s0ra8m0wx9g0la040ue0y0jj1s09c2m0h13h05j4c0c6570t76305n6y0ar7s1148n02o9g0ux050050y0t31s0iz2m0qq3h0fa4c0ly5712w630f96y0kb7t06o8n0c89h00h0509p0x12m1r0sj2l10d3g0ox4b0vl5708h620or6x0ts7s0g58m0ls9g0a4040j90y08e1r12b2m0643g0yp4c01c570i9620yj6x13h7s0pt8m0vg9g0js040sz0y0hy1s07r2m0fh3h0414c0aq570rp630436y0947s0zh8n0129g0td0412m0y0rj1s0hd2m0p33h0do4c0kg5711i630dx6y0iy7t0588n0ar9g131050870x1191r0r52l0yy3g0nk4b0ua5707a620no6x0so7s0ey8m0kh9g08q040hu0y06w1r10r2m04h3g0wy4b13k570gj620wz6x1257s0ol8m0u89g0ij040ri0y0gm1s06f2m0e43h02n4c09c570qd6302v6y0827s0yj8n0059g0sf0411b0y0qd1s0g42m0nt3h0ce4c0j457105630cl6y0hq7t0468n09u9g125050740x1051r0pw2l0xk3g0m24b0sp5705p620m46x0r87s0dq8m0jh9g07x040gw0y0651r0zw2m03i3g0vx4b12i570fh620vx6x1127s0nj8m0t99g0hp040qs0y0fw1s05m2m0d63h01j4c083570p16301i6y06q7s0x98m1309g0rd0410k0y0pk1s0fc2m0my3h0bd4c0hz570yx630bd6y0gj7t0318n08q9g114050670x0zb1r0p62l0ww3g0ld4b0rz5704v620l76x0q97s0cq8m0ig9g06v040fy0y0531r0yv2m02h3g0uv4b11d570e8620ul6x0zq7s0m98m0s39g0gk040pr0y0et1s04j2m0c43h00i4c073570o26300i6y05o7s0w58m11v9g0q9040zg0y0og1s0e72m0lt3h0a94c0gw570xv630aa6y0fe7t01t8n07h9g0zu050530x0y11r0nu2l0vg3g0ju4b0qe5703a620jo6x0ot7s0bb8m0h19g05g040eo0y03p1r0xi2m0143g0tj4b102570cz620tf6x0yl7s0l48m0qv9g0f9040ob0y0db1s0302m0ak3g12y4c05i570mg6212x6y0467s0ur8m10k9g0ox040y10y0mw1s0cj2m0k33h08h4c0f4570w46308k6y0ds7t00d8n0669g0yl0503o0x0wo1r0md2l0tx3g0ib4b0ox5701w620ib6x0nh7s0a08m0ft9g04b040de0y02j1r0w62l13l3g0rs4b0y8570b4620rl6x0wv7s0ji8m0pe9g0dx040n80y0c61s01t2m0993g11g4c03x570ku6211e6y02q7s0td8m0z79g0nn040wu0y0ls1s0bi2m0j13h07c4c0du570ur630776y0cg7s1328n04x9g0xc0502h0x0vh1r0l72l0sq3g0h04b0nf57009620gm6x0lt7s08h8m0ee9g02y040c60y0181r0ux2l12f3g0qq4b0x6570a1620qg6x0vo7s0ic8m0o99g0ct040lw0y0b01s00m2m0813g10b4c02s570jp621056y01f7s0s28m0xy9g0mg040vq0y0kn1s0a92m0hp3h05z4c0ch570tg6305x6y0b67s11r8n03l9g0w30501c0x0ud1r0k32l0rm3g0fx4b0mf5613d620fu6x0l27s07o8m0di9g020040b00y0081r0tv2l11b3g0pi4b0vv5708p620p76x0uj7s0ha8m0n89g0br040kw0y09v1r13h2m06w3g0z44c01k570ih620z16y00f7s0r78m0x49g0lm040um0y0jn1s0982m0go3h04y4c0bg570se6304w6y0a77s10x8n02v9g0vf0500f0x0ti1r0j32l0qg3g0em4b0l05611u620ea6x0jk7s06a8m0ca9g00y040aa0x13a1r0sw2l1083g0oc4b0uo5707j620o16x0te7s0g58m0m59g0ar040jy0y0901r12k2m05w3g0y04c00c570h7620xo6x1327s0pu8m0vt9g0kd040tp0y0ik1s0862m0fj3h03p4c0a1570qv6303b6y08m7s0zd8n01d9g0tx0413a0x0s61r0ht2l0pa3g0di4b0jw5610q620d56x0ie7s0548m0b49f13q0408u0x11z1r0rj2l0yv3g0mz4b0ta57062620mh6x0rs7s0ek8m0km9g09a040io0y07j1r1122m04d3g0wg4b12t570fp620w86x11l7s0od8m0uc9g0iw040s90y0h31s06n2m0e03h0264c08m570pj630226y07e7s0y48n0019g0sl0411t0x0qr1r0gd2l0nq3g0bt4b0i4560yw620bd6x0gq7s03i8m09i9f1240407h0x10d1r0py2l0x93g0lc4b0ro5704i620l16x0qh7s0dd8m0jf9g080040h20y0611r0zi2m02s3g0uw4b119570e5620up6x1067s0n38m0t69g0hs040qv0y0ft1s0592m0ch3h00k4c06x570nt6300b6y05p7s0wl8m12p9g0re0410n0x0pl1r0f22l0mc3g0ae4b0gr560xn620a66x0fk7s02f8m08j9f11a0406c0x0zl1r0p22l0w73g0k44b0qc57034620jm6x0p37s0c18m0i79g06y040gb0y05a1r0ys2m01y3g0tv4b102570cu620tf6x0yx7s0lw8m0s09g0go040q00y0ex1s04h2m0br3g13t4c064570mx6213f6y04v7s0vr8m11v9g0qk040zn0x0os1r0ec2l0ln3g09n4b0fu560wi6208w6x0e97s0158m07c9f1040405i0x0yh1r0o02l0v93g0j94b0ph57029620ip6x0o47s0b18m0h79g05y040f60y0461r0xn2m00v3g0sv4b0z6570c1620sk6x0xz7s0kv8m0qz9g0fo040ox0y0dv1s03c2m0ak3g12k4c04u570lo621266y03k7s0ue8m10h9g0p5040yn0x0nf1r0cy2l0k83g08a4b0ek560ve6207y6x0df7s00a8m06e9f0z2040440x0x91r0mp2l0tw3g0ht4b0o05700s620hc6x0mv7s09w8m0g39g04s040e00y02v1r0w92l13d3g0ra4b0xi570ab620qx6x0wi7s0jj8m0pr9g0eg040np0y0cg1s01t2m08y3g10y4c039570k56210r6y02a7s0ta8m0zi9g0o9040xb0x0me1r0bq2l0it3g06o4b0ct560tj620616x0bi7r12i8m04s9f0xn040380x0w01r0le2l0sf3g0g74b0ma56131620fl6x0l67s0898m0ek9g03d040cq0y01m1r0v02l1223g0pv4b0w05708r620pc6x0uy7s0i18m0ob9g0d3040me0y0ba1s00p2m07s3g0zn4c01q570if620yw6y00e7s0rf8m0xp9g0mj040w30x0kt1r0aa2l0hg3g05d4b0bi560s86204p6x0a77r1188m03j9f0wf0401k0x0uq1r0k32l0r53g0ez4b0l25611s620e96x0js7s06v8m0d79g023040bh0y00f1r0ts2l10s3g0ok4b0uo5707g620o06x0tk7s0gl8m0mv9g0bo040l60y09y1r13d2m06g3g0yc4c00k570he620xz6x13k7s0qk8m0ws9g0lk040up0x0ju1r09a2l0ge3g0484b0aa560qz6203g6x0907r1028m02c9f0v70400l0x0ti1r0ix2l0q03g0ds4b0jv5610k620d46x0ir7s05x8m0ca9g013040a80x1361r0si2l0zk3g0nf4b0tl5706f620n16x0sp7s0fv8m0m89g0b2040k20y0941r12e2m05e3g0x84b13d570g5620wo6x1287s0pb8m0vo9g0kl040u00x0iu1r0862l0f63g02y4b092560pu6202f6x0817r0z68m01j9f0uh0313n0x0st1r0i32l0p03g0cn4b0io560ze620bz6x0ho7s04v8m0ba9g0080409k0x12j1r0ru2l0yr3g0me4b0sc57051620lm6x0rb7s0ei8m0kw9g09r040jb0y07y1r11b2m04b3g0w34b126570ew620vh6x1157s0ob8m0uq9g0jl040ss0x0hu1r0762l0e63g01w4b07v560oh6200x6x06h7r0xm8m0039f0t30312m0x0rg1r0gs2l0np3g0bc4b0hb560xy620ag6x0g27s0398m09q9f12o040880x10x1r0q62l0x33g0kt4b0qw5703n620ka6x0py7s0d48m0ji9g08f040hr0y06o1r0zy2m02v3g0ul4b10m570db620tu6x0zf7s0mj8m0sw9g0hs040rh";
+var JY0=1900;
+var GAN="甲乙丙丁戊己庚辛壬癸", JI="子丑寅卯辰巳午未申酉戌亥";
+var GANH="甲乙丙丁戊己庚辛壬癸", JIH="子丑寅卯辰巳午未申酉戌亥";
+function jieOf(y,idx){
+  var s=JD_ENC.substr(((y-JY0)*12+idx)*5,5);
+  var doy=parseInt(s.substr(0,2),36), mn=parseInt(s.substr(2,3),36);
+  var dt=new Date(Date.UTC(y,0,1+doy));
+  return {m:dt.getUTCMonth()+1, d:dt.getUTCDate(), min:mn};
+}
+function cmpJie(y,m,d,mn,idx){
+  var j=jieOf(y,idx);
+  if(m!==j.m) return m>j.m?1:-1;
+  if(d!==j.d) return d>j.d?1:-1;
+  return mn>=j.min?1:-1;
+}
+function yearPillarIdx(y,m,d,mn){
+  var sy=y;
+  if(cmpJie(y,m,d,mn,0)<0) sy=y-1;
+  return {sy:sy, idx:((sy-4)%60+60)%60};
+}
+function monthPillar(y,m,d,mn){
+  var CHRONO=[11,0,1,2,3,4,5,6,7,8,9,10];
+  var mi=-1;
+  for(var k=0;k<12;k++){ var i=CHRONO[k]; if(cmpJie(y,m,d,mn,i)>0) mi=i; else break; }
+  if(mi<0) mi=10;
+  var yp=yearPillarIdx(y,m,d,mn);
+  var yGan=yp.idx%10;
+  var inGan=[2,4,6,8,0][yGan%5];
+  var gan=(inGan+mi)%10;
+  var ji=(mi+2)%12;
+  return {gan:gan, ji:ji, mi:mi};
+}
+function jdn2(y,m,d){ if(m<=2){y--;m+=12;} var a=Math.floor(y/100),b=2-a+Math.floor(a/4);
+  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+b-1524; }
+function dayPillarIdx(y,m,d){
+  var n=jdn2(y,m,d);
+  return ((n+49)%60+60)%60;
+}
+
+/* ── success-score formula (weights and seeds differ from the zombie/isekai tests) ── */
+var ELG=[0,0,1,1,2,2,3,3,4,4];              /* stem element */
+var ELJ=[4,2,0,0,2,1,1,2,3,3,2,4];          /* branch element */
+var GWI={4:1,16:1,28:1,34:1,46:1,58:1};     /* Goegang: Mujin Gyeongjin Imjin Musul Gyeongsul Imsul */
+var BASE_S=[50,46,57,53,49];                /* base by day-master element: Wood Fire Earth Metal Water */
+var RELS_S=[-5,-1,4,8,2];                   /* peers output wealth authority resource — authority (office) wins */
+function hash32(s){var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+/* t: 0 = time unknown, 1–12 = ja..hae hour */
+function pillarsOf(y,m,d,t){
+  var mn = t ? ((t-1)*120+30)%1440 : 720;
+  var yp=yearPillarIdx(y,m,d,mn);
+  var mp=monthPillar(y,m,d,mn);
+  var dp=dayPillarIdx(y,m,d);
+  return {yp:yp.idx, mp:mp.ji, mpg:mp.gan, dp:dp};
+}
+function career(y,m,d,t){
+  var P=pillarsOf(y,m,d,t);
+  var dg=P.dp%10, de=ELG[dg];
+  var s=BASE_S[de];
+  function rel(bj){ return RELS_S[((ELJ[bj]-de)%5+5)%5]; }
+  s += rel(P.yp%12)*1.4 + rel(P.mp)*1.6 + rel(P.dp%12)*1.1;
+  if(t) s += rel(t-1)*0.8;
+  s += (dg%2===0)?3:-2;                     /* yang stems press forward = better odds at office */
+  if(GWI[P.dp]) s += 12;                    /* Goegang — the chief star */
+  var h=hash32('jos:'+y+'-'+m+'-'+d+'-'+(t||'x'));
+  s += ((h%4013)/4012-0.5)*52;
+  s += (((h>>>9)%977)/976-0.5)*12;
+  if(s>93) s=93+(s-93)*0.5;
+  if(s<7)  s=7-(7-s)*0.5;
+  s=Math.round(s);
+  return s<1?1:(s>99?99:s);
+}
+/* yearly stipend: positively correlated with the success score + chart-hash noise (20–2,500 seom of rice) */
+function nokbong(y,m,d,t){
+  var p=career(y,m,d,t);
+  var h=hash32('nok:'+y+'-'+m+'-'+d+'-'+(t||'x'));
+  var base=20+Math.pow(p/99,1.7)*2350;
+  var v=Math.round(base*(0.85+((h%8329)/8328)*0.3));
+  return v<20?20:(v>2500?2500:v);
+}
+/* USD 180 per seom → "$180,000" */
+function nokWon(n){
+  return '$'+(n*180).toLocaleString('en-US');
+}
+/* top-% table: share of all dates (permille, ‰) scoring at or above v (1–99), measured over
+   1950-01-01..2010-12-31 with the birth time unknown. Generated by real computation at build time. */
+var TOPP=[1000,1000,1000,1000,1000,1000,999,999,999,998,997,997,996,995,994,992,990,989,987,984,981,978,974,970,966,960,954,948,942,935,928,919,909,900,891,880,867,855,842,829,816,802,788,774,758,743,726,709,693,675,656,638,622,603,584,567,549,530,512,493,472,453,436,416,397,378,360,343,326,308,292,276,261,244,228,213,199,184,171,159,148,137,126,116,104,95,86,79,71,63,57,51,45,36,28,21,16,11,9];
+function topPct(s){ var pm=TOPP[s-1]; var p=Math.round(pm/10); return p<1?1:(p>100?100:p); }
+
+/* ── result values (V) — the display bundle for sharing; carries no birth date or time ──
+   ri  1–10 = ROLES index+1, 11 = Secret Royal Inspector, 12 = Chief State Councillor
+   s   success score 1–99 / top overall top % 1–100 / nok yearly stipend 20–2500 seom
+   dp  day-pillar index 0–59 (used only for the day-pillar line)
+   The modern-money figure is computed per language by nokWon(nok), so it is not carried. */
+function resultOf(y,m,d,t){
+  var s=career(y,m,d,t), dp=dayPillarIdx(y,m,d);
+  var ri=GWI[dp]?11:(s>=97?12:(dp%10)+1);
+  return {ri:ri, s:s, top:topPct(s), nok:nokbong(y,m,d,t), dp:dp};
+}
+var V_RI=12, V_S=99, V_TOP=100, V_NOK=2481, V_DP=60;
+var V_MAX=V_RI*V_S*V_TOP*V_NOK*V_DP-1;      /* 17,684,567,999 → 7 base36 characters max */
+function encodeV(V){
+  var n=V.ri-1;
+  n=n*V_S+(V.s-1);
+  n=n*V_TOP+(V.top-1);
+  n=n*V_NOK+(V.nok-20);
+  n=n*V_DP+V.dp;
+  return n.toString(36);
+}
+function decodeV(str){
+  if(typeof str!=='string'||!/^[0-9a-z]{1,7}$/.test(str)) return null;
+  var n=parseInt(str,36);
+  if(!isFinite(n)||n<0||n>V_MAX||Math.floor(n)!==n) return null;
+  var dp=n%V_DP;  n=(n-dp)/V_DP;
+  var nok=n%V_NOK; n=(n-nok)/V_NOK; nok+=20;
+  var top=n%V_TOP; n=(n-top)/V_TOP; top+=1;
+  var s=n%V_S;    n=(n-s)/V_S;     s+=1;
+  var ri=n+1;
+  if(ri<1||ri>V_RI) return null;
+  if(s<1||s>99) return null;
+  if(top<1||top>100) return null;
+  if(nok<20||nok>2500) return null;
+  if(dp<0||dp>59) return null;
+  return {ri:ri, s:s, top:top, nok:nok, dp:dp};
+}
+/* hanji-texture seed for the result card — built from result values only (never the birth date) */
+function hanjiSeed(V){ return hash32('hanji:'+V.ri+'-'+V.s+'-'+V.top+'-'+V.nok+'-'+V.dp); }
+/*CORE:E*/
+
+/* ── occupation data ── */
+var ROLES=[
+ {img:1, emo:"🏯", nm:"Royal Palace Master Carpenter", ct:"Not just anyone gets to raise a palace ridgepole",
+  g:["#7c5b35","#3a2a12"],
+  desc:"A Gap Wood (甲木) day master carries the energy of a great tree growing straight toward the sky — and in Joseon that fate starts with a chisel and ends up building the kingdom itself. Your name sits at the top of the roster for every palace reconstruction, and when you say “that pillar is wrong” the entire site stops. You have no setting for “good enough”, which makes your own life exhausting; it also means that two centuries later, the buildings still standing are yours.",
+  sil:"“The master carpenter rejected the ridgepole three times, and even the king waited without complaint.”",
+  mate:8, worst:9},
+ {img:2, emo:"🌿", nm:"Finest Physician in Hanyang", ct:"One needle and a state councillor sits bolt upright",
+  g:["#3f6b4a","#182e1f"],
+  desc:"An Eul Wood (乙木) day master is the soft, climbing energy of a medicinal vine — you were born with hands that gently unblock whatever is stuck in a human body. When a minister's shoulder seizes up, a palanquin is sent for you before anything else, and on every house call the sick lay out mats at the gate. You look mild, but your prescriptions are merciless: one “stop drinking” from you and a ministry head goes home in tears.",
+  sil:"“The physician set his needle and a three-year ache left the shoulder. The court was unusually quiet that day.”",
+  mate:3, worst:5},
+ {img:3, emo:"📖", nm:"Marketplace Storyteller", ct:"One chapter and the whole market stops moving",
+  g:["#a34f2a","#46200e"],
+  desc:"A Byeong Fire (丙火) day master is the midday sun — a born performer who could not hide if you tried. Start reciting a chapter of the “Tale of Chunhyang” in the market and even the taffy seller folds up his stall to come and listen, and then you cut it off at the most unbearable moment with “the rest tomorrow” and hold the entire street hostage. Joseon's stars were not all inside the palace; some of them stood on a wooden platform in the marketplace.",
+  sil:"“When the storyteller broke off, the people wailed and threw coins at him.”",
+  mate:5, worst:7},
+ {img:4, emo:"🍲", nm:"Head Chef of the Royal Kitchen", ct:"A flavour that stops the king's spoon",
+  g:["#8a4a3a","#3c1c14"],
+  desc:"A Jeong Fire (丁火) day master is the flame in the hearth — a talent for warming people's hearts through nothing more than heat control. It is an ordinary day for you when the king sets down his spoon over one bowl of soup and asks who made it. Noble households outside the palace walls scheme constantly to borrow you, and you would not know about any of it, because you are busy tasting.",
+  sil:"“The king asked for a second bowl of the cook's soup; the historian, never having seen such a thing, wrote it down.”",
+  mate:1, worst:2},
+ {img:5, emo:"🌾", nm:"Ten-Thousand-Sack Landowner", ct:"Come autumn, all eight provinces pay respects to my granary",
+  g:["#8a763c","#403614"],
+  desc:"A Mu Earth (戊土) day master is the weight of a mountain range — the land recognises you and hands over its grain. Even in a famine year your paddies bend under the ears, and among the tenants there is a saying that being merely your steward is enough to change a man's fortune. You earn big and give big, so the village feast is always held in your yard.",
+  sil:"“The people raised a memorial stone to the landowner who opened his granary in the famine. He grumbled about the cost of the stone.”",
+  mate:8, worst:7},
+ {img:6, emo:"🍶", nm:"Tavern Keeper", ct:"Every rumour in the country sleeps here one night",
+  g:["#6b5138","#2f2110"],
+  desc:"A Gi Earth (己土) day master is the fertile field that raises grain — the energy of ground people gather on by themselves. A bowl of soup at your tavern contains more information than rice, and news from the capital reaches your benches before it reaches the county office. Peddlers, travellers and clerks all empty their hearts in front of you, which nobody can quite explain. Public opinion in Joseon was not made at court; it was made on your tavern floor.",
+  sil:"“They say the tavern knew of the kingdom's great affairs before the court did.”",
+  mate:2, worst:3},
+ {img:7, emo:"🏹", nm:"Top Scorer of the Military Exam", ct:"One arrow and the frontier goes quiet",
+  g:["#44506b","#181f30"],
+  desc:"A Gyeong Metal (庚金) day master is raw iron that hardens with every blow — the fate of a military examination's first-place candidate. You are the legend who put all five arrows in the target and walked off the field expressionless while the examiners were still murmuring. Posted to the border, your name alone quiets it, and your subordinates stay up half the night interpreting a single nod from a commander who never says anything.",
+  sil:"“The general raised his bow and the enemy withdrew. He saved the arrow.”",
+  mate:7, worst:2},
+ {img:8, emo:"⚖️", nm:"Inspector of the Censorate", ct:"That stare has corrupt officials drafting resignations",
+  g:["#54586b","#20222e"],
+  desc:"A Sin Metal (辛金) day master is a finished, sharply cut jewel — you were born with an eye that cannot let a speck go. One odd stroke in a ledger and you will sit up three nights to find the end of it, and there is a legend that three county magistrates resigned in advance on the rumour that you were coming. People call you insufferable behind your back, but the commoners know the truth: a country only runs because somebody like you exists.",
+  sil:"“In the county the inspector passed through, even the scale marks were made honest.”",
+  mate:6, worst:5},
+ {img:9, emo:"🎒", nm:"Chief of the Peddlers", ct:"Every road in the country is in my ledger",
+  g:["#2f5d6b","#102630"],
+  desc:"An Im Water (壬水) day master is a great river running for the sea — the energy of scale, of flow, of connection. Jeju seaweed reaching an ancestral table in the capital and Kaesong ginseng crossing the northern border both pass through your hands. You are on first-name terms with every innkeeper at every ferry crossing in the country, so a supply problem the court cannot untangle takes one word from you.",
+  sil:"“When the peddlers' chief moved, prices moved in all eight provinces.”",
+  mate:4, worst:6},
+ {img:10, emo:"🔮", nm:"Greatest Face Reader in Hanyang", ct:"One look at a face and I know who becomes a minister",
+  g:["#4a3d6b","#1c1730"],
+  desc:"A Gye Water (癸水) day master is dawn rain seeping into everything — the intuitive energy that reads what others cannot see. You once looked at a scholar in a threadbare hat and said he had the face of a man who would pass the examination in three years, and when he took first place the capital lost its mind. You can name your own fee and palanquins from great houses still queue past the end of the alley, while you laugh and say the one face you cannot read is your own.",
+  sil:"“The face reader was right three times, and after that the court's officials came to him by night.”",
+  mate:2, worst:1}
+];
+var ROLE_AMHAENG={img:11, emo:"🐎", nm:"Secret Royal Inspector (amhaeng-eosa)", ct:"When the royal warrant flashes, a county drops to its knees",
+  g:["#5b3a6b","#241030"],
+  desc:"Your day pillar is Goegang (魁罡) — what Four Pillars lore calls the “chief star”, an extreme charge of charisma. In Joseon that energy goes straight to the one post where the king puts a horse warrant in your hand: the secret royal inspector. Eating soup in a beggar's clothes, then turning a corrupt magistrate's banquet upside down with a single cry of “The Secret Royal Inspector is here!” — not even a state councillor gets a thrill like that. Commoners across the country retell your exploits with more relish than a storyteller's performance.",
+  sil:"“The inspector revealed himself; the magistrate went over the wall and the people danced.”",
+  mateTx:"Your entire escort of runners — your timing on a raid is flawless", worstTx:"Corrupt magistrates — apparently they dream about horse warrants now"};
+var ROLE_YEONG={img:12, emo:"👑", nm:"Chief State Councillor (yeonguijeong)", ct:"One below the king, above all others",
+  g:["#8a6b2a","#3d2e0c"],
+  desc:"Top of the success scale — your eight characters point at the summit of official fortune. Passing the examination was the easy part; you were promoted so fast the court historians could barely keep the record straight, and you ended at the last seat a subject can occupy, Chief State Councillor. One below the king and above ten thousand others: at morning audience you only have to clear your throat and six ministry heads straighten up. And your reputation among ordinary people is good too, which is a fate that turns up perhaps a handful of times in five centuries.",
+  sil:"“The chief councillor submitted his resignation twelve times, and twelve times the king refused it.”",
+  mateTx:"All six ministry heads — they all end up on your side eventually", worstTx:"Nobody — even your rivals concede your ability"};
+/* success score under 30: the "king of the marketplace" framing paragraph (auto-prefixed to the reading) */
+var MINCHO="Do not sigh at the number. It only means officialdom was never your road. In exchange there is no dawn audience, no superior to hand a resignation to, and no chance of exile. You may not know palace etiquette, but the goodwill of the marketplace is entirely yours — and down there, you are the king.";
+
+/* 60 day-pillar one-liners — read through a Joseon lens */
+var ILJU=[
+"a great tree in the midnight palace garden — the timber the king notices first","a flower cart drawn by an ox — slow, but it always reaches Jongno in the end",
+"the morning sun riding a tiger's back — the county buzzes from your first day in office","a lantern at the rabbit's burrow — the kind subordinates follow with their lives",
+"a great mountain holding a dragon — word of you reaches the court while you sit still","a kitchen garden guarded by a snake — takes every advantage without changing expression",
+"a blade honed on horseback — makes its name winning honours on the frontier","a jade ring among the sheep — marriage offers pile up though you say nothing",
+"a monkey's dexterity with a river's nerve — earns its keep in any of the eight provinces","dew on the dawn rooster's comb — wins trust with meticulous ledgers",
+"an old pine with a loyal hound — a bond once made is carried down the generations","a petal drifting down the waterway — leaves a romance in every town it passes",
+"midwinter sun on the well — rises through a warmth that melts even ice","a lamp in the byre — keeps watch in silence, then is called upon greatly",
+"a great mountain where the tiger lives — the clerks bow before you speak","a vegetable patch where rabbits play — trades on the goodwill of neighbours",
+"a treasured sword forged by a dragon — the day it is drawn, the court turns over","a bead brought by a snake — only the initiated know what it is worth",
+"a great river at a gallop — brings a festival to every marketplace","sweet rain on a parched paddy — proves its worth in the lean years",
+"the village shade tree the monkey climbs — the talented gather here first","a morning glory by the hen coop — gets ahead on sheer early-rising diligence",
+"a traveller walking a sunset road with a dog — makes a picture wherever it goes","the beacon at the harbour — every night-running trader puts in here",
+"a mountain the rat brings a granary map to — knows every road that wealth travels","an ox ploughing a winter field — works while others rest and laughs in spring",
+"iron in a tiger's claw — the strong are the first to lower their heads","silver ornaments in a clover field — a mild face that still gets the full price",
+"deep water where the dragon plays — the bigger the stage, the better it plays","a thread of a stream wetting the snake's path — seeps in silently and changes the game",
+"the zelkova where horses are tied — everyone passing stops to rest a while","a wildflower on the sheep hill — lasts because it never gives anyone cause to dislike it",
+"sunlight in a monkey's hand — wit enough to make even the magistrate laugh","a rooster's comb by candlelight — famous across the market on style alone",
+"a mountain fortress guarded by a dog — whatever is entrusted is kept","a rich field that raises pigs — gives it all away and the granary still fills",
+"a blade quenched in winter water — ends lawsuits with cold judgement","jade in frozen ground — the later it is dug up, the more it is worth",
+"a river carrying a tiger — fearless enough to be talked about in Hanyang","clover wet with spring rain — everyone who sees it wants to look after it",
+"a giant tree grown on a dragon's back — called the ridgepole of the realm","a flower that lives with a snake — thorned charm, not to be plucked lightly",
+"the noon sun at a gallop — your name travels all eight provinces","a campfire beside the flock — let someone sit close and they are a regular for life",
+"a rocky peak where monkeys play — strikes a serious pose, then makes you laugh","the farmer feeding the hens — savings built by never skipping a single day",
+"a white blade with a hound at heel — earns the merit, says nothing, disappears","a pearl in deep water — the marketplace knows it long before the court does",
+"the open sea at midnight — frightening precisely because nobody can read it","an ox on a frozen road — outlasts everyone and wins by still being there",
+"the head tree of the tiger's forest — followers gather of their own accord","a spring meadow full of clover — the village grows gentler just by its being there",
+"a sun above the dragon — the seat of honour is cleared wherever it appears","a candle guarded by a snake — always about to go out, never going out",
+"a volcano holding its fire — the day it blows, the county turns upside down","a hill field feeding the flock — gives everything away and still has goodwill left",
+"a famous sword in a monkey's hand — scholar and soldier in one","jade polished like a mirror — promoted on flawless work",
+"a loyal hound and deep water together — people attach themselves to a protector","rainwater returning to the sea — rides the natural order and comes to no harm"];
+
+var GANR=["Gap","Eul","Byeong","Jeong","Mu","Gi","Gyeong","Sin","Im","Gye"];
+var JIR=["ja","chuk","in","myo","jin","sa","o","mi","sin","yu","sul","hae"];
+function p60name(i){ return GANR[i%10]+JIR[i%12]+" ("+GANH[i%10]+JIH[i%12]+")"; }
+function roleByImg(i){ return i===11?ROLE_AMHAENG:(i===12?ROLE_YEONG:ROLES[i-1]); }
+function roleOf(y,m,d,t){
+  var s=career(y,m,d,t);
+  var dp=dayPillarIdx(y,m,d);
+  var r;
+  if(GWI[dp]) r=ROLE_AMHAENG;
+  else if(s>=97) r=ROLE_YEONG;
+  else r=ROLES[dp%10];
+  return {s:s, dp:dp, role:r, top:topPct(s), nok:nokbong(y,m,d,t)};
+}
+
+/* ── UI ── */
+(function(){
+var $=function(id){return document.getElementById(id);};
+var TSLOT=["Not sure","Ja hour (23:30–01:30)","Chuk hour (01:30–03:30)","In hour (03:30–05:30)","Myo hour (05:30–07:30)",
+ "Jin hour (07:30–09:30)","Sa hour (09:30–11:30)","O hour (11:30–13:30)","Mi hour (13:30–15:30)",
+ "Sin hour (15:30–17:30)","Yu hour (17:30–19:30)","Sul hour (19:30–21:30)","Hae hour (21:30–23:30)"];
+var cur=null;
+var PH_Y='Year', PH_M='Month', PH_D='Day';
+
+function fillSel(el,arr,vals){ var h=''; for(var i=0;i<arr.length;i++) h+='<option value="'+(vals?vals[i]:arr[i])+'">'+arr[i]+'</option>'; el.innerHTML=h; }
+function initInputs(){
+  var ys=[PH_Y],yv=['']; for(var y=1940;y<=2020;y++){ys.push(String(y));yv.push(y);}
+  fillSel($('by'),ys,yv);
+  var ms=[PH_M],mv=['']; for(var m=1;m<=12;m++){ms.push(String(m));mv.push(m);}
+  fillSel($('bm'),ms,mv);
+  /* the hour is optional — the "Not sure" slot carries an empty value so that the
+     empty-form state and "time unknown" (t=0) mean exactly the same thing */
+  var ts=[],tv=[]; for(var t=0;t<13;t++){ts.push(TSLOT[t]);tv.push(t===0?'':t);}
+  fillSel($('bt'),ts,tv);
+  fillDays();
+  /* first load is always an empty form — no default birth date is filled in */
+  clearInputs();
+}
+function daysIn(y,m){ return new Date(Date.UTC(y,m,0)).getUTCDate(); }
+function fillDays(){
+  var ys=$('by').value, ms=$('bm').value, olds=$('bd').value;
+  /* while year/month are still empty, offer 31 days so the day can be picked in any order */
+  var n=(ys!==''&&ms!=='')?daysIn(+ys,+ms):31,ds=[PH_D],dv=[''];
+  for(var d=1;d<=n;d++){ds.push(String(d));dv.push(d);}
+  fillSel($('bd'),ds,dv);
+  $('bd').value=(olds==='')?'':String(Math.min(+olds||1,n));
+}
+/* reset the whole input form — every select returns to its placeholder (empty value) */
+function clearInputs(){
+  $('nick').value='';
+  ['by','bm','bd','bt'].forEach(function(id){ $(id).value=''; });
+  $('needPick').style.display='none';
+}
+$('by').addEventListener('change',fillDays);
+$('bm').addEventListener('change',fillDays);
+
+/* ── legacy share parameter r: carried the full birth date and time.
+   Kept only so links already in the wild still reproduce — never generated anew,
+   and it never fills the input form. ── */
+function encodeR(y,m,d,t){ return ((((y-1940)*12+(m-1))*31+(d-1))*13+t).toString(36); }
+function decodeR(str){
+  var v=parseInt(str,36);
+  if(!isFinite(v)||v<0) return null;
+  var t=v%13; v=(v-t)/13;
+  var d=v%31+1; v=(v-(d-1))/31;
+  var m=v%12+1; v=(v-(m-1))/12;
+  var y=v+1940;
+  if(y<1940||y>2020||m<1||m>12||d<1||d>daysIn(y,m)) return null;
+  return {y:y,m:m,d:d,t:t};
+}
+
+var animId=null;
+function countUp(el,target){
+  if(animId)cancelAnimationFrame(animId);
+  var t0=null,DUR=1200;
+  function step(ts){
+    if(!t0)t0=ts;
+    var p=Math.min(1,(ts-t0)/DUR);
+    var e=1-Math.pow(1-p,3);
+    el.textContent=Math.round(target*e);
+    if(p<1)animId=requestAnimationFrame(step); else animId=null;
+  }
+  animId=requestAnimationFrame(step);
+}
+
+/* Draw the result screen from the result values (V) alone. Birth date and hour are never used.
+   shared=true means the visitor arrived through a share link. */
+var RETRY_OWN='👀 What rank would your friend hold? Try again';
+var RETRY_SHARED='🪶 Find out my own Joseon fate';
+function renderResult(V,nick,shared){
+  var r=roleByImg(V.ri);
+  cur={V:V,role:r,nick:nick||'',shared:!!shared};
+  var box=$('roleImgBox');
+  box.style.setProperty('--g1',r.g[0]);
+  box.style.setProperty('--g2',r.g[1]);
+  var fb=$('fbEmo');
+  fb.textContent=r.emo;
+  fb.style.display='';                        /* emoji fallback until the illustration loads */
+  var im=$('roleImg');
+  im.style.display='';
+  im.onload=function(){ fb.style.display='none'; };
+  im.onerror=function(){ this.style.display='none'; fb.style.display=''; };
+  im.src='/tests/joseon/img/role-'+String(r.img).padStart(2,'0')+'.png';
+  if(im.complete&&im.naturalWidth>0) fb.style.display='none';
+  $('roleName').textContent=r.nm;
+  $('roleCatch').textContent='“'+r.ct+'”';
+  countUp($('popNum'),V.s);
+  var tp=$('topPct');
+  if(V.top<=50){ tp.className='topPct'; tp.textContent='🏆 Top '+V.top+'% of all birthdates'; }
+  else { tp.className='topPct cult'; tp.textContent='🌾 Top '+V.top+'% · King of the Marketplace'; }
+  $('nokLine').innerHTML='🌾 Yearly stipend: <b>'+V.nok.toLocaleString('en-US')+'</b> seom of rice ≈ <b>'+nokWon(V.nok)+'</b> a year';
+  $('iljuLine').innerHTML='Your day pillar: <b>'+p60name(V.dp)+'</b> — '+ILJU[V.dp];
+  $('roleDesc').textContent=(V.s<30?MINCHO+' ':'')+r.desc;
+  $('silLine').innerHTML='<b>How the Annals would record it</b> — '+r.sil;
+  $('mateGood').innerHTML=r.mateTx?r.mateTx:'<b>'+ROLES[r.mate].emo+' '+ROLES[r.mate].nm+'</b> — '+GANR[r.mate]+' ('+ELM(r.mate)+') day master';
+  $('mateBad').innerHTML=r.worstTx?r.worstTx:'<b>'+ROLES[r.worst].emo+' '+ROLES[r.worst].nm+'</b> — '+GANR[r.worst]+' ('+ELM(r.worst)+') day master';
+  $('retryBtn').textContent=cur.shared?RETRY_SHARED:RETRY_OWN;
+  $('copied').textContent='';
+  $('res').classList.remove('hidden');
+}
+/* birth date/hour → result values → render (the direct test path) */
+function render(y,m,d,t,nick){ renderResult(resultOf(y,m,d,t),nick,false); }
+function ELM(g){ return ['Wood','Wood','Fire','Fire','Earth','Earth','Metal','Metal','Water','Water'][g]; }
+/* INP: on press, flip only the button state so one frame paints, then defer the heavy
+   calendar math and the result render to the next frame. The computation itself is unchanged. */
+var GO_BUSY_TX='🪶 Reading your pillars…', GO_BUSY_MIN=280, goBusy=false;
+function setGoBusy(on){
+  var b=$('goBtn');
+  if(on){
+    b.dataset.idle=b.textContent; b.textContent=GO_BUSY_TX;
+    b.dataset.hadFocus=(document.activeElement===b)?'1':'';
+    b.disabled=true;
+  }else{
+    if(b.dataset.idle) b.textContent=b.dataset.idle;
+    b.disabled=false;
+    if(b.dataset.hadFocus){ try{ b.focus({preventScroll:true}); }catch(e){} }
+  }
+}
+function runDeferred(fn){
+  if(goBusy) return;
+  goBusy=true;
+  var t0=Date.now();
+  setGoBusy(true);
+  requestAnimationFrame(function(){ setTimeout(function(){
+    try{ fn(); }
+    finally{
+      /* keep a minimum busy time so "computing" doesn't flicker past on fast devices */
+      var rest=GO_BUSY_MIN-(Date.now()-t0);
+      setTimeout(function(){ setGoBusy(false); goBusy=false; }, rest>0?rest:0);
+    }
+  },0); });
+}
+$('goBtn').addEventListener('click',function(){
+  if(goBusy) return;
+  if($('by').value===''||$('bm').value===''||$('bd').value===''){
+    $('needPick').style.display='';
+    ($('by').value===''?$('by'):($('bm').value===''?$('bm'):$('bd'))).focus();
+    return;
+  }
+  $('needPick').style.display='none';
+  var y=+$('by').value,m=+$('bm').value,d=+$('bd').value;
+  var t=$('bt').value===''?0:+$('bt').value;
+  var nick=$('nick').value.trim();
+  runDeferred(function(){
+    var V=resultOf(y,m,d,t);
+    renderResult(V,nick,false);
+    var u=new URL(location.href);
+    u.searchParams.delete('r');
+    u.searchParams.set('v',encodeV(V));
+    if(nick) u.searchParams.set('n',nick); else u.searchParams.delete('n');
+    history.replaceState(null,'',u.pathname+u.search);
+    $('res').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
+$('retryBtn').addEventListener('click',function(){
+  $('res').classList.add('hidden');
+  history.replaceState(null,'',location.pathname);
+  clearInputs();
+  cur=null;
+  $('inputPanel').scrollIntoView({behavior:'smooth',block:'start'});
+});
+function shareText(){
+  if(!cur)return '';
+  /* Link to the per-occupation share stub (/s/NN/) so the preview shows your own illustration.
+     The stub forwards the query untouched to this page and the result is reproduced.
+     ?v= carries result values only — the birth date and hour are never in it. */
+  var nn=String(cur.role.img).padStart(2,'0');
+  var base=location.pathname.replace(/\/$/,'').replace(/\/s\/\d{2}$/,'');
+  var u=location.origin+base+'/s/'+nn+'/?v='+encodeV(cur.V)+
+    (cur.nick?'&n='+encodeURIComponent(cur.nick):'');
+  return '👑 In Joseon Korea I would have been the "'+cur.role.nm+'", success score '+cur.V.s+'%! Yearly stipend '+
+    cur.V.nok.toLocaleString('en-US')+' seom of rice. What about you?\n'+u;
+}
+$('shareLink').addEventListener('click',function(){
+  if(!cur)return;
+  var u=shareText();
+  var done=function(){ $('copied').textContent='✅ Result and link copied. Paste them to a friend!'; };
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(u).then(done,function(){fallbackCopy(u);done();});
+  }else{ fallbackCopy(u); done(); }
+});
+function fallbackCopy(txt){
+  var ta=document.createElement('textarea'); ta.value=txt;
+  ta.style.cssText='position:fixed;opacity:0'; document.body.appendChild(ta);
+  ta.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(ta);
+}
+
+/* ── result card (1080×1350) ── */
+function loadImg(src){
+  return new Promise(function(res){
+    var im=new Image();
+    im.onload=function(){res(im);}; im.onerror=function(){res(null);};
+    im.src=src;
+  });
+}
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
+}
+function makeCard(){
+  if(!cur)return Promise.resolve(null);
+  var R=cur.V,r=cur.role;
+  var W=1080,H=1350;
+  var c=document.createElement('canvas'); c.width=W; c.height=H;
+  var x=c.getContext('2d');
+  return loadImg('/tests/joseon/img/role-'+String(r.img).padStart(2,'0')+'.png').then(function(im){
+    var INK='#f2e9d7', INK2='#c0b39a', INK3='#918571', RED='#e2685a', GRN='#79c39a', SEAL='#c0392e';
+    var FT='-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif';
+    /* background: hanji paper */
+    var bg=x.createLinearGradient(0,0,0,H);
+    bg.addColorStop(0,'#221c16'); bg.addColorStop(1,'#100d0b');
+    x.fillStyle=bg; x.fillRect(0,0,W,H);
+    /* hanji texture: ink specks */
+    var hs=hanjiSeed(R);
+    for(var i=0;i<90;i++){
+      hs=(Math.imul(hs,1664525)+1013904223)>>>0;
+      var sx=hs%W; var sy=(hs>>>11)%H; var ss=((hs>>>22)%3)*0.7+0.7;
+      x.globalAlpha=0.10+((hs>>>7)%40)/400;
+      x.fillStyle=INK;
+      x.fillRect(sx,sy,ss,ss);
+    }
+    x.globalAlpha=1;
+    /* dancheong bands (top) */
+    x.fillStyle=RED; x.fillRect(0,0,W,14);
+    x.fillStyle=GRN; x.fillRect(0,14,W,6);
+    /* top label */
+    x.textAlign='center';
+    x.fillStyle=INK3;
+    x.font='700 34px '+FT;
+    x.fillText('🪶 JOSEON FATE APPRAISAL 🪶',W/2,96);
+    if(cur.nick){
+      x.fillStyle=INK;
+      x.font='700 44px '+FT;
+      x.fillText(cur.nick,W/2,168);
+    }
+    /* occupation image / emoji */
+    var IS=360, ix=(W-IS)/2, iy=cur.nick?190:152;
+    var gr=x.createLinearGradient(ix,iy,ix+IS,iy+IS);
+    gr.addColorStop(0,r.g[0]); gr.addColorStop(1,r.g[1]);
+    roundRect(x,ix,iy,IS,IS,48);
+    x.fillStyle=gr; x.fill();
+    if(im){
+      x.save(); roundRect(x,ix,iy,IS,IS,48); x.clip();
+      x.drawImage(im,ix,iy,IS,IS); x.restore();
+    }else{
+      x.font='196px -apple-system,"Apple Color Emoji","Noto Color Emoji",sans-serif';
+      x.textBaseline='middle';
+      x.fillText(r.emo,W/2,iy+IS/2+14);
+      x.textBaseline='alphabetic';
+    }
+    var yy=iy+IS+80;
+    x.fillStyle=INK;
+    var nmSize=56;
+    x.font='800 '+nmSize+'px '+FT;
+    while(x.measureText(r.nm).width>W-100&&nmSize>30){ nmSize-=2; x.font='800 '+nmSize+'px '+FT; }
+    x.fillText(r.nm,W/2,yy);
+    x.fillStyle=INK2;
+    var ctSize=32;
+    x.font='400 '+ctSize+'px '+FT;
+    while(x.measureText('“'+r.ct+'”').width>W-100&&ctSize>20){ ctSize-=1; x.font='400 '+ctSize+'px '+FT; }
+    x.fillText('“'+r.ct+'”',W/2,yy+56);
+    /* large success-score number */
+    x.fillStyle=INK3;
+    x.font='700 32px '+FT;
+    x.fillText('SUCCESS SCORE',W/2,yy+140);
+    x.fillStyle=RED;
+    x.font='800 220px '+FT;
+    x.fillText(R.s+'%',W/2,yy+352);
+    /* top-% badge */
+    var btxt=R.top<=50?('🏆 Top '+R.top+'% of all birthdates'):('🌾 Top '+R.top+'% · King of the Marketplace');
+    x.font='700 38px '+FT;
+    var bw=x.measureText(btxt).width+72;
+    roundRect(x,(W-bw)/2,yy+400,bw,80,40);
+    x.fillStyle=R.top<=50?'#3a1d18':'#18291f'; x.fill();
+    x.fillStyle=R.top<=50?RED:GRN;
+    x.fillText(btxt,W/2,yy+453);
+    /* stipend */
+    x.fillStyle=RED;
+    x.font='700 38px '+FT;
+    x.fillText('🌾 '+R.nok.toLocaleString('en-US')+' seom of rice a year ≈ '+nokWon(R.nok),W/2,yy+536);
+    /* day pillar */
+    x.fillStyle=INK2;
+    x.font='400 30px '+FT;
+    /* keep clear of the seal stamp at the bottom-right (x >= W-150) */
+    var ILW=W-360, ilSize=30;
+    var il='Day pillar '+p60name(R.dp)+' · '+ILJU[R.dp];
+    var ilw=function(){ x.font='400 '+ilSize+'px '+FT; return x.measureText(il).width; };
+    while(ilw()>ILW&&ilSize>22){ ilSize-=2; }
+    if(ilw()>ILW){ il='Day pillar '+p60name(R.dp)+' · '+ILJU[R.dp].split('—')[0].trim(); }
+    if(ilw()>ILW){ il='Day pillar '+p60name(R.dp); }
+    x.fillText(il,W/2,yy+600);
+    /* seal stamp */
+    roundRect(x,W-150,H-176,86,86,12);
+    x.fillStyle=SEAL; x.fill();
+    x.fillStyle='#f7ecd8';
+    x.font='800 34px '+FT;
+    x.fillText('K',W-107,H-138);
+    x.fillText('M',W-107,H-104);
+    /* bottom URL */
+    x.fillStyle=INK3;
+    x.font='700 36px '+FT;
+    x.textAlign='center';
+    x.fillText('kmagpie.com/en/tests/joseon',W/2,H-48);
+    return c;
+  });
+}
+function cardBlob(){
+  return makeCard().then(function(c){
+    if(!c)return null;
+    return new Promise(function(res){ c.toBlob(res,'image/png'); });
+  });
+}
+function saveBlob(blob){
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download='joseon-result.png';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){URL.revokeObjectURL(a.href);},4000);
+  $('copied').textContent='✅ Result card saved. Show it off on social media!';
+}
+var IS_MOBILE=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+$('shareCard').addEventListener('click',function(){
+  cardBlob().then(function(blob){
+    if(!blob)return;
+    var f=new File([blob],'joseon-result.png',{type:'image/png'});
+    /* desktop always downloads; only mobile tries the share sheet,
+       falling back to download on a (non-cancel) failure */
+    if(IS_MOBILE&&navigator.share&&navigator.canShare&&navigator.canShare({files:[f]})){
+      navigator.share({files:[f],title:'Joseon Fate Appraisal',
+        text:'In Joseon Korea I would have been the "'+cur.role.nm+'", success score '+cur.V.s+'%! What about you? https://www.kmagpie.com/en/tests/joseon/'})
+        .catch(function(err){ if(!err||err.name!=='AbortError') saveBlob(blob); });
+    }else{
+      saveBlob(blob);
+    }
+  });
+});
+
+initInputs();
+/* share-link reproduction — ?v= (result values) first, with the old ?r= (birth date) links
+   still supported. Whichever path you arrive by, the input form is never pre-filled. */
+(function(){
+  var q=new URLSearchParams(location.search);
+  var nick=(q.get('n')||'').slice(0,12);
+  var vv=q.get('v'), rv=q.get('r');
+  if(vv===null&&rv===null) return;
+  clearInputs();                   /* arrived through a share link — leave the form empty */
+  if(vv!==null){
+    var V=decodeV(vv);
+    if(!V) return;                 /* tampered or corrupt value → empty input screen, no result */
+    renderResult(V,nick,true);
+    return;
+  }
+  var dec=decodeR(rv);
+  if(!dec)return;
+  renderResult(resultOf(dec.y,dec.m,dec.d,dec.t),nick,true);
+})();
+
+/* test hooks */
+window.JOSEON={career:career,nokbong:nokbong,nokWon:nokWon,roleOf:roleOf,dayPillarIdx:dayPillarIdx,
+  yearPillarIdx:yearPillarIdx,monthPillar:monthPillar,topPct:topPct,
+  encodeR:encodeR,decodeR:decodeR,makeCard:makeCard,cardBlob:cardBlob,render:render,shareText:shareText,
+  resultOf:resultOf,encodeV:encodeV,decodeV:decodeV,renderResult:renderResult,roleByImg:roleByImg,
+  hanjiSeed:hanjiSeed,clearInputs:clearInputs,RETRY_OWN:RETRY_OWN,RETRY_SHARED:RETRY_SHARED,
+  state:function(){return cur;},
+  ROLES:ROLES,ROLE_AMHAENG:ROLE_AMHAENG,ROLE_YEONG:ROLE_YEONG,ILJU:ILJU,p60name:p60name,MINCHO:MINCHO};
+})();
+</script>
+</body>
+</html>

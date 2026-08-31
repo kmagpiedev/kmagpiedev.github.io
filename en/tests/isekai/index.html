@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Isekai Popularity Test — How Popular Would You Be, Based on Korean Saju? | Magpie Tests</title>
+<meta name="description" content="Enter your birth date and this test reads your day master from Korean saju (Four Pillars), the traditional Korean birth-chart system, to reveal your position in an isekai world and your popularity (1–99%). Everyone's Hero? The Nation's Healer? Or… a Demon Lord more popular than the protagonist? Fan-club member count included. Check now and compare with your friends.">
+<link rel="canonical" href="https://www.kmagpie.com/en/tests/isekai/">
+<link rel="alternate" hreflang="ko" href="https://www.kmagpie.com/tests/isekai/">
+<link rel="alternate" hreflang="ja" href="https://www.kmagpie.com/ja/tests/isekai/">
+<link rel="alternate" hreflang="en" href="https://www.kmagpie.com/en/tests/isekai/">
+<link rel="alternate" hreflang="x-default" href="https://www.kmagpie.com/tests/isekai/">
+<meta property="og:title" content="Isekai Popularity Test — How Popular Would You Be, Based on Korean Saju?">
+<meta property="og:description" content="Your popularity in another world, read from your birth date with Korean Four Pillars astrology. Which of the 12 positions are you? Maybe… a Demon Lord more popular than the hero?">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Magpie Tests">
+<meta property="og:url" content="https://www.kmagpie.com/en/tests/isekai/">
+<meta property="og:image" content="https://www.kmagpie.com/en/tests/isekai/img/og.png">
+<meta property="og:locale" content="en_US">
+<style>
+  :root{
+    --bg:#0e0c20; --surface:#171334; --line:#2c2754; --line-soft:#232047;
+    --ink:#ece9f8; --ink-2:#aca6cc; --ink-3:#7b7499;
+    --accent:#f2c14e; --accent-soft:#2b2310;
+    --mag:#a78bfa; --mag-soft:#241b3e;
+    --warn:#e3c266; --warn-soft:#26200f;
+    --card-grad-a:#1d1740; --card-grad-b:#0a0918;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0b0919; --surface:#151130; --line:#2c2754; --line-soft:#201d40;
+      --ink:#ece9f8; --ink-2:#aca6cc; --ink-3:#7b7499;
+      --accent:#f5c95c; --accent-soft:#2b2310;
+      --mag:#b39dfb; --mag-soft:#241b3e;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,.5) 50%, transparent 51%),
+      radial-gradient(1px 1px at 78% 9%,  rgba(255,255,255,.4) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 55% 26%, rgba(242,193,78,.55) 50%, transparent 51%),
+      radial-gradient(1px 1px at 32% 64%, rgba(255,255,255,.3) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 88% 45%, rgba(167,139,250,.5) 50%, transparent 51%),
+      radial-gradient(1px 1px at 8% 86%, rgba(255,255,255,.35) 50%, transparent 51%),
+      radial-gradient(1px 1px at 66% 78%, rgba(242,193,78,.4) 50%, transparent 51%),
+      linear-gradient(180deg,#131035 0%,var(--bg) 55%)}
+  .wrap{max-width:680px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 6px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  .langsw{font-size:12.5px;color:var(--ink-3);margin:0 0 18px}
+  .langsw a{color:var(--ink-3);text-decoration:none;border:1px solid var(--line);border-radius:99px;padding:2px 10px;margin-right:6px}
+  .langsw a:hover{color:var(--accent);border-color:var(--accent)}
+  h1{font-size:27px;line-height:1.35;margin:0 0 10px;letter-spacing:-.02em;font-weight:800}
+  h1 .isk{color:var(--accent)}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+  .col{flex:1;min-width:90px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
+  input[type=text],select{padding:10px 12px;border:1px solid var(--line);border-radius:9px;
+    background:var(--surface);color:var(--ink);font-size:16px;font-family:inherit;width:100%;
+    font-weight:600;font-variant-numeric:tabular-nums;appearance:none;-webkit-appearance:none}
+  input:focus,select:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:14px 0 0}
+  .formMsg{font-size:13.5px;font-weight:700;color:var(--warn);margin:10px 0 0;min-height:0}
+  .formMsg:empty{margin:0}
+  .go{display:block;width:100%;margin:18px 0 0;padding:15px 10px;border:0;border-radius:12px;
+    background:var(--accent);color:#1b1204;font-size:17px;font-weight:800;font-family:inherit;cursor:pointer;
+    letter-spacing:-.01em;transition:.15s}
+  .go:hover{filter:brightness(1.08);transform:translateY(-1px)}
+  .go:disabled{cursor:default;opacity:.68;transform:none;filter:none}
+
+  /* result */
+  .result{background:var(--surface);border:1px solid var(--accent);border-radius:18px;
+    padding:28px 24px;margin:20px 0;text-align:center}
+  .rk{font-size:13px;font-weight:700;letter-spacing:.12em;color:var(--ink-3);margin:0 0 14px}
+  .roleImg{width:168px;height:168px;margin:0 auto 14px;border-radius:24px;overflow:hidden;position:relative;
+    background:linear-gradient(135deg,var(--g1,#2c2454),var(--g2,#100d24));display:flex;align-items:center;justify-content:center}
+  .roleImg img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+  .roleImg .fbEmo{font-size:84px;line-height:1;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5))}
+  .roleName{font-size:26px;font-weight:800;letter-spacing:-.02em;margin:0 0 2px}
+  .roleCatch{font-size:14.5px;color:var(--ink-2);margin:0 0 20px}
+  .popBox{margin:0 0 4px}
+  .popNum{font-size:clamp(56px,18vw,84px);font-weight:800;letter-spacing:-.04em;line-height:1.05;
+    color:var(--accent);font-variant-numeric:tabular-nums}
+  .popNum small{font-size:.45em;font-weight:700}
+  .popCap{font-size:13.5px;color:var(--ink-3);margin:0 0 2px}
+  .topPct{display:inline-block;margin:8px 0 0;padding:5px 14px;border-radius:99px;
+    background:var(--accent-soft);color:var(--accent);font-size:14px;font-weight:700}
+  .topPct.cult{background:var(--mag-soft);color:var(--mag)}
+  .fanCafe{margin:12px 0 0;font-size:14.5px;color:var(--ink-2)}
+  .fanCafe b{color:var(--accent);font-variant-numeric:tabular-nums}
+  .ilju{margin:20px 0 0;padding:13px 15px;border:1px dashed var(--line);border-radius:11px;
+    font-size:14px;color:var(--ink-2);text-align:left}
+  .ilju b{color:var(--ink)}
+  .desc{text-align:left;font-size:15px;color:var(--ink-2);margin:18px 0 0}
+  .fans{text-align:left;margin:16px 0 0;padding:12px 15px;border-left:3px solid var(--accent);
+    background:var(--accent-soft);border-radius:0 10px 10px 0;font-size:14.5px}
+  .fans b{color:var(--accent)}
+  .mates{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 0;text-align:left}
+  .mate{border:1px solid var(--line);border-radius:11px;padding:11px 13px;font-size:13.5px}
+  .mate .mk{display:block;font-size:11.5px;font-weight:700;letter-spacing:.08em;margin-bottom:3px}
+  .mate.good .mk{color:var(--accent)}
+  .mate.bad .mk{color:var(--mag)}
+  .mate b{font-size:14.5px}
+  .btns{display:flex;gap:9px;flex-wrap:wrap;margin:24px 0 0}
+  .btns button{flex:1;min-width:140px;padding:13px 8px;border-radius:11px;font-size:14.5px;font-weight:700;
+    font-family:inherit;cursor:pointer;transition:.15s;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+  .btns button:hover{border-color:var(--accent);color:var(--accent)}
+  .btns button.pri{background:var(--accent);border-color:var(--accent);color:#1b1204}
+  .btns button.pri:hover{filter:brightness(1.08);color:#1b1204}
+  .retry{display:block;width:100%;margin:10px 0 0;padding:13px 8px;border-radius:11px;border:1px dashed var(--line);
+    background:transparent;color:var(--ink-2);font-size:14.5px;font-weight:700;font-family:inherit;cursor:pointer}
+  .retry:hover{border-color:var(--accent);color:var(--accent)}
+  .copied{font-size:13px;color:var(--accent);margin:8px 0 0;min-height:20px}
+
+  .basis{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:14px 0}
+  .basis h2{margin:0 0 8px;font-size:17px}
+  .basis p{font-size:14.5px;color:var(--ink-2);margin:0 0 8px}
+  .basis p:last-child{margin:0}
+
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  .hidden{display:none}
+
+  /* collapsible body sections */
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 10px}
+  .fold .fx>:first-child{margin-top:4px}
+  .fold .fx p{font-size:14.5px;color:var(--ink-2)}
+  .fold .fx p strong{color:var(--ink)}
+  .fold .fx h3{font-size:15.5px;color:var(--ink);font-weight:700;
+    margin:22px 0 6px;letter-spacing:-.01em}
+
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .panel{padding:18px 15px}
+    .result{padding:22px 15px}
+    .roleImg{width:136px;height:136px}
+    .roleImg .fbEmo{font-size:68px}
+    .roleName{font-size:22px}
+    .mates{grid-template-columns:1fr}
+    .fold summary{padding:14px 15px}
+    .fold summary h2{font-size:15.5px}
+    .fold .fx{padding:0 15px 10px}
+  }
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/en/tests/">Magpie Tests</a> › Isekai Popularity Test</p>
+<p class="langsw"><a href="/tests/isekai/" hreflang="ko">한국어</a><a href="/ja/tests/isekai/" hreflang="ja">日本語</a></p>
+
+<h1>How Popular Would I Be<br>in an Isekai World? <span class="isk">🌙</span></h1>
+<p class="sub">Enter your birth date and this test reads your <strong>day master</strong> from <strong>saju (사주)</strong>, Korea's traditional Four Pillars birth-chart system, to work out your position after being transported to another world — and your <strong>popularity (1–99%)</strong>. A real Korean calendrical engine computes your actual birth chart first, so it's a popularity report with (questionable) receipts. Will you be Everyone's Hero, the Nation's Healer, or… a Demon Lord more popular than the protagonist?</p>
+
+<div class="panel" id="inputPanel">
+  <div class="row">
+    <div class="col" style="flex:2;min-width:160px">
+      <label class="f" for="nick">Name / nickname (optional)</label>
+      <input type="text" id="nick" maxlength="12" placeholder="Shown on your result card" autocomplete="off">
+    </div>
+  </div>
+  <div class="row" style="margin-top:14px">
+    <div class="col"><label class="f" for="by">Year</label><select id="by"></select></div>
+    <div class="col"><label class="f" for="bm">Month</label><select id="bm"></select></div>
+    <div class="col"><label class="f" for="bd">Day</label><select id="bd"></select></div>
+  </div>
+  <div class="row" style="margin-top:14px">
+    <div class="col" style="min-width:160px">
+      <label class="f" for="bt">Birth time (optional)</label>
+      <select id="bt"></select>
+    </div>
+  </div>
+  <button type="button" class="go" id="goBtn">✨ Reveal My Position</button>
+  <p class="formMsg" id="formMsg" role="status"></p>
+  <p class="note">Use your Gregorian (solar-calendar) birthday. Your birth date never leaves your browser — everything is calculated locally, and nothing is sent to any server.</p>
+</div>
+
+<div class="result hidden" id="res">
+  <p class="rk">ISEKAI POPULARITY REPORT</p>
+  <div class="roleImg" id="roleImgBox">
+    <span class="fbEmo" id="fbEmo"></span>
+    <img id="roleImg" alt="">
+  </div>
+  <p class="roleName" id="roleName"></p>
+  <p class="roleCatch" id="roleCatch"></p>
+  <div class="popBox">
+    <p class="popCap" id="popCap">Isekai popularity</p>
+    <div class="popNum"><span id="popNum">0</span><small>%</small></div>
+    <span class="topPct" id="topPct"></span>
+    <p class="fanCafe" id="fanCafe"></p>
+  </div>
+  <p class="ilju" id="iljuLine"></p>
+  <p class="desc" id="roleDesc"></p>
+  <p class="fans" id="roleFans"></p>
+  <div class="mates">
+    <div class="mate good"><span class="mk">BEST PARTY MEMBER</span><span id="mateGood"></span></div>
+    <div class="mate bad"><span class="mk">FATED RIVAL</span><span id="mateBad"></span></div>
+  </div>
+  <div class="btns">
+    <button type="button" id="shareLink">🔗 Copy result link</button>
+    <button type="button" class="pri" id="shareCard">📸 Save result card</button>
+  </div>
+  <button type="button" class="retry" id="retryBtn">👀 What would your friends get? Try another date</button>
+  <p class="copied" id="copied"></p>
+</div>
+
+<p class="gist">This test converts your birth date into a traditional Korean birth chart, extracts the <strong>day pillar</strong> — the pair of characters assigned to the day you were born — and reads its upper character, the <strong>day master</strong>, as one of ten isekai positions. The popularity score weights the <strong>output star</strong> — the energy your day master radiates outward — most heavily, and the "top N%" badge is a real percentile computed from all 22,280 birth dates between 1950 and 2010. No random numbers are used anywhere, so the same birthday always returns exactly the same result.</p>
+
+<details class="fold" open><summary><h2>What is saju — and what is a day pillar?</h2></summary><div class="fx">
+<p><strong>Saju (사주)</strong> is Korea's traditional Four Pillars birth-chart system — the fortune-reading you'll see referenced across K-dramas, webtoons, and half the couples' first dates in Seoul. It transcribes the <strong>year, month, day, and hour</strong> of your birth into four "pillars" of two characters each. The upper character is one of ten <strong>heavenly stems</strong> (Gap, Eul, Byeong, Jeong, Mu, Gi, Gyeong, Sin, Im, Gye) and the lower one is one of twelve <strong>earthly branches</strong> — the twelve zodiac animals. Eight characters in total, which is why Koreans call it <em>saju palja</em>: "four pillars, eight characters". Pairing stems and branches in order yields a cycle of sixty combinations — the <strong>sexagenary cycle</strong> that East Asia has used to label days and years for centuries.</p>
+<p>The pillar for your birth <em>day</em> is the <strong>day pillar</strong>, and its upper character is the <strong>day master</strong> — the standard English term among Four Pillars practitioners. Saju theory treats that single character as "you" and reads the other seven as the stage around you. That is why this test can assign a position from your birth date alone: the position comes from the day master, and the day master is fixed the moment your date is. The one-line "your day pillar" comment on the result screen is likewise one of sixty prepared lines, one per combination.</p>
+<p>Up to the point of extracting the eight characters, no interpretation is involved — old East Asian calendars printed each day's stem-branch pair right on the page, and a chart just transcribes your birth moment into that notation. Interpretation starts afterward, and that is where schools diverge. The isekai position assignments below are this page's own house rules, not saju orthodoxy. To see your eight characters properly, use the <a href="/tools/manse/">Korean calendrical calculator</a> (in Korean).</p>
+</div></details>
+
+<details class="fold" open><summary><h2>The 10 day masters and the 12 isekai positions</h2></summary><div class="fx">
+<p>The ten heavenly stems are the five elements — Wood, Fire, Earth, Metal, Water — each split into yang and yin. Yang Wood (Gap) and yin Wood (Eul) are both wood, but behave nothing alike. Since popularity is ultimately a question of <em>how you reach other people</em>, this test mapped each stem's way of moving outward onto one position. (And yes — "isekai", the Japanese term for another-world stories, is used as-is: the genre is global now.)</p>
+
+<h3>Gap 甲 and Eul 乙 — the Wood day masters</h3>
+<p><strong>Gap</strong>, yang Wood, is the great tree growing straight toward the sky, timber fit for a building's pillars. It starts things, it leads, and it does not bend once a direction is set. This is popularity by pure frontal assault, no tricks — so Gap becomes <strong>Everyone's Hero</strong>. The classic protagonist slot.</p>
+<p><strong>Eul</strong>, yin Wood, is the flower and the vine: it never pushes head-on, it winds around the wall and climbs, and it stands back up after being trampled. A character that wraps softly around people's hearts — the <strong>Guild Receptionist</strong>. Gathering a crowd without ever swinging a sword is the Eul way.</p>
+
+<h3>Byeong 丙 and Jeong 丁 — the Fire day masters</h3>
+<p><strong>Byeong</strong>, yang Fire, is the midday sun: impossible to hide, reaching far and evenly, holding no grudges. The widest-radiating presence among the ten stems, so it sings in the middle of the plaza as the <strong>Kingdom's Bard</strong>. It is also why Fire gets the highest base score in the formula below.</p>
+<p><strong>Jeong</strong>, yin Fire, is the lamp and the hearth. It doesn't blanket the world like the sun, but it earns its keep when it's dark and warms one spot for a long time. The center of warmth people gather to at night: the <strong>Legendary Innkeeper</strong>. Deep regulars instead of broad fame.</p>
+
+<h3>Mu 戊 and Gi 己 — the Earth day masters</h3>
+<p><strong>Mu</strong>, yang Earth, is the mountain and the levee: broad, thick, unmoved — and unwilling to move. The fewer words, the more weight. That is the <strong>Legendary Blacksmith</strong>: the kind of popularity that makes people come to you.</p>
+<p><strong>Gi</strong>, yin Earth, is the soil of fields and paddies. Instead of blocking like a mountain, it grows and nurtures. A born life-saver, transplanted directly as the <strong>Nation's Healer</strong> — never flashy, but the name everyone calls at the end.</p>
+
+<h3>Gyeong 庚 and Sin 辛 — the Metal day masters</h3>
+<p><strong>Gyeong</strong>, yang Metal, is unpolished ore, pig iron, the axe: harder with every blow, fast to decide, zero excess. Popularity proven by results instead of words — the <strong>Silent Sword Saint</strong>.</p>
+<p><strong>Sin</strong>, yin Metal, is the finished jewel, the needle, the honed blade: precise, fastidious, allergic to mess. Refined beauty as a weapon in itself — the <strong>Court Mage</strong>.</p>
+
+<h3>Im 壬 and Gye 癸 — the Water day masters</h3>
+<p><strong>Im</strong>, yang Water, is the ocean and the great river: enormous in scale, intolerant of confinement, naturally gathering people and stories. The whole continent is the stage — the <strong>Adventurers' Guild Master</strong>.</p>
+<p><strong>Gye</strong>, yin Water, is rain, dew, and morning mist: it seeps in silently and never quite takes a shape. The less substance people can pin down, the bigger the stories get — the <strong>Mysterious Spirit</strong>, the only position whose fame grows the less it appears.</p>
+
+<h3>The eleventh and twelfth — the Demon Lord and the Mastermind</h3>
+<p>There are twelve positions rather than ten because two conditions sit on top of the day masters. The first is <strong>Goegang (괴강, 魁罡)</strong>: six specific day pillars out of sixty — Mujin, Gyeongjin, Imjin, Musul, Gyeongsul, Imsul — which saju calls the "chieftain star", an extreme, forceful charisma. Born on one of these six pillars, you become the <strong>Demon Lord</strong> regardless of day master, with +14 to your popularity score. Exactly 2,228 of the 22,280 dates between 1950 and 2010 — precisely 10.00% — land here.</p>
+<p>The second is the <strong>Legendary Mastermind</strong>. This one is decided by score, not pillar: a non-Goegang chart with popularity 97 or above flips to Mastermind. Only 141 days in the same period — about 0.63%. The Goegang check runs first, so even a 99 popularity born on a Mujin day is a Demon Lord, not a Mastermind.</p>
+
+<h3>How the best party member and the fated rival were chosen</h3>
+<p>The <strong>best party member</strong> pairings are five mutual couples: Gap–Gi, Eul–Im, Byeong–Jeong, Mu–Gyeong, and Sin–Gye. Gap and Gi form what saju calls the <em>Gap-Gi combination</em>, a classic stem pairing; the other four are relations where one side produces the other (Water feeds Wood, Earth feeds Metal, Metal feeds Water) or the two share an element. Teammates who push each other up, in other words.</p>
+<p>The <strong>fated rival</strong> is looser. Only three pairs point at each other — Gap–Gyeong (Metal chops Wood), Eul–Jeong, Byeong–Sin — and the rest are one-directional grudges. Rather than mapping mechanically from element clashes, the rivals were chosen where the <em>kind</em> of popularity overlaps — the Blacksmith and the Court Mage, say, feuding over the artisan-fame demographic. The Demon Lord and the Mastermind get bespoke lines instead of pairings.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>How the 1–99% popularity is calculated</h2></summary><div class="fx">
+<p>The popularity score is built in the following order. The rules are invented for the isekai setting, but the same rules apply to everyone.</p>
+<p><strong>1. Base score</strong> — The starting point depends on the day master's element: Wood 52, Fire 58, Earth 48, Metal 45, Water 55. Fire, which radiates presence the widest, starts highest; Metal, which hardens inward, starts lowest.</p>
+<p><strong>2. Relations with the rest of the chart</strong> — The elements of your year, month, and day branches (plus the hour branch if entered) are scored by their relation to your day master. <strong>The output star — the element your day master produces — is worth +8, the biggest bonus.</strong> In saju the output star stands for speech, expression, talent, and showing yourself, so a popularity test makes it king. The wealth star (the element you control) is +3, the officer star (the element that controls you) −2, peers (your own element) −3, and <strong>the resource star — the element that produces you — is −6, the biggest penalty</strong>: learning, protection, and gathering inward point away from outward popularity. This is the exact inverse of the zombie test, where the resource star was the top bonus.</p>
+<p><strong>3. Positional weights</strong> — The month branch counts ×1.5, the year branch ×1.3, the day branch ×1.2, the hour branch ×0.7. Weighting the month heaviest follows the saju convention of treating the season of birth as the chart's root.</p>
+<p><strong>4. Yin and yang</strong> — Yin day masters (Eul, Jeong, Gi, Sin, Gye) get +2; yang ones (Gap, Byeong, Mu, Gyeong, Im) get −2. In a world where delicacy is charm, the yin stems get the edge — also the reverse of the zombie test.</p>
+<p><strong>5. Goegang</strong> — The six chieftain-star pillars get +14.</p>
+<p><strong>6. Scatter</strong> — Without it, everyone sharing a day pillar would score nearly the same. So the birth-date string goes through a fixed hash function, adding two deterministic offsets of up to ±25 and ±7. Not random: the same date always gets the same offsets.</p>
+<p>Finally, anything above 93 or below 7 is compressed by half and the result is clamped to 1–99. Over every date from 1950 to 2010 the formula averages 53.0 with a median of 53, and both extremes — 1% and 99% — actually occur. One more detail: a popularity below 30% automatically prepends a "small but fanatical following" paragraph to your reading; 12.7% of all dates qualify.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>Where do "top N%" and the fan-club count come from?</h2></summary><div class="fx">
+<p>The "top N%" badge is not a comparison with other people who took this test — your input never leaves the browser, so there is no such data to compare. Instead the page ships a 99-slot percentile table: for <strong>every one of the 22,280 dates from January 1, 1950 through December 31, 2010</strong>, popularity was computed with birth time unknown, and for each value 1–99 we stored what fraction of dates (in per-mille) scores at or above it. Your result screen just looks your number up.</p>
+<p>So read the badge as <strong>"top N% of all possible birth dates"</strong>, not of test-takers. Reference points: popularity 54 is where you enter the top half (top 49%), 60 is top 38%, 70 is top 22%, 80 is top 10%, 90 is top 4%, and 97+ is the top 1%. Past the halfway mark on the other side, the badge picks up a "cult favorite" tag.</p>
+<p><strong>The isekai fan-club member count</strong> derives from popularity. The base value is (popularity ÷ 99) raised to the power 1.6, times 900,000, plus 3,000; a hash of your birth date then applies a 0.86–1.13× multiplier and some sub-1,000 loose change. The 1.6 exponent makes membership grow steeper as popularity climbs: around 20,000-odd members at 10%, 260,000–340,000 at 50%, 670,000–880,000 at 90%, clamped between 3,000 and 980,000. Same popularity, different birthday, different count — that's the multiplier at work.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>Why the same birthday always gets the same result</h2></summary><div class="fx">
+<p>None of the five values on screen — position, popularity, percentile, fan-club count, day-pillar line — involves a random function. Everything is computed from your birth date (and the time, if you chose one).</p>
+<p>The day pillar is pure date arithmetic: convert the birth date to a running day number, take the remainder mod 60, done — the sexagenary cycle rolls over every sixty days without exception. The fiddly parts are the <strong>year and month pillars</strong>. In saju the year changes not on January 1 or Lunar New Year but at <strong>Ipchun</strong>, the "start of spring" term, and the month rolls at each of twelve solar terms. A solar term is the moment the sun reaches a specific angle, so its date and time differ every year. This page therefore embeds a minute-precision table of term times from 1900 on, and for an early-February birthday it compares against the clock to decide whether your year pillar is still last year's. Two people born on February 4 really can get different year pillars.</p>
+<p>The eight (or six, without a time) characters then run through the formula above, and the final scatter offsets and fan-club multiplier also come from hashing the birth-date string. A hash gives the same output for the same input, always — so on any day, on any device, the same birthday produces the same screen. Comparing with friends only means something because of this.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>FAQ</h2></summary><div class="fx">
+<h3>My birthday is on the lunar calendar. Can I enter it as-is?</h3>
+<p>No. The input expects the Gregorian (solar) calendar. A lunar date entered directly can be off by nearly a month, which changes the day pillar wholesale — and with it your position. If you only know your lunar birthday, convert it to a solar date first (K-magpie's <a href="/tools/lunar/">lunar–solar converter</a> is in Korean).</p>
+<h3>Does not knowing my birth time change the result?</h3>
+<p>Your position does not change — it comes from the day pillar, which the date alone determines. What changes is the popularity number, and with it the percentile and fan-club count. A birth time adds one branch at ×0.7 weight and changes the hash input for the scatter; in practice popularity moves about 17 points on average with versus without a time. Without a time, noon is used as the representative value. On the handful of dates hovering near 97, the birth time can decide whether you become the Mastermind.</p>
+<h3>Another saju calculator gives me a different chart</h3>
+<p>This test uses one fixed convention, no options. Birth time is taken only as one of twelve two-hour slots (each slot's midpoint is used); there is no 30-minute standard-time correction and no "late Rat hour" rule, both of which vary by school. Practically, two groups may differ from a full calculator: births around 11 p.m., and births on a solar-term changeover day. For those boundary cases the <a href="/tools/manse/">calendrical calculator</a> (in Korean) lets you toggle each convention.</p>
+<h3>My popularity came out painfully low</h3>
+<p>The biggest penalty in the formula is the resource star — the element that produces your day master — at −6 per branch. Several of them will visibly pull the score down. But in real saju the resource star is a fine character: it means learning, documents, and elders' care. This page simply defined popularity as "how far outward you go" and docked the inward-gathering energy — a house rule, not an astrological verdict. The very same chart scores high on the zombie test, in fact. For what those characters mean in a real reading, see <a href="https://yaong.kmagpie.com/">Yaong Myeongni</a> (in Korean).</p>
+<h3>Does the shared link contain my birth date?</h3>
+<p>No. The link carries only four result values — position number, popularity, fan-club count, day-pillar number — packed into one integer. Your birth date and time are not in it and cannot be reconstructed from it. The percentile isn't stored at all, since it follows from popularity via the table. Whoever opens your link sees only your result screen.</p>
+<h3>Why only 12 positions?</h3>
+<p>Because there are 10 day masters, plus the Goegang pillars and the Mastermind threshold. Within those 12, though, popularity (1–99), percentile, fan-club count, and one of 60 day-pillar one-liners combine — so the same position still yields a different screen for every person.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>How seriously should you take this?</h2></summary><div class="fx">
+<p>If you've read this far, you've guessed: this test is <strong>for entertainment only</strong>. The calendrical engine is a genuine computation over real solar-term data, but the rules that turn eight characters into isekai positions and percentages of popularity are entirely this page's invention. Korean saju contains, unsurprisingly, no concept of "isekai popularity" or "fan-club member counts".</p>
+<p>Nor does the number predict anything about your real relationships. No sulking over a low score, no swaggering over a high one. The intended use is putting two phones side by side and settling who gets to be the Demon Lord. If saju itself caught your interest, check your eight characters at the <a href="/tools/manse/">calendrical calculator</a> (in Korean) and read what they mean at <a href="https://yaong.kmagpie.com/">Yaong Myeongni</a> (in Korean).</p>
+</div></details>
+
+<div class="basis">
+  <h2>More worlds to try</h2>
+  <p>🧟 <a href="/en/tests/zombie/">If the Zombie Apocalypse Hits, What's Your Role? — the survival-rate test</a>. Same day master, different world, flipped scores: the chart that flops in isekai is a survival king over there.</p>
+  <p>🪶 <a href="/en/tests/joseon/">What Would You Be in Joseon-Era Korea? — the historical-Korea job test</a> reads the same chart for your past life in the 1392–1897 dynasty.</p>
+</div>
+
+<footer>
+  <p>This test is for entertainment only. The popularity score and positions guarantee nothing about anything.</p>
+  <p>Magpie Tests · All computation happens in your browser. Your birth date never leaves your browser.</p>
+  <p><a href="/">Home</a> · <a href="/en/tests/">All tests</a> · <a href="/en/tools/">Tools</a> · <a href="/en/disclaimer.html">Disclaimer</a> · <a href="/privacy-policy.html">Privacy Policy</a></p>
+</footer>
+
+</div>
+
+<script>
+/*CORE:S*/
+/* ── 만세력 코어 (연·월·일주) — /tools/manse/ 엔진 포팅 ─────────────────
+   절입(12節) 시각 테이블·일주 JDN 공식 동일. 검증: KASI 일진 대조. */
+var JD_ENC="0y0n41s0dy2m0n53h0d74c0l35712m630er6y0it7t03p8n07s9g0yw0503g0y0ws1s0nn2m0wx3h0n34c0v15808k630om6y0sm7t0dj8n0hn9h04t050d50z02q1s0xk2n02q3h0wr4d00k580hy630xy6y11z7t0mx8n0r69h0eh050n40z0cj1t03b2n0ce3i02e4d0a7580rp6403s6z07u7t0wu8n1119h0ob050ww0z0mc1t0d42n0m73i0c74d0k15811k640do6z0hq7u02o8o06t9h0y10602p0y0w41s0my2m0w33h0m24c0tu58078630n96y0ra7t0c88n0ge9h03n050cf0z01s1s0wo2n01v3h0vx4c13p580h3630x46y1147t0m38n0qb9h0dl050m20z0bn1t02f2n0bj3i01i4d099580qn6402o6z06q7t0vr8n1009h0nb050w00z0lb1t0c22n0ly3i0bx4d0jp58116640d96z0ha7u0298o06g9h0xq0601p0y0vr1s0mj2m0vo3h0lp4c0tk58072630n56y0r57t0c18n0g79h03h050c30z01m1s0wf2n01h3h0ve4c133580gf630wf6y10g7t0lf8n0po9h0cz050lw0z0b41t01x2n0az3i00v4d08k580pz640226z0677t0v98n0zh9h0mq050vf0z0li1t0c92n0lc3i0bb4d0j45810l640cp6z0gu7u01v8o0639h0xb0601w0y0v71s0lx2m0v03h0kz4c0sq58063630m46y0q67t0b88n0fi9h02t050bm0z00t1s0vk2n00m3h0uk4c12c580fr630vt6y0zx7t0kz8n0pb9h0cp050l70z0aq1t01c2n0a93i0034d07s580p86401c6z05h7t0ul8n0yy9h0mc050v40z0ke1t0b22n0jy3i09q4d0he580yu640az6z0f57u0088o04i9h0vu0600s0y0ty1s0kp2m0tq3h0jm4c0rb5804q630ku6y0oz7t0a28n0ed9h01p050aa0y13t1s0ul2m13l3h0te4c10z580e8630u76y0yb7t0jg8n0nv9h0ba050k40z09f1t0062n0953h12y4d06l580nx6313y6z0447t0t98n0xo9h0l2050ts0z0j31t09r2n0ir3i08o4d0gf580xv6409y6z0e37t1358o03h9h0uu0513h0y0sw1s0jl2m0sl3h0ig4c0q65803j630jk6y0nm7t08n8n0cy9h00b0509a0y12j1s0ta2m12a3h0s54c0zu580da630td6y0xi7t0il8n0mx9h0ab050it0z08d1s1312n07y3h11q4d05e580mu631316z0397t0sf8n0ws9h0k5050sq0z0i21t08p2n0hl3i07e4d0f2580wh6408o6z0cy7t1248o02h9h0tt0512i0y0rp1s0ic2m0rb3h0h64c0ox5802d630ij6y0ms7t0808n0ce9g13s050850y11q1s0sc2m1163h0qx4c0yi580bu630rw6y0w47t0hd8n0lw9h09f050i60z07i1s1222n06u3h10h4d041580le6311j6z01t7t0r38n0vl9h0j2050rx0z0h51t07p2n0gj3i0684d0dt580v86407g6z0bq7t10y8o01e9h0st0511j0y0qx1s0hk2m0qf3h0g54c0nn5800w630gx6y0l47t06b8n0as9g1280507a0y10f1s0r52m1023h0pr4c0xa580ak630ql6y0us7t0g28n0kk9h083050gr0z0651s10q2n05l3h0za4d02u580k6631096z00h7t0pr8n0ua9h0hs050qk0z0fu1t06e2n0f63i04v4d0cg580ts6405w6z0a37t0za8n13q9h0r6051090y0p91s0fw2m0or3h0ei4c0m65713l630fq6y0jy7t0548n09j9g10z0505n0y0z41s0pq2m0yk3h0o74c0vq58091630p46y0tc7t0el8n0j39h06l050fh0z04p1s0za2n0423h0xo4d016580ii630yo6y1307t0oc8n0su9h0g9050p20z0e51t04p2n0dj3i0394d0av580sa6404j6z08x7t0y98n12r9h0q6050yn0y0o21s0el2m0ne3h0d34c0kn5711y630e16y0ib7t03n8n0879g0zq0504k0y0xr1s0oa2m0x13h0mn4c0u75807j630np6y0s07t0dd8n0i09h05m050e70z03n1s0y22n02q3h0w94c13s580h6630xf6y11u7t0n98n0rw9h0fh050o40z0dk1t0402n0cn3i0244d09k580qw640346z07h7t0wu8n11f9h0oy050y00y0n21s0dm2m0md3h0by4c0jf5710r630cy6y0hc7t02q8n07c9g0yw0503g0y0x11s0nl2m0wc3h0lv4c0t95806g630mi6y0qu7t0ca8n0gz9h04n050de0z02s1s0xb2n01z3h0vi4c12v580g3630w66y10j7t0ly8n0qn9h0e9050n70z0cb1t02t2n0bi3i0144d08n580q0640276z06k7t0vx8n10j9h0o4050wr0y0m81s0cq2m0lg3h0b14c0ii570zr630bt6y0g27t01d8n05y9g0xk0502n0y0vs1s0md2m0v33h0km4c0s15805b630lg6y0pr7t0b58n0fr9h03c050c40z01e1s0vw2n00k3h0u34c11j580ew630v56y0zl7t0l18n0po9h0d8050lu0z0b61t01m2n0aa3h13s4d078580ok6400q6z0557t0uk8n0z79h0mq050vo0y0kn1s0b32m0js3h09d4c0gv570y8630af6y0eu7t00b8n0509g0wl050150y0ul1s0kz2m0tl3h0j14c0qf5803p630jv6y0oa7t09s8n0ek9h02a050b30z00e1s0ur2m1393h0sl4c0zx580d6630td6y0xu7t0jc8n0o39h0bq050ku0z09t1t0072n08r3h1264d05k580mx631376z03q7t0t88n0xy9h0lk050ua0y0jm1s0a32m0ip3h0844c0fg570wn6308r6y0d57s12m8n03d9g0v1050020y0t71s0jp2m0rh3h0gw4c0o75801d630hh6y0lw7t07f8n0c99g13y0509l0y1201s0sd2m10x3h0qc4c0xp580b0630r86y0vq7t0ha8n0m39h09t050ii0z07u1s1272n06p3h1044d03i580ks6310y6z01d7t0qu8n0vk9h0j8050sc0y0hd1s07s2m0gd3h05s4c0d7570ui6306q6y0b67s10o8n01e9g0t20411t0y0r71s0hn2m0q63h0fj4c0mu58003630gb6y0kt7t06d8n0b69g12w0507m0y1101s0rf2m0zx3h0p94c0wi5809q630py6y0ui7t0g48n0kw9h08j050hg0z06h1s10u2n05e3h0yt4d027580jj630zu6z00f7t0q38n0uw9h0ik050r10y0gg1s06t2m0fc3h04r4c0c4570td6305i6y0at7s10f8n01a9g0t2041110y0r51s0hi2m0py3h0fa4c0mj5713r630fy6y0kf7t0628n0az9g12t0507n0y10w1s0r52m0zj3h0os4c0w25809e630pp6y0uc7t0g08n0kw9h08p050hf0z06t1s1142n05i3h0yr4d020580j8630zg6y13z7t0pl8n0uf9h0i5050ra0y0ga1s06p2m0f73h04i4c0bq570sx630556y09o7s0zb8n0069g0rx0410q0y0q21s0gf2m0ox3h0e74c0le5712j630ep6y0j87t04x8n09v9g11q0506i0y0zv1s0q62m0yl3h0nu4c0v058085630ob6y0su7t0eh8n0jd9h076050gc0z0581s0zi2n03x3h0x84d00j580hu630y36y12n7t0oa8n0t59h0gw050pq0y0ez1s05b2m0dr3h0324c0ac570rk6303q6y0877s0xt8m12n9g0qf040zh0y0om1s0ez2m0ne3h0cm4c0js5710y630d66y0hq7t03e8n08a9g101050520y0y21s0ob2m0wo3h0lw4c0t55806f630ms6y0ri7t0db8n0i99h060050el0z03w1s0y42n02h3h0vp4c12y580g7630wh6y1137t0mu8n0rr9h0fj050oi0y0dg1s03p2m0c23h01b4c08j570pr630216y06n7s0wf8m11f9g0pa040y10y0nc1s0dj2m0lt3h0ay4c0i4570zb630bl6y0g97t0238n0769g0z50503w0y0xb1s0ni2m0vq3h0kr4c0ru5804z630l96y0px7t0bq8n0gr9h04m050du0z02s1s0x02n01b3h0uf4c11j580er630v26y0zs7t0lm8n0qn9h0eh050n90y0cl1s02w2m0ba3h00g4c07k570oo6300u6y05g7s0v88m10a9g0o7040x30y0mf1s0cq2m0l33h0a94c0hb570yd630ai6y0f27t00v8n05y9g0xw0502v0y0w01s0m82m0ui3h0jn4c0qt58041630kb6y0p07t0au8n0fx9h03u050ck0z01y1s0w52n00f3h0tl4c10s580e0630u96y0yt7t0kj8n0pi9h0dd050mh0y0bj1s01t2m0a53g13b4c06h570no6213x6y04j7s0u98m0z89g0n3040w10y0l91s0bj2m0jt3h08w4c0g0570x76309i6y0e87t0028n0549g0x00501r0y0v41s0lb2m0tk3h0in4c0pq5802v630j66y0nw7t09r8n0es9h02m050bn0z00j1s0up2m12y3h0s34c0z9580ch630su6y0xm7t0ji8n0ol9h0cg050l50y0ac1s00g2m08q3g11v4c050570m76212g6y0357s0t08m0y59g0m4040uz0y0k81s0ac2m0ii3h07j4c0ek570vp6307y6y0cn7s12j8n03p9g0vp0500s0y0ts1s0ju2m0rw3h0gu4c0nv58013630hh6y0mc7t08c8n0di9h01g050ad0y13j1s0tn2m11r3h0qq4c0xr580ax630r86y0vz7t0hw8n0n19h0ay050k40y0931r13a2m07i3g10i4c03h570kj6210s6y01i7s0rf8m0wm9g0kl040tm0y0iq1s08v2m0h13h0604c0cy570u0630696y0b17s1128n02c9g0ue041390y0sk1s0io2m0qt3h0fr4c0mq5713t630g16y0kr7t06p8n0bw9g13w050940y1201s0s42m1093h0p94c0wa5809g630pr6y0ui7t0gf8n0ll9h09k050il0y07p1r11v2m0613g0z24c023570j8620zi6y0087s0q48m0v99g0ja040s80y0hj1s07q2m0fw3h04u4c0bt570sv630546y09v7s0zt8n00z9g0sz041200y0r11s0h42m0p83h0e64c0l65712d630es6y0jp7t05r8n0b09g12y0507m0y10w1s0qy2m0z23h0o24c0v55808c630op6y0ti7t0fj8n0kr9h08q050hj0y06q1r10s2m04w3g0xw4c00x570i1620yc6x1357s0p58m0ue9g0ih040rc0y0gl1s06l2m0el3h03f4c0ae570ri6303w6y08s7s0yw8n0089g0se041160y0ql1s0gm2m0ol3h0dd4c0k95711d630dq6y0im7t04o8n09y9g120050750y1041s0q72m0y83h0n24c0tz58072630nf6y0sb7t0ee8n0jo9h07p050gp0y05t1r0zx2m0413g0wx4b13u570gv620x46x11y7s0o18m0td9g0hh040qd0y0fo1s05s2m0du3h02p4c09l570qk6302r6y07j7s0xl8m12y9g0r2041080y0p61s0f52m0n53h0bz4c0iw57100630cc6y0h87t03d8n08p9g10t0505s0y0yw1s0ow2m0wv3h0lr4c0sq5805v630m86y0r17t0d18n0ib9h06d050fj0y04j1r0yl2m02m3g0vh4b12e570fh620vr6x10l7s0ml8m0ru9g0fx040p30y0e31s0452m0c43h00v4c07p570or630156y0637s0w98m11n9g0pr040yn0y0nu1s0du2m0lt3h0ak4c0hf570yi630av6y0ft7t0208n07c9g0ze0504g0y0xc1s0nb2m0va3h0k44c0r058043630kg6y0pe7t0bl8n0gz9h052050e10y0321r0x02m00y3g0tr4b10n570dq620u16x0yy7s0l48m0qk9g0es040nq0y0d01s02y2m0av3g13k4c06d570ne6213p6y04l7s0ur8m1079g0oe040xl0y0ml1s0ci2m0kc3h08z4c0fr570wu630996y0ea7t00j8n05z9g0y5050370y0wa1s0m92m0u63h0iw4c0pq5802t630j76y0o57t0ac8n0fq9h03v050cw0y0211r0w32m0033g0su4b0zn570cn620sw6x0xs7s0jy8m0pe9g0dl040mm0y0br1s01q2m09n3g12b4c053570m36212f6y03d7s0to8m0z79g0ng040wc0y0ln1s0bk2m0jf3h0854c0ey570w06308d6y0dc7s13j8n04z9g0x5050290y0va1s0l82m0t43h0hu4c0op5801r630i56y0n37t0998n0eo9h02t050bw0y00y1r0ux2l12t3g0rj4b0yd570bf620rs6x0wr7s0iy8m0oe9g0cl040lk0y0at1s00s2m08p3g11d4c045570l66211j6y02i7s0sr8m0y89g0me040vd0y0ke1s0aa2m0i33h06r4c0di570ul630716y0c57s12i8n0409g0w6050130y0u31s0jx2m0rq3h0gg4c0na5800e630gu6y0lw7t0878n0dq9h01x050au0x13z1r0tu2l11n3g0qb4b0x4570a5620qi6x0vh7s0hr8m0nb9g0bl040kn0y09r1r13k2m0783g0zq4c02e570je620zt6y00w7s0ra8m0wx9g0la040ue0y0jj1s09c2m0h13h05j4c0c6570t76305n6y0ar7s1148n02o9g0ux050050y0t31s0iz2m0qq3h0fa4c0ly5712w630f96y0kb7t06o8n0c89h00h0509p0x12m1r0sj2l10d3g0ox4b0vl5708h620or6x0ts7s0g58m0ls9g0a4040j90y08e1r12b2m0643g0yp4c01c570i9620yj6x13h7s0pt8m0vg9g0js040sz0y0hy1s07r2m0fh3h0414c0aq570rp630436y0947s0zh8n0129g0td0412m0y0rj1s0hd2m0p33h0do4c0kg5711i630dx6y0iy7t0588n0ar9g131050870x1191r0r52l0yy3g0nk4b0ua5707a620no6x0so7s0ey8m0kh9g08q040hu0y06w1r10r2m04h3g0wy4b13k570gj620wz6x1257s0ol8m0u89g0ij040ri0y0gm1s06f2m0e43h02n4c09c570qd6302v6y0827s0yj8n0059g0sf0411b0y0qd1s0g42m0nt3h0ce4c0j457105630cl6y0hq7t0468n09u9g125050740x1051r0pw2l0xk3g0m24b0sp5705p620m46x0r87s0dq8m0jh9g07x040gw0y0651r0zw2m03i3g0vx4b12i570fh620vx6x1127s0nj8m0t99g0hp040qs0y0fw1s05m2m0d63h01j4c083570p16301i6y06q7s0x98m1309g0rd0410k0y0pk1s0fc2m0my3h0bd4c0hz570yx630bd6y0gj7t0318n08q9g114050670x0zb1r0p62l0ww3g0ld4b0rz5704v620l76x0q97s0cq8m0ig9g06v040fy0y0531r0yv2m02h3g0uv4b11d570e8620ul6x0zq7s0m98m0s39g0gk040pr0y0et1s04j2m0c43h00i4c073570o26300i6y05o7s0w58m11v9g0q9040zg0y0og1s0e72m0lt3h0a94c0gw570xv630aa6y0fe7t01t8n07h9g0zu050530x0y11r0nu2l0vg3g0ju4b0qe5703a620jo6x0ot7s0bb8m0h19g05g040eo0y03p1r0xi2m0143g0tj4b102570cz620tf6x0yl7s0l48m0qv9g0f9040ob0y0db1s0302m0ak3g12y4c05i570mg6212x6y0467s0ur8m10k9g0ox040y10y0mw1s0cj2m0k33h08h4c0f4570w46308k6y0ds7t00d8n0669g0yl0503o0x0wo1r0md2l0tx3g0ib4b0ox5701w620ib6x0nh7s0a08m0ft9g04b040de0y02j1r0w62l13l3g0rs4b0y8570b4620rl6x0wv7s0ji8m0pe9g0dx040n80y0c61s01t2m0993g11g4c03x570ku6211e6y02q7s0td8m0z79g0nn040wu0y0ls1s0bi2m0j13h07c4c0du570ur630776y0cg7s1328n04x9g0xc0502h0x0vh1r0l72l0sq3g0h04b0nf57009620gm6x0lt7s08h8m0ee9g02y040c60y0181r0ux2l12f3g0qq4b0x6570a1620qg6x0vo7s0ic8m0o99g0ct040lw0y0b01s00m2m0813g10b4c02s570jp621056y01f7s0s28m0xy9g0mg040vq0y0kn1s0a92m0hp3h05z4c0ch570tg6305x6y0b67s11r8n03l9g0w30501c0x0ud1r0k32l0rm3g0fx4b0mf5613d620fu6x0l27s07o8m0di9g020040b00y0081r0tv2l11b3g0pi4b0vv5708p620p76x0uj7s0ha8m0n89g0br040kw0y09v1r13h2m06w3g0z44c01k570ih620z16y00f7s0r78m0x49g0lm040um0y0jn1s0982m0go3h04y4c0bg570se6304w6y0a77s10x8n02v9g0vf0500f0x0ti1r0j32l0qg3g0em4b0l05611u620ea6x0jk7s06a8m0ca9g00y040aa0x13a1r0sw2l1083g0oc4b0uo5707j620o16x0te7s0g58m0m59g0ar040jy0y0901r12k2m05w3g0y04c00c570h7620xo6x1327s0pu8m0vt9g0kd040tp0y0ik1s0862m0fj3h03p4c0a1570qv6303b6y08m7s0zd8n01d9g0tx0413a0x0s61r0ht2l0pa3g0di4b0jw5610q620d56x0ie7s0548m0b49f13q0408u0x11z1r0rj2l0yv3g0mz4b0ta57062620mh6x0rs7s0ek8m0km9g09a040io0y07j1r1122m04d3g0wg4b12t570fp620w86x11l7s0od8m0uc9g0iw040s90y0h31s06n2m0e03h0264c08m570pj630226y07e7s0y48n0019g0sl0411t0x0qr1r0gd2l0nq3g0bt4b0i4560yw620bd6x0gq7s03i8m09i9f1240407h0x10d1r0py2l0x93g0lc4b0ro5704i620l16x0qh7s0dd8m0jf9g080040h20y0611r0zi2m02s3g0uw4b119570e5620up6x1067s0n38m0t69g0hs040qv0y0ft1s0592m0ch3h00k4c06x570nt6300b6y05p7s0wl8m12p9g0re0410n0x0pl1r0f22l0mc3g0ae4b0gr560xn620a66x0fk7s02f8m08j9f11a0406c0x0zl1r0p22l0w73g0k44b0qc57034620jm6x0p37s0c18m0i79g06y040gb0y05a1r0ys2m01y3g0tv4b102570cu620tf6x0yx7s0lw8m0s09g0go040q00y0ex1s04h2m0br3g13t4c064570mx6213f6y04v7s0vr8m11v9g0qk040zn0x0os1r0ec2l0ln3g09n4b0fu560wi6208w6x0e97s0158m07c9f1040405i0x0yh1r0o02l0v93g0j94b0ph57029620ip6x0o47s0b18m0h79g05y040f60y0461r0xn2m00v3g0sv4b0z6570c1620sk6x0xz7s0kv8m0qz9g0fo040ox0y0dv1s03c2m0ak3g12k4c04u570lo621266y03k7s0ue8m10h9g0p5040yn0x0nf1r0cy2l0k83g08a4b0ek560ve6207y6x0df7s00a8m06e9f0z2040440x0x91r0mp2l0tw3g0ht4b0o05700s620hc6x0mv7s09w8m0g39g04s040e00y02v1r0w92l13d3g0ra4b0xi570ab620qx6x0wi7s0jj8m0pr9g0eg040np0y0cg1s01t2m08y3g10y4c039570k56210r6y02a7s0ta8m0zi9g0o9040xb0x0me1r0bq2l0it3g06o4b0ct560tj620616x0bi7r12i8m04s9f0xn040380x0w01r0le2l0sf3g0g74b0ma56131620fl6x0l67s0898m0ek9g03d040cq0y01m1r0v02l1223g0pv4b0w05708r620pc6x0uy7s0i18m0ob9g0d3040me0y0ba1s00p2m07s3g0zn4c01q570if620yw6y00e7s0rf8m0xp9g0mj040w30x0kt1r0aa2l0hg3g05d4b0bi560s86204p6x0a77r1188m03j9f0wf0401k0x0uq1r0k32l0r53g0ez4b0l25611s620e96x0js7s06v8m0d79g023040bh0y00f1r0ts2l10s3g0ok4b0uo5707g620o06x0tk7s0gl8m0mv9g0bo040l60y09y1r13d2m06g3g0yc4c00k570he620xz6x13k7s0qk8m0ws9g0lk040up0x0ju1r09a2l0ge3g0484b0aa560qz6203g6x0907r1028m02c9f0v70400l0x0ti1r0ix2l0q03g0ds4b0jv5610k620d46x0ir7s05x8m0ca9g013040a80x1361r0si2l0zk3g0nf4b0tl5706f620n16x0sp7s0fv8m0m89g0b2040k20y0941r12e2m05e3g0x84b13d570g5620wo6x1287s0pb8m0vo9g0kl040u00x0iu1r0862l0f63g02y4b092560pu6202f6x0817r0z68m01j9f0uh0313n0x0st1r0i32l0p03g0cn4b0io560ze620bz6x0ho7s04v8m0ba9g0080409k0x12j1r0ru2l0yr3g0me4b0sc57051620lm6x0rb7s0ei8m0kw9g09r040jb0y07y1r11b2m04b3g0w34b126570ew620vh6x1157s0ob8m0uq9g0jl040ss0x0hu1r0762l0e63g01w4b07v560oh6200x6x06h7r0xm8m0039f0t30312m0x0rg1r0gs2l0np3g0bc4b0hb560xy620ag6x0g27s0398m09q9f12o040880x10x1r0q62l0x33g0kt4b0qw5703n620ka6x0py7s0d48m0ji9g08f040hr0y06o1r0zy2m02v3g0ul4b10m570db620tu6x0zf7s0mj8m0sw9g0hs040rh";
+var JY0=1900;
+var GAN="갑을병정무기경신임계", JI="자축인묘진사오미신유술해";
+var GANH="甲乙丙丁戊己庚辛壬癸", JIH="子丑寅卯辰巳午未申酉戌亥";
+function jieOf(y,idx){
+  var s=JD_ENC.substr(((y-JY0)*12+idx)*5,5);
+  var doy=parseInt(s.substr(0,2),36), mn=parseInt(s.substr(2,3),36);
+  var dt=new Date(Date.UTC(y,0,1+doy));
+  return {m:dt.getUTCMonth()+1, d:dt.getUTCDate(), min:mn};
+}
+function cmpJie(y,m,d,mn,idx){
+  var j=jieOf(y,idx);
+  if(m!==j.m) return m>j.m?1:-1;
+  if(d!==j.d) return d>j.d?1:-1;
+  return mn>=j.min?1:-1;
+}
+function yearPillarIdx(y,m,d,mn){
+  var sy=y;
+  if(cmpJie(y,m,d,mn,0)<0) sy=y-1;
+  return {sy:sy, idx:((sy-4)%60+60)%60};
+}
+function monthPillar(y,m,d,mn){
+  var CHRONO=[11,0,1,2,3,4,5,6,7,8,9,10];
+  var mi=-1;
+  for(var k=0;k<12;k++){ var i=CHRONO[k]; if(cmpJie(y,m,d,mn,i)>0) mi=i; else break; }
+  if(mi<0) mi=10;
+  var yp=yearPillarIdx(y,m,d,mn);
+  var yGan=yp.idx%10;
+  var inGan=[2,4,6,8,0][yGan%5];
+  var gan=(inGan+mi)%10;
+  var ji=(mi+2)%12;
+  return {gan:gan, ji:ji, mi:mi};
+}
+function jdn2(y,m,d){ if(m<=2){y--;m+=12;} var a=Math.floor(y/100),b=2-a+Math.floor(a/4);
+  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+b-1524; }
+function dayPillarIdx(y,m,d){
+  var n=jdn2(y,m,d);
+  return ((n+49)%60+60)%60;
+}
+
+/* ── 인기도 산식 (zombie 생존률과 다른 가중치·시드) ── */
+var ELG=[0,0,1,1,2,2,3,3,4,4];              /* 천간 오행 */
+var ELJ=[4,2,0,0,2,1,1,2,3,3,2,4];          /* 지지 오행 */
+var GWI={4:1,16:1,28:1,34:1,46:1,58:1};     /* 괴강: 무진 경진 임진 무술 경술 임술 */
+var BASE_P=[52,58,48,45,55];                /* 일간 오행별 기본 인기: 목화토금수 */
+var RELS_P=[-3,8,3,-2,-6];                  /* 비겁 식상 재 관 인 — 식상(표현력)이 인기 */
+function hash32(s){var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+/* t: 0=시간 모름, 1~12 = 자~해시 */
+function pillarsOf(y,m,d,t){
+  var mn = t ? ((t-1)*120+30)%1440 : 720;
+  var yp=yearPillarIdx(y,m,d,mn);
+  var mp=monthPillar(y,m,d,mn);
+  var dp=dayPillarIdx(y,m,d);
+  return {yp:yp.idx, mp:mp.ji, mpg:mp.gan, dp:dp};
+}
+function popularity(y,m,d,t){
+  var P=pillarsOf(y,m,d,t);
+  var dg=P.dp%10, de=ELG[dg];
+  var s=BASE_P[de];
+  function rel(bj){ return RELS_P[((ELJ[bj]-de)%5+5)%5]; }
+  s += rel(P.yp%12)*1.3 + rel(P.mp)*1.5 + rel(P.dp%12)*1.2;
+  if(t) s += rel(t-1)*0.7;
+  s += (dg%2===0)?-2:2;                     /* 음간의 섬세함 = 매력 보정 */
+  if(GWI[P.dp]) s += 14;                    /* 마왕은 원래 인기가 많다 */
+  var h=hash32('isk:'+y+'-'+m+'-'+d+'-'+(t||'x'));
+  s += ((h%4783)/4782-0.5)*50;
+  s += (((h>>>10)%1013)/1012-0.5)*14;
+  if(s>93) s=93+(s-93)*0.5;
+  if(s<7)  s=7-(7-s)*0.5;
+  s=Math.round(s);
+  return s<1?1:(s>99?99:s);
+}
+/* 이세계 팬카페 회원 수: 인기도와 양의 상관 + 사주 해시 잡음 (3,000~980,000명) */
+function fancafe(y,m,d,t){
+  var p=popularity(y,m,d,t);
+  var h=hash32('fan:'+y+'-'+m+'-'+d+'-'+(t||'x'));
+  var base=3000+Math.pow(p/99,1.6)*900000;
+  var v=Math.round(base*(0.86+((h%9781)/9780)*0.27)+ (h>>>16)%997);
+  return v<3000?3000:(v>980000?980000:v);
+}
+/* 상위 % 테이블: 1950-01-01~2010-12-31 전 날짜(시간 모름) 분포에서
+   인기도 v(1~99) 이상인 비율(퍼밀, ‰). 빌드 시 실계산으로 생성. */
+var TOPP=[1000,1000,1000,999,999,998,996,994,992,991,989,987,985,982,979,975,971,966,962,957,951,944,938,930,922,914,903,894,883,872,861,849,837,824,809,795,779,764,750,733,717,701,686,668,652,634,617,599,582,564,546,527,508,488,470,452,434,417,399,380,363,346,328,311,294,277,262,247,232,218,204,192,178,166,154,142,129,120,110,100,92,83,75,67,61,55,50,45,40,36,32,28,24,20,15,10,7,5,4];
+function topPct(s){ var pm=TOPP[s-1]; var p=Math.round(pm/10); return p<1?1:(p>100?100:p); }
+/*CORE:E*/
+
+/*__CORE__*/
+
+/* ── Position data (English) ── */
+var ROLES=[
+ {img:1, emo:"⚔️", nm:"Everyone's Hero", ct:"Kingdom-certified, head-on popularity",
+  g:["#3a3050","#131022"],
+  desc:"A Gap (甲) Wood day master carries the energy of a great tree growing straight into the sky — in an isekai world, that's protagonist buff, plain and simple. The moment you reach a village, the chief comes running; statues go up in plazas faster than you can travel between them. No tricks, just frontal-assault charisma, and somehow it all works. Your only complaint: too many fans to eat dinner quietly at an inn ever again.",
+  fan:"The entire royal knight order + plaza kids trailing you with wooden swords",
+  mate:5, worst:6},
+ {img:2, emo:"🌸", nm:"Guild Receptionist", ct:"The whole server's first crush",
+  g:["#463052","#150f1c"],
+  desc:"An Eul (乙) Wood day master is the softly winding flower-and-vine energy. You've never swung a sword, yet you sit at the top of the popularity rankings — rumor has it adventurers clear quests not for the gold but for your 'Welcome back!' at the counter. The line at your desk outgrew the dungeon-entry line long ago. You look gentle, but the guild's entire schedule turns on your palm.",
+  fan:"Every newly registered adventurer (visits daily on quest-related 'business')",
+  mate:8, worst:3},
+ {img:3, emo:"🎻", nm:"Kingdom's Bard", ct:"One song and the whole kingdom weeps",
+  g:["#54301e","#1a0e08"],
+  desc:"A Byeong (丙) Fire day master is the midday sun — presence that cannot be hidden. One song in the plaza and passing carriages stop; guards on the wall cry discreetly on duty. The kingdom's official headache is that your ballads about the hero made you more famous than the hero. Royal invitations arrive every festival season.",
+  fan:"All ages in the plaza + the royal guard, weeping on shift",
+  mate:3, worst:7},
+ {img:4, emo:"🍻", nm:"Legendary Innkeeper", ct:"People cross worlds just for this inn",
+  g:["#4d3a1c","#170f06"],
+  desc:"A Jeong (丁) Fire day master is the hearth that lights the night — the warm center people gather around. One bowl of your stew and adventuring parties extend their stay by three unplanned days. Career counseling, love advice, party-dispute arbitration: all settled across your counter. Legend says even the king once visited incognito.",
+  fan:"Thirty regular adventuring parties + wanderers with complicated pasts",
+  mate:2, worst:1},
+ {img:5, emo:"⚒️", nm:"Legendary Blacksmith", ct:"A true blade is worth the three-year waitlist",
+  g:["#3d3a2e","#14120c"],
+  desc:"A Mu (戊) Earth day master is mountain-range gravity — the textbook artisan kind of fame. Your workshop has no sign, yet the reservation book is three years deep, and the hero and the Demon Lord (!) both want your steel. The less you speak, the harder your fans' imaginations work: 'The smith nodded today' makes the village paper's front page. Unshakable weight is the brand.",
+  fan:"High-rank adventurers who know their weapons (three-year waitlist)",
+  mate:6, worst:7},
+ {img:6, emo:"💚", nm:"The Nation's Healer", ct:"This party's real ultimate weapon",
+  g:["#2a4432","#0e150f"],
+  desc:"A Gi (己) Earth day master is the fertile field that grows the grain — born with the talent for keeping people alive. Even when the party teeters on a dungeon wipe, somehow everyone walks out smiling as long as you're there. Whenever a popularity poll opens, the first post is a sign reading 'Slander our healer and it's server war.' Not flashy — but the name everyone calls in the end is yours.",
+  fan:"Every adventurer you've ever revived (effectively half the server)",
+  mate:0, worst:3},
+ {img:7, emo:"🗡️", nm:"Silent Sword Saint", ct:"Never speaks; biggest fan club in the kingdom",
+  g:["#2e3644","#0d1014"],
+  desc:"A Gyeong (庚) Metal day master is iron that hardens with every blow. You have zero lines of dialogue, yet your fan club swells on eyewitness accounts alone — 'The Sword Saint ate an apple today' triggers a special edition. Challengers queue up hoping to see you draw; most duels end before the blade leaves the sheath. The stoicism *is* the lore.",
+  fan:"The kingdom's largest unofficial fan club, 'The Scabbard' (president: the princess)",
+  mate:4, worst:0},
+ {img:8, emo:"🔮", nm:"Court Mage", ct:"Elegance is a stat, and it's maxed",
+  g:["#33265a","#0e0a1c"],
+  desc:"A Sin (辛) Metal day master is the finished jewel — born to glitter. From the fall of your robe to the last stroke of a magic circle, everything is so elegant that tickets to your demonstrations get scalped. Nobles turn your offhand remarks into season catchphrases and apprenticeship applications stack like towers. You never make mistakes, which drives the fans even crazier.",
+  fan:"The entire palace social scene + academy hopefuls",
+  mate:9, worst:2},
+ {img:9, emo:"🗺️", nm:"Adventurers' Guild Master", ct:"Every night in this city ends with his stories",
+  g:["#1e3a4a","#0a1218"],
+  desc:"An Im (壬) Water day master is the great river headed for the sea — social gravity on a continental scale. There's no corner of the land you haven't seen, and nobody can tell how much of your tavern stories is true, and nobody cares. Idol to rookies, big brother to veterans, best customer to the information brokers. When you walk into the guild, the bar's take doubles.",
+  fan:"Adventurers across the continent (200 former party members alone)",
+  mate:1, worst:6},
+ {img:10, emo:"🧚", nm:"Mysterious Spirit", ct:"A fan club built entirely on sightings",
+  g:["#22304e","#0b0f1a"],
+  desc:"A Gye (癸) Water day master is rain and morning mist — the original mystique idol. Almost nobody has actually seen you, yet the sighting board updates daily, and one 'I saw the spirit at the lake' rumor doubled the village's tourism income. Every appearance is a festival; every disappearance, a legend. The only position whose popularity rises the less you do.",
+  fan:"Sighting collectors + lake pilgrims (an official pilgrimage route now operates)",
+  mate:7, worst:2}
+];
+var ROLE_MAOU={img:11, emo:"😈", nm:"Demon Lord", ct:"The final boss more popular than the protagonist",
+  g:["#40204a","#120818"],
+  desc:"Your day pillar is Goegang (魁罡) — the 'chieftain star', the most extreme charisma in the saju playbook. By the laws of isekai storytelling this energy goes straight to the final-boss seat; the problem is you keep beating the hero in every fan poll. The mail carrier reaches your castle more often than the subjugation squads do, and 'Honestly, the Demon Lord Has a Point' tops the kingdom's banned-books list. You are the reason season two always gets greenlit.",
+  fan:"Former subjugation-squad members who came to defeat you and stayed",
+  mateTx:"All Four Heavenly Kings — benefits are great, turnover is 0%", worstTx:"The Hero — who keeps dropping by for tea lately"};
+var ROLE_BLACK={img:12, emo:"🎭", nm:"Legendary Mastermind", ct:"Not in the official story, yet has the most fans",
+  g:["#2c2410","#100c04"],
+  desc:"Top-of-the-chart popularity — your eight characters point to the summit of the kind of fame no poll can measure. Your name appears nowhere in the official story, yet theory posts proving you were behind every event in the kingdom go up daily. Zero on-screen appearances, #1 in fan art; zero lines of dialogue, yet your quotation book is in print. The unofficial most-popular character who baffled even the writers (the gods) — that's you.",
+  fan:"The entire lore-analysis board + doujin authors of 'the Mastermind theory'",
+  mateTx:"Everyone — they're all secretly on your side already", worstTx:"None — even your rivals are fans"};
+/* popularity below 30%: cult-following framing paragraph (auto-prepended) */
+var CULT="Don't be discouraged by the number alone. It measures mass exposure, nothing more — you are not the mainstream type but the small-but-fanatical-following type. Few fans, but each would take an arrow for you. Instead of a love that is wide and shallow, yours is narrow and slightly terrifying.";
+
+/* 60 day-pillar one-liners — popularity & charm edition */
+var ILJU=[
+"A great tree at midnight, hogging all the moonlight — protagonist type","Approaches at an ox's pace and owns your heart before you notice — the seeper",
+"The sun riding a tiger — the plaza stirs the moment you appear","A lamp in the rabbit burrow — the closer people get, the harder they fall",
+"A mountain holding a dragon — rumors spread even when you sit still","Imprints elegantly like a snake — fatal first impression",
+"A blade honed on horseback — leaves new fans in every town you pass","A jewel among the flock — blends in, still shines alone",
+"Monkey tricks with river scale — becomes the center of any room","Dew on a rooster's comb — charm by pure precision of detail",
+"A great tree with loyal hounds — one fan, fan for life","A flower drifting on water — draws every eye wherever it floats",
+"A midwinter waterside sun — famous for the unexpected warm side","A lantern on an ox's back — quiet steadiness that flutters hearts",
+"A tiger's mountain — hard to approach, impossible not to wonder about","A field where rabbits play — so comfortable people keep coming back",
+"A sword forged by a dragon — one reveal and the rankings reset","A jewel guarded by a snake — luxury charm for the few who know",
+"A galloping river — found at the center of every festival","Sweet rain on dry grass — appears exactly when needed, never forgotten",
+"A tall tree monkeys climb — the pros recognize you first","A flower wound round a rooster's comb — style raised to an art form",
+"The sun walking a dog at dusk — every scene becomes a portrait","A lamp over the sea — the lighthouse people travel to find",
+"A great mountain by the water — the adult everyone wants to lean on","An ox in a winter field — sincerity that becomes a legend",
+"Tiger-claw steel — the strong bow to you first","A jewel on clover — flips between adorable and razor-sharp",
+"A dragon at play in great waters — comes alive on the biggest stage","A creek along the snake path — seeps in quietly, impossible to forget",
+"A flower cart drawn by horses — your commute is a parade","A wildflower on the sheep hill — harmless face, takes everything",
+"Sunlight in a monkey's hand — wins the room with cheerful tricks","A rooster's comb by candlelight — remembered for atmosphere alone",
+"A hill fort guarded by dogs — reliability that converts straight to fandom","A rich field by the water — gathers people by feeding them",
+"A blade dipped in winter water — the cool face that fans stick to","A jewel in frozen ground — unearthed late, prized double",
+"A river carrying a tiger — a daily headline of fearless moves","Clover in spring rain — triggers everyone's protective instinct",
+"A great tree on a dragon's back — overwhelms by sheer scale","A flower living with a snake — the dangerous fragrance that pulls",
+"The noon sun at full gallop — celebrity known across the kingdom","A campfire by the flock — once you let someone near, they never leave",
+"A rocky mountain where monkeys play — imposing yet accidentally funny","The farmer feeding the hens — affection deposited daily like savings",
+"A white sword flanked by hounds — quiet back, fan letters anyway","A pearl in deep water — premium, for those in the know",
+"A midnight ocean — the deeper you look, the deeper you fall","An ox walking the frozen road — stays to the end and wins",
+"The chief tree of the tiger forest — people just start following","A spring field full of clover — your existence is healing content",
+"The sun rising over a dragon — the spotlight follows you around","A candle guarded by a snake — flickers, never dies, breaks hearts",
+"A volcano holding its heat — the day it erupts, the server goes down","A hill that feeds the flock — gives everything away, still overflowing",
+"A famed sword in a monkey's hand — skill and showmanship in one","A gem polished like a mirror — wins on sheer completeness",
+"A loyal hound by great waters — people fall for the guarding, not the guard","Rainwater returning to the sea — rides the current, loved everywhere"];
+
+var GANR=["Gap","Eul","Byeong","Jeong","Mu","Gi","Gyeong","Sin","Im","Gye"];
+var JIR=["ja","chuk","in","myo","jin","sa","o","mi","sin","yu","sul","hae"];
+function p60name(i){ return GANR[i%10]+JIR[i%12]+" ("+GANH[i%10]+JIH[i%12]+")"; }
+function roleOf(y,m,d,t){
+  var s=popularity(y,m,d,t);
+  var dp=dayPillarIdx(y,m,d);
+  var r;
+  if(GWI[dp]) r=ROLE_MAOU;
+  else if(s>=97) r=ROLE_BLACK;
+  else r=ROLES[dp%10];
+  return {s:s, dp:dp, role:r, top:topPct(s), fc:fancafe(y,m,d,t)};
+}
+
+/* ── UI ── */
+(function(){
+var $=function(id){return document.getElementById(id);};
+var TSLOT=["Not sure","Rat hour (23:30–01:30)","Ox hour (01:30–03:30)","Tiger hour (03:30–05:30)","Rabbit hour (05:30–07:30)",
+ "Dragon hour (07:30–09:30)","Snake hour (09:30–11:30)","Horse hour (11:30–13:30)","Goat hour (13:30–15:30)",
+ "Monkey hour (15:30–17:30)","Rooster hour (17:30–19:30)","Dog hour (19:30–21:30)","Pig hour (21:30–23:30)"];
+var cur=null;
+var PH='Select';
+var MSG_PICK='Please select your full birth date.';
+var RETRY_OWN='👀 What would your friends get? Try another date';
+var RETRY_SHARED='✨ Check my own isekai popularity';
+var MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+function fillSel(el,arr,vals){ var h=''; for(var i=0;i<arr.length;i++) h+='<option value="'+(vals?vals[i]:arr[i])+'">'+arr[i]+'</option>'; el.innerHTML=h; }
+function initInputs(){
+  var ys=[PH],yv=['']; for(var y=1940;y<=2020;y++){ys.push(String(y));yv.push(y);}
+  fillSel($('by'),ys,yv);
+  var ms=[PH],mv=['']; for(var m=1;m<=12;m++){ms.push(MONTHS[m-1]);mv.push(m);}
+  fillSel($('bm'),ms,mv);
+  /* slot 0 ("Not sure") has an empty value = untouched state = time unknown */
+  var ts=[],tv=[]; for(var t=0;t<13;t++){ts.push(TSLOT[t]);tv.push(t===0?'':t);}
+  fillSel($('bt'),ts,tv);
+  /* first visit always shows an empty form — no default birth date */
+  clearInputs();
+}
+function daysIn(y,m){ return new Date(Date.UTC(y,m,0)).getUTCDate(); }
+function fillDays(){
+  var yv=$('by').value,mv=$('bm').value,old=$('bd').value;
+  var n=(yv&&mv)?daysIn(+yv,+mv):31;
+  var ds=[PH],dv=[''];
+  for(var d=1;d<=n;d++){ds.push(String(d));dv.push(d);}
+  fillSel($('bd'),ds,dv);
+  $('bd').value=old?String(Math.min(+old,n)):'';
+}
+/* clear birth date, time, and nickname */
+function clearInputs(){
+  $('by').value=''; $('bm').value=''; $('bd').value='';
+  fillDays();
+  $('bt').value=''; $('nick').value='';
+  $('formMsg').textContent='';
+}
+$('by').addEventListener('change',fillDays);
+$('bm').addEventListener('change',fillDays);
+
+/* ── result-value encoding (v) ────────────────────────────────────────
+   The share link carries only what's needed to draw the result screen/card.
+   Birth date (y/m/d) and time (t) are NOT included and cannot be recovered.
+     ri : role index 0–11 (0–9=ROLES, 10=Demon Lord, 11=Mastermind)
+     s  : popularity 1–99
+     fc : fan-club members 3,000–980,000
+     dp : day-pillar index 0–59
+   The percentile follows from topPct(s), so it isn't stored.
+   Same result = same v = same URL. */
+var V_FC_MIN=3000, V_FC_MAX=980000, V_FC_N=V_FC_MAX-V_FC_MIN+1;
+var V_MAX=((11*99+98)*V_FC_N+(V_FC_N-1))*60+59;
+function encodeV(ri,s,fc,dp){
+  return ((((ri*99)+(s-1))*V_FC_N+(fc-V_FC_MIN))*60+dp).toString(36);
+}
+function decodeV(str){
+  if(typeof str!=='string') return null;
+  str=str.toLowerCase();
+  if(!/^[0-9a-z]{1,8}$/.test(str)) return null;
+  var v=parseInt(str,36);
+  if(!isFinite(v)||v<0||v>V_MAX||Math.floor(v)!==v) return null;
+  var dp=v%60; v=(v-dp)/60;
+  var fc=v%V_FC_N+V_FC_MIN; v=(v-(fc-V_FC_MIN))/V_FC_N;
+  var s=v%99+1; v=(v-(s-1))/99;
+  var ri=v;
+  if(!(ri>=0&&ri<=11)) return null;
+  if(!(s>=1&&s<=99)) return null;
+  if(!(fc>=V_FC_MIN&&fc<=V_FC_MAX)) return null;
+  if(!(dp>=0&&dp<=59)) return null;
+  return {ri:ri,s:s,fc:fc,dp:dp};
+}
+function roleByIdx(i){ return i<10?ROLES[i]:(i===10?ROLE_MAOU:ROLE_BLACK); }
+
+var animId=null;
+function countUp(el,target){
+  if(animId)cancelAnimationFrame(animId);
+  var t0=null,DUR=1200;
+  function step(ts){
+    if(!t0)t0=ts;
+    var p=Math.min(1,(ts-t0)/DUR);
+    var e=1-Math.pow(1-p,3);
+    el.textContent=Math.round(target*e);
+    if(p<1)animId=requestAnimationFrame(step); else animId=null;
+  }
+  animId=requestAnimationFrame(step);
+}
+
+function setRetryMode(shared){ $('retryBtn').textContent=shared?RETRY_SHARED:RETRY_OWN; }
+
+/* compute path: birth date → result values → shared renderer */
+function render(y,m,d,t,nick,shared){
+  var R=roleOf(y,m,d,t);
+  renderResult({ri:R.role.img-1,s:R.s,fc:R.fc,dp:R.dp,nick:nick,shared:shared});
+}
+/* shared renderer: draws the result screen from result values only */
+function renderResult(D){
+  var r=roleByIdx(D.ri);
+  var R={s:D.s,fc:D.fc,dp:D.dp,top:topPct(D.s),role:r};
+  cur={ri:D.ri,s:D.s,fc:D.fc,dp:D.dp,top:R.top,nick:D.nick||'',role:r,R:R};
+  var box=$('roleImgBox');
+  box.style.setProperty('--g1',r.g[0]);
+  box.style.setProperty('--g2',r.g[1]);
+  $('fbEmo').textContent=r.emo;
+  var im=$('roleImg');
+  im.style.display='';
+  im.onerror=function(){ this.style.display='none'; };
+  im.src='/tests/isekai/img/role-'+String(r.img).padStart(2,'0')+'.png';
+  $('roleName').textContent=r.nm;
+  $('roleCatch').textContent='“'+r.ct+'”';
+  countUp($('popNum'),R.s);
+  var tp=$('topPct');
+  if(R.top<=50){ tp.className='topPct'; tp.textContent='🏆 Top '+R.top+'% of all birth dates'; }
+  else { tp.className='topPct cult'; tp.textContent='🔮 Top '+R.top+'% · cult favorite'; }
+  $('fanCafe').innerHTML='🏰 Isekai fan club: <b>'+R.fc.toLocaleString('en-US')+'</b> members';
+  $('iljuLine').innerHTML='Your day pillar: <b>'+p60name(R.dp)+'</b> — '+ILJU[R.dp];
+  $('roleDesc').textContent=(R.s<30?CULT+' ':'')+r.desc;
+  $('roleFans').innerHTML='<b>Core fan base</b> — '+r.fan;
+  $('mateGood').innerHTML=r.mateTx?r.mateTx:'<b>'+ROLES[r.mate].emo+' '+ROLES[r.mate].nm+'</b> — the '+GANR[r.mate]+' ('+ELM(r.mate)+') day master';
+  $('mateBad').innerHTML=r.worstTx?r.worstTx:'<b>'+ROLES[r.worst].emo+' '+ROLES[r.worst].nm+'</b> — the '+GANR[r.worst]+' ('+ELM(r.worst)+') day master';
+  $('copied').textContent='';
+  setRetryMode(!!D.shared);
+  $('res').classList.remove('hidden');
+}
+function ELM(g){ return ['Wood','Wood','Fire','Fire','Earth','Earth','Metal','Metal','Water','Water'][g]; }
+/* INP: flip only the button state on click so one frame paints,
+   then defer the heavy chart computation and result render to the next frame. */
+var GO_BUSY_TX='✨ Summoning…', GO_BUSY_MIN=280, goBusy=false;
+function setGoBusy(on){
+  var b=$('goBtn');
+  if(on){
+    b.dataset.idle=b.textContent; b.textContent=GO_BUSY_TX;
+    b.dataset.hadFocus=(document.activeElement===b)?'1':'';
+    b.disabled=true;
+  }else{
+    if(b.dataset.idle) b.textContent=b.dataset.idle;
+    b.disabled=false;
+    if(b.dataset.hadFocus){ try{ b.focus({preventScroll:true}); }catch(e){} }
+  }
+}
+function runDeferred(fn){
+  if(goBusy) return;
+  goBusy=true;
+  var t0=Date.now();
+  setGoBusy(true);
+  requestAnimationFrame(function(){ setTimeout(function(){
+    try{ fn(); }
+    finally{
+      /* keep a minimum busy-state duration so it doesn't flicker on fast devices */
+      var rest=GO_BUSY_MIN-(Date.now()-t0);
+      setTimeout(function(){ setGoBusy(false); goBusy=false; }, rest>0?rest:0);
+    }
+  },0); });
+}
+$('goBtn').addEventListener('click',function(){
+  if(goBusy) return;
+  var yv=$('by').value,mv=$('bm').value,dv=$('bd').value;
+  if(!yv||!mv||!dv){ $('formMsg').textContent=MSG_PICK; (!yv?$('by'):(!mv?$('bm'):$('bd'))).focus(); return; }
+  $('formMsg').textContent='';
+  var y=+yv,m=+mv,d=+dv,t=+$('bt').value||0;
+  var nick=$('nick').value.trim();
+  runDeferred(function(){
+    render(y,m,d,t,nick,false);
+    var u=new URL(location.href);
+    u.searchParams.set('v',encodeV(cur.ri,cur.s,cur.fc,cur.dp));
+    if(nick) u.searchParams.set('n',nick); else u.searchParams.delete('n');
+    history.replaceState(null,'',u.pathname+u.search);
+    $('res').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
+$('retryBtn').addEventListener('click',function(){
+  $('res').classList.add('hidden');
+  cur=null;
+  history.replaceState(null,'',location.pathname);
+  clearInputs();
+  setRetryMode(false);
+  $('inputPanel').scrollIntoView({behavior:'smooth',block:'start'});
+});
+function shareText(){
+  if(!cur)return '';
+  /* Link to the per-position share stub (/s/NN/) so the preview shows the art.
+     The stub forwards the query back to this page, reproducing the result. */
+  var nn=String(cur.role.img).padStart(2,'0');
+  var base=location.pathname.replace(/\/$/,'');
+  var u=location.origin+base+'/s/'+nn+'/?v='+encodeV(cur.ri,cur.s,cur.fc,cur.dp)+
+    (cur.nick?'&n='+encodeURIComponent(cur.nick):'');
+  return '🌙 In an isekai world I\'m the "'+cur.role.nm+'", '+cur.s+'% popularity! Fan club: '+
+    cur.fc.toLocaleString('en-US')+' members. What\'s yours?\n'+u;
+}
+$('shareLink').addEventListener('click',function(){
+  if(!cur)return;
+  var u=shareText();
+  var done=function(){ $('copied').textContent='✅ Result and link copied. Paste it to a friend!'; };
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(u).then(done,function(){fallbackCopy(u);done();});
+  }else{ fallbackCopy(u); done(); }
+});
+function fallbackCopy(txt){
+  var ta=document.createElement('textarea'); ta.value=txt;
+  ta.style.cssText='position:fixed;opacity:0'; document.body.appendChild(ta);
+  ta.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(ta);
+}
+
+/* ── result card (1080×1350) ── */
+function loadImg(src){
+  return new Promise(function(res){
+    var im=new Image();
+    im.onload=function(){res(im);}; im.onerror=function(){res(null);};
+    im.src=src;
+  });
+}
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
+}
+var CARD_FONT='-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif';
+function makeCard(){
+  if(!cur)return Promise.resolve(null);
+  var R=cur.R,r=R.role;
+  var W=1080,H=1350;
+  var c=document.createElement('canvas'); c.width=W; c.height=H;
+  var x=c.getContext('2d');
+  return loadImg('/tests/isekai/img/role-'+String(r.img).padStart(2,'0')+'.png').then(function(im){
+    /* background: night sky */
+    var bg=x.createLinearGradient(0,0,0,H);
+    bg.addColorStop(0,'#1c1642'); bg.addColorStop(1,'#090716');
+    x.fillStyle=bg; x.fillRect(0,0,W,H);
+    /* stars — seeded from result values only (a birth-date seed would leak the birthday) */
+    var hs=hash32('star:'+cur.dp+'-'+cur.s+'-'+cur.fc);
+    for(var i=0;i<70;i++){
+      hs=(Math.imul(hs,1664525)+1013904223)>>>0;
+      var sx=hs%W; var sy=(hs>>>11)%H; var ss=((hs>>>22)%3)*0.6+0.6;
+      x.globalAlpha=0.18+((hs>>>7)%50)/100;
+      x.fillStyle=(hs>>>5)%7===0?'#f2c14e':'#ffffff';
+      x.fillRect(sx,sy,ss,ss);
+    }
+    x.globalAlpha=1;
+    /* top label */
+    x.textAlign='center';
+    x.fillStyle='#7b7499';
+    x.font='700 34px '+CARD_FONT;
+    x.fillText('🌙 ISEKAI POPULARITY REPORT 🌙',W/2,96);
+    if(cur.nick){
+      x.fillStyle='#ece9f8';
+      x.font='700 44px '+CARD_FONT;
+      x.fillText(cur.nick,W/2,168);
+    }
+    /* position image / emoji */
+    var IS=360, ix=(W-IS)/2, iy=cur.nick?190:152;
+    var gr=x.createLinearGradient(ix,iy,ix+IS,iy+IS);
+    gr.addColorStop(0,r.g[0]); gr.addColorStop(1,r.g[1]);
+    roundRect(x,ix,iy,IS,IS,48);
+    x.fillStyle=gr; x.fill();
+    if(im){
+      x.save(); roundRect(x,ix,iy,IS,IS,48); x.clip();
+      x.drawImage(im,ix,iy,IS,IS); x.restore();
+    }else{
+      x.font='196px -apple-system,"Apple Color Emoji","Noto Color Emoji",sans-serif';
+      x.textBaseline='middle';
+      x.fillText(r.emo,W/2,iy+IS/2+14);
+      x.textBaseline='alphabetic';
+    }
+    var yy=iy+IS+80;
+    x.fillStyle='#ece9f8';
+    var nmSize=64;
+    x.font='800 '+nmSize+'px '+CARD_FONT;
+    while(x.measureText(r.nm).width>W-120&&nmSize>40){ nmSize-=4; x.font='800 '+nmSize+'px '+CARD_FONT; }
+    x.fillText(r.nm,W/2,yy);
+    x.fillStyle='#aca6cc';
+    var ctSize=34;
+    x.font='400 '+ctSize+'px '+CARD_FONT;
+    while(x.measureText('“'+r.ct+'”').width>W-100&&ctSize>22){ ctSize-=2; x.font='400 '+ctSize+'px '+CARD_FONT; }
+    x.fillText('“'+r.ct+'”',W/2,yy+56);
+    /* big popularity number */
+    x.fillStyle='#7b7499';
+    x.font='700 32px '+CARD_FONT;
+    x.fillText('ISEKAI POPULARITY',W/2,yy+140);
+    x.fillStyle='#f2c14e';
+    x.font='800 220px '+CARD_FONT;
+    x.fillText(R.s+'%',W/2,yy+352);
+    /* percentile badge */
+    var btxt='🏆 Top '+R.top+'% of all birth dates'+(R.top>50?' · cult favorite':'');
+    x.font='700 38px '+CARD_FONT;
+    var bw=x.measureText(btxt).width+72;
+    roundRect(x,(W-bw)/2,yy+400,bw,80,40);
+    x.fillStyle=R.top<=50?'#2b2310':'#241b3e'; x.fill();
+    x.fillStyle=R.top<=50?'#f2c14e':'#b39dfb';
+    x.fillText(btxt,W/2,yy+453);
+    /* fan-club members */
+    x.fillStyle='#f2c14e';
+    x.font='700 40px '+CARD_FONT;
+    x.fillText('🏰 Isekai fan club: '+R.fc.toLocaleString('en-US')+' members',W/2,yy+536);
+    /* day pillar */
+    x.fillStyle='#aca6cc';
+    x.font='400 33px '+CARD_FONT;
+    var il='Day pillar '+p60name(R.dp)+' · '+ILJU[R.dp];
+    if(x.measureText(il).width>W-100){ il='Day pillar '+p60name(R.dp)+' · '+ILJU[R.dp].split(' — ')[0]; }
+    x.fillText(il,W/2,yy+600);
+    /* bottom URL */
+    x.fillStyle='#7b7499';
+    x.font='700 36px '+CARD_FONT;
+    x.fillText('kmagpie.com/en/tests/isekai',W/2,H-48);
+    return c;
+  });
+}
+function cardBlob(){
+  return makeCard().then(function(c){
+    if(!c)return null;
+    return new Promise(function(res){ c.toBlob(res,'image/png'); });
+  });
+}
+function saveBlob(blob){
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download='isekai-result.png';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){URL.revokeObjectURL(a.href);},4000);
+  $('copied').textContent='✅ Result card saved. Show it off!';
+}
+var IS_MOBILE=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+$('shareCard').addEventListener('click',function(){
+  cardBlob().then(function(blob){
+    if(!blob)return;
+    var f=new File([blob],'isekai-result.png',{type:'image/png'});
+    /* Desktop always downloads. Mobile tries the share sheet first,
+       falling back to download on (non-cancel) failure. */
+    if(IS_MOBILE&&navigator.share&&navigator.canShare&&navigator.canShare({files:[f]})){
+      navigator.share({files:[f],title:'Isekai Popularity Report',
+        text:'My isekai popularity is '+cur.s+'%! What\'s yours? https://www.kmagpie.com/en/tests/isekai/'})
+        .catch(function(err){ if(!err||err.name!=='AbortError') saveBlob(blob); });
+    }else{
+      saveBlob(blob);
+    }
+  });
+});
+
+initInputs();
+setRetryMode(false);
+/* share-link entry — the input form is never pre-filled */
+(function(){
+  var q=new URLSearchParams(location.search);
+  var nick=(q.get('n')||'').slice(0,12);
+  var vv=q.get('v');
+  if(vv===null) return;
+  var dv=decodeV(vv);
+  if(!dv) return;                 /* failed validation → empty input screen, no result */
+  clearInputs();
+  renderResult({ri:dv.ri,s:dv.s,fc:dv.fc,dp:dv.dp,nick:nick,shared:true});
+})();
+
+/* test hooks */
+window.ISEKAI={popularity:popularity,fancafe:fancafe,roleOf:roleOf,dayPillarIdx:dayPillarIdx,
+  yearPillarIdx:yearPillarIdx,monthPillar:monthPillar,topPct:topPct,
+  encodeV:encodeV,decodeV:decodeV,roleByIdx:roleByIdx,
+  makeCard:makeCard,cardBlob:cardBlob,render:render,renderResult:renderResult,shareText:shareText,
+  clearInputs:clearInputs,setRetryMode:setRetryMode,
+  ROLES:ROLES,ROLE_MAOU:ROLE_MAOU,ROLE_BLACK:ROLE_BLACK,ILJU:ILJU,p60name:p60name,CULT:CULT};
+})();
+</script>
+</body>
+</html>
