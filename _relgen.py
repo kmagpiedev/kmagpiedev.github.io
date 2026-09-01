@@ -79,6 +79,10 @@ TOOLS = {
                    '앱 화면 캡처에 배경·기기 프레임·홍보 문구를 얹어 Play 스토어와 App Store 등록 규격에 맞는 이미지로 만들어 ZIP으로 받습니다. 알파 없는 24비트 PNG로 내보내고 피처 그래픽도 지원합니다.'),
  'privacy-policy':('📄','개인정보처리방침 생성기','Play 스토어 심사용',
                    '수집 항목과 사용 중인 SDK를 고르면 Play 스토어 심사용 개인정보처리방침을 한국어·영어로 만들어 HTML 파일로 받습니다.'),
+ 'bmi':           ('⚖️','BMI 계산기','기초대사량·하루 소비 칼로리까지',
+                   '키와 몸무게로 BMI를 계산하고 대한비만학회 기준과 WHO 기준을 함께 보여줍니다. 나이·성별·활동량을 넣으면 기초대사량과 하루 총 에너지 소비량까지 계산합니다.'),
+ 'percent':       ('％','퍼센트 계산기','할인율·증감률·비율 역산',
+                   '전체의 몇 %, 비율 역산, 증감률, 할인가, 전체값 역산까지 다섯 가지 퍼센트 계산을 한 화면에서 합니다. 계산식을 그대로 보여줘서 검산할 수 있습니다.'),
 }
 
 # 목록 페이지 분류 (순서가 곧 노출 순서)
@@ -94,13 +98,15 @@ CATS = [
  ('자동차', '차를 사고 유지할 때 내는 세금입니다. 확인되지 않은 항목은 계산에 넣지 않고 어디서 확인해야 하는지 알려드립니다.',
   ['car-tax','car-acquisition','fuel-cost']),
  ('생활 편의', '집과 일상에서 자주 찾게 되는 계산입니다. 가입도 설치도 없이 바로 쓰고, 근거가 확인된 값만 계산합니다.',
-  ['electricity','pyeong','lunar','manse','date-calc','char-count','qr','minutes']),
+  ['electricity','pyeong','percent','bmi','lunar','manse','date-calc','char-count','qr','minutes']),
  ('앱 개발',    '안드로이드 앱을 출시할 때 반복적으로 필요한 작업들입니다. 직접 앱을 만들며 필요해서 만든 도구예요.',
   ['app-icon','screenshot','privacy-policy']),
 ]
 
 # 각 도구 페이지 하단에 노출할 관련 도구 (맥락 흐름 순)
 REL = {
+ 'bmi':           ['date-calc','electricity','fuel-cost'],
+ 'percent':       ['deposit','loan','salary'],
  'salary':        ['severance','loan','annual-leave'],
  'loan':          ['deposit','salary','severance'],
  'deposit':       ['loan','salary','severance'],

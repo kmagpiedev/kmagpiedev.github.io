@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>퍼센트 계산기 — 할인율·증감률·비율 역산까지 한 번에 | 까치툴</title>
+<meta name="description" content="퍼센트 계산기로 할인율 계산·증감률 계산·비율 역산을 한 번에 합니다. 50,000원의 15%, 30은 200의 몇 %, 80에서 100은 몇 % 증가인지 바로 나오고, 30% 할인 뒤 20% 추가 할인이 왜 50%가 아닌지, 부가세 10% 역산까지 계산 과정을 그대로 보여드립니다.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/percent/">
+<meta property="og:title" content="퍼센트 계산기 — 할인율·증감률·비율 역산까지 한 번에">
+<meta property="og:description" content="전체의 몇 %, 비율 역산, 증감률, 할인가, 전체값 역산까지 다섯 가지 퍼센트 계산을 계산 과정과 함께 보여드립니다.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/percent/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  .panel h2{margin:0 0 4px;font-size:17px}
+  .pd{font-size:13px;color:var(--ink-3);margin:0 0 14px}
+  .row{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start}
+  .col{flex:1;min-width:190px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
+  input[type=text],input[type=number]{padding:10px 12px;border:1px solid var(--line);border-radius:9px;
+    background:var(--surface);color:var(--ink);font-size:16px;font-family:inherit;width:100%;
+    text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+  input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .mini{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+  .mini button{font-family:inherit;font-size:12.5px;padding:5px 10px;border-radius:7px;border:1px solid var(--line);
+    background:transparent;color:var(--ink-2);cursor:pointer}
+  .mini button:hover{border-color:var(--accent);color:var(--accent)}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:12px 0 0}
+
+  .sent{font-size:16.5px;margin:0 0 6px;line-height:2.3}
+  .sent input[type=text]{display:inline-block;width:120px;padding:8px 10px;vertical-align:baseline;margin:0 2px}
+  .sent input.nar{width:78px}
+  .sent select{display:inline-block;padding:8px 8px;border:1px solid var(--line);border-radius:9px;
+    background:var(--surface);color:var(--ink);font-size:15px;font-family:inherit;font-weight:600;
+    vertical-align:baseline;margin:0 2px;cursor:pointer}
+  .sent select:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .ansline{margin:6px 0 0;font-size:14px;color:var(--ink-2)}
+  .ans{font-size:26px;font-weight:800;letter-spacing:-.02em;color:var(--accent);
+    font-variant-numeric:tabular-nums;margin-left:4px;overflow-wrap:anywhere}
+  .ans.up{color:var(--good)}
+  .ans.down{color:var(--bad)}
+  .formula{font-size:13px;color:var(--ink-3);margin:8px 0 0;font-variant-numeric:tabular-nums;
+    border-left:2px solid var(--line);padding-left:12px;overflow-wrap:anywhere}
+
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 8px}
+  .fold .fx>:first-child{margin-top:4px}
+
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  code{background:var(--line-soft);padding:1px 5px;border-radius:4px;font-size:12.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .sent{font-size:15.5px}
+    .sent input[type=text]{width:104px}
+    .sent input.nar{width:66px}
+    .ans{font-size:23px}
+  }
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
+/*TESTS:S*/
+  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 0;padding:13px 18px;
+    border:1px solid var(--line);border-radius:14px;background:var(--surface);
+    text-decoration:none;color:inherit;transition:.14s}
+  .tbn:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .tbn .ic{width:44px;height:44px;flex:none;border-radius:12px;background:#fff;
+    border:1px solid var(--line);object-fit:contain;padding:2px}
+  .tbn .tx{flex:1;min-width:0}
+  .tbn .tt{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em}
+  .tbn .ds{display:block;font-size:13px;color:var(--ink-3);line-height:1.55;margin-top:2px}
+  .tbn .ar{color:var(--ink-3);font-size:15px;flex:none}
+/*TESTS:E*/
+</style>
+<!--LD:S-->
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://www.kmagpie.com/tools/percent/#app","name":"퍼센트 계산기","url":"https://www.kmagpie.com/tools/percent/","description":"전체의 몇 %, 비율 역산, 증감률, 할인가, 전체값 역산까지 다섯 가지 퍼센트 계산을 한 화면에서 합니다. 계산식을 그대로 보여줘서 검산할 수 있습니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"inLanguage":"ko","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"K-magpie","url":"https://www.kmagpie.com/"}},{"@type":"BreadcrumbList","@id":"https://www.kmagpie.com/tools/percent/#crumb","itemListElement":[{"@type":"ListItem","position":1,"name":"K-magpie","item":"https://www.kmagpie.com/"},{"@type":"ListItem","position":2,"name":"까치툴","item":"https://www.kmagpie.com/tools/"},{"@type":"ListItem","position":3,"name":"퍼센트 계산기","item":"https://www.kmagpie.com/tools/percent/"}]}]}</script>
+<!--LD:E-->
+<!--HEAD:S-->
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
+<meta property="og:site_name" content="까치툴">
+<link rel="manifest" href="/tools/manifest.json">
+<meta name="theme-color" content="#faf9f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#171614" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="까치툴">
+<script>/*PWA*/(function(){var L=document.documentElement.lang==='en';
+if('serviceWorker' in navigator)addEventListener('load',function(){navigator.serviceWorker.register('/sw.js',{scope:'/'})['catch'](function(){})});
+var p=null,armed=false;addEventListener('beforeinstallprompt',function(e){e.preventDefault();p=e;arm()});
+function arm(){if(armed)return;armed=true;var h=function(){removeEventListener('pointerdown',h,true);removeEventListener('keydown',h,true);show()};
+addEventListener('pointerdown',h,true);addEventListener('keydown',h,true)}
+addEventListener('appinstalled',function(){p=null;var b=document.getElementById('pwaBtn');if(b)b.style.visibility='hidden'});
+function show(){if(document.getElementById('pwaBtn'))return;
+var a=document.querySelector('.sub')||document.querySelector('h1');if(!a)return;
+var b=document.createElement('button');b.id='pwaBtn';b.type='button';
+b.textContent=L?'⬇ Install as an app':'📲 앱으로 설치';
+b.style.cssText='display:inline-block;margin:0 0 22px;padding:8px 15px;border-radius:9px;font:600 13.5px/1.4 inherit;cursor:pointer;background:transparent;color:var(--accent,#b45309);border:1px solid var(--accent,#b45309)';
+b.title=L?'Works offline once installed':'설치하면 인터넷 없이도 쓸 수 있습니다';
+b.onclick=function(){if(!p)return;p.prompt();p.userChoice.then(function(){p=null;b.style.visibility='hidden'})};
+a.insertAdjacentElement('afterend',b)}})();</script>
+<!--HEAD:E-->
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › 퍼센트 계산기</p>
+
+<h1>퍼센트 계산기</h1>
+<p class="sub">일상에서 마주치는 퍼센트 계산 다섯 가지를 <strong>한 페이지에서</strong> 해결합니다. 숫자를 넣는 즉시 답이 나오고, 어떤 식으로 계산했는지 <strong>계산 과정을 그대로</strong> 보여드립니다. 할인가, 증감률, 부가세 역산까지 전부 이 안에 있습니다.</p>
+
+<div class="panel">
+  <h2>① 전체의 몇 퍼센트</h2>
+  <p class="pd">전체 값에서 일정 비율만큼이 얼마인지 구합니다. 팁, 수수료, 부가세 계산이 여기에 해당합니다.</p>
+  <p class="sent"><input type="text" id="a1" inputmode="decimal" value="50,000" aria-label="전체 값">의
+    <input type="text" id="b1" class="nar" inputmode="decimal" value="15" aria-label="퍼센트">%는?
+    <span class="ansline">답 <span class="ans" id="res1"></span></span></p>
+  <p class="formula" id="f1"></p>
+  <div class="mini" id="q1">
+    <button data-a="50,000" data-b="15">50,000원의 15%</button>
+    <button data-a="30,000" data-b="10">부가세 10%</button>
+    <button data-a="3,000,000" data-b="5">인상률 5%</button>
+    <button data-a="120,000" data-b="30">할인 30%</button>
+  </div>
+</div>
+
+<div class="panel">
+  <h2>② 비율 역산 — 몇 퍼센트인가</h2>
+  <p class="pd">부분이 전체에서 차지하는 비율을 구합니다. 목표 달성률, 득표율, 점수 비율에 씁니다.</p>
+  <p class="sent"><input type="text" id="a2" inputmode="decimal" value="30" aria-label="부분 값">는(은)
+    <input type="text" id="b2" inputmode="decimal" value="200" aria-label="전체 값">의 몇&nbsp;%?
+    <span class="ansline">답 <span class="ans" id="res2"></span></span></p>
+  <p class="formula" id="f2"></p>
+  <div class="mini" id="q2">
+    <button data-a="30" data-b="200">30은 200의?</button>
+    <button data-a="45" data-b="60">45점/60점</button>
+    <button data-a="7,500" data-b="50,000">7,500/50,000</button>
+  </div>
+</div>
+
+<div class="panel">
+  <h2>③ 증감률 — 몇 퍼센트 늘거나 줄었나</h2>
+  <p class="pd">이전 값에서 이후 값으로 바뀌었을 때의 변화율입니다. 매출 증감, 가격 변동, 몸무게 변화에 씁니다.</p>
+  <p class="sent"><input type="text" id="a3" inputmode="decimal" value="80" aria-label="이전 값">에서
+    <input type="text" id="b3" inputmode="decimal" value="100" aria-label="이후 값">(으)로 바뀌면?
+    <span class="ansline">답 <span class="ans" id="res3"></span></span></p>
+  <p class="formula" id="f3"></p>
+  <div class="mini" id="q3">
+    <button data-a="80" data-b="100">80 → 100</button>
+    <button data-a="100" data-b="80">100 → 80</button>
+    <button data-a="1,200,000" data-b="1,500,000">120만 → 150만</button>
+  </div>
+</div>
+
+<div class="panel">
+  <h2>④ 퍼센트 증가·할인 — 얼마가 되나</h2>
+  <p class="pd">값에 비율을 적용한 결과를 구합니다. 세일가, 인상된 월급, 이자 붙은 금액이 여기입니다.</p>
+  <p class="sent"><input type="text" id="a4" inputmode="decimal" value="50,000" aria-label="기준 값">에서
+    <input type="text" id="b4" class="nar" inputmode="decimal" value="30" aria-label="퍼센트">%
+    <select id="m4" aria-label="증가 또는 할인"><option value="disc" selected>할인</option><option value="inc">증가</option></select>하면?
+    <span class="ansline">답 <span class="ans" id="res4"></span></span></p>
+  <p class="formula" id="f4"></p>
+  <div class="mini" id="q4">
+    <button data-a="50,000" data-b="30" data-m="disc">할인 30%</button>
+    <button data-a="10,000" data-b="10" data-m="inc">부가세 10% 붙이기</button>
+    <button data-a="3,000,000" data-b="5" data-m="inc">인상률 5%</button>
+    <button data-a="100" data-b="3" data-m="inc">3% 증가</button>
+  </div>
+</div>
+
+<div class="panel">
+  <h2>⑤ 전체값 역산 — 전체는 얼마인가</h2>
+  <p class="pd">일부 금액과 그 비율을 알 때 전체를 거꾸로 구합니다. "계약금 10%가 3,000만원이면 집값은?" 같은 문제입니다.</p>
+  <p class="sent"><input type="text" id="b5" class="nar" inputmode="decimal" value="15" aria-label="퍼센트">%가
+    <input type="text" id="a5" inputmode="decimal" value="7,500" aria-label="부분 값">(이)라면 전체는?
+    <span class="ansline">답 <span class="ans" id="res5"></span></span></p>
+  <p class="formula" id="f5"></p>
+  <div class="mini" id="q5">
+    <button data-b="15" data-a="7,500">15%가 7,500</button>
+    <button data-b="10" data-a="30,000,000">계약금 10%가 3천만</button>
+    <button data-b="20" data-a="12,000">20%가 12,000</button>
+  </div>
+  <p class="note">부가세 포함가에서 공급가액을 뽑을 때는 이 계산기가 아니라 아래 <strong>부가세 10% 역산</strong> 설명을 먼저 읽어보세요. 11,000원의 10%를 빼는 게 아니라 11로 나누고 10을 곱해야 합니다.</p>
+</div>
+
+<p class="gist">다섯 계산기는 전부 한 가지 관계의 변형입니다. <strong>부분 = 전체 × p/100</strong>. 이 식에서 부분을 구하면 ①과 ④, p를 구하면 ②와 ③, 전체를 구하면 ⑤가 됩니다. 어느 자리가 비어 있는지만 파악하면 어떤 퍼센트 문제든 세 공식 중 하나로 풀립니다.</p>
+
+<details class="fold" open><summary><h2>퍼센트의 뜻과 기본 3공식</h2></summary><div class="fx">
+<p>퍼센트(%)는 라틴어 per centum, "100마다"라는 뜻입니다. 15%는 100 가운데 15, 즉 15/100 = 0.15라는 비율을 가리킵니다. 퍼센트가 헷갈리는 이유는 대부분 <strong>"무엇의" 15%인지</strong>, 즉 기준이 되는 전체가 무엇인지를 놓치기 때문입니다. 기준만 분명히 하면 퍼센트 계산은 아래 세 공식이 전부입니다.</p>
+<p><strong>공식 1 — 부분 구하기: 부분 = 전체 × p/100.</strong> 50,000원의 15%는 50,000 × 15/100 = 7,500원입니다. 위의 ①번 계산기가 이 공식이고, ④번 증가·할인 계산기도 사실 같은 공식입니다. 30% 할인이면 전체 × (100−30)/100, 즉 남는 70%를 구하는 것이고, 5% 인상이면 전체 × (100+5)/100로 105%를 구하는 것뿐입니다.</p>
+<p><strong>공식 2 — 비율 구하기: p = 부분 ÷ 전체 × 100.</strong> 30이 200에서 차지하는 비율은 30 ÷ 200 × 100 = 15%입니다. ②번 계산기가 이 공식이고, ③번 증감률도 같은 공식입니다. 증감률은 "변화량(이후−이전)이 이전 값에서 차지하는 비율"이라서, 80에서 100이 되면 (100−80) ÷ 80 × 100 = 25% 증가입니다.</p>
+<p><strong>공식 3 — 전체 구하기: 전체 = 부분 ÷ (p/100).</strong> 15%가 7,500원이라면 전체는 7,500 ÷ 0.15 = 50,000원입니다. ⑤번 계산기가 이 공식입니다. 나눗셈이 들어가서 셋 중 가장 어색하게 느껴지지만, 공식 1을 거꾸로 뒤집은 것에 지나지 않습니다.</p>
+<p>정리하면 전체, 부분, 비율 세 값 중 <strong>둘을 알면 나머지 하나는 반드시 구할 수 있습니다.</strong> 어떤 퍼센트 문제를 만나든 "전체가 뭐지? 부분이 뭐지? 비율이 뭐지?"를 먼저 묻고, 비어 있는 자리에 맞는 공식을 고르시면 됩니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>퍼센트와 퍼센트포인트(%p)의 차이</h2></summary><div class="fx">
+<p>뉴스에서 가장 자주 오독되는 표현이 이것입니다. 예금 금리가 3%에서 4%로 올랐다고 해봅시다. 이건 <strong>"1%p(퍼센트포인트) 상승"</strong>이지 "1% 상승"이 아닙니다. 퍼센트포인트는 퍼센트 두 값의 단순한 뺄셈 차이(4 − 3 = 1)를 가리키는 단위입니다.</p>
+<p>그럼 몇 % 상승일까요? 증감률 공식을 그대로 적용하면 (4 − 3) ÷ 3 × 100 = <strong>33.33% 상승</strong>입니다. 이자 수입으로 생각하면 명확합니다. 1억원을 맡겼을 때 이자가 연 300만원에서 400만원으로 늘었으니 이자 수입 자체는 3분의 1, 즉 33.3%가 늘어난 것이죠. "금리가 1% 올랐다"라고 쓰면 3%의 1%인 0.03%p 올라 3.03%가 됐다는 뜻이 되어버립니다.</p>
+<p>실업률 기사에서도 같은 함정이 나옵니다. 실업률이 4%에서 2%로 내려가면 "2%p 하락"이면서 동시에 "50% 감소"입니다. 어느 쪽으로 쓰느냐에 따라 체감이 완전히 달라지기 때문에, 통계를 인용하는 쪽이 유리한 표현을 골라 쓰는 일도 흔합니다. 하락 폭을 작아 보이게 하려면 "2%p 하락", 성과를 커 보이게 하려면 "절반으로 감소"라고 쓰는 식입니다.</p>
+<p>구분법은 간단합니다. <strong>퍼센트끼리의 차이는 %p, 비율로 따진 변화는 %.</strong> 지지율이 30%에서 33%가 되면 3%p 상승이자 10% 상승입니다. 기사에 %p 없이 %만 적혀 있다면 둘 중 무엇을 말하는지 한 번 의심해 보시는 게 좋습니다. 위의 ③번 증감률 계산기에 두 퍼센트 값을 그대로 넣으면 진짜 변화율이 나옵니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>할인율의 함정 — 30% 할인 후 20% 추가 할인은 50%가 아닙니다</h2></summary><div class="fx">
+<p>"전 품목 30% 할인, 오늘만 추가 20%!" 이 문구를 보면 합쳐서 50% 할인이라고 생각하기 쉽지만, 실제로는 <strong>44% 할인</strong>입니다. 할인율은 더해지는 게 아니라 곱해지기 때문입니다.</p>
+<p>100,000원짜리 물건으로 따라가 보겠습니다. 먼저 30% 할인하면 100,000 × 0.7 = 70,000원. 추가 20% 할인은 원래 가격이 아니라 <strong>이미 할인된 70,000원에</strong> 적용되므로 70,000 × 0.8 = 56,000원입니다. 남은 비율로 계산하면 0.7 × 0.8 = 0.56, 즉 원가의 56%를 내는 것이니 할인율은 100% − 56% = <strong>44%</strong>입니다. 50% 할인이라면 50,000원이어야 하는데 실제로는 56,000원을 내는 셈이죠.</p>
+<p>두 번째 할인의 기준(전체)이 첫 번째 할인으로 이미 줄어들었기 때문에 생기는 일입니다. 추가 할인은 항상 줄어든 금액에 붙으므로, 연속 할인의 총 할인율은 단순 합보다 <strong>반드시 작습니다.</strong> 판매자 입장에서는 "30% + 20%"라고 쓰는 편이 "44%"라고 쓰는 것보다 커 보이니 자주 쓰이는 표기입니다.</p>
+<p>일반화하면 a% 할인 뒤 b% 추가 할인의 최종 할인율은 100 − (100−a)(100−b)/100 입니다. 30%와 20%를 넣으면 100 − 70×80/100 = 100 − 56 = 44%가 나옵니다. 쿠폰이 겹칠 때 실제 얼마를 내는지 확인하려면 위의 ④번 계산기에 첫 할인을 적용한 결과를 다시 넣어 두 번 계산해 보시면 됩니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>증감률의 비대칭 — 50% 떨어진 뒤 50% 올라도 본전이 아닙니다</h2></summary><div class="fx">
+<p>주가 100만원짜리 주식이 50% 하락하면 50만원이 됩니다. 다음 날 50% 상승하면? 100만원으로 돌아오는 게 아니라 50만원 × 1.5 = <strong>75만원</strong>입니다. 같은 50%인데 하락은 100만원 기준이고 상승은 50만원 기준이라, 기준이 되는 전체가 달라졌기 때문입니다.</p>
+<p>퍼센트는 항상 "직전 값의 몇 %"라서, 떨어진 만큼 다시 오르는 것으로는 원금이 회복되지 않습니다. 회복에 필요한 상승률은 하락률보다 항상 큽니다. <strong>p% 하락한 뒤 원금을 회복하려면 100 × p/(100−p) % 상승이 필요합니다.</strong> 50% 하락이면 100 × 50/50 = 100% 상승, 즉 두 배가 되어야 겨우 본전입니다. 20% 하락이면 100 × 20/80 = 25% 상승이 필요하고, 90% 하락이면 무려 900% 상승, 열 배가 되어야 합니다.</p>
+<p>이 비대칭은 투자에서 특히 중요합니다. 손실이 커질수록 회복에 필요한 수익률이 가속도로 커지기 때문에, "떨어진 만큼 오르면 본전"이라는 직관은 손실을 과소평가하게 만듭니다. 반대 방향도 마찬가지입니다. 100에서 25% 오르면 125이지만, 125에서 다시 100으로 돌아가는 하락률은 25 ÷ 125 × 100 = 20%입니다.</p>
+<p>위의 ③번 계산기에 이전 값과 이후 값을 넣으면 방향까지 표시해 드립니다. 왕복 변화를 따질 때는 반드시 두 번을 각각 계산해 보세요. 올라간 퍼센트와 내려간 퍼센트가 같은 숫자라도 결과는 다릅니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>부가세 10% 역산 — 11,000원에서 공급가액 구하기</h2></summary><div class="fx">
+<p>부가세 포함 11,000원을 받았을 때 공급가액(부가세를 붙이기 전 금액)은 얼마일까요? "10%를 빼면 되지"라고 생각해 11,000 × 0.9 = 9,900원으로 계산하면 <strong>틀립니다.</strong> 정답은 <strong>11,000 × 10/11 = 10,000원</strong>이고, 부가세는 나머지 1,000원입니다.</p>
+<p>이유는 기준의 차이입니다. 부가세 10%는 <strong>공급가액의 10%</strong>이지 판매가의 10%가 아닙니다. 공급가액을 100이라고 하면 판매가는 110이 됩니다. 그러니 판매가에서 공급가액으로 돌아가려면 110으로 나누고 100을 곱해야, 즉 <strong>11로 나누고 10을 곱해야</strong> 합니다. 검산해 보면 10,000원의 10%는 1,000원이고 10,000 + 1,000 = 11,000원으로 딱 맞습니다. 반면 9,900원의 10%는 990원이라 합계가 10,890원이 되어 11,000원과 맞지 않습니다.</p>
+<p>같은 실수가 할인에서도 나옵니다. "10% 할인해서 9,000원이 됐다면 원래 가격은?"에 9,000 × 1.1 = 9,900원이라고 답하면 틀립니다. 9,000원은 원가의 90%이므로 원가는 9,000 ÷ 0.9 = 10,000원입니다. <strong>퍼센트를 붙인 결과에서 원래 값으로 돌아갈 때는 곱했던 비율로 나눠야지, 반대 부호의 퍼센트를 곱하면 안 됩니다.</strong></p>
+<p>공식으로 정리하면 부가세 포함가 ÷ 1.1 = 공급가액, 부가세 포함가 ÷ 11 = 부가세액입니다. 세금계산서를 쓰거나 프리랜서 견적에서 "부가세 별도"와 "부가세 포함"을 오갈 때 이 나눗셈 하나만 기억하시면 됩니다. ⑤번 전체값 역산 계산기에 90%가 9,000원이라고 넣으면 원가 10,000원이 바로 나옵니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>자주 묻는 질문</h2></summary><div class="fx">
+<h3>엑셀에서는 어떻게 계산하나요?</h3>
+<p>A1에 전체, B1에 퍼센트가 있다면 부분은 <code>=A1*B1/100</code>입니다. B1에 15 대신 15%라고 입력했다면 엑셀이 자동으로 0.15로 저장하므로 <code>=A1*B1</code>만으로 충분합니다. 비율은 <code>=A1/B1</code>을 입력한 뒤 셀 서식을 백분율로 바꾸시고, 증감률은 이전 값 A1과 이후 값 B1에 대해 <code>=(B1-A1)/A1</code>을 백분율 서식으로 보시면 됩니다. 30% 할인가는 <code>=A1*(1-30%)</code>, 부가세 포함가에서 공급가액은 <code>=A1*10/11</code>입니다.</p>
+<h3>평균 퍼센트를 그냥 평균 내면 안 되나요?</h3>
+<p>기준이 되는 전체가 서로 다르면 안 됩니다. 1반 50명 중 40%, 2반 10명 중 80%가 합격했다고 전체 합격률이 (40+80)/2 = 60%가 되는 게 아닙니다. 실제 합격자는 20명 + 8명 = 28명이고 전체는 60명이므로 28 ÷ 60 × 100 = 46.67%입니다. 퍼센트는 각 집단의 크기로 <strong>가중평균</strong>해야 하며, 가장 안전한 방법은 퍼센트를 평균 내지 말고 원래의 부분과 전체를 각각 더한 뒤 다시 비율을 구하는 것입니다. 수익률처럼 곱으로 누적되는 값이라면 산술평균 대신 기하평균이 필요해서 또 다릅니다.</p>
+<h3>마이너스 값에서 증감률은 어떻게 보나요?</h3>
+<p>기준값이 음수이면 증감률 해석에 주의가 필요합니다. 영업이익이 −100에서 50이 되면 공식상 (50−(−100)) ÷ (−100) × 100 = −150%가 나오는데, 적자에서 흑자로 좋아졌는데 부호는 음수라 직관과 어긋납니다. 그래서 재무 기사에서는 음수가 낀 구간의 증감률은 쓰지 않고 <strong>"흑자 전환", "적자 확대"처럼 말로 풀거나 변화액 자체를 적는 것</strong>이 관례입니다. 위 계산기도 수식 그대로의 값을 보여드리므로, 기준값이 음수라면 숫자보다 실제 변화 방향을 먼저 확인하세요.</p>
+<h3>소수점은 몇 자리까지 보여주나요?</h3>
+<p>결과는 소수 둘째 자리까지 반올림해서 보여드리고, 정수로 떨어지면 소수점 없이 표시합니다. 3.33%처럼 나누어떨어지지 않는 값은 반올림된 값이라는 점을 감안하시고, 세금처럼 원 단위 절사 규정이 있는 계산은 해당 규정을 따로 적용하셔야 합니다.</p>
+</div></details>
+
+<!--REL:S-->
+<h2>함께 쓰면 좋은 도구</h2>
+<div class="rel">
+  <a href="/tools/deposit/"><strong>예금·적금 이자 계산기</strong><span>세후 실수령액, 단리·복리 비교</span></a>
+  <a href="/tools/loan/"><strong>대출 이자 계산기</strong><span>원리금균등·원금균등·거치기간</span></a>
+  <a href="/tools/salary/"><strong>연봉 실수령액 계산기</strong><span>2026년 요율·간이세액표 원본</span></a>
+</div>
+<p class="rel-all"><a href="/tools/">까치툴 도구 36개 전체 보기 →</a></p>
+<!--REL:E-->
+
+<!--TESTS:S-->
+<a class="tbn" href="/tests/">
+  <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
+  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 좀비 생존률부터 전생, 아이돌 포지션까지 — 결과는 친구와 비교해 보세요.</span></span>
+  <span class="ar">→</span>
+</a>
+<!--TESTS:E-->
+
+<footer>
+  <p>까치툴 · 모든 계산은 브라우저에서 이루어지며 입력값은 전송·저장되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/tools/about/">소개</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+
+function num(v){
+  const s=String(v).replace(/,/g,'').trim();
+  if(!s||s==='.'||s==='-'||s==='-.') return NaN;
+  if(!/^-?\d*\.?\d*$/.test(s)) return NaN;
+  const n=parseFloat(s);
+  return isFinite(n)?n:NaN;
+}
+function clean(el){
+  let s=el.value.replace(/[^0-9.,\-]/g,'');
+  if(s!==el.value) el.value=s;
+}
+/* 2진 부동소수점 오차 보정 후 소수 둘째 자리 반올림 (0.7×0.8 → 0.56) */
+function round2(n){
+  if(!isFinite(n)) return NaN;
+  const s=n.toPrecision(12);
+  if(s.indexOf('e')>=0||s.indexOf('E')>=0) return Math.round(n*100)/100;
+  return Number(Math.round(Number(s+'e2'))+'e-2');
+}
+function fmt(n){
+  if(!isFinite(n)) return '—';
+  return round2(n).toLocaleString('ko-KR',{maximumFractionDigits:2});
+}
+const NEED='값을 입력하시면 바로 계산됩니다.';
+
+function c1(){
+  const a=num($('a1').value), b=num($('b1').value), r=$('res1'), f=$('f1');
+  if(!isFinite(a)||!isFinite(b)){ r.textContent='—'; f.textContent=NEED; return; }
+  const v=a*b/100;
+  r.textContent=fmt(v);
+  f.textContent=fmt(a)+' × '+fmt(b)+'/100 = '+fmt(v);
+}
+function c2(){
+  const a=num($('a2').value), b=num($('b2').value), r=$('res2'), f=$('f2');
+  if(!isFinite(a)||!isFinite(b)){ r.textContent='—'; f.textContent=NEED; return; }
+  if(b===0){ r.textContent='—'; f.textContent='전체 값이 0이면 비율을 구할 수 없습니다.'; return; }
+  const v=a/b*100;
+  r.textContent=fmt(v)+'%';
+  f.textContent=fmt(a)+' ÷ '+fmt(b)+' × 100 = '+fmt(v)+'%';
+}
+function c3(){
+  const a=num($('a3').value), b=num($('b3').value), r=$('res3'), f=$('f3');
+  r.classList.remove('up','down');
+  if(!isFinite(a)||!isFinite(b)){ r.textContent='—'; f.textContent=NEED; return; }
+  if(a===0){ r.textContent='—'; f.textContent='이전 값이 0이면 증감률을 정의할 수 없습니다. 변화량 '+fmt(b)+'만 말할 수 있습니다.'; return; }
+  const v=(b-a)/a*100, rv=round2(v);
+  if(rv>0){ r.textContent='+'+fmt(v)+'% 증가'; r.classList.add('up'); }
+  else if(rv<0){ r.textContent='−'+fmt(Math.abs(v))+'% 감소'; r.classList.add('down'); }
+  else{ r.textContent='0% (변화 없음)'; }
+  const sv=rv>0?'+'+fmt(v):(rv<0?'−'+fmt(Math.abs(v)):fmt(v));
+  f.textContent='('+fmt(b)+' − '+fmt(a)+') ÷ '+fmt(a)+' × 100 = '+sv+'%';
+  if(a<0) f.textContent+=' · 기준값이 음수라 부호 해석에 주의하세요.';
+}
+function c4(){
+  const a=num($('a4').value), b=num($('b4').value), m=$('m4').value, r=$('res4'), f=$('f4');
+  if(!isFinite(a)||!isFinite(b)){ r.textContent='—'; f.textContent=NEED; return; }
+  if(m==='disc'){
+    const v=a*(100-b)/100, d=a*b/100;
+    r.textContent=fmt(v)+' (할인액 '+fmt(d)+')';
+    f.textContent=fmt(a)+' × (100 − '+fmt(b)+')/100 = '+fmt(v)+' · 할인액 '+fmt(a)+' × '+fmt(b)+'/100 = '+fmt(d);
+  }else{
+    const v=a*(100+b)/100, d=a*b/100;
+    r.textContent=fmt(v);
+    f.textContent=fmt(a)+' × (100 + '+fmt(b)+')/100 = '+fmt(v)+' · 증가분 '+fmt(d);
+  }
+}
+function c5(){
+  const a=num($('a5').value), b=num($('b5').value), r=$('res5'), f=$('f5');
+  if(!isFinite(a)||!isFinite(b)){ r.textContent='—'; f.textContent=NEED; return; }
+  if(b===0){ r.textContent='—'; f.textContent='0%로는 전체를 역산할 수 없습니다.'; return; }
+  const v=a/(b/100);
+  r.textContent=fmt(v);
+  f.textContent=fmt(a)+' ÷ ('+fmt(b)+'/100) = '+fmt(v);
+}
+
+const calcs={1:c1,2:c2,3:c3,4:c4,5:c5};
+const fields={1:['a1','b1'],2:['a2','b2'],3:['a3','b3'],4:['a4','b4'],5:['a5','b5']};
+
+Object.keys(fields).forEach(k=>{
+  fields[k].forEach(id=>$(id).addEventListener('input',()=>{ clean($(id)); calcs[k](); }));
+});
+$('m4').addEventListener('change',c4);
+
+Object.keys(fields).forEach(k=>{
+  document.querySelectorAll('#q'+k+' button').forEach(b=>b.addEventListener('click',()=>{
+    if(b.dataset.a!==undefined) $(fields[k][0]).value=b.dataset.a;
+    if(b.dataset.b!==undefined) $(fields[k][1]).value=b.dataset.b;
+    if(b.dataset.m!==undefined) $('m4').value=b.dataset.m;
+    calcs[k]();
+  }));
+});
+
+c1();c2();c3();c4();c5();
+})();
+</script>
+</body>
+</html>
