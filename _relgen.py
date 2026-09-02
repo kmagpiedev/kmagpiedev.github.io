@@ -83,12 +83,18 @@ TOOLS = {
                    '키와 몸무게로 BMI를 계산하고 대한비만학회 기준과 WHO 기준을 함께 보여줍니다. 나이·성별·활동량을 넣으면 기초대사량과 하루 총 에너지 소비량까지 계산합니다.'),
  'percent':       ('％','퍼센트 계산기','할인율·증감률·비율 역산',
                    '전체의 몇 %, 비율 역산, 증감률, 할인가, 전체값 역산까지 다섯 가지 퍼센트 계산을 한 화면에서 합니다. 계산식을 그대로 보여줘서 검산할 수 있습니다.'),
+ 'image-merge':   ('🧩','사진 이어붙이기','세로·가로·격자, 캡처 합치기',
+                   '여러 장을 한 장으로 이어붙입니다. 세로·가로·격자 배치, 폭 맞춤, 간격과 배경색까지 정하고 JPG·PNG·WebP로 저장합니다. 카톡 캡처 합치기에 알맞습니다.'),
+ 'exif-remove':   ('📍','사진 위치정보 지우기','EXIF·GPS 무손실 제거',
+                   '사진에 숨은 촬영 위치·기종·시각 정보를 지웁니다. JPEG는 픽셀을 건드리지 않고 메타데이터만 잘라내는 무손실 방식이라 화질이 그대로입니다. 중고거래·SNS 업로드 전에.'),
+ 'audio-cut':     ('🎵','음악 자르기','벨소리·알람음, 파형 보며 구간 선택',
+                   'MP3·M4A·WAV를 열어 파형을 보며 구간을 고르고 페이드·노멀라이즈를 적용해 저장합니다. 무손실 WAV와 기기 기본 압축 포맷으로 저장되고 파일은 브라우저를 떠나지 않습니다.'),
 }
 
 # 목록 페이지 분류 (순서가 곧 노출 순서)
 CATS = [
  ('이미지 편집', '사진을 다루는 도구입니다. 전부 브라우저 안에서 처리되고 업로드가 없어서, 얼굴이 나온 사진이나 공개 전 자료도 안심하고 올릴 수 있습니다.',
-  ['remove-bg','id-photo','resize','convert','image-compress','watermark','gif-maker','meme']),
+  ['remove-bg','id-photo','resize','convert','image-compress','image-merge','exif-remove','watermark','gif-maker','meme']),
  ('PDF·문서',   '계약서나 제출 서류를 다룰 때 쓰는 도구입니다. 원본 문서의 글자를 그대로 살린 채 처리합니다.',
   ['pdf','pdf-compress','pdf-sign','pdf-to-image','img2pdf']),
  ('급여·노동', '법령과 공식 고시를 그대로 적용해 계산합니다. 근사식을 쓰지 않고 계산 과정과 근거 조문을 함께 보여줍니다.',
@@ -99,12 +105,17 @@ CATS = [
   ['car-tax','car-acquisition','fuel-cost']),
  ('생활 편의', '집과 일상에서 자주 찾게 되는 계산입니다. 가입도 설치도 없이 바로 쓰고, 근거가 확인된 값만 계산합니다.',
   ['electricity','pyeong','percent','bmi','lunar','manse','date-calc','char-count','qr','minutes']),
+ ('오디오', '소리 파일을 다루는 도구입니다. 파형을 보며 브라우저 안에서 바로 자르고 저장합니다. 업로드가 없어서 개인 녹음 파일도 안심하고 쓸 수 있습니다.',
+  ['audio-cut']),
  ('앱 개발',    '안드로이드 앱을 출시할 때 반복적으로 필요한 작업들입니다. 직접 앱을 만들며 필요해서 만든 도구예요.',
   ['app-icon','screenshot','privacy-policy']),
 ]
 
 # 각 도구 페이지 하단에 노출할 관련 도구 (맥락 흐름 순)
 REL = {
+ 'image-merge':   ['resize','image-compress','exif-remove'],
+ 'exif-remove':   ['image-compress','image-merge','convert'],
+ 'audio-cut':     ['gif-maker','image-compress','qr'],
  'bmi':           ['date-calc','electricity','fuel-cost'],
  'percent':       ['deposit','loan','salary'],
  'salary':        ['severance','loan','annual-leave'],

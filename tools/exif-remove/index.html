@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>사진 위치정보 지우기 — EXIF·GPS 메타데이터 삭제, 서버 전송 없음 | 까치툴</title>
+<meta name="description" content="사진 위치정보 삭제, EXIF 제거를 브라우저에서만 처리합니다. 중고거래 사진·SNS 원본에 남은 GPS 좌표, 기종, 촬영시각, 썸네일을 찾아 보여주고 화질 손상 없이 잘라냅니다. 여러 장 한 번에, 서버 전송 없음.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/exif-remove/">
+<meta property="og:title" content="사진 위치정보 지우기 — EXIF·GPS 메타데이터 삭제">
+<meta property="og:description" content="사진에 남은 GPS 좌표·기종·촬영시각을 찾아서 화질 손상 없이 지웁니다. 서버 전송 없이 브라우저에서만 처리.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/exif-remove/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:940px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 30px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  #drop{border:2px dashed var(--line);border-radius:16px;padding:42px 24px;text-align:center;
+    background:var(--surface);cursor:pointer;transition:.15s}
+  #drop:hover,#drop.over{border-color:var(--accent);background:var(--accent-soft)}
+  #drop .big{font-size:17px;font-weight:600;margin-bottom:6px}
+  #drop .small{font-size:13.5px;color:var(--ink-3)}
+  #file{display:none}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:18px 0}
+  .row{display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start}
+  .col{flex:1;min-width:225px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin-bottom:8px}
+  .opt{display:flex;align-items:flex-start;gap:9px;font-size:14.5px;cursor:pointer;margin-bottom:8px}
+  .opt input{margin-top:4px;width:17px;height:17px;accent-color:var(--accent);cursor:pointer;flex:none}
+  .opt .d{font-size:12.5px;color:var(--ink-3);display:block;line-height:1.5}
+  .inline{display:flex;align-items:center;gap:9px;font-size:14px;flex-wrap:wrap}
+  .val{font-variant-numeric:tabular-nums;font-weight:700;color:var(--accent)}
+
+  button.act{font-family:inherit;font-size:15px;font-weight:600;padding:12px 22px;border-radius:10px;border:1px solid transparent;cursor:pointer;transition:.12s}
+  .primary{background:var(--accent);color:#fff}
+  .primary:hover{filter:brightness(1.08)}
+  .primary:disabled{opacity:.45;cursor:not-allowed;filter:none}
+  .ghost{background:transparent;color:var(--ink-2);border-color:var(--line)}
+  .ghost:hover{border-color:var(--ink-3);color:var(--ink)}
+
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+  th,td{text-align:left;padding:10px 9px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+  th{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;border-bottom:1px solid var(--line)}
+  .tw{overflow-x:auto}
+  .thumb{width:48px;height:48px;object-fit:cover;border-radius:7px;border:1px solid var(--line);display:block;background:var(--line-soft)}
+  .fname{font-size:14px;font-weight:600;word-break:break-all;line-height:1.4}
+  .save{font-weight:700;font-variant-numeric:tabular-nums}
+  .save.g{color:var(--good)} .save.b{color:var(--bad)}
+  .dl{font-size:12.5px;padding:5px 11px;border-radius:7px;border:1px solid var(--line);
+    background:transparent;color:var(--ink-2);cursor:pointer;font-family:inherit;font-weight:600}
+  .dl:hover{border-color:var(--accent);color:var(--accent)}
+
+  .item{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin:12px 0}
+  .item .hd{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .item .hd .meta{flex:1;min-width:160px}
+  .item .sz{font-size:13px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+  .item .row{margin-top:14px;gap:20px}
+  .item h4{margin:0 0 6px;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+  ul.found{list-style:none;margin:0;padding:0;font-size:14px}
+  ul.found li{padding:4px 0;border-bottom:1px dashed var(--line-soft);word-break:break-all}
+  ul.found li:last-child{border-bottom:0}
+  ul.found li.gps{color:var(--bad);font-weight:700}
+  ul.found li.keep{color:var(--ink-3)}
+  .ok{color:var(--good);font-weight:700}
+  .ng{color:var(--bad);font-weight:700}
+
+  .totals{background:var(--good-soft);border:1px solid var(--good);border-radius:12px;padding:16px 20px;margin:16px 0;
+    display:flex;gap:28px;flex-wrap:wrap;align-items:baseline}
+  .totals .k{font-size:12.5px;color:var(--ink-2);display:block}
+  .totals .v{font-size:19px;font-weight:700;font-variant-numeric:tabular-nums}
+
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .m-good{background:var(--good-soft);border-color:var(--good)}
+  .hidden{display:none}
+  .bar{height:5px;background:var(--line-soft);border-radius:99px;overflow:hidden;margin-top:12px}
+  .bar>i{display:block;height:100%;width:0;background:var(--accent);transition:width .18s}
+  code{background:var(--line-soft);padding:2px 6px;border-radius:5px;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .note{font-size:13.5px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:13px;margin:14px 0}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+/*FOLD:S*/
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 8px}
+  .fold .fx>:first-child{margin-top:4px}
+/*FOLD:E*/
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
+/*TESTS:S*/
+  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 0;padding:13px 18px;
+    border:1px solid var(--line);border-radius:14px;background:var(--surface);
+    text-decoration:none;color:inherit;transition:.14s}
+  .tbn:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .tbn .ic{width:44px;height:44px;flex:none;border-radius:12px;background:#fff;
+    border:1px solid var(--line);object-fit:contain;padding:2px}
+  .tbn .tx{flex:1;min-width:0}
+  .tbn .tt{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em}
+  .tbn .ds{display:block;font-size:13px;color:var(--ink-3);line-height:1.55;margin-top:2px}
+  .tbn .ar{color:var(--ink-3);font-size:15px;flex:none}
+/*TESTS:E*/
+</style>
+<!--LD:S-->
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://www.kmagpie.com/tools/exif-remove/#app","name":"사진 위치정보 지우기","url":"https://www.kmagpie.com/tools/exif-remove/","description":"사진에 숨은 촬영 위치·기종·시각 정보를 지웁니다. JPEG는 픽셀을 건드리지 않고 메타데이터만 잘라내는 무손실 방식이라 화질이 그대로입니다. 중고거래·SNS 업로드 전에.","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"inLanguage":"ko","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"K-magpie","url":"https://www.kmagpie.com/"}},{"@type":"BreadcrumbList","@id":"https://www.kmagpie.com/tools/exif-remove/#crumb","itemListElement":[{"@type":"ListItem","position":1,"name":"K-magpie","item":"https://www.kmagpie.com/"},{"@type":"ListItem","position":2,"name":"까치툴","item":"https://www.kmagpie.com/tools/"},{"@type":"ListItem","position":3,"name":"사진 위치정보 지우기","item":"https://www.kmagpie.com/tools/exif-remove/"}]}]}</script>
+<!--LD:E-->
+<!--HEAD:S-->
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
+<meta property="og:site_name" content="까치툴">
+<link rel="manifest" href="/tools/manifest.json">
+<meta name="theme-color" content="#faf9f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#171614" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="까치툴">
+<script>/*PWA*/(function(){var L=document.documentElement.lang==='en';
+if('serviceWorker' in navigator)addEventListener('load',function(){navigator.serviceWorker.register('/sw.js',{scope:'/'})['catch'](function(){})});
+var p=null,armed=false;addEventListener('beforeinstallprompt',function(e){e.preventDefault();p=e;arm()});
+function arm(){if(armed)return;armed=true;var h=function(){removeEventListener('pointerdown',h,true);removeEventListener('keydown',h,true);show()};
+addEventListener('pointerdown',h,true);addEventListener('keydown',h,true)}
+addEventListener('appinstalled',function(){p=null;var b=document.getElementById('pwaBtn');if(b)b.style.visibility='hidden'});
+function show(){if(document.getElementById('pwaBtn'))return;
+var a=document.querySelector('.sub')||document.querySelector('h1');if(!a)return;
+var b=document.createElement('button');b.id='pwaBtn';b.type='button';
+b.textContent=L?'⬇ Install as an app':'📲 앱으로 설치';
+b.style.cssText='display:inline-block;margin:0 0 22px;padding:8px 15px;border-radius:9px;font:600 13.5px/1.4 inherit;cursor:pointer;background:transparent;color:var(--accent,#b45309);border:1px solid var(--accent,#b45309)';
+b.title=L?'Works offline once installed':'설치하면 인터넷 없이도 쓸 수 있습니다';
+b.onclick=function(){if(!p)return;p.prompt();p.userChoice.then(function(){p=null;b.style.visibility='hidden'})};
+a.insertAdjacentElement('afterend',b)}})();</script>
+<!--HEAD:E-->
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › 사진 위치정보 지우기</p>
+
+<h1>사진 위치정보·EXIF 지우기</h1>
+<p class="sub">사진에 숨어 있는 <strong>GPS 좌표·기종·촬영시각·편집 프로그램·썸네일</strong>을 먼저 찾아서 보여주고, 픽셀은 건드리지 않은 채 메타데이터만 잘라냅니다. 파일이 서버로 전송되지 않습니다 — 위치정보를 지우려고 사진을 어딘가에 올리는 것 자체가 모순이니까요.</p>
+
+<div id="drop">
+  <div class="big">사진을 여기에 끌어다 놓거나 클릭해서 선택하세요</div>
+  <div class="small">여러 장을 한꺼번에 선택할 수 있습니다 · JPG · PNG · WebP (HEIC 등은 JPG로 변환해 처리)</div>
+  <input type="file" id="file" accept="image/*,.heic,.heif" multiple>
+</div>
+
+<div id="warn" class="hidden"></div>
+
+<div id="editor" class="hidden">
+  <div class="panel">
+    <div class="row">
+      <div class="col">
+        <label class="f">저장 옵션</label>
+        <label class="opt"><input type="checkbox" id="rot" checked><span>회전 정보 반영해서 저장<span class="d">회전 정보(Orientation)가 1이 아닌 사진은 그냥 지우면 옆으로 누워 보입니다. 켜 두면 그런 사진만 회전을 픽셀에 반영해 다시 인코딩합니다(품질 0.92). 나머지는 무손실로 잘라냅니다.</span></span></label>
+        <label class="opt"><input type="checkbox" id="icc"><span>색상 프로필(ICC)도 제거<span class="d">ICC는 위치나 개인정보가 아니라 색 표현 정보입니다. 지우면 일부 화면에서 색이 달라 보일 수 있어 기본은 유지합니다.</span></span></label>
+      </div>
+      <div class="col">
+        <label class="f">처리 방식</label>
+        <p class="note" style="margin:0">JPEG는 파일 구조에서 APP1(EXIF·XMP)·APP13(IPTC)·주석 세그먼트만 잘라내고, PNG는 eXIf·tEXt·iTXt·zTXt·tIME 청크를, WebP는 EXIF·XMP 청크를 뺀 뒤 헤더를 다시 계산합니다. 처리 후 결과 파일을 다시 읽어 남은 메타데이터가 없는지 확인합니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+    <button class="act primary" id="zipAll" disabled>전부 저장(zip)</button>
+    <button class="act ghost" id="reset">파일 다시 선택</button>
+    <span id="stat" style="font-size:14px;color:var(--ink-3)"></span>
+  </div>
+  <div class="bar hidden" id="barWrap"><i id="bar"></i></div>
+
+  <div id="totals" class="totals hidden"></div>
+  <div id="list"></div>
+  <p class="note">파일은 이 창을 떠나지 않습니다. 결과 파일은 원본 이름 뒤에 <code>_clean</code>이 붙어 저장되고, 원본은 그대로 남습니다.</p>
+</div>
+
+<p class="gist">스마트폰으로 찍은 사진에는 촬영 위치의 GPS 좌표가 소수점 넷째 자리까지 들어갑니다. 집에서 찍은 중고거래 사진, 아이 사진, 매장 사진을 원본 그대로 보내면 받는 사람이 집 주소를 알 수 있다는 뜻입니다. 이 도구는 파일 안에 뭐가 들어 있는지 먼저 보여주고, JPEG·PNG·WebP의 메타데이터 부분만 잘라내 화질 손상 없이 저장합니다. 모든 처리는 브라우저 안에서 끝나고 서버로 가는 바이트는 하나도 없습니다.</p>
+
+<details class="fold" open><summary><h2>사용법</h2></summary><div class="fx">
+<p>사진을 끌어다 놓거나 클릭해서 여러 장을 고르면 곧바로 각 파일을 읽어 <strong>발견된 정보</strong>를 보여줍니다. 위치정보가 있으면 빨간 글씨로 위도·경도가 표시되고, 기종·촬영시각·편집 프로그램·내장 썸네일·XMP·IPTC 여부가 함께 나옵니다. 그 아래에 처리 결과가 붙는데, 결과 파일을 다시 읽어서 <strong>메타데이터 없음</strong>이 확인되어야 초록색 체크가 뜹니다. 처리 전후의 바이트 수도 나란히 보여드립니다.</p>
+<p>파일별로 바로 받을 수도 있고, <strong>전부 저장(zip)</strong>을 누르면 처리된 파일 전체를 압축 없이 담은 ZIP 하나로 받을 수 있습니다. 옵션을 바꾸면 이미 올린 파일이 새 설정으로 자동으로 다시 처리됩니다. 원본 파일은 건드리지 않으니 결과가 마음에 들지 않으면 그냥 다시 올리시면 됩니다.</p>
+<p>기본 설정은 대부분의 상황에 맞춰져 있습니다. 회전 정보는 반영하고, 색상 프로필은 남깁니다. 두 옵션이 무엇인지는 아래 <em>왜 무손실인가</em>와 <em>자주 묻는 질문</em>에서 설명합니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>EXIF가 뭔가요 — 사진 한 장에 뭐가 들어 있나</h2></summary><div class="fx">
+<p>EXIF(Exchangeable Image File Format)는 카메라와 스마트폰이 사진 파일 앞부분에 끼워 넣는 촬영 기록입니다. 화면에 보이는 그림과는 별개의 영역이라 사진 뷰어에서는 보이지 않지만, 파일을 받은 사람이 속성 창을 열거나 아무 EXIF 뷰어에 넣기만 하면 전부 읽힙니다. 대표적으로 이런 것들이 들어갑니다.</p>
+<h3>기종과 제조사</h3>
+<p>Make·Model 태그에 "Apple iPhone 15 Pro", "samsung SM-S928N"처럼 정확한 모델명이 적힙니다. 렌즈 정보, 펌웨어 버전, 일부 기종은 제조 일련번호(BodySerialNumber)까지 남습니다. 일련번호는 같은 사람이 올린 여러 사진을 하나로 묶는 열쇠가 됩니다.</p>
+<h3>촬영 시각</h3>
+<p>DateTimeOriginal에는 초 단위 촬영 시각이, 최근 기종은 시간대 오프셋까지 들어갑니다. "이 시간에 이 장소에 있었다"는 기록이 사진 한 장으로 완성되는 셈입니다.</p>
+<h3>GPS 좌표</h3>
+<p>GPS IFD에 위도·경도가 도·분·초 세 쌍의 분수로, 고도와 GPS 시각까지 함께 저장됩니다. 소수점 넷째 자리까지면 약 10m 정확도라 아파트 동 단위로 특정됩니다. 이 도구는 좌표를 십진수로 바꿔 글자로만 보여드리며, 지도를 불러오지 않습니다. 지도를 띄우는 순간 좌표가 지도 서버로 나가기 때문입니다.</p>
+<h3>편집 프로그램</h3>
+<p>Software 태그와 XMP 영역에는 어떤 앱으로 보정했는지, 어떤 단계로 편집했는지(Photoshop 히스토리, Lightroom 프리셋 이름)가 남습니다. 무해해 보이지만 "원본이 아니라 손을 댄 사진"이라는 증거가 되기도 하고, 편집 기록 안에 원본 파일 경로(<code>C:\Users\이름\...</code>)가 그대로 적히는 경우도 있습니다.</p>
+<h3>내장 썸네일 — 가장 자주 놓치는 부분</h3>
+<p>EXIF 안에는 원본을 작게 줄인 썸네일 JPEG가 통째로 들어 있습니다(IFD1). 문제는 사진을 자르거나 모자이크를 한 뒤 저장해도 <strong>썸네일은 갱신되지 않는 프로그램이 많다</strong>는 점입니다. 얼굴을 가린 사진을 올렸는데 썸네일 안에 가리기 전 얼굴이 그대로 남아 있던 사례가 실제로 여러 번 보고됐습니다. 이 도구는 EXIF 블록을 통째로 들어내므로 썸네일도 함께 사라집니다.</p>
+<h3>그 밖의 영역</h3>
+<p>XMP(어도비 계열 메타데이터), IPTC(언론·사진가용 캡션·저작권·인물 정보), 제조사 전용 MakerNote(얼굴 인식 좌표, 촬영 모드 등), 주석(COM), 그리고 파일 끝 뒤에 붙는 추가 데이터(삼성 모션 포토의 동영상, 구글 모션 포토)까지 다양합니다. 모션 포토는 몇 초짜리 영상이 사진 뒤에 통째로 붙어 있어서 사진보다 큰 경우도 많고, 그 영상 속에도 주변 소리와 모습이 들어 있습니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>중고거래·SNS에 올리기 전에 — 집 주소가 새는 경로</h2></summary><div class="fx">
+<p>당근이나 번개장터에 물건을 올릴 때는 보통 집 안에서 찍습니다. 거실 바닥에 놓고 찍은 의자, 책상 위의 노트북, 옷장 앞에서 찍은 옷. 그 사진의 GPS는 곧 <strong>집 주소</strong>입니다. 거래 상대는 대개 동네 사람이고, 사진 한 장에서 동·호수 단위까지 나오는 좌표를 얻을 수 있다면 굳이 물어볼 필요도 없습니다. 아이 사진, 반려동물 사진, 매장 내부 사진도 마찬가지입니다.</p>
+<h3>"앱이 알아서 지워주지 않나요"</h3>
+<p>큰 플랫폼은 대부분 업로드하면서 EXIF를 떼어냅니다. 카카오톡 일반 전송, 인스타그램, 페이스북, X, 당근 앱 내 업로드는 서버에서 다시 인코딩하면서 위치정보가 사라집니다. 문제는 <strong>원본 파일이 그대로 전달되는 경로</strong>입니다.</p>
+<ul>
+<li>메신저의 <strong>"원본 전송"</strong>, <strong>"원본 화질"</strong> 옵션 — 카카오톡·텔레그램·라인은 원본 전송을 고르면 EXIF가 그대로 갑니다.</li>
+<li><strong>이메일 첨부</strong> — 메일은 파일을 손대지 않습니다. 사진을 첨부하면 좌표도 같이 갑니다.</li>
+<li><strong>클라우드 공유 링크</strong> — 구글 드라이브, 아이클라우드, 네이버 MYBOX 링크로 보낸 원본은 받는 쪽이 완전한 파일을 다운로드합니다.</li>
+<li><strong>블로그·카페·커뮤니티 첨부</strong> — 자체 리사이즈 없이 파일을 그대로 보관하는 게시판이 아직 많습니다. 네이버 블로그처럼 지우는 곳도 있지만 게시판마다 다르고, 확인하기도 어렵습니다.</li>
+<li><strong>에어드롭·근접 공유·USB</strong> — 파일 복사와 같습니다.</li>
+<li><strong>PDF·워드 문서에 넣은 사진</strong> — 문서 안에 원본 JPEG가 통째로 들어가는 경우가 있습니다.</li>
+</ul>
+<p>정리하면 "어디에 올리느냐"에 따라 결과가 달라지고, 어느 경로가 지워주는지 매번 확인하는 것보다 <strong>보내기 전에 내 손으로 지우는 편</strong>이 확실합니다. 이 도구는 그 한 단계를 위한 것입니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>왜 무손실인가 — 재인코딩과 잘라내기의 차이</h2></summary><div class="fx">
+<p>메타데이터를 지우는 가장 쉬운 방법은 사진을 열어서 다시 저장하는 것입니다. 그림판에서 열고 저장하거나, 캔버스에 그린 뒤 내보내면 EXIF는 사라집니다. 하지만 이 과정은 JPEG를 <strong>다시 압축</strong>하는 것이라 저장할 때마다 화질이 조금씩 깎이고, 세대가 쌓이면 압축 얼룩이 눈에 띄기 시작합니다. 고화질 사진을 팔거나 인쇄용으로 보낼 때는 그냥 넘길 문제가 아닙니다.</p>
+<p>JPEG 파일은 여러 개의 세그먼트가 순서대로 이어진 구조입니다. 앞쪽에 EXIF(APP1), XMP(APP1), IPTC(APP13), 색상 프로필(APP2), 주석(COM) 같은 정보 세그먼트가 있고, 그 뒤에 양자화 테이블(DQT), 프레임 헤더(SOF), 허프만 테이블(DHT), 그리고 실제 픽셀이 압축된 스캔 데이터(SOS)가 옵니다. 정보 세그먼트는 픽셀 데이터와 독립적이어서 <strong>그 부분만 오려내고 나머지를 그대로 이어 붙이면</strong> 픽셀은 1바이트도 바뀌지 않습니다. 이 도구가 하는 일이 정확히 그것입니다. 처리 전후 파일에서 스캔 데이터를 비교하면 완전히 동일합니다.</p>
+<p>PNG도 마찬가지로 청크 구조라서 eXIf·tEXt·iTXt·zTXt·tIME 청크만 빼고 IHDR·PLTE·IDAT 등을 그대로 이어 붙입니다. WebP는 RIFF 컨테이너에서 EXIF·XMP 청크를 빼고 전체 길이와 VP8X 헤더의 플래그 비트를 다시 계산합니다. 세 형식 모두 이미지 데이터에는 손대지 않습니다.</p>
+<h3>예외 하나 — 회전 정보</h3>
+<p>스마트폰은 세로로 찍은 사진의 픽셀을 가로로 저장하고, EXIF의 Orientation 태그에 "이 사진은 90도 돌려서 보여줘"라고 적어 둡니다. 뷰어는 이 태그를 읽어 바르게 표시합니다. 그런데 EXIF를 통째로 지우면 그 태그도 사라져서 사진이 옆으로 누운 채 보입니다. 그래서 <strong>Orientation이 1이 아닌 파일만</strong> 예외적으로 회전을 픽셀에 반영해서 다시 인코딩합니다(JPEG 품질 0.92, 육안으로 구분하기 어려운 수준). 어떤 파일이 이 경로로 처리됐는지는 결과에 따로 표시됩니다. 회전 정보가 없거나 1이면 무손실로 처리됩니다. 옵션을 끄면 회전 정보가 있어도 무손실로 잘라내지만, 그 경우 사진이 돌아가 보일 수 있다는 점을 감안하셔야 합니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>이 도구가 지우는 것과 남기는 것</h2></summary><div class="fx">
+<div class="tw"><table>
+<thead><tr><th>형식</th><th>지우는 것</th><th>남기는 것</th></tr></thead>
+<tbody>
+<tr><td>JPEG</td><td>APP1 EXIF(기종·시각·GPS·썸네일·MakerNote), APP1 XMP, APP13 IPTC/Photoshop, 주석(COM), 기타 APPn, 파일 끝 뒤 추가 데이터(모션 포토 등), 선택 시 ICC</td><td>SOI, APP0 JFIF, APP2 ICC 프로필(기본), APP14 Adobe 색변환 정보, DQT·SOF·DHT·DRI, 스캔 데이터, EOI</td></tr>
+<tr><td>PNG</td><td>eXIf, tEXt, zTXt, iTXt(XMP 포함), tIME, 알 수 없는 청크, 선택 시 iCCP</td><td>IHDR, PLTE, tRNS, gAMA, cHRM, sRGB, iCCP(기본), sBIT, bKGD, pHYs, IDAT, IEND, APNG 프레임 청크</td></tr>
+<tr><td>WebP</td><td>EXIF, XMP, 선택 시 ICCP + VP8X 플래그 비트 정리</td><td>VP8·VP8L·VP8X·ALPH·ANIM·ANMF, ICCP(기본)</td></tr>
+<tr><td>HEIC·기타</td><td colspan="2">브라우저가 열 수 있는 경우 캔버스로 다시 그려 JPG로 저장합니다. 이 경로는 모든 메타데이터가 사라지지만 재인코딩이라 무손실은 아닙니다.</td></tr>
+</tbody></table></div>
+<p>APP0 JFIF와 APP14 Adobe 세그먼트는 개인정보를 담지 않고 일부 뷰어의 색 해석에 필요해서 남깁니다. 결과 카드의 "처리 결과" 항목에서 남긴 것을 회색으로 표시하니, 정말로 아무것도 남기고 싶지 않다면 ICC 제거 옵션을 켜시면 됩니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>애초에 위치가 저장되지 않게 하려면</h2></summary><div class="fx">
+<p>보내기 전에 지우는 것도 좋지만, 처음부터 위치가 기록되지 않게 하는 편이 더 편합니다. 다만 위치를 끄면 사진 앱의 "장소별 보기"나 여행 기록이 동작하지 않으니 본인의 사용 방식에 맞춰 고르세요.</p>
+<h3>아이폰</h3>
+<p><strong>설정 → 개인정보 보호 및 보안 → 위치 서비스 → 카메라</strong>에서 "안 함"을 고르면 이후 촬영에 GPS가 기록되지 않습니다. 사진마다 끄고 싶다면 공유 시트에서 사진을 고른 뒤 상단의 <strong>"옵션"</strong>을 눌러 <strong>"위치"</strong> 토글을 끄면 그 공유에서만 위치가 빠집니다. "모든 사진 데이터"가 켜져 있으면 편집 기록까지 함께 나가니 확인하세요. 사진 앱에서 사진 정보(ⓘ)를 열고 <strong>"위치 조정"</strong> → <strong>"위치 제거"</strong>로 보관 중인 사진에서 지울 수도 있습니다.</p>
+<h3>안드로이드(갤럭시 기준)</h3>
+<p>카메라 앱의 <strong>설정 → 위치 태그</strong>를 끄면 됩니다. 픽셀 등 다른 기종은 카메라 설정 안의 "위치 저장" 항목입니다. 갤러리 앱에서 사진 상세 정보를 열면 위치를 개별로 지울 수 있고, 갤럭시는 공유할 때 <strong>"위치 정보 삭제"</strong> 옵션이 공유 시트에 나타나기도 합니다. 구글 포토는 공유 설정에서 "위치 정보 삭제"를 켜 두면 링크 공유 시 좌표가 빠집니다.</p>
+<h3>PC에서</h3>
+<p>윈도우는 파일 속성 → 자세히 → "속성 및 개인 정보 제거"로 지울 수 있지만 썸네일과 XMP가 남는 경우가 있습니다. macOS 미리보기는 "위치 정보 제거"만 있고 나머지는 그대로 둡니다. 여러 장을 한 번에, 남는 것 없이 처리하려면 이 도구가 더 빠릅니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>자주 묻는 질문</h2></summary><div class="fx">
+<h3>지운 뒤에도 파일 크기가 큰데요</h3>
+<p>메타데이터는 보통 수십 KB입니다. EXIF 썸네일이 10~30KB, XMP가 몇 KB, 삼성 모션 포토처럼 영상이 붙어 있으면 수 MB까지 줄어들지만, 그게 아니라면 크게 줄지 않는 게 정상입니다. 픽셀 데이터는 1바이트도 바꾸지 않았기 때문입니다. 용량 자체를 줄이려면 <a href="/tools/image-compress/">이미지 용량 줄이기</a>를 이어서 쓰세요. 그 도구도 다시 인코딩하는 과정에서 메타데이터가 사라집니다.</p>
+<h3>색이 변했어요</h3>
+<p>"색상 프로필(ICC)도 제거"를 켜셨을 가능성이 높습니다. Display P3처럼 넓은 색공간으로 찍은 사진은 ICC가 없으면 sRGB로 해석되어 채도가 조금 낮아 보입니다. 기본값은 유지이니 옵션을 끄고 다시 처리하시면 됩니다. ICC 프로필에는 위치나 기기 식별 정보가 들어 있지 않습니다.</p>
+<h3>HEIC는 왜 안 되나요</h3>
+<p>아이폰 기본 형식인 HEIC는 브라우저가 직접 읽지 못하는 경우가 많고, 컨테이너 구조(ISOBMFF)가 JPEG보다 훨씬 복잡해서 무손실로 잘라내는 코드를 안전하게 넣기 어렵습니다. 사파리처럼 HEIC를 열 수 있는 브라우저라면 캔버스로 다시 그려 JPG로 저장해 드리고, 그렇지 않으면 안내 메시지가 뜹니다. 아이폰에서는 <strong>설정 → 카메라 → 포맷 → "높은 호환성"</strong>으로 바꾸면 처음부터 JPG로 찍힙니다.</p>
+<h3>결과 파일이 정말 깨끗한지 어떻게 믿나요</h3>
+<p>처리한 파일을 처음 올린 파일과 같은 파서로 다시 읽어서 남은 세그먼트·청크가 없는지 확인한 뒤 체크 표시를 띄웁니다. 의심스러우면 결과 파일을 다른 EXIF 뷰어에 넣어 보셔도 됩니다. 이 페이지는 외부 스크립트를 하나도 불러오지 않고 파일 바이트를 직접 해석하므로 무엇이 지워지는지 코드 그대로입니다.</p>
+<h3>카카오톡으로 이미 보낸 사진은요</h3>
+<p>일반 전송이었다면 카카오톡이 다시 인코딩하면서 위치가 빠졌을 가능성이 높습니다. 원본 전송이었다면 받은 쪽 기기에 좌표가 그대로 있습니다. 이미 나간 파일은 되돌릴 수 없으니, 앞으로 보낼 파일부터 지우는 수밖에 없습니다.</p>
+<h3>사진 여러 장의 이름이 겹치면요</h3>
+<p>ZIP으로 받을 때 같은 이름이 있으면 뒤에 번호가 붙습니다. 개별 저장 시에는 브라우저가 알아서 (1), (2)를 붙입니다.</p>
+</div></details>
+
+<!--REL:S-->
+<h2>함께 쓰면 좋은 도구</h2>
+<div class="rel">
+  <a href="/tools/image-compress/"><strong>이미지 용량 줄이기</strong><span>목표 용량에 자동으로 맞춤</span></a>
+  <a href="/tools/image-merge/"><strong>사진 이어붙이기</strong><span>세로·가로·격자, 캡처 합치기</span></a>
+  <a href="/tools/convert/"><strong>이미지 확장자 변환</strong><span>PNG·JPG·WebP·BMP·ICO</span></a>
+</div>
+<p class="rel-all"><a href="/tools/">까치툴 도구 39개 전체 보기 →</a></p>
+<!--REL:E-->
+
+<!--TESTS:S-->
+<a class="tbn" href="/tests/">
+  <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
+  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 좀비 생존률부터 전생, 아이돌 포지션까지 — 결과는 친구와 비교해 보세요.</span></span>
+  <span class="ar">→</span>
+</a>
+<!--TESTS:E-->
+
+<footer>
+  <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 파일은 업로드되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/tools/about/">소개</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+
+  /* ---------- 내장 ZIP (store) ---------- */
+  const CRC=(()=>{const t=new Uint32Array(256);
+    for(let i=0;i<256;i++){let c=i;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[i]=c>>>0;}return t;})();
+  function crc32(u8){let c=0xFFFFFFFF;for(let i=0;i<u8.length;i++)c=CRC[(c^u8[i])&0xFF]^(c>>>8);return (c^0xFFFFFFFF)>>>0;}
+  function zipStore(entries){
+    const enc=new TextEncoder(), d=new Date();
+    const T=((d.getHours()<<11)|(d.getMinutes()<<5)|(d.getSeconds()>>1))&0xFFFF;
+    const D=(((d.getFullYear()-1980)<<9)|((d.getMonth()+1)<<5)|d.getDate())&0xFFFF;
+    const locals=[],centrals=[];let off=0;
+    for(const e of entries){
+      const nm=enc.encode(e.name),da=e.data,crc=crc32(da);
+      const lh=new Uint8Array(30+nm.length),lv=new DataView(lh.buffer);
+      lv.setUint32(0,0x04034b50,true);lv.setUint16(4,20,true);lv.setUint16(6,0x0800,true);
+      lv.setUint16(10,T,true);lv.setUint16(12,D,true);lv.setUint32(14,crc,true);
+      lv.setUint32(18,da.length,true);lv.setUint32(22,da.length,true);lv.setUint16(26,nm.length,true);
+      lh.set(nm,30);locals.push(lh,da);
+      const ch=new Uint8Array(46+nm.length),cv=new DataView(ch.buffer);
+      cv.setUint32(0,0x02014b50,true);cv.setUint16(4,20,true);cv.setUint16(6,20,true);
+      cv.setUint16(8,0x0800,true);cv.setUint16(12,T,true);cv.setUint16(14,D,true);
+      cv.setUint32(16,crc,true);cv.setUint32(20,da.length,true);cv.setUint32(24,da.length,true);
+      cv.setUint16(28,nm.length,true);cv.setUint32(42,off,true);
+      ch.set(nm,46);centrals.push(ch);off+=lh.length+da.length;
+    }
+    const cd=centrals.reduce((a,c)=>a+c.length,0);
+    const eo=new Uint8Array(22),ev=new DataView(eo.buffer);
+    ev.setUint32(0,0x06054b50,true);ev.setUint16(8,entries.length,true);ev.setUint16(10,entries.length,true);
+    ev.setUint32(12,cd,true);ev.setUint32(16,off,true);
+    return new Blob([...locals,...centrals,eo],{type:'application/zip'});
+  }
+
+  /* ---------- 공통 ---------- */
+  const kb=n=>n>=1048576?(n/1048576).toFixed(2)+' MB':n>=1024?(n/1024).toFixed(1)+' KB':n+' B';
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const asc=(u8,o,n)=>{let s='';for(let i=0;i<n&&o+i<u8.length;i++)s+=String.fromCharCode(u8[o+i]);return s;};
+  const startsWith=(u8,o,str)=>{for(let i=0;i<str.length;i++)if(u8[o+i]!==str.charCodeAt(i))return false;return true;};
+  const cat=parts=>{const n=parts.reduce((a,p)=>a+p.length,0),o=new Uint8Array(n);let q=0;for(const p of parts){o.set(p,q);q+=p.length;}return o;};
+
+  /* ---------- TIFF/EXIF 파서 ---------- */
+  const TS=[0,1,1,2,4,8,1,1,2,4,8,4,8];
+  function parseTIFF(u8,base,end){
+    if(base+8>end) return null;
+    const le = u8[base]===0x49&&u8[base+1]===0x49 ? true : (u8[base]===0x4D&&u8[base+1]===0x4D ? false : null);
+    if(le===null) return null;
+    const dv=new DataView(u8.buffer,u8.byteOffset+base,end-base), lim=end-base;
+    const u16=o=>dv.getUint16(o,le), u32=o=>dv.getUint32(o,le);
+    if(u16(2)!==42) return null;
+    const r={};
+    function readIFD(off,tags,out){
+      if(off<=0||off+2>lim) return 0;
+      const n=u16(off);
+      for(let i=0;i<n;i++){
+        const e=off+2+i*12; if(e+12>lim) return 0;
+        const tag=u16(e),type=u16(e+2),cnt=u32(e+4),sz=(TS[type]||1)*cnt;
+        const vo= sz<=4 ? e+8 : u32(e+8);
+        if(!(tag in tags) || vo+sz>lim) continue;
+        const key=tags[tag];
+        if(type===2){let s='';for(let k=0;k<cnt;k++){const c=u8[base+vo+k];if(!c)break;s+=String.fromCharCode(c);}out[key]=s.trim();}
+        else if(type===3) out[key]=u16(vo);
+        else if(type===4) out[key]=u32(vo);
+        else if(type===5||type===10){const a=[];for(let k=0;k<cnt;k++){const num=dv.getUint32(vo+k*8,le),den=dv.getUint32(vo+k*8+4,le);a.push(den?num/den:0);}out[key]=a;}
+        else out[key]=true;
+      }
+      const nx=off+2+n*12; return nx+4<=lim?u32(nx):0;
+    }
+    try{
+      const next=readIFD(u32(4),{0x010F:'make',0x0110:'model',0x0132:'dateTime',0x0131:'software',0x0112:'orientation',0x8769:'exifIFD',0x8825:'gpsIFD'},r);
+      r.thumbnail = next>0 && next<lim;
+      if(r.exifIFD) readIFD(r.exifIFD,{0x9003:'dateTimeOriginal',0x927C:'makerNote',0x9286:'userComment',0xA430:'owner',0xA431:'serial',0xA434:'lens'},r);
+      if(r.gpsIFD){
+        const g={}; readIFD(r.gpsIFD,{1:'latRef',2:'lat',3:'lonRef',4:'lon',6:'alt'},g);
+        if(Array.isArray(g.lat)&&g.lat.length>=3&&Array.isArray(g.lon)&&g.lon.length>=3){
+          let lat=g.lat[0]+g.lat[1]/60+g.lat[2]/3600, lon=g.lon[0]+g.lon[1]/60+g.lon[2]/3600;
+          if((g.latRef||'').toUpperCase().startsWith('S')) lat=-lat;
+          if((g.lonRef||'').toUpperCase().startsWith('W')) lon=-lon;
+          if(isFinite(lat)&&isFinite(lon)) r.gps={lat,lon,alt:Array.isArray(g.alt)?g.alt[0]:null};
+        } else if(g.lat||g.lon) r.gpsPartial=true;
+      }
+    }catch(e){ r.error=true; }
+    return r;
+  }
+
+  /* ---------- JPEG ---------- */
+  function walkJPEG(u8){
+    if(u8.length<4||u8[0]!==0xFF||u8[1]!==0xD8) return null;
+    const segs=[{m:0xD8,s:0,e:2}], n=u8.length; let p=2, eoi=false;
+    while(p<n){
+      if(u8[p]!==0xFF){ break; }
+      while(p<n&&u8[p]===0xFF) p++;
+      if(p>=n) break;
+      const m=u8[p], s=p-1; p++;
+      if(m===0xD9){ segs.push({m,s,e:p}); eoi=true; break; }
+      if(m===0x00||m===0x01||(m>=0xD0&&m<=0xD7)){ segs.push({m,s,e:p}); continue; }
+      if(p+2>n) break;
+      const len=(u8[p]<<8)|u8[p+1]; let e=p+len; if(e>n) e=n;
+      if(m===0xDA){
+        let q=e;
+        while(q<n){ if(u8[q]===0xFF&&q+1<n){const b=u8[q+1]; if(b!==0&&!(b>=0xD0&&b<=0xD7)&&b!==0xFF) break;} q++; }
+        e=q;
+      }
+      segs.push({m,s,e}); p=e;
+    }
+    const last=segs[segs.length-1].e;
+    return {segs, trailer: eoi && last<n ? n-last : 0, eoi};
+  }
+  function jpegKind(u8,g){
+    const d=g.s+4;
+    if(g.m===0xE1){ if(startsWith(u8,d,'Exif\0')) return 'exif'; if(startsWith(u8,d,'http://ns.adobe.com/x')) return 'xmp'; return 'app'; }
+    if(g.m===0xE2){ if(startsWith(u8,d,'ICC_PROFILE')) return 'icc'; if(startsWith(u8,d,'MPF')) return 'mpf'; return 'app'; }
+    if(g.m===0xE0) return 'jfif';
+    if(g.m===0xED) return startsWith(u8,d,'Photoshop')?'iptc':'app';
+    if(g.m===0xEE) return startsWith(u8,d,'Adobe')?'adobe':'app';
+    if(g.m>=0xE0&&g.m<=0xEF) return 'app';
+    if(g.m===0xFE) return 'com';
+    return 'core';
+  }
+  function analyzeJPEG(u8){
+    const w=walkJPEG(u8); if(!w) return null;
+    const f={fmt:'jpeg',found:[],kept:[],orientation:1,priv:0};
+    let exifSeen=false;
+    for(const g of w.segs){
+      const k=jpegKind(u8,g);
+      if(k==='exif'&&!exifSeen){
+        exifSeen=true; const t=parseTIFF(u8,g.s+10,g.e); f.exif=t; f.priv++;
+        if(t){ if(t.gps) f.found.push({c:'gps',t:`📍 위치정보 있음 (${t.gps.lat.toFixed(4)}, ${t.gps.lon.toFixed(4)})`+(t.gps.alt!=null?` · 고도 ${Math.round(t.gps.alt)}m`:'')});
+          else if(t.gpsPartial) f.found.push({c:'gps',t:'📍 GPS 항목 있음 (좌표 형식 불완전)'});
+          if(t.make||t.model) f.found.push({t:'📷 기종: '+[t.make,t.model].filter(Boolean).join(' ')});
+          if(t.dateTimeOriginal||t.dateTime) f.found.push({t:'🕒 촬영시각: '+(t.dateTimeOriginal||t.dateTime)});
+          if(t.software) f.found.push({t:'🛠 편집 프로그램: '+t.software});
+          if(t.lens) f.found.push({t:'🔭 렌즈: '+t.lens});
+          if(t.serial||t.owner) f.found.push({c:'gps',t:'🔑 일련번호·소유자 이름 있음'});
+          if(t.makerNote) f.found.push({t:'🏭 제조사 전용 데이터(MakerNote)'});
+          if(t.userComment) f.found.push({t:'💬 사용자 코멘트'});
+          if(t.thumbnail) f.found.push({t:'🖼 내장 썸네일 있음 (원본 축소본)'});
+          if(t.orientation&&t.orientation!==1){ f.orientation=t.orientation; f.found.push({t:'🔁 회전 정보 (Orientation '+t.orientation+')'}); }
+          if(!f.found.length) f.found.push({t:'📄 EXIF 블록 (내용 미상)'});
+        } else f.found.push({t:'📄 EXIF 블록 (읽지 못함)'});
+      }
+      else if(k==='exif') { f.priv++; f.found.push({t:'📄 추가 EXIF 블록'}); }
+      else if(k==='xmp'){ f.priv++; f.found.push({t:'🏷 XMP 메타데이터 (편집 기록 등)'}); }
+      else if(k==='iptc'){ f.priv++; f.found.push({t:'📝 IPTC/Photoshop 정보'}); }
+      else if(k==='mpf'){ f.priv++; f.found.push({t:'🖼 MPF 다중 이미지 (내장 사진)'}); }
+      else if(k==='com'){ f.priv++; f.found.push({t:'💬 주석(COM) 세그먼트'}); }
+      else if(k==='app'){ f.priv++; f.found.push({t:'📦 기타 APP'+(g.m-0xE0)+' 세그먼트'}); }
+      else if(k==='icc'){ f.icc=true; }
+    }
+    if(w.trailer){ f.priv++; f.found.push({t:'📎 파일 끝 뒤 추가 데이터 '+kb(w.trailer)+' (모션 포토 등)'}); }
+    if(f.icc) f.found.push({c:'keep',t:'🎨 색상 프로필(ICC)'});
+    if(!w.eoi) f.truncated=true;
+    return f;
+  }
+  function cleanJPEG(u8,removeICC){
+    const w=walkJPEG(u8), out=[];
+    for(const g of w.segs){
+      const k=jpegKind(u8,g);
+      if(k==='exif'||k==='xmp'||k==='iptc'||k==='mpf'||k==='com'||k==='app') continue;
+      if(k==='icc'&&removeICC) continue;
+      out.push(u8.subarray(g.s,g.e));
+    }
+    return cat(out);
+  }
+
+  /* ---------- PNG ---------- */
+  const PNGSIG=[0x89,0x50,0x4E,0x47,0x0D,0x0A,0x1A,0x0A];
+  const PNGKEEP=new Set(['IHDR','PLTE','tRNS','gAMA','cHRM','sRGB','sBIT','bKGD','pHYs','hIST','sPLT','IDAT','IEND','acTL','fcTL','fdAT','cICP','mDCv','cLLi']);
+  function walkPNG(u8){
+    if(u8.length<8||!PNGSIG.every((b,i)=>u8[i]===b)) return null;
+    const ch=[], n=u8.length; let p=8;
+    while(p+8<=n){
+      const len=((u8[p]<<24)|(u8[p+1]<<16)|(u8[p+2]<<8)|u8[p+3])>>>0, type=asc(u8,p+4,4);
+      const e=p+12+len; if(e>n) break;
+      ch.push({type,s:p,e,d:p+8,len}); p=e; if(type==='IEND') break;
+    }
+    return ch;
+  }
+  function analyzePNG(u8){
+    const ch=walkPNG(u8); if(!ch) return null;
+    const f={fmt:'png',found:[],orientation:1,priv:0};
+    for(const c of ch){
+      if(c.type==='eXIf'){ f.priv++; const t=parseTIFF(u8,c.d,c.e-4); f.exif=t;
+        if(t&&t.gps) f.found.push({c:'gps',t:`📍 위치정보 있음 (${t.gps.lat.toFixed(4)}, ${t.gps.lon.toFixed(4)})`});
+        if(t&&(t.make||t.model)) f.found.push({t:'📷 기종: '+[t.make,t.model].filter(Boolean).join(' ')});
+        if(t&&(t.dateTimeOriginal||t.dateTime)) f.found.push({t:'🕒 촬영시각: '+(t.dateTimeOriginal||t.dateTime)});
+        if(t&&t.software) f.found.push({t:'🛠 편집 프로그램: '+t.software});
+        f.found.push({t:'📄 eXIf 청크'+(t&&t.thumbnail?' (썸네일 포함)':'')});
+      }
+      else if(c.type==='tEXt'||c.type==='zTXt'||c.type==='iTXt'){
+        f.priv++; let key='';for(let i=c.d;i<c.e-4&&i<c.d+79;i++){if(!u8[i])break;key+=String.fromCharCode(u8[i]);}
+        if(c.type==='iTXt'&&key==='XML:com.adobe.xmp') f.found.push({t:'🏷 XMP 메타데이터 (iTXt)'});
+        else f.found.push({t:'📝 '+c.type+' 텍스트: '+(key||'(키 없음)')});
+      }
+      else if(c.type==='tIME'){ f.priv++; f.found.push({t:'🕒 tIME 수정 시각'}); }
+      else if(c.type==='iCCP'){ f.icc=true; }
+      else if(!PNGKEEP.has(c.type)){ f.priv++; f.found.push({t:'📦 기타 청크: '+c.type}); }
+    }
+    if(f.icc) f.found.push({c:'keep',t:'🎨 색상 프로필(iCCP)'});
+    return f;
+  }
+  function cleanPNG(u8,removeICC){
+    const ch=walkPNG(u8), out=[u8.subarray(0,8)];
+    for(const c of ch){
+      if(c.type==='iCCP'){ if(!removeICC) out.push(u8.subarray(c.s,c.e)); continue; }
+      if(PNGKEEP.has(c.type)) out.push(u8.subarray(c.s,c.e));
+    }
+    return cat(out);
+  }
+
+  /* ---------- WebP ---------- */
+  function walkWebP(u8){
+    if(u8.length<12||!startsWith(u8,0,'RIFF')||!startsWith(u8,8,'WEBP')) return null;
+    const ch=[], n=u8.length; let p=12;
+    while(p+8<=n){
+      const fcc=asc(u8,p,4), len=(u8[p+4]|(u8[p+5]<<8)|(u8[p+6]<<16)|(u8[p+7]<<24))>>>0;
+      let e=p+8+len+(len&1); if(e>n) e=n;
+      ch.push({fcc,s:p,e,d:p+8,len}); p=e;
+    }
+    return ch;
+  }
+  function analyzeWebP(u8){
+    const ch=walkWebP(u8); if(!ch) return null;
+    const f={fmt:'webp',found:[],orientation:1,priv:0};
+    for(const c of ch){
+      if(c.fcc==='EXIF'){ f.priv++; const off=startsWith(u8,c.d,'Exif\0')?c.d+6:c.d; const t=parseTIFF(u8,off,c.d+c.len); f.exif=t;
+        if(t&&t.gps) f.found.push({c:'gps',t:`📍 위치정보 있음 (${t.gps.lat.toFixed(4)}, ${t.gps.lon.toFixed(4)})`});
+        if(t&&(t.make||t.model)) f.found.push({t:'📷 기종: '+[t.make,t.model].filter(Boolean).join(' ')});
+        if(t&&(t.dateTimeOriginal||t.dateTime)) f.found.push({t:'🕒 촬영시각: '+(t.dateTimeOriginal||t.dateTime)});
+        if(t&&t.software) f.found.push({t:'🛠 편집 프로그램: '+t.software});
+        if(t&&t.orientation&&t.orientation!==1){ f.orientation=t.orientation; f.found.push({t:'🔁 회전 정보 (Orientation '+t.orientation+')'}); }
+        f.found.push({t:'📄 EXIF 청크'});
+      }
+      else if(c.fcc==='XMP '){ f.priv++; f.found.push({t:'🏷 XMP 메타데이터'}); }
+      else if(c.fcc==='ICCP'){ f.icc=true; }
+    }
+    if(f.icc) f.found.push({c:'keep',t:'🎨 색상 프로필(ICCP)'});
+    return f;
+  }
+  function cleanWebP(u8,removeICC){
+    const ch=walkWebP(u8), parts=[];
+    for(const c of ch){
+      if(c.fcc==='EXIF'||c.fcc==='XMP ') continue;
+      if(c.fcc==='ICCP'&&removeICC) continue;
+      const seg=u8.slice(c.s,c.e);
+      if(c.fcc==='VP8X'&&c.len>=1){ seg[8]&=~(0x08|0x04); if(removeICC) seg[8]&=~0x20; }
+      parts.push(seg);
+    }
+    const body=cat(parts), out=new Uint8Array(12+body.length);
+    out.set(u8.subarray(0,12)); out.set(body,12);
+    const sz=out.length-8; out[4]=sz&255;out[5]=(sz>>8)&255;out[6]=(sz>>16)&255;out[7]=(sz>>>24)&255;
+    return out;
+  }
+
+  function analyze(u8){ return analyzeJPEG(u8)||analyzePNG(u8)||analyzeWebP(u8)||null; }
+
+  /* ---------- 캔버스 재인코딩 ---------- */
+  function loadImg(blob){return new Promise((res,rej)=>{const i=new Image();const u=URL.createObjectURL(blob);i.onload=()=>{res(i)};i.onerror=()=>{URL.revokeObjectURL(u);rej(new Error('decode'))};i.src=u;});}
+  async function reencode(blob,mime){
+    const img=await loadImg(blob);
+    const c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;
+    const x=c.getContext('2d');
+    if(mime==='image/jpeg'){x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);}
+    x.drawImage(img,0,0);
+    URL.revokeObjectURL(img.src);
+    const out=await new Promise(r=>c.toBlob(r,mime,mime==='image/png'?undefined:0.92));
+    if(!out) throw new Error('encode');
+    return new Uint8Array(await out.arrayBuffer());
+  }
+
+  /* ---------- 상태 ---------- */
+  let items=[], seq=0, running=false, dirty=false;
+  const drop=$('drop'),file=$('file'),warn=$('warn');
+  function msg(k,h){warn.className='msg m-'+k;warn.innerHTML=h;warn.classList.remove('hidden');}
+
+  drop.addEventListener('click',()=>file.click());
+  drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('over')});
+  drop.addEventListener('dragleave',()=>drop.classList.remove('over'));
+  drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('over');add(e.dataTransfer.files)});
+  file.addEventListener('change',e=>{add(e.target.files);file.value='';});
+  $('rot').addEventListener('change',()=>rerun());
+  $('icc').addEventListener('change',()=>rerun());
+
+  async function add(list){
+    const fs=[...list].filter(f=>f.type.startsWith('image/')||/\.(heic|heif|jpe?g|png|webp)$/i.test(f.name));
+    if(!fs.length){msg('bad','이미지 파일이 없습니다.');return;}
+    warn.classList.add('hidden');
+    $('editor').classList.remove('hidden');
+    for(const f of fs){
+      const it={id:++seq,file:f,name:f.name,orig:f.size,url:URL.createObjectURL(f),out:null,status:'대기'};
+      items.push(it); render(it);
+    }
+    rerun();
+  }
+
+  function rerun(){ if(running){dirty=true;return;} run(); }
+  async function run(){
+    running=true; dirty=false;
+    const todo=items.filter(i=>!i.out||i.opts!==optKey());
+    $('barWrap').classList.remove('hidden');
+    for(let i=0;i<todo.length;i++){
+      const it=todo[i]; it.opts=optKey();
+      $('stat').textContent=`처리 중 ${i+1}/${todo.length}`;
+      try{ await processOne(it); }catch(e){ it.out=null; it.err=e&&e.message==='decode'?'브라우저가 이 파일을 열지 못했습니다. HEIC라면 아이폰에서 JPG로 변환한 뒤 다시 올려 주세요.':'처리 중 오류가 났습니다. 파일이 손상되었을 수 있습니다.'; }
+      render(it);
+      $('bar').style.width=Math.round((i+1)/todo.length*100)+'%';
+      await new Promise(r=>setTimeout(r));
+    }
+    $('barWrap').classList.add('hidden');$('bar').style.width='0';
+    summary(); running=false;
+    if(dirty) run();
+  }
+  const optKey=()=>($('rot').checked?'r':'')+($('icc').checked?'i':'');
+
+  async function processOne(it){
+    const u8=new Uint8Array(await it.file.arrayBuffer());
+    const a=analyze(u8); it.before=a; it.err=null;
+    const removeICC=$('icc').checked, rot=$('rot').checked;
+    const base=it.name.replace(/\.[^.]+$/,'');
+    if(!a){
+      it.before={fmt:'other',found:[{t:'❔ 이 형식은 메타데이터를 읽지 못합니다 — 변환 후 처리'}],priv:0,orientation:1};
+      const mime=/^image\/(gif|bmp|svg)/.test(it.file.type)?'image/png':'image/jpeg';
+      it.out=await reencode(it.file,mime); it.method='reencode';
+      it.outName=base+'_clean.'+(mime==='image/png'?'png':'jpg'); it.outMime=mime;
+    } else if(a.orientation!==1&&rot){
+      const mime=a.fmt==='png'?'image/png':a.fmt==='webp'?'image/webp':'image/jpeg';
+      it.out=await reencode(it.file,mime); it.method='rotate';
+      it.outName=base+'_clean.'+(a.fmt==='png'?'png':a.fmt==='webp'?'webp':'jpg'); it.outMime=mime;
+    } else {
+      it.out= a.fmt==='jpeg'?cleanJPEG(u8,removeICC): a.fmt==='png'?cleanPNG(u8,removeICC): cleanWebP(u8,removeICC);
+      it.method='lossless'; it.rotWarn=a.orientation!==1;
+      it.outName=base+'_clean.'+(a.fmt==='jpeg'?'jpg':a.fmt); it.outMime='image/'+a.fmt;
+    }
+    const chk=analyze(it.out);
+    it.after=chk; it.clean= chk ? chk.priv===0 && !(removeICC&&chk.icc) : false;
+    it.leftICC= chk && chk.icc;
+  }
+
+  /* ---------- 렌더 ---------- */
+  function render(it){
+    let el=document.getElementById('it'+it.id);
+    if(!el){ el=document.createElement('div'); el.className='item'; el.id='it'+it.id; $('list').appendChild(el); }
+    const found=it.before?it.before.found:[];
+    const fl = found.length ? found.map(f=>`<li class="${f.c||''}">${esc(f.t)}</li>`).join('') : '<li class="keep">발견된 메타데이터 없음 — 이미 깨끗한 파일입니다</li>';
+    let res='';
+    if(it.err) res=`<p class="ng" style="margin:0">⚠ ${esc(it.err)}</p>`;
+    else if(!it.out) res=`<p style="margin:0;color:var(--ink-3)">처리 대기 중…</p>`;
+    else{
+      const how = it.method==='lossless' ? '무손실 — 메타데이터 세그먼트만 잘라냈고 픽셀은 그대로입니다.'
+        : it.method==='rotate' ? `회전 정보(Orientation ${it.before.orientation})가 있어 회전을 반영해 다시 인코딩했습니다. 이 파일은 무손실이 아닙니다.`
+        : '브라우저가 읽을 수 있는 형식으로 다시 그려 저장했습니다(재인코딩).';
+      res=`<p style="margin:0 0 6px" class="${it.clean?'ok':'ng'}">${it.clean?'✅ 메타데이터 없음 — 결과 파일을 다시 읽어 확인했습니다':'⚠ 결과 파일에 항목이 남아 있습니다'}</p>
+        <p style="margin:0 0 6px;font-size:13.5px;color:var(--ink-2)">${esc(how)}</p>
+        ${it.rotWarn?'<p style="margin:0 0 6px;font-size:13.5px;color:var(--warn)">회전 정보를 지웠으므로 일부 뷰어에서 사진이 돌아가 보일 수 있습니다.</p>':''}
+        ${it.leftICC?'<p style="margin:0 0 6px;font-size:13px;color:var(--ink-3)">색상 프로필(ICC)은 옵션에 따라 남겼습니다.</p>':''}
+        <p class="sz" style="margin:0 0 10px">${kb(it.orig)} → <strong>${kb(it.out.length)}</strong> <span class="save ${it.out.length<=it.orig?'g':'b'}">(${it.out.length<=it.orig?'−':'+'}${kb(Math.abs(it.orig-it.out.length))})</span></p>
+        <button class="dl" data-i="${it.id}">이 파일 받기</button>`;
+    }
+    el.innerHTML=`<div class="hd"><img class="thumb" src="${it.url}" alt="" onerror="this.style.visibility='hidden'"><div class="meta"><div class="fname">${esc(it.name)}</div><div class="sz">${kb(it.orig)} · ${it.before?({jpeg:'JPEG',png:'PNG',webp:'WebP',other:'기타 형식'})[it.before.fmt]:'분석 중'}</div></div></div>
+      <div class="row"><div class="col"><h4>발견된 정보</h4><ul class="found">${fl}</ul></div><div class="col"><h4>처리 결과</h4>${res}</div></div>`;
+    const b=el.querySelector('.dl'); if(b) b.addEventListener('click',()=>download(it));
+  }
+  function download(it){
+    const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([it.out],{type:it.outMime}));a.download=it.outName;a.click();
+    setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+  }
+  function summary(){
+    const done=items.filter(i=>i.out);
+    const gps=items.filter(i=>i.before&&i.before.found.some(f=>f.c==='gps')).length;
+    const oT=done.reduce((a,i)=>a+i.orig,0), nT=done.reduce((a,i)=>a+i.out.length,0);
+    const re=done.filter(i=>i.method!=='lossless').length;
+    $('totals').className='totals'+(done.length?'':' hidden');
+    $('totals').innerHTML=`<div><span class="k">처리한 사진</span><span class="v">${done.length}장</span></div>
+      <div><span class="k">위치정보가 있던 사진</span><span class="v">${gps}장</span></div>
+      <div><span class="k">용량</span><span class="v">${kb(oT)} → ${kb(nT)}</span></div>
+      <div><span class="k">무손실 처리</span><span class="v">${done.length-re}장${re?` · 재인코딩 ${re}장`:''}</span></div>`;
+    $('zipAll').disabled=!done.length;
+    $('stat').textContent=done.length?`완료 — ${done.length}장`:'';
+    const bad=items.filter(i=>i.err).length;
+    if(bad) msg('warn',`${bad}장은 처리하지 못했습니다. 각 카드의 안내를 확인해 주세요.`); else warn.classList.add('hidden');
+  }
+
+  $('zipAll').addEventListener('click',()=>{
+    const done=items.filter(i=>i.out);if(!done.length)return;
+    const seen={},entries=[];
+    for(const it of done){
+      let n=it.outName;
+      if(seen[n]){n=n.replace(/(\.[^.]+)$/,`_${seen[it.outName]}$1`);}
+      seen[it.outName]=(seen[it.outName]||0)+1;
+      entries.push({name:n,data:it.out});
+    }
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(zipStore(entries));a.download='photos-clean.zip';a.click();
+    setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+  });
+
+  $('reset').addEventListener('click',()=>{
+    items.forEach(i=>URL.revokeObjectURL(i.url));
+    items=[];file.value='';$('editor').classList.add('hidden');$('list').innerHTML='';
+    warn.classList.add('hidden');$('totals').className='totals hidden';
+    $('zipAll').disabled=true;$('stat').textContent='';
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+})();
+</script>
+</body>
+</html>

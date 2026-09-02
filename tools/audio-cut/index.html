@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>음악 자르기 — MP3 벨소리·알람음 만들기, 서버 전송 없음 | 까치툴</title>
+<meta name="description" content="MP3 자르기, 벨소리 만들기를 브라우저에서만 처리합니다. 파형을 보며 구간을 드래그로 고르고 페이드인·아웃, 노멀라이즈를 적용해 무손실 WAV 또는 기기 기본 압축 포맷(M4A·WEBM)으로 저장합니다. 서버 전송 없이 안전합니다.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/audio-cut/">
+<meta property="og:title" content="음악 자르기 — MP3 벨소리·알람음 만들기">
+<meta property="og:description" content="파형을 보며 구간을 골라 벨소리·알람음으로 저장. 서버 전송 없이 브라우저에서 처리.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/audio-cut/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:940px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 30px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  #drop{border:2px dashed var(--line);border-radius:16px;padding:42px 24px;text-align:center;
+    background:var(--surface);cursor:pointer;transition:.15s}
+  #drop:hover,#drop.over{border-color:var(--accent);background:var(--accent-soft)}
+  #drop .big{font-size:17px;font-weight:600;margin-bottom:6px}
+  #drop .small{font-size:13.5px;color:var(--ink-3)}
+  #file{display:none}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:18px 0}
+  .row{display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start}
+  .col{flex:1;min-width:225px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin-bottom:8px}
+  .opt{display:flex;align-items:flex-start;gap:9px;font-size:14.5px;cursor:pointer;margin-bottom:8px}
+  .opt input{margin-top:4px;width:17px;height:17px;accent-color:var(--accent);cursor:pointer;flex:none}
+  .opt .d{font-size:12.5px;color:var(--ink-3);display:block;line-height:1.5}
+  input[type=range]{width:100%;accent-color:var(--accent)}
+  input[type=number],input[type=text],select{padding:7px 9px;border:1px solid var(--line);border-radius:7px;
+    background:var(--surface);color:var(--ink);font-size:14px;font-family:inherit}
+  input[type=number]{width:92px;text-align:right}
+  input[type=text].tm{width:96px;text-align:right;font-variant-numeric:tabular-nums}
+  .inline{display:flex;align-items:center;gap:9px;font-size:14px;flex-wrap:wrap}
+  .val{font-variant-numeric:tabular-nums;font-weight:700;color:var(--accent)}
+
+  button.act{font-family:inherit;font-size:15px;font-weight:600;padding:12px 22px;border-radius:10px;border:1px solid transparent;cursor:pointer;transition:.12s}
+  .primary{background:var(--accent);color:#fff}
+  .primary:hover{filter:brightness(1.08)}
+  .primary:disabled{opacity:.45;cursor:not-allowed;filter:none}
+  .ghost{background:transparent;color:var(--ink-2);border-color:var(--line)}
+  .ghost:hover{border-color:var(--ink-3);color:var(--ink)}
+  .ghost:disabled{opacity:.45;cursor:not-allowed}
+  .ghost.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+  .chip{font-size:13px;padding:6px 12px;border-radius:8px;border:1px solid var(--line);
+    background:transparent;color:var(--ink-2);cursor:pointer;font-family:inherit;font-weight:600}
+  .chip:hover{border-color:var(--accent);color:var(--accent)}
+  .chip.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+
+  .finfo{font-size:14px;color:var(--ink-2);display:flex;gap:6px 16px;flex-wrap:wrap;margin:0 0 12px}
+  .finfo b{color:var(--ink);word-break:break-all}
+  .wave{position:relative;width:100%;max-width:100%;overflow:hidden;border-radius:10px;border:1px solid var(--line);background:var(--bg)}
+  #cv{display:block;width:100%;height:150px;touch-action:none;cursor:ew-resize;user-select:none;-webkit-user-select:none}
+  .wave .hint{position:absolute;right:8px;top:6px;font-size:11.5px;color:var(--ink-3);pointer-events:none}
+  @media (max-width:480px){.wave .hint{display:none}}
+  .times{display:flex;gap:10px 22px;flex-wrap:wrap;align-items:flex-end;margin:14px 0 6px}
+  .times label{font-size:12.5px;color:var(--ink-3);display:block;margin-bottom:4px}
+  .quick{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 0}
+  .ctl{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px}
+  .est{font-size:13.5px;color:var(--ink-3);margin:10px 0 0;font-variant-numeric:tabular-nums}
+  .fmt-note{font-size:12.5px;color:var(--ink-3);margin:6px 0 0;line-height:1.55}
+
+  .totals{background:var(--good-soft);border:1px solid var(--good);border-radius:12px;padding:16px 20px;margin:16px 0;
+    display:flex;gap:28px;flex-wrap:wrap;align-items:baseline}
+  .totals .k{font-size:12.5px;color:var(--ink-2);display:block}
+  .totals .v{font-size:19px;font-weight:700;font-variant-numeric:tabular-nums}
+
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .m-good{background:var(--good-soft);border-color:var(--good)}
+  .hidden{display:none}
+  .bar{height:5px;background:var(--line-soft);border-radius:99px;overflow:hidden;margin-top:12px}
+  .bar>i{display:block;height:100%;width:0;background:var(--accent);transition:width .18s}
+  code{background:var(--line-soft);padding:2px 6px;border-radius:5px;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .note{font-size:13.5px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:13px;margin:14px 0}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+  th,td{text-align:left;padding:10px 9px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+  th{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;border-bottom:1px solid var(--line)}
+  .tw{overflow-x:auto;max-width:100%}
+  ol,ul{padding-left:22px;margin:0 0 14px}
+  li{margin-bottom:4px}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+/*FOLD:S*/
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 8px}
+  .fold .fx>:first-child{margin-top:4px}
+/*FOLD:E*/
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
+/*TESTS:S*/
+  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 0;padding:13px 18px;
+    border:1px solid var(--line);border-radius:14px;background:var(--surface);
+    text-decoration:none;color:inherit;transition:.14s}
+  .tbn:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .tbn .ic{width:44px;height:44px;flex:none;border-radius:12px;background:#fff;
+    border:1px solid var(--line);object-fit:contain;padding:2px}
+  .tbn .tx{flex:1;min-width:0}
+  .tbn .tt{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em}
+  .tbn .ds{display:block;font-size:13px;color:var(--ink-3);line-height:1.55;margin-top:2px}
+  .tbn .ar{color:var(--ink-3);font-size:15px;flex:none}
+/*TESTS:E*/
+</style>
+<!--LD:S-->
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://www.kmagpie.com/tools/audio-cut/#app","name":"음악 자르기","url":"https://www.kmagpie.com/tools/audio-cut/","description":"MP3·M4A·WAV를 열어 파형을 보며 구간을 고르고 페이드·노멀라이즈를 적용해 저장합니다. 무손실 WAV와 기기 기본 압축 포맷으로 저장되고 파일은 브라우저를 떠나지 않습니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"inLanguage":"ko","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"K-magpie","url":"https://www.kmagpie.com/"}},{"@type":"BreadcrumbList","@id":"https://www.kmagpie.com/tools/audio-cut/#crumb","itemListElement":[{"@type":"ListItem","position":1,"name":"K-magpie","item":"https://www.kmagpie.com/"},{"@type":"ListItem","position":2,"name":"까치툴","item":"https://www.kmagpie.com/tools/"},{"@type":"ListItem","position":3,"name":"음악 자르기","item":"https://www.kmagpie.com/tools/audio-cut/"}]}]}</script>
+<!--LD:E-->
+<!--HEAD:S-->
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
+<meta property="og:site_name" content="까치툴">
+<link rel="manifest" href="/tools/manifest.json">
+<meta name="theme-color" content="#faf9f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#171614" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="까치툴">
+<script>/*PWA*/(function(){var L=document.documentElement.lang==='en';
+if('serviceWorker' in navigator)addEventListener('load',function(){navigator.serviceWorker.register('/sw.js',{scope:'/'})['catch'](function(){})});
+var p=null,armed=false;addEventListener('beforeinstallprompt',function(e){e.preventDefault();p=e;arm()});
+function arm(){if(armed)return;armed=true;var h=function(){removeEventListener('pointerdown',h,true);removeEventListener('keydown',h,true);show()};
+addEventListener('pointerdown',h,true);addEventListener('keydown',h,true)}
+addEventListener('appinstalled',function(){p=null;var b=document.getElementById('pwaBtn');if(b)b.style.visibility='hidden'});
+function show(){if(document.getElementById('pwaBtn'))return;
+var a=document.querySelector('.sub')||document.querySelector('h1');if(!a)return;
+var b=document.createElement('button');b.id='pwaBtn';b.type='button';
+b.textContent=L?'⬇ Install as an app':'📲 앱으로 설치';
+b.style.cssText='display:inline-block;margin:0 0 22px;padding:8px 15px;border-radius:9px;font:600 13.5px/1.4 inherit;cursor:pointer;background:transparent;color:var(--accent,#b45309);border:1px solid var(--accent,#b45309)';
+b.title=L?'Works offline once installed':'설치하면 인터넷 없이도 쓸 수 있습니다';
+b.onclick=function(){if(!p)return;p.prompt();p.userChoice.then(function(){p=null;b.style.visibility='hidden'})};
+a.insertAdjacentElement('afterend',b)}})();</script>
+<!--HEAD:E-->
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › 음악 자르기</p>
+
+<h1>음악 자르기 — 벨소리·알람음 만들기</h1>
+<p class="sub">파형을 보면서 원하는 구간만 골라 <strong>벨소리·알람음·알림음으로 저장합니다.</strong> 페이드인·아웃과 노멀라이즈를 적용할 수 있고, 파일이 서버로 전송되지 않고 브라우저 안에서만 처리됩니다.</p>
+
+<div id="drop">
+  <div class="big">음악 파일을 여기에 끌어다 놓거나 클릭해서 선택하세요</div>
+  <div class="small">MP3 · M4A · AAC · WAV · OGG · FLAC 등 브라우저가 읽을 수 있는 오디오 · 한 번에 한 파일</div>
+  <input type="file" id="file" accept="audio/*,.mp3,.m4a,.aac,.wav,.ogg,.oga,.flac,.opus,.webm">
+</div>
+
+<div id="warn" class="hidden"></div>
+
+<div id="editor" class="hidden">
+  <div class="panel">
+    <div class="finfo" id="finfo"></div>
+    <div class="wave">
+      <canvas id="cv" aria-label="파형. 양쪽 손잡이를 드래그해 구간을 고르세요"></canvas>
+      <span class="hint">손잡이를 드래그해 구간 선택</span>
+    </div>
+
+    <div class="times">
+      <div><label for="tStart">시작 (분:초.초)</label><input type="text" class="tm" id="tStart" value="0:00.0" inputmode="decimal" aria-label="시작 시각"></div>
+      <div><label for="tEnd">끝 (분:초.초)</label><input type="text" class="tm" id="tEnd" value="0:00.0" inputmode="decimal" aria-label="끝 시각"></div>
+      <div><label>선택 길이</label><span class="val" id="selLen">0.0초</span></div>
+    </div>
+
+    <div class="quick">
+      <button type="button" class="chip" id="q30">처음 30초</button>
+      <button type="button" class="chip" id="q40">처음 40초</button>
+      <button type="button" class="chip" id="qAll">전체 선택</button>
+      <button type="button" class="chip" id="qLoop" aria-pressed="false">선택 구간 반복 재생</button>
+    </div>
+
+    <div class="ctl">
+      <button type="button" class="act primary" id="play">▶ 선택 구간 미리 듣기</button>
+      <button type="button" class="act ghost" id="stop" disabled>■ 정지</button>
+      <span id="pstat" style="font-size:14px;color:var(--ink-3);font-variant-numeric:tabular-nums"></span>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="row">
+      <div class="col">
+        <label class="f">페이드인 <span class="val" id="fiV">0.0</span>초</label>
+        <input type="range" id="fadeIn" min="0" max="3" step="0.1" value="0">
+        <label class="f" style="margin-top:14px">페이드아웃 <span class="val" id="foV">0.0</span>초</label>
+        <input type="range" id="fadeOut" min="0" max="3" step="0.1" value="0">
+        <p class="note" style="margin-top:8px">구간 시작과 끝을 부드럽게 만들어 "뚝" 하고 끊기는 소리를 없앱니다. 벨소리는 0.5~1초 정도가 자연스럽습니다.</p>
+      </div>
+      <div class="col">
+        <label class="f">음량</label>
+        <label class="opt"><input type="checkbox" id="norm"><span>노멀라이즈 (피크 −1 dBFS)<span class="d">가장 큰 소리가 −1 dBFS가 되도록 전체 음량을 같은 비율로 키우거나 줄입니다. 벨소리가 너무 작게 들릴 때 켜세요.</span></span></label>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+    <button type="button" class="act primary" id="dlWav">WAV로 저장 (무손실)</button>
+    <button type="button" class="act ghost hidden" id="dlRec">압축 저장</button>
+    <button type="button" class="act ghost" id="reset">파일 다시 선택</button>
+    <span id="stat" style="font-size:14px;color:var(--ink-3)"></span>
+  </div>
+  <p class="fmt-note hidden" id="recNote"></p>
+  <div class="bar hidden" id="barWrap"><i id="bar"></i></div>
+  <p class="est" id="est"></p>
+  <div id="done" class="hidden"></div>
+</div>
+
+<p class="gist">파형 위의 두 손잡이를 끌어 구간을 정하고 미리 들어본 뒤 저장하면 됩니다. 이 도구는 라이선스가 자유로운 브라우저 내장 기능만 쓰기 때문에 MP3로 다시 인코딩하지 않고, 대신 어디서나 열리는 무손실 WAV와 기기가 기본으로 지원하는 압축 포맷(아이폰·맥은 M4A, 크롬·안드로이드는 WEBM)으로 저장합니다. 파일은 서버로 전송되지 않습니다.</p>
+
+<details class="fold" open><summary><h2>사용법</h2></summary><div class="fx">
+<p>음악 파일을 올리면 파형이 그려집니다. 파형 위에는 시작 손잡이와 끝 손잡이가 있는데, 마우스나 손가락으로 끌어서 원하는 구간을 고르시면 됩니다. 정확한 시각을 맞추고 싶으면 아래 시작·끝 입력칸에 <code>1:23.5</code>처럼 분:초.초 형식으로 직접 적으셔도 됩니다. 초 단위만 적어도(예: <code>83.5</code>) 알아서 해석합니다.</p>
+<p>"처음 30초", "처음 40초" 버튼은 벨소리용으로 가장 흔한 길이를 한 번에 잡아 줍니다. 후렴 부분을 쓰고 싶다면 손잡이를 끌어 옮긴 뒤 "선택 구간 반복 재생"을 켜고 미리 들어보세요. 반복 재생 상태에서는 손잡이를 옮겨도 다음 반복부터 바뀐 구간으로 이어지기 때문에, 들으면서 시작점을 맞추기 편합니다.</p>
+<p>구간이 정해졌으면 페이드인·아웃과 노멀라이즈를 원하는 대로 켜고 저장 버튼을 누르시면 됩니다. WAV 저장은 즉시 끝나고, 압축 저장은 구간 길이만큼 시간이 걸립니다(30초 구간이면 약 30초). 압축 저장은 브라우저의 녹음 기능을 그대로 쓰기 때문에 실시간으로만 처리할 수 있어서 그렇습니다.</p>
+<p>모든 처리는 브라우저의 Web Audio API로 이루어집니다. 파일이 서버로 올라가지 않으므로 구매한 음원이나 직접 녹음한 파일도 안심하고 쓰실 수 있고, 업로드·다운로드 대기 시간이 없습니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>어떤 파일을 넣을 수 있나요</h2></summary><div class="fx">
+<p>브라우저가 디코딩할 수 있는 오디오라면 무엇이든 됩니다. MP3, M4A·AAC, WAV, OGG(Vorbis·Opus), FLAC이 대표적이고, 크롬·엣지·파이어폭스·사파리 최신 버전은 모두 이 형식들을 읽습니다. 동영상 파일(MP4·WEBM)도 오디오 트랙만 뽑아 읽는 경우가 많은데, 브라우저마다 다르니 안 되면 먼저 오디오로 변환해 주세요.</p>
+<p>다만 DRM이 걸린 음원(스트리밍 서비스에서 내려받은 파일 등)은 어떤 도구로도 열리지 않습니다. 이런 파일은 브라우저가 "디코딩할 수 없는 파일"이라고만 알려 줍니다. 또 20분이 넘는 긴 파일은 디코딩 후 메모리를 많이 차지합니다(44.1kHz 스테레오 기준 1분에 약 21MB). 경고를 띄우기는 하지만 처리는 그대로 진행하니, 모바일에서 아주 긴 파일을 다룰 때는 탭이 꺼질 수 있다는 점만 알아 두세요.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>왜 결과가 MP3가 아니라 WAV·M4A·WEBM인가요</h2></summary><div class="fx">
+<p>솔직하게 말씀드리면, 이 페이지는 <strong>MP3로 다시 인코딩하지 않습니다.</strong> 까치툴은 외부 라이브러리를 쓰지 않고 브라우저에 내장된 기능만으로 만드는 것을 원칙으로 하는데, 웹에서 쓸 수 있는 MP3 인코더는 대부분 GPL·LGPL 계열 라이선스라 그대로 넣기 어렵습니다. 그래서 라이선스가 완전히 자유로운 두 가지 방법으로 저장합니다.</p>
+<h3>WAV (무손실)</h3>
+<p>잘라낸 구간의 원본 소리를 그대로 16비트 PCM으로 담습니다. 음질 손실이 전혀 없고, 윈도우·맥·안드로이드·아이폰은 물론 오래된 MP3 플레이어나 차량 오디오까지 거의 모든 기기가 열 수 있습니다. 대신 용량이 큽니다. 44.1kHz 스테레오 기준으로 1분에 약 10MB이므로, 30초 벨소리는 5MB 정도가 됩니다. 안드로이드 벨소리로 쓰기에는 이 정도면 전혀 문제가 없습니다.</p>
+<h3>압축 저장 (기기 기본 포맷)</h3>
+<p>브라우저의 녹음 기능(MediaRecorder)을 이용해 잘라낸 소리를 다시 압축합니다. 어떤 형식이 나오는지는 브라우저가 정합니다. <strong>아이폰·아이패드·맥의 Safari는 M4A(AAC)</strong>를 만들고, <strong>크롬·엣지·삼성 인터넷·파이어폭스는 WEBM(Opus)</strong>을 만듭니다. 버튼에 실제로 만들어질 형식이 표시되니 확인하고 누르시면 됩니다. 용량은 WAV의 10분의 1 정도이고, 일반적인 벨소리 용도라면 음질 차이를 느끼기 어렵습니다.</p>
+<p>정리하면, 아이폰 벨소리를 만들 때는 사파리에서 "M4A로 저장"을 쓰시는 것이 가장 간단하고, 안드로이드는 WAV든 WEBM이든 그대로 벨소리로 지정할 수 있습니다. 꼭 MP3 파일이어야 한다면 WAV로 저장한 뒤 다른 변환 프로그램을 거치셔야 합니다.</p>
+<div class="tw"><table>
+<thead><tr><th>형식</th><th>만드는 브라우저</th><th>30초 기준 용량</th><th>음질</th><th>어디에 쓰나</th></tr></thead>
+<tbody>
+<tr><td>WAV</td><td>모든 브라우저</td><td>약 5MB (44.1kHz 스테레오)</td><td>무손실</td><td>안드로이드 벨소리·알람음, 편집 원본 보관, 다른 프로그램으로 변환할 때</td></tr>
+<tr><td>M4A (AAC)</td><td>Safari(아이폰·아이패드·맥), 일부 크롬</td><td>약 480KB (128kbps)</td><td>손실, 벨소리용으로 충분</td><td>아이폰 벨소리(확장자를 m4r로), 안드로이드, 메신저 전송</td></tr>
+<tr><td>WEBM (Opus)</td><td>크롬·엣지·파이어폭스·삼성 인터넷</td><td>약 360KB (96kbps)</td><td>손실, 같은 용량에서 AAC보다 우수</td><td>안드로이드 벨소리·알림음, 웹·디스코드 공유</td></tr>
+</tbody></table></div>
+</div></details>
+
+<details class="fold" open><summary><h2>좋은 구간을 고르는 요령</h2></summary><div class="fx">
+<p>벨소리로 쓸 구간은 <strong>첫 1~2초 안에 곡이 무엇인지 알 수 있고 소리가 충분히 큰 부분</strong>이 좋습니다. 전주가 조용하게 시작하는 곡은 전화가 온 것을 늦게 알아차리게 되므로, 후렴이나 악기가 한꺼번에 들어오는 지점에서 시작하는 편이 실용적입니다. 파형에서 세로로 두껍게 솟아오르는 부분이 소리가 큰 구간이니, 그 직전을 시작점으로 잡으면 됩니다.</p>
+<p>시작점은 박자의 첫 박(다운비트)에 맞추면 훨씬 자연스럽습니다. 파형에서 규칙적으로 튀어나온 뾰족한 봉우리가 드럼 박자인 경우가 많으니, 봉우리 바로 앞에 손잡이를 놓고 반복 재생으로 확인해 보세요. 끝점은 프레이즈가 끝나는 지점에 두고 페이드아웃을 1초 정도 주면 중간에 끊긴 느낌이 줄어듭니다. 40초 제한이 있는 아이폰이라면 후렴 한 번이 보통 20~30초 안에 끝나므로 후렴 하나만 담는다고 생각하시면 됩니다.</p>
+<p>알람음은 반대로 생각합니다. 잠을 깨우는 것이 목적이므로 페이드인 없이 큰 소리로 바로 시작하는 구간을 고르고, 노멀라이즈를 켜서 음량을 최대한 확보하세요. 알림음은 곡의 특징이 드러나는 짧은 리프나 보컬 한 마디(3~5초)만 잘라내면 됩니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>벨소리 규격 정리 — 안드로이드와 아이폰</h2></summary><div class="fx">
+<h3>안드로이드</h3>
+<p>안드로이드는 벨소리 형식에 관대합니다. MP3·WAV·M4A·OGG 대부분을 그대로 씁니다. 저장한 파일을 휴대폰 내부 저장소의 <code>Ringtones</code> 폴더(알람음은 <code>Alarms</code>, 알림음은 <code>Notifications</code>)에 넣으면 설정 → 소리 및 진동 → 벨소리 목록에 나타납니다. 폴더에 넣지 않아도 벨소리 선택 화면에서 "+" 또는 "파일에서 추가"를 눌러 다운로드 폴더의 파일을 직접 고를 수 있는 기종이 많습니다.</p>
+<p>길이는 보통 30~40초면 충분합니다. 전화는 대개 30초 안에 받거나 끊기기 때문에, 그 이후는 들을 일이 거의 없습니다. 삼성 갤럭시는 벨소리 선택 화면에 "하이라이트만" 옵션이 있어 긴 파일도 자동으로 좋은 구간을 골라 주지만, 직접 고른 구간을 쓰고 싶으면 여기서 잘라 넣는 편이 확실합니다.</p>
+<h3>아이폰</h3>
+<p>아이폰 벨소리는 <strong>M4R</strong>이라는 확장자를 씁니다. 사실 M4R은 M4A(AAC) 파일의 확장자만 바꾼 것으로, 내용은 완전히 같습니다. 조건은 두 가지입니다. AAC로 인코딩되어 있을 것, 그리고 <strong>길이가 40초 이하</strong>일 것. 40초를 넘으면 아이폰이 벨소리로 인식하지 않으니 "처음 40초" 버튼이나 그보다 짧은 구간을 쓰세요.</p>
+<p>아이폰에 넣는 방법은 두 가지가 있습니다.</p>
+<ol>
+<li><strong>컴퓨터를 쓰는 방법(iTunes·Finder):</strong> 사파리나 크롬에서 "M4A로 저장"으로 받은 파일의 확장자를 <code>.m4a</code>에서 <code>.m4r</code>로 바꿉니다. 아이폰을 컴퓨터에 케이블로 연결하고, 윈도우는 iTunes, 맥은 Finder에서 기기를 선택합니다. 바꾼 파일을 기기 화면(왼쪽 사이드바의 아이폰 이름)에 끌어다 놓으면 동기화되면서 벨소리 목록에 추가됩니다. 그 다음 아이폰의 설정 → 사운드 및 햅틱 → 벨소리에서 고르시면 됩니다.</li>
+<li><strong>아이폰만으로 하는 방법(GarageBand):</strong> 아이폰 사파리에서 "M4A로 저장"을 누르면 파일 앱의 다운로드 폴더에 저장됩니다. 앱스토어에서 무료인 GarageBand를 설치하고, 새 프로젝트 → 오디오 레코더를 연 뒤 트랙 보기로 전환합니다. 오른쪽 위 루프 아이콘 → 파일 탭에서 받은 파일을 찾아 트랙에 끌어 놓습니다. 왼쪽 위 아래화살표(▾) → 나의 노래로 저장한 다음, 저장된 곡을 길게 눌러 공유 → 벨소리 → 내보내기를 누르면 바로 벨소리 목록에 들어갑니다. GarageBand는 40초가 넘으면 자동으로 잘라 주기도 합니다.</li>
+</ol>
+<h3>알람음·알림음 길이</h3>
+<p>알람음은 반복 재생되므로 30초 정도면 충분하고, 시작 부분이 너무 조용하면 알람 효과가 떨어지니 페이드인을 짧게(0.3초 이하) 두거나 아예 끄는 편이 좋습니다. 카카오톡·문자 같은 알림음은 3~5초가 적당합니다. 카카오톡은 앱 안에서 제공하는 알림음만 고를 수 있고, 안드로이드는 시스템 알림음을 바꾸면 그 소리가 적용되는 경우가 많습니다. 알림음은 짧게 끝나야 하므로 페이드아웃 0.3~0.5초로 끝을 정리해 주세요.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>페이드인·아웃과 노멀라이즈는 왜 넣나요</h2></summary><div class="fx">
+<h3>페이드인·아웃</h3>
+<p>노래 중간을 잘라내면 시작과 끝에서 파형이 갑자기 0에서 튀어 오르거나 0으로 꺼지기 때문에 "뚝", "틱" 하는 잡음이 들립니다. 페이드인은 시작 부분의 음량을 0에서 서서히 키우고, 페이드아웃은 끝 부분을 서서히 줄여서 이 잡음을 없앱니다. 이 도구는 지정한 시간 동안 음량을 직선으로(선형) 올리고 내리며, 원본 파형 자체에 적용한 뒤 저장하므로 어떤 기기에서 재생해도 같게 들립니다.</p>
+<p>벨소리는 페이드인 0.5초, 페이드아웃 1초 정도가 무난합니다. 후렴 시작처럼 첫 박자가 중요한 구간이면 페이드인을 0.1~0.2초로 짧게 두세요. 알림음처럼 짧은 소리는 페이드아웃만 0.2~0.3초 주면 깔끔하게 끝납니다.</p>
+<h3>노멀라이즈 (피크 −1 dBFS)</h3>
+<p>노멀라이즈는 구간 안에서 가장 큰 소리(피크)를 기준으로 전체 음량을 같은 비율로 조절하는 것입니다. 소리의 크고 작은 관계는 그대로 두고 전체를 위아래로 옮기기만 하므로 음질이 나빠지지 않습니다. 음원마다 녹음 레벨이 달라서, 조용한 곡을 벨소리로 쓰면 전화가 온 줄 모를 때가 있는데 이럴 때 켜면 도움이 됩니다.</p>
+<p>기준을 0 dBFS(디지털 최대치)가 아니라 −1 dBFS로 두는 이유는 여유를 남기기 위해서입니다. 디지털 값이 최대치에 딱 붙어 있으면 압축 포맷으로 변환하거나 스피커의 아날로그 회로를 거칠 때 실제 파형이 최대치를 살짝 넘어(인터샘플 피크) 찌그러지는 소리가 날 수 있습니다. 1 dB 정도 낮춰 두면 듣기에는 차이가 없으면서 이 문제를 피할 수 있어서 대부분의 마스터링에서 쓰는 관행입니다. 노멀라이즈는 페이드를 적용한 뒤에 계산하므로, 저장된 파일의 최대 피크가 정확히 −1 dBFS가 됩니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
+<h3>선택 구간 시작이 원본보다 살짝 밀려요</h3>
+<p>MP3 파일에서 흔히 생기는 현상입니다. MP3는 인코딩할 때 앞에 짧은 무음(인코더 딜레이, 보통 1,000~2,000샘플로 0.02~0.05초)이 붙고, 디코더에 따라 이 무음을 자동으로 잘라 주기도 하고 그대로 두기도 합니다. 그래서 다른 프로그램에서 잰 시각과 여기서의 시각이 몇십 밀리초 차이 날 수 있습니다. 벨소리 용도라면 문제가 되지 않고, 박자를 정확히 맞추고 싶다면 파형을 보면서 손잡이를 살짝 옮기거나 반복 재생으로 들으면서 맞추세요.</p>
+<h3>아이폰에서 저장이 안 돼요</h3>
+<p>아이폰 사파리는 다운로드 버튼을 누르면 파일 앱의 "다운로드" 폴더에 저장하고, 오른쪽 위 주소창 근처에 다운로드 아이콘이 나타납니다. 저장 확인 창이 뜨지 않아서 안 된 것처럼 보일 뿐인 경우가 대부분입니다. 파일 앱 → 나의 iPhone(또는 iCloud Drive) → 다운로드 폴더를 확인해 보세요. 카카오톡·인스타그램 같은 앱 안의 브라우저에서는 다운로드 자체가 막혀 있으니, 링크를 사파리로 열어서 다시 시도하시면 됩니다.</p>
+<h3>음질이 나빠진 것 같아요</h3>
+<p>"압축 저장"은 브라우저가 소리를 다시 압축하는 것이라 원본이 이미 MP3였다면 손실이 한 번 더 쌓입니다(재압축). 대부분은 알아채기 어렵지만 민감하시다면 WAV로 저장하세요. WAV는 디코딩된 원본 소리를 그대로 담기 때문에 이 도구에서 추가로 잃는 음질이 전혀 없습니다. 안드로이드는 WAV 벨소리를 그대로 쓸 수 있습니다.</p>
+<h3>파일이 너무 커요</h3>
+<p>WAV는 압축이 없어서 크기가 길이와 정확히 비례합니다. 계산은 간단합니다. 샘플레이트 × 채널 수 × 2바이트(16비트) × 초. 44.1kHz 스테레오면 44,100 × 2 × 2 = 176,400바이트/초, 즉 <strong>1분에 약 10MB</strong>입니다. 48kHz 스테레오는 1분에 약 11MB, 모노는 절반입니다. 30초 벨소리라면 5MB 안팎이라 문제없지만, 여러 곡을 만들거나 메신저로 보내야 한다면 압축 저장을 쓰시면 됩니다. 저장 버튼 아래에 예상 용량이 표시됩니다.</p>
+<h3>재생 버튼을 눌러도 소리가 안 나요</h3>
+<p>휴대폰이 무음 모드이거나 미디어 볼륨이 0인 경우가 가장 많습니다. 아이폰은 측면 무음 스위치가 켜져 있으면 브라우저 소리도 나지 않습니다. 또 브라우저는 사용자가 화면을 한 번 눌러야 소리를 낼 수 있게 되어 있어서, 페이지를 열자마자 자동으로 소리가 나지는 않습니다. 재생 버튼을 직접 누르면 됩니다.</p>
+<h3>압축 저장 버튼이 안 보여요</h3>
+<p>브라우저가 오디오 녹음(MediaRecorder)을 지원하지 않는 경우입니다. 아주 오래된 브라우저나 일부 앱 내장 브라우저에서 그렇습니다. 이때는 WAV 저장을 쓰시거나, 크롬·사파리 최신 버전으로 다시 열어 보세요.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>저작권 안내</h2></summary><div class="fx">
+<p>이 도구는 직접 구매하거나 소장한 음원을 <strong>개인적으로 이용</strong>하는 용도를 위한 것입니다. 잘라낸 벨소리·알람음을 다른 사람에게 배포하거나 판매하는 것은 저작권법에 저촉될 수 있으니 본인 기기에서만 사용해 주세요. 스트리밍 서비스의 음원은 약관상 다운로드·편집이 금지된 경우가 대부분입니다.</p>
+</div></details>
+
+<!--REL:S-->
+<h2>함께 쓰면 좋은 도구</h2>
+<div class="rel">
+  <a href="/tools/gif-maker/"><strong>GIF 만들기</strong><span>사진 여러 장으로 움짤 애니메이션</span></a>
+  <a href="/tools/image-compress/"><strong>이미지 용량 줄이기</strong><span>목표 용량에 자동으로 맞춤</span></a>
+  <a href="/tools/qr/"><strong>QR코드 만들기</strong><span>링크·와이파이·연락처</span></a>
+</div>
+<p class="rel-all"><a href="/tools/">까치툴 도구 39개 전체 보기 →</a></p>
+<!--REL:E-->
+
+<!--TESTS:S-->
+<a class="tbn" href="/tests/">
+  <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
+  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 좀비 생존률부터 전생, 아이돌 포지션까지 — 결과는 친구와 비교해 보세요.</span></span>
+  <span class="ar">→</span>
+</a>
+<!--TESTS:E-->
+
+<footer>
+  <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 파일은 업로드되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/tools/about/">소개</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+
+  /* ---------- state ---------- */
+  let ctx=null;            // AudioContext (사용자 클릭 시 생성)
+  let buf=null;            // AudioBuffer
+  let baseName='audio';
+  let sel={s:0,e:0};       // 선택 구간(초)
+  let peaks=null,peaksW=0; // 파형 캐시
+  let src=null,playT0=0,playOff=0,raf=0,loop=false;
+  let busy=false;
+  let drag=null;
+
+  const drop=$('drop'),file=$('file'),warn=$('warn'),cv=$('cv');
+  const cx=cv.getContext('2d');
+
+  /* 우선순위: AAC가 든 MP4(진짜 M4A) → WEBM(Opus) → OGG(Opus) → 코덱 미지정 MP4(Safari 대비).
+     크롬은 'audio/mp4'를 Opus 코덱으로도 만들 수 있어 M4A라 부르면 안 되므로 코덱을 명시해 확인합니다. */
+  const REC_TYPES=[
+    ['audio/mp4;codecs=mp4a.40.2','m4a','M4A'],
+    ['audio/webm;codecs=opus','webm','WEBM'],
+    ['audio/ogg;codecs=opus','ogg','OGG'],
+    ['audio/mp4','m4a','M4A']
+  ];
+  let rec=null;
+  if(window.MediaRecorder && MediaRecorder.isTypeSupported){
+    for(const t of REC_TYPES){ if(MediaRecorder.isTypeSupported(t[0])){rec={mime:t[0],ext:t[1],label:t[2]};break;} }
+  }
+  if(rec){
+    $('dlRec').textContent=rec.label+'로 저장 (압축)';
+    $('dlRec').classList.remove('hidden');
+    $('recNote').textContent='압축 형식은 브라우저가 정합니다 — 아이폰·맥 Safari는 M4A(아이폰 벨소리는 m4a 계열), 크롬·엣지·안드로이드는 WEBM(Opus). 이 브라우저에서는 '+rec.label+'이 만들어집니다.';
+    $('recNote').classList.remove('hidden');
+  }
+
+  /* ---------- utils ---------- */
+  const kb=n=>n>=1048576?(n/1048576).toFixed(1)+' MB':(n/1024).toFixed(0)+' KB';
+  function msg(k,h){warn.className='msg m-'+k;warn.innerHTML=h;warn.classList.remove('hidden');}
+  function fmtT(t){t=Math.max(0,t);const m=Math.floor(t/60),s=t-m*60;return m+':'+(s<10?'0':'')+s.toFixed(1);}
+  function parseT(v){
+    v=String(v).trim().replace(/\s/g,'');if(!v)return NaN;
+    const p=v.split(':');let t=0;
+    for(const x of p){const n=parseFloat(x);if(isNaN(n))return NaN;t=t*60+n;}
+    return t;
+  }
+  function ensureCtx(){
+    if(!ctx){const AC=window.AudioContext||window.webkitAudioContext;ctx=new AC();}
+    if(ctx.state==='suspended')ctx.resume().catch(()=>{});
+    return ctx;
+  }
+
+  /* ---------- 파일 입력 ---------- */
+  drop.addEventListener('click',()=>{ensureCtx();file.click();});
+  drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('over')});
+  drop.addEventListener('dragleave',()=>drop.classList.remove('over'));
+  drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('over');if(e.dataTransfer.files[0])load(e.dataTransfer.files[0]);});
+  file.addEventListener('change',e=>{if(e.target.files[0])load(e.target.files[0]);});
+
+  function decode(ab){
+    const c=ensureCtx();
+    return new Promise((res,rej)=>{
+      let p;
+      try{p=c.decodeAudioData(ab,res,rej);}catch(e){rej(e);return;}
+      if(p&&p.then)p.then(res,rej);
+    });
+  }
+
+  async function load(f){
+    stop();
+    warn.classList.add('hidden');$('done').classList.add('hidden');
+    $('stat').textContent='읽는 중…';
+    let ab;
+    try{ab=await f.arrayBuffer();}catch(e){msg('bad','파일을 읽을 수 없습니다.');$('stat').textContent='';return;}
+    let b;
+    try{b=await decode(ab);}
+    catch(e){
+      msg('bad','이 파일은 브라우저가 디코딩할 수 없습니다. 손상되었거나 DRM이 걸린 파일, 또는 지원하지 않는 형식일 수 있습니다. MP3·M4A·WAV·OGG·FLAC로 다시 시도해 보세요.');
+      $('stat').textContent='';return;
+    }
+    if(!b||!b.length){msg('bad','소리가 들어 있지 않은 파일입니다.');$('stat').textContent='';return;}
+    buf=b;baseName=(f.name||'audio').replace(/\.[^.]+$/,'')||'audio';
+    peaks=null;peaksW=0;
+    const ch=b.numberOfChannels;
+    $('finfo').innerHTML=`<span>파일 <b></b></span><span>길이 <b>${fmtT(b.duration)}</b></span><span>샘플레이트 <b>${(b.sampleRate/1000).toFixed(1)}kHz</b></span><span>채널 <b>${ch===1?'모노':ch===2?'스테레오':ch+'ch'}</b></span>`;
+    $('finfo').querySelector('b').textContent=f.name||'audio';
+    if(b.duration>1200) msg('warn',`파일이 ${Math.round(b.duration/60)}분으로 깁니다. 디코딩된 소리가 메모리를 약 ${kb(b.length*ch*4)} 차지하므로 모바일에서는 느리거나 탭이 꺼질 수 있습니다. 그대로 진행합니다.`);
+    setSel(0,Math.min(b.duration,30));
+    $('editor').classList.remove('hidden');
+    $('stat').textContent='';
+    resize();
+  }
+
+  /* ---------- 선택 구간 ---------- */
+  function setSel(s,e){
+    if(!buf)return;
+    const D=buf.duration;
+    s=Math.min(Math.max(0,s),D);e=Math.min(Math.max(0,e),D);
+    if(e-s<0.1){ if(s>D-0.1)s=Math.max(0,D-0.1); e=Math.min(D,s+0.1); }
+    sel={s,e};
+    $('tStart').value=fmtT(s);$('tEnd').value=fmtT(e);
+    $('selLen').textContent=(e-s).toFixed(1)+'초';
+    if(src&&loop){src.loopStart=s;src.loopEnd=e;}
+    est();draw();
+  }
+  $('tStart').addEventListener('change',()=>{const t=parseT($('tStart').value);if(isNaN(t)){$('tStart').value=fmtT(sel.s);return;}setSel(t,Math.max(sel.e,t+0.1));});
+  $('tEnd').addEventListener('change',()=>{const t=parseT($('tEnd').value);if(isNaN(t)){$('tEnd').value=fmtT(sel.e);return;}setSel(Math.min(sel.s,t-0.1),t);});
+  $('q30').addEventListener('click',()=>setSel(0,30));
+  $('q40').addEventListener('click',()=>setSel(0,40));
+  $('qAll').addEventListener('click',()=>setSel(0,buf?buf.duration:0));
+  $('qLoop').addEventListener('click',()=>{
+    loop=!loop;$('qLoop').classList.toggle('on',loop);$('qLoop').setAttribute('aria-pressed',loop);
+    if(src){src.loop=loop;if(loop){src.loopStart=sel.s;src.loopEnd=sel.e;}}
+    if(loop&&!src)play();
+  });
+
+  /* ---------- 파형 ---------- */
+  function calcPeaks(W){
+    const ch=buf.numberOfChannels,N=buf.length,per=N/W;
+    const mn=new Float32Array(W),mx=new Float32Array(W);
+    const step=Math.max(1,Math.floor(per/1200));
+    const data=[];for(let c=0;c<ch;c++)data.push(buf.getChannelData(c));
+    for(let x=0;x<W;x++){
+      const a=Math.floor(x*per),b=Math.min(N,Math.floor((x+1)*per)+1);
+      let lo=1,hi=-1;
+      for(let i=a;i<b;i+=step){
+        let v=0;for(let c=0;c<ch;c++)v+=data[c][i];v/=ch;
+        if(v<lo)lo=v;if(v>hi)hi=v;
+      }
+      if(lo>hi){lo=0;hi=0;}
+      mn[x]=lo;mx[x]=hi;
+    }
+    peaks={mn,mx};peaksW=W;
+  }
+  function css(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
+  function resize(){
+    if(!buf||$('editor').classList.contains('hidden'))return;
+    const W=Math.max(1,Math.floor(cv.clientWidth)),H=150,dpr=Math.min(2,window.devicePixelRatio||1);
+    if(cv.width!==Math.round(W*dpr)||cv.height!==Math.round(H*dpr)){cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);}
+    if(peaksW!==W)calcPeaks(W);
+    draw();
+  }
+  window.addEventListener('resize',resize);
+  if(window.ResizeObserver)new ResizeObserver(()=>resize()).observe(cv.parentElement);
+
+  function draw(){
+    if(!buf||!peaks)return;
+    const dpr=cv.width/Math.max(1,cv.clientWidth||peaksW),W=peaksW,H=150,D=buf.duration;
+    cx.setTransform(dpr,0,0,dpr,0,0);
+    cx.fillStyle=css('--bg');cx.fillRect(0,0,W,H);
+    const xs=sel.s/D*W,xe=sel.e/D*W;
+    // 선택 영역
+    cx.fillStyle=css('--accent-soft');cx.fillRect(xs,0,xe-xs,H);
+    // 파형
+    const mid=H/2,amp=H/2-6;
+    cx.fillStyle=css('--ink-3');
+    for(let x=0;x<W;x++){
+      if(x>=xs&&x<=xe)continue;
+      const y1=mid-peaks.mx[x]*amp,y2=mid-peaks.mn[x]*amp;
+      cx.fillRect(x,y1,1,Math.max(1,y2-y1));
+    }
+    cx.fillStyle=css('--accent');
+    for(let x=Math.max(0,Math.floor(xs));x<=Math.min(W-1,Math.ceil(xe));x++){
+      const y1=mid-peaks.mx[x]*amp,y2=mid-peaks.mn[x]*amp;
+      cx.fillRect(x,y1,1,Math.max(1,y2-y1));
+    }
+    // 중심선
+    cx.fillStyle=css('--line');cx.fillRect(0,mid,W,1);
+    // 손잡이
+    const ink=css('--ink');
+    for(const [x,left] of [[xs,true],[xe,false]]){
+      cx.fillStyle=ink;cx.fillRect(Math.round(x)-1,0,2,H);
+      cx.beginPath();
+      const hx=Math.round(x);
+      if(left){cx.moveTo(hx,0);cx.lineTo(hx+12,0);cx.lineTo(hx+12,14);cx.lineTo(hx,22);}
+      else{cx.moveTo(hx,0);cx.lineTo(hx-12,0);cx.lineTo(hx-12,14);cx.lineTo(hx,22);}
+      cx.closePath();cx.fill();
+    }
+    // 재생 위치
+    if(src){
+      const t=curPos();
+      if(t!==null){const px=t/D*W;cx.fillStyle=css('--good');cx.fillRect(Math.round(px)-1,0,2,H);}
+    }
+    // 시각 표시
+    cx.fillStyle=css('--ink-2');cx.font='11px -apple-system,BlinkMacSystemFont,sans-serif';cx.textBaseline='bottom';
+    cx.textAlign='left';cx.fillText('0:00',4,H-3);
+    cx.textAlign='right';cx.fillText(fmtT(D),W-4,H-3);
+  }
+
+  /* 드래그 (포인터 이벤트: 마우스·터치 공통) */
+  function xToT(clientX){const r=cv.getBoundingClientRect();return Math.min(1,Math.max(0,(clientX-r.left)/r.width))*buf.duration;}
+  cv.addEventListener('pointerdown',e=>{
+    if(!buf)return;e.preventDefault();
+    const r=cv.getBoundingClientRect(),W=r.width,D=buf.duration;
+    const x=e.clientX-r.left,xs=sel.s/D*W,xe=sel.e/D*W;
+    const ds=Math.abs(x-xs),de=Math.abs(x-xe);
+    drag={h:(ds<=de&&!(ds===de&&x>xe))?'s':'e',id:e.pointerId};
+    try{cv.setPointerCapture(e.pointerId);}catch(_){}
+    document.addEventListener('pointermove',onMove);
+    document.addEventListener('pointerup',endDrag);
+    document.addEventListener('pointercancel',endDrag);
+    move(e);
+  });
+  function move(e){
+    if(!drag||!buf)return;
+    const t=xToT(e.clientX);
+    if(drag.h==='s')setSel(Math.min(t,sel.e-0.1),sel.e);else setSel(sel.s,Math.max(t,sel.s+0.1));
+  }
+  function onMove(e){if(drag&&e.pointerId===drag.id){if(e.cancelable)e.preventDefault();move(e);}}
+  function endDrag(e){
+    if(!drag||e.pointerId!==drag.id)return;
+    drag=null;try{cv.releasePointerCapture(e.pointerId);}catch(_){}
+    document.removeEventListener('pointermove',onMove);
+    document.removeEventListener('pointerup',endDrag);
+    document.removeEventListener('pointercancel',endDrag);
+  }
+
+  /* ---------- 미리 듣기 ---------- */
+  function curPos(){
+    if(!src||!ctx)return null;
+    const el=ctx.currentTime-playT0;
+    if(loop){const L=sel.e-sel.s;return sel.s+((playOff-sel.s+el)%L+L)%L;}
+    return Math.min(sel.e,playOff+el);
+  }
+  async function play(){
+    if(!buf)return;
+    const c=ensureCtx();
+    try{await c.resume();}catch(_){}
+    stop();
+    src=c.createBufferSource();src.buffer=buf;
+    src.loop=loop;if(loop){src.loopStart=sel.s;src.loopEnd=sel.e;}
+    src.connect(c.destination);
+    playOff=sel.s;playT0=c.currentTime;
+    const me=src;
+    src.onended=()=>{if(src===me){src=null;$('stop').disabled=true;$('pstat').textContent='';cancelAnimationFrame(raf);draw();}};
+    if(loop)src.start(0,sel.s);else src.start(0,sel.s,Math.max(0.05,sel.e-sel.s));
+    $('stop').disabled=false;
+    const tick=()=>{if(!src)return;const t=curPos();$('pstat').textContent=fmtT(t)+(loop?' (반복)':'');draw();raf=requestAnimationFrame(tick);};
+    tick();
+  }
+  function stop(){
+    if(src){const s=src;src=null;try{s.onended=null;s.stop();}catch(_){}}
+    cancelAnimationFrame(raf);$('stop').disabled=true;$('pstat').textContent='';
+    if(buf&&peaks)draw();
+  }
+  $('play').addEventListener('click',play);
+  $('stop').addEventListener('click',stop);
+
+  /* ---------- 옵션 ---------- */
+  $('fadeIn').addEventListener('input',()=>{$('fiV').textContent=(+$('fadeIn').value).toFixed(1);});
+  $('fadeOut').addEventListener('input',()=>{$('foV').textContent=(+$('fadeOut').value).toFixed(1);});
+  function est(){
+    if(!buf)return;
+    const d=sel.e-sel.s,fr=Math.round(d*buf.sampleRate),ch=buf.numberOfChannels;
+    const wav=44+fr*ch*2;
+    let s=`출력 길이 ${d.toFixed(1)}초 · WAV 약 ${kb(wav)}`;
+    if(rec){const bps=rec.ext==='m4a'?128000:(ch>1?96000:64000);s+=` · ${rec.label} 약 ${kb(d*bps/8)} (추정)`;}
+    $('est').textContent=s;
+  }
+
+  /* ---------- 렌더링: 구간 → Float32 채널 배열 ---------- */
+  function render(){
+    const sr=buf.sampleRate,ch=buf.numberOfChannels;
+    const a=Math.round(sel.s*sr),b=Math.min(buf.length,Math.round(sel.e*sr));
+    const n=Math.max(1,b-a);
+    const out=[];
+    for(let c=0;c<ch;c++){out.push(buf.getChannelData(c).slice(a,a+n));}
+    const fi=Math.min(n,Math.round(+$('fadeIn').value*sr)),fo=Math.min(n,Math.round(+$('fadeOut').value*sr));
+    if(fi>0)for(let c=0;c<ch;c++){const d=out[c];for(let i=0;i<fi;i++)d[i]*=i/fi;}
+    if(fo>0)for(let c=0;c<ch;c++){const d=out[c];for(let i=0;i<fo;i++)d[n-1-i]*=i/fo;}
+    if($('norm').checked){
+      let pk=0;for(let c=0;c<ch;c++){const d=out[c];for(let i=0;i<n;i++){const v=Math.abs(d[i]);if(v>pk)pk=v;}}
+      if(pk>0){const g=Math.pow(10,-1/20)/pk;for(let c=0;c<ch;c++){const d=out[c];for(let i=0;i<n;i++)d[i]*=g;}}
+    }
+    return {ch:out,sr,n};
+  }
+
+  /* ---------- WAV 인코더 (RIFF + 16bit PCM, 자체 구현) ---------- */
+  function wavBlob(r){
+    const ch=r.ch.length,n=r.n,bytes=n*ch*2;
+    const ab=new ArrayBuffer(44+bytes),v=new DataView(ab);
+    const str=(o,s)=>{for(let i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i));};
+    str(0,'RIFF');v.setUint32(4,36+bytes,true);str(8,'WAVE');
+    str(12,'fmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,ch,true);
+    v.setUint32(24,r.sr,true);v.setUint32(28,r.sr*ch*2,true);v.setUint16(32,ch*2,true);v.setUint16(34,16,true);
+    str(36,'data');v.setUint32(40,bytes,true);
+    let o=44;
+    for(let i=0;i<n;i++)for(let c=0;c<ch;c++){
+      let s=r.ch[c][i];s=s<-1?-1:s>1?1:s;
+      v.setInt16(o,s<0?s*32768:s*32767,true);o+=2;
+    }
+    return new Blob([ab],{type:'audio/wav'});
+  }
+
+  /* ---------- 압축 저장: MediaRecorder ---------- */
+  function recordBlob(r){
+    return new Promise((res,rej)=>{
+      const c=ensureCtx();
+      const ab=c.createBuffer(r.ch.length,r.n,r.sr);
+      for(let i=0;i<r.ch.length;i++)ab.copyToChannel(r.ch[i],i);
+      const dest=c.createMediaStreamDestination();
+      const s=c.createBufferSource();s.buffer=ab;s.connect(dest);
+      let mr;
+      try{mr=new MediaRecorder(dest.stream,{mimeType:rec.mime});}catch(e){rej(e);return;}
+      const chunks=[];
+      mr.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data);};
+      mr.onerror=e=>rej(e.error||new Error('record'));
+      mr.onstop=()=>{try{s.disconnect();}catch(_){}res(new Blob(chunks,{type:mr.mimeType||rec.mime}));};
+      const dur=r.n/r.sr;
+      const t0=c.currentTime;
+      const tick=()=>{if(mr.state!=='recording')return;const p=Math.min(1,(c.currentTime-t0)/dur);$('bar').style.width=Math.round(p*100)+'%';$('stat').textContent=`압축 중… ${(p*dur).toFixed(1)} / ${dur.toFixed(1)}초`;setTimeout(tick,120);};
+      s.onended=()=>{setTimeout(()=>{if(mr.state==='recording')mr.stop();},200);};
+      c.resume().then(()=>{mr.start(250);s.start();tick();}).catch(rej);
+    });
+  }
+
+  function download(blob,name){
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+    $('done').className='msg m-good';
+    $('done').innerHTML=`<strong>${name}</strong> (${kb(blob.size)}) 저장을 시작했습니다. 아이폰 사파리는 파일 앱의 다운로드 폴더에 저장됩니다.`;
+  }
+  function setBusy(b){busy=b;$('dlWav').disabled=b;$('dlRec').disabled=b;$('play').disabled=b;$('barWrap').classList.toggle('hidden',!b);if(!b){$('bar').style.width='0';}}
+
+  $('dlWav').addEventListener('click',()=>{
+    if(!buf||busy)return;ensureCtx();
+    setBusy(true);$('stat').textContent='WAV 만드는 중…';
+    setTimeout(()=>{
+      try{download(wavBlob(render()),baseName+'_cut.wav');$('stat').textContent='';}
+      catch(e){msg('bad','WAV를 만들지 못했습니다. 구간이 너무 길면 메모리가 부족할 수 있으니 더 짧게 잘라 보세요.');$('stat').textContent='';}
+      setBusy(false);
+    },30);
+  });
+  $('dlRec').addEventListener('click',async()=>{
+    if(!buf||busy||!rec)return;ensureCtx();stop();
+    setBusy(true);$('stat').textContent='압축 준비 중…';
+    try{const b=await recordBlob(render());download(b,baseName+'_cut.'+rec.ext);$('stat').textContent='';}
+    catch(e){msg('bad','압축 저장에 실패했습니다. WAV로 저장을 이용해 주세요.');$('stat').textContent='';}
+    setBusy(false);
+  });
+
+  $('reset').addEventListener('click',()=>{
+    stop();buf=null;peaks=null;peaksW=0;file.value='';
+    $('editor').classList.add('hidden');warn.classList.add('hidden');$('done').classList.add('hidden');$('stat').textContent='';
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+
+  /* 검증용 훅 (외부 스크립트 없음) */
+  window.kmAudioCut={setSel,render,wavBlob,recordBlob,get sel(){return sel;},get buffer(){return buf;},get rec(){return rec;}};
+})();
+</script>
+</body>
+</html>

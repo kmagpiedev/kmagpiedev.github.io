@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>사진 이어붙이기 — 여러 장을 세로·가로로 한 장에, 캡처 합치기 | 까치툴</title>
+<meta name="description" content="사진 이어붙이기·이미지 합치기·캡처 합치기를 브라우저에서만 처리합니다. 여러 장을 세로·가로·격자로 한 장에 붙이고 폭 맞춤, 간격, 여백, 배경색, JPG·PNG·WebP를 고를 수 있어요. 카톡 대화 캡처와 블로그 긴 이미지에 알맞고 파일은 서버로 전송되지 않습니다.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/image-merge/">
+<meta property="og:title" content="사진 이어붙이기 — 여러 장을 세로·가로로 한 장에, 캡처 합치기">
+<meta property="og:description" content="여러 장을 세로·가로·격자로 한 장에 이어붙이기. 폭 맞춤·간격·배경색 설정. 서버 전송 없이 브라우저에서 처리.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/image-merge/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:940px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 30px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+  ul,ol{padding-left:22px;margin:0 0 14px}
+  li{margin-bottom:4px}
+
+  #drop{border:2px dashed var(--line);border-radius:16px;padding:42px 24px;text-align:center;
+    background:var(--surface);cursor:pointer;transition:.15s}
+  #drop:hover,#drop.over{border-color:var(--accent);background:var(--accent-soft)}
+  #drop .big{font-size:17px;font-weight:600;margin-bottom:6px}
+  #drop .small{font-size:13.5px;color:var(--ink-3)}
+  #file{display:none}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:18px 0}
+  .row{display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start}
+  .col{flex:1;min-width:225px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin-bottom:8px}
+  .seg{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+  .seg button{flex:1;background:transparent;border:0;padding:9px 6px;font-size:13.5px;font-weight:600;
+    color:var(--ink-2);cursor:pointer;font-family:inherit;transition:.12s;min-width:0}
+  .seg button.on{background:var(--accent);color:#fff}
+  .seg.v{flex-direction:column}
+  .seg.v button{text-align:left;padding:9px 12px;border-top:1px solid var(--line)}
+  .seg.v button:first-child{border-top:0}
+  .opt{display:flex;align-items:flex-start;gap:9px;font-size:14.5px;cursor:pointer;margin-bottom:8px}
+  .opt input{margin-top:4px;width:17px;height:17px;accent-color:var(--accent);cursor:pointer;flex:none}
+  .opt .d{font-size:12.5px;color:var(--ink-3);display:block;line-height:1.5}
+  input[type=range]{width:100%;accent-color:var(--accent)}
+  input[type=number],select{padding:7px 9px;border:1px solid var(--line);border-radius:7px;
+    background:var(--surface);color:var(--ink);font-size:14px;font-family:inherit}
+  input[type=number]{width:92px;text-align:right}
+  input[type=color]{width:44px;height:32px;padding:2px;border:1px solid var(--line);border-radius:7px;background:var(--surface);cursor:pointer}
+  select{width:100%}
+  .inline{display:flex;align-items:center;gap:9px;font-size:14px;flex-wrap:wrap}
+  .val{font-variant-numeric:tabular-nums;font-weight:700;color:var(--accent)}
+
+  button.act{font-family:inherit;font-size:15px;font-weight:600;padding:12px 22px;border-radius:10px;border:1px solid transparent;cursor:pointer;transition:.12s}
+  .primary{background:var(--accent);color:#fff}
+  .primary:hover{filter:brightness(1.08)}
+  .primary:disabled{opacity:.45;cursor:not-allowed;filter:none}
+  .ghost{background:transparent;color:var(--ink-2);border-color:var(--line)}
+  .ghost:hover{border-color:var(--ink-3);color:var(--ink)}
+
+  .thumb{width:40px;height:40px;object-fit:cover;border-radius:7px;border:1px solid var(--line);display:block;flex:none;background:var(--line-soft)}
+  .fname{font-size:13.5px;word-break:break-all;line-height:1.4}
+  .dl{font-size:12.5px;padding:5px 11px;border-radius:7px;border:1px solid var(--line);
+    background:transparent;color:var(--ink-2);cursor:pointer;font-family:inherit;font-weight:600}
+  .dl:hover{border-color:var(--accent);color:var(--accent)}
+  .dl:disabled{opacity:.4;cursor:not-allowed}
+
+  .lhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .lhead .cnt{font-size:14px;color:var(--ink-2);flex:1;min-width:120px}
+  .list{display:flex;flex-direction:column;gap:8px}
+  .it{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid var(--line);border-radius:11px;background:var(--surface);position:relative}
+  .it.drag{opacity:.45}
+  .it.ins-before::before,.it.ins-after::before{content:"";position:absolute;left:8px;right:8px;height:3px;border-radius:2px;background:var(--accent)}
+  .it.ins-before::before{top:-6px}
+  .it.ins-after::before{bottom:-6px}
+  .it .grab{flex:none;width:26px;height:40px;display:flex;align-items:center;justify-content:center;color:var(--ink-3);
+    cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;font-size:17px;letter-spacing:-3px;border-radius:7px}
+  .it .grab:hover{background:var(--line-soft);color:var(--ink)}
+  .it.drag .grab{cursor:grabbing}
+  .it .idx{flex:none;width:20px;font-size:12.5px;color:var(--ink-3);text-align:center;font-variant-numeric:tabular-nums}
+  .it .meta{flex:1;min-width:0}
+  .it .dim{font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+  .it .btns{display:flex;gap:4px;flex:none}
+  .it .btns button{width:30px;height:30px;border:1px solid var(--line);background:transparent;border-radius:7px;color:var(--ink-2);
+    cursor:pointer;font-family:inherit;font-size:12px;padding:0;line-height:1}
+  .it .btns button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+  .it .btns button:disabled{opacity:.3;cursor:not-allowed}
+  @media (max-width:480px){
+    .panel{padding:16px 14px}
+    .it{gap:7px;padding:7px 8px}
+    .it .idx{display:none}
+    .it .grab{width:22px}
+    .it .fname{font-size:12.5px}
+    .it .btns{gap:3px}
+    .it .btns button{width:27px;height:27px}
+    .row{gap:18px}
+  }
+
+  .pvbox{border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;justify-content:center;overflow:hidden;
+    background-color:#e8e6e2;
+    background-image:linear-gradient(45deg,#d4d1cc 25%,transparent 25%,transparent 75%,#d4d1cc 75%),linear-gradient(45deg,#d4d1cc 25%,transparent 25%,transparent 75%,#d4d1cc 75%);
+    background-size:16px 16px;background-position:0 0,8px 8px}
+  #pv{max-width:100%;max-height:70vh;width:auto;height:auto;display:block;box-shadow:0 1px 4px rgba(0,0,0,.18)}
+  .pvinfo{display:flex;gap:20px;flex-wrap:wrap;align-items:baseline;margin-top:12px;font-size:14px;color:var(--ink-2)}
+  .pvinfo .k{font-size:12.5px;color:var(--ink-3);display:block}
+  .pvinfo .v{font-size:17px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink)}
+
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .m-good{background:var(--good-soft);border-color:var(--good)}
+  .hidden{display:none}
+  code{background:var(--line-soft);padding:2px 6px;border-radius:5px;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .note{font-size:13.5px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:13px;margin:14px 0}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+  th,td{text-align:left;padding:10px 9px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+  th{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;border-bottom:1px solid var(--line)}
+  .tblwrap{overflow-x:auto}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+/*FOLD:S*/
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 8px}
+  .fold .fx>:first-child{margin-top:4px}
+/*FOLD:E*/
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
+/*TESTS:S*/
+  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 0;padding:13px 18px;
+    border:1px solid var(--line);border-radius:14px;background:var(--surface);
+    text-decoration:none;color:inherit;transition:.14s}
+  .tbn:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .tbn .ic{width:44px;height:44px;flex:none;border-radius:12px;background:#fff;
+    border:1px solid var(--line);object-fit:contain;padding:2px}
+  .tbn .tx{flex:1;min-width:0}
+  .tbn .tt{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em}
+  .tbn .ds{display:block;font-size:13px;color:var(--ink-3);line-height:1.55;margin-top:2px}
+  .tbn .ar{color:var(--ink-3);font-size:15px;flex:none}
+/*TESTS:E*/
+</style>
+<!--HEAD:S-->
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
+<meta property="og:site_name" content="까치툴">
+<link rel="manifest" href="/tools/manifest.json">
+<meta name="theme-color" content="#faf9f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#171614" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="까치툴">
+<script>/*PWA*/(function(){var L=document.documentElement.lang==='en';
+if('serviceWorker' in navigator)addEventListener('load',function(){navigator.serviceWorker.register('/sw.js',{scope:'/'})['catch'](function(){})});
+var p=null,armed=false;addEventListener('beforeinstallprompt',function(e){e.preventDefault();p=e;arm()});
+function arm(){if(armed)return;armed=true;var h=function(){removeEventListener('pointerdown',h,true);removeEventListener('keydown',h,true);show()};
+addEventListener('pointerdown',h,true);addEventListener('keydown',h,true)}
+addEventListener('appinstalled',function(){p=null;var b=document.getElementById('pwaBtn');if(b)b.style.visibility='hidden'});
+function show(){if(document.getElementById('pwaBtn'))return;
+var a=document.querySelector('.sub')||document.querySelector('h1');if(!a)return;
+var b=document.createElement('button');b.id='pwaBtn';b.type='button';
+b.textContent=L?'⬇ Install as an app':'📲 앱으로 설치';
+b.style.cssText='display:inline-block;margin:0 0 22px;padding:8px 15px;border-radius:9px;font:600 13.5px/1.4 inherit;cursor:pointer;background:transparent;color:var(--accent,#b45309);border:1px solid var(--accent,#b45309)';
+b.title=L?'Works offline once installed':'설치하면 인터넷 없이도 쓸 수 있습니다';
+b.onclick=function(){if(!p)return;p.prompt();p.userChoice.then(function(){p=null;b.style.visibility='hidden'})};
+a.insertAdjacentElement('afterend',b)}})();</script>
+<!--HEAD:E-->
+<!--LD:S-->
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://www.kmagpie.com/tools/image-merge/#app","name":"사진 이어붙이기","url":"https://www.kmagpie.com/tools/image-merge/","description":"여러 장을 한 장으로 이어붙입니다. 세로·가로·격자 배치, 폭 맞춤, 간격과 배경색까지 정하고 JPG·PNG·WebP로 저장합니다. 카톡 캡처 합치기에 알맞습니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"inLanguage":"ko","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"K-magpie","url":"https://www.kmagpie.com/"}},{"@type":"BreadcrumbList","@id":"https://www.kmagpie.com/tools/image-merge/#crumb","itemListElement":[{"@type":"ListItem","position":1,"name":"K-magpie","item":"https://www.kmagpie.com/"},{"@type":"ListItem","position":2,"name":"까치툴","item":"https://www.kmagpie.com/tools/"},{"@type":"ListItem","position":3,"name":"사진 이어붙이기","item":"https://www.kmagpie.com/tools/image-merge/"}]}]}</script>
+<!--LD:E-->
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/tools/">까치툴</a> › 사진 이어붙이기</p>
+
+<h1>사진 이어붙이기</h1>
+<p class="sub">여러 장의 사진이나 캡처를 <strong>세로·가로·격자로 한 장에 이어붙입니다.</strong> 폭을 자동으로 맞추고 간격·배경색·출력 형식을 고를 수 있어요. 파일이 서버로 전송되지 않고 브라우저 안에서만 처리됩니다.</p>
+
+<div id="drop">
+  <div class="big">사진을 여기에 끌어다 놓거나 클릭해서 선택하세요</div>
+  <div class="small">여러 장을 한꺼번에 선택할 수 있습니다 · JPG · PNG · WebP · GIF(첫 프레임)</div>
+  <input type="file" id="file" accept="image/*" multiple>
+</div>
+
+<div id="warn" class="hidden"></div>
+
+<div id="editor" class="hidden">
+  <div class="panel">
+    <div class="lhead">
+      <span class="cnt" id="cnt"></span>
+      <button class="dl" id="sortName" type="button">이름순 정렬</button>
+      <button class="dl" id="addMore" type="button">사진 더 추가</button>
+      <button class="dl" id="clearAll" type="button">모두 지우기</button>
+    </div>
+    <div class="list" id="list"></div>
+    <p class="note" style="margin:12px 0 0">▲▼ 버튼이나 왼쪽 손잡이(⋮⋮)를 끌어서 순서를 바꿀 수 있습니다. 위에서 아래(왼쪽에서 오른쪽) 순서로 붙습니다.</p>
+  </div>
+
+  <div class="panel">
+    <div class="row">
+      <div class="col">
+        <label class="f">방향</label>
+        <div class="seg" id="dir">
+          <button type="button" data-v="v" class="on">세로</button>
+          <button type="button" data-v="h">가로</button>
+          <button type="button" data-v="g">격자</button>
+        </div>
+        <div class="inline hidden" id="colsWrap" style="margin-top:10px">
+          <span>열 수</span><input type="number" id="cols" value="2" min="1" max="20" step="1"><span>열</span>
+        </div>
+
+        <label class="f" style="margin-top:20px" id="fitLabel">폭 맞춤</label>
+        <div class="seg v" id="fit">
+          <button type="button" data-v="min" class="on">가장 좁은 사진에 맞춤</button>
+          <button type="button" data-v="max">가장 넓은 사진에 맞춤</button>
+          <button type="button" data-v="keep">원본 크기 유지 · 가운데 정렬</button>
+        </div>
+        <p class="note" style="margin-top:8px" id="fitNote">폭이 다른 사진을 세로로 붙일 때 가장 좁은 사진 폭으로 나머지를 줄여 맞춥니다. 화질 손실이 가장 적은 기본값입니다.</p>
+
+        <label class="f" style="margin-top:20px">간격과 여백</label>
+        <div class="inline" style="margin-bottom:8px">
+          <span style="min-width:96px">사진 사이 간격</span><input type="number" id="gap" value="0" min="0" max="500" step="1"><span>px</span>
+        </div>
+        <div class="inline">
+          <span style="min-width:96px">바깥 여백</span><input type="number" id="margin" value="0" min="0" max="500" step="1"><span>px</span>
+        </div>
+      </div>
+
+      <div class="col">
+        <label class="f">배경색</label>
+        <div class="inline">
+          <input type="color" id="bg" value="#ffffff">
+          <label class="opt" style="margin:0"><input type="checkbox" id="alpha"><span>투명 배경 <span class="d">PNG·WebP에서만 가능</span></span></label>
+        </div>
+
+        <label class="f" style="margin-top:20px">출력 형식</label>
+        <select id="fmt">
+          <option value="jpeg">JPG — 사진에 알맞음, 어디서나 열림</option>
+          <option value="png">PNG — 캡처·글자가 많을 때, 무손실</option>
+          <option value="webp">WebP — 용량이 가장 작음</option>
+        </select>
+        <div id="qWrap" style="margin-top:12px">
+          <label class="f">품질 <span class="val" id="qv">92</span></label>
+          <input type="range" id="q" min="50" max="100" value="92">
+        </div>
+
+        <label class="f" style="margin-top:20px">최대 출력 크기</label>
+        <div class="inline">
+          <span>긴 변</span><input type="number" id="maxSide" value="4096" min="256" max="16384" step="256"><span>px 이하</span>
+        </div>
+        <p class="note" style="margin-top:6px">결과가 이 크기를 넘으면 비율을 유지한 채 자동으로 줄입니다. 브라우저·휴대폰 메모리 한계 때문에 4096을 기본으로 둡니다. 더 크게 뽑으려면 값을 올리되, 16384를 넘을 수는 없습니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <label class="f">미리보기</label>
+    <div class="pvbox"><canvas id="pv" width="1" height="1"></canvas></div>
+    <div class="pvinfo">
+      <div><span class="k">출력 크기</span><span class="v" id="dims">–</span></div>
+      <div><span class="k">용량</span><span class="v" id="est" style="font-size:15px">–</span></div>
+    </div>
+    <div id="scaleNote" class="msg m-warn hidden"></div>
+  </div>
+
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+    <button class="act primary" id="go" type="button">합쳐서 저장</button>
+    <button class="act ghost" id="reset" type="button">파일 다시 선택</button>
+    <span id="stat" style="font-size:14px;color:var(--ink-3)"></span>
+  </div>
+  <p class="note" style="margin-top:12px">사진은 서버로 전송되지 않습니다. 합치기·저장 모두 이 브라우저 안에서만 이루어집니다.</p>
+</div>
+
+<p class="gist">여러 장의 사진이나 화면 캡처를 골라 세로·가로·격자로 한 장에 이어붙입니다. 폭이 다른 사진은 가장 좁은(또는 넓은) 사진에 자동으로 맞추고, 사진 사이 간격과 바깥 여백, 배경색을 정할 수 있습니다. 휴대폰 사진의 회전 정보(EXIF)도 반영하고, 결과는 JPG·PNG·WebP로 저장됩니다. 파일은 서버로 올라가지 않고 브라우저에서만 처리됩니다.</p>
+
+<details class="fold" open><summary><h2>사용법</h2></summary><div class="fx">
+<p>사진을 여러 장 올리면 목록에 파일명과 크기(가로×세로 px)가 표시됩니다. 목록의 순서가 곧 붙는 순서입니다. 세로 모드에서는 위에서 아래로, 가로 모드에서는 왼쪽에서 오른쪽으로, 격자 모드에서는 왼쪽 위부터 한 줄씩 채워집니다. 순서는 ▲▼ 버튼으로 한 칸씩 옮기거나, 왼쪽 손잡이를 잡고 끌어서 바꿀 수 있습니다. 손잡이 끌기는 마우스뿐 아니라 휴대폰 터치에서도 동작합니다.</p>
+<p>파일을 고른 순서가 뒤죽박죽이라면 <strong>이름순 정렬</strong>을 누르세요. 파일명 안의 숫자를 사람이 읽는 순서대로(1, 2, 3, … 10, 11) 정렬하므로 캡처 순서가 그대로 살아납니다. 아래쪽 옵션에서 방향과 폭 맞춤, 간격, 배경색, 출력 형식을 정하면 미리보기가 바로 바뀌고, 출력 크기와 예상 용량도 함께 표시됩니다. 마음에 들면 <strong>합쳐서 저장</strong>을 누르면 됩니다. 미리보기는 화면에 맞게 줄여서 그리고, 저장할 때 원래 크기로 다시 그리기 때문에 미리보기가 흐려 보여도 결과물은 선명합니다.</p>
+<p>모든 처리는 브라우저의 Canvas API로 이루어집니다. 사진이 서버로 올라가지 않으므로 개인 대화 캡처나 공개 전 자료도 안심하고 쓰실 수 있고, 업로드·다운로드 대기 없이 바로 결과를 받습니다. 저장된 파일 이름은 <code>merged.jpg</code>, <code>merged.png</code>, <code>merged.webp</code> 중 고른 형식에 따라 정해집니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>세로로 합칠 때 폭을 왜 맞춰야 하나요</h2></summary><div class="fx">
+<p>같은 휴대폰에서 찍은 카카오톡 캡처는 폭이 전부 같습니다. 예를 들어 어떤 기종은 1080px, 어떤 기종은 1170px이나 1290px으로 통일되어 있어서 그냥 이어붙여도 매끈하게 붙습니다. 문제는 <strong>캡처한 기기가 서로 다를 때</strong>입니다. 내 휴대폰 캡처와 상대가 보내 준 캡처, 또는 PC 브라우저 캡처와 휴대폰 캡처를 한 장에 붙이면 폭이 제각각이라 한쪽에 빈 공간이 생기거나 글자 크기가 들쭉날쭉해 보입니다. 사진의 경우에도 가로로 찍은 사진과 세로로 찍은 사진은 폭이 다르기 때문에 같은 문제가 생깁니다.</p>
+<p>그래서 이 도구는 세로 모드에서 세 가지 폭 맞춤 방식을 제공합니다.</p>
+<ul>
+<li><strong>가장 좁은 사진에 맞춤</strong> — 나머지 사진을 줄여서 가장 좁은 사진의 폭에 맞춥니다. 확대가 전혀 없으므로 화질 손실이 가장 적고, 결과 파일도 가장 작습니다. 캡처 합치기의 기본값으로 알맞습니다.</li>
+<li><strong>가장 넓은 사진에 맞춤</strong> — 나머지 사진을 키워서 가장 넓은 사진의 폭에 맞춥니다. 작은 사진이 확대되므로 살짝 흐려질 수 있지만, 큰 사진의 해상도를 그대로 지키고 싶을 때 씁니다.</li>
+<li><strong>원본 크기 유지 · 가운데 정렬</strong> — 아무것도 줄이거나 키우지 않고 가장 넓은 사진 폭에 맞춰 나머지를 가운데에 놓습니다. 남는 공간은 배경색(또는 투명)으로 채워집니다. 크기가 다른 것이 의도된 결과물, 예를 들어 비교용 자료를 만들 때 유용합니다.</li>
+</ul>
+<p>가로 모드에서는 같은 원리가 높이에 적용됩니다. 가장 낮은 사진에 맞춤, 가장 높은 사진에 맞춤, 원본 유지 세 가지가 있고 동작은 위와 똑같습니다. 사진을 줄이거나 키울 때 비율은 항상 유지되므로 사진이 찌그러지는 일은 없습니다.</p>
+<h3>격자 모드는 언제 쓰나요</h3>
+<p>사진이 여섯 장, 아홉 장처럼 많은데 한 줄로 붙이면 지나치게 길어질 때 격자를 씁니다. 열 수를 정하면 왼쪽 위부터 차례로 채워지고, 각 열의 폭은 세로 모드와 같은 규칙으로 맞춰집니다. 줄마다 높이는 그 줄에서 가장 높은 사진 기준으로 잡히고 나머지는 세로 가운데에 놓입니다. 2열은 비교표(전·후, 좌·우)에, 3열은 상품 컷이나 여행 사진 모음에 잘 맞습니다. 격자에서 사진 사이 간격을 8~20px 정도 주고 배경을 흰색으로 두면 깔끔한 콜라주가 됩니다. 한 줄에 다 채워지지 않는 마지막 줄은 왼쪽부터 채워지고 남는 칸은 배경색으로 남습니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>캡처 합치기 실전</h2></summary><div class="fx">
+<h3>카카오톡 대화 캡처 이어붙이기</h3>
+<p>긴 대화를 캡처하면 여러 장으로 나뉩니다. 이 도구에 순서대로 올리고 세로 방향, 가장 좁은 사진에 맞춤, 간격 0으로 두면 한 장의 긴 이미지가 됩니다. 대화 캡처는 글자가 많으므로 출력 형식은 PNG를 권합니다. 캡처를 찍을 때 화면을 조금씩 겹치게 찍었다면 붙인 자리에서 같은 말풍선이 두 번 보이게 됩니다. <strong>겹치는 부분을 잘라내는 작업은 이 도구의 범위 밖</strong>이라, 붙이기 전에 각 캡처의 위아래를 먼저 잘라 두셔야 합니다. 정확한 px로 자르거나 비율로 잘라내는 작업은 <a href="/tools/resize/">이미지 크기 조절</a>에서 할 수 있습니다. 캡처를 찍을 때 상태 표시줄(시계·배터리)과 입력창을 미리 빼고 찍으면 자를 일이 줄어듭니다.</p>
+<p>상대방이 보내 준 캡처를 내 캡처와 섞어 붙일 때는 폭이 다른 경우가 많습니다. 이때 "가장 좁은 사진에 맞춤"을 쓰면 글자 크기가 비슷하게 맞춰져서 읽기 편합니다. 공개할 자료라면 붙이기 전에 이름과 프로필 사진을 가리는 것도 잊지 마세요. 이 도구는 모자이크 기능이 없으므로 캡처 단계에서 처리하거나 다른 편집 앱을 쓰셔야 합니다.</p>
+<h3>블로그·상세페이지용 긴 이미지</h3>
+<p>블로그나 쇼핑몰 상세페이지는 세로로 긴 이미지를 한 장으로 올리는 경우가 많습니다. 여러 장의 안내 이미지를 세로로 이어붙이고 간격을 0으로 두면 한 장짜리 긴 이미지가 되고, 간격을 20~40px 정도 주면 단락처럼 나뉘어 읽기 편해집니다. 다만 대부분의 플랫폼은 업로드 이미지의 최대 세로 길이나 용량에 제한이 있습니다. 예를 들어 어떤 곳은 긴 변 4096px 또는 10MB를 넘으면 자동으로 줄이거나 거부합니다. 최대 출력 크기 옵션을 플랫폼 제한에 맞춰 두면 업로드 후 다시 줄어드는 일을 피할 수 있습니다. 상세페이지처럼 사진이 많은 경우엔 JPG 85~90 정도로 저장하고, 글자 위주라면 PNG로 저장한 뒤 용량이 크면 <a href="/tools/image-compress/">이미지 용량 줄이기</a>로 한 번 더 줄이는 순서를 권합니다.</p>
+<h3>인스타그램 캐러셀용 가로 분할은 반대 작업입니다</h3>
+<p>인스타그램에서 한 장의 파노라마를 여러 장으로 나눠 옆으로 넘기는 캐러셀은 이 도구와 <strong>정반대의 작업</strong>입니다. 이 도구는 여러 장을 한 장으로 합치는 것이고, 캐러셀은 한 장을 여러 장으로 자르는 것이니까요. 합친 결과물을 인스타 캐러셀용으로 자르려면 <a href="/tools/resize/">이미지 크기 조절</a>에서 1:1 비율로 위치를 옮겨 가며 잘라 내시면 됩니다. 반대로 여러 장의 정사각형 사진을 옆으로 이어붙여 긴 파노라마처럼 보이게 만들고 싶다면 가로 모드에 간격 0으로 붙이면 됩니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>출력 형식은 어떻게 고르나요</h2></summary><div class="fx">
+<p>세 가지 형식은 각각 잘하는 일이 다릅니다. 무엇을 붙이는지에 따라 고르시면 됩니다.</p>
+<ul>
+<li><strong>PNG</strong> — 화면 캡처, 대화 캡처, 표나 코드처럼 <strong>글자가 많은 이미지</strong>에 적합합니다. 무손실이라 글자 가장자리가 뭉개지지 않고 색이 그대로 보존됩니다. 대신 사진처럼 색이 복잡한 이미지는 용량이 매우 커집니다. 투명 배경이 필요할 때도 PNG입니다.</li>
+<li><strong>JPG</strong> — 카메라로 찍은 <strong>사진</strong>에 적합합니다. 품질 85~92 사이에 두면 눈으로 구분하기 어려운 손실로 용량을 크게 줄일 수 있습니다. 95 이상은 용량만 커지고 화질 차이는 거의 없습니다. 어디서나 열리는 것이 가장 큰 장점이고, 투명 배경은 지원하지 않아 투명한 부분은 배경색으로 채워집니다.</li>
+<li><strong>WebP</strong> — 같은 화질에서 JPG보다 25~35% 작아 <strong>용량이 가장 적게</strong> 나옵니다. 투명도도 지원합니다. 다만 오래된 사진 뷰어, 일부 메신저, 문서 편집기에서는 열리지 않거나 첨부가 거부될 수 있어서, 상대방 환경을 모를 때는 JPG가 안전합니다.</li>
+</ul>
+<h3>긴 이미지의 용량은 얼마나 나오나요</h3>
+<p>세로로 여러 장을 붙이면 픽셀 수가 그만큼 늘고, 용량도 함께 늘어납니다. 대략적인 감을 잡으려면 가로×세로 픽셀 수를 먼저 계산해 보세요. 카카오톡 캡처 10장을 붙여 1080×12000이 되었다면 약 1,300만 픽셀입니다. 이 정도 크기의 대화 캡처는 PNG로 저장하면 보통 3~8MB, 흰 배경이 넓고 글자가 적으면 그보다 작게 나옵니다. 같은 크기를 JPG 90으로 저장하면 1.5~3MB, WebP로는 1~2MB 정도가 흔한 범위입니다. 사진을 붙인 경우 PNG는 훨씬 커져서 1,300만 픽셀이면 20MB를 넘길 수도 있으므로, 사진은 꼭 JPG나 WebP로 저장하세요. 미리보기 아래에 표시되는 예상 용량은 축소된 미리보기를 기준으로 어림한 값이고, 저장을 누르면 실제 용량이 표시됩니다.</p>
+<div class="tblwrap"><table>
+<thead><tr><th>내용</th><th>권장 형식</th><th>품질</th><th>비고</th></tr></thead>
+<tbody>
+<tr><td>카톡·대화 캡처</td><td>PNG</td><td>–</td><td>글자 선명, 용량은 크지만 감당 가능</td></tr>
+<tr><td>웹페이지 캡처</td><td>PNG 또는 WebP</td><td>WebP 90</td><td>이미지가 많으면 WebP가 유리</td></tr>
+<tr><td>사진 여러 장</td><td>JPG</td><td>85~92</td><td>가장 무난, 어디서나 열림</td></tr>
+<tr><td>투명 배경 콜라주</td><td>PNG</td><td>–</td><td>투명 배경 체크</td></tr>
+<tr><td>웹에 올릴 최종본</td><td>WebP</td><td>80~90</td><td>용량 최소, 구형 앱 미지원 주의</td></tr>
+</tbody></table></div>
+</div></details>
+
+<details class="fold" open><summary><h2>브라우저에서 만들 수 있는 크기의 한계</h2></summary><div class="fx">
+<p>브라우저의 캔버스에는 크기 상한이 있습니다. 정확한 값은 브라우저와 기기마다 다르지만 대체로 <strong>한 변이 16,384px</strong> 근처이고, 가로×세로를 곱한 총 픽셀 수에도 별도의 제한이 있습니다. 크롬과 엣지는 한 변 16,384px 안팎에 총 2억 6천만 픽셀 정도, 사파리는 총 픽셀 수 제한이 더 빡빡해서 iOS에서는 1,600만 픽셀 남짓만 안정적으로 만들어지는 경우가 많습니다. 이 한계를 넘으면 오류 없이 그냥 빈 이미지가 나오거나 저장이 조용히 실패하기 때문에, 이 도구는 16,384px 또는 총 픽셀 한계를 넘는 크기는 만들지 않고 안내 메시지를 보여 줍니다.</p>
+<p>또 다른 제약은 메모리입니다. 캔버스는 픽셀 하나에 4바이트를 쓰므로 1080×12000 이미지는 그 자체로 약 52MB, 4096×16384라면 268MB의 메모리를 차지합니다. 여기에 원본 사진들이 디코딩된 상태로 함께 올라가 있어야 하니 실제 사용량은 그 몇 배가 됩니다. 휴대폰 브라우저는 탭 하나가 쓸 수 있는 메모리가 제한되어 있어서 이 정도가 되면 탭이 새로고침되거나 저장이 실패할 수 있습니다.</p>
+<p>그래서 <strong>최대 출력 크기 기본값을 4096px</strong>로 두었습니다. 4096px은 대부분의 SNS·블로그·메신저가 어차피 그 이상을 줄여 버리는 크기이고, 휴대폰에서도 안정적으로 만들어지는 범위입니다. 결과가 이 값을 넘으면 비율을 유지한 채 자동으로 줄이고, 미리보기 아래에 얼마나 줄었는지 알려 드립니다. 캡처 원본 해상도를 꼭 지켜야 한다면 값을 8192나 그 이상으로 올리되, PC 브라우저에서 시도하시고 사진 수를 나눠서 두세 번에 걸쳐 붙이는 것이 안전합니다. 원본 사진이 매우 크면(4000만 화소 사진 등) 붙이기 전에 <a href="/tools/resize/">이미지 크기 조절</a>로 먼저 줄여 두는 것도 좋은 방법입니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>자주 겪는 문제</h2></summary><div class="fx">
+<h3>사진이 옆으로 돌아가요</h3>
+<p>휴대폰으로 찍은 사진은 실제 픽셀은 가로로 저장되고 "세로로 돌려서 보여 줘"라는 회전 정보(EXIF Orientation)만 붙어 있는 경우가 많습니다. 사진 앱은 이 정보를 읽어 똑바로 보여 주지만, 정보를 무시하는 프로그램에서는 사진이 옆으로 누워 보입니다. 이 도구는 사진을 읽을 때 회전 정보를 반영해 화면에 보이는 방향 그대로 붙이고, 결과물에는 회전 정보 없이 픽셀 자체를 똑바로 저장합니다. 그래서 합친 이미지는 어디서 열어도 같은 방향으로 보입니다. 만약 그래도 돌아가 있다면 원본 사진에 회전 정보가 잘못 기록된 경우이므로, 사진 앱에서 한 번 회전해 저장한 뒤 다시 올려 주세요.</p>
+<h3>용량이 너무 커요</h3>
+<p>긴 이미지는 픽셀 수가 많아 용량이 클 수밖에 없습니다. 먼저 출력 형식을 확인하세요. 사진을 PNG로 저장했다면 JPG 88 정도로 바꾸는 것만으로 용량이 5분의 1 이하로 줄어듭니다. 그다음 최대 출력 크기를 2048~3000px로 낮춰 보세요. 대부분의 화면에서는 차이를 느끼기 어렵습니다. 이미 저장한 파일을 목표 용량(예: 5MB 이하)에 맞춰 줄이려면 <a href="/tools/image-compress/">이미지 용량 줄이기</a>를 쓰시면 됩니다. 품질을 자동으로 조절해 원하는 용량 아래로 맞춰 줍니다.</p>
+<h3>순서가 이상해요</h3>
+<p>파일 선택 창에서 여러 장을 고르면 브라우저가 넘겨주는 순서가 클릭한 순서와 다를 수 있습니다. 또 컴퓨터의 일반적인 문자열 정렬은 <code>img1, img10, img2</code>처럼 숫자를 글자로 취급해서 10이 2보다 앞에 오는 문제가 있습니다. 이 도구의 <strong>이름순 정렬</strong>은 파일명 속 숫자를 값으로 비교하는 자연 정렬(natural sort)을 쓰기 때문에 <code>img1, img2, img10</code> 순서로 바르게 정렬됩니다. 캡처 파일명이 <code>Screenshot_20250101-101530</code>처럼 시각으로 되어 있으면 이름순 정렬이 곧 찍은 순서입니다. 그래도 맞지 않으면 ▲▼ 버튼이나 손잡이를 끌어 직접 옮기세요.</p>
+<h3>투명 배경이 흰색이 됐어요</h3>
+<p>JPG로 저장하셨을 가능성이 높습니다. JPG는 투명도를 지원하지 않아 투명한 부분이 배경색으로 채워집니다. PNG나 WebP를 고르고 투명 배경 체크를 켜 주세요. 미리보기의 체크무늬는 투명한 영역을 나타내는 것이고 결과 파일에는 포함되지 않습니다.</p>
+<h3>GIF를 올렸는데 움직이지 않아요</h3>
+<p>여러 장을 한 장의 정지 이미지로 합치는 도구라 GIF는 첫 프레임만 사용합니다. 움직이는 GIF를 만들거나 편집하려면 <a href="/tools/gif-maker/">GIF 만들기</a>를 이용해 주세요.</p>
+<h3>저장 버튼을 눌렀는데 아무 일도 없어요</h3>
+<p>출력 크기가 브라우저 한계를 넘었거나 메모리가 부족한 경우입니다. 최대 출력 크기를 낮추거나 사진 수를 줄여서 다시 시도해 보세요. 일부 브라우저의 시크릿 모드나 다운로드 차단 설정에서는 저장 창이 뜨지 않을 수 있으니 주소창 옆 차단 알림도 확인해 주세요.</p>
+</div></details>
+
+<!--REL:S-->
+<h2>함께 쓰면 좋은 도구</h2>
+<div class="rel">
+  <a href="/tools/resize/"><strong>이미지 크기 조절</strong><span>정확한 px 지정, 비율 자르기</span></a>
+  <a href="/tools/image-compress/"><strong>이미지 용량 줄이기</strong><span>목표 용량에 자동으로 맞춤</span></a>
+  <a href="/tools/exif-remove/"><strong>사진 위치정보 지우기</strong><span>EXIF·GPS 무손실 제거</span></a>
+</div>
+<p class="rel-all"><a href="/tools/">까치툴 도구 39개 전체 보기 →</a></p>
+<!--REL:E-->
+
+<!--TESTS:S-->
+<a class="tbn" href="/tests/">
+  <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
+  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 좀비 생존률부터 전생, 아이돌 포지션까지 — 결과는 친구와 비교해 보세요.</span></span>
+  <span class="ar">→</span>
+</a>
+<!--TESTS:E-->
+
+<footer>
+  <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 파일은 업로드되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/tools/about/">소개</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const drop=$('drop'),file=$('file'),warn=$('warn'),list=$('list'),pv=$('pv');
+  const MAX_SIDE=16384, MAX_AREA=16384*16384;
+  let items=[], uid=0, busy=false;
+
+  const kb=n=>n>=1048576?(n/1048576).toFixed(2)+' MB':(n/1024).toFixed(0)+' KB';
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  function msg(k,h){warn.className='msg m-'+k;warn.innerHTML=h;warn.classList.remove('hidden');}
+  function clearMsg(){warn.classList.add('hidden');}
+
+  /* ---------- options ---------- */
+  const opt={dir:'v',fit:'min',fmt:'jpeg'};
+  const num=(id,def,min,max)=>{const v=parseInt($(id).value,10);return Math.min(max,Math.max(min,isNaN(v)?def:v));};
+  const mime=()=>'image/'+opt.fmt;
+  const ext=()=>({jpeg:'jpg',png:'png',webp:'webp'})[opt.fmt];
+  const qv=()=>opt.fmt==='png'?undefined:num('q',92,50,100)/100;
+  const alphaOn=()=>opt.fmt!=='jpeg'&&$('alpha').checked;
+
+  function seg(id,key,after){
+    const box=$(id);
+    box.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+      box.querySelectorAll('button').forEach(x=>x.classList.remove('on'));
+      b.classList.add('on');opt[key]=b.dataset.v;if(after)after();update();
+    }));
+  }
+  seg('dir','dir',()=>{
+    $('colsWrap').classList.toggle('hidden',opt.dir!=='g');
+    const h=opt.dir==='h';
+    const fb=$('fit').querySelectorAll('button');
+    fb[0].textContent=h?'가장 낮은 사진에 맞춤':'가장 좁은 사진에 맞춤';
+    fb[1].textContent=h?'가장 높은 사진에 맞춤':'가장 넓은 사진에 맞춤';
+    $('fitLabel').textContent=h?'높이 맞춤':'폭 맞춤';
+    $('fitNote').textContent=h
+      ?'높이가 다른 사진을 가로로 붙일 때 가장 낮은 사진 높이로 나머지를 줄여 맞춥니다. 화질 손실이 가장 적은 기본값입니다.'
+      :(opt.dir==='g'?'각 열의 폭을 가장 좁은(또는 넓은) 사진 기준으로 맞춥니다. 줄 높이는 그 줄에서 가장 높은 사진에 맞춰집니다.'
+      :'폭이 다른 사진을 세로로 붙일 때 가장 좁은 사진 폭으로 나머지를 줄여 맞춥니다. 화질 손실이 가장 적은 기본값입니다.');
+  });
+  seg('fit','fit');
+  ['cols','gap','margin','maxSide','bg','alpha'].forEach(id=>$(id).addEventListener('input',update));
+  $('q').addEventListener('input',()=>{$('qv').textContent=$('q').value;update();});
+  $('fmt').addEventListener('change',()=>{
+    opt.fmt=$('fmt').value;
+    $('qWrap').classList.toggle('hidden',opt.fmt==='png');
+    $('alpha').disabled=opt.fmt==='jpeg';
+    update();
+  });
+
+  /* ---------- file intake ---------- */
+  drop.addEventListener('click',()=>file.click());
+  drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('over')});
+  drop.addEventListener('dragleave',()=>drop.classList.remove('over'));
+  drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('over');add(e.dataTransfer.files)});
+  file.addEventListener('change',e=>{add(e.target.files);file.value='';});
+  $('addMore').addEventListener('click',()=>file.click());
+
+  async function decode(f){
+    if(window.createImageBitmap){
+      try{return await createImageBitmap(f,{imageOrientation:'from-image'});}catch(e){}
+      try{return await createImageBitmap(f);}catch(e){}
+    }
+    return await new Promise((res,rej)=>{
+      const i=new Image(),u=URL.createObjectURL(f);
+      i.onload=()=>{URL.revokeObjectURL(u);res(i)};
+      i.onerror=()=>{URL.revokeObjectURL(u);rej(new Error('decode'))};
+      i.src=u;
+    });
+  }
+  function makeThumb(src,w,h){
+    const c=document.createElement('canvas');c.width=40;c.height=40;c.className='thumb';
+    const x=c.getContext('2d');const s=Math.max(40/w,40/h);
+    const dw=w*s,dh=h*s;x.imageSmoothingQuality='high';
+    x.drawImage(src,(40-dw)/2,(40-dh)/2,dw,dh);
+    return c;
+  }
+  async function add(fl){
+    const fs=[...fl].filter(f=>f.type.startsWith('image/'));
+    if(!fs.length){msg('bad','이미지 파일이 없습니다. JPG·PNG·WebP·GIF 파일을 올려 주세요.');return;}
+    clearMsg();
+    let bad=0;
+    $('stat').textContent='불러오는 중…';
+    for(const f of fs){
+      let src=null;
+      try{src=await decode(f);}catch(e){}
+      if(!src){bad++;continue;}
+      const w=src.naturalWidth||src.width,h=src.naturalHeight||src.height;
+      if(!w||!h){bad++;continue;}
+      items.push({id:++uid,file:f,name:f.name,src,w,h,thumb:makeThumb(src,w,h)});
+    }
+    if(bad)msg('warn',`${bad}장은 읽을 수 없어 건너뛰었습니다. HEIC 등 브라우저가 열지 못하는 형식일 수 있어요.`);
+    $('stat').textContent='';
+    $('editor').classList.toggle('hidden',!items.length);
+    drawList();update();
+  }
+
+  /* ---------- list ---------- */
+  function drawList(){
+    list.innerHTML='';
+    items.forEach((it,i)=>{
+      const el=document.createElement('div');el.className='it';el.dataset.id=it.id;
+      el.innerHTML=`<span class="grab" role="button" aria-label="끌어서 순서 바꾸기" title="끌어서 순서 바꾸기">⋮⋮</span>
+        <span class="idx">${i+1}</span><span class="th"></span>
+        <div class="meta"><div class="fname">${esc(it.name)}</div><div class="dim">${it.w}×${it.h}</div></div>
+        <div class="btns">
+          <button type="button" data-a="up" title="위로" aria-label="위로"${i===0?' disabled':''}>▲</button>
+          <button type="button" data-a="down" title="아래로" aria-label="아래로"${i===items.length-1?' disabled':''}>▼</button>
+          <button type="button" data-a="del" title="제거" aria-label="제거">✕</button>
+        </div>`;
+      el.querySelector('.th').replaceWith(it.thumb);
+      list.appendChild(el);
+    });
+    $('cnt').textContent=items.length?`${items.length}장`:'';
+  }
+  list.addEventListener('click',e=>{
+    const b=e.target.closest('button[data-a]');if(!b)return;
+    const i=items.findIndex(x=>String(x.id)===b.closest('.it').dataset.id);if(i<0)return;
+    const a=b.dataset.a;
+    if(a==='up'&&i>0){[items[i-1],items[i]]=[items[i],items[i-1]];}
+    else if(a==='down'&&i<items.length-1){[items[i+1],items[i]]=[items[i],items[i+1]];}
+    else if(a==='del'){const it=items.splice(i,1)[0];if(it.src&&it.src.close)try{it.src.close()}catch(x){}}
+    if(!items.length){$('editor').classList.add('hidden');}
+    drawList();update();
+  });
+  $('sortName').addEventListener('click',()=>{
+    const col=new Intl.Collator('ko',{numeric:true,sensitivity:'base'});
+    items.sort((a,b)=>col.compare(a.name,b.name));
+    drawList();update();
+  });
+  $('clearAll').addEventListener('click',resetAll);
+  $('reset').addEventListener('click',()=>{resetAll();window.scrollTo({top:0,behavior:'smooth'});});
+  function resetAll(){
+    items.forEach(it=>{if(it.src&&it.src.close)try{it.src.close()}catch(x){}});
+    items=[];file.value='';list.innerHTML='';
+    $('editor').classList.add('hidden');clearMsg();$('stat').textContent='';
+  }
+
+  /* ---------- drag reorder (pointer events) ---------- */
+  let drag=null;
+  list.addEventListener('pointerdown',e=>{
+    const h=e.target.closest('.grab');if(!h)return;
+    const row=h.closest('.it');if(!row)return;
+    e.preventDefault();
+    drag={h,row,target:null,before:false,pid:e.pointerId};
+    row.classList.add('drag');
+    try{h.setPointerCapture(e.pointerId);}catch(x){}
+    h.addEventListener('pointermove',onMove);
+    h.addEventListener('pointerup',onUp);
+    h.addEventListener('pointercancel',onUp);
+  });
+  function clearMark(){if(drag&&drag.target){drag.target.classList.remove('ins-before','ins-after');drag.target=null;}}
+  function onMove(e){
+    if(!drag)return;
+    const y=e.clientY,rows=[...list.children].filter(r=>r!==drag.row);
+    let t=null,before=false;
+    for(const r of rows){const b=r.getBoundingClientRect();if(y<b.top+b.height/2){t=r;before=true;break;}}
+    if(!t&&rows.length){t=rows[rows.length-1];before=false;}
+    if(t!==drag.target||before!==drag.before){
+      clearMark();drag.target=t;drag.before=before;
+      if(t)t.classList.add(before?'ins-before':'ins-after');
+    }
+  }
+  function onUp(){
+    if(!drag)return;
+    const {h,row,target,before}=drag;
+    h.removeEventListener('pointermove',onMove);h.removeEventListener('pointerup',onUp);h.removeEventListener('pointercancel',onUp);
+    try{h.releasePointerCapture(drag.pid);}catch(x){}
+    row.classList.remove('drag');clearMark();
+    if(target&&target!==row){
+      const from=items.findIndex(x=>String(x.id)===row.dataset.id);
+      let to=items.findIndex(x=>String(x.id)===target.dataset.id);
+      if(from>=0&&to>=0){
+        const it=items.splice(from,1)[0];
+        if(from<to)to--;
+        if(!before)to++;
+        items.splice(to,0,it);
+      }
+    }
+    drag=null;drawList();update();
+  }
+
+  /* ---------- layout ---------- */
+  function layout(){
+    const n=items.length;if(!n)return null;
+    const gap=num('gap',0,0,500),m=num('margin',0,0,500),maxSide=num('maxSide',4096,256,MAX_SIDE);
+    const fit=opt.fit;let cells=[],W,H;
+    if(opt.dir==='h'){
+      const hs=items.map(i=>i.h);
+      const th=fit==='min'?Math.min(...hs):Math.max(...hs);
+      let x=m;
+      for(const it of items){
+        let w,h;if(fit==='keep'){w=it.w;h=it.h;}else{h=th;w=Math.max(1,Math.round(it.w*th/it.h));}
+        cells.push({x,y:m+Math.round((th-h)/2),w,h,it});x+=w+gap;
+      }
+      W=x-gap+m;H=th+2*m;
+    }else{
+      const ws=items.map(i=>i.w);
+      const tw=fit==='min'?Math.min(...ws):Math.max(...ws);
+      const cols=opt.dir==='g'?num('cols',2,1,20):1;
+      const scaled=items.map(it=>{
+        if(fit==='keep')return{w:it.w,h:it.h,it};
+        return{w:tw,h:Math.max(1,Math.round(it.h*tw/it.w)),it};
+      });
+      let y=m;
+      for(let r=0;r*cols<scaled.length;r++){
+        const rowCells=scaled.slice(r*cols,(r+1)*cols);
+        const rh=Math.max(...rowCells.map(c=>c.h));
+        rowCells.forEach((c,k)=>{
+          cells.push({x:m+k*(tw+gap)+Math.round((tw-c.w)/2),y:y+Math.round((rh-c.h)/2),w:c.w,h:c.h,it:c.it});
+        });
+        y+=rh+gap;
+      }
+      W=cols*tw+(cols-1)*gap+2*m;H=y-gap+m;
+    }
+    const origW=W,origH=H;let s=1;
+    if(Math.max(W,H)>maxSide){
+      s=maxSide/Math.max(W,H);
+      cells=cells.map(c=>({x:Math.round(c.x*s),y:Math.round(c.y*s),w:Math.max(1,Math.round(c.w*s)),h:Math.max(1,Math.round(c.h*s)),it:c.it}));
+      W=Math.max(1,Math.round(W*s));H=Math.max(1,Math.round(H*s));
+    }
+    return{W,H,cells,s,origW,origH};
+  }
+  function paint(ctx,L,sx,sy){
+    ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+    if(!alphaOn()){ctx.fillStyle=$('bg').value||'#ffffff';ctx.fillRect(0,0,Math.ceil(L.W*sx),Math.ceil(L.H*sy));}
+    for(const c of L.cells){ctx.drawImage(c.it.src,c.x*sx,c.y*sy,c.w*sx,c.h*sy);}
+  }
+
+  /* ---------- preview ---------- */
+  let raf=0,estT=0;
+  function update(){cancelAnimationFrame(raf);raf=requestAnimationFrame(renderPreview);}
+  function renderPreview(){
+    const L=layout();
+    if(!L){$('dims').textContent='–';$('est').textContent='–';return;}
+    const ps=Math.min(1,1400/Math.max(L.W,L.H),Math.sqrt(2.5e6/(L.W*L.H)));
+    pv.width=Math.max(1,Math.round(L.W*ps));pv.height=Math.max(1,Math.round(L.H*ps));
+    const ctx=pv.getContext('2d');ctx.clearRect(0,0,pv.width,pv.height);
+    paint(ctx,L,pv.width/L.W,pv.height/L.H);
+    $('dims').textContent=`${L.W} × ${L.H} px`;
+    const sn=$('scaleNote');
+    if(L.s<1){sn.innerHTML=`원래 크기 ${L.origW}×${L.origH}px가 최대 출력 크기를 넘어 <strong>${Math.round(L.s*100)}%</strong>로 줄였습니다. 더 크게 뽑으려면 최대 출력 크기를 올려 주세요.`;sn.classList.remove('hidden');}
+    else sn.classList.add('hidden');
+    if(L.W>MAX_SIDE||L.H>MAX_SIDE||L.W*L.H>MAX_AREA)$('est').textContent='브라우저 한계 초과';
+    else estimate(L);
+  }
+  function estimate(L){
+    clearTimeout(estT);$('est').textContent='계산 중…';
+    estT=setTimeout(()=>{
+      const exact=pv.width===L.W&&pv.height===L.H;
+      pv.toBlob(b=>{
+        if(!b){$('est').textContent='–';return;}
+        const f=(L.W*L.H)/(pv.width*pv.height);
+        $('est').textContent=exact?kb(b.size):'약 '+kb(b.size*f)+' (예상)';
+      },mime(),qv());
+    },300);
+  }
+
+  /* ---------- export ---------- */
+  $('go').addEventListener('click',async()=>{
+    if(!items.length||busy)return;
+    const L=layout();if(!L)return;
+    clearMsg();
+    if(L.W>MAX_SIDE||L.H>MAX_SIDE||L.W*L.H>MAX_AREA){
+      msg('bad',`출력 크기 ${L.W}×${L.H}px는 브라우저가 만들 수 있는 캔버스 한계(한 변 16,384px, 총 픽셀 약 2.7억)를 넘습니다. <strong>최대 출력 크기</strong>를 낮추거나 사진 수를 줄여 주세요.`);
+      return;
+    }
+    busy=true;const btn=$('go');btn.disabled=true;$('stat').textContent='렌더링 중…';
+    await new Promise(r=>setTimeout(r,20));
+    try{
+      const c=document.createElement('canvas');c.width=L.W;c.height=L.H;
+      const ctx=c.getContext('2d');if(!ctx)throw new Error('ctx');
+      paint(ctx,L,1,1);
+      const blob=await new Promise(r=>c.toBlob(r,mime(),qv()));
+      if(!blob||!blob.size)throw new Error('blob');
+      let e=ext();
+      if(blob.type!==mime()){
+        e=blob.type==='image/png'?'png':blob.type==='image/jpeg'?'jpg':e;
+        msg('warn',`이 브라우저는 ${opt.fmt.toUpperCase()} 저장을 지원하지 않아 ${e.toUpperCase()}로 저장했습니다.`);
+      }
+      const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='merged.'+e;
+      document.body.appendChild(a);a.click();a.remove();
+      setTimeout(()=>URL.revokeObjectURL(a.href),5000);
+      $('est').textContent=kb(blob.size);
+      $('stat').textContent=`저장 완료 — ${L.W}×${L.H} px · ${kb(blob.size)}`;
+    }catch(err){
+      msg('bad','이미지를 만들지 못했습니다. 브라우저 메모리나 캔버스 한계를 넘었을 수 있어요. <strong>최대 출력 크기</strong>를 낮추거나(예: 2048) 사진 수를 줄여서 다시 시도해 주세요.');
+      $('stat').textContent='';
+    }
+    busy=false;btn.disabled=false;
+  });
+})();
+</script>
+</body>
+</html>
