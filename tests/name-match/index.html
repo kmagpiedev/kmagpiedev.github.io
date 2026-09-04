@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>이름 궁합 테스트 — 획수로 보는 두 사람의 궁합 | 까치테스트</title>
+<meta name="description" content="내 이름과 상대 이름을 넣으면 한글 획수로 두 사람의 궁합을 계산합니다. 교과서 귀퉁이에 그리던 그 획수 피라미드를 그대로 화면에 그려 주고, 천생연분부터 '전생의 원수(그래서 더 재밌는)'까지 12유형과 전체 상위 몇 %인지까지 알려드립니다. 이름은 어디로도 전송되지 않고 공유 링크에도 담기지 않습니다.">
+<link rel="canonical" href="https://www.kmagpie.com/tests/name-match/">
+<link rel="alternate" hreflang="ko" href="https://www.kmagpie.com/tests/name-match/">
+<link rel="alternate" hreflang="x-default" href="https://www.kmagpie.com/tests/name-match/">
+<meta property="og:title" content="이름 궁합 테스트 — 획수로 보는 두 사람의 궁합">
+<meta property="og:description" content="교과서 귀퉁이에 그리던 그 획수 피라미드. 내 이름과 상대 이름으로 30초, 두 사람의 궁합은 몇 %? 천생연분부터 '전생의 원수(그래서 더 재밌는)'까지 12유형.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tests/name-match/">
+<meta property="og:image" content="https://www.kmagpie.com/tests/name-match/img/og.png">
+<meta property="og:site_name" content="까치테스트">
+<style>
+  :root{
+    --bg:#1a0f14; --surface:#24151c; --line:#4a2a36; --line-soft:#331c26;
+    --ink:#fdf0f3; --ink-2:#e6c3cc; --ink-3:#b58a98;
+    --accent:#ff7a8a; --accent-soft:#3d1a24;
+    --gld:#ffc46b; --gld-soft:#3a2a10;
+    --card-grad-a:#331a24; --card-grad-b:#120a0e;
+    --btn-ink:#2a0810;
+    --me:#ff7a8a; --you:#ffc46b;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#150b10; --surface:#20121a; --line:#4a2a36; --line-soft:#2c1620;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(1.5px 1.5px at 12% 10%, rgba(255,122,138,.24) 50%, transparent 51%),
+      radial-gradient(1px 1px at 70% 7%,  rgba(253,240,243,.10) 50%, transparent 51%),
+      radial-gradient(2px 2px at 44% 28%, rgba(255,196,107,.16) 50%, transparent 51%),
+      radial-gradient(1px 1px at 28% 56%, rgba(253,240,243,.09) 50%, transparent 51%),
+      radial-gradient(2px 2px at 88% 40%, rgba(255,122,138,.18) 50%, transparent 51%),
+      radial-gradient(1px 1px at 8% 82%,  rgba(255,196,107,.12) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 62% 74%, rgba(255,122,138,.14) 50%, transparent 51%)}
+  .wrap{max-width:680px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:27px;line-height:1.35;margin:0 0 10px;letter-spacing:-.02em;font-weight:800}
+  h1 .jd{color:var(--accent)}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+  .col{flex:1;min-width:90px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
+  label.f .me{color:var(--me)} label.f .you{color:var(--you)}
+  input[type=text],select{padding:10px 12px;border:1px solid var(--line);border-radius:9px;
+    background:var(--surface);color:var(--ink);font-size:16px;font-family:inherit;width:100%;
+    font-weight:600;font-variant-numeric:tabular-nums;appearance:none;-webkit-appearance:none}
+  input:focus,select:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:14px 0 0}
+  .go{display:block;width:100%;margin:18px 0 0;padding:15px 10px;border:0;border-radius:12px;
+    background:var(--accent);color:var(--btn-ink);font-size:17px;font-weight:800;font-family:inherit;cursor:pointer;
+    letter-spacing:-.01em;transition:.15s}
+  .go:hover{filter:brightness(1.08);transform:translateY(-1px)}
+  .go:disabled{cursor:default;opacity:.68;transform:none;filter:none}
+
+  /* 결과 */
+  .result{background:var(--surface);border:1px solid var(--accent);border-radius:18px;
+    padding:28px 24px;margin:20px 0;text-align:center}
+  .rk{font-size:13px;font-weight:700;letter-spacing:.12em;color:var(--ink-3);margin:0 0 14px}
+  .roleImg{width:168px;height:168px;margin:0 auto 14px;border-radius:24px;overflow:hidden;position:relative;
+    background:linear-gradient(135deg,var(--g1,#5e2a3a),var(--g2,#1a0a10));display:flex;align-items:center;justify-content:center}
+  .roleImg img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+  .roleImg .fbEmo{font-size:84px;line-height:1;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5))}
+  .roleName{font-size:26px;font-weight:800;letter-spacing:-.02em;margin:0 0 2px}
+  .roleCatch{font-size:14.5px;color:var(--ink-2);margin:0 0 20px}
+  .popBox{margin:0 0 4px}
+  .popNum{font-size:clamp(52px,16vw,80px);font-weight:800;letter-spacing:-.04em;line-height:1.05;
+    color:var(--accent);font-variant-numeric:tabular-nums}
+  .popNum small{font-size:.42em;font-weight:700}
+  .popCap{font-size:15px;color:var(--ink-2);margin:0 0 2px;font-weight:700}
+  .popCap .me{color:var(--me)} .popCap .you{color:var(--you)}
+  .tier{font-size:15px;font-weight:800;color:var(--ink);margin:6px 0 0}
+  .topPct{display:inline-block;margin:8px 0 0;padding:5px 14px;border-radius:99px;
+    background:var(--accent-soft);color:var(--accent);font-size:14px;font-weight:700}
+  .topPct.rare{background:var(--gld-soft);color:var(--gld)}
+  .pyr{margin:20px 0 0;padding:14px 6px 10px;border:1px dashed var(--line);border-radius:12px;overflow-x:auto}
+  .pyr .pp{font-size:12.5px;color:var(--ink-3);margin:0 0 10px;letter-spacing:.04em;font-weight:700}
+  .pr{display:flex;justify-content:center;gap:3px;margin:0 0 4px}
+  .pc{width:26px;height:26px;border-radius:7px;background:var(--accent-soft);color:var(--ink);font-weight:800;
+    font-size:14px;display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums;flex:none}
+  .pr.nm .pc{background:transparent;height:auto;font-size:14px;font-weight:700}
+  .pr.nm .pc.a{color:var(--me)} .pr.nm .pc.b{color:var(--you)}
+  .pr.first .pc.a{box-shadow:inset 0 0 0 1.5px var(--me)} .pr.first .pc.b{box-shadow:inset 0 0 0 1.5px var(--you)}
+  .pr.last .pc{background:var(--accent);color:var(--btn-ink);font-size:16px;width:30px;height:30px}
+  .pyr .pl{font-size:12.5px;color:var(--ink-3);margin:8px 0 0}
+  .pyr .pl .me{color:var(--me)} .pyr .pl .you{color:var(--you)}
+  .desc{text-align:left;font-size:15px;color:var(--ink-2);margin:18px 0 0}
+  .trace{text-align:left;margin:16px 0 0;padding:12px 15px;border-left:3px solid var(--accent);
+    background:var(--accent-soft);border-radius:0 10px 10px 0;font-size:14.5px}
+  .trace b{color:var(--accent)}
+  .mates{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 0;text-align:left}
+  .mate{border:1px solid var(--line);border-radius:11px;padding:11px 13px;font-size:13.5px}
+  .mate .mk{display:block;font-size:11.5px;font-weight:700;letter-spacing:.08em;margin-bottom:3px}
+  .mate.good .mk{color:var(--gld)}
+  .mate.bad .mk{color:var(--accent)}
+  .mate b{font-size:14.5px}
+  .btns{display:flex;gap:9px;flex-wrap:wrap;margin:24px 0 0}
+  .btns button{flex:1;min-width:140px;padding:13px 8px;border-radius:11px;font-size:14.5px;font-weight:700;
+    font-family:inherit;cursor:pointer;transition:.15s;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+  .btns button:hover{border-color:var(--accent);color:var(--accent)}
+  .btns button.pri{background:var(--accent);border-color:var(--accent);color:var(--btn-ink)}
+  .btns button.pri:hover{filter:brightness(1.08);color:var(--btn-ink)}
+  .retry{display:block;width:100%;margin:10px 0 0;padding:13px 8px;border-radius:11px;border:1px dashed var(--line);
+    background:transparent;color:var(--ink-2);font-size:14.5px;font-weight:700;font-family:inherit;cursor:pointer}
+  .retry:hover{border-color:var(--accent);color:var(--accent)}
+  .copied{font-size:13px;color:var(--gld);margin:8px 0 0;min-height:20px}
+
+  .basis{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:14px 0}
+  .basis h2{margin:0 0 8px;font-size:17px}
+  .basis p{font-size:14.5px;color:var(--ink-2);margin:0 0 8px}
+  .basis p:last-child{margin:0}
+
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  .hidden{display:none}
+
+  /* 본문 접기 */
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 10px}
+  .fold .fx>:first-child{margin-top:4px}
+  .fold .fx p{font-size:14.5px;color:var(--ink-2)}
+  .fold .fx p strong{color:var(--ink)}
+  .fold .fx h3{font-size:15.5px;color:var(--ink);font-weight:700;
+    margin:22px 0 6px;letter-spacing:-.01em}
+  .tw{overflow-x:auto;margin:0 0 14px}
+  table.st{border-collapse:collapse;font-size:13.5px;min-width:100%;white-space:nowrap}
+  table.st th,table.st td{border:1px solid var(--line-soft);padding:6px 9px;text-align:center}
+  table.st th{background:var(--accent-soft);color:var(--ink);font-weight:700}
+  table.st td{color:var(--ink-2)}
+  table.st td.k{color:var(--ink);font-weight:700}
+  pre.py{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px;line-height:1.6;color:var(--ink);
+    background:var(--accent-soft);border-radius:10px;padding:12px 14px;margin:0 0 14px;overflow-x:auto;text-align:center}
+  pre.py b{color:var(--accent)}
+  ul.tl{padding-left:20px;margin:0 0 14px;font-size:14.5px;color:var(--ink-2)}
+  ul.tl li{margin:0 0 6px}
+  ul.tl b{color:var(--ink)}
+
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .panel{padding:18px 15px}
+    .result{padding:22px 15px}
+    .roleImg{width:136px;height:136px}
+    .roleImg .fbEmo{font-size:68px}
+    .roleName{font-size:22px}
+    .mates{grid-template-columns:1fr}
+    .fold summary{padding:14px 15px}
+    .fold summary h2{font-size:15.5px}
+    .fold .fx{padding:0 15px 10px}
+    .pc{width:24px;height:24px;font-size:13px}
+    .pr.last .pc{width:28px;height:28px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> › <a href="/tests/">까치테스트</a> › 이름 궁합 테스트</p>
+
+<h1>두 사람의 <span class="jd">이름 궁합</span>은 몇 %? 💞</h1>
+<p class="sub">내 이름과 상대 이름을 넣으면 <strong>한글 획수</strong>로 두 사람의 궁합을 계산합니다. 교과서 귀퉁이에 연필로 그리던 바로 그 <strong>획수 피라미드</strong> — 이름을 한 글자씩 번갈아 놓고, 옆끼리 더해서 일의 자리만 남기고, 두 자리가 남을 때까지 내려가는 그 방식 그대로입니다. 결과는 천생연분부터 ‘전생의 원수(그래서 더 재밌는)’까지 12유형으로 나오고, 만 쌍의 이름 조합 분포에서 <strong>전체 상위 몇 %</strong>인지도 알려드립니다. 피라미드 전체를 화면에 그려 주니, 친구가 “그거 계산 맞아?” 하면 한 줄씩 보여주면 됩니다.</p>
+
+<div class="panel" id="inputPanel">
+  <div class="row">
+    <div class="col" style="min-width:140px">
+      <label class="f" for="nameA"><span class="me">●</span> 내 이름</label>
+      <input type="text" id="nameA" maxlength="5" placeholder="예: 이하늘" autocomplete="off" inputmode="text">
+    </div>
+    <div class="col" style="min-width:140px">
+      <label class="f" for="nameB"><span class="you">●</span> 상대 이름</label>
+      <input type="text" id="nameB" maxlength="5" placeholder="예: 김서준" autocomplete="off" inputmode="text">
+    </div>
+  </div>
+  <div class="row" style="margin-top:14px">
+    <div class="col" style="min-width:160px">
+      <label class="f" for="rel">두 사람의 관계 (선택)</label>
+      <select id="rel">
+        <option value="">선택 안 함</option>
+        <option value="1">친구</option>
+        <option value="2">썸</option>
+        <option value="3">연인</option>
+        <option value="4">부부</option>
+        <option value="5">가족</option>
+        <option value="6">동료</option>
+      </select>
+    </div>
+  </div>
+  <p class="note" id="needPick" style="display:none;color:var(--accent)">이름은 한글 2~5자로 넣어 주세요. (성 포함, 띄어쓰기 없이)</p>
+  <button type="button" class="go" id="goBtn">💞 이름 궁합 확인하기</button>
+  <p class="note">한글 이름 기준(성 포함 2~5자)입니다. 관계는 풀이 문장만 바꾸고 숫자는 바꾸지 않습니다. 이름은 어디로도 전송되지 않고 브라우저 안에서만 계산되며, 공유 링크에도 담기지 않습니다.</p>
+</div>
+
+<div class="result hidden" id="res">
+  <p class="rk">NAME MATCH REPORT</p>
+  <div class="roleImg" id="roleImgBox">
+    <span class="fbEmo" id="fbEmo"></span>
+    <img id="roleImg" alt="" width="168" height="168">
+  </div>
+  <p class="roleName" id="roleName"></p>
+  <p class="roleCatch" id="roleCatch"></p>
+  <div class="popBox">
+    <p class="popCap" id="popCap">두 사람의 이름 궁합</p>
+    <div class="popNum"><span id="popNum">0</span><small>%</small></div>
+    <p class="tier" id="tierLine"></p>
+    <span class="topPct" id="topPct"></span>
+  </div>
+  <div class="pyr" id="pyr">
+    <p class="pp">획수 피라미드 — 옆끼리 더해 일의 자리만</p>
+    <div id="pyrRows"></div>
+    <p class="pl"><span class="me">●</span> 내 이름 · <span class="you">●</span> 상대 이름 · 맨 아래 두 자리가 궁합 %</p>
+  </div>
+  <p class="desc" id="roleDesc"></p>
+  <p class="trace" id="traceLine"></p>
+  <div class="mates">
+    <div class="mate good"><span class="mk">💡 이 조합의 무기</span><span id="mateGood"></span></div>
+    <div class="mate bad"><span class="mk">🔄 순서를 바꾸면</span><span id="mateBad"></span></div>
+  </div>
+  <div class="btns">
+    <button type="button" id="shareLink">🔗 결과 링크 복사</button>
+    <button type="button" class="pri" id="shareCard">📸 결과 카드 저장</button>
+  </div>
+  <button type="button" class="retry" id="retryBtn">👀 다른 사람이랑도 해보기</button>
+  <p class="copied" id="copied"></p>
+</div>
+
+<p class="gist">이 테스트는 두 이름을 한 글자씩 <strong>초성·중성·종성</strong>으로 풀어 획수를 세고, 두 사람의 글자를 <strong>번갈아 한 줄</strong>로 늘어놓은 뒤, 이웃한 두 수를 더해 <strong>일의 자리만</strong> 남기는 일을 두 자리가 남을 때까지 반복합니다. 그 두 자리가 궁합 %입니다. 계산에 무작위 함수가 없어서 같은 두 이름을 같은 순서로 넣으면 언제 눌러도 같은 숫자가 나오고, 관계 선택은 풀이 문장만 바꿀 뿐 숫자에는 손대지 않습니다. ‘전체 상위 N%’는 흔한 이름 음절로 만든 1만 쌍의 이름 조합을 미리 돌려 얻은 분포표에서 찾은 값입니다. 사주도 통계도 아닌, 연필과 종이로 하던 놀이를 그대로 옮긴 재미 콘텐츠입니다.</p>
+
+<details class="fold" open><summary><h2>획수 궁합은 어디서 왔나 — 교과서 낙서와 종이접기 시절</h2></summary><div class="fx">
+<p>이름 획수 궁합은 학술적으로 누가 언제 만들었는지 밝혀진 적이 없는, 그야말로 <strong>교실에서 태어난 놀이</strong>입니다. 쉬는 시간 10분, 짝꿍 교과서 귀퉁이에 연필로 두 이름을 적고, 글자 밑에 획수를 세어 쓰고, 옆끼리 더해 가며 삼각형을 그리다 보면 맨 아래 두 자리 숫자가 남습니다. 그 숫자가 크면 교실이 뒤집어지고, 작으면 “순서 바꿔서 다시 해!”가 나오고, 그래도 작으면 “성 빼고 해 봐”가 나옵니다. 종이접기로 만든 동서남북 점괘, 연필 굴리기, 이름 궁합 — 이 세 가지는 세대를 건너 살아남은 교실 점술 3대장이라 할 만합니다.</p>
+<p>비슷한 놀이는 다른 문화권에도 있습니다. 영어권에서는 두 이름에서 LOVE 또는 TRUE LOVE의 각 글자가 몇 번 나오는지 세어 같은 방식으로 더해 내려가는 ‘Love Calculator’ 놀이가 있고, 일본에도 이름의 획수를 더해 내려가는 ‘相性占い(궁합 점)’가 있습니다. 규칙의 뼈대는 모두 같습니다 — 이름을 숫자로 바꾸고, 이웃한 숫자를 더하고, 일의 자리만 남기고, 두 자리가 될 때까지 내려간다. 한글판이 특별한 점은 <strong>자음과 모음의 획수</strong>를 센다는 것입니다. 한글은 글자 하나가 초성·중성·종성으로 딱 떨어지게 분해되고 각 자모의 획수가 비교적 분명해서, 이 놀이에 유난히 잘 맞는 문자입니다.</p>
+<p>이 페이지는 그 교실 규칙을 코드로 옮긴 것입니다. 손으로 할 때 사람마다 조금씩 다르던 부분 — ㅇ을 1획으로 볼지, ㅋ을 3획으로 볼지, 겹받침을 어떻게 셀지 — 은 아래 규칙 표대로 <strong>한 가지로 고정</strong>했습니다. 그래야 같은 이름이 늘 같은 숫자를 내고, 친구와 결과가 다를 때 “네 표가 틀렸네”라고 말할 근거가 생깁니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>획수 세는 규칙 표 — 이 페이지가 쓰는 자모 획수</h2></summary><div class="fx">
+<p>한글 한 글자는 초성(첫 자음) + 중성(모음) + 종성(받침)으로 나뉘고, 글자의 획수는 세 자모의 획수를 더한 값입니다. 받침이 없으면 종성은 0획이고, 겹받침은 두 자음의 획수를 더합니다. 이 표는 필기체가 아니라 <strong>정자체(교과서체)로 쓸 때의 획수</strong>를 기준으로 했습니다. 가장 자주 논쟁이 되는 ㅇ은 한 획(동그라미 한 번), ㅋ은 ㄱ에 한 획을 더한 3획, ㅊ은 ㅈ에 한 획을 더한 4획, ㅎ은 3획입니다.</p>
+<div class="tw"><table class="st">
+<tr><th colspan="19">초성 (첫 자음)</th></tr>
+<tr><td class="k">ㄱ</td><td class="k">ㄲ</td><td class="k">ㄴ</td><td class="k">ㄷ</td><td class="k">ㄸ</td><td class="k">ㄹ</td><td class="k">ㅁ</td><td class="k">ㅂ</td><td class="k">ㅃ</td><td class="k">ㅅ</td><td class="k">ㅆ</td><td class="k">ㅇ</td><td class="k">ㅈ</td><td class="k">ㅉ</td><td class="k">ㅊ</td><td class="k">ㅋ</td><td class="k">ㅌ</td><td class="k">ㅍ</td><td class="k">ㅎ</td></tr>
+<tr><td>2</td><td>4</td><td>2</td><td>3</td><td>6</td><td>5</td><td>4</td><td>4</td><td>8</td><td>2</td><td>4</td><td>1</td><td>3</td><td>6</td><td>4</td><td>3</td><td>4</td><td>4</td><td>3</td></tr>
+</table></div>
+<div class="tw"><table class="st">
+<tr><th colspan="21">중성 (모음)</th></tr>
+<tr><td class="k">ㅏ</td><td class="k">ㅐ</td><td class="k">ㅑ</td><td class="k">ㅒ</td><td class="k">ㅓ</td><td class="k">ㅔ</td><td class="k">ㅕ</td><td class="k">ㅖ</td><td class="k">ㅗ</td><td class="k">ㅘ</td><td class="k">ㅙ</td><td class="k">ㅚ</td><td class="k">ㅛ</td><td class="k">ㅜ</td><td class="k">ㅝ</td><td class="k">ㅞ</td><td class="k">ㅟ</td><td class="k">ㅠ</td><td class="k">ㅡ</td><td class="k">ㅢ</td><td class="k">ㅣ</td></tr>
+<tr><td>2</td><td>3</td><td>3</td><td>4</td><td>2</td><td>3</td><td>3</td><td>4</td><td>2</td><td>4</td><td>5</td><td>3</td><td>3</td><td>2</td><td>4</td><td>5</td><td>3</td><td>3</td><td>1</td><td>2</td><td>1</td></tr>
+</table></div>
+<div class="tw"><table class="st">
+<tr><th colspan="14">종성 (받침) — 홑받침은 초성과 같은 값, 겹받침은 두 자음의 합, 받침 없음 = 0</th></tr>
+<tr><td class="k">없음</td><td class="k">ㄱ</td><td class="k">ㄴ</td><td class="k">ㄷ</td><td class="k">ㄹ</td><td class="k">ㅁ</td><td class="k">ㅂ</td><td class="k">ㅅ</td><td class="k">ㅇ</td><td class="k">ㅈ</td><td class="k">ㅊ</td><td class="k">ㅋ</td><td class="k">ㅌ</td><td class="k">ㅍ</td></tr>
+<tr><td>0</td><td>2</td><td>2</td><td>3</td><td>5</td><td>4</td><td>4</td><td>2</td><td>1</td><td>3</td><td>4</td><td>3</td><td>4</td><td>4</td></tr>
+<tr><td class="k">ㅎ</td><td class="k">ㄲ</td><td class="k">ㅆ</td><td class="k">ㄳ</td><td class="k">ㄵ</td><td class="k">ㄶ</td><td class="k">ㄺ</td><td class="k">ㄻ</td><td class="k">ㄼ</td><td class="k">ㄽ</td><td class="k">ㄾ</td><td class="k">ㄿ</td><td class="k">ㅀ</td><td class="k">ㅄ</td></tr>
+<tr><td>3</td><td>4</td><td>4</td><td>4</td><td>5</td><td>5</td><td>7</td><td>9</td><td>9</td><td>7</td><td>9</td><td>9</td><td>8</td><td>6</td></tr>
+</table></div>
+<p>몇 글자만 세어 보면 감이 옵니다. <strong>김</strong> = ㄱ2 + ㅣ1 + ㅁ4 = <strong>7획</strong>, <strong>이</strong> = ㅇ1 + ㅣ1 = <strong>2획</strong>, <strong>박</strong> = ㅂ4 + ㅏ2 + ㄱ2 = <strong>8획</strong>, <strong>최</strong> = ㅊ4 + ㅚ3 = <strong>7획</strong>, <strong>정</strong> = ㅈ3 + ㅓ2 + ㅇ1 = <strong>6획</strong>, <strong>민</strong> = ㅁ4 + ㅣ1 + ㄴ2 = <strong>7획</strong>, <strong>서</strong> = ㅅ2 + ㅓ2 = <strong>4획</strong>, <strong>연</strong> = ㅇ1 + ㅕ3 + ㄴ2 = <strong>6획</strong>. 가장 가벼운 글자는 ‘이’·‘으’ 같은 2획이고, 가장 무거운 축은 쌍자음 + 복모음 + 겹받침이 한 글자에 겹쳐 20획을 넘기는 경우(최대 ㅃ8 + ㅙ5 + ㄻ9 = 22획)인데, 실제 이름에는 거의 등장하지 않습니다.</p>
+<p>ㅐ·ㅔ가 3획이고 ㅒ·ㅖ가 4획인 것은 ㅏ·ㅓ에 세로획 하나가 더 붙기 때문이고, ㅘ·ㅝ가 4획, ㅙ·ㅞ가 5획인 것은 ㅗ·ㅜ 2획에 ㅏ·ㅓ 2획(또는 ㅐ·ㅔ 3획)을 더한 값입니다. ㅢ는 ㅡ1 + ㅣ1 = 2획, ㅚ·ㅟ는 ㅗ·ㅜ 2획 + ㅣ 1획 = 3획입니다. 규칙에 예외가 없어서 한 번 익히면 손으로도 그대로 셀 수 있습니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>계산 예시 — 이하늘 × 김서준을 한 단계씩</h2></summary><div class="fx">
+<p>규칙 표로 실제 두 이름을 끝까지 계산해 보겠습니다. 내 이름을 <strong>이하늘</strong>, 상대 이름을 <strong>김서준</strong>이라고 하겠습니다.</p>
+<h3>1단계 — 글자마다 획수 세기</h3>
+<ul class="tl">
+<li><b>이</b> = ㅇ1 + ㅣ1 + (받침 없음)0 = <b>2</b></li>
+<li><b>하</b> = ㅎ3 + ㅏ2 + 0 = <b>5</b></li>
+<li><b>늘</b> = ㄴ2 + ㅡ1 + ㄹ5 = <b>8</b></li>
+<li><b>김</b> = ㄱ2 + ㅣ1 + ㅁ4 = <b>7</b></li>
+<li><b>서</b> = ㅅ2 + ㅓ2 + 0 = <b>4</b></li>
+<li><b>준</b> = ㅈ3 + ㅜ2 + ㄴ2 = <b>7</b></li>
+</ul>
+<p>그래서 이하늘은 <strong>2·5·8</strong>, 김서준은 <strong>7·4·7</strong>입니다.</p>
+<h3>2단계 — 두 이름을 한 글자씩 번갈아 놓기</h3>
+<p>내 이름의 첫 글자, 상대 이름의 첫 글자, 내 이름의 둘째 글자, 상대 이름의 둘째 글자… 순서로 한 줄을 만듭니다. 이(2) 김(7) 하(5) 서(4) 늘(8) 준(7) → <strong>2 7 5 4 8 7</strong>. 두 이름의 글자 수가 다르면(예: 세 글자와 두 글자) 긴 쪽의 남는 글자를 순서대로 뒤에 붙입니다.</p>
+<h3>3단계 — 옆끼리 더해서 일의 자리만 남기기</h3>
+<p>이웃한 두 수를 더하고, 10이 넘으면 일의 자리만 씁니다(2+7=9, 7+5=12→2, …). 한 줄 내려갈 때마다 수가 하나씩 줄어들고, 두 개가 남으면 멈춥니다.</p>
+<pre class="py">2 7 5 4 8 7
+ 9 2 9 2 5
+  1 1 1 7
+   2 2 8
+    <b>4 0</b></pre>
+<p>첫 줄 2·7·5·4·8·7에서 2+7=9, 7+5=12→2, 5+4=9, 4+8=12→2, 8+7=15→5 이니 둘째 줄은 9·2·9·2·5. 셋째 줄은 9+2=11→1, 2+9=11→1, 9+2=11→1, 2+5=7 이니 1·1·1·7. 넷째 줄은 1+1=2, 1+1=2, 1+7=8 이니 2·2·8. 마지막으로 2+2=4, 2+8=10→0 이니 <strong>4·0</strong>. 두 자리가 남았으니 여기서 멈춥니다.</p>
+<p>결론: <strong>이하늘 × 김서준의 이름 궁합은 40%</strong>, 유형은 ‘티격태격 베프’입니다. 위 입력칸에 그대로 넣어 보면 화면에 이 피라미드가 똑같이 그려집니다. 손으로 그려 본 사람은 알겠지만, 이 놀이의 재미 절반은 숫자가 아니라 삼각형이 좁아지는 그 과정에 있습니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>왜 이름 순서를 바꾸면 결과가 달라지나</h2></summary><div class="fx">
+<p>많이 받는 질문이고, 손으로 해 본 사람이라면 한 번쯤 “순서 바꿔서 다시 해!”를 외쳐 봤을 것입니다. 답부터 말하면, <strong>이 계산은 대칭이 아닙니다.</strong> 같은 두 이름이라도 누구를 앞에 두느냐에 따라 숫자가 달라집니다.</p>
+<p>이유는 2단계의 ‘번갈아 놓기’에 있습니다. 이하늘을 앞에 두면 첫 줄이 2·7·5·4·8·7이지만, 김서준을 앞에 두면 7·2·4·5·7·8이 됩니다. 이웃한 수의 쌍이 달라지니(첫 경우 2와 7, 7과 5… / 둘째 경우 7과 2, 2와 4…) 둘째 줄부터 다른 숫자가 나오고, 그 차이가 아래로 내려가며 증폭됩니다. 실제로 계산하면 이렇습니다.</p>
+<pre class="py">7 2 4 5 7 8
+ 9 6 9 2 5
+  5 5 1 7
+   0 6 8
+    <b>6 4</b></pre>
+<p>7+2=9, 2+4=6, 4+5=9, 5+7=12→2, 7+8=15→5 → 9·6·9·2·5. 9+6=15→5, 6+9=15→5, 9+2=11→1, 2+5=7 → 5·5·1·7. 5+5=10→0, 5+1=6, 1+7=8 → 0·6·8. 0+6=6, 6+8=14→4 → <strong>6·4</strong>. 그러니까 <strong>김서준 × 이하늘은 64%</strong>, ‘알콩달콩’입니다. 같은 두 사람인데 앞뒤만 바꿨더니 40%와 64% — 24%포인트 차이입니다.</p>
+<p>이것은 버그가 아니라 놀이의 규칙입니다. 교실에서도 늘 “내 이름을 먼저 쓴 게 진짜야” “아니야, 성 먼저 쓴 사람이…” 하는 실랑이가 있었고, 이 페이지는 그 실랑이까지 보존하기로 했습니다. 그래서 결과 화면 아래 ‘순서를 바꾸면’ 칸에 상대 이름을 앞에 뒀을 때의 숫자를 함께 보여 줍니다. 마음에 드는 쪽을 고르시면 됩니다. 두 숫자가 모두 낮으면 그것대로 흔치 않은 조합이니 그것을 자랑하면 됩니다.</p>
+<p>덧붙이면, 이름 순서가 아니라 이름 자체를 바꿔도 당연히 달라집니다. 성을 빼고 이름만 넣거나, 개명 전 이름을 넣거나, 별명을 넣으면 첫 줄 자체가 달라지니 완전히 다른 피라미드가 됩니다. 어떤 이름이 ‘진짜’인지는 이 페이지가 정하지 않습니다 — 주민등록상 이름으로 하는 것이 정석이지만, 정석은 재미없다는 것도 압니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>손으로 직접 그려 보는 법 — 종이 한 장이면 충분</h2></summary><div class="fx">
+<p>화면이 다 그려 주지만, 이 놀이의 본래 맛은 연필에 있습니다. 상대 앞에서 직접 그려 보이면 효과가 두 배입니다. 순서는 이렇습니다.</p>
+<ul class="tl">
+<li><b>① 이름 두 개를 한 글자씩 번갈아 적는다.</b> 내 이름 첫 글자, 상대 첫 글자, 내 둘째 글자, 상대 둘째 글자… 세 글자 이름 둘이면 여섯 칸이 됩니다. 글자 사이는 넉넉히 띄우세요. 아래로 삼각형이 내려갈 자리입니다.</li>
+<li><b>② 글자 밑에 획수를 적는다.</b> 위 규칙 표대로 초성·중성·종성을 더합니다. 헷갈리는 글자는 표를 보면서 하고, ㅇ은 1획으로 통일합니다.</li>
+<li><b>③ 이웃한 두 수를 더해 아래 줄 사이에 적는다.</b> 두 수의 한가운데 아래에 씁니다. 10이 넘으면 일의 자리만 씁니다. 12는 2, 15는 5, 10은 0.</li>
+<li><b>④ 두 개가 남을 때까지 반복한다.</b> 줄이 하나 내려갈 때마다 수가 하나씩 줄어드니 여섯 칸이면 다섯 줄 만에 끝납니다. 마지막 두 자리를 이어 읽으면 궁합 %입니다.</li>
+</ul>
+<p>자주 하는 실수는 세 가지입니다. 이웃하지 않은 수를 더하는 것(첫 수와 셋째 수를 더하면 안 됩니다), 10이 넘었을 때 두 자리를 그대로 적는 것, 그리고 마지막 줄에서 두 수를 한 번 더 더해 한 자리로 만들어 버리는 것입니다. 두 자리가 남으면 거기서 멈춰야 합니다. 한 자리로 줄이면 0~9 사이의 다른 놀이가 됩니다. 손으로 그린 결과와 화면이 다르면 열에 아홉은 이 셋 중 하나이고, 나머지 하나는 획수 표 차이입니다.</p>
+<p>이름이 넷·다섯 글자로 길어지면 첫 줄이 열 칸까지 늘어나고 줄 수도 아홉 줄까지 늘어납니다. 종이가 좁으면 세로로 쓰세요. 규칙은 같습니다. 참고로 첫 줄에 수가 n개면 마지막 두 자리에는 첫 줄의 모든 수가 이항계수 배로 섞여 들어갑니다 — 파스칼의 삼각형과 같은 구조라서, 가운데 글자의 획수가 양 끝 글자보다 결과에 훨씬 크게 작용합니다. 성보다 이름 가운데 글자를 바꿨을 때 결과가 더 요동치는 이유입니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>같은 이름끼리 하면?</h2></summary><div class="fx">
+<p>동명이인과의 궁합, 혹은 자기 자신과의 궁합이 궁금해서 같은 이름을 두 칸에 넣어 보는 분이 꼭 있습니다. 결과는 “항상 높다”도 “항상 낮다”도 아닙니다. 같은 이름을 번갈아 놓으면 첫 줄이 a·a·b·b·c·c 꼴로 같은 수가 두 개씩 나란히 서는데, 여기서부터는 이름에 따라 제각각입니다.</p>
+<p>예를 들어 <strong>김민수 × 김민수</strong>는 7·7·7·7·4·4 → 4·4·4·1·8 → 8·8·5·9 → 6·3·4 → <strong>9·7</strong>, 즉 97%로 ‘천생연분’이 나옵니다. 반면 <strong>이하늘 × 이하늘</strong>은 2·2·5·5·8·8 → 4·7·0·3·6 → 1·7·3·9 → 8·0·2 → <strong>8·2</strong>, 82%로 ‘환상의 콤비’입니다. 둘 다 높긴 하지만 규칙상 낮게 나오는 이름도 얼마든지 있습니다. 자기 이름과의 궁합이 낮게 나왔다면 ‘자기 자신과 밀당하는 사람’으로 읽으면 됩니다. 실제로 그런 사람이 있으니까요.</p>
+<p>같은 이름이라도 순서를 바꿀 수 없으니(바꿔도 같으니) 이 경우만큼은 결과가 하나로 고정됩니다. 결과 화면의 ‘순서를 바꾸면’ 칸에도 같은 숫자가 뜹니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>12유형 소개 — 꽝이 없는 궁합표</h2></summary><div class="fx">
+<p>궁합 %를 12개 구간으로 나눠 유형 이름을 붙였습니다. 구간은 위쪽이 촘촘하고 아래쪽이 널널한데, 90% 이상은 전체의 10%밖에 안 나오기 때문에 그 안에서 세분해야 재미가 있기 때문입니다. 이 표에서 <strong>‘나쁜’ 유형은 없습니다.</strong> 낮은 숫자는 흔한 만큼 편안한 조합이고, 가장 낮은 구간은 오히려 이 테스트에서 가장 웃긴 결과입니다.</p>
+<ul class="tl">
+<li><b>💞 천생연분 (96~100%)</b> — 하늘이 미리 짝지어 둔 두 이름. 100쌍 중 4~5쌍만 나오는 꼭대기 구간입니다.</li>
+<li><b>💘 운명의 짝 (90~95%)</b> — 이름이 먼저 알아본 인연. 자랑해도 아무도 뭐라 못 하는 숫자.</li>
+<li><b>🍡 찰떡궁합 (85~89%)</b> — 붙여 놓으면 안 떨어지는 사이. 말 그대로 찰떡.</li>
+<li><b>🤝 환상의 콤비 (80~84%)</b> — 둘이면 못 할 게 없는 조합. 일이든 놀이든 팀으로 강한 쪽.</li>
+<li><b>✨ 단짝 케미 (70~79%)</b> — 말 안 해도 통하는 눈빛. 상위 30% 언저리의 안정적인 좋은 궁합.</li>
+<li><b>🌸 알콩달콩 (60~69%)</b> — 소소하게 매일 좋은 사이. 폭죽보다는 온돌 같은 궁합.</li>
+<li><b>⚖️ 밀당 중 (50~59%)</b> — 반반, 그래서 매일 궁금한. 획수가 결정을 사람에게 넘긴 구간.</li>
+<li><b>🐥 티격태격 베프 (40~49%)</b> — 싸우면서 정드는 사이. 위 예시의 이하늘 × 김서준이 여기.</li>
+<li><b>🧲 극과 극 매력 (30~39%)</b> — 달라서 자꾸 끌리는. 취향은 갈리고 대화는 안 끊기는 조합.</li>
+<li><b>🌶️ 츤데레 (20~29%)</b> — 겉으로는 아닌 척, 속은 진심. 숫자가 낮은 건 부끄러워서라는 설.</li>
+<li><b>🌱 성장형 인연 (10~19%)</b> — 지금부터 쌓아 가는 궁합. 시작점이 낮으면 올라갈 일만 남습니다.</li>
+<li><b>⚔️ 전생의 원수 (0~9%)</b> — 그래서 더 재밌는 사이. 전생에 원수였다면 이번 생에 다시 만난 이유가 있을 것입니다. 이 결과를 받은 두 사람은 대개 서로 캡처를 보내며 웃습니다.</li>
+</ul>
+<p>피라미드의 마지막 두 자리는 각각 0~9 사이의 값이므로 궁합 %는 0%부터 99%까지 나올 수 있고, 100%는 이 규칙으로는 나오지 않습니다. 천생연분 구간을 96~100으로 적은 것은 관례를 따른 것이고 실제 최대값은 99%입니다. 99%가 나왔다면 그것이 이 테스트의 만점입니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>‘전체 상위 N%’는 어디서 나온 숫자인가</h2></summary><div class="fx">
+<p>결과 화면의 ‘이름 궁합 전체 상위 N%’는 이 테스트를 해본 다른 사람들과 비교한 값이 아닙니다. 이름을 어디로도 보내지 않으니 그럴 방법이 없습니다. 대신 페이지 안에 미리 계산해 둔 백분위 표가 들어 있습니다.</p>
+<p>표는 이렇게 만들었습니다. 존재하는 모든 이름 쌍을 전부 돌려 보는 것은 불가능하므로(성 60여 개 × 이름 음절 117개 × 117개의 조합만 해도 80만 개, 그 쌍은 수천억 개), 대신 <strong>흔한 한국 이름 음절로 무작위 이름을 만들어 1만 쌍을 시뮬레이션</strong>했습니다. 성은 통계상 빈도가 높은 60개(김·이·박·최·정·강·조·윤·장·임…)를 인구 비율에 가깝게 가중치를 두어 뽑고, 이름은 자주 쓰이는 음절 117개(민·서·지·현·준·우·하·은·수·영·진·연·정·아·윤·도·시·재·승·유·예·채·소·다·나·원·호·태·성·건·주·혁·규·빈·린·율·온·해·결·훈·경·석·철·미·희·숙·자·옥·순·혜·선·화·상·용·동·명·기·종·대·만·근·식·학·광·창·병·남·열·환·한·별·솔·찬·이·가·라·람·리·늘·봄·비·슬·범·겸·담·언·륜·후·강·욱·모·보·세·안·일·형·천·향·금·복·녀·효·운·평·필·웅·백·묵·탁·봉·묘·양·인·완·제·련·설)에 빈도 가중치를 두어 두 음절(90%) 또는 한 음절(10%)을 붙였습니다. 이렇게 만든 이름 두 개를 한 쌍으로 하여 1만 쌍의 궁합 %를 계산하고, 0%부터 99%까지 각각에 대해 ‘그 값 이상이 나오는 쌍이 전체의 몇 퍼밀(‰)인지’를 100칸짜리 표로 저장했습니다. 난수는 고정 시드를 써서 빌드할 때마다 같은 표가 나옵니다.</p>
+<p>결과는 예상대로 거의 고른 분포입니다. 1만 쌍의 평균은 49.1%, 90% 이상은 전체의 10.0%, 70% 이상은 29.3%, 50% 이상은 49.7%, 10% 미만은 10.7%였습니다. 일의 자리만 남기는 규칙이 원래 숫자를 0~9에 고르게 흩뿌리기 때문에 궁합 %도 0~99에 고르게 퍼집니다. 그래서 ‘상위 N%’는 대략 (100 − 궁합%)에 가깝지만, 표는 시뮬레이션 실측값을 그대로 씁니다. 결과가 50% 아래로 내려가면 배지가 금색으로 바뀌며 ‘희귀 반전 조합 상위 N%’로 뒤집어 보여 줍니다 — 아래에서부터 센 순위입니다. 낮은 쪽 끝인 0%는 아래에서 상위 1%, 즉 100쌍 중 1쌍의 진짜 희귀 결과입니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>이 결과를 어디까지 믿어야 하나</h2></summary><div class="fx">
+<p>여기까지 읽었다면 짐작하시겠지만, 이 테스트는 <strong>재미로 보는 콘텐츠</strong>입니다. 획수 궁합은 사주·명리·성명학·작명학 어느 쪽과도 관련이 없고, 심리학적 근거도 통계적 근거도 없습니다. 이름의 획수가 두 사람의 관계에 영향을 준다는 증거는 어디에도 없으며, 이 페이지는 그런 주장을 하지 않습니다. 성명학에서 말하는 ‘한자 획수’와도 다릅니다 — 그쪽은 한자의 획수와 오행·수리를 따지지만, 이 놀이는 한글 자모의 획수를 세는 교실 규칙일 뿐입니다.</p>
+<p>그래도 이 페이지가 정확성에 신경을 쓴 부분이 있다면, <strong>계산이 규칙대로 정확하다</strong>는 것입니다. 획수 표는 페이지에 그대로 공개되어 있고, 위 예시는 손으로 따라 해도 같은 숫자가 나오며, 화면에 그려지는 피라미드는 실제 계산 과정 그대로입니다. 결과가 마음에 안 들면 순서를 바꾸거나, 성을 빼거나, 별명을 넣어도 됩니다. 규칙 안에서라면 어느 것도 반칙이 아닙니다. 다만 상대에게 “우리 97%래” 하고 보여 줄 때는 어느 순서로 했는지까지 말해 주는 것이 양심입니다.</p>
+<p>하나 덧붙이면, 이 테스트의 12유형에는 꽝이 없습니다. 0%가 나와도 ‘전생의 원수(그래서 더 재밌는)’이고, 실제로 이 결과를 받은 사람들이 가장 신나서 공유합니다. 관계는 획수가 아니라 두 사람이 정하는 것이고, 이 숫자는 오늘 대화의 첫 마디를 대신해 줄 뿐입니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>자주 묻는 것</h2></summary><div class="fx">
+<h3>영어 이름이나 한자 이름은 안 되나요</h3>
+<p>이 페이지는 한글 완성형 글자(가~힣)만 받습니다. 영어 이름은 획수 규칙이 다른 놀이(LOVE 세기)라서 섞을 수 없고, 한자 이름은 한자 획수를 세는 성명학 쪽 규칙이라 역시 다른 계산입니다. 외국 이름이라면 한글로 표기한 이름(예: 제임스, 유키)을 넣으면 됩니다. 한글로 적을 수 있는 이름이면 뭐든 계산됩니다.</p>
+<h3>외자 이름, 네 글자 이름은요</h3>
+<p>성 포함 2~5자면 모두 됩니다. 외자 이름(예: 이산, 김온)은 성 포함 두 글자로 넣으면 되고, 두 글자 성(남궁·독고·선우·황보 등)에 두 글자 이름이면 네 글자, 두 글자 성에 세 글자 이름이면 다섯 글자까지 들어갑니다. 두 이름의 글자 수가 달라도 됩니다. 번갈아 놓다가 짧은 쪽이 먼저 끝나면 긴 쪽의 남은 글자가 순서대로 뒤에 붙습니다. 예를 들어 이산(2·2) × 김서준(7·4·7)은 2·7·2·4·7 다섯 개로 시작합니다. 글자 수가 많을수록 피라미드가 높아지고 계산 줄이 늘어납니다.</p>
+<h3>성을 빼고 이름만 넣어도 되나요</h3>
+<p>됩니다. 두 글자 이상이면 계산됩니다. 다만 성을 넣었을 때와는 첫 줄이 달라지니 완전히 다른 결과가 나옵니다. 교실에서는 대개 성 포함 세 글자로 했고, 이 페이지의 예시도 그 기준입니다. 어느 쪽이 정답이라고 정해진 것은 없습니다.</p>
+<h3>결과가 낮게 나왔어요</h3>
+<p>먼저 순서를 바꿔서 다시 해 보세요. 결과 화면의 ‘순서를 바꾸면’ 칸에 미리 계산해 두었습니다. 그래도 낮으면 축하드립니다. 낮은 궁합 구간은 이 테스트에서 가장 많이 공유되는 결과이고, 12유형 어디에도 ‘안 맞는 사이’라는 이름은 없습니다. ‘전생의 원수’가 나왔다면 이번 생에 다시 만난 이유를 두 사람이 직접 찾으면 됩니다. 획수는 관계를 결정하지 않고, 두 사람의 오늘 대화 주제를 하나 만들어 줄 뿐입니다.</p>
+<h3>관계를 고르면 숫자가 바뀌나요</h3>
+<p>바뀌지 않습니다. 관계(친구·썸·연인·부부·가족·동료)는 결과 화면의 풀이 문장 한 줄과 호칭을 바꿀 뿐이고, 궁합 %와 유형은 오직 두 이름에서만 계산됩니다. 같은 두 이름을 넣고 관계만 바꿔 보면 숫자가 그대로인 것을 확인할 수 있습니다.</p>
+<h3>공유 링크에 이름이 담기나요</h3>
+<p>아니오. 공유 링크에 담기는 값은 유형 번호와 궁합 %, 그리고 선택한 관계 번호를 하나의 짧은 숫자로 묶은 것뿐입니다. 두 사람의 이름은 링크에 실리지 않고, 담긴 값에서 역산되지도 않습니다. 링크를 받은 사람은 ‘두 사람의 이름 궁합 N%’와 유형만 보게 되고, 피라미드는 이름이 있어야 그릴 수 있으니 링크로 들어온 화면에는 뜨지 않습니다. 반대로 ‘결과 카드 저장’ 버튼으로 만드는 이미지에는 두 이름과 피라미드가 그려집니다. 그 이미지는 당신 기기에만 저장되고, 어디에 올릴지는 당신이 정합니다.</p>
+<h3>입력한 이름은 어디로 가나요</h3>
+<p>아무 데도 가지 않습니다. 이 페이지에는 서버로 무언가를 보내는 코드가 없고, 계산은 전부 브라우저 안에서 끝납니다. 주소창에 남는 것은 결과값 하나뿐이고, ‘다시 해보기’를 누르면 그것도 지워집니다.</p>
+<h3>‘김 하늘’처럼 띄어 쓰면 어떻게 되나요</h3>
+<p>띄어쓰기는 계산 전에 자동으로 지웁니다. ‘김 하늘’과 ‘김하늘’은 같은 이름으로 처리되고, 글자 수도 띄어쓰기를 뺀 세 글자로 셉니다. 다만 한글 완성형이 아닌 문자 — 알파벳, 숫자, 자음만 따로 쓴 ‘ㅎㄴ’ 같은 것 — 가 섞여 있으면 계산하지 않고 다시 입력해 달라는 안내가 뜹니다.</p>
+<h3>친구랑 손으로 한 결과랑 달라요</h3>
+<p>거의 항상 획수 표 차이입니다. ㅇ을 2획으로 세거나, ㅋ·ㅌ·ㅍ을 다르게 세거나, 겹받침을 하나로 치는 사람이 있습니다. 이 페이지는 위 표를 한 가지로 고정했으니, 표를 맞추고 다시 계산하면 같은 숫자가 나옵니다. 그래도 다르면 덧셈 어딘가에서 10을 넘긴 자리를 잘못 적은 것입니다. 화면의 피라미드와 한 줄씩 비교해 보세요.</p>
+</div></details>
+
+<div class="basis">
+  <h2>같은 이름으로 다른 세계도 다녀오세요</h2>
+  <p>🐉 <a href="/tests/guardian/">나를 지키는 수호신수는? — 사주로 보는 수호신수 테스트</a></p>
+  <p>🔮 <a href="/tests/pastlife/">나는 전생에 누구였을까? — 사주로 보는 전생 테스트</a></p>
+  <p>🎤 <a href="/tests/idol/">내가 아이돌이 된다면? — 사주로 보는 포지션·데뷔 순위 테스트</a></p>
+  <p>🪶 <a href="/tests/joseon/">내가 조선시대에 태어났다면? — 사주로 보는 조선시대 직업 테스트</a></p>
+  <p>🧟 <a href="/tests/zombie/">좀비사태가 터지면 나의 역할은? — 사주로 보는 생존률 테스트</a></p>
+  <p>🌙 <a href="/tests/isekai/">난 이세계에서 얼마나 인기 있을까? — 사주로 보는 이세계 인기도 테스트</a></p>
+  <p>🤖 <a href="/tests/robot/">만약 당신이 AI 로봇이 된다면? — 사주로 보는 로봇 유형 테스트</a></p>
+  <p>이름 궁합은 획수 놀이, 나머지는 생년월일 사주 — 계산법이 다르면 결과도 다릅니다.</p>
+</div>
+
+<footer>
+  <p>이 테스트는 재미로 보는 콘텐츠입니다. 궁합 %·유형·상위 %는 사주·성명학·심리학·통계와 무관하며 어떤 사실도 보장하지 않습니다.</p>
+  <p>까치테스트 · 모든 계산은 브라우저 안에서 이루어지며 입력한 이름은 어디로도 전송되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">까치툴</a> · <a href="/tools/about/">소개</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+/*CORE:S*/
+/* ── 한글 획수 궁합 코어 ───────────────────────────────────────────
+   U+AC00~U+D7A3 완성형을 초성·중성·종성으로 분해해 자모 획수를 더한다.
+   표는 페이지 본문의 규칙 표와 동일(정자체 기준, 겹받침 = 합). */
+var CHO=[2,4,2,3,6,5,4,4,8,2,4,1,3,6,4,3,4,4,3];               /* ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ */
+var JUNG=[2,3,3,4,2,3,3,4,2,4,5,3,3,2,4,5,3,3,1,2,1];          /* ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ */
+var JONG=[0,2,4,4,2,5,5,3,5,7,9,9,7,9,9,8,4,4,6,2,4,1,3,4,3,4,4,3]; /* 없음ㄱㄲㄳㄴㄵㄶㄷㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅄㅅㅆㅇㅈㅊㅋㅌㅍㅎ */
+function strokeOf(ch){
+  var c=ch.charCodeAt(0)-0xAC00;
+  if(c<0||c>11171) return null;
+  var jo=c%28, ju=Math.floor(c/28)%21, ch0=Math.floor(c/588);
+  return CHO[ch0]+JUNG[ju]+JONG[jo];
+}
+/* 이름 → 글자별 획수 배열. 한글 완성형이 아닌 글자가 섞이면 null */
+function strokes(s){
+  var a=[]; for(var i=0;i<s.length;i++){ var v=strokeOf(s.charAt(i)); if(v===null) return null; a.push(v); }
+  return a;
+}
+/* 두 배열을 a[0],b[0],a[1],b[1]… 로 번갈아 섞는다. 길이가 다르면 긴 쪽 나머지를 순서대로 뒤에 붙인다 */
+function interleave(a,b){
+  var r=[],n=Math.max(a.length,b.length);
+  for(var i=0;i<n;i++){ if(i<a.length) r.push(a[i]); if(i<b.length) r.push(b[i]); }
+  return r;
+}
+/* 피라미드: 이웃한 두 수의 합 mod 10 으로 줄여 가며 2개가 남을 때까지. 모든 줄을 반환 */
+function pyramid(row){
+  var rows=[row.slice()];
+  while(rows[rows.length-1].length>2){
+    var p=rows[rows.length-1],q=[];
+    for(var i=0;i<p.length-1;i++) q.push((p[i]+p[i+1])%10);
+    rows.push(q);
+  }
+  return rows;
+}
+var NAME_RE=/^[가-힣]{2,5}$/;
+function validName(s){ return NAME_RE.test(s); }
+/* 이름 두 개 → {rows, pct}. 유효하지 않으면 null */
+function matchOf(a,b){
+  var sa=strokes(a), sb=strokes(b);
+  if(!sa||!sb||sa.length<1||sb.length<1) return null;
+  var rows=pyramid(interleave(sa,sb));
+  var last=rows[rows.length-1];
+  return {sa:sa, sb:sb, rows:rows, pct:last.length>=2?last[0]*10+last[1]:last[0]};
+}
+function pctOf(a,b){ var m=matchOf(a,b); return m?m.pct:null; }
+
+/* 12유형 구간 — 위쪽을 촘촘하게 */
+var TYPES=[
+ {img:1, lo:96, hi:100, emo:"💞", nm:"천생연분", ct:"하늘이 미리 짝지어 둔 두 이름",
+  g:["#7a2a4a","#2a0a18"],
+  desc:"100쌍 중 4~5쌍만 올라오는 꼭대기 구간입니다. 두 이름의 획수를 번갈아 늘어놓고 더해 내려갔더니 맨 아래에 남은 것이 96 이상 — 교실에서 이 숫자가 나오면 책상이 뒤집어지고, 어른이 되어 나오면 조용히 캡처를 하게 됩니다. 획수가 이렇게까지 맞아떨어지는 것은 정말로 드문 일이라, 이 결과는 두 사람이 어떤 사이든 한 번쯤 자랑해도 되는 숫자입니다. 이름이 먼저 서로를 알아봤다면, 나머지는 사람이 천천히 확인하면 됩니다.",
+  spec:"어떤 순서로 소개해도 첫인상이 좋게 남는 조합 — 이름 두 개를 같이 부르면 이상하게 잘 어울립니다."},
+ {img:2, lo:90, hi:95, emo:"💘", nm:"운명의 짝", ct:"이름이 먼저 알아본 인연",
+  g:["#7a2a3a","#2a0a12"],
+  desc:"90%대 — 전체 이름 조합의 상위 10%에만 허락되는 구간입니다. 천생연분에 한 끗 못 미친 것이 아쉬울 수도 있지만, 이 구간의 진짜 장점은 ‘운명’이라는 단어를 써도 아무도 토를 못 단다는 것입니다. 획수가 이 정도로 맞으면 교실 규칙상 ‘순서 바꿔서 다시 해’라는 말이 안 나옵니다. 어느 쪽이 앞에 서든 이미 충분히 높고, 두 사람이 이 화면을 나란히 보고 있다면 그것으로 이 숫자의 쓸모는 다한 것입니다.",
+  spec:"결정적인 순간에 같은 선택을 하는 조합 — 메뉴 고를 때 동시에 같은 걸 가리키는 사이입니다."},
+ {img:3, lo:85, hi:89, emo:"🍡", nm:"찰떡궁합", ct:"붙여 놓으면 안 떨어지는 사이",
+  g:["#7a3a2a","#2a120a"],
+  desc:"‘찰떡’이라는 말이 딱 맞는 80% 후반입니다. 폭죽처럼 요란한 90%대와 달리 이 구간은 조용히 오래 붙어 있는 쪽입니다. 획수 피라미드에서 이 숫자가 나오려면 첫 줄부터 마지막 줄까지 꾸준히 큰 수가 이어져야 하는데, 그 ‘꾸준함’이 이 유형의 성격입니다. 같이 있으면 편하고, 떨어져 있으면 뭔가 허전하고, 다시 만나면 어제 하던 이야기를 이어서 하는 사이 — 그런 두 사람의 이름이 대개 여기서 나옵니다.",
+  spec:"같이 있을 때 시간이 빨리 가는 조합 — ‘벌써 이 시간이야?’를 가장 자주 말하는 사이입니다."},
+ {img:4, lo:80, hi:84, emo:"🤝", nm:"환상의 콤비", ct:"둘이면 못 할 게 없는 조합",
+  g:["#6a4a2a","#22160a"],
+  desc:"80% 초반 — 연애 궁합이라기보다 ‘팀 궁합’으로 읽으면 가장 잘 맞는 구간입니다. 한 사람이 벌이고 한 사람이 수습하거나, 한 사람이 지도를 보고 한 사람이 운전하는, 역할이 자연스럽게 갈리는 두 이름입니다. 획수도 그렇습니다. 첫 줄에서 큰 수와 작은 수가 번갈아 서 있다가 아래로 내려가며 서로를 채워 80대에 안착하는 모양이 이 유형에서 자주 보입니다. 같이 여행 계획을 짜 보면 이 숫자가 왜 나왔는지 알게 됩니다.",
+  spec:"둘이 하면 일이 반으로 줄어드는 조합 — 조별 과제에서 같은 조가 되면 나머지 조원이 편해집니다."},
+ {img:5, lo:70, hi:79, emo:"✨", nm:"단짝 케미", ct:"말 안 해도 통하는 눈빛",
+  g:["#5a3a5a","#1c101c"],
+  desc:"70%대 — 전체 상위 30% 언저리의 안정적인 좋은 궁합입니다. 이 구간의 두 사람은 대개 ‘설명이 필요 없는’ 사이입니다. 눈빛 한 번으로 ‘그거 하자’가 통하고, 카톡 한 줄로 약속이 잡히고, 같이 있을 때 굳이 말을 안 해도 어색하지 않습니다. 획수 피라미드로 보면 중간 줄에서 흔들리다가도 마지막 두 자리가 7로 시작하며 안정을 찾는 모양이 많습니다. 화려하지 않아서 오히려 오래가는, 단짝의 숫자입니다.",
+  spec:"침묵이 어색하지 않은 조합 — 같은 공간에서 각자 딴짓을 해도 ‘같이 논 것’으로 치는 사이입니다."},
+ {img:6, lo:60, hi:69, emo:"🌸", nm:"알콩달콩", ct:"소소하게 매일 좋은 사이",
+  g:["#6a3a4a","#22101a"],
+  desc:"60%대 — 절반보다 확실히 높고, 그렇다고 요란하지는 않은 구간입니다. 이 유형의 두 사람은 큰 사건보다 작은 일상에서 잘 맞습니다. 같은 간식을 좋아하고, 비슷한 시간에 졸리고, 사소한 걸로 웃습니다. 피라미드에서 이 숫자는 첫 줄이 어떻든 중간에서 부드럽게 정리되어 60대에 내려앉는 경우가 많습니다. 위 계산 예시의 김서준 × 이하늘(64%)이 바로 이 구간입니다. 온돌처럼 은근하고 오래 따뜻한 궁합입니다.",
+  spec:"작은 일에 같이 웃는 조합 — 남들은 이해 못 하는 둘만의 개그 코드가 반드시 있습니다."},
+ {img:7, lo:50, hi:59, emo:"⚖️", nm:"밀당 중", ct:"반반, 그래서 매일 궁금한",
+  g:["#4a4a5a","#14141c"],
+  desc:"정확히 반반 — 획수가 ‘알아서들 하라’며 결정을 사람에게 넘긴 구간입니다. 이 유형은 결과가 나쁜 게 아니라 아직 안 정해진 것입니다. 오늘은 잘 맞고 내일은 티격태격하고, 그래서 매일 상대가 궁금해지는 사이. 교실에서는 이 숫자가 나오면 꼭 ‘순서 바꿔서 다시!’가 나왔고, 실제로 순서를 바꾸면 이 구간은 위아래로 가장 크게 흔들립니다. 결과 화면 아래 ‘순서를 바꾸면’ 칸을 확인해 보세요. 두 숫자 중 마음에 드는 쪽이 오늘의 정답입니다.",
+  spec:"예측이 안 돼서 지루할 틈이 없는 조합 — ‘쟤 오늘 무슨 생각 하지?’가 하루 한 번은 나옵니다."},
+ {img:8, lo:40, hi:49, emo:"🐥", nm:"티격태격 베프", ct:"싸우면서 정드는 사이",
+  g:["#5a4a2a","#1c160a"],
+  desc:"40%대 — 위 계산 예시의 이하늘 × 김서준(40%)이 바로 여기입니다. 이 유형의 두 사람은 만나면 일단 한마디씩 주고받습니다. 놀리고, 반박하고, ‘야 그건 아니지’를 하루에 세 번쯤 하고, 그러고 나서 같이 밥을 먹습니다. 획수가 반보다 조금 아래로 나온 것을 ‘안 맞는다’로 읽으면 이 유형을 완전히 잘못 읽은 것입니다. 티격태격은 편해서 나오는 것이고, 편한 사이만이 이렇게 싸울 수 있습니다. 오래된 친구 이름을 넣으면 이상하게 이 구간이 자주 나옵니다.",
+  spec:"싸워도 다음 날 아무 일 없던 것처럼 만나는 조합 — 사과 없이 화해가 되는 드문 사이입니다."},
+ {img:9, lo:30, hi:39, emo:"🧲", nm:"극과 극 매력", ct:"달라서 자꾸 끌리는",
+  g:["#3a4a6a","#0e1420"],
+  desc:"30%대 — 획수가 서로 다른 방향을 가리키는데, 그래서 재미있는 구간입니다. 취향이 갈리고, 속도가 다르고, 한쪽이 계획할 때 한쪽은 즉흥인 두 사람. 자석은 같은 극끼리 밀어내고 다른 극끼리 붙습니다. 이 유형의 이름 궁합이 낮게 나오는 이유는 피라미드 첫 줄에서 큰 수와 작은 수가 크게 엇갈리기 때문인데, 그 엇갈림이 대화를 끊기지 않게 하는 힘이기도 합니다. 같은 영화를 보고 정반대 감상을 말하며 두 시간 떠드는 사이라면 이 숫자가 딱 맞습니다.",
+  spec:"서로에게 없는 것을 하나씩 갖고 있는 조합 — 둘을 합치면 세상에 못 가 볼 식당이 없습니다."},
+ {img:10, lo:20, hi:29, emo:"🌶️", nm:"츤데레", ct:"겉으로는 아닌 척, 속은 진심",
+  g:["#6a2a2a","#200a0a"],
+  desc:"20%대 — 숫자가 낮은 것은 부끄러워서라는 설이 유력한 구간입니다. 이 유형의 두 사람은 대놓고 잘 맞는다고 말하지 않습니다. ‘별로야’라고 하면서 챙기고, ‘안 가’라고 하면서 먼저 와 있고, 이 결과를 보고도 ‘거 봐, 안 맞잖아’라고 하면서 캡처는 해 둡니다. 획수는 겉모습만 셉니다. 자음 모음 획수가 어떻게 배열되었든, 진짜 궁합은 그 이름을 어떤 목소리로 부르느냐에 달려 있습니다. 이 숫자를 상대에게 보여 주고 반응을 관찰해 보세요. 반응이 크면 클수록 이 유형이 맞습니다.",
+  spec:"말과 행동이 반대인 조합 — ‘관심 없어’의 뜻이 ‘관심 많아’로 번역되는 사이입니다."},
+ {img:11, lo:10, hi:19, emo:"🌱", nm:"성장형 인연", ct:"지금부터 쌓아 가는 궁합",
+  g:["#2a5a3a","#0a1c10"],
+  desc:"10%대 — 시작점이 낮으면 올라갈 일만 남습니다. 이 유형은 이름이 미리 정해 준 게 거의 없다는 뜻이고, 그것은 곧 두 사람이 직접 만들어야 한다는 뜻입니다. 획수 놀이는 첫 만남의 운을 점치는 것이지 관계의 끝을 말하는 게 아닙니다. 실제로 오래된 부부 이름을 넣어 보면 이 구간이 심심찮게 나오고, 그분들은 대개 이 숫자를 보고 크게 웃습니다. 숫자가 낮을수록 나중에 ‘우리 이름 궁합 12%였는데’ 하고 말할 때의 효과가 커집니다. 지금부터 쌓으면 됩니다.",
+  spec:"시간이 지날수록 좋아지는 조합 — 첫인상보다 열 번째 만남이 훨씬 나은 사이입니다."},
+ {img:12, lo:0, hi:9, emo:"⚔️", nm:"전생의 원수", ct:"그래서 더 재밌는 사이",
+  g:["#5a1a2a","#1c060c"],
+  desc:"0~9% — 축하합니다, 이 테스트에서 가장 많이 공유되는 결과입니다. 전생에 원수였다면 이번 생에 다시 만난 데는 이유가 있을 것이고, 그 이유를 찾는 것이 두 사람의 숙제입니다. 획수 피라미드가 여기까지 내려오려면 마지막 줄 첫 자리가 0이어야 하는데, 100쌍 중 10쌍 정도가 이 구간에 들어옵니다. 낮은 숫자를 보고 같이 웃을 수 있는 사이면 이미 궁합은 통과한 것입니다. 이 결과를 받은 두 사람은 대개 서로에게 캡처를 보내고, 순서를 바꿔 다시 해 보고, 그래도 낮으면 그것을 프로필에 올립니다. 그래서 더 재밌는 사이 — 유형 이름에 괄호가 붙은 이유입니다.",
+  spec:"어떤 결과가 나와도 같이 웃을 수 있는 조합 — 이 화면을 보여 주는 것 자체가 이미 놀이입니다."}
+];
+function typeOf(pct){
+  for(var i=0;i<TYPES.length;i++){ if(pct>=TYPES[i].lo&&pct<=TYPES[i].hi) return TYPES[i]; }
+  return TYPES[TYPES.length-1];
+}
+function typeIdx(pct){ return typeOf(pct).img; }
+
+/* 상위 % 테이블: 흔한 이름 음절로 만든 무작위 이름 1만 쌍(고정 시드)의 궁합 % 분포에서
+   궁합 p(0~99) 이상인 비율(퍼밀, ‰). 빌드 시 node 로 실계산하여 고정. */
+var TOPP=[1000,990,979,968,955,944,934,925,914,903,893,882,870,860,850,841,830,819,809,800,792,780,770,761,753,744,732,722,714,707,696,684,677,668,658,648,638,629,622,611,600,591,580,569,560,550,539,531,520,507,497,488,475,465,456,447,439,429,418,408,399,387,377,367,357,347,337,324,313,304,293,282,272,262,253,244,231,222,214,205,195,185,175,166,156,145,136,128,119,110,100,91,83,73,63,54,45,34,22,9];
+function clampPct(p){ return p<1?1:(p>100?100:p); }
+function topPct(pct){ return clampPct(Math.round(TOPP[pct]/10)); }
+/* 아래에서부터 센 순위: 궁합 pct 이하인 비율 */
+function botPct(pct){ return clampPct(Math.round((1000-(pct<99?TOPP[pct+1]:0))/10)); }
+
+/* 관계 — 숫자에는 관여하지 않고 문장만 바꾼다 */
+var RELS=[
+ {id:0, nm:"", who:"두 사람"},
+ {id:1, nm:"친구", who:"두 친구"},
+ {id:2, nm:"썸", who:"썸 타는 두 사람"},
+ {id:3, nm:"연인", who:"두 연인"},
+ {id:4, nm:"부부", who:"이 부부"},
+ {id:5, nm:"가족", who:"이 가족"},
+ {id:6, nm:"동료", who:"두 동료"}
+];
+/* RELTX[관계][구간] — 구간 0: 70% 이상, 1: 40~69%, 2: 39% 이하 */
+var RELTX=[
+ ["이름 궁합이 이 정도면 첫 만남에서 이미 반은 통한 겁니다. 나머지 반은 오늘 저녁 메뉴를 같이 정하면서 채우세요.",
+  "딱 반반. 획수가 ‘알아서들 하라’고 넘겨 준 케이스입니다. 이런 궁합은 대개 먼저 연락하는 쪽이 이깁니다.",
+  "숫자는 낮은데 이상하게 안 떨어지는 조합이 꼭 이 구간에서 나옵니다. 궁합표에 ‘반전 매력’이라는 칸이 있다면 여기입니다."],
+ ["이 정도면 20년 뒤에도 단톡방 이름이 안 바뀌는 친구입니다. 결혼식 사회는 서로 봐 주기로 미리 정해 두세요.",
+  "반반 궁합의 친구는 대체로 ‘싸우고 나면 더 친해지는’ 쪽입니다. 다음 여행 계획은 이 친구랑 짜세요.",
+  "친구 사이에서 낮은 궁합은 ‘놀릴 거리 하나 추가’일 뿐입니다. 이 결과를 캡처해서 보내면 대화가 30분은 갑니다."],
+ ["썸 단계에서 이 숫자면 이름이 먼저 고백한 겁니다. 이 화면을 보여 주는 것 자체가 괜찮은 핑계가 됩니다.",
+  "밀당 중인 두 이름. 획수도 결정을 못 내렸으니 결정은 사람이 해야 합니다. 먼저 연락하는 쪽이 이깁니다.",
+  "낮게 나왔다고 접지 마세요. ‘우리 이름 궁합 이렇게 나왔는데 어떡하지?’는 역대급 대화 시작 멘트입니다. 원래 썸은 핑계로 굴러갑니다."],
+ ["연인 사이에 이 숫자는 자랑용입니다. 상대 이름을 앞에 두고 한 번 더 돌려 보고, 높은 쪽을 프로필에 올리세요.",
+  "반반 궁합의 커플은 대개 ‘취향은 다른데 리듬이 맞는’ 쪽입니다. 메뉴 정할 때 가위바위보가 필요한 게 그 증거입니다.",
+  "낮은 이름 궁합은 커플에게 오히려 좋은 소재입니다. ‘획수 따위가 우릴 뭘 알아’라는 말을 할 기회가 생겼으니까요."],
+ ["부부 이름 궁합이 이 정도면 결혼 전에 이 테스트가 없었던 게 다행입니다. 있었으면 너무 쉽게 결정했을 테니까요.",
+  "반반 궁합의 부부는 이미 획수와 상관없이 살아 낸 사람들입니다. 이 숫자는 그냥 저녁 식탁 이야깃거리로 쓰세요.",
+  "낮은 숫자를 보고 같이 웃을 수 있는 사이면 이미 궁합은 통과한 겁니다. 이 결과는 냉장고에 붙여 두면 손님들이 좋아합니다."],
+ ["가족끼리 이 숫자면 명절 식탁이 시끄러울 이유가 없습니다. 있다면 그건 궁합이 아니라 리모컨 문제입니다.",
+  "반반 궁합의 가족은 표준입니다. 티격태격하면서도 결국 같은 편 — 획수가 딱 그렇게 말하고 있습니다.",
+  "가족 이름 궁합이 낮게 나오는 건 흔한 일이고, 원래 가족은 궁합으로 묶인 게 아니라 냉장고로 묶인 사이입니다. 웃고 넘기세요."],
+ ["동료 궁합이 이 정도면 프로젝트 하나는 같이 해 봐야 합니다. 회의 시간이 절반으로 줄 겁니다.",
+  "반반 궁합의 동료는 ‘서로 다른 걸 잘하는’ 조합일 때 가장 강합니다. 역할을 나누면 숫자보다 잘 굴러갑니다.",
+  "낮은 궁합의 동료는 점심 메뉴 취향이 갈리는 정도입니다. 대신 이 결과를 공유하면 팀 단톡방이 5분은 살아납니다."]
+];
+function relTier(pct){ return pct>=70?0:(pct>=40?1:2); }
+
+/* ── 결과값(V) — 이름을 담지 않는 공유용 표시값 묶음 ─────────────
+   ti  1~12 = TYPES img / pct 0~99 / rel 0~6 (관계, 0 = 선택 안 함) */
+var V_TI=12, V_PCT=100, V_REL=7;
+var V_MAX=V_TI*V_PCT*V_REL-1;               /* 8,399 → base36 최대 3자 */
+function encodeV(V){
+  var n=V.ti-1;
+  n=n*V_PCT+V.pct;
+  n=n*V_REL+(V.rel||0);
+  return n.toString(36);
+}
+function decodeV(str){
+  if(typeof str!=='string') return null;
+  str=str.toLowerCase();
+  if(!/^[0-9a-z]{1,3}$/.test(str)) return null;
+  var v=parseInt(str,36);
+  if(!isFinite(v)||v<0||v>V_MAX||Math.floor(v)!==v) return null;
+  var rel=v%V_REL; v=(v-rel)/V_REL;
+  var pct=v%V_PCT; v=(v-pct)/V_PCT;
+  var ti=v+1;
+  if(ti<1||ti>V_TI) return null;
+  if(pct<0||pct>99) return null;
+  if(rel<0||rel>6) return null;
+  if(typeIdx(pct)!==ti) return null;       /* 유형과 %가 어긋난 조작값 거부 */
+  return {ti:ti, pct:pct, rel:rel};
+}
+function resultOf(a,b,rel){
+  var m=matchOf(a,b); if(!m) return null;
+  return {V:{ti:typeIdx(m.pct), pct:m.pct, rel:rel||0}, m:m};
+}
+function hash32(s){var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+function petalSeed(V){ return hash32('petal:'+V.ti+'-'+V.pct+'-'+V.rel); }
+/*CORE:E*/
+
+/* ── UI ── */
+(function(){
+var $=function(id){return document.getElementById(id);};
+var cur=null;
+
+function clearInputs(){
+  $('nameA').value=''; $('nameB').value=''; $('rel').value='';
+  $('needPick').style.display='none';
+}
+
+var animId=null;
+function countUp(el,target){
+  if(animId)cancelAnimationFrame(animId);
+  var t0=null,DUR=1200;
+  function step(ts){
+    if(!t0)t0=ts;
+    var p=Math.min(1,(ts-t0)/DUR);
+    var e=1-Math.pow(1-p,3);
+    el.textContent=Math.round(target*e);
+    if(p<1)animId=requestAnimationFrame(step); else animId=null;
+  }
+  if(target===0){ el.textContent='0'; return; }
+  animId=requestAnimationFrame(step);
+}
+
+function tierOf(pct){
+  if(pct>=90) return '💞 이름부터 운명인 조합';
+  if(pct>=70) return '✨ 잘 맞는 조합';
+  if(pct>=40) return '⚖️ 반반의 묘미가 있는 조합';
+  return '🔥 반전 매력 조합';
+}
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+
+/* 피라미드 DOM — 이름이 있을 때만 그린다 */
+function renderPyramid(m,a,b){
+  var box=$('pyrRows'), h='';
+  var n=Math.max(m.sa.length,m.sb.length), lab=[];
+  for(var i=0;i<n;i++){ if(i<m.sa.length) lab.push({c:a.charAt(i),k:'a'}); if(i<m.sb.length) lab.push({c:b.charAt(i),k:'b'}); }
+  h+='<div class="pr nm">'; for(var j=0;j<lab.length;j++) h+='<span class="pc '+lab[j].k+'">'+esc(lab[j].c)+'</span>'; h+='</div>';
+  for(var r=0;r<m.rows.length;r++){
+    var cls='pr'+(r===0?' first':'')+(r===m.rows.length-1?' last':'');
+    h+='<div class="'+cls+'">';
+    for(var k=0;k<m.rows[r].length;k++){
+      var kc=(r===0)?(' '+lab[k].k):'';
+      h+='<span class="pc'+kc+'">'+m.rows[r][k]+'</span>';
+    }
+    h+='</div>';
+  }
+  box.innerHTML=h;
+}
+
+/* 결과 화면 렌더 — 결과값(V)만으로 그린다. names={a,b,m}는 직접 테스트 경로에서만 있다.
+   shared=true 면 공유 링크로 들어온 사람 화면(이름 없음). */
+var RETRY_OWN='👀 다른 사람이랑도 해보기';
+var RETRY_SHARED='💞 나도 이름 궁합 해보기';
+function renderResult(V,names,shared){
+  var t=TYPES[V.ti-1], rel=RELS[V.rel||0];
+  cur={V:V,type:t,names:names||null,shared:!!shared};
+  var box=$('roleImgBox');
+  box.style.setProperty('--g1',t.g[0]);
+  box.style.setProperty('--g2',t.g[1]);
+  $('fbEmo').textContent=t.emo;
+  var im=$('roleImg');
+  im.style.display='';
+  $('fbEmo').style.display='';
+  im.onload=function(){ $('fbEmo').style.display='none'; };
+  im.onerror=function(){ this.style.display='none'; $('fbEmo').style.display=''; };
+  im.src='/tests/name-match/img/role-'+String(t.img).padStart(2,'0')+'.png';
+  $('roleName').textContent=t.nm+(t.img===12?'(그래서 더 재밌는)':'');
+  $('roleCatch').textContent='“'+t.ct+'”';
+  if(names){
+    $('popCap').innerHTML='<span class="me">'+esc(names.a)+'</span> ♥ <span class="you">'+esc(names.b)+'</span>'+(rel.nm?' · '+esc(rel.nm):'')+'의 이름 궁합';
+    renderPyramid(names.m,names.a,names.b);
+    $('pyr').style.display='';
+  }else{
+    $('popCap').textContent=rel.who+'의 이름 궁합'+(rel.nm?' ('+rel.nm+')':'');
+    $('pyrRows').innerHTML='';
+    $('pyr').style.display='none';
+  }
+  countUp($('popNum'),V.pct);
+  $('tierLine').textContent=tierOf(V.pct);
+  var tp=$('topPct'), top=topPct(V.pct);
+  if(top<=50){ tp.className='topPct'; tp.textContent='🏆 이름 궁합 전체 상위 '+top+'%'; }
+  else { tp.className='topPct rare'; tp.textContent='🎲 희귀 반전 조합 상위 '+botPct(V.pct)+'%'; }
+  $('roleDesc').textContent=t.desc;
+  $('traceLine').innerHTML='<b>'+(rel.nm?esc(rel.nm)+' 관계 한마디':'획수의 한마디')+'</b> — '+esc(RELTX[V.rel||0][relTier(V.pct)]);
+  $('mateGood').textContent=t.spec;
+  if(names){
+    var rv=matchOf(names.b,names.a), rt=typeOf(rv.pct);
+    $('mateBad').innerHTML='<b>'+esc(names.b)+' × '+esc(names.a)+'</b>는 <b>'+rv.pct+'%</b> — '+rt.emo+' '+esc(rt.nm)+(rv.pct===V.pct?' (같은 숫자!)':(rv.pct>V.pct?' (이쪽이 더 높아요)':' (이쪽이 더 낮아요)'));
+  }else{
+    $('mateBad').textContent='이름을 넣어야 계산돼요. 순서를 바꾸면 숫자가 달라집니다 — 직접 해보세요.';
+  }
+  $('retryBtn').textContent=cur.shared?RETRY_SHARED:RETRY_OWN;
+  $('copied').textContent='';
+  $('res').classList.remove('hidden');
+}
+
+/* INP: 누른 즉시 버튼 상태만 바꿔 한 프레임 그려주고, 계산과 렌더는 다음 프레임으로 미룬다. */
+var GO_BUSY_TX='✏️ 피라미드 그리는 중…', GO_BUSY_MIN=280, goBusy=false;
+function setGoBusy(on){
+  var b=$('goBtn');
+  if(on){
+    b.dataset.idle=b.textContent; b.textContent=GO_BUSY_TX;
+    b.dataset.hadFocus=(document.activeElement===b)?'1':'';
+    b.disabled=true;
+  }else{
+    if(b.dataset.idle) b.textContent=b.dataset.idle;
+    b.disabled=false;
+    if(b.dataset.hadFocus){ try{ b.focus({preventScroll:true}); }catch(e){} }
+  }
+}
+function runDeferred(fn){
+  if(goBusy) return;
+  goBusy=true;
+  var t0=Date.now();
+  setGoBusy(true);
+  requestAnimationFrame(function(){ setTimeout(function(){
+    try{ fn(); }
+    finally{
+      var rest=GO_BUSY_MIN-(Date.now()-t0);
+      setTimeout(function(){ setGoBusy(false); goBusy=false; }, rest>0?rest:0);
+    }
+  },0); });
+}
+function readName(id){ return $(id).value.replace(/\s+/g,''); }
+$('goBtn').addEventListener('click',function(){
+  if(goBusy) return;
+  var a=readName('nameA'), b=readName('nameB');
+  if(!validName(a)||!validName(b)){
+    $('needPick').style.display='';
+    (validName(a)?$('nameB'):$('nameA')).focus();
+    return;
+  }
+  $('needPick').style.display='none';
+  var rel=$('rel').value===''?0:+$('rel').value;
+  runDeferred(function(){
+    var R=resultOf(a,b,rel);
+    if(!R) return;
+    renderResult(R.V,{a:a,b:b,m:R.m},false);
+    /* 주소창에는 결과값만 남긴다 — 이름은 절대 싣지 않는다 */
+    var u=new URL(location.href);
+    u.search='';
+    u.searchParams.set('v',encodeV(R.V));
+    history.replaceState(null,'',u.pathname+u.search);
+    $('res').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
+[$('nameA'),$('nameB')].forEach(function(el){
+  el.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); $('goBtn').click(); } });
+});
+$('retryBtn').addEventListener('click',function(){
+  $('res').classList.add('hidden');
+  history.replaceState(null,'',location.pathname);
+  clearInputs();
+  cur=null;
+  $('inputPanel').scrollIntoView({behavior:'smooth',block:'start'});
+  $('nameA').focus();
+});
+function shareUrl(){
+  if(!cur)return '';
+  /* 유형별 공유 스텁(/s/NN/)으로 링크 — 미리보기에 유형 이미지가 뜬다.
+     스텁이 쿼리를 그대로 본 페이지로 넘긴다. ?v= 에는 유형·%·관계만 담기고 이름은 절대 실리지 않는다. */
+  var nn=String(cur.type.img).padStart(2,'0');
+  var base=location.pathname.replace(/\/$/,'');
+  return location.origin+base+'/s/'+nn+'/?v='+encodeV(cur.V);
+}
+function shareText(){
+  if(!cur)return '';
+  var who=cur.names?(cur.names.a+' ♥ '+cur.names.b):'우리';
+  return cur.type.emo+' '+who+' 이름 궁합 '+cur.V.pct+'% — "'+cur.type.nm+'"! 너희는 몇 %야?\n'+shareUrl();
+}
+$('shareLink').addEventListener('click',function(){
+  if(!cur)return;
+  var u=shareText();
+  var done=function(){ $('copied').textContent='✅ 결과와 링크를 복사했어요. 링크에는 이름이 담기지 않아요.'; };
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(u).then(done,function(){fallbackCopy(u);done();});
+  }else{ fallbackCopy(u); done(); }
+});
+function fallbackCopy(txt){
+  var ta=document.createElement('textarea'); ta.value=txt;
+  ta.style.cssText='position:fixed;opacity:0'; document.body.appendChild(ta);
+  ta.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(ta);
+}
+
+/* ── 결과 카드 (1080×1350) — 두 이름과 피라미드는 카드에만 그린다(사용자가 직접 저장) ── */
+function loadImg(src){
+  return new Promise(function(res){
+    var im=new Image();
+    im.onload=function(){res(im);}; im.onerror=function(){res(null);};
+    im.src=src;
+  });
+}
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
+}
+var FF='-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+function makeCard(){
+  if(!cur)return Promise.resolve(null);
+  var V=cur.V,t=cur.type,names=cur.names;
+  var W=1080,H=1350;
+  var c=document.createElement('canvas'); c.width=W; c.height=H;
+  var x=c.getContext('2d');
+  return loadImg('/tests/name-match/img/role-'+String(t.img).padStart(2,'0')+'.png').then(function(im){
+    var INK='#fdf0f3', INK2='#e6c3cc', INK3='#b58a98', AC='#ff7a8a', GL='#ffc46b';
+    var bg=x.createLinearGradient(0,0,0,H);
+    bg.addColorStop(0,'#331a24'); bg.addColorStop(1,'#120a0e');
+    x.fillStyle=bg; x.fillRect(0,0,W,H);
+    /* 꽃잎 티끌 — 결과값 시드로 결정론 배치 */
+    var hs=petalSeed(V);
+    for(var i=0;i<110;i++){
+      hs=(Math.imul(hs,1664525)+1013904223)>>>0;
+      var sx=hs%W; var sy=(hs>>>11)%H; var ss=((hs>>>22)%3)*0.8+0.8;
+      x.globalAlpha=0.08+((hs>>>7)%40)/400;
+      x.fillStyle=(hs>>>5)%5===0?GL:AC;
+      x.fillRect(sx,sy,ss,ss);
+    }
+    x.globalAlpha=1;
+    x.textAlign='center';
+    x.fillStyle=INK3;
+    x.font='700 34px '+FF;
+    x.fillText('💞 NAME MATCH REPORT 💞',W/2,96);
+    /* 두 이름 */
+    var IS=250, ix=(W-IS)/2, iy=140;
+    if(names){
+      x.font='800 50px '+FF;
+      var aw=x.measureText(names.a).width, bw=x.measureText(names.b).width, hw=x.measureText(' ♥ ').width;
+      var tx0=(W-(aw+hw+bw))/2;
+      x.textAlign='left';
+      x.fillStyle=AC; x.fillText(names.a,tx0,178);
+      x.fillStyle=INK; x.fillText(' ♥ ',tx0+aw,178);
+      x.fillStyle=GL; x.fillText(names.b,tx0+aw+hw,178);
+      x.textAlign='center';
+      iy=208;
+    }
+    var gr=x.createLinearGradient(ix,iy,ix+IS,iy+IS);
+    gr.addColorStop(0,t.g[0]); gr.addColorStop(1,t.g[1]);
+    roundRect(x,ix,iy,IS,IS,40);
+    x.fillStyle=gr; x.fill();
+    if(im){
+      x.save(); roundRect(x,ix,iy,IS,IS,40); x.clip();
+      x.drawImage(im,ix,iy,IS,IS); x.restore();
+    }else{
+      x.font='140px -apple-system,"Apple Color Emoji","Noto Color Emoji",sans-serif';
+      x.textBaseline='middle';
+      x.fillText(t.emo,W/2,iy+IS/2+10);
+      x.textBaseline='alphabetic';
+    }
+    var yy=iy+IS+62;
+    x.fillStyle=INK;
+    x.font='800 56px '+FF;
+    x.fillText(t.nm+(t.img===12?'(그래서 더 재밌는)':''),W/2,yy);
+    x.fillStyle=INK2;
+    x.font='400 30px '+FF;
+    x.fillText('“'+t.ct+'”',W/2,yy+48);
+    /* 큰 % */
+    var numFont='800 176px '+FF, sufFont='800 66px '+FF;
+    x.font=numFont; var nw=x.measureText(String(V.pct)).width;
+    x.font=sufFont; var sw=x.measureText('%').width;
+    var tx=(W-(nw+6+sw))/2;
+    x.textAlign='left';
+    x.fillStyle=AC;
+    x.font=numFont; x.fillText(String(V.pct),tx,yy+228);
+    x.font=sufFont; x.fillText('%',tx+nw+6,yy+228);
+    x.textAlign='center';
+    /* 뱃지 */
+    var top=topPct(V.pct);
+    var btxt=top<=50?('🏆 이름 궁합 전체 상위 '+top+'%'):('🎲 희귀 반전 조합 상위 '+botPct(V.pct)+'%');
+    x.font='700 34px '+FF;
+    var bw2=x.measureText(btxt).width+68;
+    roundRect(x,(W-bw2)/2,yy+262,bw2,70,35);
+    x.fillStyle=top<=50?'#3d1a24':'#3a2a10'; x.fill();
+    x.fillStyle=top<=50?AC:GL;
+    x.fillText(btxt,W/2,yy+309);
+    /* 피라미드 미니 드로잉 — 줄 수에 맞춰 칸 크기를 줄인다(최대 9줄) */
+    var py=yy+378;
+    if(names){
+      var m=names.m, rows=m.rows.length;
+      var rowH=Math.min(50,Math.floor((H-124-30-py)/rows)), cell=rowH-6, gap=4;
+      var lab=[], n=Math.max(m.sa.length,m.sb.length);
+      for(var q=0;q<n;q++){ if(q<m.sa.length) lab.push({c:names.a.charAt(q),k:0}); if(q<m.sb.length) lab.push({c:names.b.charAt(q),k:1}); }
+      x.font='700 '+Math.round(cell*0.64)+'px '+FF;
+      var rw=lab.length*cell+(lab.length-1)*gap, rx=(W-rw)/2;
+      for(var q2=0;q2<lab.length;q2++){ x.fillStyle=lab[q2].k?GL:AC; x.fillText(lab[q2].c,rx+q2*(cell+gap)+cell/2,py); }
+      py+=Math.round(cell*0.4);
+      for(var r=0;r<rows;r++){
+        var row=m.rows[r], last=(r===rows-1);
+        var w2=row.length*cell+(row.length-1)*gap, x0=(W-w2)/2;
+        for(var k=0;k<row.length;k++){
+          var cx=x0+k*(cell+gap);
+          roundRect(x,cx,py,cell,cell,Math.round(cell*0.22));
+          x.fillStyle=last?AC:'#3d1a24'; x.fill();
+          if(r===0){ x.strokeStyle=lab[k].k?GL:AC; x.lineWidth=2; x.stroke(); }
+          x.fillStyle=last?'#2a0810':INK;
+          x.font='800 '+Math.round(cell*0.6)+'px '+FF;
+          x.fillText(String(row[k]),cx+cell/2,py+cell-Math.round(cell*0.3));
+        }
+        py+=rowH;
+      }
+      x.fillStyle=INK3; x.font='400 24px '+FF;
+      x.fillText('획수를 번갈아 놓고, 옆끼리 더해 일의 자리만 남기기',W/2,py+18);
+    }else{
+      x.fillStyle=INK3; x.font='400 30px '+FF;
+      x.fillText('링크에는 이름이 담기지 않아요 — 직접 넣어 보세요',W/2,py+20);
+    }
+    x.fillStyle=INK3;
+    x.font='700 36px -apple-system,BlinkMacSystemFont,sans-serif';
+    x.fillText('kmagpie.com/tests/name-match',W/2,H-48);
+    return c;
+  });
+}
+function cardBlob(){
+  return makeCard().then(function(c){
+    if(!c)return null;
+    return new Promise(function(res){ c.toBlob(res,'image/png'); });
+  });
+}
+function saveBlob(blob){
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download='name-match-result.png';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){URL.revokeObjectURL(a.href);},4000);
+  $('copied').textContent='✅ 결과 카드를 저장했어요. 상대에게 보내 보세요!';
+}
+var IS_MOBILE=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+$('shareCard').addEventListener('click',function(){
+  cardBlob().then(function(blob){
+    if(!blob)return;
+    var f=new File([blob],'name-match-result.png',{type:'image/png'});
+    if(IS_MOBILE&&navigator.share&&navigator.canShare&&navigator.canShare({files:[f]})){
+      navigator.share({files:[f],title:'이름 궁합 결과',
+        text:cur.type.emo+' 우리 이름 궁합 '+cur.V.pct+'% "'+cur.type.nm+'"! 너희는? https://www.kmagpie.com/tests/name-match/'})
+        .catch(function(err){ if(!err||err.name!=='AbortError') saveBlob(blob); });
+    }else{
+      saveBlob(blob);
+    }
+  });
+});
+
+clearInputs();
+/* 공유 링크 재현 — ?v=(결과값)만 읽는다. 입력폼은 절대 채우지 않는다(채울 이름이 없다). */
+(function(){
+  try{
+    var q=new URLSearchParams(location.search);
+    var vv=q.get('v');
+    if(vv===null) return;
+    clearInputs();
+    var V=decodeV(vv);
+    if(!V) return;
+    renderResult(V,null,true);
+  }catch(e){}
+})();
+
+/* 테스트 훅 */
+window.NAMEMATCH={CHO:CHO,JUNG:JUNG,JONG:JONG,strokeOf:strokeOf,strokes:strokes,interleave:interleave,pyramid:pyramid,
+  matchOf:matchOf,pctOf:pctOf,typeOf:typeOf,typeIdx:typeIdx,TYPES:TYPES,RELS:RELS,RELTX:RELTX,relTier:relTier,
+  TOPP:TOPP,topPct:topPct,botPct:botPct,validName:validName,
+  resultOf:resultOf,encodeV:encodeV,decodeV:decodeV,V_MAX:V_MAX,renderResult:renderResult,
+  makeCard:makeCard,cardBlob:cardBlob,shareText:shareText,shareUrl:shareUrl,tierOf:tierOf,
+  petalSeed:petalSeed,clearInputs:clearInputs,RETRY_OWN:RETRY_OWN,RETRY_SHARED:RETRY_SHARED,
+  state:function(){return cur;}};
+})();
+</script>
+</body>
+</html>

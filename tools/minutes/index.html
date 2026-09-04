@@ -152,7 +152,7 @@
   .rel-all{font-size:14.5px;font-weight:600;margin:0}
 /*REL:E*/
 /*TESTS:S*/
-  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 0;padding:13px 18px;
+  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 24px;padding:13px 18px;
     border:1px solid var(--line);border-radius:14px;background:var(--surface);
     text-decoration:none;color:inherit;transition:.14s}
   .tbn:hover{border-color:var(--accent);transform:translateY(-2px)}
@@ -338,6 +338,14 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 
 <p class="gist">회의록·업무일지 양식을 채우면 정돈된 문서로 만들어 워드(.docx)·마크다운으로 저장하거나 복사·인쇄할 수 있습니다. 입력하는 대로 자동 임시저장되고, 크로미움 브라우저에서는 파일에 연결해 두면 수정할 때마다 알아서 덮어씁니다. 작성 내용은 서버로 전송되지 않고 전부 브라우저 안에서 처리됩니다.</p>
 
+<!--TESTS:S-->
+<a class="tbn" href="/tests/">
+  <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
+  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 좀비 생존률부터 전생, 아이돌 포지션까지 — 결과는 친구와 비교해 보세요.</span></span>
+  <span class="ar">→</span>
+</a>
+<!--TESTS:E-->
+
 <details class="fold" open><summary><h2>회의록에 꼭 들어가야 하는 것</h2></summary><div class="fx">
 <p>회의록을 녹취록처럼 쓰려다 지치는 경우가 많은데, 방향이 반대입니다. 한 달 뒤에 회의록을 다시 여는 사람은 누가 무슨 말을 했는지가 아니라 <strong>그래서 뭘 하기로 했는지</strong>를 찾습니다. 그래서 회의록의 심장은 결정사항과 액션아이템 두 칸이에요. 결정사항은 "논의했다"가 아니라 "A안으로 간다"처럼 결론 문장으로 적고, 액션아이템은 할 일·담당·기한 세 가지가 다 있어야 일이 실제로 움직입니다. 담당이 비어 있는 할 일은 아무의 일도 아니게 되고, 기한이 없는 일은 다음 회의 때 그대로 다시 올라옵니다.</p>
 <p>이 도구의 회의록 양식이 안건·논의 내용·결정사항·액션아이템을 따로 받는 것도 그 때문입니다. 논의 내용은 흐름을 기억할 정도로만 간추리고, 힘은 결정과 할 일에 쓰세요. 일시·장소·참석자 같은 머리 정보는 나중에 "그 결정에 누가 있었나"를 확인할 때 의외로 중요해집니다.</p>
@@ -386,16 +394,8 @@ a.insertAdjacentElement('afterend',b)}})();</script>
   <a href="/tools/img2pdf/"><strong>이미지를 PDF로</strong><span>JPG·PNG 여러 장을 한 파일로</span></a>
   <a href="/tools/qr/"><strong>QR코드 만들기</strong><span>링크·와이파이·연락처</span></a>
 </div>
-<p class="rel-all"><a href="/tools/">까치툴 도구 39개 전체 보기 →</a></p>
+<p class="rel-all"><a href="/tools/">까치툴 도구 40개 전체 보기 →</a></p>
 <!--REL:E-->
-
-<!--TESTS:S-->
-<a class="tbn" href="/tests/">
-  <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
-  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 좀비 생존률부터 전생, 아이돌 포지션까지 — 결과는 친구와 비교해 보세요.</span></span>
-  <span class="ar">→</span>
-</a>
-<!--TESTS:E-->
 
 <footer>
   <p>까치툴 · 작성 내용은 서버로 전송·저장되지 않으며, 임시저장은 이 브라우저의 localStorage에만 남습니다.</p>

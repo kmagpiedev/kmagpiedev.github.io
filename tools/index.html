@@ -33,6 +33,20 @@
   .crumb a:hover{color:var(--accent)}
   h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
   .sub{color:var(--ink-2);margin:0 0 34px;font-size:15.5px}
+  .srch{position:relative;margin:0 0 6px}
+  .srch input{width:100%;padding:13px 44px 13px 46px;border:1px solid var(--line);border-radius:14px;
+    background:var(--surface);color:var(--ink);font:inherit;font-size:16px;outline:none;transition:.14s}
+  .srch input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .srch input::placeholder{color:var(--ink-3)}
+  .srch input::-webkit-search-cancel-button,.srch input::-webkit-search-decoration{-webkit-appearance:none;appearance:none}
+  .srch .ic{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:17px;pointer-events:none;opacity:.8}
+  .srch .clr{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;background:transparent;
+    color:var(--ink-3);font:inherit;font-size:20px;line-height:1;padding:6px 10px;cursor:pointer;border-radius:8px;display:none}
+  .srch .clr:hover{color:var(--ink);background:var(--line-soft)}
+  .srch.on .clr{display:block}
+  .srch-n{font-size:13px;color:var(--ink-3);margin:0 0 4px;min-height:20px}
+  .srch-n b{color:var(--accent);font-weight:700}
+  .hid{display:none!important}
   h2{font-size:19px;margin:44px 0 10px;letter-spacing:-.015em;font-weight:700}
   p{margin:0 0 14px}
   a{color:var(--accent)}
@@ -67,7 +81,7 @@
   .langsw a:hover{color:var(--accent);border-color:var(--accent)}
 /*LANG:E*/
 /*TESTS:S*/
-  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 0;padding:13px 18px;
+  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 24px;padding:13px 18px;
     border:1px solid var(--line);border-radius:14px;background:var(--surface);
     text-decoration:none;color:inherit;transition:.14s}
   .tbn:hover{border-color:var(--accent);transform:translateY(-2px)}
@@ -121,6 +135,13 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 <p class="langsw"><a href="/en/tools/" hreflang="en" lang="en">English version</a></p>
 <!--LANG:E-->
 
+<form class="srch" id="srch" role="search" onsubmit="return false" autocomplete="off">
+  <span class="ic" aria-hidden="true">🔍</span>
+  <input type="search" id="q" placeholder="도구 찾기 — 예: 누끼, 퇴직금, PDF, 사주, 움짤" aria-label="도구 검색" enterkeyhint="search">
+  <button type="button" class="clr" id="qclr" aria-label="검색어 지우기">×</button>
+</form>
+<p class="srch-n" id="srchn" aria-live="polite"></p>
+
 <!--CAT:S-->
 <h2 class="cat">이미지 편집</h2>
 <p class="cat-d">사진을 다루는 도구입니다. 전부 브라우저 안에서 처리되고 업로드가 없어서, 얼굴이 나온 사진이나 공개 전 자료도 안심하고 올릴 수 있습니다.</p>
@@ -129,6 +150,11 @@ a.insertAdjacentElement('afterend',b)}})();</script>
     <span class="ic">✂️</span>
     <div class="nm">배경 제거 (누끼)</div>
     <div class="ds">사진에서 인물만 남기고 배경을 지웁니다. 투명 PNG·배경색·흐림 처리 지원. 워터마크도 횟수 제한도 없습니다.</div>
+  </a>
+  <a class="tool" href="/tools/upscale/">
+    <span class="ic">🔍</span>
+    <div class="nm">사진 화질 개선 (AI 업스케일)</div>
+    <div class="ds">흐릿하거나 작은 사진을 AI로 2배·4배 키웁니다. 옛날 사진, 캡처, 저화질 이미지의 윤곽을 살려 선명하게 만들고, 전후 비교 슬라이더로 확인한 뒤 PNG·JPG로 저장합니다. 사진은 업로드되지 않습니다.</div>
   </a>
   <a class="tool" href="/tools/id-photo/">
     <span class="ic">🪪</span>
@@ -381,5 +407,33 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 </footer>
 
 </div>
+<script>
+/* 도구 검색 — 카드 이름·설명 텍스트에 대한 단순 포함 검색. 서버 요청 없음. */
+(function(){
+  var q=document.getElementById('q'), box=document.getElementById('srch'), note=document.getElementById('srchn');
+  if(!q) return;
+  var ALIAS={'누끼':'배경 제거','배경제거':'배경 제거','움짤':'GIF','gif':'GIF','jpg':'JPG','png':'PNG','히익':'HEIC','heic':'확장자 변환','용량':'용량','압축':'용량 줄이기','리사이즈':'크기 조절','사이즈':'크기','실수령':'실수령액','월급':'실수령액','세후':'실수령액','연봉':'연봉','퇴직':'퇴직금','알바':'주휴수당','최저임금':'주휴수당','연차':'연차','실업':'실업급여','대출':'대출','적금':'적금','예금':'예금','이자':'이자','자동차세':'자동차세','취득세':'취득세','기름값':'유류비','주유':'유류비','전기':'전기요금','누진':'누진','평수':'평수','평':'평수','제곱미터':'평수','만나이':'만 나이','디데이':'D-day','dday':'D-day','사주':'만세력','만세력':'만세력','음력':'음력','띠':'띠','글자수':'글자수','자소서':'글자수','qr':'QR','큐알':'QR','회의록':'회의록','짤':'짤','밈':'짤','워터마크':'워터마크','증명사진':'증명사진','여권':'여권','아이콘':'아이콘','스크린샷':'스크린샷','개인정보':'개인정보처리방침','bmi':'BMI','비만':'BMI','칼로리':'기초대사량','퍼센트':'퍼센트','할인':'할인','%':'퍼센트','합치기':'이어붙이기','이어':'이어붙이기','위치정보':'위치정보','exif':'EXIF','gps':'GPS','벨소리':'벨소리','mp3':'MP3','음악':'음악','화질':'화질','업스케일':'업스케일','선명':'화질','확대':'확대','ai':'AI','pdf':'PDF','서명':'서명','도장':'도장','스캔':'스캔'};
+  var cards=[].slice.call(document.querySelectorAll('.tool'));
+  var groups=[]; cards.forEach(function(c){
+    var g=c.parentNode; var h=g.previousElementSibling, d=null; if(h&&h.classList.contains('cat-d')){d=h;h=h.previousElementSibling;}
+    var o=groups.filter(function(x){return x.g===g})[0]; if(!o){o={g:g,h:h,d:d,cards:[]};groups.push(o);} o.cards.push(c);
+    c._t=(c.textContent||'').replace(/\s+/g,' ').toLowerCase();
+  });
+  function norm(v){ v=(v||'').trim().toLowerCase(); return v; }
+  function terms(v){ var out=[v]; var a=ALIAS[v]; if(a) out.push(a.toLowerCase()); return out; }
+  function run(){
+    var v=norm(q.value); box.classList.toggle('on',!!v);
+    if(!v){ cards.forEach(function(c){c.classList.remove('hid')}); groups.forEach(function(o){[o.g,o.h,o.d].forEach(function(e){e&&e.classList.remove('hid')})}); note.textContent=''; return; }
+    var ts=terms(v), n=0;
+    groups.forEach(function(o){ var k=0; o.cards.forEach(function(c){ var hit=ts.some(function(t){return c._t.indexOf(t)>=0}); c.classList.toggle('hid',!hit); if(hit)k++; });
+      [o.g,o.h,o.d].forEach(function(e){e&&e.classList.toggle('hid',k===0)}); n+=k; });
+    note.innerHTML=n?('<b>'+n+'개</b> 도구가 "'+v.replace(/[<>&]/g,'')+'"에 해당합니다'):('"'+v.replace(/[<>&]/g,'')+'"에 맞는 도구가 없습니다 — 다른 말로 찾아보거나 아래 목록을 훑어보세요');
+  }
+  q.addEventListener('input',run);
+  q.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); var f=cards.filter(function(c){return !c.classList.contains('hid')})[0]; if(f&&norm(q.value)) location.href=f.getAttribute('href'); } if(e.key==='Escape'){ q.value=''; run(); } });
+  document.getElementById('qclr').addEventListener('click',function(){ q.value=''; run(); q.focus(); });
+  var u=new URLSearchParams(location.search).get('q'); if(u){ q.value=u; run(); }
+})();
+</script>
 </body>
 </html>

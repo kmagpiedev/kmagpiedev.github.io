@@ -142,7 +142,7 @@
   .langsw a:hover{color:var(--accent);border-color:var(--accent)}
 /*LANG:E*/
 /*TESTS:S*/
-  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 0;padding:13px 18px;
+  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 24px;padding:13px 18px;
     border:1px solid var(--line);border-radius:14px;background:var(--surface);
     text-decoration:none;color:inherit;transition:.14s}
   .tbn:hover{border-color:var(--accent);transform:translateY(-2px)}
@@ -260,6 +260,14 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 
 <p class="gist">서류 사진 여러 장을 순서를 정해 PDF 한 개로 묶고 A4·Letter 용지와 여백을 고를 수 있습니다. JPG는 재압축 없이 그대로 담기며, 파일은 서버로 올라가지 않고 브라우저 안에서 처리됩니다. PDF는 압축 형식이 아니므로 용량 제한이 있으면 이미지를 먼저 줄인 뒤 묶으세요.</p>
 
+<!--TESTS:S-->
+<a class="tbn" href="/tests/">
+  <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
+  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 좀비 생존률부터 전생, 아이돌 포지션까지 — 결과는 친구와 비교해 보세요.</span></span>
+  <span class="ar">→</span>
+</a>
+<!--TESTS:E-->
+
 <details class="fold" open><summary><h2>사진 여러 장을 왜 굳이 PDF로 묶나</h2></summary><div class="fx">
 <p>요즘은 서류를 스캐너로 뜨는 대신 휴대폰으로 찍습니다. 스캐너 있는 집이 드물고, 밝은 데서 반듯하게 찍으면 읽는 데는 아무 문제가 없으니까요. 문제는 그 다음입니다. 신분증 앞뒤 두 장, 통장 사본 한 장, 계약서 네 장을 찍고 나면 사진이 일곱 개인데, 제출 화면은 파일을 하나만 올리라고 하거나 첨부 개수를 세 개로 막아둔 경우가 흔합니다. 은행 서류 제출, 회사 경비 정산, 학교 서류, 관공서 민원 창구에서 거의 매번 겪는 일이에요.</p>
 <p>여러 파일을 받아주는 곳이라도 순서까지 지켜지지는 않습니다. 받는 쪽 화면에서는 대개 파일명 순으로 정렬되기 때문에, 내가 1번부터 4번까지 순서대로 올렸어도 상대방은 뒤섞인 순서로 보게 됩니다. 계약서처럼 앞뒤가 이어져야 하는 문서에서는 이게 곧 반려 사유가 됩니다. PDF 한 개로 묶으면 <strong>페이지 순서가 파일 안에 고정되기 때문에</strong> 누가 어디서 열든 같은 순서로 보입니다.</p>
@@ -314,16 +322,8 @@ a.insertAdjacentElement('afterend',b)}})();</script>
   <a href="/tools/pdf-compress/"><strong>PDF 용량 줄이기</strong><span>2·5·10MB 목표 용량에 맞춰 압축</span></a>
   <a href="/tools/pdf-to-image/"><strong>PDF를 이미지로</strong><span>JPG·PNG 300dpi, ZIP 저장</span></a>
 </div>
-<p class="rel-all"><a href="/tools/">까치툴 도구 39개 전체 보기 →</a></p>
+<p class="rel-all"><a href="/tools/">까치툴 도구 40개 전체 보기 →</a></p>
 <!--REL:E-->
-
-<!--TESTS:S-->
-<a class="tbn" href="/tests/">
-  <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
-  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 좀비 생존률부터 전생, 아이돌 포지션까지 — 결과는 친구와 비교해 보세요.</span></span>
-  <span class="ar">→</span>
-</a>
-<!--TESTS:E-->
 
 <footer>
   <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 파일은 전송·저장되지 않습니다.</p>

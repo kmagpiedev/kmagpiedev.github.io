@@ -160,7 +160,7 @@
   .langsw a:hover{color:var(--accent);border-color:var(--accent)}
 /*LANG:E*/
 /*TESTS:S*/
-  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 0;padding:13px 18px;
+  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 24px;padding:13px 18px;
     border:1px solid var(--line);border-radius:14px;background:var(--surface);
     text-decoration:none;color:inherit;transition:.14s}
   .tbn:hover{border-color:var(--accent);transform:translateY(-2px)}
@@ -352,6 +352,14 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 
 <p class="gist">Stitch several photos into an animated GIF, or bring a single photo to life with zoom and pan effects. Everything, including the encoding, happens inside your browser — files are never uploaded anywhere. If file size is a worry, shrinking to 480px on the long side is the single most effective fix.</p>
 
+<!--TESTS:S-->
+<a class="tbn" href="/en/tests/">
+  <img class="ic" src="/images/kmagpie-test-icon.png" alt="Magpie Tests logo — a magpie giving a thumbs up" width="44" height="44" loading="lazy" decoding="async">
+  <span class="tx"><span class="tt">Try the Magpie Tests</span><span class="ds">Your birth date is the only input and it takes 30 seconds — zombie survival rate, past life, idol position, guardian spirit. Made to compare with friends.</span></span>
+  <span class="ar">&rarr;</span>
+</a>
+<!--TESTS:E-->
+
 <details class="fold" open><summary><h2>Why are GIFs so big?</h2></summary><div class="fx">
 <p>GIF is a format from 1989, and its original design has carried through unchanged: a frame can use <strong>only 256 colors, and within that limit there is no lossy compression to trade quality for size.</strong> On top of that, most GIFs store the entire canvas again for every frame. Build a GIF from ten photos and you are essentially packing ten photos' worth of data into one file.</p>
 <p>Video codecs work the opposite way. H.264, the codec behind most mp4 files, stores only what changed since the previous frame and boldly discards detail the human eye can't distinguish. That is why the same clip as an mp4 is routinely ten to fifty times smaller than as a GIF. Yes, GIF is technically outdated — but there is a reason it survives. Because it is an image file, <strong>it plays automatically everywhere with no video player, no sound, and no pausing.</strong></p>
@@ -406,14 +414,6 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 </div>
 <p class="rel-all"><a href="/en/tools/">See all 20 English tools →</a></p>
 <!--REL:E-->
-
-<!--TESTS:S-->
-<a class="tbn" href="/en/tests/">
-  <img class="ic" src="/images/kmagpie-test-icon.png" alt="Magpie Tests logo — a magpie giving a thumbs up" width="44" height="44" loading="lazy" decoding="async">
-  <span class="tx"><span class="tt">Try the Magpie Tests</span><span class="ds">Your birth date is the only input and it takes 30 seconds — zombie survival rate, past life, idol position, guardian spirit. Made to compare with friends.</span></span>
-  <span class="ar">&rarr;</span>
-</a>
-<!--TESTS:E-->
 
 <footer>
   <p>GIF encoding: gifenc (MIT) — source and license at <a href="/tools/lib/">/tools/lib/</a>.</p>

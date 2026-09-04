@@ -135,7 +135,7 @@
   .langsw a:hover{color:var(--accent);border-color:var(--accent)}
 /*LANG:E*/
 /*TESTS:S*/
-  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 0;padding:13px 18px;
+  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 24px;padding:13px 18px;
     border:1px solid var(--line);border-radius:14px;background:var(--surface);
     text-decoration:none;color:inherit;transition:.14s}
   .tbn:hover{border-color:var(--accent);transform:translateY(-2px)}
@@ -268,6 +268,14 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 
 <p class="gist">목표 용량을 KB 단위로 정하면 품질을 자동으로 좁혀가며 그 아래에서 가장 좋은 화질을 찾아 줍니다. 여러 장을 한 번에 처리해 ZIP으로 받을 수 있고, 서버 전송 없이 브라우저에서만 처리됩니다. PNG는 품질 조절 효과가 작아 크기 축소나 WebP 변환이 더 효과적입니다.</p>
 
+<!--TESTS:S-->
+<a class="tbn" href="/tests/">
+  <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
+  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 좀비 생존률부터 전생, 아이돌 포지션까지 — 결과는 친구와 비교해 보세요.</span></span>
+  <span class="ar">→</span>
+</a>
+<!--TESTS:E-->
+
 <details class="fold" open><summary><h2>사용법</h2></summary><div class="fx">
 <p>이미지를 여러 장 올린 뒤 압축 방식을 고르고 압축하기를 누르면 됩니다. 결과는 파일별로 이전·이후 용량과 절감률이 표시되고, 하나씩 받거나 ZIP으로 한 번에 받을 수 있습니다. 원본은 그대로 두고 새 파일이 만들어지므로 마음에 안 들면 설정을 바꿔 다시 누르면 됩니다.</p>
 <p>모든 처리는 브라우저의 Canvas API로 이루어집니다. 파일이 서버로 올라가지 않기 때문에 개인 사진이나 공개 전 자료도 안심하고 쓰실 수 있고, 업로드·다운로드 대기 시간이 없어 수십 장도 금방 끝납니다.</p>
@@ -300,19 +308,11 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 <h2>함께 쓰면 좋은 도구</h2>
 <div class="rel">
   <a href="/tools/resize/"><strong>이미지 크기 조절</strong><span>정확한 px 지정, 비율 자르기</span></a>
-  <a href="/tools/convert/"><strong>이미지 확장자 변환</strong><span>PNG·JPG·WebP·BMP·ICO</span></a>
+  <a href="/tools/upscale/"><strong>사진 화질 개선 (AI 업스케일)</strong><span>2배·4배 확대, 브라우저에서 AI 처리</span></a>
   <a href="/tools/remove-bg/"><strong>배경 제거 (누끼)</strong><span>인물만 남기고 투명 PNG</span></a>
 </div>
-<p class="rel-all"><a href="/tools/">까치툴 도구 39개 전체 보기 →</a></p>
+<p class="rel-all"><a href="/tools/">까치툴 도구 40개 전체 보기 →</a></p>
 <!--REL:E-->
-
-<!--TESTS:S-->
-<a class="tbn" href="/tests/">
-  <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
-  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 좀비 생존률부터 전생, 아이돌 포지션까지 — 결과는 친구와 비교해 보세요.</span></span>
-  <span class="ar">→</span>
-</a>
-<!--TESTS:E-->
 
 <footer>
   <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 파일은 업로드되지 않습니다.</p>

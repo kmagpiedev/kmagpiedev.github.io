@@ -127,7 +127,7 @@
   .rel-all{font-size:14.5px;font-weight:600;margin:0}
 /*REL:E*/
 /*TESTS:S*/
-  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 0;padding:13px 18px;
+  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 24px;padding:13px 18px;
     border:1px solid var(--line);border-radius:14px;background:var(--surface);
     text-decoration:none;color:inherit;transition:.14s}
   .tbn:hover{border-color:var(--accent);transform:translateY(-2px)}
@@ -360,6 +360,14 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 
 <p class="gist">기름값은 거리에서 연비를 나눠 필요한 연료량을 구한 뒤 유가를 곱하는 계산이며, 실제 연비는 공인 복합연비보다 10~20% 낮게 잡는 것이 현실적입니다. 정산이 어긋나는 가장 흔한 원인은 왕복 거리와 통행료를 빼먹는 것입니다. 출장 정산의 km당 단가는 법정 금액이 아니라 회사 여비 규정이고, 자가운전보조금 비과세는 월 20만원 한도에 별도 요건이 있습니다.</p>
 
+<!--TESTS:S-->
+<a class="tbn" href="/tests/">
+  <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
+  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 좀비 생존률부터 전생, 아이돌 포지션까지 — 결과는 친구와 비교해 보세요.</span></span>
+  <span class="ar">→</span>
+</a>
+<!--TESTS:E-->
+
 <details class="fold" open><summary><h2>유류비 지원금을 찾아오셨다면</h2></summary><div class="fx">
 <p>이 계산기는 <strong>내 차로 이동할 때 드는 기름값</strong>을 계산하는 도구입니다. 그런데 "유류비"로 검색해 들어오는 분들 중에는 다른 것을 찾는 경우가 섞여 있어서, 갈래를 먼저 정리해 둡니다. 화물차 운전자에게 유류세 일부를 돌려주는 <strong>화물자동차 유가보조금</strong>은 국토교통부와 지자체가 운영하는 별도 제도로, 유류구매카드로 결제해야 지급되고 관할 지자체나 유가보조금 관리 시스템에서 자격을 확인합니다. 저소득층 <strong>에너지바우처</strong>나 등유 지원 같은 복지 제도도 마찬가지로 신청 자격과 금액이 따로 정해져 있어요. 둘 다 이 계산기로는 계산되지 않고, 계산할 수 있는 성질의 것도 아닙니다.</p>
 <p>또 하나, 이 계산기는 <strong>기름값과 통행료까지만</strong> 다룹니다. 차를 굴리는 전체 비용에는 감가상각, 보험료, 자동차세, 정비비가 더 붙는데, 이런 총 소유비용은 차종과 연식, 운전 습관에 따라 편차가 너무 커서 여기서는 다루지 않습니다. 회사 출장비 규정도 회사마다 달라서 계산기가 정답을 줄 수 없고, 위 출장 정산 탭은 회사가 정한 단가를 넣었을 때의 곱셈을 대신해 줄 뿐입니다.</p>
@@ -411,16 +419,8 @@ a.insertAdjacentElement('afterend',b)}})();</script>
   <a href="/tools/electricity/"><strong>전기요금 계산기</strong><span>누진세·에어컨 요금 얼마나</span></a>
   <a href="/tools/salary/"><strong>연봉 실수령액 계산기</strong><span>2026년 요율·간이세액표 원본</span></a>
 </div>
-<p class="rel-all"><a href="/tools/">까치툴 도구 39개 전체 보기 →</a></p>
+<p class="rel-all"><a href="/tools/">까치툴 도구 40개 전체 보기 →</a></p>
 <!--REL:E-->
-
-<!--TESTS:S-->
-<a class="tbn" href="/tests/">
-  <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
-  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 좀비 생존률부터 전생, 아이돌 포지션까지 — 결과는 친구와 비교해 보세요.</span></span>
-  <span class="ar">→</span>
-</a>
-<!--TESTS:E-->
 
 <footer>
   <!--FOOTNOTE--><p>계산 결과는 참고용 추정치이며 법적 효력이 없습니다. 정확한 금액과 문의처는 <a href="/disclaimer.html">면책조항</a>에서 확인하세요.</p>

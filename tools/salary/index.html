@@ -129,7 +129,7 @@
   .langsw a:hover{color:var(--accent);border-color:var(--accent)}
 /*LANG:E*/
 /*TESTS:S*/
-  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 0;padding:13px 18px;
+  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 24px;padding:13px 18px;
     border:1px solid var(--line);border-radius:14px;background:var(--surface);
     text-decoration:none;color:inherit;transition:.14s}
   .tbn:hover{border-color:var(--accent);transform:translateY(-2px)}
@@ -255,6 +255,14 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 
 <p class="gist">월 실수령액은 연봉을 12(퇴직금 별도) 또는 13(포함)으로 나눈 뒤 비과세액을 뺀 과세 대상 월급여를 기준으로 4대보험과 소득세를 공제해 구합니다. 소득세는 근사식이 아니라 국세청 근로소득 간이세액표 원본에서 찾아오므로 회사 급여 시스템과 같은 값이 나옵니다. 2026년에는 국민연금 요율이 9.5%로 올라 공제액이 작년보다 조금 늘었습니다.</p>
 
+<!--TESTS:S-->
+<a class="tbn" href="/tests/">
+  <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
+  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 좀비 생존률부터 전생, 아이돌 포지션까지 — 결과는 친구와 비교해 보세요.</span></span>
+  <span class="ar">→</span>
+</a>
+<!--TESTS:E-->
+
 <details class="fold" open><summary><h2>연봉별 실수령액 표 (2026년 기준)</h2></summary><div class="fx">
 <p>혼자 사는 직장인(부양가족 본인 1명)이 식대 20만원을 비과세로 받고 퇴직금이 연봉과 별도인 경우입니다. 줄을 누르면 위 계산기에 그 연봉이 들어갑니다.</p>
 <table>
@@ -301,16 +309,8 @@ a.insertAdjacentElement('afterend',b)}})();</script>
   <a href="/tools/loan/"><strong>대출 이자 계산기</strong><span>원리금균등·원금균등·거치기간</span></a>
   <a href="/tools/annual-leave/"><strong>연차 계산기</strong><span>입사일·회계연도 기준 동시 비교</span></a>
 </div>
-<p class="rel-all"><a href="/tools/">까치툴 도구 39개 전체 보기 →</a></p>
+<p class="rel-all"><a href="/tools/">까치툴 도구 40개 전체 보기 →</a></p>
 <!--REL:E-->
-
-<!--TESTS:S-->
-<a class="tbn" href="/tests/">
-  <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
-  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 좀비 생존률부터 전생, 아이돌 포지션까지 — 결과는 친구와 비교해 보세요.</span></span>
-  <span class="ar">→</span>
-</a>
-<!--TESTS:E-->
 
 <footer>
   <!--FOOTNOTE--><p>계산 결과는 참고용 추정치이며 법적 효력이 없습니다. 정확한 금액과 문의처는 <a href="/disclaimer.html">면책조항</a>에서 확인하세요.</p>

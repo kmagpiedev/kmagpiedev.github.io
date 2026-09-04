@@ -123,6 +123,27 @@
         color: var(--muted);
         font-size: 0.84rem;
     }
+    .hero-quick { margin-top: 18px; display: grid; gap: 10px; }
+    .hq-fortune {
+        display: flex; align-items: center; gap: 12px; padding: 11px 14px;
+        border-radius: 14px; border: 1px solid rgba(214, 156, 41, 0.45);
+        background: linear-gradient(135deg, rgba(20, 29, 61, 0.85), rgba(11, 16, 32, 0.9));
+        color: var(--text); text-decoration: none; transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+    .hq-fortune:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .hq-moon { font-size: 26px; line-height: 1; flex: none; }
+    .hq-tx { flex: 1; min-width: 0; }
+    .hq-tt { display: block; font-weight: 700; font-size: 0.95rem; letter-spacing: -0.01em; }
+    .hq-ds { display: block; font-size: 0.8rem; color: var(--muted); margin-top: 2px; line-height: 1.5; }
+    .hq-ds b { color: #f4c66a; font-weight: 700; }
+    .hq-ar { color: var(--muted); flex: none; }
+    .hq-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; font-size: 0.8rem; }
+    .hq-lbl { color: var(--muted); margin-right: 2px; }
+    .hq-tools a {
+        color: var(--text); text-decoration: none; padding: 4px 11px; border-radius: 999px;
+        border: 1px solid var(--border); background: rgba(15, 15, 15, 0.7); transition: border-color 0.12s ease;
+    }
+    .hq-tools a:hover { border-color: var(--accent); color: #f4c66a; }
     .hero-apps {
         display: grid;
         grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -540,6 +561,25 @@
                         </a>
                     </div>
                     <p class="hero-proof" data-i18n="heroProof">앱은 Google Play에서 설치하고, 웹 콘텐츠는 설치 없이 바로 즐길 수 있습니다.</p>
+
+                    <div class="hero-quick" id="heroQuick">
+                        <a class="hq-fortune" href="/fortune/today/" id="hqFortune">
+                            <span class="hq-moon" aria-hidden="true">🌙</span>
+                            <span class="hq-tx">
+                                <span class="hq-tt" data-i18n="hqFortuneTitle">오늘의 운세 🌙 — 사주 기반, 매일 바뀝니다</span>
+                                <span class="hq-ds" id="hqFortuneDesc">오늘의 일진과 내 일주로 계산하는 총운 점수. 매일 바뀝니다.</span>
+                            </span>
+                            <span class="hq-ar" aria-hidden="true">→</span>
+                        </a>
+                        <div class="hq-tools">
+                            <span class="hq-lbl" data-i18n="hqPopular">인기 도구</span>
+                            <a href="/tools/manse/" data-i18n="hqT1" data-i18n-attr="href:hqT1Href">만세력 (사주 뽑기)</a>
+                            <a href="/tools/fuel-cost/" data-i18n="hqT2" data-i18n-attr="href:hqT2Href">유류비 계산기</a>
+                            <a href="/tools/electricity/" data-i18n="hqT3" data-i18n-attr="href:hqT3Href">전기요금 계산기</a>
+                            <a href="/tools/salary/" data-i18n="hqT4" data-i18n-attr="href:hqT4Href">연봉 실수령액</a>
+                            <a href="/tests/name-match/" data-i18n="hqT5" data-i18n-attr="href:hqT5Href">이름 궁합 NEW</a>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="hero-apps" aria-label="K-magpie Google Play apps" data-i18n-attr="aria-label:heroAppsAria">
@@ -728,6 +768,10 @@
                 <p class="section-desc" data-i18n="toolsDesc">가입 없이 쓰는 무료 도구입니다. 파일은 서버로 전송되지 않고 전부 내 브라우저 안에서 처리되며, 사용 횟수 제한도 워터마크도 없습니다.</p>
 
                 <div class="tool-grid">
+                    <a class="tool-chip" href="/tools/manse/">만세력 (사주 뽑기)<span>절입 시각까지 반영한 원국</span></a>
+                    <a class="tool-chip" href="/tools/fuel-cost/">유류비 계산기<span>거리 · 연비로 기름값, 출장 정산</span></a>
+                    <a class="tool-chip" href="/tools/electricity/">전기요금 계산기<span>누진세 · 에어컨 요금 얼마나</span></a>
+                    <a class="tool-chip" href="/tools/upscale/">사진 화질 개선 (AI 업스케일)<span>2배 · 4배 확대, 브라우저에서 처리</span></a>
                     <a class="tool-chip" href="/tools/salary/">연봉 실수령액 계산기<span>2026년 요율 · 간이세액표 원본</span></a>
                     <a class="tool-chip" href="/tools/loan/">대출 이자 계산기<span>원리금균등·원금균등 비교</span></a>
                     <a class="tool-chip" href="/tools/pdf/">PDF 편집기<span>합치기 · 나누기 · 페이지 삭제</span></a>
@@ -907,6 +951,13 @@
                 galleryCta: "3D 갤러리 입장하기",
                 heroMonBreakCta: "MonBreak 설치하기",
                 heroProof: "앱은 Google Play에서 설치하고, 웹 콘텐츠는 설치 없이 바로 즐길 수 있습니다.",
+                hqFortuneTitle: "오늘의 운세 🌙 — 사주 기반, 매일 바뀝니다",
+                hqPopular: "인기 도구",
+                hqT1: "만세력 (사주 뽑기)", hqT1Href: "/tools/manse/",
+                hqT2: "유류비 계산기", hqT2Href: "/tools/fuel-cost/",
+                hqT3: "전기요금 계산기", hqT3Href: "/tools/electricity/",
+                hqT4: "연봉 실수령액", hqT4Href: "/tools/salary/",
+                hqT5: "이름 궁합 NEW", hqT5Href: "/tests/name-match/",
                 heroAppsAria: "K-magpie Google Play 앱 목록",
                 gamesTitle: "모바일 게임 & 앱",
                 gamesDesc: "모바일 게임과 앱의 소개를 확인하거나 Google Play에서 바로 설치해보세요.",
@@ -1019,6 +1070,13 @@
                 galleryCta: "Enter the 3D Gallery",
                 heroMonBreakCta: "Install MonBreak",
                 heroProof: "Install apps from Google Play, or enjoy the web experiences instantly with no installation.",
+                hqFortuneTitle: "Today&#39;s Fortune 🌙 — saju-based daily reading (Korean)",
+                hqPopular: "Popular tools",
+                hqT1: "Net Salary Calculator", hqT1Href: "/en/tools/salary/",
+                hqT2: "Remove Background", hqT2Href: "/en/tools/remove-bg/",
+                hqT3: "PDF Editor", hqT3Href: "/en/tools/pdf/",
+                hqT4: "QR Code Generator", hqT4Href: "/en/tools/qr/",
+                hqT5: "Magpie Tests", hqT5Href: "/en/tests/",
                 heroAppsAria: "K-magpie Google Play app list",
                 gamesTitle: "Mobile Games & Apps",
                 gamesDesc: "Read about our mobile games and apps, or install them directly from Google Play.",
@@ -1131,6 +1189,13 @@
                 galleryCta: "3Dギャラリーに入る",
                 heroMonBreakCta: "MonBreakをインストール",
                 heroProof: "アプリはGoogle Playからインストールし、Webコンテンツはインストールなしですぐ楽しめます。",
+                hqFortuneTitle: "今日の運勢 🌙 — 四柱推命ベースの日運（韓国語）",
+                hqPopular: "人気ツール",
+                hqT1: "万歳暦（四柱を出す）", hqT1Href: "/tools/manse/",
+                hqT2: "燃料費計算", hqT2Href: "/tools/fuel-cost/",
+                hqT3: "電気料金計算", hqT3Href: "/tools/electricity/",
+                hqT4: "年収手取り計算", hqT4Href: "/tools/salary/",
+                hqT5: "カササギテスト", hqT5Href: "/ja/tests/",
                 heroAppsAria: "K-magpie Google Playアプリ一覧",
                 gamesTitle: "モバイルゲーム & アプリ",
                 gamesDesc: "モバイルゲームとアプリの紹介を見るか、Google Playから直接インストールできます。",
@@ -1226,6 +1291,58 @@
             });
 
             localStorage.setItem("kmagpie_language", lang);
+            if (typeof renderHeroQuick === "function") renderHeroQuick(lang);
+        }
+
+        /* 히어로 '오늘의 운세' 위젯 — /fortune/today/ 와 같은 산식(일진·일주·십성·지지·해시)으로
+           오늘 일진을 보여주고, 그 페이지에서 생일을 '기억하기'로 저장해 둔 사람에게는 오늘 총운 점수까지 미리 보여준다.
+           생년월일은 어디로도 전송되지 않는다. */
+        function renderHeroQuick(lang) {
+            var el = document.getElementById("hqFortuneDesc");
+            if (!el) return;
+            var GAN = "갑을병정무기경신임계", JI = "자축인묘진사오미신유술해";
+            var GANH = "甲乙丙丁戊己庚辛壬癸", JIH = "子丑寅卯辰巳午未申酉戌亥";
+            var ELG = [0,0,1,1,2,2,3,3,4,4];
+            var BASE_S = [58,55,62,57,59,63,54,61,56,64], JMOD = [0,10,12,-12,-9,-7,-5];
+            var YUKHAP=[[0,1],[2,11],[3,10],[4,9],[5,8],[6,7]], SAMHAP=[[8,0,4],[11,3,7],[2,6,10],[5,9,1]];
+            var CHUNG=[[0,6],[1,7],[2,8],[3,9],[4,10],[5,11]];
+            var HYEONG=[[2,5],[5,8],[8,2],[1,10],[10,7],[7,1],[0,3],[4,4],[6,6],[9,9],[11,11]];
+            var PA=[[0,9],[1,4],[2,11],[3,6],[5,8],[7,10]], HAE=[[0,7],[1,6],[2,5],[3,4],[8,11],[9,10]];
+            function jdn(y,m,d){ if(m<=2){y--;m+=12;} var a=Math.floor(y/100),b=2-a+Math.floor(a/4);
+                return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+b-1524; }
+            function dp(y,m,d){ return ((jdn(y,m,d)+49)%60+60)%60; }
+            function inP(T,a,b){ for(var i=0;i<T.length;i++){ if((T[i][0]===a&&T[i][1]===b)||(T[i][0]===b&&T[i][1]===a)) return true; } return false; }
+            function jiRel(a,b){ if(inP(CHUNG,a,b)) return 3;
+                if(a!==b){ for(var i=0;i<4;i++){ if(SAMHAP[i].indexOf(a)>=0&&SAMHAP[i].indexOf(b)>=0) return 2; } }
+                if(inP(YUKHAP,a,b)) return 1; if(inP(HYEONG,a,b)) return 4; if(inP(PA,a,b)) return 5; if(inP(HAE,a,b)) return 6; return 0; }
+            function tenGod(ug,tg){ var r=((ELG[tg]-ELG[ug])%5+5)%5; return r*2+(((ug%2)===(tg%2))?0:1); }
+            function hash32(s){ var h=2166136261; for(var i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619); } return h>>>0; }
+            function pad2(n){ return (n<10?"0":"")+n; }
+            var n = new Date(), y = n.getFullYear(), m = n.getMonth()+1, d = n.getDate();
+            var tdp = dp(y,m,d), tg = tdp%10, tj = tdp%12;
+            var gz = GAN[tg]+JI[tj], gzh = GANH[tg]+JIH[tj];
+            var MON_EN = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+            var day = lang==="en" ? MON_EN[m-1]+" "+d : (lang==="ja" ? m+"月"+d+"日" : m+"월 "+d+"일");
+            var score = null;
+            try {
+                var o = JSON.parse(localStorage.getItem("kmagpie.fortune.birth") || "null");
+                if (o && o.y>=1940 && o.y<=2020 && o.m>=1 && o.m<=12 && o.d>=1 && o.d<=31) {
+                    var udp = dp(o.y,o.m,o.d), ug = udp%10, uj = udp%12, t = (o.t>=1&&o.t<=12)?o.t:0;
+                    var jr = jiRel(uj,tj), hm = t ? Math.round(JMOD[jiRel(t-1,tj)]/2) : 0;
+                    var h = hash32("ft:"+y+"-"+pad2(m)+"-"+pad2(d)+"-"+udp);
+                    score = Math.round(BASE_S[tenGod(ug,tg)]+JMOD[jr]+hm+((h%13)-6));
+                    score = score<1?1:(score>99?99:score);
+                }
+            } catch (e) {}
+            var txt;
+            if (lang==="en") {
+                txt = day+" · "+gzh+" ("+gz+") day · "+(score!==null ? "your overall score today: <b>"+score+"</b> / 99" : "enter your birth date for today&#39;s score (Korean page)");
+            } else if (lang==="ja") {
+                txt = day+" · "+gzh+"（"+gz+"）の日 · "+(score!==null ? "今日の総合運 <b>"+score+"点</b>" : "生年月日を入れると今日の点数が出ます（韓国語）");
+            } else {
+                txt = day+" "+gz+"("+gzh+")일 · "+(score!==null ? "내 오늘 총운 <b>"+score+"점</b> — 자세히 보기" : "생년월일만 넣으면 오늘 총운 점수와 재물·애정·일·건강. 매일 바뀝니다.");
+            }
+            el.innerHTML = txt;
         }
 
         document.getElementById("year").textContent = new Date().getFullYear();

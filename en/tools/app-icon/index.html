@@ -138,7 +138,7 @@
   .langsw a:hover{color:var(--accent);border-color:var(--accent)}
 /*LANG:E*/
 /*TESTS:S*/
-  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 0;padding:13px 18px;
+  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 24px;padding:13px 18px;
     border:1px solid var(--line);border-radius:14px;background:var(--surface);
     text-decoration:none;color:inherit;transition:.14s}
   .tbn:hover{border-color:var(--accent);transform:translateY(-2px)}
@@ -252,6 +252,14 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 
 <p class="gist">One 1024px square PNG turns into a full Android, iOS and favicon icon set, delivered as a ZIP with the folder structure already laid out. The adaptive icon layers get the safe-zone inset applied for you, so nothing gets clipped on a round launcher mask. Nothing is uploaded — unreleased artwork never leaves your machine.</p>
 
+<!--TESTS:S-->
+<a class="tbn" href="/en/tests/">
+  <img class="ic" src="/images/kmagpie-test-icon.png" alt="Magpie Tests logo — a magpie giving a thumbs up" width="44" height="44" loading="lazy" decoding="async">
+  <span class="tx"><span class="tt">Try the Magpie Tests</span><span class="ds">Your birth date is the only input and it takes 30 seconds — zombie survival rate, past life, idol position, guardian spirit. Made to compare with friends.</span></span>
+  <span class="ar">&rarr;</span>
+</a>
+<!--TESTS:E-->
+
 <details class="fold" open><summary><h2>How to use</h2></summary><div class="fx">
 <p>Start with a 1024×1024 square PNG. The bigger the source, the cleaner every downscale, so exporting 1024px straight out of your vector tool gives the sharpest result. Pick the sets you want, press download, and you get a ZIP with the folders already in place. Drop the Android files into <code>app/src/main/res/</code>, and on iOS replace the whole <code>AppIcon.appiconset</code> folder inside your asset catalog.</p>
 <p>Nothing is sent anywhere. All the resizing happens through your browser's Canvas API, so the tool keeps working with the network off and an unreleased icon never leaves your machine. No sign-up, no limits, no watermark.</p>
@@ -324,14 +332,6 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 </div>
 <p class="rel-all"><a href="/en/tools/">See all 20 English tools →</a></p>
 <!--REL:E-->
-
-<!--TESTS:S-->
-<a class="tbn" href="/en/tests/">
-  <img class="ic" src="/images/kmagpie-test-icon.png" alt="Magpie Tests logo — a magpie giving a thumbs up" width="44" height="44" loading="lazy" decoding="async">
-  <span class="tx"><span class="tt">Try the Magpie Tests</span><span class="ds">Your birth date is the only input and it takes 30 seconds — zombie survival rate, past life, idol position, guardian spirit. Made to compare with friends.</span></span>
-  <span class="ar">&rarr;</span>
-</a>
-<!--TESTS:E-->
 
 <footer>
   <p>Kmagpie Tools · Everything runs in your browser. Files are never uploaded.</p>

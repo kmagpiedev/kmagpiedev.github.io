@@ -89,12 +89,14 @@ TOOLS = {
                    '사진에 숨은 촬영 위치·기종·시각 정보를 지웁니다. JPEG는 픽셀을 건드리지 않고 메타데이터만 잘라내는 무손실 방식이라 화질이 그대로입니다. 중고거래·SNS 업로드 전에.'),
  'audio-cut':     ('🎵','음악 자르기','벨소리·알람음, 파형 보며 구간 선택',
                    'MP3·M4A·WAV를 열어 파형을 보며 구간을 고르고 페이드·노멀라이즈를 적용해 저장합니다. 무손실 WAV와 기기 기본 압축 포맷으로 저장되고 파일은 브라우저를 떠나지 않습니다.'),
+ 'upscale':       ('🔍','사진 화질 개선 (AI 업스케일)','2배·4배 확대, 브라우저에서 AI 처리',
+                   '흐릿하거나 작은 사진을 AI로 2배·4배 키웁니다. 옛날 사진, 캡처, 저화질 이미지의 윤곽을 살려 선명하게 만들고, 전후 비교 슬라이더로 확인한 뒤 PNG·JPG로 저장합니다. 사진은 업로드되지 않습니다.'),
 }
 
 # 목록 페이지 분류 (순서가 곧 노출 순서)
 CATS = [
  ('이미지 편집', '사진을 다루는 도구입니다. 전부 브라우저 안에서 처리되고 업로드가 없어서, 얼굴이 나온 사진이나 공개 전 자료도 안심하고 올릴 수 있습니다.',
-  ['remove-bg','id-photo','resize','convert','image-compress','image-merge','exif-remove','watermark','gif-maker','meme']),
+  ['remove-bg','upscale','id-photo','resize','convert','image-compress','image-merge','exif-remove','watermark','gif-maker','meme']),
  ('PDF·문서',   '계약서나 제출 서류를 다룰 때 쓰는 도구입니다. 원본 문서의 글자를 그대로 살린 채 처리합니다.',
   ['pdf','pdf-compress','pdf-sign','pdf-to-image','img2pdf']),
  ('급여·노동', '법령과 공식 고시를 그대로 적용해 계산합니다. 근사식을 쓰지 않고 계산 과정과 근거 조문을 함께 보여줍니다.',
@@ -113,6 +115,7 @@ CATS = [
 
 # 각 도구 페이지 하단에 노출할 관련 도구 (맥락 흐름 순)
 REL = {
+ 'upscale':       ['remove-bg','image-compress','resize'],
  'image-merge':   ['resize','image-compress','exif-remove'],
  'exif-remove':   ['image-compress','image-merge','convert'],
  'audio-cut':     ['gif-maker','image-compress','qr'],
@@ -127,15 +130,15 @@ REL = {
  'holiday-pay':   ['annual-leave','severance','salary'],
  'pdf':           ['pdf-compress','pdf-to-image','pdf-sign'],
  'pdf-sign':      ['pdf','id-photo','salary'],
- 'remove-bg':     ['id-photo','convert','image-compress'],
+ 'remove-bg':     ['id-photo','upscale','image-compress'],
  'convert':       ['resize','gif-maker','image-compress'],
  'id-photo':      ['remove-bg','convert','image-compress'],
- 'image-compress':['resize','convert','remove-bg'],
+ 'image-compress':['resize','upscale','remove-bg'],
  'watermark':     ['meme','image-compress','resize'],
  'gif-maker':     ['meme','resize','image-compress'],
  'minutes':       ['char-count','img2pdf','qr'],
  'meme':          ['gif-maker','watermark','image-compress'],
- 'resize':        ['image-compress','gif-maker','convert'],
+ 'resize':        ['image-compress','upscale','convert'],
  'qr':            ['char-count','convert','date-calc'],
  'car-tax':       ['fuel-cost','car-acquisition','loan'],
  'car-acquisition':['car-tax','fuel-cost','loan'],
@@ -174,7 +177,7 @@ def block(slug):
             f'<p class="rel-all"><a href="/tools/">까치툴 도구 {n}개 전체 보기 →</a></p>\n<!--REL:E-->\n\n')
 
 TESTS_CSS = """/*TESTS:S*/
-  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 0;padding:13px 18px;
+  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 24px;padding:13px 18px;
     border:1px solid var(--line);border-radius:14px;background:var(--surface);
     text-decoration:none;color:inherit;transition:.14s}
   .tbn:hover{border-color:var(--accent);transform:translateY(-2px)}
@@ -208,8 +211,12 @@ EN_TESTS_BLOCK = """<!--TESTS:S-->
 """
 
 
+TESTS_RE = re.compile(r'\r?\n[ \t]*<!--TESTS:S-->.*?<!--TESTS:E-->(\r?\n)*', re.S)
+
+
 def patch_tests(s, nl, tests_block=None):
-    """푸터 바로 위에 까치테스트 배너를 넣는다. 몇 번 돌려도 결과가 같다."""
+    """까치테스트 배너를 결과 바로 아래(첫 gist 문단 뒤)에 넣는다.
+    gist 가 없는 페이지(소개·목록)는 푸터 바로 위. 몇 번 돌려도 결과가 같다."""
     if '/*TESTS:S*/' in s:
         s = put(s, '/*TESTS:S*/', '/*TESTS:E*/', TESTS_CSS.replace('\n', nl).strip())
     else:
@@ -218,9 +225,12 @@ def patch_tests(s, nl, tests_block=None):
         s = s[:i] + TESTS_CSS.replace('\n', nl) + s[i:]
 
     blk = (tests_block or TESTS_BLOCK).replace('\n', nl)
-    r = put(s, '<!--TESTS:S-->', '<!--TESTS:E-->', blk.strip())
-    if r is not None:
-        return r
+    s = TESTS_RE.sub(nl, s, count=1)          # 기존 배너는 위치와 무관하게 걷어낸다
+    body = s.find('<body')
+    g = s.find('<p class="gist"', body)
+    if g > 0:
+        j = s.find('</p>', g) + len('</p>')
+        return s[:j] + nl + nl + blk.strip() + s[j:]
     i = s.find('<footer>')
     assert i > 0, 'TESTS: <footer> 없음'
     return s[:i] + blk + s[i:]

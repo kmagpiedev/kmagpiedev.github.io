@@ -26,3 +26,10 @@ LICENSE 파일들을 삭제하지 말고 그대로 두세요.
 mediapipe/wasm/vision_wasm_module_internal.js 와 .wasm 은
 실제 로딩에 사용되지 않는 변형입니다. 지우면 약 12MB를 아낄 수 있고
 동작에는 영향이 없습니다 (SIMD판과 비SIMD판만 있으면 됩니다).
+
+4) upscaler/ 폴더  — 사진 화질 개선(AI 업스케일) 도구
+   - tf.min.js            : TensorFlow.js 4.22 (Google) — Apache License 2.0, 전문: upscaler/tfjs.LICENSE.txt
+   - upscaler.min.js      : UpscalerJS 1.0 (Kevin Scott) — MIT, 전문: upscaler/upscalerjs.LICENSE.txt
+   - esrgan-medium-x2/x4  : @upscalerjs/esrgan-medium 모델 정의 + 가중치(models/x2, models/x4) — MIT,
+                            전문: upscaler/esrgan-medium.LICENSE.txt
+   - 모든 추론은 브라우저 안에서 실행되며 모델 파일은 이 폴더에서만 불러옵니다(CDN 사용 안 함).

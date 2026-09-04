@@ -135,7 +135,7 @@
   .rel-all{font-size:14.5px;font-weight:600;margin:0}
 /*REL:E*/
 /*TESTS:S*/
-  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 0;padding:13px 18px;
+  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 24px;padding:13px 18px;
     border:1px solid var(--line);border-radius:14px;background:var(--surface);
     text-decoration:none;color:inherit;transition:.14s}
   .tbn:hover{border-color:var(--accent);transform:translateY(-2px)}
@@ -254,6 +254,14 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 
 <p class="gist">1024px 정사각 PNG 한 장으로 안드로이드·iOS·파비콘 규격 아이콘을 폴더 구조가 갖춰진 ZIP으로 만듭니다. 적응형 아이콘의 세이프존 비율은 자동으로 적용됩니다. 출시 전 아이콘도 서버 전송 없이 브라우저 안에서만 처리되어 유출 걱정이 없습니다.</p>
 
+<!--TESTS:S-->
+<a class="tbn" href="/tests/">
+  <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
+  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 좀비 생존률부터 전생, 아이돌 포지션까지 — 결과는 친구와 비교해 보세요.</span></span>
+  <span class="ar">→</span>
+</a>
+<!--TESTS:E-->
+
 <details class="fold" open><summary><h2>사용법</h2></summary><div class="fx">
 <p>1024×1024 크기의 정사각형 PNG를 준비해 위에 올리세요. 원본이 클수록 축소 품질이 좋아지므로, 가능하면 벡터에서 1024px로 내보낸 파일을 쓰시는 게 가장 깔끔합니다. 생성할 규격을 고르고 내려받기를 누르면 폴더 구조가 갖춰진 ZIP이 만들어집니다. 안드로이드 파일은 압축을 풀어 <code>app/src/main/res/</code> 아래에 그대로 덮어쓰면 되고, iOS는 <code>AppIcon.appiconset</code> 폴더를 통째로 교체하면 됩니다. Xcode 14 이상을 쓰신다면 iOS 쪽은 1024px 파일 하나만 꺼내 쓰셔도 됩니다.</p>
 <p>이 도구는 이미지를 서버로 보내지 않습니다. 브라우저의 Canvas API로 처리하기 때문에 인터넷 연결이 끊겨도 동작하고, 출시 전 아이콘이 외부로 유출될 걱정이 없습니다.</p>
@@ -333,16 +341,8 @@ a.insertAdjacentElement('afterend',b)}})();</script>
   <a href="/tools/privacy-policy/"><strong>개인정보처리방침 생성기</strong><span>Play 스토어 심사용</span></a>
   <a href="/tools/image-compress/"><strong>이미지 용량 줄이기</strong><span>목표 용량에 자동으로 맞춤</span></a>
 </div>
-<p class="rel-all"><a href="/tools/">까치툴 도구 39개 전체 보기 →</a></p>
+<p class="rel-all"><a href="/tools/">까치툴 도구 40개 전체 보기 →</a></p>
 <!--REL:E-->
-
-<!--TESTS:S-->
-<a class="tbn" href="/tests/">
-  <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
-  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 좀비 생존률부터 전생, 아이돌 포지션까지 — 결과는 친구와 비교해 보세요.</span></span>
-  <span class="ar">→</span>
-</a>
-<!--TESTS:E-->
 
 <footer>
   <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 파일은 업로드되지 않습니다.</p>

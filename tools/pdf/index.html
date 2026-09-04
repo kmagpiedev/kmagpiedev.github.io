@@ -132,7 +132,7 @@
   .langsw a:hover{color:var(--accent);border-color:var(--accent)}
 /*LANG:E*/
 /*TESTS:S*/
-  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 0;padding:13px 18px;
+  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 24px;padding:13px 18px;
     border:1px solid var(--line);border-radius:14px;background:var(--surface);
     text-decoration:none;color:inherit;transition:.14s}
   .tbn:hover{border-color:var(--accent);transform:translateY(-2px)}
@@ -225,6 +225,14 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 
 <p class="gist">여러 PDF와 이미지를 올려 합치고, 페이지를 삭제·회전·정렬해 하나의 파일이나 낱장 ZIP으로 저장합니다. 모든 작업은 서버 전송 없이 브라우저 안에서 처리되어 민감한 문서도 안전합니다. 암호가 걸린 PDF와 스캔본의 글자 수정은 지원하지 않습니다.</p>
 
+<!--TESTS:S-->
+<a class="tbn" href="/tests/">
+  <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
+  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 좀비 생존률부터 전생, 아이돌 포지션까지 — 결과는 친구와 비교해 보세요.</span></span>
+  <span class="ar">→</span>
+</a>
+<!--TESTS:E-->
+
 <details class="fold" open><summary><h2>사용법</h2></summary><div class="fx">
 <p>PDF 파일을 여러 개 올리면 모든 페이지가 한 줄로 이어져 표시됩니다. 페이지를 눌러 선택하고 회전하거나 삭제할 수 있고, 페이지 위에 마우스를 올리면 나타나는 화살표로 순서를 옮길 수 있습니다. 다 됐으면 하나의 PDF로 저장하거나, 선택한 페이지만 따로 뽑거나, 페이지마다 낱장으로 분리해 ZIP으로 받으세요.</p>
 <p>이미지를 함께 올리면 각각 한 페이지로 변환되어 들어갑니다. 사진 여러 장을 PDF 한 파일로 묶어 제출해야 할 때 그대로 쓰시면 됩니다.</p>
@@ -264,16 +272,8 @@ a.insertAdjacentElement('afterend',b)}})();</script>
   <a href="/tools/pdf-to-image/"><strong>PDF를 이미지로</strong><span>JPG·PNG 300dpi, ZIP 저장</span></a>
   <a href="/tools/pdf-sign/"><strong>PDF 서명·도장 넣기</strong><span>인쇄 없이 계약서에 바로</span></a>
 </div>
-<p class="rel-all"><a href="/tools/">까치툴 도구 39개 전체 보기 →</a></p>
+<p class="rel-all"><a href="/tools/">까치툴 도구 40개 전체 보기 →</a></p>
 <!--REL:E-->
-
-<!--TESTS:S-->
-<a class="tbn" href="/tests/">
-  <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
-  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 좀비 생존률부터 전생, 아이돌 포지션까지 — 결과는 친구와 비교해 보세요.</span></span>
-  <span class="ar">→</span>
-</a>
-<!--TESTS:E-->
 
 <footer>
   <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 파일은 업로드되지 않습니다.</p>
