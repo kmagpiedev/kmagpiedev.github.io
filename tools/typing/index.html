@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>한글 타자 속도 테스트 — 분당 타수·정확도 측정, 타자 연습 | 까치툴</title>
+<meta name="description" content="한글 타자 속도 테스트. 문장을 따라 치면 분당 타수와 정확도, 등급과 상위 % 추정치가 바로 나옵니다. 한글·영문 문장 연습과 긴 글 모드, 결과 카드 저장까지 지원하며 설치가 필요 없고 입력한 글은 전송되지 않습니다.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/typing/">
+<meta property="og:title" content="한글 타자 속도 테스트 — 분당 타수·정확도 측정">
+<meta property="og:description" content="문장을 따라 치면 분당 타수와 정확도, 등급이 바로 나옵니다. 한글·영문·긴 글 모드와 결과 카드 저장까지.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/typing/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+    --pri-ink:#fff;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+      --pri-ink:#171614;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 20px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .xlink{display:inline-flex;align-items:center;gap:8px;margin:0 0 22px;padding:8px 14px;
+    border:1px solid var(--line);border-radius:999px;background:var(--surface);
+    font-size:13.5px;color:var(--ink-2);text-decoration:none}
+  .xlink:hover{border-color:var(--accent);color:var(--accent)}
+  .xlink b{font-weight:700}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:16px 0}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:12px 0 0}
+  .hidden{display:none}
+  code{background:var(--line-soft);padding:1px 5px;border-radius:4px;font-size:12.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .src{font-size:12.5px;color:var(--ink-3);margin-top:14px;padding-top:12px;border-top:1px solid var(--line-soft)}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+
+  .tabs{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 4px}
+  .tabs button{font-family:inherit;font-size:14px;font-weight:600;padding:9px 14px;border-radius:10px;
+    border:1px solid var(--line);background:transparent;color:var(--ink-2);cursor:pointer}
+  .tabs button:hover{border-color:var(--accent);color:var(--accent)}
+  .tabs button[aria-selected="true"]{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+
+  .opts{display:flex;gap:20px;flex-wrap:wrap;margin-top:16px}
+  .opt{min-width:150px}
+  .opt label.f{display:block;font-size:12px;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--ink-3);font-weight:700;margin:0 0 7px}
+  .seg{display:flex;gap:6px}
+  .seg button{flex:1;font-family:inherit;font-size:13.5px;font-weight:600;padding:8px 6px;border-radius:9px;
+    border:1px solid var(--line);background:transparent;color:var(--ink-2);cursor:pointer;white-space:nowrap}
+  .seg button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+
+  .stats{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+  .stat{flex:1 1 84px;min-width:84px;border:1px solid var(--line);border-radius:11px;
+    padding:8px 11px;background:var(--surface)}
+  .stat b{display:block;font-size:18px;font-weight:800;letter-spacing:-.01em;
+    font-variant-numeric:tabular-nums;line-height:1.35}
+  .stat span{display:block;font-size:11px;color:var(--ink-3);letter-spacing:.04em}
+
+  .target{white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere;
+    font-size:20px;line-height:1.95;background:var(--bg);
+    border:1px solid var(--line);border-radius:12px;padding:15px 17px;
+    max-height:260px;overflow-y:auto}
+  .target span.ok{color:var(--good)}
+  .target span.bad{color:var(--bad);background:var(--bad-soft);border-radius:3px}
+  .target span.cur{background:var(--accent-soft);box-shadow:inset 0 -2px 0 var(--accent);border-radius:3px}
+  #ta{width:100%;margin-top:12px;padding:12px 15px;border:1px solid var(--line);border-radius:12px;
+    background:var(--surface);color:var(--ink);font-family:inherit;font-size:19px;line-height:1.75;
+    resize:vertical;min-height:76px}
+  #ta:focus{outline:2px solid var(--accent);outline-offset:-1px}
+
+  .result{background:var(--surface);border:1px solid var(--accent);border-radius:16px;padding:24px 22px;margin:18px 0}
+  .rlab{font-size:13px;color:var(--ink-2);margin:0 0 2px}
+  .rbig{font-size:56px;font-weight:800;letter-spacing:-.035em;line-height:1.08;
+    font-variant-numeric:tabular-nums;color:var(--accent)}
+  .rbig small{font-size:19px;font-weight:700;margin-left:5px;letter-spacing:0}
+  .rgrade{font-size:23px;font-weight:800;letter-spacing:-.02em;margin:14px 0 2px}
+  .rpct{font-size:14px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+  .rgrid{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 0}
+  .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+  .btn{font-family:inherit;font-size:14.5px;font-weight:600;padding:10px 16px;border-radius:10px;cursor:pointer;
+    border:1px solid var(--line);background:transparent;color:var(--ink-2)}
+  .btn:hover{border-color:var(--accent);color:var(--accent)}
+  .btn.pri{background:var(--accent);border-color:var(--accent);color:var(--pri-ink)}
+  .btn.pri:hover{opacity:.9;color:var(--pri-ink)}
+  .share{margin-top:14px;font-size:13px;color:var(--ink-3);word-break:break-all}
+  .share a{color:var(--ink-2)}
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-ok{background:var(--good-soft);border-color:var(--good)}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px}
+  th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line-soft)}
+  th{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:700;border-bottom:1px solid var(--line)}
+  td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  tr.hi td{background:var(--accent-soft);font-weight:700}
+
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .rbig{font-size:44px}
+    .target{font-size:18px;padding:13px 14px}
+    #ta{font-size:17px}
+    table{font-size:13px}
+    th,td{padding:7px 4px}
+    .stat{flex:1 1 calc(50% - 4px);min-width:0}
+  }
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 8px}
+  .fold .fx>:first-child{margin-top:4px}
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-srch{display:flex;gap:8px;margin:0 0 12px}
+  .rel-srch input{flex:1;min-width:0;padding:10px 14px;border:1px solid var(--line);border-radius:11px;
+    background:var(--surface);color:var(--ink);font:inherit;font-size:14.5px;outline:none}
+  .rel-srch input:focus{border-color:var(--accent)}
+  .rel-srch input::-webkit-search-cancel-button{-webkit-appearance:none}
+  .rel-srch button{flex:none;padding:10px 16px;border:1px solid var(--accent);border-radius:11px;
+    background:transparent;color:var(--accent);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+  .rel-srch button:hover{background:var(--accent-soft)}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
+/*TESTS:S*/
+  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 24px;padding:13px 18px;
+    border:1px solid var(--line);border-radius:14px;background:var(--surface);
+    text-decoration:none;color:inherit;transition:.14s}
+  .tbn:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .tbn .ic{width:44px;height:44px;flex:none;border-radius:12px;background:#fff;
+    border:1px solid var(--line);object-fit:contain;padding:2px}
+  .tbn .tx{flex:1;min-width:0}
+  .tbn .tt{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em}
+  .tbn .ds{display:block;font-size:13px;color:var(--ink-3);line-height:1.55;margin-top:2px}
+  .tbn .ar{color:var(--ink-3);font-size:15px;flex:none}
+/*TESTS:E*/
+</style>
+<!--HEAD:S-->
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
+<meta property="og:site_name" content="까치툴">
+<link rel="manifest" href="/tools/manifest.json">
+<meta name="theme-color" content="#faf9f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#171614" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="까치툴">
+<script>/*PWA*/(function(){var L=document.documentElement.lang==='en';
+if('serviceWorker' in navigator)addEventListener('load',function(){navigator.serviceWorker.register('/sw.js',{scope:'/'})['catch'](function(){})});
+var p=null,armed=false;addEventListener('beforeinstallprompt',function(e){e.preventDefault();p=e;arm()});
+function arm(){if(armed)return;armed=true;var h=function(){removeEventListener('pointerdown',h,true);removeEventListener('keydown',h,true);show()};
+addEventListener('pointerdown',h,true);addEventListener('keydown',h,true)}
+addEventListener('appinstalled',function(){p=null;var b=document.getElementById('pwaBtn');if(b)b.style.visibility='hidden'});
+function show(){if(document.getElementById('pwaBtn'))return;
+var a=document.querySelector('.sub')||document.querySelector('h1');if(!a)return;
+var b=document.createElement('button');b.id='pwaBtn';b.type='button';
+b.textContent=L?'⬇ Install as an app':'📲 앱으로 설치';
+b.style.cssText='display:inline-block;margin:0 0 22px;padding:8px 15px;border-radius:9px;font:600 13.5px/1.4 inherit;cursor:pointer;background:transparent;color:var(--accent,#b45309);border:1px solid var(--accent,#b45309)';
+b.title=L?'Works offline once installed':'설치하면 인터넷 없이도 쓸 수 있습니다';
+b.onclick=function(){if(!p)return;p.prompt();p.userChoice.then(function(){p=null;b.style.visibility='hidden'})};
+a.insertAdjacentElement('afterend',b)}})();</script>
+<!--HEAD:E-->
+<!--LD:S-->
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://www.kmagpie.com/tools/typing/#app","name":"한글 타자 속도 테스트","url":"https://www.kmagpie.com/tools/typing/","description":"한글·영문 문장을 따라 치면 분당 타수와 정확도, 등급이 나옵니다. 한컴타자 방식으로 자소를 분해해 타수를 세고, 결과 카드를 저장하거나 링크로 친구와 비교할 수 있습니다. 모바일에서도 됩니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"inLanguage":"ko","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"K-magpie","url":"https://www.kmagpie.com/"}},{"@type":"BreadcrumbList","@id":"https://www.kmagpie.com/tools/typing/#crumb","itemListElement":[{"@type":"ListItem","position":1,"name":"K-magpie","item":"https://www.kmagpie.com/"},{"@type":"ListItem","position":2,"name":"까치툴","item":"https://www.kmagpie.com/tools/"},{"@type":"ListItem","position":3,"name":"한글 타자 속도 테스트","item":"https://www.kmagpie.com/tools/typing/"}]}]}</script>
+<!--LD:E-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> &rsaquo; <a href="/tools/">까치툴</a> &rsaquo; 한글 타자 속도 테스트</p>
+
+<a class="xlink" href="/tools/reaction/">⚡ <b>반응속도 테스트 · 클릭 속도(CPS)</b> 도 해 보기 →</a>
+
+<h1>한글 타자 속도 테스트</h1>
+<p class="sub">화면에 뜬 문장을 그대로 따라 치면 <strong>분당 타수와 정확도</strong>가 바로 나옵니다. 타수는 한컴타자와 같은 방식으로, 글자를 자소로 쪼개 실제 키 입력 수로 환산합니다. 한글 문장·영문 문장·긴 글 세 가지 모드가 있고, 결과는 카드 이미지로 저장할 수 있어요.</p>
+
+<div id="shared" class="msg m-ok hidden"></div>
+
+<div class="panel" id="setup">
+  <div class="tabs" role="tablist" id="modeTabs">
+    <button type="button" role="tab" data-mode="ko" aria-selected="true">문장 연습 (한글)</button>
+    <button type="button" role="tab" data-mode="en" aria-selected="false">문장 연습 (영문)</button>
+    <button type="button" role="tab" data-mode="long" aria-selected="false">긴 글 (한글)</button>
+  </div>
+  <div class="opts">
+    <div class="opt">
+      <label class="f">문장 개수</label>
+      <div class="seg" id="cntSeg">
+        <button type="button" data-c="3" aria-pressed="false">3개</button>
+        <button type="button" data-c="5" aria-pressed="true">5개</button>
+        <button type="button" data-c="10" aria-pressed="false">10개</button>
+      </div>
+    </div>
+    <div class="opt">
+      <label class="f">쌍자음 계산</label>
+      <div class="seg" id="dblSeg">
+        <button type="button" data-d="0" aria-pressed="true">1타 (시프트 포함)</button>
+        <button type="button" data-d="1" aria-pressed="false">2타</button>
+      </div>
+    </div>
+  </div>
+  <p class="note" id="modeNote">한글 문장 60개 중에서 무작위로 뽑습니다. 문장은 모두 이 페이지를 위해 직접 쓴 것이라 인용문·속담이 섞여 있지 않습니다.</p>
+</div>
+
+<div class="panel" id="stage">
+  <div class="stats">
+    <div class="stat"><b id="sProg">1 / 5</b><span>진행</span></div>
+    <div class="stat"><b id="sTime">0.0초</b><span>경과</span></div>
+    <div class="stat"><b id="sCpm">0</b><span>타/분</span></div>
+    <div class="stat"><b id="sAcc">100%</b><span>정확도</span></div>
+  </div>
+  <div class="target" id="target"></div>
+  <textarea id="ta" rows="2" autocomplete="off" autocorrect="off" autocapitalize="off"
+    spellcheck="false" inputmode="text" aria-label="따라 칠 문장을 입력하는 칸"
+    placeholder="여기에 위 문장을 그대로 입력하세요"></textarea>
+  <div class="btns">
+    <button type="button" class="btn" id="btnSkip">이 문장 건너뛰기</button>
+    <button type="button" class="btn" id="btnReset">처음부터</button>
+  </div>
+  <p class="note">첫 글자를 입력하는 순간 자동으로 시작됩니다. 문장을 정확히 다 치면 다음 문장으로 넘어가요. 붙여넣기는 막혀 있고, 입력한 글은 어디에도 전송·저장되지 않습니다.</p>
+</div>
+
+<div class="result hidden" id="result">
+  <p class="rlab">분당 타수</p>
+  <div class="rbig" id="rCpm">0<small>타/분</small></div>
+  <div class="rgrade" id="rGrade">—</div>
+  <div class="rpct" id="rPct"></div>
+  <div class="stats" style="margin-top:18px">
+    <div class="stat"><b id="rAcc">—</b><span>정확도</span></div>
+    <div class="stat"><b id="rWpm">—</b><span>WPM (영문 기준)</span></div>
+    <div class="stat"><b id="rSec">—</b><span>소요 시간</span></div>
+    <div class="stat"><b id="rErr">—</b><span>오타 수</span></div>
+  </div>
+  <table>
+    <thead><tr><th>항목</th><th style="text-align:right">값</th></tr></thead>
+    <tbody id="rTb"></tbody>
+  </table>
+  <div class="btns">
+    <button type="button" class="btn pri" id="btnAgain">다시 하기</button>
+    <button type="button" class="btn" id="btnCard">결과 카드 저장</button>
+    <button type="button" class="btn" id="btnCopy">링크 복사</button>
+  </div>
+  <p class="share">공유 링크: <a id="shareUrl" href="#" rel="nofollow">—</a><br>링크에는 타수와 정확도 두 숫자만 담기며 이름·기기 정보는 포함되지 않습니다.</p>
+  <p class="src">타수는 한컴타자 방식(자소 단위 환산)으로 계산합니다. 초성·중성·종성 각 1타, 복합 모음(ㅘ ㅙ ㅚ ㅝ ㅞ ㅟ ㅢ)과 겹받침(ㄳ ㄵ ㄶ ㄺ ㄻ ㄼ ㄽ ㄾ ㄿ ㅀ ㅄ)은 2타, 쌍자음(ㄲ ㄸ ㅃ ㅆ ㅉ)은 설정에 따라 1타 또는 2타, 공백과 문장부호는 1타입니다. 등급과 상위 % 는 합리적인 가정으로 만든 고정 분포표에 따른 <strong>추정치</strong>이며 실제 통계 조사 결과가 아닙니다.</p>
+  <canvas id="cardCv" width="1080" height="1350" class="hidden"></canvas>
+</div>
+
+<p class="gist">타자 속도 테스트는 화면의 문장을 그대로 따라 치는 동안 걸린 시간과 정확도를 재는 도구입니다. 한국에서 흔히 쓰는 "분당 타수"는 완성된 글자 수가 아니라 자판을 누른 횟수를 기준으로 하기 때문에, 같은 글자 수라도 받침과 복합 모음이 많으면 타수가 더 높게 나옵니다. 이 페이지는 초성·중성·종성 각 1타, 복합 모음과 겹받침 2타, 쌍자음 1타(설정에서 2타로 변경 가능)라는 한컴타자와 같은 규칙으로 환산하고, 영문 모드에서는 국제적으로 쓰는 WPM(분당 단어 수)도 함께 보여 줍니다. 문장은 전부 이 페이지를 위해 직접 쓴 창작 문장이며, 입력한 내용은 브라우저 밖으로 나가지 않습니다.</p>
+
+<!--TESTS:S-->
+<a class="tbn" href="/tests/">
+  <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
+  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 좀비 생존률부터 전생, 아이돌 포지션까지 — 결과는 친구와 비교해 보세요.</span></span>
+  <span class="ar">→</span>
+</a>
+<!--TESTS:E-->
+
+<details class="fold" open><summary><h2>타수와 WPM은 무엇이 다를까</h2></summary><div class="fx">
+<p>한국에서 타자 속도를 말할 때 쓰는 단위는 <strong>타수(打數), 즉 분당 키 입력 횟수</strong>입니다. 반면 영어권에서 쓰는 단위는 <strong>WPM(Words Per Minute), 분당 단어 수</strong>입니다. 이름만 다른 게 아니라 세는 대상 자체가 달라서, 두 숫자를 그대로 비교하면 엉뚱한 결론이 납니다.</p>
+<p>WPM에는 오래된 관례가 하나 있습니다. 영어 단어는 길이가 제각각이라 "단어"를 그대로 세면 짧은 단어만 나오는 글이 유리해지므로, <strong>공백을 포함해 다섯 글자를 한 단어로 친다</strong>는 규칙을 씁니다. 즉 1분 동안 250자를 쳤다면 250 ÷ 5 = 50 WPM이 되는 식입니다. 이 규칙 덕분에 어떤 문장을 쳐도 비교적 공평한 숫자가 나옵니다. 이 페이지의 영문 모드도 같은 방식을 씁니다.</p>
+<p>한글은 사정이 다릅니다. "값"이라는 한 글자를 치려면 ㄱ, ㅏ, ㅂ, ㅅ 네 번을 눌러야 합니다. 완성된 글자 수를 세면 손가락이 실제로 한 일이 전혀 반영되지 않지요. 그래서 한국의 타자 프로그램들은 글자 수 대신 <strong>자판을 누른 횟수</strong>를 세는 쪽을 택했고, 그것이 오늘날의 타수입니다. 대략적인 감으로는 한글 타수 400타가 영문 40~50 WPM 정도의 손놀림에 해당하지만, 문장의 받침 비율에 따라 흔들리기 때문에 정확한 환산식은 존재하지 않습니다. 두 숫자는 서로 다른 자로 잰 길이라고 생각하는 편이 안전합니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>한컴타자 방식의 타수 계산 — 자소 하나가 한 타</h2></summary><div class="fx">
+<p>한글 한 글자는 초성·중성·종성으로 이루어집니다. 유니코드로 보면 한글 음절은 <code>0xAC00 + (초성×21 + 중성)×28 + 종성</code> 이라는 규칙적인 자리에 놓여 있어서, 글자 하나만 있으면 어떤 자소로 이루어졌는지 계산으로 되돌릴 수 있습니다. 이 페이지가 하는 일이 정확히 그것입니다.</p>
+<p>환산 규칙은 이렇습니다. <strong>초성 1타, 중성 1타, 종성이 있으면 1타</strong>가 기본입니다. 그래서 받침이 없는 "가"는 2타, 받침이 있는 "각"은 3타가 됩니다. 여기에 두벌식 자판의 현실을 반영한 예외가 붙습니다. 첫째, <strong>복합 모음</strong>(ㅘ ㅙ ㅚ ㅝ ㅞ ㅟ ㅢ)은 자판에 따로 있는 키가 아니라 두 모음을 이어 눌러 만들므로 2타입니다. "왜"는 ㅇ + ㅗ + ㅐ 로 3타이지요. 둘째, <strong>겹받침</strong>(ㄳ ㄵ ㄶ ㄺ ㄻ ㄼ ㄽ ㄾ ㄿ ㅀ ㅄ)도 두 자음을 이어 누르므로 2타입니다. "닭"은 ㄷ + ㅏ + ㄹ + ㄱ 으로 4타가 됩니다.</p>
+<p>애매한 것이 <strong>쌍자음</strong>(ㄲ ㄸ ㅃ ㅆ ㅉ)입니다. 두벌식에서는 시프트를 누른 채 해당 자음 키를 한 번 누르므로 물리적으로는 키를 두 개 누르지만 타이핑 동작은 한 번입니다. 관례적으로는 시프트를 포함해 1타로 세는 경우가 많아 이 페이지도 기본값을 1타로 두었고, 시프트까지 세고 싶은 분을 위해 설정에서 2타로 바꿀 수 있게 했습니다. 공백과 마침표·쉼표 같은 문장부호는 각각 1타입니다. 영문자와 숫자도 1타로 셉니다.</p>
+<p>이 계산은 실제로 어떤 키를 눌렀는지 감시해서 세는 것이 아니라 <strong>완성된 문장을 되짚어 환산</strong>하는 방식입니다. 그래서 중간에 지우고 다시 친 키는 타수에 포함되지 않습니다. 오타를 많이 내면 시간만 늘어나 타수가 떨어지는 구조라, 결과적으로 "정확하게 친 만큼만 인정받는" 셈입니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>한국인 평균 타수는 어느 정도일까</h2></summary><div class="fx">
+<p>결론부터 말하면 <strong>공신력 있는 전국 통계는 사실상 없습니다.</strong> 타자 속도는 국가 통계 조사 항목이 아니고, 온라인 타자 사이트가 공개하는 숫자는 그 사이트를 찾아온 사람들만의 기록이라 전체 인구를 대표하지 못합니다. 그러니 어떤 페이지가 "한국인 평균은 정확히 몇 타"라고 단정한다면 근거를 의심해 보시는 게 좋습니다. 이 페이지의 등급과 상위 % 도 그래서 <strong>추정</strong>이라고 명시해 두었습니다.</p>
+<p>그럼에도 일반적으로 통용되는 감각은 있습니다. 컴퓨터를 일상적으로 쓰지만 타자 연습을 따로 하지 않은 성인은 대체로 <strong>200~350타</strong> 범위에 놓인다고 이야기됩니다. 사무직처럼 문서를 자주 다루는 사람들은 <strong>350~500타</strong> 정도가 흔하고, 학창 시절 타자 연습을 열심히 했거나 채팅·글쓰기를 오래 한 사람은 <strong>500~700타</strong>에 도달하기도 합니다. 700타를 넘기면 주변에서 확실히 빠르다는 소리를 듣는 수준이고, 900타 이상은 속기를 따로 훈련한 영역에 가깝습니다.</p>
+<p>다만 이 범위는 어디까지나 대략적인 감각입니다. 같은 사람이라도 문장의 성격에 따라 100타 이상 차이가 납니다. 받침이 적고 익숙한 단어로 이루어진 문장은 빠르게 나가지만, 낯선 고유명사나 숫자·괄호가 섞이면 눈에 띄게 느려집니다. 그러니 한 번 잰 숫자에 일희일비하기보다, <strong>같은 조건에서 여러 번 재어 평균을 보는 편</strong>이 자기 실력을 아는 데 훨씬 도움이 됩니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>타자가 빨라지는 연습법</h2></summary><div class="fx">
+<p>속도를 올리는 가장 확실한 길은 역설적이게도 <strong>속도를 목표로 삼지 않는 것</strong>입니다. 타자는 손가락이 자판 위치를 몸으로 기억하는 일이고, 그 기억은 정확하게 반복할 때만 쌓입니다. 틀린 위치를 빠르게 반복하면 틀린 습관이 굳어질 뿐입니다. 처음에는 오히려 평소보다 느리게, 대신 오타가 거의 없도록 치는 연습이 장기적으로 훨씬 빨리 늡니다.</p>
+<p>다음은 <strong>기본 자리(홈 포지션)</strong>입니다. 왼손 검지를 ㄹ(F), 오른손 검지를 ㅓ(J) 자리에 두고, 각 손가락이 담당하는 열을 정해 두는 방식입니다. 두 키에는 대개 작은 돌기가 있어 손끝으로 위치를 찾을 수 있습니다. 처음에는 답답하고 느리지만, 이 규칙을 지키면 손이 자판 위를 헤매지 않게 되어 어느 순간부터 속도가 계단식으로 올라갑니다. 반대로 두세 손가락만 쓰는 습관은 300~400타 부근에서 벽을 만듭니다.</p>
+<p>세 번째는 <strong>화면을 보고 치는 습관</strong>입니다. 자판을 내려다보는 동안에는 다음 글자를 미리 읽을 수 없어서, 한 글자 치고 확인하고 다시 치는 식으로 리듬이 끊깁니다. 익숙해지면 눈은 늘 지금 치는 곳보다 몇 글자 앞을 읽고 손은 뒤따라오는 상태가 되는데, 이때부터 속도가 크게 붙습니다. 처음에는 자판을 천으로 가리거나, 아예 화면만 보고 틀리든 말든 끝까지 쳐 보는 연습이 도움이 됩니다.</p>
+<p>마지막은 <strong>짧고 잦은 연습</strong>입니다. 한 번에 한 시간을 몰아치는 것보다 하루 10분씩 2주가 훨씬 효과적입니다. 손가락 운동 기억은 잠을 자는 사이에 정착되기 때문에, 날짜를 나누는 편이 유리합니다. 또한 손목을 책상에 붙여 누르지 말고, 어깨에 힘을 빼고 손가락 관절만 움직이는 자세를 유지해야 오래 쳐도 아프지 않습니다. 통증이 생기면 속도보다 자세를 먼저 점검하세요.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>두벌식과 세벌식, 자판 배열 짧게 보기</h2></summary><div class="fx">
+<p>한국에서 표준으로 쓰이는 배열은 <strong>두벌식</strong>입니다. 이름 그대로 자판을 자음과 모음 두 벌로 나눈 방식으로, 왼손 쪽에 자음이 오른손 쪽에 모음이 배치되어 있습니다. 종성(받침)은 초성과 같은 키를 씁니다. 배우기 쉽고 키 개수가 적어 국가 표준이 되었고, 오늘날 대부분의 컴퓨터와 휴대전화가 이 배열을 기본으로 씁니다.</p>
+<p>두벌식의 약점은 <strong>글자 경계를 컴퓨터가 추측해야 한다</strong>는 점입니다. 예를 들어 "간" 다음에 모음이 오면 ㄴ이 받침이 아니라 다음 글자의 초성이 되어야 하므로, 입력기가 앞 글자를 고쳐 씁니다. 이 때문에 빠르게 칠 때 글자가 흔들려 보이거나, 도중에 끊고 다시 칠 때 의도치 않은 조합이 생기기도 합니다. 이 페이지가 조합 중(composition) 상태를 따로 다루고 조합이 끝난 뒤에 맞고 틀림을 판정하는 것도 바로 이 특성 때문입니다.</p>
+<p><strong>세벌식</strong>은 초성·중성·종성에 각각 다른 키를 배정한 배열입니다. 받침 키가 따로 있으니 글자 경계를 추측할 필요가 없고, 왼손·오른손이 번갈아 움직이는 비율이 높아 손의 피로가 적다고 알려져 있습니다. 다만 익혀야 할 키가 많고 표준 배열이 아니어서 공용 컴퓨터에서 쓰기 불편하다는 현실적인 문제가 있습니다. 지금 쓰는 배열이 답답하지 않다면 굳이 바꿀 이유는 없고, 하루 종일 글을 쓰는 직업이라면 한 번쯤 살펴볼 만한 선택지라고 정리할 수 있겠습니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>오타를 줄이는 법</h2></summary><div class="fx">
+<p>오타에는 몇 가지 정해진 패턴이 있습니다. 가장 흔한 것은 <strong>순서 뒤바뀜</strong>입니다. 양손을 번갈아 쓰는 글자에서 오른손이 왼손보다 살짝 빨리 나가면 자소 순서가 어긋납니다. 이런 오타가 잦다면 속도를 10%쯤 낮춰 양손의 박자를 맞추는 연습이 효과적입니다. 메트로놈처럼 일정한 간격으로 치는 감각을 익히면 눈에 띄게 줄어듭니다.</p>
+<p>두 번째는 <strong>이웃 키 오타</strong>입니다. ㅏ와 ㅑ, ㅓ와 ㅔ처럼 붙어 있는 키를 잘못 누르는 경우인데, 대개 손이 홈 포지션에서 조금씩 밀려나 있을 때 생깁니다. 문단을 하나 끝낼 때마다 검지를 돌기 위에 다시 얹는 습관을 들이면 손 위치가 초기화되어 오타가 줄어듭니다.</p>
+<p>세 번째는 <strong>시프트 처리 실수</strong>입니다. 쌍자음과 ㅒ·ㅖ는 시프트를 함께 눌러야 하는데, 시프트를 너무 일찍 떼거나 늦게 누르면 다른 글자가 나옵니다. 왼쪽 자음에는 오른쪽 시프트를, 오른쪽 모음에는 왼쪽 시프트를 쓰는 식으로 <strong>반대쪽 시프트</strong>를 쓰는 습관을 들이면 한 손이 무리하게 벌어지지 않아 훨씬 안정적입니다.</p>
+<p>마지막으로, 오타를 발견했을 때의 대처도 습관입니다. 백스페이스를 길게 눌러 뭉텅이로 지우는 것보다 틀린 글자만 정확히 지우고 이어 치는 편이 결과적으로 빠릅니다. 그리고 연습할 때는 <strong>정확도 95% 이상을 유지할 수 있는 속도</strong>를 자기 속도로 삼으세요. 정확도가 90% 아래로 떨어진 기록은 아무리 타수가 높아도 실제 문서 작업에서는 더 느립니다. 지운 만큼의 시간이 결국 다 돌아오기 때문입니다.</p>
+</div></details>
+
+<!--REL:S-->
+<h2>함께 쓰면 좋은 도구</h2>
+<div class="rel">
+  <a href="/tools/reaction/"><strong>반응속도·클릭 속도 테스트</strong><span>반응 ms · CPS · 에임 정확도</span></a>
+  <a href="/tools/char-count/"><strong>글자수 세기</strong><span>공백 포함·제외, 바이트, 원고지</span></a>
+  <a href="/tools/minutes/"><strong>회의록 작성기</strong><span>회의록·업무일지 양식, 워드 저장</span></a>
+</div>
+<form class="rel-srch" action="/tools/" method="get" role="search"><input type="search" name="q" placeholder="도구 45개 중에서 찾기 — 예: 누끼, 퇴직금, PDF" aria-label="까치툴 도구 검색" autocomplete="off"><button type="submit">검색</button></form>
+<p class="rel-all"><a href="/tools/">까치툴 도구 45개 전체 보기 →</a></p>
+<!--REL:E-->
+
+<footer>
+  <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 입력값(파일)은 전송·저장되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/tools/about/">소개</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+var $=function(id){return document.getElementById(id);};
+
+/* ====================== 자소 분해 / 타수 환산 ====================== */
+var CHO='ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ'.split('');
+var JUNG='ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ'.split('');
+var JONG=['','ㄱ','ㄲ','ㄳ','ㄴ','ㄵ','ㄶ','ㄷ','ㄹ','ㄺ','ㄻ','ㄼ','ㄽ','ㄾ','ㄿ','ㅀ','ㅁ','ㅂ','ㅄ','ㅅ','ㅆ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+var VSPLIT={'ㅘ':'ㅗㅏ','ㅙ':'ㅗㅐ','ㅚ':'ㅗㅣ','ㅝ':'ㅜㅓ','ㅞ':'ㅜㅔ','ㅟ':'ㅜㅣ','ㅢ':'ㅡㅣ'};
+var CSPLIT={'ㄳ':'ㄱㅅ','ㄵ':'ㄴㅈ','ㄶ':'ㄴㅎ','ㄺ':'ㄹㄱ','ㄻ':'ㄹㅁ','ㄼ':'ㄹㅂ','ㄽ':'ㄹㅅ','ㄾ':'ㄹㅌ','ㄿ':'ㄹㅍ','ㅀ':'ㄹㅎ','ㅄ':'ㅂㅅ'};
+var DBL={'ㄲ':'ㄱㄱ','ㄸ':'ㄷㄷ','ㅃ':'ㅂㅂ','ㅆ':'ㅅㅅ','ㅉ':'ㅈㅈ'};
+
+function pushJamo(out,j,two){
+  var s;
+  if(CSPLIT[j]){s=CSPLIT[j].split('');out.push(s[0]);out.push(s[1]);return;}
+  if(VSPLIT[j]){s=VSPLIT[j].split('');out.push(s[0]);out.push(s[1]);return;}
+  if(DBL[j]){ if(two){s=DBL[j].split('');out.push(s[0]);out.push(s[1]);} else out.push(j); return; }
+  out.push(j);
+}
+/* decompose('닭') -> ['ㄷ','ㅏ','ㄹ','ㄱ'] · decompose('왜') -> ['ㅇ','ㅗ','ㅐ'] */
+function decompose(ch,opt){
+  var two=!!(opt&&opt.doubleAsTwo);
+  var c=String(ch==null?'':ch);
+  if(!c.length) return [];
+  c=String.fromCodePoint(c.codePointAt(0));
+  var code=c.codePointAt(0), out=[];
+  if(code>=0xAC00&&code<=0xD7A3){
+    var s=code-0xAC00;
+    pushJamo(out,CHO[Math.floor(s/588)],two);
+    pushJamo(out,JUNG[Math.floor((s%588)/28)],two);
+    var jo=JONG[s%28]; if(jo) pushJamo(out,jo,two);
+    return out;
+  }
+  if(code>=0x3131&&code<=0x318E){ pushJamo(out,c,two); return out; }
+  return [c];
+}
+/* strokes('가나다 라마') === 11 */
+function strokes(str,opt){
+  var s=String(str==null?'':str), n=0, i=0, arr=Array.from(s);
+  for(i=0;i<arr.length;i++) n+=decompose(arr[i],opt).length;
+  return n;
+}
+/* 분당 타수 */
+function score(st,ms){
+  st=Number(st)||0; ms=Number(ms)||0;
+  if(ms<=0) return 0;
+  return Math.round(st/(ms/60000));
+}
+
+/* ====================== 등급 · 상위 % 추정 ====================== */
+var GRADES=[
+  {min:0,   name:'독수리 타법',     desc:'아직 손이 자판 위를 눈으로 찾고 있는 단계예요. 위치를 외우는 것부터 시작하면 가장 빨리 늘어납니다.'},
+  {min:120, name:'자판 더듬기',     desc:'글자는 찾아가지만 손이 자주 헤맵니다. 기본 자리에 손가락을 얹는 습관부터 잡아 보세요.'},
+  {min:200, name:'두 손 입문',      desc:'양손을 제대로 쓰기 시작한 구간입니다. 화면만 보고 치는 연습을 더하면 금방 올라갑니다.'},
+  {min:280, name:'리듬 타는 손',    desc:'문장을 끊지 않고 이어 칠 수 있는 수준입니다. 일상적인 문서 작업에는 충분합니다.'},
+  {min:360, name:'자판 길들인 손',  desc:'손이 자판을 몸으로 기억한 상태입니다. 이제부터는 정확도를 지키며 조금씩 올리는 싸움입니다.'},
+  {min:440, name:'소리 없는 속기사',desc:'회의 내용을 실시간으로 옮겨 적을 만한 속도입니다. 오타율만 낮추면 더 올라갑니다.'},
+  {min:530, name:'손가락 폭풍',     desc:'주변에서 확실히 빠르다는 소리를 듣는 구간입니다. 여기부터는 문장 난이도가 곧 실력입니다.'},
+  {min:630, name:'광속 까치',       desc:'생각하는 속도와 치는 속도가 거의 붙어 있는 영역입니다. 대단합니다.'}
+];
+var GRADES_EN=[
+  {min:0,  name:'독수리 타법'},{min:15, name:'자판 더듬기'},{min:25, name:'두 손 입문'},
+  {min:35, name:'리듬 타는 손'},{min:45, name:'자판 길들인 손'},{min:55, name:'소리 없는 속기사'},
+  {min:70, name:'손가락 폭풍'},{min:85, name:'광속 까치'}
+];
+function pickGrade(list,v){
+  var g=list[0],i;
+  for(i=0;i<list.length;i++){ if(v>=list[i].min) g=list[i]; }
+  return {level:list.indexOf(g)+1,of:list.length,name:g.name,desc:g.desc||''};
+}
+function grade(cpm){ return pickGrade(GRADES,Number(cpm)||0); }
+function gradeEn(wpm){ return pickGrade(GRADES_EN,Number(wpm)||0); }
+
+/* 합리적 가정으로 만든 고정 분포표 — 실제 조사 통계가 아닌 추정치 */
+var PCT_CPM=[[80,99.5],[120,98],[160,95],[200,91],[250,83],[300,72],[350,60],[400,47],
+             [450,35],[500,25],[550,17],[600,11],[650,7],[700,4],[800,1.5],[900,.6],[1100,.1]];
+var PCT_WPM=[[8,99.5],[15,96],[20,92],[25,85],[30,74],[35,61],[40,47],[45,35],
+             [50,25],[55,17],[60,11],[70,5],[80,2],[100,.3]];
+function topPct(tb,v){
+  var i,a,b;
+  if(v<=tb[0][0]) return tb[0][1];
+  if(v>=tb[tb.length-1][0]) return tb[tb.length-1][1];
+  for(i=1;i<tb.length;i++){
+    if(v<=tb[i][0]){ a=tb[i-1]; b=tb[i];
+      return a[1]+(b[1]-a[1])*(v-a[0])/(b[0]-a[0]); }
+  }
+  return tb[tb.length-1][1];
+}
+function pctText(p){
+  if(p>=10) return '상위 약 '+Math.round(p)+'%';
+  if(p>=1)  return '상위 약 '+(Math.round(p*10)/10)+'%';
+  return '상위 약 '+(Math.round(p*100)/100)+'%';
+}
+
+/* ====================== 문장 코퍼스 (전부 원문 창작) ====================== */
+var KO=[
+'아침 창문을 열자 서늘한 공기가 방 안으로 천천히 들어왔다.',
+'버스가 정류장에 서자 사람들이 우산을 접으며 하나씩 내렸다.',
+'책상 위에 놓인 컵에서 김이 가늘게 올라오고 있었다.',
+'회의가 끝나고 나서야 점심시간이 다 지나갔다는 것을 알았다.',
+'골목 끝 담장 위에서 고양이가 낮잠을 자고 있었다.',
+'비가 그친 뒤 아스팔트에서 흙냄새가 희미하게 올라왔다.',
+'새로 산 신발이 발에 익을 때까지는 며칠이 더 걸릴 것 같다.',
+'퇴근길 지하철 창밖으로 도시의 불빛이 길게 흘러갔다.',
+'주말 아침에는 알람을 끄고 조금 더 누워 있기로 했다.',
+'냉장고를 열어 보니 어제 사 둔 두부가 그대로 남아 있었다.',
+'사무실 복도 끝 창문에서 오후 햇빛이 비스듬히 들어온다.',
+'오래된 자전거 체인에 기름을 칠하자 소리가 부드러워졌다.',
+'산책로를 따라 걷다 보면 개천 물소리가 점점 커진다.',
+'찌개가 끓기 시작하자 부엌 유리창에 김이 뽀얗게 서렸다.',
+'문서를 저장하지 않고 창을 닫아 버려서 처음부터 다시 썼다.',
+'도서관 열람실은 종이 넘기는 소리 말고는 아주 조용했다.',
+'첫눈이 내린 날 아침에는 모두가 조금씩 늦게 도착했다.',
+'화분에 물을 준 지 오래되어 잎 끝이 노랗게 말라 있었다.',
+'택배 상자를 뜯자 완충재가 바닥으로 우수수 떨어졌다.',
+'여름밤에는 선풍기 도는 소리가 자장가처럼 방을 채웠다.',
+'계단을 두 칸씩 오르다가 중간에서 숨이 차 멈춰 섰다.',
+'봄이 되면 학교 담장을 따라 개나리가 노랗게 번진다.',
+'회사 앞 커피집은 아홉 시가 되기 전부터 늘 붐빈다.',
+'우편함에 오래 꽂혀 있던 고지서를 이제야 꺼내 보았다.',
+'낡은 수첩에는 예전에 쓰던 전화번호가 아직도 적혀 있었다.',
+'창고를 정리하다가 잃어버린 줄 알았던 우산을 찾았다.',
+'강가에서는 바람이 갈대를 한쪽으로 눕히며 지나갔다.',
+'노트북 배터리가 십 퍼센트 남았다는 알림이 화면에 떴다.',
+'점심으로 국수를 먹고 나서 뜨거운 국물까지 다 마셨다.',
+'지난주에 심은 상추 씨앗에서 작은 싹이 여럿 올라왔다.',
+'엘리베이터가 고장 나서 오늘은 계단으로 걸어 올라갔다.',
+'늦은 밤 편의점 불빛만 골목을 환하게 밝히고 있었다.',
+'빨래를 널자 베란다 전체에 세제 냄새가 은은하게 퍼졌다.',
+'회의록을 정리하면서 빠진 항목이 있는지 다시 확인했다.',
+'가을 산길에는 밟을 때마다 낙엽 부서지는 소리가 났다.',
+'창가 자리에 앉아 지나가는 사람들을 한참 바라보았다.',
+'새벽에 눈이 떠져서 물을 한 잔 마시고 다시 누웠다.',
+'눈이 많이 온 날에는 길가 자동차들이 하얀 지붕을 쓴다.',
+'오래 쓰던 마우스가 결국 왼쪽 버튼부터 말을 듣지 않았다.',
+'시장 골목에서 뜨거운 어묵 국물을 종이컵에 받아 들었다.',
+'옥상에 올라가면 멀리 산 능선이 흐릿하게 보인다.',
+'서류를 인쇄하려는데 종이가 걸려서 한참을 씨름했다.',
+'저녁 무렵 하늘이 주황색에서 보라색으로 천천히 바뀌었다.',
+'이사한 집은 아침마다 햇빛이 거실 깊숙이 들어온다.',
+'자판을 두드리는 소리만 사무실에 규칙적으로 이어졌다.',
+'텃밭에 물을 주고 나서 호미를 창고에 다시 넣어 두었다.',
+'비행기 창밖으로 구름이 넓은 들판처럼 펼쳐져 있었다.',
+'오후 세 시가 되자 졸음이 몰려와 잠깐 밖으로 나갔다.',
+'우체국에 들러 소포를 부치고 영수증을 지갑에 넣었다.',
+'밤새 내린 비로 마당 곳곳에 작은 물웅덩이가 생겼다.',
+'부엌 서랍을 열 때마다 숟가락들이 달그락 소리를 낸다.',
+'신호가 바뀌기를 기다리며 사람들은 휴대전화를 들여다봤다.',
+'사무실 화분에 새잎이 돋아 아침마다 확인하게 된다.',
+'오래된 라디오에서 잡음 사이로 음악이 흘러나왔다.',
+'창문을 닫자 바깥 소음이 갑자기 멀어진 것처럼 느껴졌다.',
+'겨울 아침 유리창에 얼어붙은 성에를 손으로 문질렀다.',
+'출근길에 신호를 세 번이나 놓쳐서 결국 뛰어서 갔다.',
+'책장을 정리하다가 오래전에 접어 둔 쪽지를 발견했다.',
+'냄비에 물을 올려 두고 잠깐 다른 일을 하다가 넘쳤다.',
+'퇴근 후 동네를 한 바퀴 걸으면 머릿속이 정리된다.'
+];
+var EN=[
+'The kettle hissed while rain tapped on the window.',
+'She stacked the folders and turned off the desk lamp.',
+'A slow train passed behind the row of gray houses.',
+'Morning fog settled over the field before sunrise.',
+'He wiped the counter and stacked the clean plates.',
+'The printer jammed twice before the meeting started.',
+'Leaves drifted across the empty parking lot at dusk.',
+'We walked the long way home to finish the story.',
+'The office was quiet except for a humming fan.',
+'A gull circled the pier and landed on a wet post.',
+'He wrote three lines, deleted them, and began again.',
+'The bus arrived late but nobody seemed to mind.',
+'Snow gathered on the branches outside the window.',
+'She poured coffee and opened the report once more.',
+'The river ran high after two days of steady rain.',
+'Somebody left an umbrella beside the front door.',
+'He checked the list twice and locked the storeroom.',
+'Sunlight crossed the floor and reached the bookshelf.',
+'The dog waited by the gate until the car appeared.',
+'Wind moved through the tall grass along the path.',
+'They painted the fence before the weather turned.',
+'My notes were scattered across four different files.',
+'The bakery smelled of warm bread and burnt sugar.',
+'He tied his boots and stepped into the cold air.',
+'A quiet street can feel wider than it really is.',
+'The meeting ended early and everyone looked glad.',
+'She marked the calendar and closed the laptop lid.',
+'Frost covered the windshield in a thin white sheet.',
+'The elevator stopped on every floor that morning.',
+'He carried the boxes up two flights without resting.',
+'Rain streaked the glass and blurred the streetlights.',
+'The clock above the door had been wrong for weeks.',
+'We shared one small table near the back window.',
+'Her keys were under the newspaper the whole time.',
+'The garden looked greener after the long weekend.',
+'He answered the last email and stood up slowly.',
+'A moth kept circling the lamp on the front porch.',
+'The tide pulled the shells back into dark water.',
+'She sorted the mail and set the bills to one side.',
+'Clouds thinned and the hills came back into view.'
+];
+var LONG=[
+[
+'새벽 다섯 시의 시장은 하루 중 가장 분주하다. 트럭에서 내려진 상자들이 골목 양쪽에 차곡차곡 쌓이고, 상인들은 물기가 남은 채소를 손으로 훑어 가며 크기별로 나눈다. 아직 어두운 하늘 아래에서 전구 몇 개가 좌판을 노랗게 비춘다.',
+'여섯 시가 가까워지면 첫 손님들이 들어온다. 대개는 근처 식당에서 나온 사람들이라 사는 양이 많고 걸음이 빠르다. 흥정은 길지 않다. 서로 얼굴을 아는 사이라 값을 묻는 대신 봉지 개수만 말하고 지나간다.',
+'해가 완전히 떠오르면 시장의 소리가 바뀐다. 짐을 부리던 소리 대신 사람들이 이야기하는 소리가 골목을 채우고, 끝자락 국숫집에서는 뜨거운 김이 문틈으로 새어 나온다. 상인들은 그제야 접이식 의자에 앉아 늦은 아침을 먹는다.',
+'정오가 지나면 좌판은 눈에 띄게 헐거워진다. 남은 물건을 한쪽으로 모으고 빈 상자를 접어 쌓는 일이 시작된다. 하루가 끝나는 시각이 남들보다 이른 대신, 이곳의 하루는 남들이 잠든 시각에 시작된다.'
+],
+[
+'도서관 삼층 열람실은 오후 두 시가 가장 조용하다. 점심을 먹고 돌아온 사람들이 자리를 잡고, 창가 쪽에는 햇빛이 길게 들어와 책상 절반을 덮는다. 누군가 의자를 당길 때마다 바닥에서 짧은 소리가 나고 그 소리는 곧 흡수되어 사라진다.',
+'서가 사이를 걸으면 종이와 먼지가 섞인 냄새가 난다. 오래 꽂혀 있던 책일수록 등이 바래 있어서, 제목을 읽으려면 고개를 옆으로 기울여야 한다. 찾던 번호를 지나쳤다가 두 칸 되돌아오는 일이 자주 있다.',
+'네 시가 넘으면 분위기가 조금 흐트러진다. 가방을 챙기는 소리, 자판을 두드리는 소리, 복도에서 낮게 통화하는 소리가 겹친다. 창밖으로는 해가 건물 뒤로 넘어가며 열람실 안의 빛도 서서히 물러난다.',
+'문을 닫을 시간이 되면 사서가 조용히 층을 한 바퀴 돈다. 남은 사람들은 읽던 쪽에 종이를 끼우고 책을 반납대에 올려 둔다. 계단을 내려오면 바깥 공기가 확 달라져 있고, 그제야 하루가 얼마나 지났는지 실감이 난다.'
+],
+[
+'겨울 산길은 초입부터 소리가 다르다. 낙엽 위에 얇게 덮인 서리가 발밑에서 부서지며 사각거리고, 나뭇가지 사이로 지나가는 바람은 여름보다 훨씬 높은 음을 낸다. 배낭 끈을 조이고 장갑을 고쳐 끼는 동안 손끝이 벌써 시리다.',
+'삼십 분쯤 오르면 몸에서 열이 나기 시작한다. 겉옷을 벗어 배낭에 넣고 다시 걸으면 숨소리가 규칙적으로 잡힌다. 이 구간에서는 앞사람의 발자국을 그대로 밟는 편이 힘이 덜 든다. 눈이 얼어 미끄러운 자리도 발자국을 따라가면 대체로 안전하다.',
+'능선에 올라서면 시야가 갑자기 넓어진다. 잎이 다 떨어진 나무들 사이로 아래쪽 마을과 논이 한눈에 들어오고, 멀리 능선들이 옅은 회색으로 겹쳐 보인다. 여기서 마시는 물은 이상하게 더 차고 맛있다.',
+'내려오는 길은 오르는 길보다 짧게 느껴지지만 무릎에는 더 부담이 간다. 보폭을 줄이고 천천히 내려오다 보면 어느새 다시 낙엽 소리가 들리는 구간이다. 산 입구에 도착해 신발에 묻은 흙을 털면 하루가 정리된 기분이 든다.'
+],
+[
+'사무실을 옮기는 날은 아침부터 정신이 없다. 책상마다 번호를 적은 종이를 붙이고, 서류함은 순서가 섞이지 않도록 고무줄로 묶는다. 모니터는 상자 안에서 흔들리지 않게 완충재를 채워야 하는데 이 작업이 생각보다 오래 걸린다.',
+'짐을 다 빼고 나면 방이 원래보다 훨씬 넓어 보인다. 벽에는 액자와 게시물을 떼어 낸 자국이 그대로 남아 있고, 바닥에는 오래 눌려 있던 책상다리 자국이 네 개씩 찍혀 있다. 청소기를 한 번 돌리면 먼지가 상당히 나온다.',
+'새 사무실에서는 자리 배치를 다시 정해야 한다. 창가를 원하는 사람과 조용한 안쪽을 원하는 사람이 갈리는데, 대개는 몇 마디 오가다 금방 정해진다. 전원 콘센트가 부족한 자리를 확인하는 일이 그다음이다.',
+'저녁이 되면 대부분의 상자가 열리고 책상 위에 물건들이 제자리를 찾는다. 아직 벽은 비어 있고 안내판도 붙지 않았지만, 컴퓨터가 켜지고 자판 소리가 나기 시작하면 그곳은 이미 사무실이다.'
+],
+[
+'바닷가 마을의 아침은 배 소리로 시작된다. 밤새 나가 있던 배들이 돌아오면 방파제 안쪽이 잠깐 붐비고, 그물에서 떨어진 물이 시멘트 바닥을 짙게 적신다. 갈매기들은 그 위를 낮게 돌며 기회를 노린다.',
+'선착장 옆 창고 앞에서는 상자를 옮기고 얼음을 채우는 일이 이어진다. 사람들은 서로의 이름을 부르는 대신 짧은 신호로 말을 대신하는데, 처음 보는 사람에게는 그저 소음처럼 들린다. 익숙해지면 그 안에 순서가 있다는 것을 알게 된다.',
+'해가 높아지면 마을 안쪽 길이 조용해진다. 담벼락에 그물을 널어 말리고, 마당에는 어제 씻어 둔 장화가 뒤집힌 채 서 있다. 골목 끝 가게 앞 평상에는 오전 내내 아무도 앉지 않는다.',
+'저녁이 되면 다시 사람들이 나온다. 방파제 끝까지 걸어가 바다를 보고 돌아오는 산책이 하루의 마지막 일과처럼 이어진다. 물빛이 어두워지고 등대에 불이 들어오면 마을은 다음 새벽을 준비하기 시작한다.'
+]
+];
+
+/* ====================== 상태 ====================== */
+var CANON='https://www.kmagpie.com/tools/typing/';
+var S={mode:'ko',count:5,dbl:false,items:[],idx:0,running:false,done:false,
+       t0:0,itemStart:0,totalMs:0,totalStrokes:0,totalChars:0,totalErr:0,
+       wrong:null,over:0,composing:false,timer:0,last:null};
+
+function shuffle(a){
+  var b=a.slice(),i,j,t;
+  for(i=b.length-1;i>0;i--){ j=Math.floor(Math.random()*(i+1)); t=b[i]; b[i]=b[j]; b[j]=t; }
+  return b;
+}
+function buildItems(){
+  if(S.mode==='long'){
+    var p=LONG[Math.floor(Math.random()*LONG.length)];
+    return p.slice();
+  }
+  var src=(S.mode==='en')?EN:KO;
+  return shuffle(src).slice(0,Math.min(S.count,src.length));
+}
+
+function esc(c){
+  if(c==='&') return '&amp;';
+  if(c==='<') return '&lt;';
+  if(c==='>') return '&gt;';
+  return c;
+}
+function renderTarget(){
+  var t=S.items[S.idx]||'', v=$('ta').value, html='', i, cls;
+  for(i=0;i<t.length;i++){
+    cls='';
+    if(i<v.length){
+      if(S.composing&&i===v.length-1) cls='cur';
+      else cls=(v.charAt(i)===t.charAt(i))?'ok':'bad';
+    } else if(i===v.length) cls='cur';
+    html+='<span'+(cls?' class="'+cls+'"':'')+'>'+esc(t.charAt(i))+'</span>';
+  }
+  $('target').innerHTML=html;
+  var cur=$('target').querySelector('.cur');
+  if(cur&&cur.scrollIntoView) cur.scrollIntoView({block:'nearest'});
+}
+function accNow(){
+  var chars=S.totalChars+(S.items[S.idx]?Math.min($('ta').value.length,S.items[S.idx].length):0);
+  var err=S.totalErr+(S.wrong?S.wrong.size:0)+S.over;
+  if(chars<=0) return 100;
+  return Math.max(0,(chars-err)/chars*100);
+}
+function updateLive(){
+  var now=performance.now();
+  var ms=S.totalMs+(S.running?(now-S.itemStart):0);
+  var st=S.totalStrokes+strokes($('ta').value,{doubleAsTwo:S.dbl});
+  $('sProg').textContent=(Math.min(S.idx+1,S.items.length))+' / '+S.items.length;
+  $('sTime').textContent=(ms/1000).toFixed(1)+'초';
+  $('sCpm').textContent=String(score(st,ms));
+  $('sAcc').textContent=Math.round(accNow())+'%';
+}
+
+function startRun(){
+  S.running=true;
+  S.t0=performance.now();
+  S.itemStart=S.t0;
+  if(S.timer) clearInterval(S.timer);
+  S.timer=setInterval(updateLive,100);
+}
+function resetRun(keepMode){
+  if(S.timer){clearInterval(S.timer);S.timer=0;}
+  S.items=buildItems();
+  S.idx=0; S.running=false; S.done=false;
+  S.totalMs=0; S.totalStrokes=0; S.totalChars=0; S.totalErr=0;
+  S.wrong=new Set(); S.over=0; S.composing=false;
+  $('ta').value='';
+  $('result').className='result hidden';
+  $('stage').className='panel';
+  renderTarget(); updateLive();
+  if(!keepMode) return;
+}
+function commitItem(skipped){
+  var now=performance.now(), t=S.items[S.idx];
+  if(S.running) S.totalMs+=now-S.itemStart;
+  if(!skipped) S.totalStrokes+=strokes(t,{doubleAsTwo:S.dbl});
+  S.totalChars+=t.length;
+  S.totalErr+=S.wrong.size+S.over+(skipped?Math.max(0,t.length-$('ta').value.length):0);
+  S.idx++;
+  S.wrong=new Set(); S.over=0;
+  $('ta').value='';
+  if(S.idx>=S.items.length){ finish(); return; }
+  S.itemStart=performance.now();
+  renderTarget(); updateLive();
+}
+function onInput(e){
+  if(e&&typeof e.isComposing==='boolean') S.composing=e.isComposing;
+  if(S.done) return;
+  var t=S.items[S.idx]||'', v=$('ta').value, i;
+  if(!S.running&&v.length>0) startRun();
+  var lim=S.composing?v.length-1:v.length;
+  for(i=0;i<lim&&i<t.length;i++){ if(v.charAt(i)!==t.charAt(i)) S.wrong.add(i); }
+  if(v.length>t.length) S.over=Math.max(S.over,v.length-t.length);
+  renderTarget(); updateLive();
+  if(!S.composing&&v===t) commitItem(false);
+}
+function finish(){
+  S.running=false; S.done=true;
+  if(S.timer){clearInterval(S.timer);S.timer=0;}
+  var ms=S.totalMs;
+  var cpm=score(S.totalStrokes,ms);
+  var acc=S.totalChars>0?Math.max(0,(S.totalChars-S.totalErr)/S.totalChars*100):0;
+  var wpm=ms>0?(S.totalChars/5)/(ms/60000):0;
+  var isEn=(S.mode==='en');
+  var g=isEn?gradeEn(wpm):grade(cpm);
+  var p=isEn?topPct(PCT_WPM,wpm):topPct(PCT_CPM,cpm);
+
+  S.last={cpm:cpm,acc:Math.round(acc*10)/10,wpm:Math.round(wpm*10)/10,ms:ms,
+          err:S.totalErr,chars:S.totalChars,st:S.totalStrokes,grade:g,pct:p,mode:S.mode};
+
+  $('rCpm').innerHTML=cpm+'<small>타/분</small>';
+  $('rGrade').textContent=g.level+'단계 · '+g.name;
+  $('rPct').textContent=pctText(p)+' 수준으로 추정됩니다 (고정 분포표 기반 추정치).';
+  $('rAcc').textContent=(Math.round(acc*10)/10)+'%';
+  $('rWpm').textContent=(Math.round(wpm*10)/10);
+  $('rSec').textContent=(ms/1000).toFixed(1)+'초';
+  $('rErr').textContent=S.totalErr+'개';
+
+  var rows='';
+  rows+='<tr><td>모드</td><td class="n">'+(S.mode==='ko'?'문장 연습 (한글)':S.mode==='en'?'문장 연습 (영문)':'긴 글 (한글)')+'</td></tr>';
+  rows+='<tr><td>친 문장 수</td><td class="n">'+S.items.length+'개</td></tr>';
+  rows+='<tr><td>친 글자 수</td><td class="n">'+S.totalChars+'자</td></tr>';
+  rows+='<tr class="hi"><td>환산 타수 (자소 기준)</td><td class="n">'+S.totalStrokes+'타</td></tr>';
+  rows+='<tr><td>쌍자음 계산</td><td class="n">'+(S.dbl?'2타':'1타')+'</td></tr>';
+  rows+='<tr><td>등급 설명</td><td class="n" style="text-align:left;white-space:normal">'+(g.desc||'—')+'</td></tr>';
+  $('rTb').innerHTML=rows;
+
+  var url=CANON+'?v='+cpm+'-'+Math.round(acc);
+  $('shareUrl').textContent=url;
+  $('shareUrl').setAttribute('href',url);
+
+  $('stage').className='panel hidden';
+  $('result').className='result';
+  $('result').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* ====================== 결과 카드 ====================== */
+function drawCard(){
+  var cv=$('cardCv'), x=cv.getContext('2d'), W=1080, H=1350;
+  var d=S.last||{cpm:0,acc:0,grade:{level:1,name:'—'},pct:50};
+  var gr=x.createLinearGradient(0,0,W,H);
+  gr.addColorStop(0,'#191713'); gr.addColorStop(.55,'#211d17'); gr.addColorStop(1,'#14120f');
+  x.fillStyle=gr; x.fillRect(0,0,W,H);
+  /* 미세한 점 격자 */
+  var i,j;
+  for(i=24;i<W;i+=34){
+    for(j=24;j<H;j+=34){
+      x.fillStyle='rgba(224,163,90,'+(0.020+((i*j)%7)*0.006).toFixed(3)+')';
+      x.beginPath(); x.arc(i,j,2.2,0,Math.PI*2); x.fill();
+    }
+  }
+  x.strokeStyle='rgba(224,163,90,.42)'; x.lineWidth=3;
+  x.strokeRect(48,48,W-96,H-96);
+
+  x.textAlign='center';
+  x.fillStyle='#e0a35a';
+  x.font='700 40px -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+  x.fillText('한글 타자 속도 테스트', W/2, 190);
+
+  x.fillStyle='#8a837a';
+  x.font='500 30px -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+  x.fillText('분당 타수', W/2, 300);
+
+  x.fillStyle='#f3efe8';
+  var big=String(d.cpm), bs=big.length<=3?250:(big.length===4?210:(big.length===5?170:135));
+  x.font='800 '+bs+'px -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+  x.fillText(big, W/2, 500);
+
+  x.fillStyle='#e0a35a';
+  x.font='700 46px -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+  x.fillText('타 / 분', W/2, 570);
+
+  x.strokeStyle='rgba(224,163,90,.28)'; x.lineWidth=2;
+  x.beginPath(); x.moveTo(150,650); x.lineTo(W-150,650); x.stroke();
+
+  x.fillStyle='#f3efe8';
+  x.font='800 66px -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+  x.fillText(d.grade.level+'단계 · '+d.grade.name, W/2, 760);
+
+  x.fillStyle='#aca69d';
+  x.font='500 36px -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+  x.fillText('정확도 '+d.acc+'%   ·   '+pctText(d.pct)+' (추정)', W/2, 840);
+
+  /* 하단 정보 박스 */
+  x.fillStyle='rgba(255,255,255,.04)';
+  x.fillRect(120,930,W-240,190);
+  x.strokeStyle='rgba(224,163,90,.22)'; x.lineWidth=2;
+  x.strokeRect(120,930,W-240,190);
+  x.fillStyle='#aca69d';
+  x.font='500 32px -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+  x.fillText('소요 '+((d.ms||0)/1000).toFixed(1)+'초   ·   오타 '+(d.err||0)+'개', W/2, 1000);
+  x.fillText('WPM '+(d.wpm||0)+'   ·   환산 '+(d.st||0)+'타', W/2, 1060);
+
+  x.fillStyle='#e0a35a';
+  x.font='700 34px -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+  x.fillText('kmagpie.com/tools/typing/', W/2, 1220);
+  x.fillStyle='#6f6961';
+  x.font='400 26px -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+  x.fillText('등급·상위 %는 고정 분포표에 따른 추정치입니다', W/2, 1268);
+  return cv;
+}
+function makeCard(){
+  var cv=drawCard();
+  return new Promise(function(res){
+    if(cv.toBlob) cv.toBlob(function(b){res(b);},'image/png');
+    else res(null);
+  });
+}
+
+/* ====================== 이벤트 ====================== */
+var ta=$('ta');
+ta.addEventListener('input',onInput);
+ta.addEventListener('compositionstart',function(){S.composing=true;});
+ta.addEventListener('compositionupdate',function(){S.composing=true;});
+ta.addEventListener('compositionend',function(){S.composing=false;onInput(null);});
+ta.addEventListener('paste',function(e){e.preventDefault();});
+ta.addEventListener('drop',function(e){e.preventDefault();});
+ta.addEventListener('keydown',function(e){
+  if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); if(!S.composing) onInput(null); }
+});
+
+Array.prototype.forEach.call(document.querySelectorAll('#modeTabs button'),function(b){
+  b.addEventListener('click',function(){
+    Array.prototype.forEach.call(document.querySelectorAll('#modeTabs button'),function(o){
+      o.setAttribute('aria-selected',o===b?'true':'false');
+    });
+    S.mode=b.getAttribute('data-mode');
+    $('modeNote').textContent = S.mode==='ko'
+      ? '한글 문장 60개 중에서 무작위로 뽑습니다. 문장은 모두 이 페이지를 위해 직접 쓴 것이라 인용문·속담이 섞여 있지 않습니다.'
+      : S.mode==='en'
+      ? '영문 문장 40개 중에서 무작위로 뽑습니다. 영문 모드에서는 WPM(분당 단어 수)을 기준으로 등급이 매겨집니다.'
+      : '3~4문단짜리 긴 글 한 편을 문단 단위로 이어서 칩니다. 문장 개수 설정은 이 모드에서 적용되지 않습니다.';
+    resetRun(); ta.focus();
+  });
+});
+Array.prototype.forEach.call(document.querySelectorAll('#cntSeg button'),function(b){
+  b.addEventListener('click',function(){
+    Array.prototype.forEach.call(document.querySelectorAll('#cntSeg button'),function(o){
+      o.setAttribute('aria-pressed',o===b?'true':'false');
+    });
+    S.count=parseInt(b.getAttribute('data-c'),10)||5;
+    resetRun(); ta.focus();
+  });
+});
+Array.prototype.forEach.call(document.querySelectorAll('#dblSeg button'),function(b){
+  b.addEventListener('click',function(){
+    Array.prototype.forEach.call(document.querySelectorAll('#dblSeg button'),function(o){
+      o.setAttribute('aria-pressed',o===b?'true':'false');
+    });
+    S.dbl=b.getAttribute('data-d')==='1';
+    updateLive();
+  });
+});
+$('btnSkip').addEventListener('click',function(){ if(!S.done&&S.items.length){ if(!S.running) startRun(); commitItem(true);} ta.focus(); });
+$('btnReset').addEventListener('click',function(){ resetRun(); ta.focus(); });
+$('btnAgain').addEventListener('click',function(){ resetRun(); ta.focus(); });
+$('btnCard').addEventListener('click',function(){
+  makeCard().then(function(b){
+    if(!b) return;
+    var u=URL.createObjectURL(b), a=document.createElement('a');
+    a.href=u; a.download='typing-'+((S.last&&S.last.cpm)||0)+'타.png';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){URL.revokeObjectURL(u);},2000);
+  });
+});
+$('btnCopy').addEventListener('click',function(){
+  var url=$('shareUrl').textContent, btn=$('btnCopy'), old=btn.textContent;
+  function done(){ btn.textContent='복사됨!'; setTimeout(function(){btn.textContent=old;},1500); }
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(url).then(done,function(){fallback();});
+  } else fallback();
+  function fallback(){
+    var t=document.createElement('textarea'); t.value=url; document.body.appendChild(t);
+    t.select(); try{document.execCommand('copy');}catch(err){}
+    t.remove(); done();
+  }
+});
+
+/* 공유 링크로 들어온 경우 */
+(function(){
+  var m=/[?&]v=(\d+)-(\d+)/.exec(location.search);
+  if(!m) return;
+  var cpm=parseInt(m[1],10), acc=parseInt(m[2],10);
+  if(!isFinite(cpm)||cpm<=0) return;
+  var g=grade(cpm);
+  $('shared').className='msg m-ok';
+  $('shared').textContent='공유된 기록: '+cpm+'타/분 · 정확도 '+acc+'% · '+g.level+'단계 「'+g.name+'」. 아래에서 직접 재 보세요.';
+})();
+
+resetRun();
+
+window.TYPING={
+  strokes:strokes,
+  decompose:decompose,
+  score:score,
+  grade:grade,
+  gradeEn:gradeEn,
+  makeCard:makeCard,
+  items:function(){return S.items.slice();},
+  state:function(){return {mode:S.mode,idx:S.idx,done:S.done,last:S.last};}
+};
+})();
+</script>
+</body>
+</html>

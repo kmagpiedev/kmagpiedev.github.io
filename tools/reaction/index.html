@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>반응속도 테스트 — 클릭 속도(CPS)·에임 정확도 측정 | 까치툴</title>
+<meta name="description" content="반응속도 테스트와 클릭 속도(CPS) 테스트를 한 곳에서. 초록으로 바뀌는 순간 클릭해 5회 평균 반응속도를 밀리초로 재고, 5초·10초 연타로 CPS를, 60초 에임 테스트로 정확도를 확인하세요. 결과 카드 저장과 링크 공유도 됩니다.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/reaction/">
+<meta property="og:title" content="반응속도 테스트 — 클릭 속도(CPS)·에임 정확도 측정">
+<meta property="og:description" content="초록으로 바뀌는 순간 클릭. 5회 평균 반응속도, 클릭 속도(CPS), 60초 에임 정확도까지 한 페이지에서.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/reaction/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+    --pri-ink:#fff;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+      --pri-ink:#171614;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 20px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .xlink{display:inline-flex;align-items:center;gap:8px;margin:0 0 22px;padding:8px 14px;
+    border:1px solid var(--line);border-radius:999px;background:var(--surface);
+    font-size:13.5px;color:var(--ink-2);text-decoration:none}
+  .xlink:hover{border-color:var(--accent);color:var(--accent)}
+  .xlink b{font-weight:700}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:16px 0}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:12px 0 0}
+  .hidden{display:none}
+  code{background:var(--line-soft);padding:1px 5px;border-radius:4px;font-size:12.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .src{font-size:12.5px;color:var(--ink-3);margin-top:14px;padding-top:12px;border-top:1px solid var(--line-soft)}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+
+  .tabs{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 14px}
+  .tabs button{font-family:inherit;font-size:14px;font-weight:600;padding:9px 14px;border-radius:10px;
+    border:1px solid var(--line);background:transparent;color:var(--ink-2);cursor:pointer}
+  .tabs button:hover{border-color:var(--accent);color:var(--accent)}
+  .tabs button[aria-selected="true"]{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+
+  .seg{display:flex;gap:6px;flex-wrap:wrap}
+  .seg button{font-family:inherit;font-size:13.5px;font-weight:600;padding:8px 14px;border-radius:9px;
+    border:1px solid var(--line);background:transparent;color:var(--ink-2);cursor:pointer}
+  .seg button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+
+  #pad{position:relative;width:100%;min-height:300px;border-radius:18px;display:flex;
+    flex-direction:column;align-items:center;justify-content:center;text-align:center;
+    cursor:pointer;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;
+    padding:26px 18px;transition:background-color .06s linear;color:#fff}
+  #pad .pt{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.35;margin:0}
+  #pad .ps{font-size:15px;margin:10px 0 0;opacity:.92;max-width:520px}
+  #pad .pms{font-size:64px;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums;margin:6px 0 0}
+  #pad[data-state="idle"]{background:#3f3a33}
+  #pad[data-state="wait"]{background:#b8342c}
+  #pad[data-state="go"]{background:#149a5a}
+  #pad[data-state="early"]{background:#8a5a17}
+  #pad[data-state="trial"]{background:#2f4f7a}
+  #pad[data-state="done"]{background:#2a2721}
+
+  #cpsPad{position:relative;width:100%;min-height:280px;border-radius:18px;background:#2f4f7a;color:#fff;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+    cursor:pointer;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;padding:26px 18px}
+  #cpsPad .pt{font-size:24px;font-weight:800;margin:0}
+  #cpsPad .pnum{font-size:76px;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums;margin:4px 0}
+  #cpsPad .ps{font-size:15px;margin:6px 0 0;opacity:.92}
+  #cpsPad[data-state="done"]{background:#2a2721}
+
+  #aimArea{position:relative;width:100%;height:340px;border-radius:18px;background:#1d2a33;
+    overflow:hidden;cursor:crosshair;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
+  #aimArea .dot{position:absolute;border-radius:50%;background:#e0a35a;
+    box-shadow:0 0 0 3px rgba(255,255,255,.22) inset;cursor:pointer}
+  #aimArea .hint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    color:#cfd8de;font-size:16px;text-align:center;padding:20px}
+
+  .stats{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 0}
+  .stat{flex:1 1 84px;min-width:84px;border:1px solid var(--line);border-radius:11px;
+    padding:8px 11px;background:var(--surface)}
+  .stat b{display:block;font-size:18px;font-weight:800;letter-spacing:-.01em;
+    font-variant-numeric:tabular-nums;line-height:1.35}
+  .stat span{display:block;font-size:11px;color:var(--ink-3);letter-spacing:.04em}
+  .trials{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0 0;font-size:12.5px;color:var(--ink-3)}
+  .trials i{font-style:normal;border:1px solid var(--line);border-radius:8px;padding:4px 9px;
+    font-variant-numeric:tabular-nums;background:var(--surface)}
+
+  .result{background:var(--surface);border:1px solid var(--accent);border-radius:16px;padding:24px 22px;margin:18px 0}
+  .rlab{font-size:13px;color:var(--ink-2);margin:0 0 2px}
+  .rbig{font-size:56px;font-weight:800;letter-spacing:-.035em;line-height:1.08;
+    font-variant-numeric:tabular-nums;color:var(--accent)}
+  .rbig small{font-size:19px;font-weight:700;margin-left:5px;letter-spacing:0}
+  .rgrade{font-size:23px;font-weight:800;letter-spacing:-.02em;margin:14px 0 2px}
+  .rpct{font-size:14px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+  .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+  .btn{font-family:inherit;font-size:14.5px;font-weight:600;padding:10px 16px;border-radius:10px;cursor:pointer;
+    border:1px solid var(--line);background:transparent;color:var(--ink-2)}
+  .btn:hover{border-color:var(--accent);color:var(--accent)}
+  .btn.pri{background:var(--accent);border-color:var(--accent);color:var(--pri-ink)}
+  .btn.pri:hover{opacity:.9;color:var(--pri-ink)}
+  .share{margin-top:14px;font-size:13px;color:var(--ink-3);word-break:break-all}
+  .share a{color:var(--ink-2)}
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-ok{background:var(--good-soft);border-color:var(--good)}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px}
+  th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line-soft)}
+  th{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:700;border-bottom:1px solid var(--line)}
+  td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  tr.hi td{background:var(--accent-soft);font-weight:700}
+
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .rbig{font-size:44px}
+    #pad{min-height:260px}
+    #pad .pms{font-size:52px}
+    #cpsPad .pnum{font-size:62px}
+    #aimArea{height:300px}
+    table{font-size:13px}
+    th,td{padding:7px 4px}
+    .stat{flex:1 1 calc(50% - 4px);min-width:0}
+  }
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 8px}
+  .fold .fx>:first-child{margin-top:4px}
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-srch{display:flex;gap:8px;margin:0 0 12px}
+  .rel-srch input{flex:1;min-width:0;padding:10px 14px;border:1px solid var(--line);border-radius:11px;
+    background:var(--surface);color:var(--ink);font:inherit;font-size:14.5px;outline:none}
+  .rel-srch input:focus{border-color:var(--accent)}
+  .rel-srch input::-webkit-search-cancel-button{-webkit-appearance:none}
+  .rel-srch button{flex:none;padding:10px 16px;border:1px solid var(--accent);border-radius:11px;
+    background:transparent;color:var(--accent);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+  .rel-srch button:hover{background:var(--accent-soft)}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
+/*TESTS:S*/
+  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 24px;padding:13px 18px;
+    border:1px solid var(--line);border-radius:14px;background:var(--surface);
+    text-decoration:none;color:inherit;transition:.14s}
+  .tbn:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .tbn .ic{width:44px;height:44px;flex:none;border-radius:12px;background:#fff;
+    border:1px solid var(--line);object-fit:contain;padding:2px}
+  .tbn .tx{flex:1;min-width:0}
+  .tbn .tt{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em}
+  .tbn .ds{display:block;font-size:13px;color:var(--ink-3);line-height:1.55;margin-top:2px}
+  .tbn .ar{color:var(--ink-3);font-size:15px;flex:none}
+/*TESTS:E*/
+</style>
+<!--HEAD:S-->
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
+<meta property="og:site_name" content="까치툴">
+<link rel="manifest" href="/tools/manifest.json">
+<meta name="theme-color" content="#faf9f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#171614" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="까치툴">
+<script>/*PWA*/(function(){var L=document.documentElement.lang==='en';
+if('serviceWorker' in navigator)addEventListener('load',function(){navigator.serviceWorker.register('/sw.js',{scope:'/'})['catch'](function(){})});
+var p=null,armed=false;addEventListener('beforeinstallprompt',function(e){e.preventDefault();p=e;arm()});
+function arm(){if(armed)return;armed=true;var h=function(){removeEventListener('pointerdown',h,true);removeEventListener('keydown',h,true);show()};
+addEventListener('pointerdown',h,true);addEventListener('keydown',h,true)}
+addEventListener('appinstalled',function(){p=null;var b=document.getElementById('pwaBtn');if(b)b.style.visibility='hidden'});
+function show(){if(document.getElementById('pwaBtn'))return;
+var a=document.querySelector('.sub')||document.querySelector('h1');if(!a)return;
+var b=document.createElement('button');b.id='pwaBtn';b.type='button';
+b.textContent=L?'⬇ Install as an app':'📲 앱으로 설치';
+b.style.cssText='display:inline-block;margin:0 0 22px;padding:8px 15px;border-radius:9px;font:600 13.5px/1.4 inherit;cursor:pointer;background:transparent;color:var(--accent,#b45309);border:1px solid var(--accent,#b45309)';
+b.title=L?'Works offline once installed':'설치하면 인터넷 없이도 쓸 수 있습니다';
+b.onclick=function(){if(!p)return;p.prompt();p.userChoice.then(function(){p=null;b.style.visibility='hidden'})};
+a.insertAdjacentElement('afterend',b)}})();</script>
+<!--HEAD:E-->
+<!--LD:S-->
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://www.kmagpie.com/tools/reaction/#app","name":"반응속도·클릭 속도 테스트","url":"https://www.kmagpie.com/tools/reaction/","description":"초록으로 바뀌는 순간 누르는 반응속도(5회 평균), 5초·10초 동안의 클릭 속도(CPS), 60초 에임 정확도를 잽니다. 등급과 상위 % 추정, 결과 카드 저장까지. 게이머 친구와 비교해 보세요.","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"inLanguage":"ko","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"K-magpie","url":"https://www.kmagpie.com/"}},{"@type":"BreadcrumbList","@id":"https://www.kmagpie.com/tools/reaction/#crumb","itemListElement":[{"@type":"ListItem","position":1,"name":"K-magpie","item":"https://www.kmagpie.com/"},{"@type":"ListItem","position":2,"name":"까치툴","item":"https://www.kmagpie.com/tools/"},{"@type":"ListItem","position":3,"name":"반응속도·클릭 속도 테스트","item":"https://www.kmagpie.com/tools/reaction/"}]}]}</script>
+<!--LD:E-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> &rsaquo; <a href="/tools/">까치툴</a> &rsaquo; 반응속도 테스트</p>
+
+<a class="xlink" href="/tools/typing/">⌨ <b>한글 타자 속도 테스트</b> 도 해 보기 →</a>
+
+<h1>반응속도 테스트 · 클릭 속도(CPS) 테스트</h1>
+<p class="sub">빨간 화면이 <strong>초록으로 바뀌는 순간 클릭</strong>하면 반응속도를 밀리초 단위로 잽니다. 5회 평균과 최고·최저 기록을 함께 보여 주고, 옆 탭에서는 정해진 시간 동안 얼마나 빨리 연타할 수 있는지(CPS)와 움직이는 표적을 얼마나 정확히 맞히는지도 잴 수 있어요.</p>
+
+<div id="shared" class="msg m-ok hidden"></div>
+
+<div class="tabs" role="tablist" id="tabs">
+  <button type="button" role="tab" data-tab="rt" aria-selected="true">① 반응속도</button>
+  <button type="button" role="tab" data-tab="cps" aria-selected="false">② 클릭 속도 (CPS)</button>
+  <button type="button" role="tab" data-tab="aim" aria-selected="false">③ 정확도 (에임)</button>
+</div>
+
+<!-- ================= 탭 1 : 반응속도 ================= -->
+<section id="panRt">
+<div class="panel">
+  <div id="pad" data-state="idle" role="button" tabindex="0" aria-label="반응속도 측정 영역">
+    <p class="pt" id="padTitle">화면을 클릭하면 시작합니다</p>
+    <p class="ps" id="padSub">빨간색으로 바뀐 뒤 <b>초록색이 되는 순간</b> 바로 클릭하세요. 모두 5번 잽니다.</p>
+    <p class="pms hidden" id="padMs"></p>
+  </div>
+  <div class="stats">
+    <div class="stat"><b id="rtProg">0 / 5</b><span>진행</span></div>
+    <div class="stat"><b id="rtAvg">—</b><span>평균 ms</span></div>
+    <div class="stat"><b id="rtMin">—</b><span>최저 ms</span></div>
+    <div class="stat"><b id="rtMax">—</b><span>최고 ms</span></div>
+  </div>
+  <div class="trials" id="rtTrials"></div>
+  <div class="btns">
+    <button type="button" class="btn" id="rtReset">처음부터</button>
+  </div>
+  <p class="note">모든 시간은 <code>performance.now()</code> 로 측정합니다. 초록으로 바뀌기 전에 누르면 "성급" 처리되어 그 회차는 다시 잽니다. 대기 시간은 1.5~4초 사이에서 매번 무작위로 정해집니다.</p>
+</div>
+
+<div class="result hidden" id="rtResult">
+  <p class="rlab">평균 반응속도</p>
+  <div class="rbig" id="rrAvg">0<small>ms</small></div>
+  <div class="rgrade" id="rrGrade">—</div>
+  <div class="rpct" id="rrPct"></div>
+  <div class="stats">
+    <div class="stat"><b id="rrMin">—</b><span>최저 ms</span></div>
+    <div class="stat"><b id="rrMax">—</b><span>최고 ms</span></div>
+    <div class="stat"><b id="rrSpread">—</b><span>편차 ms</span></div>
+    <div class="stat"><b id="rrEarly">—</b><span>성급 클릭</span></div>
+  </div>
+  <table>
+    <thead><tr><th>회차</th><th style="text-align:right">반응속도</th></tr></thead>
+    <tbody id="rrTb"></tbody>
+  </table>
+  <div class="btns">
+    <button type="button" class="btn pri" id="rrAgain">다시 하기</button>
+    <button type="button" class="btn" id="rrCard">결과 카드 저장</button>
+    <button type="button" class="btn" id="rrCopy">링크 복사</button>
+  </div>
+  <p class="share">공유 링크: <a id="shareUrl" href="#" rel="nofollow">—</a><br>링크에는 평균 반응속도 숫자 하나만 담기며 이름·기기 정보는 포함되지 않습니다.</p>
+  <p class="src">등급과 상위 % 는 합리적인 가정으로 만든 고정 분포표에 따른 <strong>추정치</strong>이며 실제 조사 통계가 아닙니다. 화면 주사율, 입력 장치, 브라우저 상태에 따라 수십 ms 차이가 생길 수 있습니다.</p>
+  <canvas id="cardCv" width="1080" height="1350" class="hidden"></canvas>
+</div>
+</section>
+
+<!-- ================= 탭 2 : CPS ================= -->
+<section id="panCps" class="hidden">
+<div class="panel">
+  <div class="seg" id="cpsSeg" style="margin-bottom:14px">
+    <button type="button" data-s="5" aria-pressed="true">5초</button>
+    <button type="button" data-s="10" aria-pressed="false">10초</button>
+  </div>
+  <div id="cpsPad" data-state="idle" role="button" tabindex="0" aria-label="클릭 속도 측정 영역">
+    <p class="pt" id="cpsTitle">여기를 계속 클릭하세요</p>
+    <p class="pnum" id="cpsCount">0</p>
+    <p class="ps" id="cpsSub">첫 클릭과 동시에 5초 카운트다운이 시작됩니다.</p>
+  </div>
+  <div class="stats">
+    <div class="stat"><b id="cpsLeft">5.0</b><span>남은 시간(초)</span></div>
+    <div class="stat"><b id="cpsNow">0.0</b><span>CPS</span></div>
+    <div class="stat"><b id="cpsTotal">0</b><span>총 클릭</span></div>
+    <div class="stat"><b id="cpsGradeS">—</b><span>등급</span></div>
+  </div>
+  <div class="btns">
+    <button type="button" class="btn" id="cpsReset">처음부터</button>
+  </div>
+  <p class="note">마우스 클릭과 화면 터치를 모두 셉니다. 터치 기기에서 <code>touchstart</code> 와 뒤따르는 클릭이 이중으로 세지 않도록 처리되어 있습니다.</p>
+</div>
+</section>
+
+<!-- ================= 탭 3 : 에임 ================= -->
+<section id="panAim" class="hidden">
+<div class="panel">
+  <div id="aimArea"><div class="hint" id="aimHint">시작 버튼을 누르면 60초 동안 원이 나타납니다.<br>원을 클릭할 때마다 다음 원이 조금씩 작아집니다.</div></div>
+  <div class="stats">
+    <div class="stat"><b id="aimLeft">60</b><span>남은 시간(초)</span></div>
+    <div class="stat"><b id="aimHit">0</b><span>명중</span></div>
+    <div class="stat"><b id="aimMiss">0</b><span>빗나감</span></div>
+    <div class="stat"><b id="aimAvg">—</b><span>평균 반응 ms</span></div>
+  </div>
+  <div class="btns">
+    <button type="button" class="btn pri" id="aimStart">60초 시작</button>
+    <button type="button" class="btn" id="aimReset">처음부터</button>
+  </div>
+  <p class="note">화면 안 임의의 위치에 원이 하나씩 나타납니다. 맞힐수록 원이 작아지고, 원이 아닌 곳을 누르면 빗나감으로 셉니다. 평균 반응은 원이 나타난 순간부터 클릭까지 걸린 시간입니다.</p>
+</div>
+</section>
+
+<p class="gist">반응속도 테스트는 신호가 나타난 순간부터 손이 움직여 버튼을 누르기까지 걸린 시간을 재는 도구입니다. 이 시간에는 빛이 눈에 들어와 뇌가 신호를 알아채는 시간, 움직이라는 명령이 근육에 도달하는 시간, 그리고 화면과 마우스·터치스크린이 만들어 내는 기계적인 지연이 모두 섞여 있습니다. 사람의 단순 반응은 흔히 200~250밀리초 안팎으로 이야기되지만 나이·피로·집중 상태에 따라 쉽게 변하고, 측정 장비의 지연까지 더해지므로 한 번의 숫자로 능력을 단정하기는 어렵습니다. 여러 번 재어 평균과 편차를 함께 보는 편이 훨씬 의미 있습니다.</p>
+
+<!--TESTS:S-->
+<a class="tbn" href="/tests/">
+  <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
+  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 좀비 생존률부터 전생, 아이돌 포지션까지 — 결과는 친구와 비교해 보세요.</span></span>
+  <span class="ar">→</span>
+</a>
+<!--TESTS:E-->
+
+<details class="fold" open><summary><h2>사람의 반응속도는 보통 어느 정도일까</h2></summary><div class="fx">
+<p>심리학에서는 반응 과제를 크게 세 가지로 나눕니다. 신호가 하나뿐이고 반응도 하나인 <strong>단순 반응</strong>, 여러 신호 중 특정 신호에만 반응해야 하는 <strong>변별 반응</strong>, 신호마다 다른 반응을 골라야 하는 <strong>선택 반응</strong>입니다. 이 페이지의 첫 번째 탭은 가장 단순한 형태, 즉 초록색 하나만 기다렸다가 누르는 단순 반응 과제입니다. 세 가지 중 가장 짧은 시간이 나오는 유형입니다.</p>
+<p>일반적으로 알려진 범위를 말하자면, 건강한 성인의 시각 단순 반응은 <strong>대략 200~250밀리초</strong> 부근으로 이야기됩니다. 소리에 대한 반응은 시각보다 조금 빠른 편이라고 알려져 있는데, 소리 신호가 뇌에 도달하는 경로가 더 짧기 때문이라는 설명이 흔히 붙습니다. 다만 이런 숫자는 실험실 장비로 잰 값과 웹 브라우저에서 잰 값이 다르고, 연구마다 과제 설계도 달라서 <strong>정확히 몇 밀리초가 평균이라고 단정하기는 어렵습니다.</strong> 이 페이지가 보여 주는 등급과 상위 % 도 그래서 추정치라고 밝혀 두었습니다.</p>
+<p>같은 사람 안에서도 편차는 꽤 큽니다. 잠을 충분히 잤는지, 카페인을 마셨는지, 측정 직전에 얼마나 집중하고 있었는지에 따라 30~50밀리초 정도는 쉽게 움직입니다. 또 나이가 들면 신경 전도 속도와 근육 반응이 조금씩 느려져 평균이 서서히 올라가는 경향이 있다고 알려져 있습니다. 그래서 어제의 나와 오늘의 나를 비교하는 데는 쓸모가 있지만, 남과 비교해 우열을 가리는 용도로는 적합하지 않습니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>화면 주사율과 입력 지연이 측정에 섞이는 이유</h2></summary><div class="fx">
+<p>브라우저에서 재는 반응속도에는 사람의 반응 외에 <strong>기계가 만든 지연</strong>이 반드시 섞여 들어갑니다. 가장 큰 몫은 화면 주사율입니다. 60Hz 모니터는 1초에 60번, 즉 약 16.7밀리초마다 화면을 새로 그립니다. 코드가 "지금 초록으로 바꿔"라고 명령해도 실제 픽셀이 바뀌는 것은 다음 갱신 시점이므로, 평균적으로 8밀리초 안팎, 최악의 경우 17밀리초 가까이 늦게 눈에 들어옵니다. 144Hz 화면이라면 이 값이 4분의 1 정도로 줄어듭니다.</p>
+<p>반대쪽 끝에도 지연이 있습니다. 마우스는 정해진 주기로 컴퓨터에 상태를 보고하는데, 보고 주기가 125Hz인 일반적인 마우스라면 클릭이 최대 8밀리초까지 대기할 수 있습니다. 무선 연결이면 여기에 전송 지연이 더 붙고, 터치스크린은 손가락 접촉을 판정하는 과정 때문에 마우스보다 느린 경우가 많습니다. 브라우저가 이벤트를 자바스크립트에 전달하는 과정, 다른 탭이나 백그라운드 작업이 잡아먹는 시간도 무시할 수 없습니다.</p>
+<p>이 모든 것을 합치면 <strong>같은 사람이 같은 날 측정해도 장비에 따라 20~50밀리초쯤 차이가 나는 일이 흔합니다.</strong> 그러니 다른 기기나 다른 사이트에서 잰 기록과 직접 비교하는 것은 큰 의미가 없습니다. 비교하고 싶다면 같은 컴퓨터, 같은 화면, 같은 입력 장치에서 잰 기록끼리 비교하세요. 이 페이지가 최고·최저와 함께 편차를 보여 주는 이유도, 한 번의 숫자보다 여러 번의 분포가 더 정직하기 때문입니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>게임과 운전에서의 반응속도</h2></summary><div class="fx">
+<p>게임을 즐기는 분들이 반응속도에 관심을 갖는 이유는 분명합니다. 대전 격투나 슈팅 게임에서는 상대의 움직임을 보고 대응하기까지의 시간이 그대로 승부에 반영되니까요. 다만 실제 게임 실력은 단순 반응속도만으로 결정되지 않습니다. 숙련된 플레이어가 빠르게 보이는 이유의 상당 부분은 <strong>예측</strong>입니다. 상대의 자세나 상황 전개를 보고 다음 행동을 미리 좁혀 두기 때문에, 신호가 나타났을 때 이미 반쯤 준비된 상태에서 움직이는 것입니다. 반응속도 테스트에서 평범한 기록이 나와도 게임을 잘하는 사람이 많은 것은 이 때문입니다.</p>
+<p>운전에서도 비슷합니다. 흔히 말하는 정지거리는 <strong>공주거리와 제동거리</strong>로 나뉩니다. 공주거리는 위험을 인지하고 브레이크를 밟기까지 차가 그대로 나아간 거리이고, 제동거리는 브레이크가 걸린 뒤 멈추기까지의 거리입니다. 사람의 반응 시간은 공주거리에만 영향을 줍니다. 그런데 실제 도로에서의 반응은 이 페이지처럼 "초록이 켜지면 누른다"가 아니라, 무엇이 일어났는지 판단하고 어떤 조작을 할지 고르는 <strong>선택 반응</strong>이라서 훨씬 오래 걸립니다. 안전 교육에서 흔히 1초 안팎을 가정하는 것도 그래서입니다.</p>
+<p>결론적으로 이 테스트의 숫자는 게임 실력이나 운전 능력을 예측해 주지 않습니다. 재미로 재고, 자기 컨디션의 변화를 보는 지표 정도로 활용하시는 것이 적절합니다. 졸리거나 피곤할 때 기록이 눈에 띄게 나빠지는 것을 확인하는 용도로는 꽤 쓸모가 있습니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>반응속도를 조금이라도 개선하려면</h2></summary><div class="fx">
+<p>가장 확실하고 즉각적인 방법은 <strong>충분한 수면</strong>입니다. 수면이 부족하면 주의를 유지하는 능력이 떨어져 반응이 느려지고, 무엇보다 편차가 커집니다. 평균은 비슷해 보여도 유난히 늦은 회차가 섞여 나오기 시작한다면 피로 신호로 읽을 수 있습니다. 가벼운 유산소 운동 직후에 각성 수준이 올라가 기록이 좋아지는 경우도 흔합니다.</p>
+<p>측정 자세도 생각보다 영향이 큽니다. 손가락을 버튼에서 살짝 떼고 있으면 누르는 동작 자체에 시간이 더 걸리므로, 손끝을 버튼에 가볍게 얹은 상태로 기다리는 편이 유리합니다. 화면 전체를 넓게 보고 있다가 변화를 알아채는 것이, 한 점을 뚫어지게 응시하는 것보다 대체로 빠릅니다. 어깨와 팔에 힘이 들어가 있으면 오히려 느려지므로 힘을 빼는 것이 좋습니다.</p>
+<p>연습으로 얼마나 좋아지느냐는 조심스럽게 말해야 합니다. 반복하면 과제에 익숙해져 기록이 좋아지는 것은 분명하지만, 그것이 신경 전달 속도 자체가 빨라진 결과인지 <strong>과제 요령이 늘어난 결과인지는 구분하기 어렵습니다.</strong> 실제로 같은 테스트를 반복하면 처음 몇 회에 빠르게 좋아지다가 이내 평평해지는 곡선이 흔히 나타납니다. 그러니 "훈련하면 반응속도가 극적으로 빨라진다"는 식의 주장은 걸러 들으시는 편이 좋습니다. 화면 주사율을 높이고 유선 입력 장치를 쓰는 편이, 몇 주간의 연습보다 기록에 더 큰 영향을 주는 경우도 많습니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>이 테스트의 한계와 올바른 해석</h2></summary><div class="fx">
+<p>첫째, 이 페이지는 <strong>의학적·심리학적 검사가 아닙니다.</strong> 실험실에서 쓰는 반응 측정 장비는 화면 갱신과 입력을 하드웨어 수준에서 동기화하지만, 브라우저는 그럴 수 없습니다. 따라서 절대적인 값보다는 같은 환경에서의 상대적인 변화를 보는 데 쓰는 것이 맞습니다. 기록이 유난히 나쁘게 나온다고 해서 건강 문제를 의심할 근거는 되지 않으며, 반대로 좋은 기록이 건강을 보증하지도 않습니다.</p>
+<p>둘째, <strong>대기 시간이 무작위인 이유</strong>를 이해하면 결과를 더 잘 읽을 수 있습니다. 만약 항상 정확히 2초 뒤에 초록이 켜진다면 사람은 리듬을 외워 미리 누를 수 있고, 그러면 반응이 아니라 예측을 재는 셈이 됩니다. 그래서 매 회차마다 1.5초에서 4초 사이에서 무작위로 정합니다. 그럼에도 여러 번 하다 보면 "슬슬 켜질 때가 됐다"는 감이 생겨 기록이 조금씩 좋아지는데, 이것은 반응이 빨라진 것이 아니라 예측이 섞인 것입니다.</p>
+<p>셋째, <strong>클릭 속도(CPS)와 에임 테스트는 반응속도와 다른 능력</strong>을 잽니다. CPS는 짧은 시간 안에 손가락을 얼마나 빨리 반복해서 움직일 수 있는지, 즉 근육의 반복 운동 속도에 가깝습니다. 마우스 버튼의 물리적 구조와 손가락을 쓰는 방식에 따라 크게 달라지고, 손목이나 손가락에 무리가 갈 수 있으니 통증이 있으면 즉시 멈추시기 바랍니다. 에임 테스트는 표적을 눈으로 찾아 손을 옮기는 <strong>눈과 손의 협응</strong>을 보는 과제로, 화면 크기와 마우스 감도에 따라 결과가 크게 달라집니다. 세 가지 숫자는 서로 다른 것을 재고 있으니 하나로 묶어 "반사신경"이라 부르지 않는 편이 정확합니다.</p>
+</div></details>
+
+<!--REL:S-->
+<h2>함께 쓰면 좋은 도구</h2>
+<div class="rel">
+  <a href="/tools/typing/"><strong>한글 타자 속도 테스트</strong><span>분당 타수·정확도, 결과 카드 공유</span></a>
+  <a href="/tools/bmi/"><strong>BMI 계산기</strong><span>기초대사량·하루 소비 칼로리까지</span></a>
+  <a href="/tools/qr/"><strong>QR코드 만들기</strong><span>링크·와이파이·연락처</span></a>
+</div>
+<form class="rel-srch" action="/tools/" method="get" role="search"><input type="search" name="q" placeholder="도구 45개 중에서 찾기 — 예: 누끼, 퇴직금, PDF" aria-label="까치툴 도구 검색" autocomplete="off"><button type="submit">검색</button></form>
+<p class="rel-all"><a href="/tools/">까치툴 도구 45개 전체 보기 →</a></p>
+<!--REL:E-->
+
+<footer>
+  <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 입력값(파일)은 전송·저장되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/tools/about/">소개</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+var $=function(id){return document.getElementById(id);};
+var CANON='https://www.kmagpie.com/tools/reaction/';
+
+/* ====================== 등급 · 상위 % 추정 ====================== */
+var G_MS=[
+  {max:180, name:'번개 반사',        desc:'화면이 바뀌는 순간과 손이 거의 붙어 있습니다. 장비 지연까지 감안하면 대단히 빠른 기록입니다.'},
+  {max:210, name:'매의 눈',          desc:'변화를 알아채는 속도가 아주 빠릅니다. 컨디션이 좋은 날의 기록으로 보입니다.'},
+  {max:240, name:'날쌘 손끝',        desc:'흔히 이야기되는 범위의 빠른 쪽입니다. 안정적으로 유지되면 좋은 기록입니다.'},
+  {max:270, name:'준수한 반응',      desc:'일반적으로 알려진 범위의 한가운데입니다. 무난하고 건강한 기록입니다.'},
+  {max:300, name:'평균 언저리',      desc:'평범한 구간입니다. 손끝을 버튼에 얹고 다시 재면 조금 줄어들 수 있습니다.'},
+  {max:350, name:'여유로운 손',      desc:'조금 느긋한 편입니다. 화면 주사율이나 무선 입력 지연도 함께 의심해 보세요.'},
+  {max:420, name:'느긋한 반사',      desc:'피로하거나 집중이 흩어진 상태일 수 있습니다. 쉬었다가 다시 재 보세요.'},
+  {max:1e9, name:'명상 중인 손가락', desc:'급할 것 없다는 태도가 손끝에 담겨 있습니다. 컨디션을 점검해 보시길 권합니다.'}
+];
+var G_CPS=[
+  {max:4,   name:'톡톡 두드리기',  desc:'천천히 확실하게 누르는 방식입니다. 손목에 무리가 없는 속도예요.'},
+  {max:6,   name:'꾸준한 검지',    desc:'일반적인 클릭 속도 구간입니다. 일상적인 작업에는 충분합니다.'},
+  {max:8,   name:'빨라지는 손목',  desc:'검지 하나로 낼 수 있는 속도의 위쪽입니다. 리듬이 잘 잡혀 있습니다.'},
+  {max:10,  name:'연타 숙련자',    desc:'상당히 빠릅니다. 손가락 두 개를 번갈아 쓰는 방식일 가능성이 높습니다.'},
+  {max:12,  name:'폭풍 클릭',      desc:'아주 빠른 구간입니다. 손목과 손가락에 부담이 가지 않는지 살펴보세요.'},
+  {max:14,  name:'잔상 남기는 손', desc:'화면이 숫자를 따라가기 바쁜 속도입니다. 무리하지 마세요.'},
+  {max:1e9, name:'초음속 검지',    desc:'사람 손으로 도달하기 쉽지 않은 영역입니다. 통증이 있다면 즉시 멈추세요.'}
+];
+function pickMax(list,v){
+  var i;
+  for(i=0;i<list.length;i++){ if(v<list[i].max) return {level:i+1,of:list.length,name:list[i].name,desc:list[i].desc}; }
+  var l=list[list.length-1];
+  return {level:list.length,of:list.length,name:l.name,desc:l.desc};
+}
+function grade(ms){ return pickMax(G_MS,Number(ms)||0); }
+function cpsGrade(cps){ return pickMax(G_CPS,Number(cps)||0); }
+
+/* 합리적 가정으로 만든 고정 분포표 — 실제 조사 통계가 아닌 추정치 */
+var PCT_MS=[[120,.2],[150,1],[170,3],[190,8],[210,16],[230,28],[250,42],[270,56],
+            [290,68],[310,77],[340,86],[380,92],[430,96],[500,98.5],[700,99.7]];
+var PCT_CPS=[[2,99.5],[3,97],[4,90],[5,78],[6,62],[7,45],[8,30],[9,19],[10,11],
+             [11,7],[12,4],[14,1.2],[16,.3]];
+function topPct(tb,v){
+  var i,a,b;
+  if(v<=tb[0][0]) return tb[0][1];
+  if(v>=tb[tb.length-1][0]) return tb[tb.length-1][1];
+  for(i=1;i<tb.length;i++){
+    if(v<=tb[i][0]){ a=tb[i-1]; b=tb[i];
+      return a[1]+(b[1]-a[1])*(v-a[0])/(b[0]-a[0]); }
+  }
+  return tb[tb.length-1][1];
+}
+function pctText(p){
+  if(p>=10) return '상위 약 '+Math.round(p)+'%';
+  if(p>=1)  return '상위 약 '+(Math.round(p*10)/10)+'%';
+  return '상위 약 '+(Math.round(p*100)/100)+'%';
+}
+
+/* 터치와 마우스 이벤트가 겹쳐 두 번 세지 않도록 */
+function tapBind(el,fn){
+  var last=0;
+  el.addEventListener('touchstart',function(e){
+    if(e.cancelable) e.preventDefault();
+    last=Date.now(); fn(e);
+  },{passive:false});
+  el.addEventListener('mousedown',function(e){
+    if(Date.now()-last<800) return;
+    fn(e);
+  });
+  el.addEventListener('keydown',function(e){
+    if(e.key===' '||e.key==='Enter'){ e.preventDefault(); fn(e); }
+  });
+}
+
+/* ====================== 탭 ====================== */
+var PANS={rt:'panRt',cps:'panCps',aim:'panAim'};
+Array.prototype.forEach.call(document.querySelectorAll('#tabs button'),function(b){
+  b.addEventListener('click',function(){
+    var t=b.getAttribute('data-tab'),k;
+    Array.prototype.forEach.call(document.querySelectorAll('#tabs button'),function(o){
+      o.setAttribute('aria-selected',o===b?'true':'false');
+    });
+    for(k in PANS){ if(Object.prototype.hasOwnProperty.call(PANS,k)) $(PANS[k]).className=(k===t?'':'hidden'); }
+  });
+});
+
+/* ====================== 탭 1 : 반응속도 ====================== */
+var RT={n:5,trials:[],early:0,state:'idle',timer:0,goAt:0,last:null};
+var pad=$('pad');
+function rtSet(st){ RT.state=st; pad.setAttribute('data-state',st); }
+function rtPaint(t,s,ms){
+  $('padTitle').textContent=t;
+  $('padSub').innerHTML=s;
+  if(ms==null){ $('padMs').className='pms hidden'; $('padMs').textContent=''; }
+  else { $('padMs').className='pms'; $('padMs').textContent=ms+' ms'; }
+}
+function rtStats(){
+  var a=RT.trials,i,sum=0,mn=1e9,mx=0;
+  $('rtProg').textContent=a.length+' / '+RT.n;
+  if(!a.length){ $('rtAvg').textContent='—'; $('rtMin').textContent='—'; $('rtMax').textContent='—'; $('rtTrials').innerHTML=''; return; }
+  for(i=0;i<a.length;i++){ sum+=a[i]; if(a[i]<mn)mn=a[i]; if(a[i]>mx)mx=a[i]; }
+  $('rtAvg').textContent=Math.round(sum/a.length);
+  $('rtMin').textContent=mn; $('rtMax').textContent=mx;
+  var h='';
+  for(i=0;i<a.length;i++) h+='<i>'+(i+1)+'회 '+a[i]+'ms</i>';
+  $('rtTrials').innerHTML=h;
+}
+function rtArm(){
+  rtSet('wait');
+  rtPaint('기다리세요…','초록색으로 바뀌면 <b>바로</b> 클릭하세요.',null);
+  var d=1500+Math.random()*2500;
+  RT.timer=setTimeout(function(){
+    RT.timer=0;
+    RT.goAt=performance.now();
+    rtSet('go');
+    rtPaint('지금!','클릭!',null);
+  },d);
+}
+function rtTap(){
+  var st=RT.state,ms;
+  if(st==='idle'||st==='trial'||st==='early'){ rtArm(); return; }
+  if(st==='wait'){
+    if(RT.timer){ clearTimeout(RT.timer); RT.timer=0; }
+    RT.early++;
+    rtSet('early');
+    rtPaint('성급했어요!','초록색이 되기 전에 눌렀습니다. 이 회차는 다시 잽니다. 화면을 클릭해 재시도하세요.',null);
+    return;
+  }
+  if(st==='go'){
+    ms=Math.round(performance.now()-RT.goAt);
+    RT.trials.push(ms);
+    rtStats();
+    if(RT.trials.length>=RT.n){ rtFinish(ms); return; }
+    rtSet('trial');
+    rtPaint('좋아요',(RT.trials.length)+'번째 기록입니다. 화면을 클릭하면 다음 회차가 시작됩니다.',ms);
+    return;
+  }
+  if(st==='done'){ rtReset(); return; }
+}
+function rtFinish(lastMs){
+  rtSet('done');
+  rtPaint('측정 완료','아래에서 결과를 확인하세요.',lastMs);
+  var a=RT.trials,i,sum=0,mn=1e9,mx=0;
+  for(i=0;i<a.length;i++){ sum+=a[i]; if(a[i]<mn)mn=a[i]; if(a[i]>mx)mx=a[i]; }
+  var avg=Math.round(sum/a.length);
+  var g=grade(avg), p=topPct(PCT_MS,avg);
+  RT.last={avg:avg,min:mn,max:mx,spread:mx-mn,early:RT.early,grade:g,pct:p,trials:a.slice()};
+
+  $('rrAvg').innerHTML=avg+'<small>ms</small>';
+  $('rrGrade').textContent=g.level+'단계 · '+g.name;
+  $('rrPct').textContent=pctText(p)+' 수준으로 추정됩니다 (고정 분포표 기반 추정치). '+g.desc;
+  $('rrMin').textContent=mn; $('rrMax').textContent=mx;
+  $('rrSpread').textContent=(mx-mn); $('rrEarly').textContent=RT.early+'회';
+  var rows='';
+  for(i=0;i<a.length;i++){
+    rows+='<tr'+(a[i]===mn?' class="hi"':'')+'><td>'+(i+1)+'회</td><td class="n">'+a[i]+' ms</td></tr>';
+  }
+  rows+='<tr><td>평균</td><td class="n">'+avg+' ms</td></tr>';
+  $('rrTb').innerHTML=rows;
+  var url=CANON+'?v='+avg;
+  $('shareUrl').textContent=url; $('shareUrl').setAttribute('href',url);
+  $('rtResult').className='result';
+}
+function rtReset(){
+  if(RT.timer){ clearTimeout(RT.timer); RT.timer=0; }
+  RT.trials=[]; RT.early=0; RT.last=null;
+  rtSet('idle');
+  rtPaint('화면을 클릭하면 시작합니다','빨간색으로 바뀐 뒤 <b>초록색이 되는 순간</b> 바로 클릭하세요. 모두 5번 잽니다.',null);
+  rtStats();
+  $('rtResult').className='result hidden';
+}
+tapBind(pad,rtTap);
+$('rtReset').addEventListener('click',rtReset);
+$('rrAgain').addEventListener('click',function(){ rtReset(); pad.scrollIntoView({behavior:'smooth',block:'center'}); });
+
+/* ====================== 탭 2 : CPS ====================== */
+var CP={dur:5,clicks:0,t0:0,timer:0,tick:0,running:false,done:false,last:null};
+var cpsPad=$('cpsPad');
+function cpsPaint(){
+  var el=performance.now()-CP.t0;
+  var left=Math.max(0,CP.dur-el/1000);
+  var cps=el>0?CP.clicks/(el/1000):0;
+  $('cpsCount').textContent=String(CP.clicks);
+  $('cpsTotal').textContent=String(CP.clicks);
+  $('cpsLeft').textContent=(CP.running?left:CP.dur).toFixed(1);
+  $('cpsNow').textContent=(CP.running||CP.done?cps:0).toFixed(1);
+}
+function cpsTapFn(){
+  if(CP.done) return;
+  if(!CP.running){
+    CP.running=true; CP.clicks=0; CP.t0=performance.now();
+    cpsPad.setAttribute('data-state','run');
+    $('cpsTitle').textContent='멈추지 말고 계속!';
+    $('cpsSub').textContent=CP.dur+'초 동안 최대한 많이 클릭하세요.';
+    CP.tick=setInterval(function(){
+      var el=performance.now()-CP.t0;
+      if(el>=CP.dur*1000){ cpsFinish(); return; }
+      $('cpsLeft').textContent=Math.max(0,CP.dur-el/1000).toFixed(1);
+      $('cpsNow').textContent=(CP.clicks/(el/1000)).toFixed(1);
+    },50);
+  }
+  CP.clicks++;
+  var el=performance.now()-CP.t0;
+  $('cpsCount').textContent=String(CP.clicks);
+  $('cpsTotal').textContent=String(CP.clicks);
+  if(el>0) $('cpsNow').textContent=(CP.clicks/(el/1000)).toFixed(1);
+}
+function cpsFinish(){
+  if(CP.tick){ clearInterval(CP.tick); CP.tick=0; }
+  CP.running=false; CP.done=true;
+  var cps=CP.clicks/CP.dur;
+  var g=cpsGrade(cps), p=topPct(PCT_CPS,cps);
+  CP.last={clicks:CP.clicks,cps:Math.round(cps*100)/100,dur:CP.dur,grade:g,pct:p};
+  cpsPad.setAttribute('data-state','done');
+  $('cpsTitle').textContent='끝!';
+  $('cpsSub').textContent=CP.dur+'초 동안 '+CP.clicks+'번 · 초당 '+cps.toFixed(2)+'회 · '+g.level+'단계 「'+g.name+'」 · '+pctText(p)+' (추정)';
+  $('cpsLeft').textContent='0.0';
+  $('cpsNow').textContent=cps.toFixed(1);
+  $('cpsTotal').textContent=String(CP.clicks);
+  $('cpsGradeS').textContent=g.name;
+}
+function cpsReset(){
+  if(CP.tick){ clearInterval(CP.tick); CP.tick=0; }
+  CP.clicks=0; CP.running=false; CP.done=false; CP.last=null;
+  cpsPad.setAttribute('data-state','idle');
+  $('cpsTitle').textContent='여기를 계속 클릭하세요';
+  $('cpsSub').textContent='첫 클릭과 동시에 '+CP.dur+'초 카운트다운이 시작됩니다.';
+  $('cpsCount').textContent='0'; $('cpsTotal').textContent='0';
+  $('cpsLeft').textContent=CP.dur.toFixed(1); $('cpsNow').textContent='0.0';
+  $('cpsGradeS').textContent='—';
+}
+tapBind(cpsPad,cpsTapFn);
+$('cpsReset').addEventListener('click',cpsReset);
+Array.prototype.forEach.call(document.querySelectorAll('#cpsSeg button'),function(b){
+  b.addEventListener('click',function(){
+    Array.prototype.forEach.call(document.querySelectorAll('#cpsSeg button'),function(o){
+      o.setAttribute('aria-pressed',o===b?'true':'false');
+    });
+    CP.dur=parseInt(b.getAttribute('data-s'),10)||5;
+    cpsReset();
+  });
+});
+
+/* ====================== 탭 3 : 에임 ====================== */
+var AIM={on:false,hits:0,miss:0,sum:0,dotAt:0,endAt:0,tick:0,dot:null};
+var area=$('aimArea');
+function aimSpawn(){
+  if(AIM.dot&&AIM.dot.parentNode) AIM.dot.parentNode.removeChild(AIM.dot);
+  var w=area.clientWidth,h=area.clientHeight;
+  var size=Math.max(18,Math.round(46-AIM.hits*1.4));
+  var d=document.createElement('div');
+  d.className='dot';
+  d.style.width=size+'px'; d.style.height=size+'px';
+  d.style.left=Math.round(Math.random()*Math.max(1,w-size))+'px';
+  d.style.top=Math.round(Math.random()*Math.max(1,h-size))+'px';
+  area.appendChild(d);
+  AIM.dot=d;
+  AIM.dotAt=performance.now();
+}
+function aimPaint(){
+  $('aimHit').textContent=String(AIM.hits);
+  $('aimMiss').textContent=String(AIM.miss);
+  $('aimAvg').textContent=AIM.hits?Math.round(AIM.sum/AIM.hits):'—';
+  $('aimLeft').textContent=AIM.on?String(Math.max(0,Math.ceil((AIM.endAt-performance.now())/1000))):'60';
+}
+function aimStart(){
+  aimReset(true);
+  AIM.on=true; AIM.endAt=performance.now()+60000;
+  var hint=$('aimHint'); if(hint) hint.style.display='none';
+  aimSpawn(); aimPaint();
+  AIM.tick=setInterval(function(){
+    if(performance.now()>=AIM.endAt){ aimStop(); return; }
+    aimPaint();
+  },200);
+}
+function aimStop(){
+  AIM.on=false;
+  if(AIM.tick){ clearInterval(AIM.tick); AIM.tick=0; }
+  if(AIM.dot&&AIM.dot.parentNode) AIM.dot.parentNode.removeChild(AIM.dot);
+  AIM.dot=null;
+  var hint=$('aimHint');
+  if(hint){
+    hint.style.display='';
+    hint.innerHTML='60초 종료 — 명중 '+AIM.hits+'개 · 빗나감 '+AIM.miss+'개'+
+      (AIM.hits?(' · 평균 반응 '+Math.round(AIM.sum/AIM.hits)+'ms'):'')+
+      '<br>명중률 '+((AIM.hits+AIM.miss)?Math.round(AIM.hits/(AIM.hits+AIM.miss)*100):0)+'%';
+  }
+  $('aimLeft').textContent='0';
+}
+function aimReset(keep){
+  if(AIM.tick){ clearInterval(AIM.tick); AIM.tick=0; }
+  AIM.on=false; AIM.hits=0; AIM.miss=0; AIM.sum=0;
+  if(AIM.dot&&AIM.dot.parentNode) AIM.dot.parentNode.removeChild(AIM.dot);
+  AIM.dot=null;
+  var hint=$('aimHint');
+  if(hint&&!keep){
+    hint.style.display='';
+    hint.innerHTML='시작 버튼을 누르면 60초 동안 원이 나타납니다.<br>원을 클릭할 때마다 다음 원이 조금씩 작아집니다.';
+  }
+  $('aimLeft').textContent='60';
+  aimPaint();
+}
+(function(){
+  var last=0;
+  function handle(e,target){
+    if(!AIM.on) return;
+    if(target&&target.className==='dot'){
+      AIM.hits++; AIM.sum+=performance.now()-AIM.dotAt;
+      aimSpawn();
+    } else { AIM.miss++; }
+    aimPaint();
+  }
+  area.addEventListener('touchstart',function(e){
+    if(e.cancelable) e.preventDefault();
+    last=Date.now();
+    var t=e.target;
+    handle(e,t);
+  },{passive:false});
+  area.addEventListener('mousedown',function(e){
+    if(Date.now()-last<800) return;
+    handle(e,e.target);
+  });
+})();
+$('aimStart').addEventListener('click',aimStart);
+$('aimReset').addEventListener('click',function(){ aimReset(false); });
+
+/* ====================== 결과 카드 ====================== */
+function drawCard(){
+  var cv=$('cardCv'), x=cv.getContext('2d'), W=1080, H=1350;
+  var d=RT.last||{avg:0,min:0,max:0,spread:0,early:0,grade:grade(0),pct:50};
+  var gr=x.createLinearGradient(0,0,W,H);
+  gr.addColorStop(0,'#141a17'); gr.addColorStop(.55,'#1b201c'); gr.addColorStop(1,'#101311');
+  x.fillStyle=gr; x.fillRect(0,0,W,H);
+  var i,j;
+  for(i=24;i<W;i+=34){
+    for(j=24;j<H;j+=34){
+      x.fillStyle='rgba(110,231,168,'+(0.018+((i*j)%7)*0.006).toFixed(3)+')';
+      x.beginPath(); x.arc(i,j,2.2,0,Math.PI*2); x.fill();
+    }
+  }
+  x.strokeStyle='rgba(110,231,168,.40)'; x.lineWidth=3;
+  x.strokeRect(48,48,W-96,H-96);
+
+  x.textAlign='center';
+  x.fillStyle='#6ee7a8';
+  x.font='700 40px -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+  x.fillText('반응속도 테스트', W/2, 190);
+
+  x.fillStyle='#8a938d';
+  x.font='500 30px -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+  x.fillText('5회 평균 반응속도', W/2, 300);
+
+  x.fillStyle='#f1f5f2';
+  var big=String(d.avg), bs=big.length<=3?250:(big.length===4?210:(big.length===5?170:135));
+  x.font='800 '+bs+'px -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+  x.fillText(big, W/2, 500);
+
+  x.fillStyle='#6ee7a8';
+  x.font='700 46px -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+  x.fillText('밀리초 (ms)', W/2, 570);
+
+  x.strokeStyle='rgba(110,231,168,.28)'; x.lineWidth=2;
+  x.beginPath(); x.moveTo(150,650); x.lineTo(W-150,650); x.stroke();
+
+  x.fillStyle='#f1f5f2';
+  x.font='800 66px -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+  x.fillText(d.grade.level+'단계 · '+d.grade.name, W/2, 760);
+
+  x.fillStyle='#a7b0aa';
+  x.font='500 36px -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+  x.fillText(pctText(d.pct)+' (추정)', W/2, 840);
+
+  x.fillStyle='rgba(255,255,255,.04)';
+  x.fillRect(120,930,W-240,190);
+  x.strokeStyle='rgba(110,231,168,.22)'; x.lineWidth=2;
+  x.strokeRect(120,930,W-240,190);
+  x.fillStyle='#a7b0aa';
+  x.font='500 32px -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+  x.fillText('최저 '+d.min+'ms   ·   최고 '+d.max+'ms', W/2, 1000);
+  x.fillText('편차 '+d.spread+'ms   ·   성급 클릭 '+d.early+'회', W/2, 1060);
+
+  x.fillStyle='#6ee7a8';
+  x.font='700 34px -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+  x.fillText('kmagpie.com/tools/reaction/', W/2, 1220);
+  x.fillStyle='#6f7a73';
+  x.font='400 26px -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
+  x.fillText('등급·상위 %는 고정 분포표에 따른 추정치입니다', W/2, 1268);
+  return cv;
+}
+function makeCard(){
+  var cv=drawCard();
+  return new Promise(function(res){
+    if(cv.toBlob) cv.toBlob(function(b){res(b);},'image/png');
+    else res(null);
+  });
+}
+$('rrCard').addEventListener('click',function(){
+  makeCard().then(function(b){
+    if(!b) return;
+    var u=URL.createObjectURL(b), a=document.createElement('a');
+    a.href=u; a.download='reaction-'+((RT.last&&RT.last.avg)||0)+'ms.png';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){URL.revokeObjectURL(u);},2000);
+  });
+});
+$('rrCopy').addEventListener('click',function(){
+  var url=$('shareUrl').textContent, btn=$('rrCopy'), old=btn.textContent;
+  function done(){ btn.textContent='복사됨!'; setTimeout(function(){btn.textContent=old;},1500); }
+  function fallback(){
+    var t=document.createElement('textarea'); t.value=url; document.body.appendChild(t);
+    t.select(); try{document.execCommand('copy');}catch(err){}
+    t.remove(); done();
+  }
+  if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done,fallback);
+  else fallback();
+});
+
+/* 공유 링크로 들어온 경우 */
+(function(){
+  var m=/[?&]v=(\d+)/.exec(location.search);
+  if(!m) return;
+  var ms=parseInt(m[1],10);
+  if(!isFinite(ms)||ms<=0) return;
+  var g=grade(ms);
+  $('shared').className='msg m-ok';
+  $('shared').textContent='공유된 기록: 평균 '+ms+'ms · '+g.level+'단계 「'+g.name+'」. 아래에서 직접 재 보세요.';
+})();
+
+rtReset(); cpsReset(); aimReset(false);
+
+window.REACTION={
+  grade:grade,
+  cpsGrade:cpsGrade,
+  makeCard:makeCard,
+  state:function(){return {rt:RT.state,trials:RT.trials.slice(),early:RT.early,
+                           cps:{clicks:CP.clicks,running:CP.running,done:CP.done,dur:CP.dur},
+                           aim:{on:AIM.on,hits:AIM.hits,miss:AIM.miss}};}
+};
+})();
+</script>
+</body>
+</html>

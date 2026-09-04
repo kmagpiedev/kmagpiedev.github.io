@@ -126,6 +126,14 @@
   .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
   .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
   .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-srch{display:flex;gap:8px;margin:0 0 12px}
+  .rel-srch input{flex:1;min-width:0;padding:10px 14px;border:1px solid var(--line);border-radius:11px;
+    background:var(--surface);color:var(--ink);font:inherit;font-size:14.5px;outline:none}
+  .rel-srch input:focus{border-color:var(--accent)}
+  .rel-srch input::-webkit-search-cancel-button{-webkit-appearance:none}
+  .rel-srch button{flex:none;padding:10px 16px;border:1px solid var(--accent);border-radius:11px;
+    background:transparent;color:var(--accent);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+  .rel-srch button:hover{background:var(--accent-soft)}
   .rel-all{font-size:14.5px;font-weight:600;margin:0}
 /*REL:E*/
 /*LANG:S*/
@@ -286,11 +294,12 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 <!--REL:S-->
 <h2>함께 쓰면 좋은 도구</h2>
 <div class="rel">
+  <a href="/tools/ocr/"><strong>사진 글자 추출 (OCR)</strong><span>한글·영문, 캡처 붙여넣기, 업로드 없음</span></a>
   <a href="/tools/pdf/"><strong>PDF 편집기</strong><span>합치기·나누기·페이지 삭제</span></a>
-  <a href="/tools/pdf-sign/"><strong>PDF 서명·도장 넣기</strong><span>인쇄 없이 계약서에 바로</span></a>
   <a href="/tools/img2pdf/"><strong>이미지를 PDF로</strong><span>JPG·PNG 여러 장을 한 파일로</span></a>
 </div>
-<p class="rel-all"><a href="/tools/">까치툴 도구 40개 전체 보기 →</a></p>
+<form class="rel-srch" action="/tools/" method="get" role="search"><input type="search" name="q" placeholder="도구 45개 중에서 찾기 — 예: 누끼, 퇴직금, PDF" aria-label="까치툴 도구 검색" autocomplete="off"><button type="submit">검색</button></form>
+<p class="rel-all"><a href="/tools/">까치툴 도구 45개 전체 보기 →</a></p>
 <!--REL:E-->
 
 <footer>

@@ -182,6 +182,14 @@
   .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
   .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
   .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-srch{display:flex;gap:8px;margin:0 0 12px}
+  .rel-srch input{flex:1;min-width:0;padding:10px 14px;border:1px solid var(--line);border-radius:11px;
+    background:var(--surface);color:var(--ink);font:inherit;font-size:14.5px;outline:none}
+  .rel-srch input:focus{border-color:var(--accent)}
+  .rel-srch input::-webkit-search-cancel-button{-webkit-appearance:none}
+  .rel-srch button{flex:none;padding:10px 16px;border:1px solid var(--accent);border-radius:11px;
+    background:transparent;color:var(--accent);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+  .rel-srch button:hover{background:var(--accent-soft)}
   .rel-all{font-size:14.5px;font-weight:600;margin:0}
 /*REL:E*/
 /*TESTS:S*/
@@ -374,7 +382,8 @@ a.insertAdjacentElement('afterend',b)}})();</script>
   <a href="/tools/date-calc/"><strong>날짜 계산기</strong><span>만나이·D-day·날짜 사이 일수</span></a>
   <a href="/tools/char-count/"><strong>글자수 세기</strong><span>공백 포함·제외, 바이트, 원고지</span></a>
 </div>
-<p class="rel-all"><a href="/tools/">까치툴 도구 40개 전체 보기 →</a></p>
+<form class="rel-srch" action="/tools/" method="get" role="search"><input type="search" name="q" placeholder="도구 45개 중에서 찾기 — 예: 누끼, 퇴직금, PDF" aria-label="까치툴 도구 검색" autocomplete="off"><button type="submit">검색</button></form>
+<p class="rel-all"><a href="/tools/">까치툴 도구 45개 전체 보기 →</a></p>
 <!--REL:E-->
 
 <footer>

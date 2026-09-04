@@ -91,6 +91,16 @@ TOOLS = {
                    'MP3·M4A·WAV를 열어 파형을 보며 구간을 고르고 페이드·노멀라이즈를 적용해 저장합니다. 무손실 WAV와 기기 기본 압축 포맷으로 저장되고 파일은 브라우저를 떠나지 않습니다.'),
  'upscale':       ('🔍','사진 화질 개선 (AI 업스케일)','2배·4배 확대, 브라우저에서 AI 처리',
                    '흐릿하거나 작은 사진을 AI로 2배·4배 키웁니다. 옛날 사진, 캡처, 저화질 이미지의 윤곽을 살려 선명하게 만들고, 전후 비교 슬라이더로 확인한 뒤 PNG·JPG로 저장합니다. 사진은 업로드되지 않습니다.'),
+ 'ocr':           ('📝','사진 글자 추출 (OCR)','한글·영문, 캡처 붙여넣기, 업로드 없음',
+                   '사진이나 캡처 속 글자를 텍스트로 뽑아 복사합니다. 한국어·영어를 브라우저 안에서 인식하므로 사진이 서버로 나가지 않고, 스크린샷은 Ctrl+V로 바로 붙여넣으면 됩니다. 여러 장은 파일별로 나눠 보여줍니다.'),
+ 'average-down':  ('📉','물타기 계산기 (평단가)','목표 평단 역산·본전 회복률·매도 손익',
+                   '추가 매수 후 평단가와 총 투자금을 계산하고, 목표 평단까지 몇 주를 더 사야 하는지 역산합니다. −50%면 +100%가 필요하다는 본전 회복률 표와 수수료·거래세를 뺀 매도 손익까지, 원·달러·코인 단위로 계산식을 그대로 보여줍니다.'),
+ 'typing':        ('⌨️','한글 타자 속도 테스트','분당 타수·정확도, 결과 카드 공유',
+                   '한글·영문 문장을 따라 치면 분당 타수와 정확도, 등급이 나옵니다. 한컴타자 방식으로 자소를 분해해 타수를 세고, 결과 카드를 저장하거나 링크로 친구와 비교할 수 있습니다. 모바일에서도 됩니다.'),
+ 'reaction':      ('⚡','반응속도·클릭 속도 테스트','반응 ms · CPS · 에임 정확도',
+                   '초록으로 바뀌는 순간 누르는 반응속도(5회 평균), 5초·10초 동안의 클릭 속도(CPS), 60초 에임 정확도를 잽니다. 등급과 상위 % 추정, 결과 카드 저장까지. 게이머 친구와 비교해 보세요.'),
+ 'insta-text':    ('✨','인스타 줄바꿈·글꼴 꾸미기','빈 줄 살리기, 유니코드 폰트 28종, 특수문자 750개',
+                   '인스타·스레드에서 사라지는 빈 줄을 보이지 않는 문자로 살리고, 𝐛𝐨𝐥𝐝·𝒮𝒸𝓇𝒾𝓅𝓉 같은 유니코드 글꼴 28종과 하트·별·구분선 등 특수문자 750개를 한 번에 복사합니다. 캡션 글자수·해시태그 수도 세어 줍니다.'),
 }
 
 # 목록 페이지 분류 (순서가 곧 노출 순서)
@@ -98,15 +108,17 @@ CATS = [
  ('이미지 편집', '사진을 다루는 도구입니다. 전부 브라우저 안에서 처리되고 업로드가 없어서, 얼굴이 나온 사진이나 공개 전 자료도 안심하고 올릴 수 있습니다.',
   ['remove-bg','upscale','id-photo','resize','convert','image-compress','image-merge','exif-remove','watermark','gif-maker','meme']),
  ('PDF·문서',   '계약서나 제출 서류를 다룰 때 쓰는 도구입니다. 원본 문서의 글자를 그대로 살린 채 처리합니다.',
-  ['pdf','pdf-compress','pdf-sign','pdf-to-image','img2pdf']),
+  ['pdf','pdf-compress','pdf-sign','pdf-to-image','img2pdf','ocr']),
  ('급여·노동', '법령과 공식 고시를 그대로 적용해 계산합니다. 근사식을 쓰지 않고 계산 과정과 근거 조문을 함께 보여줍니다.',
   ['salary','severance','unemployment','annual-leave','holiday-pay']),
  ('금융', '돈을 빌리고 모을 때 필요한 계산입니다. 계산 과정을 전부 보여주고 입력한 값은 어디로도 전송되지 않습니다.',
-  ['loan','deposit']),
+  ['loan','deposit','average-down']),
  ('자동차', '차를 사고 유지할 때 내는 세금입니다. 확인되지 않은 항목은 계산에 넣지 않고 어디서 확인해야 하는지 알려드립니다.',
   ['car-tax','car-acquisition','fuel-cost']),
  ('생활 편의', '집과 일상에서 자주 찾게 되는 계산입니다. 가입도 설치도 없이 바로 쓰고, 근거가 확인된 값만 계산합니다.',
-  ['electricity','pyeong','percent','bmi','lunar','manse','date-calc','char-count','qr','minutes']),
+  ['electricity','pyeong','percent','bmi','lunar','manse','date-calc','char-count','insta-text','qr','minutes']),
+ ('타자·반응 테스트', '키보드와 손이 얼마나 빠른지 재는 도구입니다. 결과 카드를 저장해 친구와 비교해 보세요. 측정값은 브라우저 안에만 있습니다.',
+  ['typing','reaction']),
  ('오디오', '소리 파일을 다루는 도구입니다. 파형을 보며 브라우저 안에서 바로 자르고 저장합니다. 업로드가 없어서 개인 녹음 파일도 안심하고 쓸 수 있습니다.',
   ['audio-cut']),
  ('앱 개발',    '안드로이드 앱을 출시할 때 반복적으로 필요한 작업들입니다. 직접 앱을 만들며 필요해서 만든 도구예요.',
@@ -116,11 +128,16 @@ CATS = [
 # 각 도구 페이지 하단에 노출할 관련 도구 (맥락 흐름 순)
 REL = {
  'upscale':       ['remove-bg','image-compress','resize'],
- 'image-merge':   ['resize','image-compress','exif-remove'],
+ 'ocr':           ['pdf-to-image','img2pdf','char-count'],
+ 'average-down':  ['percent','deposit','loan'],
+ 'typing':        ['reaction','char-count','minutes'],
+ 'reaction':      ['typing','bmi','qr'],
+ 'insta-text':    ['char-count','image-merge','qr'],
+ 'image-merge':   ['resize','insta-text','exif-remove'],
  'exif-remove':   ['image-compress','image-merge','convert'],
  'audio-cut':     ['gif-maker','image-compress','qr'],
  'bmi':           ['date-calc','electricity','fuel-cost'],
- 'percent':       ['deposit','loan','salary'],
+ 'percent':       ['average-down','deposit','loan'],
  'salary':        ['severance','loan','annual-leave'],
  'loan':          ['deposit','salary','severance'],
  'deposit':       ['loan','salary','severance'],
@@ -142,14 +159,14 @@ REL = {
  'qr':            ['char-count','convert','date-calc'],
  'car-tax':       ['fuel-cost','car-acquisition','loan'],
  'car-acquisition':['car-tax','fuel-cost','loan'],
- 'pdf-to-image':  ['pdf','pdf-sign','img2pdf'],
+ 'pdf-to-image':  ['ocr','pdf','img2pdf'],
  'img2pdf':       ['pdf','pdf-compress','pdf-to-image'],
  'pdf-compress':  ['img2pdf','pdf','image-compress'],
  'lunar':         ['manse','date-calc','char-count'],
  'manse':         ['lunar','date-calc','char-count'],
  'electricity':   ['fuel-cost','pyeong','deposit'],
  'fuel-cost':     ['car-tax','electricity','salary'],
- 'char-count':    ['date-calc','lunar','qr'],
+ 'char-count':    ['insta-text','typing','ocr'],
  'pyeong':        ['electricity','date-calc','loan'],
  'date-calc':     ['lunar','char-count','annual-leave'],
  'app-icon':      ['screenshot','privacy-policy','image-compress'],
@@ -164,6 +181,14 @@ CSS = """/*REL:S*/
   .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
   .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
   .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-srch{display:flex;gap:8px;margin:0 0 12px}
+  .rel-srch input{flex:1;min-width:0;padding:10px 14px;border:1px solid var(--line);border-radius:11px;
+    background:var(--surface);color:var(--ink);font:inherit;font-size:14.5px;outline:none}
+  .rel-srch input:focus{border-color:var(--accent)}
+  .rel-srch input::-webkit-search-cancel-button{-webkit-appearance:none}
+  .rel-srch button{flex:none;padding:10px 16px;border:1px solid var(--accent);border-radius:11px;
+    background:transparent;color:var(--accent);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+  .rel-srch button:hover{background:var(--accent-soft)}
   .rel-all{font-size:14.5px;font-weight:600;margin:0}
 /*REL:E*/
 """
@@ -174,6 +199,9 @@ def block(slug):
         f'  <a href="/tools/{s}/"><strong>{TOOLS[s][1]}</strong><span>{TOOLS[s][2]}</span></a>'
         for s in REL[slug])
     return (f'<!--REL:S-->\n<h2>함께 쓰면 좋은 도구</h2>\n<div class="rel">\n{cards}\n</div>\n'
+            f'<form class="rel-srch" action="/tools/" method="get" role="search">'
+            f'<input type="search" name="q" placeholder="도구 {n}개 중에서 찾기 — 예: 누끼, 퇴직금, PDF" aria-label="까치툴 도구 검색" autocomplete="off">'
+            f'<button type="submit">검색</button></form>\n'
             f'<p class="rel-all"><a href="/tools/">까치툴 도구 {n}개 전체 보기 →</a></p>\n<!--REL:E-->\n\n')
 
 TESTS_CSS = """/*TESTS:S*/

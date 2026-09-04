@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>물타기 계산기 (평단가 계산기) — 새 평단·목표 평단 역산·본전 회복률 | 까치툴</title>
+<meta name="description" content="물타기 계산기로 추가 매수 뒤 새 평단가를 바로 확인하세요. 최대 10회 추가 매수, 총 수량·투자금·평가손익, 목표 평단에 필요한 수량 역산, −50%는 왜 +100%인지 보여주는 본전 회복률표, 수수료·거래세 반영 매도 손익까지 계산식과 함께 보여드립니다.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/average-down/">
+<meta property="og:title" content="물타기 계산기 (평단가 계산기) — 새 평단·목표 평단 역산·본전 회복률">
+<meta property="og:description" content="추가 매수 뒤 새 평단, 목표 평단에 필요한 수량, 본전까지 필요한 상승률, 매도 실현손익을 계산식과 함께 한 화면에서 확인합니다.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/average-down/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  [hidden]{display:none!important}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:16px 0}
+  .panel h2{margin:0 0 4px;font-size:17px}
+  .pd{font-size:13px;color:var(--ink-3);margin:0 0 14px}
+  .row{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
+  .col{flex:1;min-width:150px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.04em;color:var(--ink-3);font-weight:600;margin:0 0 7px}
+  input[type=text]{padding:10px 12px;border:1px solid var(--line);border-radius:9px;
+    background:var(--surface);color:var(--ink);font-size:16px;font-family:inherit;width:100%;
+    text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+  input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .withu{display:flex;align-items:center;gap:7px}
+  .withu .u{font-size:13.5px;color:var(--ink-3);flex:none;white-space:nowrap}
+
+  .seg{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--surface)}
+  .seg button{flex:1;background:transparent;border:0;padding:10px 4px;font-size:13.5px;font-weight:600;
+    color:var(--ink-2);cursor:pointer;font-family:inherit;transition:.12s;line-height:1.35}
+  .seg button.on{background:var(--accent);color:#fff}
+  .seg.sm button{font-size:12.5px;padding:8px 3px}
+  .seg.sm button small{display:block;font-weight:500;font-size:11px;opacity:.75}
+
+  .curbar{display:flex;gap:10px;align-items:center;margin:0 0 14px;flex-wrap:wrap}
+  .curbar .lb{font-size:12.5px;color:var(--ink-3);font-weight:600;flex:none}
+  .curbar .seg{flex:1;min-width:210px}
+
+  .pane{display:none}
+  .pane.on{display:block}
+
+  .lots{margin:0}
+  .lot{display:flex;gap:8px;align-items:center;margin-bottom:9px}
+  .lot input{flex:1;min-width:0}
+  .lot .del{flex:none;width:38px;height:41px;border:1px solid var(--line);border-radius:9px;
+    background:transparent;color:var(--ink-3);font-size:15px;cursor:pointer;font-family:inherit;line-height:1}
+  .lot .del:hover{border-color:var(--bad);color:var(--bad)}
+  .addbtn{font-family:inherit;font-size:13.5px;font-weight:600;padding:9px 14px;border-radius:9px;
+    border:1px dashed var(--line);background:transparent;color:var(--ink-2);cursor:pointer;width:100%}
+  .addbtn:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+  .addbtn:disabled{opacity:.45;cursor:default}
+  .hint{font-size:12.5px;color:var(--ink-3);margin:8px 0 0}
+
+  .result{background:var(--accent-soft);border:1px solid var(--accent);border-radius:14px;padding:18px 20px;margin:16px 0 0}
+  .rk{font-size:12.5px;color:var(--ink-2);margin:0 0 2px;font-weight:600}
+  .money{font-size:33px;font-weight:800;letter-spacing:-.025em;font-variant-numeric:tabular-nums;
+    line-height:1.2;color:var(--accent);overflow-wrap:anywhere}
+  .money.sm{font-size:25px}
+  .money.up{color:var(--good)}
+  .money.down{color:var(--bad)}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:14px 0 0}
+  .card{border:1px solid var(--line);border-radius:11px;padding:11px 13px;background:var(--surface)}
+  .card .k{font-size:12px;color:var(--ink-3);font-weight:600}
+  .card .v{font-size:18px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.02em;
+    margin-top:1px;line-height:1.3;overflow-wrap:anywhere}
+  .card .v.up{color:var(--good)}
+  .card .v.down{color:var(--bad)}
+  .formula{font-size:13px;color:var(--ink-2);margin:12px 0 0;font-variant-numeric:tabular-nums;
+    border-left:2px solid var(--line);padding-left:12px;word-break:keep-all;overflow-wrap:anywhere;line-height:1.75}
+  .formula b{font-weight:700;color:var(--ink)}
+  .msg{border-radius:11px;padding:11px 14px;font-size:13.5px;margin:14px 0 0;line-height:1.65}
+  .m-bad{background:var(--bad-soft);border:1px solid var(--bad);color:var(--ink)}
+  .m-warn{background:var(--warn-soft);border:1px solid var(--warn);color:var(--ink)}
+  .note{font-size:12.5px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:14px 0 0;line-height:1.7}
+
+  .tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:14px 0 0}
+  table{width:100%;border-collapse:collapse;font-size:14px;min-width:340px}
+  th,td{padding:8px 10px;border-bottom:1px solid var(--line-soft);text-align:left;white-space:nowrap}
+  th{font-size:12.5px;color:var(--ink-3);font-weight:600;border-bottom:1px solid var(--line)}
+  td.n{text-align:right;font-variant-numeric:tabular-nums}
+  tr.hi td{background:var(--accent-soft);font-weight:700}
+
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 8px}
+  .fold .fx>:first-child{margin-top:4px}
+
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  code{background:var(--line-soft);padding:1px 5px;border-radius:4px;font-size:12.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+  @media (max-width:560px){
+    .wrap{padding:32px 15px 70px}
+    h1{font-size:23px}
+    .panel{padding:17px 15px}
+    .money{font-size:27px}
+    .money.sm{font-size:21px}
+    .seg button{font-size:12px;padding:9px 2px}
+    .curbar .seg{min-width:0}
+    .col{min-width:118px}
+  }
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-srch{display:flex;gap:8px;margin:0 0 12px}
+  .rel-srch input{flex:1;min-width:0;padding:10px 14px;border:1px solid var(--line);border-radius:11px;
+    background:var(--surface);color:var(--ink);font:inherit;font-size:14.5px;outline:none}
+  .rel-srch input:focus{border-color:var(--accent)}
+  .rel-srch input::-webkit-search-cancel-button{-webkit-appearance:none}
+  .rel-srch button{flex:none;padding:10px 16px;border:1px solid var(--accent);border-radius:11px;
+    background:transparent;color:var(--accent);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+  .rel-srch button:hover{background:var(--accent-soft)}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
+/*TESTS:S*/
+  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 24px;padding:13px 18px;
+    border:1px solid var(--line);border-radius:14px;background:var(--surface);
+    text-decoration:none;color:inherit;transition:.14s}
+  .tbn:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .tbn .ic{width:44px;height:44px;flex:none;border-radius:12px;background:#fff;
+    border:1px solid var(--line);object-fit:contain;padding:2px}
+  .tbn .tx{flex:1;min-width:0}
+  .tbn .tt{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em}
+  .tbn .ds{display:block;font-size:13px;color:var(--ink-3);line-height:1.55;margin-top:2px}
+  .tbn .ar{color:var(--ink-3);font-size:15px;flex:none}
+/*TESTS:E*/
+</style>
+<!--HEAD:S-->
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
+<meta property="og:site_name" content="까치툴">
+<link rel="manifest" href="/tools/manifest.json">
+<meta name="theme-color" content="#faf9f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#171614" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="까치툴">
+<script>/*PWA*/(function(){var L=document.documentElement.lang==='en';
+if('serviceWorker' in navigator)addEventListener('load',function(){navigator.serviceWorker.register('/sw.js',{scope:'/'})['catch'](function(){})});
+var p=null,armed=false;addEventListener('beforeinstallprompt',function(e){e.preventDefault();p=e;arm()});
+function arm(){if(armed)return;armed=true;var h=function(){removeEventListener('pointerdown',h,true);removeEventListener('keydown',h,true);show()};
+addEventListener('pointerdown',h,true);addEventListener('keydown',h,true)}
+addEventListener('appinstalled',function(){p=null;var b=document.getElementById('pwaBtn');if(b)b.style.visibility='hidden'});
+function show(){if(document.getElementById('pwaBtn'))return;
+var a=document.querySelector('.sub')||document.querySelector('h1');if(!a)return;
+var b=document.createElement('button');b.id='pwaBtn';b.type='button';
+b.textContent=L?'⬇ Install as an app':'📲 앱으로 설치';
+b.style.cssText='display:inline-block;margin:0 0 22px;padding:8px 15px;border-radius:9px;font:600 13.5px/1.4 inherit;cursor:pointer;background:transparent;color:var(--accent,#b45309);border:1px solid var(--accent,#b45309)';
+b.title=L?'Works offline once installed':'설치하면 인터넷 없이도 쓸 수 있습니다';
+b.onclick=function(){if(!p)return;p.prompt();p.userChoice.then(function(){p=null;b.style.visibility='hidden'})};
+a.insertAdjacentElement('afterend',b)}})();</script>
+<!--HEAD:E-->
+<!--LD:S-->
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://www.kmagpie.com/tools/average-down/#app","name":"물타기 계산기 (평단가)","url":"https://www.kmagpie.com/tools/average-down/","description":"추가 매수 후 평단가와 총 투자금을 계산하고, 목표 평단까지 몇 주를 더 사야 하는지 역산합니다. −50%면 +100%가 필요하다는 본전 회복률 표와 수수료·거래세를 뺀 매도 손익까지, 원·달러·코인 단위로 계산식을 그대로 보여줍니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"inLanguage":"ko","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"K-magpie","url":"https://www.kmagpie.com/"}},{"@type":"BreadcrumbList","@id":"https://www.kmagpie.com/tools/average-down/#crumb","itemListElement":[{"@type":"ListItem","position":1,"name":"K-magpie","item":"https://www.kmagpie.com/"},{"@type":"ListItem","position":2,"name":"까치툴","item":"https://www.kmagpie.com/tools/"},{"@type":"ListItem","position":3,"name":"물타기 계산기 (평단가)","item":"https://www.kmagpie.com/tools/average-down/"}]}]}</script>
+<!--LD:E-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> &rsaquo; <a href="/tools/">까치툴</a> &rsaquo; 물타기 계산기</p>
+
+<h1>물타기 계산기 (평단가 계산기)</h1>
+<p class="sub">추가 매수를 하면 평단이 <strong>얼마로 바뀌는지</strong>, 원하는 평단을 만들려면 <strong>몇 주가 더 필요한지</strong>, 본전까지 <strong>몇 % 올라야 하는지</strong>를 한 화면에서 계산합니다. 결과 아래에 <strong>계산식을 그대로</strong> 보여드려서 직접 검산할 수 있습니다.</p>
+
+<div class="panel">
+  <div class="curbar">
+    <span class="lb">표시 단위</span>
+    <div class="seg sm" id="curSeg" role="group" aria-label="통화 단위 선택">
+      <button type="button" data-c="krw" class="on">원<small>정수</small></button>
+      <button type="button" data-c="usd">달러<small>소수 2자리</small></button>
+      <button type="button" data-c="coin">코인<small>소수 8자리</small></button>
+    </div>
+  </div>
+
+  <div class="seg" id="tabs" role="group" aria-label="계산 종류 선택">
+    <button type="button" data-v="avg" class="on">평단 계산</button>
+    <button type="button" data-v="target">목표 평단</button>
+    <button type="button" data-v="rec">본전 계산</button>
+    <button type="button" data-v="sell">매도 손익</button>
+  </div>
+
+  <!-- ① 평단가 계산 -->
+  <div class="pane on" id="pane-avg" style="margin-top:20px">
+    <h2>추가 매수 후 새 평단가</h2>
+    <p class="pd">지금 들고 있는 물량에 추가 매수를 더했을 때의 평균 단가입니다. 추가 매수는 최대 10회까지 넣을 수 있습니다.</p>
+
+    <div class="row">
+      <div class="col">
+        <label class="f" for="h_q">보유 수량</label>
+        <input type="text" id="h_q" inputmode="decimal" value="100" aria-label="보유 수량">
+      </div>
+      <div class="col">
+        <label class="f" for="h_p">보유 평단</label>
+        <input type="text" id="h_p" inputmode="decimal" value="10,000" aria-label="보유 평단">
+      </div>
+    </div>
+
+    <label class="f" style="margin-top:16px">추가 매수 (수량 · 단가)</label>
+    <div class="lots" id="lots"></div>
+    <button type="button" class="addbtn" id="addLot">+ 추가 매수 한 줄 더</button>
+    <p class="hint" id="lotHint">지금 <span id="lotN">1</span>회 / 최대 10회</p>
+
+    <div class="row" style="margin-top:16px">
+      <div class="col">
+        <label class="f" for="a_now">현재가 <span style="font-weight:400">(선택)</span></label>
+        <input type="text" id="a_now" inputmode="decimal" placeholder="입력 시 평가손익 계산" aria-label="현재가">
+      </div>
+    </div>
+
+    <div class="result">
+      <p class="rk">추가 매수 후 새 평단</p>
+      <div class="money" id="a_avg">—</div>
+      <div class="cards">
+        <div class="card"><div class="k">총 수량</div><div class="v" id="a_qty">—</div></div>
+        <div class="card"><div class="k">총 투자금</div><div class="v" id="a_cost">—</div></div>
+        <div class="card"><div class="k">평단 변화</div><div class="v" id="a_diff">—</div></div>
+      </div>
+      <div class="cards" id="a_evalBox" hidden>
+        <div class="card"><div class="k">평가금액</div><div class="v" id="a_eval">—</div></div>
+        <div class="card"><div class="k">평가손익</div><div class="v" id="a_pl">—</div></div>
+        <div class="card"><div class="k">수익률</div><div class="v" id="a_rate">—</div></div>
+      </div>
+      <p class="formula" id="a_f"></p>
+    </div>
+    <p class="note">수수료와 세금은 이 계산에 넣지 않은 순수 단가 기준입니다. 실제 체결 비용까지 보려면 <strong>매도 손익</strong> 탭을 쓰세요.</p>
+  </div>
+
+  <!-- ② 목표 평단 역산 -->
+  <div class="pane" id="pane-target" style="margin-top:20px">
+    <h2>목표 평단을 만들려면 얼마나 더 사야 하나</h2>
+    <p class="pd">원하는 평단을 정해 두고, 지금 가격으로 몇 주를 더 담아야 그 평단이 되는지 거꾸로 계산합니다.</p>
+
+    <div class="row">
+      <div class="col">
+        <label class="f" for="t_q">보유 수량</label>
+        <input type="text" id="t_q" inputmode="decimal" value="100" aria-label="보유 수량">
+      </div>
+      <div class="col">
+        <label class="f" for="t_a">보유 평단</label>
+        <input type="text" id="t_a" inputmode="decimal" value="10,000" aria-label="보유 평단">
+      </div>
+    </div>
+    <div class="row" style="margin-top:14px">
+      <div class="col">
+        <label class="f" for="t_t">목표 평단</label>
+        <input type="text" id="t_t" inputmode="decimal" value="9,000" aria-label="목표 평단">
+      </div>
+      <div class="col">
+        <label class="f" for="t_p">추가 매수 단가 (현재가)</label>
+        <input type="text" id="t_p" inputmode="decimal" value="8,000" aria-label="추가 매수 단가">
+      </div>
+    </div>
+
+    <div class="result">
+      <p class="rk">추가로 필요한 수량</p>
+      <div class="money" id="t_need">—</div>
+      <div class="cards">
+        <div class="card"><div class="k">필요 금액</div><div class="v" id="t_amt">—</div></div>
+        <div class="card"><div class="k">매수 후 총 수량</div><div class="v" id="t_tq">—</div></div>
+        <div class="card"><div class="k">매수 후 총 투자금</div><div class="v" id="t_tc">—</div></div>
+      </div>
+      <p class="formula" id="t_f"></p>
+    </div>
+    <div id="t_msg"></div>
+    <p class="note">평단을 현재가보다 낮게 만들 수는 없습니다. 아무리 많이 사도 평단은 현재가 쪽으로 다가갈 뿐 그 아래로는 내려가지 않기 때문입니다. 목표 평단이 현재가 이하이면 계산이 성립하지 않습니다.</p>
+  </div>
+
+  <!-- ③ 본전 계산 -->
+  <div class="pane" id="pane-rec" style="margin-top:20px">
+    <h2>본전까지 몇 % 올라야 하나</h2>
+    <p class="pd">평단 대비 현재가가 떨어진 비율을 넣으면, 원금을 되찾는 데 필요한 상승률이 나옵니다. 하락률과 상승률은 <strong>기준이 달라서</strong> 절대 같지 않습니다.</p>
+
+    <div class="row">
+      <div class="col">
+        <label class="f" for="r_a">평단 <span style="font-weight:400">(선택)</span></label>
+        <input type="text" id="r_a" inputmode="decimal" placeholder="예: 10,000" aria-label="평단">
+      </div>
+      <div class="col">
+        <label class="f" for="r_p">현재가 <span style="font-weight:400">(선택)</span></label>
+        <input type="text" id="r_p" inputmode="decimal" placeholder="예: 5,000" aria-label="현재가">
+      </div>
+      <div class="col">
+        <label class="f" for="r_d">하락률</label>
+        <div class="withu"><input type="text" id="r_d" inputmode="decimal" value="50" aria-label="하락률"><span class="u">%</span></div>
+      </div>
+    </div>
+
+    <div class="result">
+      <p class="rk">본전까지 필요한 상승률</p>
+      <div class="money" id="r_up">—</div>
+      <div class="cards">
+        <div class="card"><div class="k">100만원이 남은 금액</div><div class="v" id="r_left">—</div></div>
+        <div class="card"><div class="k">필요 배수</div><div class="v" id="r_mul">—</div></div>
+      </div>
+      <p class="formula" id="r_f"></p>
+    </div>
+
+    <div class="tw">
+      <table id="recTable">
+        <thead><tr><th>하락률</th><th class="n">100만원 → 남은 금액</th><th class="n">본전까지 필요한 상승률</th></tr></thead>
+        <tbody>
+          <tr data-d="10"><td>−10%</td><td class="n">900,000원</td><td class="n">+11.11%</td></tr>
+          <tr data-d="20"><td>−20%</td><td class="n">800,000원</td><td class="n">+25.00%</td></tr>
+          <tr data-d="30"><td>−30%</td><td class="n">700,000원</td><td class="n">+42.86%</td></tr>
+          <tr data-d="40"><td>−40%</td><td class="n">600,000원</td><td class="n">+66.67%</td></tr>
+          <tr data-d="50"><td>−50%</td><td class="n">500,000원</td><td class="n">+100.00%</td></tr>
+          <tr data-d="60"><td>−60%</td><td class="n">400,000원</td><td class="n">+150.00%</td></tr>
+          <tr data-d="70"><td>−70%</td><td class="n">300,000원</td><td class="n">+233.33%</td></tr>
+          <tr data-d="80"><td>−80%</td><td class="n">200,000원</td><td class="n">+400.00%</td></tr>
+          <tr data-d="90"><td>−90%</td><td class="n">100,000원</td><td class="n">+900.00%</td></tr>
+          <tr data-d="95"><td>−95%</td><td class="n">50,000원</td><td class="n">+1,900.00%</td></tr>
+          <tr data-d="99"><td>−99%</td><td class="n">10,000원</td><td class="n">+9,900.00%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">하락률 p%에서 본전에 필요한 상승률은 <strong>100 × p ÷ (100 − p)</strong> 입니다. 하락이 깊어질수록 필요한 상승률은 직선이 아니라 가파르게 휘어 오릅니다.</p>
+  </div>
+
+  <!-- ④ 매도 손익 -->
+  <div class="pane" id="pane-sell" style="margin-top:20px">
+    <h2>팔면 손에 남는 금액</h2>
+    <p class="pd">매수·매도 수수료와 매도 시 세금을 반영한 실현손익입니다. 요율은 계좌와 시장마다 다르니 <strong>직접 확인해서 바꿔 넣으세요.</strong></p>
+
+    <div class="row">
+      <div class="col">
+        <label class="f" for="s_q">수량</label>
+        <input type="text" id="s_q" inputmode="decimal" value="150" aria-label="수량">
+      </div>
+      <div class="col">
+        <label class="f" for="s_a">평단</label>
+        <input type="text" id="s_a" inputmode="decimal" value="9,333" aria-label="평단">
+      </div>
+      <div class="col">
+        <label class="f" for="s_p">매도가</label>
+        <input type="text" id="s_p" inputmode="decimal" value="11,000" aria-label="매도가">
+      </div>
+    </div>
+    <div class="row" style="margin-top:14px">
+      <div class="col">
+        <label class="f" for="s_fee">수수료율 (매수·매도 각각)</label>
+        <div class="withu"><input type="text" id="s_fee" inputmode="decimal" value="0.015" aria-label="수수료율"><span class="u">%</span></div>
+      </div>
+      <div class="col">
+        <label class="f" for="s_tax">증권거래세율 (매도 시)</label>
+        <div class="withu"><input type="text" id="s_tax" inputmode="decimal" value="0.15" aria-label="증권거래세율"><span class="u">%</span></div>
+      </div>
+    </div>
+
+    <div class="result">
+      <p class="rk">실현손익 (비용·세금 반영)</p>
+      <div class="money" id="s_profit">—</div>
+      <div class="cards">
+        <div class="card"><div class="k">수익률</div><div class="v" id="s_rate">—</div></div>
+        <div class="card"><div class="k">매도 실수령액</div><div class="v" id="s_net">—</div></div>
+        <div class="card"><div class="k">총 비용(수수료+세금)</div><div class="v" id="s_costs">—</div></div>
+        <div class="card"><div class="k">본전 매도가</div><div class="v" id="s_be">—</div></div>
+      </div>
+      <p class="formula" id="s_f"></p>
+    </div>
+    <p class="note"><strong>요율은 반드시 직접 확인하세요.</strong> 증권사 수수료는 계좌 종류·이벤트·거래 채널에 따라 다르고, 증권거래세율은 시장(코스피·코스닥·코넥스 등)과 시행 연도에 따라 달라지며 시장에 따라 별도 세목이 함께 붙기도 합니다. 기본값은 입력 예시일 뿐이며 이 계산기는 세액을 확정하거나 법적 정확성을 보장하지 않습니다. 배당·환전 수수료·해외주식 양도소득세 등은 반영되지 않습니다.</p>
+  </div>
+</div>
+
+<p class="gist">물타기 계산기는 보유 물량과 추가 매수 물량을 <strong>가중평균</strong>해서 새 평단을 구합니다. 평단은 (수량 × 단가)를 모두 더한 총 투자금을 총 수량으로 나눈 값이라, 싼 가격에 많이 담을수록 그 가격 쪽으로 끌려 내려갑니다. 다만 평단이 내려간다고 이미 난 손실금이 줄어드는 것은 아닙니다 — 줄어드는 것은 손실'률'이고, 손실'금'은 그대로이며 투입 원금만 커집니다. 목표 평단 역산, 본전 회복률, 매도 실현손익까지 계산식을 그대로 보여드리니 직접 검산해 보세요.</p>
+
+<!--TESTS:S-->
+<a class="tbn" href="/tests/">
+  <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
+  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 좀비 생존률부터 전생, 아이돌 포지션까지 — 결과는 친구와 비교해 보세요.</span></span>
+  <span class="ar">→</span>
+</a>
+<!--TESTS:E-->
+
+<details class="fold" open><summary><h2>평단은 평균이 아니라 가중평균입니다</h2></summary><div class="fx">
+<p>10,000원에 100주를 산 뒤 8,000원에 50주를 더 샀다면, 새 평단은 (10,000 + 8,000) ÷ 2 = 9,000원이 아닙니다. 두 가격을 그냥 평균 내면 두 번의 매수가 똑같은 무게를 가진다는 뜻이 되는데, 실제로는 첫 매수가 두 배 많은 물량을 갖고 있습니다. 무게가 다른 값을 평균할 때는 <strong>가중평균</strong>을 써야 합니다.</p>
+<p>계산은 단순합니다. <strong>총 투자금 ÷ 총 수량.</strong> 위 예시라면 (100 × 10,000) + (50 × 8,000) = 1,400,000원을 150주로 나눠 9,333.33원이 됩니다. 산술평균 9,000원보다 333원 높죠. 첫 매수 물량이 더 많으니 평단도 그쪽으로 더 끌립니다.</p>
+<p>이 구조를 알면 물타기의 효율을 감으로 잡을 수 있습니다. 평단이 얼마나 내려가는지는 추가 매수 <em>금액</em>이 아니라 기존 물량 대비 추가 물량의 <strong>비율</strong>이 결정합니다. 100주를 들고 있을 때 10주를 더 사면 새 물량 비중이 10분의 1이라 평단은 가격차의 약 10분의 1만큼만 움직입니다. 100주를 더 사면 비중이 절반이 되어 평단은 두 가격의 한가운데로 갑니다.</p>
+<p>공식으로 쓰면 새 평단 = 기존 평단 − (기존 평단 − 매수가) × 추가수량 ÷ 총수량입니다. 즉 <strong>평단이 내려가는 폭은 "가격차 × 새 물량 비중"</strong>입니다. 10,000원 평단에 8,000원으로 물을 타면 가격차는 2,000원이고, 추가 물량이 전체의 3분의 1이면 평단은 약 667원 내려가 9,333원이 됩니다. 위 계산기의 계산식 줄이 이 과정을 그대로 보여줍니다.</p>
+<p>여기서 나오는 중요한 한계 하나. 아무리 많이 사도 평단은 <strong>추가 매수가 아래로 내려가지 않습니다.</strong> 새 물량 비중이 100%에 가까워질수록 평단은 매수가에 수렴할 뿐이기 때문입니다. "8,000원에 물을 타서 평단을 7,000원으로 만들겠다"는 계획은 수학적으로 불가능합니다. 목표 평단 탭이 이런 입력에 불가능 안내를 띄우는 이유입니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>−50%는 왜 +100%여야 본전인가</h2></summary><div class="fx">
+<p>퍼센트에는 언제나 "무엇의 몇 %인가"라는 기준이 붙습니다. 10,000원이 50% 떨어져 5,000원이 됐을 때, 하락률 50%의 기준은 <strong>떨어지기 전 10,000원</strong>입니다. 그런데 다시 오를 때의 기준은 <strong>떨어진 뒤의 5,000원</strong>이죠. 기준이 절반으로 줄었으니 같은 금액(5,000원)을 회복하는 데 필요한 상승률은 두 배, 즉 100%가 됩니다.</p>
+<p>일반화하면 p% 하락 뒤 원금 회복에 필요한 상승률은 <strong>100 × p ÷ (100 − p)</strong>입니다. 10% 하락은 11.11%, 20%는 25%, 30%는 42.86%, 50%는 100%, 70%는 233.33%, 90%는 900% 상승이 필요합니다. 하락률이 커질수록 필요한 상승률은 완만하게 늘지 않고 <strong>가속도로 휘어 오릅니다.</strong> 하락률 90%와 95% 사이는 5%p 차이지만 필요한 상승률은 900%에서 1,900%로 두 배가 넘게 뜁니다.</p>
+<p>이 비대칭이 실전에서 갖는 의미는 분명합니다. 손실이 얕을 때는 회복이 현실적이지만, 깊어지면 "원래 가격으로 돌아오기"가 사실상 새로운 대박을 요구하는 일이 됩니다. −20%는 시장이 조금 좋아지면 메울 수 있는 수준이지만, −80%는 다섯 배가 되어야 본전입니다. 그래서 손실 관리에 관한 이야기가 "얼마를 벌 것인가"보다 "얼마까지 잃을 것인가"에 집중되는 것입니다.</p>
+<p>반대 방향도 같은 논리로 움직입니다. 100이 25% 올라 125가 됐다가 다시 100으로 내려가는 하락률은 25%가 아니라 20%입니다. 오를 때와 내릴 때의 기준값이 다르기 때문에, <strong>같은 숫자의 퍼센트라도 왕복하면 제자리가 아닙니다.</strong> 수익률을 여러 기간에 걸쳐 곱해 나갈 때 산술평균이 아니라 기하평균을 써야 하는 이유도 여기에 있습니다.</p>
+<p>여기에 물타기가 끼어들면 계산이 한 겹 더 붙습니다. 물을 타면 본전 가격 자체가 내려가므로, 회복에 필요한 상승률은 <strong>현재가 대비 새 평단까지의 거리</strong>로 다시 계산해야 합니다. 10,000원 평단이 5,000원이 되어 −50%(본전까지 +100%)인 상황에서 5,000원에 같은 수량을 더 담으면 평단은 7,500원이 되고, 5,000원에서 7,500원까지는 +50%면 충분합니다. 필요한 상승률이 100%에서 50%로 절반이 되는 셈이죠. 대신 원금은 두 배가 됐습니다. 위 계산기의 평단 탭에서 새 평단을 구한 뒤, 본전 탭에 현재가와 새 평단을 넣으면 이 숫자를 바로 볼 수 있습니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>물타기와 불타기 — 반대 방향의 추가 매수</h2></summary><div class="fx">
+<p><strong>물타기</strong>는 산 가격보다 떨어졌을 때 더 사서 평단을 낮추는 것(영어로는 averaging down)이고, <strong>불타기</strong>는 산 가격보다 올랐을 때 더 사서 비중을 늘리는 것(피라미딩, pyramiding)입니다. 계산식은 완전히 같습니다. 둘 다 가중평균이고, 방향만 다릅니다. 물타기는 평단을 내리고 불타기는 평단을 올립니다.</p>
+<p>차이는 수학이 아니라 <strong>전제</strong>에 있습니다. 물타기는 "지금 가격이 싸다, 곧 되돌아온다"는 판단에 돈을 더 겁니다. 판단이 맞으면 낮아진 평단 덕분에 회복 구간에서 수익이 커지고, 틀리면 더 깊이 내려가는 자산에 더 많은 돈이 묶입니다. 불타기는 "추세가 살아 있다"는 판단에 돈을 더 겁니다. 추세가 이어지면 큰 물량으로 수익을 얻지만, 꺾이면 평단이 올라간 상태여서 이익이 빠르게 손실로 뒤집힙니다.</p>
+<p>실무적으로 크게 갈리는 지점은 <strong>손실 한도를 정하기 쉬운가</strong>입니다. 불타기는 평단이 위로 올라가긴 해도 대개 이익 구간에서 이뤄지므로 "평단까지 밀리면 정리한다"처럼 기준을 세우기 쉽습니다. 반면 물타기는 이미 손실 중인 자리에서 금액을 키우는 행동이라, 기준을 미리 정해 두지 않으면 "여기서 팔면 손실 확정이니까 한 번만 더"가 반복되며 한 종목 비중이 통제 불능으로 커지기 쉽습니다.</p>
+<p>어느 쪽도 그 자체로 옳거나 그르지 않습니다. 다만 두 방식 모두 <strong>추가 매수는 확신이 아니라 비중을 늘리는 행위</strong>라는 점은 같습니다. 물을 탈 때마다 그 종목이 내 전체 자산에서 차지하는 비율이 얼마가 되는지, 그 비율이 감당 가능한 수준인지를 평단보다 먼저 확인하는 편이 낫습니다. 계산기가 보여주는 총 투자금이 그 확인의 출발점입니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>가장 흔한 착각 — 평단을 낮춰도 손실금은 줄지 않습니다</h2></summary><div class="fx">
+<p>물타기에 관한 오해 중 압도적으로 많은 것이 "평단을 낮추면 손실이 줄어든다"는 생각입니다. 숫자로 확인해 보면 그렇지 않습니다. 10,000원에 100주를 샀는데 8,000원이 됐다면 평가손실은 200,000원이고 손실률은 −20%입니다. 여기서 8,000원에 100주를 더 사면 평단은 9,000원으로 내려갑니다. 손실률은 (8,000 − 9,000) ÷ 9,000 = <strong>−11.1%</strong>로 확 줄어든 것처럼 보이죠.</p>
+<p>그런데 손실 <strong>금액</strong>은 어떨까요. 총 200주에 평단 9,000원, 현재가 8,000원이니 평가손실은 (8,000 − 9,000) × 200 = <strong>여전히 200,000원</strong>입니다. 한 푼도 줄지 않았습니다. 줄어든 것은 손실률뿐이고, 그 손실률이 줄어든 이유는 손실이 작아져서가 아니라 <strong>분모(투입 원금)가 100만원에서 180만원으로 커졌기</strong> 때문입니다. 추가로 산 100주는 산 가격 그대로라 손익이 0이고, 그래서 손실 금액은 처음 그대로 남습니다.</p>
+<p>정리하면 물타기가 실제로 바꾸는 것은 두 가지입니다. 첫째, <strong>손익분기 가격이 낮아집니다.</strong> 10,000원까지 올라야 본전이던 것이 9,000원만 되어도 본전이 됩니다. 앞의 회복률 표대로라면 필요한 상승률이 25%에서 12.5%로 줄어드니 이건 진짜 이득입니다. 둘째, <strong>노출 금액이 커집니다.</strong> 앞으로 이 종목이 1% 움직일 때마다 흔들리는 금액이 10,000원에서 18,000원으로 커집니다. 이익이 날 때도 손실이 날 때도 똑같이 커집니다.</p>
+<p>그래서 물타기는 "손실을 줄이는 행동"이 아니라 <strong>"회복 문턱을 낮추는 대신 판돈을 키우는 거래"</strong>로 이해하는 편이 정확합니다. 이 교환이 유리한지는 결국 그 자산이 회복될 것인가에 달려 있고, 그 판단은 계산기가 대신해 줄 수 없습니다. 계산기가 해 줄 수 있는 것은 교환의 조건 — 낮아진 본전 가격과 커진 투입 금액 — 을 정확한 숫자로 보여주는 일뿐입니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>분할 매수 계획을 숫자로 세우는 법</h2></summary><div class="fx">
+<p>즉흥적인 물타기와 계획된 분할 매수를 가르는 것은 <strong>미리 정해 둔 세 개의 숫자</strong>입니다. ① 이 종목에 넣을 총 예산의 상한, ② 몇 번에 나눠 넣을 것인지, ③ 각 회차를 어느 가격에 넣을 것인지. 이 셋을 사기 전에 종이에 적어 두면, 떨어지는 도중에 즉흥적으로 늘리는 일을 크게 줄일 수 있습니다.</p>
+<p>가장 단순한 방식은 <strong>균등 분할</strong>입니다. 예산 300만원을 3회로 나눠 100만원씩, 예를 들어 −10%, −20%, −30% 지점에서 집행하는 식입니다. 금액이 같으면 가격이 낮을수록 더 많은 수량을 사게 되어(정액매수의 자연스러운 성질) 평단이 자동으로 아래쪽으로 기울어집니다. 두 번째는 <strong>후반 가중</strong>입니다. 1회차 50만원, 2회차 100만원, 3회차 150만원처럼 뒤로 갈수록 금액을 키우면 평단이 더 크게 내려가지만, 그만큼 하락이 깊어졌을 때 큰 금액이 들어가므로 판단이 틀렸을 때의 타격도 커집니다.</p>
+<p>계획을 세울 때 반드시 함께 계산해야 할 것이 <strong>"전부 집행했을 때"의 상태</strong>입니다. 마지막 회차까지 다 넣었을 때 평단이 얼마가 되는지, 그 시점의 투입 금액이 내 전체 자산의 몇 %인지, 거기서 추가로 30% 더 빠지면 평가손실이 얼마인지를 미리 구해 두세요. 위 계산기에 계획한 회차를 그대로 넣어 보면 최종 평단과 총 투자금이 바로 나옵니다. 이 숫자를 보고 "감당할 수 있다"는 생각이 들지 않는다면, 계획 자체를 줄여야 한다는 신호입니다.</p>
+<p>회차 간격을 정할 때는 <strong>퍼센트로 잡는 편이 금액으로 잡는 것보다 안정적</strong>입니다. "1,000원 떨어질 때마다"처럼 금액으로 정하면 주가가 낮아질수록 같은 1,000원이 더 큰 하락률이 되어 뒤로 갈수록 간격이 벌어집니다. "−10%마다"처럼 비율로 정하면 어느 구간에서든 체감 간격이 일정합니다. 간격이 너무 좁으면 예산이 초반 얕은 하락에서 다 소진되고, 너무 넓으면 계획한 자리에 영영 닿지 않은 채 반등해 버립니다. 이 종목이 과거에 어느 정도 폭으로 흔들렸는지를 보고 정하는 것이 그나마 근거 있는 방법입니다.</p>
+<p>마지막으로 <strong>중단 조건</strong>도 숫자로 정해 두는 편이 좋습니다. "예산을 다 쓰면 더 사지 않는다", "이 종목 비중이 전체의 N%를 넘으면 멈춘다", "처음 사게 만든 이유가 사라지면 계획을 폐기한다" 같은 것들입니다. 분할 매수의 진짜 가치는 평단을 예쁘게 만드는 데 있는 게 아니라, 하락 중에 내려야 할 결정을 <strong>하락하기 전에 미리 내려 두는 데</strong> 있습니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>이 계산기가 하지 않는 것</h2></summary><div class="fx">
+<p>이 도구는 <strong>산술 계산기</strong>입니다. 입력한 수량과 가격으로 가중평균, 역산, 비율을 계산해 보여줄 뿐이고, 그 종목을 더 사야 하는지 팔아야 하는지에 대해서는 아무 의견도 갖고 있지 않습니다. 여기서 나온 숫자는 <strong>투자 권유나 자문이 아니며</strong>, 투자 판단과 그 결과에 대한 책임은 전적으로 이용자 본인에게 있습니다.</p>
+<p>세금과 비용도 마찬가지입니다. 매도 손익 탭의 수수료율·거래세율 기본값은 <strong>입력 예시일 뿐</strong>이며, 실제 요율은 증권사·계좌 종류·거래 채널·시장 구분(코스피·코스닥·코넥스 등)·시행 연도에 따라 달라집니다. 시장에 따라 별도 세목이 함께 부과되기도 하고, 해외 주식이라면 환전 수수료와 양도소득세처럼 이 계산에 전혀 들어가 있지 않은 항목들이 붙습니다. 이 계산기는 세액을 확정하지 않으며 법적·세무적 정확성을 주장하지 않습니다. 정확한 금액은 거래하는 증권사의 수수료 안내와 실제 거래내역서로 확인하세요.</p>
+<p>계산 자체의 한계도 있습니다. 배당이나 분배금, 액면분할·병합, 무상증자, 주식 대체출고 같은 사건은 평단과 수량을 바꾸지만 여기에는 반영되지 않습니다. 여러 계좌에 나뉜 물량, 대차·신용 이자, 환율 변동 역시 계산에 들어가지 않습니다. 증권사 앱이 보여주는 평단과 이 계산 결과가 다르다면 대개 이런 항목들 또는 증권사별 반올림·비용 반영 방식의 차이 때문입니다.</p>
+<p>대신 확실하게 해 드리는 것도 있습니다. 입력한 숫자는 <strong>브라우저 밖으로 나가지 않습니다.</strong> 서버로 전송하지 않고, 브라우저에 저장하지도 않으며, 페이지를 새로 고치면 모두 사라집니다. 공유 링크나 저장 기능을 두지 않은 것도 같은 이유입니다. 보유 종목과 금액은 민감한 정보이니, 계산이 끝나면 창을 닫는 것으로 충분합니다.</p>
+</div></details>
+
+<!--REL:S-->
+<h2>함께 쓰면 좋은 도구</h2>
+<div class="rel">
+  <a href="/tools/percent/"><strong>퍼센트 계산기</strong><span>할인율·증감률·비율 역산</span></a>
+  <a href="/tools/deposit/"><strong>예금·적금 이자 계산기</strong><span>세후 실수령액, 단리·복리 비교</span></a>
+  <a href="/tools/loan/"><strong>대출 이자 계산기</strong><span>원리금균등·원금균등·거치기간</span></a>
+</div>
+<form class="rel-srch" action="/tools/" method="get" role="search"><input type="search" name="q" placeholder="도구 45개 중에서 찾기 — 예: 누끼, 퇴직금, PDF" aria-label="까치툴 도구 검색" autocomplete="off"><button type="submit">검색</button></form>
+<p class="rel-all"><a href="/tools/">까치툴 도구 45개 전체 보기 →</a></p>
+<!--REL:E-->
+
+<footer>
+  <p>계산 결과는 참고용 추정치이며 투자 권유가 아닙니다. 세율·수수료율은 반드시 직접 확인하세요. 자세한 내용은 <a href="/disclaimer.html">면책조항</a>에서 확인하세요.</p>
+  <p>까치툴 · 모든 계산은 브라우저에서 이루어지며 입력값은 전송·저장되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/tools/about/">소개</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+var $=function(id){return document.getElementById(id)};
+
+/* ---------- 통화/표시 ---------- */
+var CUR={
+  krw:{d:0,pre:'',suf:'원',q:'주'},
+  usd:{d:2,pre:'$',suf:'',q:'주'},
+  coin:{d:8,pre:'',suf:'',q:'개'}
+};
+var cur='krw';
+
+function parseNum(v){
+  if(typeof v==='number') return isFinite(v)?v:NaN;
+  var s=String(v==null?'':v).replace(/,/g,'').replace(/\s/g,'');
+  if(!s) return NaN;
+  if(!/^-?\d*\.?\d*$/.test(s)) return NaN;
+  var n=parseFloat(s);
+  return isFinite(n)?n:NaN;
+}
+function group(ip){ return ip.replace(/\B(?=(\d{3})+(?!\d))/g,','); }
+
+/* 입력창 천단위 콤마 자동 */
+function autoComma(el){
+  var raw=el.value;
+  var focused=(document.activeElement===el);
+  var fromEnd=raw.length-(focused?(el.selectionStart==null?raw.length:el.selectionStart):raw.length);
+  var s=raw.replace(/[^0-9.]/g,'');
+  var i=s.indexOf('.');
+  if(i>=0) s=s.slice(0,i+1)+s.slice(i+1).replace(/\./g,'');
+  var parts=s.split('.'), ip=parts[0]||'', dp=parts.length>1?parts[1]:null;
+  ip=ip.replace(/^0+(?=\d)/,'');
+  var out=group(ip);
+  if(dp!==null) out+='.'+dp;
+  if(out!==raw){
+    el.value=out;
+    if(focused){
+      var pos=out.length-fromEnd; if(pos<0)pos=0; if(pos>out.length)pos=out.length;
+      try{el.setSelectionRange(pos,pos)}catch(e){}
+    }
+  }
+}
+function money(n,opt){
+  if(!isFinite(n)) return '—';
+  var c=CUR[cur], d=c.d;
+  var sign=n<0?'−':((opt&&opt.sign&&n>0)?'+':'');
+  var s=Math.abs(n).toLocaleString('ko-KR',{minimumFractionDigits:d===8?0:d,maximumFractionDigits:d});
+  return sign+c.pre+s+c.suf;
+}
+function qty(n){
+  if(!isFinite(n)) return '—';
+  return n.toLocaleString('ko-KR',{maximumFractionDigits:8})+CUR[cur].q;
+}
+function pct(n,opt){
+  if(!isFinite(n)) return '—';
+  var sign=n<0?'−':((opt&&opt.sign&&n>0)?'+':'');
+  return sign+Math.abs(n).toLocaleString('ko-KR',{minimumFractionDigits:2,maximumFractionDigits:2})+'%';
+}
+function tone(el,v){
+  el.classList.remove('up','down');
+  if(v>0) el.classList.add('up'); else if(v<0) el.classList.add('down');
+}
+
+/* ---------- 순수 계산 함수 ---------- */
+function avgTotals(lots){
+  var q=0,c=0;
+  for(var i=0;i<lots.length;i++){
+    var L=lots[i];
+    var lq=parseNum(L.qty!=null?L.qty:L.q), lp=parseNum(L.price!=null?L.price:L.p);
+    if(!isFinite(lq)||!isFinite(lp)||lq<=0) continue;
+    q+=lq; c+=lq*lp;
+  }
+  return {qty:q,cost:c,avg:q>0?c/q:NaN};
+}
+function avgPrice(lots){ return avgTotals(lots).avg; }
+function needQty(q,avg,target,price){
+  q=parseNum(q); avg=parseNum(avg); target=parseNum(target); price=parseNum(price);
+  if(!isFinite(q)||!isFinite(avg)||!isFinite(target)||!isFinite(price)) return NaN;
+  var den=price-target;
+  if(den===0) return (avg===target)?0:NaN;
+  return q*(target-avg)/den;
+}
+function recoverPct(drop){
+  drop=Math.abs(parseNum(drop));
+  if(!isFinite(drop)) return NaN;
+  if(drop>=100) return Infinity;
+  return 100*drop/(100-drop);
+}
+function sellProfit(q,avg,sell,feeRate,taxRate){
+  if(q&&typeof q==='object'){
+    var o=q; sell=o.sell!=null?o.sell:o.sellPrice; avg=o.avg; feeRate=o.feeRate; taxRate=o.taxRate; q=o.qty;
+  }
+  q=parseNum(q); avg=parseNum(avg); sell=parseNum(sell);
+  var f=parseNum(feeRate); var t=parseNum(taxRate);
+  if(!isFinite(f)) f=0; if(!isFinite(t)) t=0;
+  if(!isFinite(q)||!isFinite(avg)||!isFinite(sell)) return null;
+  var buyAmt=q*avg, sellAmt=q*sell;
+  var buyFee=buyAmt*f/100, sellFee=sellAmt*f/100, tax=sellAmt*t/100;
+  var totalCost=buyAmt+buyFee;
+  var net=sellAmt-sellFee-tax;
+  var profit=net-totalCost;
+  var rate=totalCost>0?profit/totalCost*100:NaN;
+  var den=1-f/100-t/100;
+  var be=den>0?avg*(1+f/100)/den:NaN;
+  return {buyAmt:buyAmt,sellAmt:sellAmt,buyFee:buyFee,sellFee:sellFee,tax:tax,
+    fees:buyFee+sellFee,costs:buyFee+sellFee+tax,totalCost:totalCost,net:net,
+    profit:profit,rate:rate,breakeven:be};
+}
+
+/* ---------- 입력 배선 ---------- */
+var NUMIDS=['h_q','h_p','a_now','t_q','t_a','t_t','t_p','r_a','r_p','r_d','s_q','s_a','s_p','s_fee','s_tax'];
+function bind(el,fn){
+  el.addEventListener('input',function(){ autoComma(el); fn(el); });
+}
+
+/* ---------- ① 평단 계산 ---------- */
+var MAXLOT=10;
+function lotRows(){ return Array.prototype.slice.call(document.querySelectorAll('#lots .lot')); }
+function addLot(q,p){
+  if(lotRows().length>=MAXLOT) return null;
+  var d=document.createElement('div'); d.className='lot';
+  var iq=document.createElement('input'); iq.type='text'; iq.className='lq'; iq.inputMode='decimal';
+  iq.placeholder='수량'; iq.setAttribute('aria-label','추가 매수 수량');
+  var ip=document.createElement('input'); ip.type='text'; ip.className='lp'; ip.inputMode='decimal';
+  ip.placeholder='단가'; ip.setAttribute('aria-label','추가 매수 단가');
+  var b=document.createElement('button'); b.type='button'; b.className='del'; b.textContent='✕';
+  b.setAttribute('aria-label','이 줄 삭제');
+  if(q!=null) iq.value=q; if(p!=null) ip.value=p;
+  d.appendChild(iq); d.appendChild(ip); d.appendChild(b);
+  $('lots').appendChild(d);
+  bind(iq,calcAvg); bind(ip,calcAvg);
+  b.addEventListener('click',function(){
+    if(lotRows().length<=1){ iq.value=''; ip.value=''; }
+    else d.parentNode.removeChild(d);
+    syncLotUI(); calcAvg();
+  });
+  return d;
+}
+function syncLotUI(){
+  var n=lotRows().length;
+  $('lotN').textContent=String(n);
+  $('addLot').disabled=(n>=MAXLOT);
+  $('addLot').textContent=(n>=MAXLOT)?'추가 매수는 최대 10회까지':'+ 추가 매수 한 줄 더';
+}
+function readLots(){
+  var out=[];
+  lotRows().forEach(function(r){
+    var q=parseNum(r.querySelector('.lq').value), p=parseNum(r.querySelector('.lp').value);
+    if(isFinite(q)&&q>0&&isFinite(p)) out.push({qty:q,price:p});
+  });
+  return out;
+}
+function calcAvg(){
+  var hq=parseNum($('h_q').value), hp=parseNum($('h_p').value);
+  var lots=[];
+  if(isFinite(hq)&&hq>0&&isFinite(hp)) lots.push({qty:hq,price:hp});
+  var add=readLots();
+  lots=lots.concat(add);
+  var T=avgTotals(lots);
+  var f=$('a_f'), box=$('a_evalBox');
+  if(!(T.qty>0)){
+    $('a_avg').textContent='—'; $('a_qty').textContent='—'; $('a_cost').textContent='—';
+    $('a_diff').textContent='—'; box.hidden=true;
+    f.textContent='보유 수량·평단 또는 추가 매수 수량·단가를 입력하시면 바로 계산됩니다.';
+    return;
+  }
+  $('a_avg').textContent=money(T.avg);
+  $('a_qty').textContent=qty(T.qty);
+  $('a_cost').textContent=money(T.cost);
+
+  var dEl=$('a_diff');
+  if(isFinite(hp)&&isFinite(hq)&&hq>0&&add.length){
+    /* 평단이 내려가도 손실 '금액'은 그대로이므로 색으로 이득처럼 보이게 하지 않습니다 */
+    dEl.textContent=money(T.avg-hp,{sign:true});
+    dEl.classList.remove('up','down');
+  }else{ dEl.textContent='—'; dEl.classList.remove('up','down'); }
+
+  var terms=lots.map(function(L){ return qty(L.qty)+' × '+money(L.price); }).join(' + ');
+  var line='('+terms+') ÷ '+qty(T.qty)+' = <b>'+money(T.avg)+'</b>';
+
+  var now=parseNum($('a_now').value);
+  if(isFinite(now)&&now>0){
+    box.hidden=false;
+    var ev=now*T.qty, pl=ev-T.cost, rt=T.cost>0?pl/T.cost*100:NaN;
+    $('a_eval').textContent=money(ev);
+    var plEl=$('a_pl'); plEl.textContent=money(pl,{sign:true}); tone(plEl,pl);
+    var rtEl=$('a_rate'); rtEl.textContent=pct(rt,{sign:true}); tone(rtEl,pl);
+    line+='<br>평가손익 = ('+money(now)+' − '+money(T.avg)+') × '+qty(T.qty)+' = <b>'+money(pl,{sign:true})+'</b>'+
+      ' · 수익률 = '+money(pl,{sign:true})+' ÷ '+money(T.cost)+' × 100 = <b>'+pct(rt,{sign:true})+'</b>';
+  }else{ box.hidden=true; }
+  f.innerHTML=line;
+}
+
+/* ---------- ② 목표 평단 역산 ---------- */
+function calcTarget(){
+  var q=parseNum($('t_q').value), a=parseNum($('t_a').value),
+      t=parseNum($('t_t').value), p=parseNum($('t_p').value);
+  var msg=$('t_msg'), f=$('t_f');
+  function blank(txt,cls){
+    $('t_need').textContent='—'; $('t_amt').textContent='—';
+    $('t_tq').textContent='—'; $('t_tc').textContent='—';
+    f.textContent='';
+    msg.innerHTML=txt?'<div class="msg '+(cls||'m-warn')+'">'+txt+'</div>':'';
+  }
+  if(!(isFinite(q)&&q>0)||!isFinite(a)||!isFinite(t)||!isFinite(p)){
+    return blank('보유 수량·평단, 목표 평단, 추가 매수 단가를 모두 입력해 주세요.');
+  }
+  if(a===t){ return blank('이미 목표 평단과 같습니다. 추가 매수가 필요하지 않습니다.'); }
+  if(t<a && p>=t){
+    return blank('<strong>불가능한 목표입니다.</strong> 목표 평단 '+money(t)+'이(가) 추가 매수 단가 '+money(p)+
+      ' 이하입니다. 아무리 많이 사도 평단은 매수 단가 아래로 내려가지 않습니다. 목표 평단을 매수 단가보다 높게 잡으세요.','m-bad');
+  }
+  if(t>a && p<=t){
+    return blank('<strong>불가능한 목표입니다.</strong> 평단을 지금보다 <em>올리려면</em> 추가 매수 단가가 목표 평단보다 높아야 합니다.','m-bad');
+  }
+  var x=needQty(q,a,t,p);
+  if(!isFinite(x)||x<=0){ return blank('입력한 조건으로는 목표 평단을 만들 수 없습니다.','m-bad'); }
+  var amt=x*p, tq=q+x, tc=q*a+amt;
+  $('t_need').textContent=qty(x);
+  $('t_amt').textContent=money(amt);
+  $('t_tq').textContent=qty(tq);
+  $('t_tc').textContent=money(tc);
+  msg.innerHTML = (t<a)
+    ? '<div class="msg m-warn">평단을 '+money(a)+' → '+money(t)+'로 낮추려면 투입 원금이 '+money(q*a)+' → '+money(tc)+
+      '로 늘어납니다. 손실 <em>금액</em>이 줄어드는 것이 아니라 손익분기 가격이 내려가는 것입니다.</div>'
+    : '';
+  f.innerHTML='필요 수량 = 보유수량 × (목표평단 − 보유평단) ÷ (매수단가 − 목표평단)<br>'+
+    '= '+qty(q)+' × ('+money(t)+' − '+money(a)+') ÷ ('+money(p)+' − '+money(t)+') = <b>'+qty(x)+'</b><br>'+
+    '필요 금액 = '+qty(x)+' × '+money(p)+' = <b>'+money(amt)+'</b>';
+}
+
+/* ---------- ③ 본전 계산 ---------- */
+var recLock=false;
+function calcRec(){
+  var d=parseNum($('r_d').value);
+  var f=$('r_f');
+  Array.prototype.forEach.call($('recTable').querySelectorAll('tbody tr'),function(tr){tr.classList.remove('hi')});
+  if(!isFinite(d)){
+    $('r_up').textContent='—'; $('r_left').textContent='—'; $('r_mul').textContent='—';
+    f.textContent='하락률을 입력하시면 본전까지 필요한 상승률이 나옵니다.'; return;
+  }
+  d=Math.abs(d);
+  if(d>=100){
+    $('r_up').textContent='회복 불가';
+    $('r_left').textContent='0원'; $('r_mul').textContent='—';
+    f.textContent='100% 하락은 가치가 0이 된 상태라, 어떤 상승률로도 원금이 돌아오지 않습니다.'; return;
+  }
+  var up=recoverPct(d), mul=100/(100-d), left=1000000*(100-d)/100;
+  $('r_up').textContent=pct(up,{sign:true});
+  $('r_left').textContent=left.toLocaleString('ko-KR',{maximumFractionDigits:0})+'원';
+  $('r_mul').textContent=mul.toLocaleString('ko-KR',{minimumFractionDigits:2,maximumFractionDigits:2})+'배';
+  f.innerHTML='필요 상승률 = 100 × '+d.toLocaleString('ko-KR',{maximumFractionDigits:4})+' ÷ (100 − '+
+    d.toLocaleString('ko-KR',{maximumFractionDigits:4})+') = <b>'+pct(up,{sign:true})+'</b>'+
+    ' · 남은 금액이 원금의 '+(100-d).toLocaleString('ko-KR',{maximumFractionDigits:4})+'%이므로 <b>'+
+    mul.toLocaleString('ko-KR',{minimumFractionDigits:2,maximumFractionDigits:2})+'배</b>가 되어야 본전입니다.';
+  var tr=$('recTable').querySelector('tbody tr[data-d="'+String(Math.round(d))+'"]');
+  if(tr&&Math.abs(d-Math.round(d))<1e-9) tr.classList.add('hi');
+}
+function recFromPrices(){
+  var a=parseNum($('r_a').value), p=parseNum($('r_p').value);
+  if(isFinite(a)&&a>0&&isFinite(p)&&p>=0){
+    var d=(a-p)/a*100;
+    recLock=true;
+    $('r_d').value=(Math.round(d*10000)/10000).toString();
+    recLock=false;
+  }
+  calcRec();
+}
+
+/* ---------- ④ 매도 손익 ---------- */
+function calcSell(){
+  var q=parseNum($('s_q').value), a=parseNum($('s_a').value), p=parseNum($('s_p').value);
+  var fr=parseNum($('s_fee').value), tr=parseNum($('s_tax').value);
+  var f=$('s_f');
+  if(!(isFinite(q)&&q>0)||!isFinite(a)||!isFinite(p)){
+    $('s_profit').textContent='—'; $('s_rate').textContent='—'; $('s_net').textContent='—';
+    $('s_costs').textContent='—'; $('s_be').textContent='—';
+    $('s_profit').classList.remove('up','down');
+    f.textContent='수량·평단·매도가를 입력하시면 바로 계산됩니다.'; return;
+  }
+  var R=sellProfit(q,a,p,isFinite(fr)?fr:0,isFinite(tr)?tr:0);
+  var pEl=$('s_profit');
+  pEl.textContent=money(R.profit,{sign:true}); tone(pEl,R.profit);
+  var rEl=$('s_rate'); rEl.textContent=pct(R.rate,{sign:true}); tone(rEl,R.profit);
+  $('s_net').textContent=money(R.net);
+  $('s_costs').textContent=money(R.costs);
+  $('s_be').textContent=money(R.breakeven);
+  f.innerHTML=
+    '매도금액 = '+qty(q)+' × '+money(p)+' = '+money(R.sellAmt)+'<br>'+
+    '매도 수수료 '+money(R.sellFee)+' + 세금 '+money(R.tax)+' → 실수령 <b>'+money(R.net)+'</b><br>'+
+    '매수원가 = '+qty(q)+' × '+money(a)+' + 매수 수수료 '+money(R.buyFee)+' = '+money(R.totalCost)+'<br>'+
+    '실현손익 = '+money(R.net)+' − '+money(R.totalCost)+' = <b>'+money(R.profit,{sign:true})+'</b> ('+pct(R.rate,{sign:true})+')<br>'+
+    '본전 매도가 = '+money(a)+' × (1 + 수수료율) ÷ (1 − 수수료율 − 세율) = <b>'+money(R.breakeven)+'</b>';
+}
+
+/* ---------- 전체 재계산 ---------- */
+function recalcAll(){ calcAvg(); calcTarget(); calcRec(); calcSell(); }
+
+/* ---------- 탭 · 통화 ---------- */
+Array.prototype.forEach.call(document.querySelectorAll('#tabs button'),function(b){
+  b.addEventListener('click',function(){
+    Array.prototype.forEach.call(document.querySelectorAll('#tabs button'),function(x){x.classList.remove('on')});
+    b.classList.add('on');
+    Array.prototype.forEach.call(document.querySelectorAll('.pane'),function(p){p.classList.remove('on')});
+    var el=$('pane-'+b.dataset.v); if(el) el.classList.add('on');
+  });
+});
+Array.prototype.forEach.call(document.querySelectorAll('#curSeg button'),function(b){
+  b.addEventListener('click',function(){
+    Array.prototype.forEach.call(document.querySelectorAll('#curSeg button'),function(x){x.classList.remove('on')});
+    b.classList.add('on'); cur=b.dataset.c; recalcAll();
+  });
+});
+
+/* ---------- 초기화 ---------- */
+NUMIDS.forEach(function(id){
+  var el=$(id); if(!el) return;
+  el.addEventListener('input',function(){
+    autoComma(el);
+    if(id==='r_a'||id==='r_p'){ recFromPrices(); return; }
+    if(id==='r_d'){ if(!recLock){ $('r_a').value=''; $('r_p').value=''; } calcRec(); return; }
+    if(id.charAt(0)==='h'||id==='a_now') calcAvg();
+    else if(id.charAt(0)==='t') calcTarget();
+    else if(id.charAt(0)==='s') calcSell();
+  });
+});
+Array.prototype.forEach.call($('recTable').querySelectorAll('tbody tr'),function(tr){
+  tr.style.cursor='pointer';
+  tr.addEventListener('click',function(){
+    $('r_a').value=''; $('r_p').value=''; $('r_d').value=tr.dataset.d; calcRec();
+  });
+});
+$('addLot').addEventListener('click',function(){ var d=addLot(); syncLotUI(); if(d) d.querySelector('.lq').focus(); });
+
+addLot('50','8,000');
+syncLotUI();
+recalcAll();
+
+/* ---------- 테스트/디버그 훅 ---------- */
+window.AVG={
+  avgPrice:avgPrice,
+  avgTotals:avgTotals,
+  needQty:needQty,
+  recoverPct:recoverPct,
+  sellProfit:sellProfit,
+  parseNum:parseNum,
+  currency:function(c){
+    var b=document.querySelector('#curSeg button[data-c="'+c+'"]'); if(b) b.click(); return cur;
+  },
+  tab:function(v){ var b=document.querySelector('#tabs button[data-v="'+v+'"]'); if(b) b.click(); return v; },
+  set:function(id,v){ var el=$(id); if(!el) return false;
+    el.value=String(v); el.dispatchEvent(new Event('input',{bubbles:true})); return true; },
+  setLot:function(i,q,p){ var rows=lotRows(); if(!rows[i]) return false;
+    var a=rows[i].querySelector('.lq'), b=rows[i].querySelector('.lp');
+    a.value=String(q); a.dispatchEvent(new Event('input',{bubbles:true}));
+    b.value=String(p); b.dispatchEvent(new Event('input',{bubbles:true})); return true; },
+  addLot:function(q,p){ var d=addLot(q,p); syncLotUI(); calcAvg(); return !!d; },
+  lotCount:function(){ return lotRows().length; },
+  state:function(){ return {cur:cur, lots:readLots(),
+    avg:$('a_avg').textContent, qty:$('a_qty').textContent, cost:$('a_cost').textContent,
+    need:$('t_need').textContent, rec:$('r_up').textContent, profit:$('s_profit').textContent}; }
+};
+})();
+</script>
+</body>
+</html>

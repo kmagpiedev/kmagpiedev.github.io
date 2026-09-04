@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>인스타 줄바꿈 — 글꼴 꾸미기·특수문자 복사 | 까치툴</title>
+<meta name="description" content="인스타그램·스레드에서 사라지는 빈 줄을 살려주는 줄바꿈 변환기입니다. 보이지 않는 문자를 빈 줄에 넣어 문단 간격을 유지하고, 유니코드 글꼴 28종으로 아이디와 소개글을 꾸미고, 하트·별·화살표 등 특수문자 750여 개를 검색해 복사할 수 있습니다. 모두 브라우저에서 처리됩니다.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/insta-text/">
+<meta property="og:title" content="인스타 줄바꿈 — 글꼴 꾸미기·특수문자 복사">
+<meta property="og:description" content="빈 줄이 사라지지 않게 변환하고, 유니코드 글꼴로 꾸미고, 특수문자를 이름으로 검색해 담아서 복사하세요.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/insta-text/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .wrap{max-width:880px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:16px 0}
+  .row{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start}
+  .col{flex:1;min-width:180px}
+  label.f{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 8px}
+  input[type=text],input[type=search]{padding:10px 12px;border:1px solid var(--line);border-radius:9px;
+    background:var(--surface);color:var(--ink);font-size:16px;font-family:inherit;width:100%}
+  input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  textarea{width:100%;min-height:160px;resize:vertical;padding:14px 15px;border:1px solid var(--line);
+    border-radius:11px;background:var(--bg);color:var(--ink);font-size:15.5px;font-family:inherit;line-height:1.7}
+  textarea:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  textarea[readonly]{background:var(--accent-soft)}
+  .note{font-size:13px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:12px;margin:12px 0 0}
+  .note b{color:var(--ink-2)}
+  .acts{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+  .acts button{font-family:inherit;font-size:14px;font-weight:600;padding:10px 18px;border-radius:9px;
+    border:1px solid var(--line);background:transparent;color:var(--ink-2);cursor:pointer;transition:.12s}
+  .acts button:hover{border-color:var(--accent);color:var(--accent)}
+  .acts button.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+  .acts button.pri:hover{opacity:.9;color:#fff}
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .m-ok{background:var(--good-soft);border-color:var(--good)}
+  .hidden{display:none}
+  code{background:var(--line-soft);padding:1px 5px;border-radius:4px;font-size:12.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+
+  /* 탭 */
+  .tabs{display:flex;gap:6px;border:1px solid var(--line);border-radius:12px;padding:5px;background:var(--surface);margin:0 0 6px}
+  .tabs button{flex:1;min-width:0;background:transparent;border:0;padding:11px 6px;border-radius:8px;
+    font-family:inherit;font-size:13.5px;font-weight:700;color:var(--ink-2);cursor:pointer;transition:.12s;
+    letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tabs button[aria-selected=true]{background:var(--accent);color:#fff}
+  .tabs button:hover[aria-selected=false]{color:var(--accent)}
+
+  /* 옵션 칩 */
+  .chips{display:flex;gap:7px;flex-wrap:wrap}
+  .chips button{font-family:inherit;font-size:13px;padding:7px 12px;border-radius:8px;border:1px solid var(--line);
+    background:transparent;color:var(--ink-2);cursor:pointer;transition:.12s}
+  .chips button:hover{border-color:var(--accent);color:var(--accent)}
+  .chips button.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft);font-weight:700}
+  .chips button .bad{color:var(--bad);font-size:11.5px}
+
+  /* 카운터 */
+  .meters{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+  .meter{flex:1;min-width:140px;border:1px solid var(--line);border-radius:11px;padding:11px 14px;background:var(--bg)}
+  .meter .k{font-size:11.5px;letter-spacing:.05em;color:var(--ink-3);font-weight:600;text-transform:uppercase}
+  .meter .v{font-size:21px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em;color:var(--accent)}
+  .meter .v.over{color:var(--bad)}
+  .meter .v small{font-size:13px;font-weight:600;color:var(--ink-3);margin-left:3px}
+
+  /* 미리보기 목업 */
+  .prevs{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+  .mock{flex:1;min-width:0;border:1px solid var(--line);border-radius:14px;background:var(--surface);overflow:hidden}
+  .mock .hd{display:flex;align-items:center;gap:9px;padding:11px 13px;border-bottom:1px solid var(--line-soft)}
+  .mock .av{width:28px;height:28px;border-radius:50%;background:var(--line);flex:none}
+  .mock .nm{font-size:13px;font-weight:700}
+  .mock .nm em{display:block;font-style:normal;font-size:11px;color:var(--ink-3);font-weight:500}
+  .mock .bd{padding:12px 13px;font-size:14px;line-height:1.65;white-space:pre-wrap;word-break:break-word;
+    min-height:96px;max-height:280px;overflow:auto}
+  .mock .cap{font-size:11.5px;color:var(--ink-3);padding:0 13px 10px;margin:0}
+  .mock.bad .cap{color:var(--bad)}
+  .mock.good .cap{color:var(--good)}
+  .mock .bd .tag{color:#3b82f6}
+  @media (prefers-color-scheme:dark){ .mock .bd .tag{color:#7dabf8} }
+
+  /* 글꼴 목록 */
+  .flist{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+  .fitem{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:12px;
+    padding:11px 13px;background:var(--surface)}
+  .fitem .fn{flex:none;width:104px;font-size:12px;color:var(--ink-3);font-weight:600;line-height:1.4}
+  .fitem .fn b{display:block;color:var(--ink-2);font-size:12.5px}
+  .fitem .fs{flex:1;min-width:0;font-size:17px;line-height:1.5;word-break:break-all;overflow-wrap:anywhere}
+  .fitem .fc{flex:none;font-family:inherit;font-size:13px;font-weight:700;padding:8px 13px;border-radius:8px;
+    border:1px solid var(--line);background:transparent;color:var(--ink-2);cursor:pointer;transition:.12s}
+  .fitem .fc:hover{border-color:var(--accent);color:var(--accent)}
+  .fitem .ko{display:inline-block;font-size:10.5px;font-weight:700;color:var(--good);
+    background:var(--good-soft);border-radius:4px;padding:0 4px;margin-top:2px}
+  @media (max-width:560px){
+    .fitem{flex-wrap:wrap;gap:8px}
+    .fitem .fn{width:auto;flex:1}
+    .fitem .fs{flex-basis:100%;order:3;font-size:16px}
+  }
+
+  /* 특수문자 */
+  .catbar{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 0}
+  .catbar button{font-family:inherit;font-size:12.5px;padding:6px 11px;border-radius:99px;border:1px solid var(--line);
+    background:transparent;color:var(--ink-2);cursor:pointer;transition:.12s}
+  .catbar button:hover{border-color:var(--accent);color:var(--accent)}
+  .catbar button.on{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(48px,1fr));gap:6px;margin-top:14px}
+  .tile{font-family:inherit;font-size:19px;line-height:1.3;min-height:46px;padding:4px 2px;border-radius:9px;
+    border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;transition:.1s;
+    display:flex;align-items:center;justify-content:center;overflow:hidden;min-width:0}
+  .tile:hover{border-color:var(--accent);background:var(--accent-soft)}
+  .tile.w2{grid-column:span 2;font-size:15px}
+  .tile.w3{grid-column:span 3;font-size:13.5px}
+  .tile.w4{grid-column:span 4;font-size:12.5px}
+  .tile.inv{font-size:11px;color:var(--ink-3);border-style:dashed;font-weight:600}
+  .gtitle{font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);
+    font-weight:700;margin:20px 0 0}
+  .basket{position:sticky;bottom:0;z-index:5;margin-top:16px;border:1px solid var(--accent);border-radius:13px;
+    background:var(--surface);padding:12px 14px;box-shadow:0 -4px 16px rgba(0,0,0,.06)}
+  .basket .bt{font-size:12px;color:var(--ink-3);font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin:0 0 7px}
+  .basket .bv{min-height:38px;border:1px solid var(--line);border-radius:9px;background:var(--bg);
+    padding:8px 10px;font-size:18px;line-height:1.5;word-break:break-all;overflow-wrap:anywhere;max-height:110px;overflow:auto}
+  .basket .bv:empty::before{content:"문자를 누르면 여기에 담깁니다";font-size:13px;color:var(--ink-3)}
+  .basket .acts{margin-top:10px}
+  .basket .acts button{padding:8px 14px;font-size:13px}
+
+  /* 토스트 */
+  .toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,14px);z-index:99;
+    background:var(--ink);color:var(--bg);font-size:14px;font-weight:600;padding:10px 20px;border-radius:99px;
+    opacity:0;pointer-events:none;transition:.18s;max-width:88vw;text-align:center}
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 70px}
+    h1{font-size:23px}
+    .panel{padding:18px 15px;border-radius:14px}
+    .tabs button{font-size:12px;padding:10px 3px}
+    .grid{grid-template-columns:repeat(auto-fill,minmax(44px,1fr))}
+    .basket{padding:9px 11px;border-radius:11px}
+    .basket .bt{margin:0 0 5px;font-size:11px}
+    .basket .bv{min-height:32px;max-height:66px;font-size:16px;padding:6px 8px}
+    .basket .acts{margin-top:8px;gap:6px}
+    .basket .acts button{padding:7px 10px;font-size:12px}
+  }
+/*FOLD:S*/
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 8px}
+  .fold .fx>:first-child{margin-top:4px}
+/*FOLD:E*/
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-srch{display:flex;gap:8px;margin:0 0 12px}
+  .rel-srch input{flex:1;min-width:0;padding:10px 14px;border:1px solid var(--line);border-radius:11px;
+    background:var(--surface);color:var(--ink);font:inherit;font-size:14.5px;outline:none}
+  .rel-srch input:focus{border-color:var(--accent)}
+  .rel-srch input::-webkit-search-cancel-button{-webkit-appearance:none}
+  .rel-srch button{flex:none;padding:10px 16px;border:1px solid var(--accent);border-radius:11px;
+    background:transparent;color:var(--accent);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+  .rel-srch button:hover{background:var(--accent-soft)}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
+/*TESTS:S*/
+  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 24px;padding:13px 18px;
+    border:1px solid var(--line);border-radius:14px;background:var(--surface);
+    text-decoration:none;color:inherit;transition:.14s}
+  .tbn:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .tbn .ic{width:44px;height:44px;flex:none;border-radius:12px;background:#fff;
+    border:1px solid var(--line);object-fit:contain;padding:2px}
+  .tbn .tx{flex:1;min-width:0}
+  .tbn .tt{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em}
+  .tbn .ds{display:block;font-size:13px;color:var(--ink-3);line-height:1.55;margin-top:2px}
+  .tbn .ar{color:var(--ink-3);font-size:15px;flex:none}
+/*TESTS:E*/
+</style>
+<!--HEAD:S-->
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
+<meta property="og:site_name" content="까치툴">
+<link rel="manifest" href="/tools/manifest.json">
+<meta name="theme-color" content="#faf9f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#171614" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="까치툴">
+<script>/*PWA*/(function(){var L=document.documentElement.lang==='en';
+if('serviceWorker' in navigator)addEventListener('load',function(){navigator.serviceWorker.register('/sw.js',{scope:'/'})['catch'](function(){})});
+var p=null,armed=false;addEventListener('beforeinstallprompt',function(e){e.preventDefault();p=e;arm()});
+function arm(){if(armed)return;armed=true;var h=function(){removeEventListener('pointerdown',h,true);removeEventListener('keydown',h,true);show()};
+addEventListener('pointerdown',h,true);addEventListener('keydown',h,true)}
+addEventListener('appinstalled',function(){p=null;var b=document.getElementById('pwaBtn');if(b)b.style.visibility='hidden'});
+function show(){if(document.getElementById('pwaBtn'))return;
+var a=document.querySelector('.sub')||document.querySelector('h1');if(!a)return;
+var b=document.createElement('button');b.id='pwaBtn';b.type='button';
+b.textContent=L?'⬇ Install as an app':'📲 앱으로 설치';
+b.style.cssText='display:inline-block;margin:0 0 22px;padding:8px 15px;border-radius:9px;font:600 13.5px/1.4 inherit;cursor:pointer;background:transparent;color:var(--accent,#b45309);border:1px solid var(--accent,#b45309)';
+b.title=L?'Works offline once installed':'설치하면 인터넷 없이도 쓸 수 있습니다';
+b.onclick=function(){if(!p)return;p.prompt();p.userChoice.then(function(){p=null;b.style.visibility='hidden'})};
+a.insertAdjacentElement('afterend',b)}})();</script>
+<!--HEAD:E-->
+<!--LD:S-->
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://www.kmagpie.com/tools/insta-text/#app","name":"인스타 줄바꿈·글꼴 꾸미기","url":"https://www.kmagpie.com/tools/insta-text/","description":"인스타·스레드에서 사라지는 빈 줄을 보이지 않는 문자로 살리고, 𝐛𝐨𝐥𝐝·𝒮𝒸𝓇𝒾𝓅𝓉 같은 유니코드 글꼴 28종과 하트·별·구분선 등 특수문자 750개를 한 번에 복사합니다. 캡션 글자수·해시태그 수도 세어 줍니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"inLanguage":"ko","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"K-magpie","url":"https://www.kmagpie.com/"}},{"@type":"BreadcrumbList","@id":"https://www.kmagpie.com/tools/insta-text/#crumb","itemListElement":[{"@type":"ListItem","position":1,"name":"K-magpie","item":"https://www.kmagpie.com/"},{"@type":"ListItem","position":2,"name":"까치툴","item":"https://www.kmagpie.com/tools/"},{"@type":"ListItem","position":3,"name":"인스타 줄바꿈·글꼴 꾸미기","item":"https://www.kmagpie.com/tools/insta-text/"}]}]}</script>
+<!--LD:E-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> &rsaquo; <a href="/tools/">까치툴</a> &rsaquo; 인스타 줄바꿈</p>
+
+<h1>인스타 줄바꿈 · 글꼴 꾸미기 · 특수문자</h1>
+<p class="sub">인스타그램·스레드에 올리면 <strong>빈 줄이 사라지는 문제</strong>를 보이지 않는 문자로 해결합니다. 유니코드 글꼴 28종으로 소개글을 꾸미고, 하트·별·화살표 같은 특수문자를 이름으로 검색해 담아 한 번에 복사할 수 있습니다. 입력한 글은 브라우저 밖으로 나가지 않습니다.</p>
+
+<div class="tabs" role="tablist">
+  <button type="button" role="tab" id="tab-break" aria-controls="pane-break" aria-selected="true">① 인스타 줄바꿈</button>
+  <button type="button" role="tab" id="tab-font" aria-controls="pane-font" aria-selected="false">② 글꼴 꾸미기</button>
+  <button type="button" role="tab" id="tab-sym" aria-controls="pane-sym" aria-selected="false">③ 특수문자</button>
+</div>
+
+<!-- ① 줄바꿈 -->
+<section id="pane-break" role="tabpanel" aria-labelledby="tab-break">
+  <div class="panel">
+    <label class="f" for="brIn">원본 글</label>
+    <textarea id="brIn" placeholder="여기에 캡션이나 소개글을 쓰세요.&#10;&#10;문단 사이를 빈 줄로 띄우면, 앱에 올렸을 때 그 빈 줄이 사라지는 경우가 많습니다.&#10;&#10;#해시태그 도 함께 세어 드립니다."></textarea>
+
+    <div style="margin-top:16px">
+      <label class="f">빈 줄에 넣을 보이지 않는 문자</label>
+      <div class="chips" id="brMode">
+        <button type="button" data-v="full" class="on">한자 공백 U+3000 <span style="color:var(--good)">권장</span></button>
+        <button type="button" data-v="braille">점자 공백 U+2800</button>
+        <button type="button" data-v="zwsp">제로폭 공백 U+200B <span class="bad">비추천</span></button>
+        <button type="button" data-v="none">넣지 않기(공백 정리만)</button>
+      </div>
+      <p class="note" id="brModeNote"></p>
+    </div>
+
+    <div class="acts">
+      <button type="button" id="brCopy" class="pri">변환 결과 복사</button>
+      <button type="button" id="brSample">예시 넣기</button>
+      <button type="button" id="brClear">지우기</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <label class="f" for="brOut">변환 결과 (그대로 복사해서 붙여넣기)</label>
+    <textarea id="brOut" readonly></textarea>
+
+    <div class="meters">
+      <div class="meter"><div class="k">캡션 글자수</div><div class="v" id="mChars">0<small>/ 2,200</small></div></div>
+      <div class="meter"><div class="k">해시태그</div><div class="v" id="mTags">0<small>개 / 30</small></div></div>
+      <div class="meter"><div class="k">줄 수</div><div class="v" id="mLines">0<small>줄</small></div></div>
+      <div class="meter"><div class="k">살린 빈 줄</div><div class="v" id="mBlank">0<small>줄</small></div></div>
+    </div>
+    <div id="brWarn"></div>
+    <p class="note">한도 수치는 <b>현재 알려진 한도</b>(캡션 2,200자·해시태그 30개)를 기준으로 표시합니다. 앱 정책은 예고 없이 바뀔 수 있으니 실제 입력창에서 한 번 더 확인하세요.</p>
+  </div>
+
+  <div class="panel">
+    <label class="f">미리보기 (일반적인 게시물 카드 모양)</label>
+    <div class="prevs">
+      <div class="mock bad">
+        <div class="hd"><span class="av"></span><span class="nm">내 계정<em>변환하지 않고 올렸을 때</em></span></div>
+        <div class="bd" id="mockBad"></div>
+        <p class="cap">빈 줄이 접혀 문단 구분이 사라진 모습</p>
+      </div>
+      <div class="mock good">
+        <div class="hd"><span class="av"></span><span class="nm">내 계정<em>변환해서 올렸을 때</em></span></div>
+        <div class="bd" id="mockGood"></div>
+        <p class="cap">빈 줄에 보이지 않는 문자가 들어가 간격이 유지됨</p>
+      </div>
+    </div>
+    <p class="note">실제 화면은 앱 버전과 기기에 따라 다릅니다. 위 카드는 줄 간격 차이를 보여 주기 위한 <b>일반적인 형태의 예시</b>입니다.</p>
+  </div>
+</section>
+
+<!-- ② 글꼴 -->
+<section id="pane-font" role="tabpanel" aria-labelledby="tab-font" hidden>
+  <div class="panel">
+    <label class="f" for="fnIn">꾸밀 글</label>
+    <textarea id="fnIn" style="min-height:92px" placeholder="Hello 123 안녕하세요"></textarea>
+    <p class="note" id="fnNote"><b>영문과 숫자만</b> 다른 모양으로 바뀌고 한글·한자는 그대로 남습니다. 유니코드에 한글용 장식 글꼴이 따로 없기 때문입니다. 다만 <b>밑줄·취소선·물결·점</b>은 글자 위아래에 겹쳐 그리는 결합 문자라서 <b>한글에도 그대로 적용</b>됩니다. 아래 목록에서 <span class="ko">한글 O</span> 표시를 찾아보세요.</p>
+    <div class="msg m-warn" style="margin-top:14px">화면 낭독(스크린리더)을 쓰는 분에게는 이 글자들이 뜻 없는 기호로 읽히거나 통째로 건너뛰어질 수 있습니다. <strong>이름·닉네임처럼 짧은 곳에만 쓰고, 본문과 안내 문구는 일반 글자로</strong> 두는 것이 좋습니다.</div>
+  </div>
+
+  <div class="flist" id="fnList"></div>
+</section>
+
+<!-- ③ 특수문자 -->
+<section id="pane-sym" role="tabpanel" aria-labelledby="tab-sym" hidden>
+  <div class="panel">
+    <label class="f" for="syQ">이름으로 검색 (예: 하트, 별, 화살표, 괄호)</label>
+    <input type="search" id="syQ" placeholder="하트" autocomplete="off">
+    <div class="catbar" id="syCats"></div>
+  </div>
+
+  <div id="syBody"></div>
+
+  <div class="basket">
+    <p class="bt">모아 담기 바구니 <span id="bkCount" style="color:var(--accent)">0개</span></p>
+    <div class="bv" id="bkView"></div>
+    <div class="acts">
+      <button type="button" class="pri" id="bkCopy">바구니 전체 복사</button>
+      <button type="button" id="bkSpace">띄어쓰기로 구분: 끔</button>
+      <button type="button" id="bkUndo">마지막 빼기</button>
+      <button type="button" id="bkClear">비우기</button>
+    </div>
+  </div>
+</section>
+
+<p class="gist">인스타그램과 스레드는 캡션에 연속으로 들어간 줄바꿈을 하나로 접어 버리기 때문에, 문단 사이를 띄우려면 빈 줄에 눈에 보이지 않는 문자를 하나 넣어 "빈 줄이 아닌 줄"로 만들어야 합니다. 가장 안정적인 건 한자 공백(U+3000)이고, 점자 공백(U+2800)도 널리 쓰이지만 제로폭 공백(U+200B)은 폭이 0이라 그대로 접히는 경우가 있습니다. 글꼴 꾸미기는 실제 글꼴을 바꾸는 게 아니라 모양이 비슷한 다른 문자로 바꿔치기하는 것이라, 검색에 걸리지 않고 화면 낭독기에서 제대로 읽히지 않는다는 대가가 따릅니다. 현재 알려진 한도는 캡션 2,200자, 해시태그 30개입니다.</p>
+
+<!--TESTS:S-->
+<a class="tbn" href="/tests/">
+  <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
+  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 좀비 생존률부터 전생, 아이돌 포지션까지 — 결과는 친구와 비교해 보세요.</span></span>
+  <span class="ar">→</span>
+</a>
+<!--TESTS:E-->
+
+<details class="fold" open><summary><h2>인스타에서 빈 줄이 사라지는 진짜 이유</h2></summary><div class="fx">
+<p>메모장이나 카카오톡에서 예쁘게 문단을 나눠 쓴 글을 인스타그램 캡션에 붙여넣으면, 올리고 난 뒤에 문단 사이 여백이 통째로 사라져 있는 경우가 많습니다. 글자는 하나도 안 없어졌는데 줄만 다닥다닥 붙어 버리는 거예요. 이건 앱의 버그가 아니라 <strong>글을 화면에 그릴 때 연속된 줄바꿈을 하나로 접는 처리</strong> 때문입니다.</p>
+<p>웹과 앱에서 글을 보여 주는 방식은 대체로 두 가지입니다. 하나는 입력한 줄바꿈을 그대로 살리는 방식이고, 다른 하나는 여러 개의 공백과 줄바꿈을 <strong>하나로 합쳐서</strong> 문단을 정리하는 방식입니다. 후자는 원래 웹 문서의 기본 동작이에요. 사람이 소스 코드를 보기 좋게 줄 맞춰 써도 화면에는 한 문단으로 이어져 나오게 하려고 만들어진 규칙입니다. 소셜 앱의 캡션 영역은 사용자가 실수로 스무 줄쯤 엔터를 눌러 놓았을 때 게시물이 화면을 다 잡아먹지 않도록, 이 "합치기" 규칙을 다양한 강도로 적용합니다.</p>
+<p>그래서 줄바꿈 한 번(문단 나누기)은 살아남는데 줄바꿈 두 번(빈 줄 만들기)은 한 번으로 줄어듭니다. 여기서 중요한 건, 앱이 <strong>"빈 줄"을 지우는 게 아니라 "내용이 없는 줄"을 지운다</strong>는 점입니다. 뒤집어 말하면 그 줄에 무엇이든 하나라도 들어 있으면 앱은 그 줄을 정상적인 내용 줄로 보고 남겨 둡니다. 그 "무엇"이 눈에 보이지 않는 문자면 우리 눈에는 빈 줄로 보이면서 앱에는 내용이 있는 줄로 인식되죠. 이 도구가 하는 일이 정확히 이겁니다. 덤으로 줄 끝에 딸려 온 잉여 공백도 함께 정리합니다. 줄 끝 공백은 눈에 안 보이지만 글자수에는 잡히고, 붙여넣기 과정에서 줄바꿈 위치를 어긋나게 만드는 원인이 되기도 합니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>보이지 않는 문자는 종류마다 다르게 동작합니다</h2></summary><div class="fx">
+<p>흔히 "투명 문자" 하나로 뭉뚱그려 부르지만, 실제로는 성격이 꽤 다릅니다. 가장 널리 쓰이고 이 도구의 기본값인 <strong>한자 공백(U+3000, Ideographic Space)</strong>은 한자·가나를 쓰는 문서에서 한 글자만큼의 폭을 가지는 공백입니다. 폭이 0이 아니라 <strong>실제로 한 글자 너비를 차지</strong>하기 때문에, 줄을 정리하는 규칙에 걸려도 "내용이 있는 줄"로 살아남을 확률이 가장 높습니다. 거의 모든 기기에 폰트가 있어서 네모(□)로 깨질 위험도 낮습니다.</p>
+<p><strong>점자 공백(U+2800, Braille Pattern Blank)</strong>은 점자 블록에서 "점이 하나도 찍히지 않은 칸"을 뜻하는 문자입니다. 분류상 공백이 아니라 <strong>일반 문자</strong>로 취급되기 때문에 공백을 정리하는 규칙을 아예 피해 갑니다. 그래서 어떤 앱에서는 한자 공백보다 더 확실하게 먹힙니다. 대신 폰트가 없는 기기에서는 빈 네모로 보일 수 있고, 화면 낭독기가 "점자 빈 칸"이라고 읽어 버릴 수 있다는 점을 감수해야 합니다.</p>
+<p><strong>제로폭 공백(U+200B)</strong>은 이름 그대로 폭이 0입니다. 원래는 긴 단어 안에서 줄바꿈이 가능한 지점을 표시하려고 만든 문자예요. 눈에 절대 안 띈다는 점 때문에 인기가 많지만, <strong>폭이 0이라 "빈 줄"로 판정되어 그대로 접히는 사례가 자주 보고됩니다.</strong> 앱이 공백류 문자를 걸러내는 목록에 U+200B를 포함해 두면 그냥 지워집니다. 그래서 이 도구는 선택지로는 제공하되 비추천으로 표시합니다. 잘 되는 곳에서는 가장 깔끔하니, 다른 방법이 다 실패했을 때 시험 삼아 써 보는 정도로 쓰시길 권합니다. 참고로 예전에 많이 쓰이던 한글 채움 문자(U+3164)는 요즘 앱에서 걸러지는 경우가 늘었습니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>유니코드 글꼴은 글꼴이 아니라 다른 글자입니다</h2></summary><div class="fx">
+<p>인스타 프로필에서 자주 보이는 𝐛𝐨𝐥𝐝, 𝓼𝓬𝓻𝓲𝓹𝓽, 𝔣𝔯𝔞𝔨𝔱𝔲𝔯 같은 글자들은 <strong>글꼴을 바꾼 결과가 아닙니다.</strong> 인스타그램에는 캡션 글꼴을 바꾸는 기능 자체가 없습니다. 저건 원래 수학책에서 벡터·집합·행렬 같은 걸 구분해 표기하려고 유니코드에 따로 등록해 둔 <strong>완전히 다른 문자들</strong>입니다. 영어 대문자 A는 코드 65번이지만, 굵은 A(𝐀)는 119808번(U+1D400)에 있는 별개의 글자예요. 모양만 A를 닮았을 뿐 컴퓨터에게는 남남입니다.</p>
+<p>이 원리 덕분에 어떤 앱에서든 붙여넣기만 하면 모양이 유지됩니다. 앱이 지원해 주는 게 아니라 애초에 그 모양의 글자를 넣은 것이니까요. 하지만 같은 이유로 부작용이 따라옵니다. 첫째, <strong>검색이 되지 않습니다.</strong> 계정 이름을 𝓙𝓾𝓵𝓲𝓪로 써 두면 누가 "Julia"로 검색해도 나오지 않습니다. 계정을 알리고 싶다면 이름 칸은 평범한 글자로 두는 편이 훨씬 유리합니다. 둘째, <strong>화면 낭독기가 제대로 읽지 못합니다.</strong> 시각장애가 있는 이용자에게는 "수학 굵은 대문자 제이, 수학 굵은 소문자 유…"처럼 하나하나 읽히거나, 아예 건너뛰어 이름이 통째로 사라집니다.</p>
+<p>셋째, <strong>기기에 따라 네모(□)로 보입니다.</strong> 해당 문자를 담은 폰트가 없는 기기에서는 두부 모양 빈 네모가 줄줄이 나옵니다. 대체로 굵게·기울임·산세리프 계열은 잘 보이고, 원문자·네모문자·프락투어 계열은 구형 기기나 일부 안드로이드 기기에서 깨질 확률이 올라갑니다. 넷째, 시스템에 따라 <strong>글자수가 2배로 계산</strong>됩니다. 이 문자들은 대부분 저장 공간을 두 칸 차지해서, 소개글 150자 제한 같은 곳에서 체감상 절반밖에 못 쓰게 되는 일이 생깁니다. 결론적으로 <strong>포인트로 한두 단어에만 쓰고, 정보를 담은 문장은 일반 글자로</strong> 두는 게 가장 무난합니다.</p>
+<p>반면 밑줄(U+0332)·취소선(U+0336)·물결(U+0330)·점(U+0307) 같은 <strong>결합 문자</strong>는 원리가 다릅니다. 이건 앞 글자에 겹쳐서 그려지는 장식이라 글자 자체를 바꾸지 않습니다. 그래서 <strong>한글에도 그대로 적용</strong>되고, 검색도 원본 글자 기준으로는 어느 정도 걸립니다. 다만 겹쳐 그리는 위치는 폰트가 정하기 때문에 기기마다 선이 어긋나 보일 수 있습니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>캡션 2,200자와 해시태그 30개, 어떻게 쓰는 게 좋을까</h2></summary><div class="fx">
+<p>현재 알려진 한도는 <strong>캡션 2,200자, 게시물당 해시태그 30개</strong>입니다. 다만 이 숫자는 공식 문서에 크게 적혀 있는 값이라기보다 오래 관찰되어 온 값이고, 앱 정책은 예고 없이 바뀝니다. 실제 입력창에서 최종 확인하는 습관을 들이세요. 특히 글자수는 <strong>이모지와 유니코드 장식 글자가 2자로 계산될 수 있어</strong> 이 도구의 숫자보다 실제가 더 크게 잡힐 수 있습니다. 한도 근처라면 100자쯤 여유를 두는 게 안전합니다.</p>
+<p>해시태그 30개는 상한이지 목표가 아닙니다. 상한을 넘기면 대개 태그 전체가 무시되거나 저장이 막히므로, 30개를 꽉 채워 놓고 하나 더 추가하는 실수를 조심해야 합니다. 실무적으로는 <strong>내용과 실제로 관련 있는 태그만</strong> 남기는 편이 낫습니다. 관련 없는 인기 태그를 잔뜩 붙이는 방식은 노출에 도움이 되지 않을 뿐 아니라 계정 평가에 불리하게 작용한다고 알려져 있습니다.</p>
+<p>캡션이 태그로 지저분해 보이는 게 싫다면, 본문을 쓰고 빈 줄을 서너 개 넣은 뒤 그 아래에 태그를 모아 두는 방식이 흔히 쓰입니다. 캡션은 기본적으로 두어 줄만 보이고 나머지는 "더 보기"로 접히기 때문에, 태그가 접힌 영역으로 밀려 들어가 깔끔해 보입니다. 이때도 빈 줄이 접히면 태그가 본문에 바로 붙어 버리니, <strong>이 도구로 변환한 뒤 붙여넣으면</strong> 의도한 간격이 유지됩니다. 첫 줄에는 가장 하고 싶은 말을 넣으세요. 접히기 전에 보이는 건 사실상 첫 한두 줄뿐입니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>프로필 소개글과 카톡 프로필 문구 만들기</h2></summary><div class="fx">
+<p>인스타 프로필 소개글은 캡션보다 훨씬 짧습니다. <strong>대략 150자</strong> 안에서 승부를 봐야 하고, 줄바꿈도 캡션보다 까다롭게 처리됩니다. 앱에서 직접 엔터를 누르면 줄이 안 나뉘는 경우가 있어서, <strong>다른 곳에서 줄바꿈까지 완성한 문구를 통째로 복사해 붙여넣는</strong> 방식이 널리 쓰입니다. 이때도 빈 줄을 넣고 싶다면 이 도구의 ① 탭으로 변환한 뒤 붙여넣으세요. 저장 후 미리보기에서 줄이 유지됐는지 꼭 확인하고, 안 되면 웹 브라우저에서 프로필 편집을 시도해 보는 것도 방법입니다.</p>
+<p>소개글 구성은 보통 <strong>정체성 → 하는 일 → 행동 유도</strong> 순서로 짭니다. 첫 줄에 무슨 계정인지 한 문장으로 밝히고, 둘째 줄에 구체적인 정보(지역·분야·활동 시간 등)를 넣고, 마지막 줄에 링크를 가리키는 문구를 두는 식입니다. 줄 앞에 작은 기호(▸ · ◦ ✦)를 붙이면 목록처럼 정리되어 읽기 편합니다. ③ 탭에서 마음에 드는 기호를 담아 쓰세요. 다만 <strong>기호를 줄마다 세 개 이상</strong> 붙이면 오히려 산만해지고 낭독기 사용자에게는 소음이 됩니다.</p>
+<p>카카오톡 프로필 문구는 성격이 또 다릅니다. 여기서는 줄바꿈이 비교적 잘 유지되는 편이지만 표시 영역이 좁아서 <strong>짧게 끊어 쓰는 게 핵심</strong>입니다. 한 줄에 열두 글자 안팎이면 잘리지 않고 보기 좋습니다. 카톡은 한글이 주인공이라 영문 장식 글꼴은 어울리지 않는 경우가 많고, 대신 <strong>한글에도 걸리는 결합 문자 밑줄·취소선</strong>이나 문장 앞뒤의 작은 기호가 더 자연스럽습니다. 이름 옆에 특수문자를 붙일 때는 상대방 기기에서 네모로 보일 수 있으니, 널리 쓰이는 기본 기호(★ ♥ ✦ · ◦ ✧) 위주로 고르는 편이 안전합니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>특수문자를 넣기 전에 확인할 것</h2></summary><div class="fx">
+<p>특수문자는 예뻐 보이지만 <strong>모든 기기에서 같은 모양으로 보이지 않습니다.</strong> 문자를 담은 폰트가 없으면 빈 네모(□)나 물음표 상자로 나오고, 이모지는 기기 제조사마다 그림이 완전히 다릅니다. 아이폰에서 확인한 조합이 안드로이드에서는 어색하게 보일 수 있어요. 중요한 자리(계정 이름, 첫 줄)에 쓸 문자는 <strong>가능하면 다른 기기에서도 한 번 확인</strong>하는 게 좋습니다. 오래전부터 널리 쓰인 기호일수록 안전합니다.</p>
+<p>접근성 측면도 생각해 볼 만합니다. 화면 낭독기는 기호 하나하나에 이름을 붙여 읽습니다. ★을 열 개 늘어놓으면 "검은 별, 검은 별, 검은 별…"이 열 번 반복됩니다. <strong>장식용 기호는 문장 앞뒤에 한두 개</strong>로 제한하고, 뜻을 담은 정보는 글자로 적어 두세요. 이모지도 마찬가지여서, 이모지만으로 의미를 전달하는 문장은 낭독기 사용자에게 전달되지 않습니다.</p>
+<p>마지막으로 검색 문제입니다. 특수문자를 계정 이름이나 해시태그에 섞으면 검색과 태그 연결이 끊어집니다. 해시태그는 대체로 문자·숫자·밑줄만 인식하므로, <strong>태그 안에 기호를 넣으면 그 앞까지만 태그로 잡힙니다.</strong> 꾸미고 싶다면 태그 바깥에 두세요. 이 도구의 모든 처리는 브라우저 안에서만 이뤄지고 입력한 글은 어디로도 전송되지 않으니, 초안을 마음껏 다듬어 보셔도 됩니다.</p>
+</div></details>
+
+<!--REL:S-->
+<h2>함께 쓰면 좋은 도구</h2>
+<div class="rel">
+  <a href="/tools/char-count/"><strong>글자수 세기</strong><span>공백 포함·제외, 바이트, 원고지</span></a>
+  <a href="/tools/image-merge/"><strong>사진 이어붙이기</strong><span>세로·가로·격자, 캡처 합치기</span></a>
+  <a href="/tools/qr/"><strong>QR코드 만들기</strong><span>링크·와이파이·연락처</span></a>
+</div>
+<form class="rel-srch" action="/tools/" method="get" role="search"><input type="search" name="q" placeholder="도구 45개 중에서 찾기 — 예: 누끼, 퇴직금, PDF" aria-label="까치툴 도구 검색" autocomplete="off"><button type="submit">검색</button></form>
+<p class="rel-all"><a href="/tools/">까치툴 도구 45개 전체 보기 →</a></p>
+<!--REL:E-->
+
+<footer>
+  <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 입력한 글은 전송·저장되지 않습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/tools/about/">소개</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+'use strict';
+var $=function(id){return document.getElementById(id);};
+var U=function(n){ return String.fromCodePoint(n); };
+var E=function(hex){ return String.fromCodePoint(parseInt(hex,16)); };
+
+/* ───────── 공용: 복사 · 토스트 ───────── */
+var toastT=null;
+function toast(msg){
+  var t=$('toast'); if(!t) return;
+  t.textContent=msg; t.classList.add('show');
+  if(toastT) clearTimeout(toastT);
+  toastT=setTimeout(function(){ t.classList.remove('show'); },1500);
+}
+function legacyCopy(s){
+  try{
+    var ta=document.createElement('textarea');
+    ta.value=s; ta.setAttribute('readonly','');
+    ta.style.cssText='position:fixed;left:-9999px;top:0;opacity:0';
+    document.body.appendChild(ta);
+    ta.select(); try{ ta.setSelectionRange(0,ta.value.length); }catch(e){}
+    var ok=document.execCommand('copy');
+    document.body.removeChild(ta);
+    return !!ok;
+  }catch(e){ return false; }
+}
+function copyText(s,msg){
+  if(s===''||s==null){ toast('복사할 내용이 없습니다'); return; }
+  var done=function(){ toast(msg||'복사됨'); };
+  var fail=function(){ if(legacyCopy(s)) done(); else toast('복사에 실패했습니다. 직접 선택해 복사해 주세요'); };
+  try{
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(s).then(done,fail);
+      return;
+    }
+  }catch(e){}
+  fail();
+}
+function esc(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* ───────── ① 줄바꿈 변환 ───────── */
+var FILLERS={
+  full:'\u3000',     /* 한자 공백 */
+  braille:'\u2800',  /* 점자 공백 */
+  zwsp:'\u200B',     /* 제로폭 공백 */
+  none:''
+};
+/* 줄 끝에서 걷어낼 공백류 + 이미 들어가 있던 채움 문자 */
+var TRIM_RE=/[ \t\u00A0\u1680\u2000-\u200D\u202F\u205F\u2060\u2800\u3000\u3164\uFEFF]+$/;
+var ONLY_RE=/^[ \t\u00A0\u1680\u2000-\u200D\u202F\u205F\u2060\u2800\u3000\u3164\uFEFF]+$/;
+
+/* 줄 끝 공백 제거 + 빈 줄을 보이지 않는 문자로 채움 */
+function convertBreaks(text,mode){
+  var ch=Object.prototype.hasOwnProperty.call(FILLERS,mode)?FILLERS[mode]:FILLERS.full;
+  var lines=String(text==null?'':text).replace(/\r\n?/g,'\n').split('\n');
+  var i,l;
+  for(i=0;i<lines.length;i++){
+    l=lines[i].replace(TRIM_RE,'');
+    /* 채움 문자만 남은 줄은 다시 빈 줄로 되돌린다(모드 전환 시 중복 방지) */
+    if(l!==''&&ONLY_RE.test(l)) l='';
+    lines[i]=l;
+  }
+  while(lines.length&&lines[lines.length-1]==='') lines.pop();
+  while(lines.length&&lines[0]==='') lines.shift();
+  for(i=0;i<lines.length;i++) if(lines[i]==='') lines[i]=ch;
+  return lines.join('\n');
+}
+
+/* 앱이 연속 개행을 접었을 때의 모습(미리보기용) */
+function collapse(text){
+  return String(text==null?'':text)
+    .replace(/\r\n?/g,'\n')
+    .split('\n').map(function(l){ return l.replace(TRIM_RE,''); })
+    .join('\n')
+    .replace(/\n{2,}/g,'\n')
+    .replace(/^\n+|\n+$/g,'');
+}
+
+function countChars(s){ return Array.from(String(s==null?'':s)).length; }
+function countTags(s){
+  var m=String(s==null?'':s).match(/(^|[\s\u3000])#[^\s\u3000#.,!?()\[\]{}<>"'\/\\]+/g);
+  return m?m.length:0;
+}
+
+var CAP_LIMIT=2200, TAG_LIMIT=30;
+var brMode='full';
+var MODE_NOTES={
+  full:'<b>한자 공백(U+3000)</b>은 한 글자 너비를 실제로 차지해서 앱이 빈 줄로 판정할 확률이 가장 낮습니다. 거의 모든 기기에 폰트가 있어 깨질 위험도 적습니다. 잘 모르겠다면 이걸 쓰세요.',
+  braille:'<b>점자 공백(U+2800)</b>은 분류상 공백이 아니라 일반 문자라, 공백을 정리하는 규칙을 아예 피해 갑니다. 대신 폰트가 없는 기기에서는 빈 네모로 보일 수 있습니다.',
+  zwsp:'<b>제로폭 공백(U+200B)</b>은 폭이 0이라 눈에 전혀 안 띄지만, 그만큼 <b>빈 줄로 판정되어 그대로 접히는 경우</b>가 있습니다. 다른 방법이 안 될 때 시험용으로만 권합니다.',
+  none:'채움 문자를 넣지 않고 <b>줄 끝 공백 정리와 앞뒤 빈 줄 제거</b>만 합니다. 줄바꿈이 잘 유지되는 곳(카카오톡 등)에 붙여넣을 때 쓰세요.'
+};
+var SAMPLE='오늘의 기록 ☕\n\n아침에 내린 커피가 유난히 잘 나온 날.\n원두는 바꾸지 않았는데 물 온도만 조금 낮췄더니 신맛이 살아났다.\n\n작은 변수 하나가 결과를 바꾼다는 게 요즘 계속 와닿는다.\n\n#커피 #홈카페 #드립커피 #기록';
+
+function tagHTML(s){
+  return esc(s).replace(/(^|[\s\u3000])(#[^\s\u3000#]+)/g,function(_,a,b){ return a+'<span class="tag">'+b+'</span>'; });
+}
+
+function renderBreak(){
+  var src=$('brIn').value;
+  var out=convertBreaks(src,brMode);
+  $('brOut').value=out;
+
+  var chars=countChars(out), tags=countTags(out);
+  var lines=out===''?0:out.split('\n').length;
+  var fill=FILLERS[brMode];
+  var blanks=0;
+  if(fill){
+    var arr=out.split('\n');
+    for(var i=0;i<arr.length;i++) if(arr[i]===fill) blanks++;
+  }
+
+  var cEl=$('mChars'), tEl=$('mTags');
+  cEl.innerHTML=chars.toLocaleString('ko-KR')+'<small>/ '+CAP_LIMIT.toLocaleString('ko-KR')+'</small>';
+  cEl.className=chars>CAP_LIMIT?'v over':'v';
+  tEl.innerHTML=tags+'<small>개 / '+TAG_LIMIT+'</small>';
+  tEl.className=tags>TAG_LIMIT?'v over':'v';
+  $('mLines').innerHTML=lines+'<small>줄</small>';
+  $('mBlank').innerHTML=blanks+'<small>줄</small>';
+
+  var w=$('brWarn'), h='';
+  if(chars>CAP_LIMIT) h+='<div class="msg m-bad">캡션이 현재 알려진 한도(2,200자)를 <strong>'+(chars-CAP_LIMIT).toLocaleString('ko-KR')+'자 초과</strong>했습니다. 이모지와 장식 글자는 2자로 계산되는 경우가 있어 실제로는 더 길 수 있습니다.</div>';
+  if(tags>TAG_LIMIT) h+='<div class="msg m-bad">해시태그가 <strong>'+tags+'개</strong>입니다. 현재 알려진 한도는 30개이고, 넘기면 태그 전체가 무시되거나 저장이 막힐 수 있습니다.</div>';
+  else if(tags===TAG_LIMIT) h+='<div class="msg m-warn">해시태그가 정확히 30개입니다. 하나만 더 추가해도 한도를 넘습니다.</div>';
+  if(brMode==='zwsp'&&blanks>0) h+='<div class="msg m-warn">제로폭 공백은 앱에 따라 그대로 접힐 수 있습니다. 올린 뒤 간격이 사라졌다면 <strong>한자 공백(U+3000)</strong>으로 바꿔 보세요.</div>';
+  if(!h&&blanks>0) h='<div class="msg m-ok">빈 줄 <strong>'+blanks+'개</strong>에 보이지 않는 문자를 넣었습니다. 위 결과를 그대로 복사해 붙여넣으세요.</div>';
+  w.innerHTML=h;
+
+  $('mockBad').innerHTML=tagHTML(collapse(src))||'<span style="color:var(--ink-3)">위에 글을 쓰면 여기에 미리보기가 나옵니다</span>';
+  $('mockGood').innerHTML=tagHTML(out)||'<span style="color:var(--ink-3)">변환 결과가 여기에 나옵니다</span>';
+  $('brModeNote').innerHTML=MODE_NOTES[brMode];
+}
+
+/* ───────── ② 유니코드 글꼴 ───────── */
+var AZ='ABCDEFGHIJKLMNOPQRSTUVWXYZ', az='abcdefghijklmnopqrstuvwxyz', D09='0123456789';
+function fromStr(s){ return Array.from(s); }
+
+function buildMap(sp){
+  var m={},i,a;
+  if(sp.up!=null) for(i=0;i<26;i++) m[AZ[i]]=U(sp.up+i);
+  if(sp.upS){ a=fromStr(sp.upS); for(i=0;i<26&&i<a.length;i++) m[AZ[i]]=a[i]; }
+  if(sp.lo!=null) for(i=0;i<26;i++) m[az[i]]=U(sp.lo+i);
+  if(sp.loS){ a=fromStr(sp.loS); for(i=0;i<26&&i<a.length;i++) m[az[i]]=a[i]; }
+  if(sp.di!=null) for(i=0;i<10;i++) m[D09[i]]=U(sp.di+i);
+  if(sp.diS){ a=fromStr(sp.diS); for(i=0;i<10&&i<a.length;i++) m[D09[i]]=a[i]; }
+  if(sp.ex) for(var k in sp.ex) if(Object.prototype.hasOwnProperty.call(sp.ex,k)) m[k]=sp.ex[k];
+  return m;
+}
+
+var SUP_LO='ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖqʳˢᵗᵘᵛʷˣʸᶻ';
+var SUP_UP='ᴬᴮᶜᴰᴱᶠᴳᴴᴵᴶᴷᴸᴹᴺᴼᴾᑭᴿˢᵀᵁⱽᵂˣʸᶻ';
+var SUB_MAP={a:'ₐ',e:'ₑ',h:'ₕ',i:'ᵢ',j:'ⱼ',k:'ₖ',l:'ₗ',m:'ₘ',n:'ₙ',o:'ₒ',p:'ₚ',r:'ᵣ',s:'ₛ',t:'ₜ',u:'ᵤ',v:'ᵥ',x:'ₓ'};
+var SMALL='ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘqʀsᴛᴜᴠᴡxʏᴢ';
+/* 좌우 뒤집기 표. RTL(히브리·아랍) 문자는 섞여 쓰면 글자 순서가 뒤엉키므로 쓰지 않는다 */
+var FLIP_LO='ɐqɔpǝɟƃɥᴉɾʞlɯuodbɹsʇnʌʍxʎz';
+var FLIP_UP='∀ᗺƆ◖ƎℲ⅁HIſʞ˥WNOԀΌᴚS⊥∩ΛMX⅄Z';
+var FLIP_DI='0ƖᄅƐᔭϛ9ㄥ' + '8' + '6';
+var FLIP_EX={};
+FLIP_EX['.']='˙'; FLIP_EX[',']="'"; FLIP_EX["'"]=','; FLIP_EX['"']='„';
+FLIP_EX['?']='¿'; FLIP_EX['!']='¡'; FLIP_EX['(']=')'; FLIP_EX[')']='(';
+FLIP_EX['[']=']'; FLIP_EX[']']='['; FLIP_EX['{']='}'; FLIP_EX['}']='{';
+FLIP_EX['<']='>';  FLIP_EX['>']='<'; FLIP_EX['_']='‾'; FLIP_EX['&']='⅋';
+
+var STYLE_DEFS=[
+  {id:'bold',       name:'굵게',           spec:{up:0x1D400,lo:0x1D41A,di:0x1D7CE}},
+  {id:'italic',     name:'기울임',          spec:{up:0x1D434,lo:0x1D44E,ex:{h:'ℎ'}}},
+  {id:'bolditalic', name:'굵은 기울임',      spec:{up:0x1D468,lo:0x1D482}},
+  {id:'script',     name:'필기체',          spec:{up:0x1D49C,lo:0x1D4B6,ex:{B:'ℬ',E:'ℰ',F:'ℱ',H:'ℋ',I:'ℐ',L:'ℒ',M:'ℳ',R:'ℛ',e:'ℯ',g:'ℊ',o:'ℴ'}}},
+  {id:'boldscript', name:'굵은 필기체',      spec:{up:0x1D4D0,lo:0x1D4EA}},
+  {id:'fraktur',    name:'프락투어',         spec:{up:0x1D504,lo:0x1D51E,ex:{C:'ℭ',H:'ℌ',I:'ℑ',R:'ℜ',Z:'ℨ'}}},
+  {id:'boldfraktur',name:'굵은 프락투어',    spec:{up:0x1D56C,lo:0x1D586}},
+  {id:'double',     name:'속 빈 글씨',       spec:{up:0x1D538,lo:0x1D552,di:0x1D7D8,ex:{C:'ℂ',H:'ℍ',N:'ℕ',P:'ℙ',Q:'ℚ',R:'ℝ',Z:'ℤ'}}},
+  {id:'sans',       name:'산세리프',         spec:{up:0x1D5A0,lo:0x1D5BA,di:0x1D7E2}},
+  {id:'sansbold',   name:'산세리프 굵게',    spec:{up:0x1D5D4,lo:0x1D5EE,di:0x1D7EC}},
+  {id:'sansitalic', name:'산세리프 기울임',  spec:{up:0x1D608,lo:0x1D622}},
+  {id:'mono',       name:'모노스페이스',      spec:{up:0x1D670,lo:0x1D68A,di:0x1D7F6}},
+  {id:'fullwidth',  name:'전각(넓은 글씨)',  spec:{up:0xFF21,lo:0xFF41,di:0xFF10,ex:{' ':'\u3000','!':'！','?':'？','.':'．',',':'，','@':'＠','#':'＃'}}},
+  {id:'circle',     name:'원문자',           spec:{up:0x24B6,lo:0x24D0,diS:'⓪①②③④⑤⑥⑦⑧⑨'}},
+  {id:'circleDark', name:'검은 원문자',      spec:{up:0x1F150,lo:0x1F150,diS:'⓿❶❷❸❹❺❻❼❽❾'}},
+  {id:'square',     name:'네모문자',         spec:{up:0x1F130,lo:0x1F130}},
+  {id:'squareDark', name:'검은 네모문자',     spec:{up:0x1F170,lo:0x1F170}},
+  {id:'super',      name:'위 첨자',          spec:{upS:SUP_UP,loS:SUP_LO,diS:'⁰¹²³⁴⁵⁶⁷⁸⁹',ex:{'+':'⁺','-':'⁻','=':'⁼','(':'⁽',')':'⁾'}}},
+  {id:'sub',        name:'아래 첨자',        spec:{diS:'₀₁₂₃₄₅₆₇₈₉',ex:SUB_MAP}},
+  {id:'smallcaps',  name:'스몰캡스',         spec:{upS:SMALL,loS:SMALL}},
+  {id:'flip',       name:'뒤집기',  reverse:true, spec:{upS:FLIP_UP,loS:FLIP_LO,diS:FLIP_DI,ex:FLIP_EX}},
+  {id:'strike',     name:'취소선',     ko:true, comb:'̶'},
+  {id:'strike2',    name:'빗금 취소선', ko:true, comb:'̸'},
+  {id:'under',      name:'밑줄',       ko:true, comb:'̲'},
+  {id:'under2',     name:'이중 밑줄',   ko:true, comb:'̳'},
+  {id:'over',       name:'윗줄',       ko:true, comb:'̅'},
+  {id:'wave',       name:'물결',       ko:true, comb:'̰'},
+  {id:'dot',        name:'점 찍기',    ko:true, comb:'̇'}
+];
+
+var STYLE_MAP={};
+(function(){
+  for(var i=0;i<STYLE_DEFS.length;i++){
+    var d=STYLE_DEFS[i];
+    STYLE_MAP[d.id]={ id:d.id, name:d.name, comb:d.comb||null, reverse:!!d.reverse,
+                      map:d.spec?buildMap(d.spec):{}, ko:!!d.ko };
+  }
+})();
+
+function fancy(text,styleId){
+  var s=String(text==null?'':text);
+  var st=STYLE_MAP[styleId];
+  if(!st) return s;
+  if(st.comb){
+    return Array.from(s).map(function(c){
+      return (c==='\n'||c==='\r')?c:c+st.comb;
+    }).join('');
+  }
+  var mapped=Array.from(s).map(function(c){ return st.map[c]||c; }).join('');
+  if(st.reverse){
+    mapped=mapped.split('\n').map(function(l){ return Array.from(l).reverse().join(''); }).join('\n');
+  }
+  return mapped;
+}
+
+var STYLES=STYLE_DEFS.map(function(d){
+  return { id:d.id, name:d.name, korean:!!d.ko, sample:fancy(d.ko?'한글 Abc 123':'Abc 123',d.id) };
+});
+
+var FN_SAMPLE='Hello 123 안녕';
+function renderFonts(){
+  var raw=$('fnIn').value;
+  var src=raw.length?raw:FN_SAMPLE;
+  var box=$('fnList'), frag=document.createDocumentFragment();
+  box.innerHTML='';
+  STYLE_DEFS.forEach(function(d){
+    var row=document.createElement('div');
+    row.className='fitem';
+    row.setAttribute('data-style',d.id);
+    var nm=document.createElement('div');
+    nm.className='fn';
+    nm.innerHTML='<b>'+esc(d.name)+'</b>'+(d.ko?'<span class="ko">한글 O</span>':'<span style="font-size:10.5px">영문·숫자</span>');
+    var sp=document.createElement('div');
+    sp.className='fs'; sp.textContent=fancy(src,d.id);
+    var bt=document.createElement('button');
+    bt.type='button'; bt.className='fc'; bt.textContent='복사';
+    bt.addEventListener('click',function(){
+      var cur=$('fnIn').value;
+      copyText(fancy(cur.length?cur:FN_SAMPLE,d.id),d.name+' 복사됨');
+    });
+    row.appendChild(nm); row.appendChild(sp); row.appendChild(bt);
+    frag.appendChild(row);
+  });
+  box.appendChild(frag);
+}
+
+/* ───────── ③ 특수문자 ───────── */
+var SYMBOLS=[
+{id:'heart',name:'하트',items:[
+['♥','하트 검은하트 사랑'],['♡','하트 빈하트 흰하트'],['❤','하트 빨간하트'],['❥','하트 회전하트'],
+['❣','하트 느낌표하트'],['❦','하트 꽃하트 장식'],['❧','하트 잎하트 장식'],['ღ','하트 조지아하트 러브'],
+['☙','하트 회전꽃 장식'],['☠','하트 반대 해골'],['\u{1F495}','하트 두개하트'],['\u{1F496}','하트 반짝이는하트'],
+['\u{1F497}','하트 커지는하트'],['\u{1F498}','하트 화살하트 큐피드'],['\u{1F499}','하트 파란하트'],['\u{1F49A}','하트 초록하트'],
+['\u{1F49B}','하트 노란하트'],['\u{1F49C}','하트 보라하트'],['\u{1F9E1}','하트 주황하트'],['\u{1F90D}','하트 흰하트'],
+['\u{1F90E}','하트 갈색하트'],['\u{1F5A4}','하트 검은하트 블랙'],['\u{1F49D}','하트 선물하트 리본'],['\u{1F49E}','하트 도는하트'],
+['\u{1F49F}','하트 하트장식 하트상자'],['\u{1F48C}','하트 러브레터 편지'],['\u{1F493}','하트 뛰는하트 두근'],['\u{1F494}','하트 깨진하트 이별'],
+['\u{1FA77}','하트 분홍하트'],['\u{1FA75}','하트 하늘하트'],['\u{1FA76}','하트 회색하트'],['\u{1F48B}','하트 키스마크 입술'],
+['\u{1F60D}','하트 하트눈 얼굴'],['\u{1F970}','하트 하트얼굴 사랑']
+]},
+{id:'star',name:'별·반짝',items:[
+['★','별 검은별'],['☆','별 흰별 빈별'],['✦','별 검은사각별'],['✧','별 흰사각별'],
+['✩','별 윤곽별'],['✪','별 원안의별'],['✫','별 검은원별'],['✬','별 검은사각테별'],
+['✭','별 윤곽사각별'],['✮','별 무거운윤곽별'],['✯','별 소용돌이별'],['✰','별 흰빛별'],
+['✱','별 굵은별표'],['✲','별 열린별표'],['✳','별 여덟살별표'],['✴','별 여덟꼭지별'],
+['✵','별 여덟꼭지곡선별'],['✶','별 여섯꼭지별'],['✷','별 여덟꼭지곧은별'],['✸','별 여덟꼭지굵은별'],
+['✹','별 열두꼭지별'],['✺','별 열여섯꼭지별'],['⋆','별 별연산자 작은별'],['⁂','별 세별표 별표세개'],
+['⚝','별 윤곽별표'],['✡','별 다윗의별 육각별'],['✣','별 네잎 장식'],['✤','별 굵은네잎 장식'],
+['✥','별 네개의물방울 장식'],['❈','별 반짝임 장식'],['⭐','별 노란별'],['\u{1F31F}','별 빛나는별'],
+['✨','별 반짝반짝 스파클'],['\u{1F4AB}','별 어지러운별'],['\u{1F320}','별 별똥별 유성'],['✴','별 별표']
+]},
+{id:'arrow',name:'화살표',items:[
+['←','화살표 왼쪽'],['↑','화살표 위쪽'],['→','화살표 오른쪽'],['↓','화살표 아래쪽'],
+['↔','화살표 좌우'],['↕','화살표 상하'],['↖','화살표 왼쪽위 대각선'],['↗','화살표 오른쪽위 대각선'],
+['↘','화살표 오른쪽아래 대각선'],['↙','화살표 왼쪽아래 대각선'],['⇐','화살표 두줄왼쪽'],['⇑','화살표 두줄위'],
+['⇒','화살표 두줄오른쪽'],['⇓','화살표 두줄아래'],['⇔','화살표 두줄좌우'],['⇕','화살표 두줄상하'],
+['⇦','화살표 흰왼쪽'],['⇧','화살표 흰위쪽'],['⇨','화살표 흰오른쪽'],['⇩','화살표 흰아래쪽'],
+['↩','화살표 되돌아가기 왼쪽갈고리'],['↪','화살표 오른쪽갈고리'],['↻','화살표 시계방향 회전'],['↺','화살표 반시계방향 회전'],
+['⇄','화살표 교차 좌우'],['⇆','화살표 교차 반대'],['⟶','화살표 긴오른쪽'],['⟵','화살표 긴왼쪽'],
+['➔','화살표 굵은넓은오른쪽'],['➘','화살표 오른쪽아래'],['➙','화살표 오른쪽'],['➚','화살표 오른쪽위'],
+['➛','화살표 그림자오른쪽'],['➜','화살표 둥근오른쪽'],['➝','화살표 삼각오른쪽'],['➞','화살표 굵은삼각오른쪽'],
+['➟','화살표 점선오른쪽'],['➠','화살표 굵은점선오른쪽'],['➤','화살표 검은오른쪽'],['➥','화살표 굽은아래'],
+['➦','화살표 굽은위'],['➲','화살표 원안오른쪽'],['➡','화살표 굵은오른쪽'],['⬅','화살표 굵은왼쪽'],
+['⬆','화살표 굵은위'],['⬇','화살표 굵은아래'],['⤴','화살표 위로꺾임'],['⤵','화살표 아래로꺾임'],
+['▶','화살표 재생 오른쪽삼각'],['◀','화살표 왼쪽삼각'],['▲','화살표 위쪽삼각'],['▼','화살표 아래쪽삼각'],
+['»','화살표 겹화살괄호 오른쪽'],['«','화살표 겹화살괄호 왼쪽'],['›','화살표 홑화살괄호 오른쪽'],['‹','화살표 홑화살괄호 왼쪽'],
+['↵','화살표 줄바꿈 엔터'],['↨','화살표 상하기준선']
+]},
+{id:'bracket',name:'괄호·따옴표',items:[
+['「','괄호 낫표 열기'],['」','괄호 낫표 닫기'],['『','괄호 겹낫표 열기'],['』','괄호 겹낫표 닫기'],
+['【','괄호 검은렌즈 열기'],['】','괄호 검은렌즈 닫기'],['〔','괄호 거북등 열기'],['〕','괄호 거북등 닫기'],
+['〈','괄호 홑화살 열기'],['〉','괄호 홑화살 닫기'],['《','괄호 겹화살 열기'],['》','괄호 겹화살 닫기'],
+['〖','괄호 흰렌즈 열기'],['〗','괄호 흰렌즈 닫기'],['〘','괄호 흰거북등 열기'],['〙','괄호 흰거북등 닫기'],
+['〚','괄호 흰각 열기'],['〛','괄호 흰각 닫기'],['（','괄호 전각소괄호 열기'],['）','괄호 전각소괄호 닫기'],
+['［','괄호 전각대괄호 열기'],['］','괄호 전각대괄호 닫기'],['｛','괄호 전각중괄호 열기'],['｝','괄호 전각중괄호 닫기'],
+['｟','괄호 흰전각 열기'],['｠','괄호 흰전각 닫기'],['⦅','괄호 흰이중 열기'],['⦆','괄호 흰이중 닫기'],
+['⦗','괄호 납작 열기'],['⦘','괄호 납작 닫기'],['⁅','괄호 대괄호점 열기'],['⁆','괄호 대괄호점 닫기'],
+['❨','괄호 굵은소괄호 열기'],['❩','괄호 굵은소괄호 닫기'],['❬','괄호 굵은각 열기'],['❭','괄호 굵은각 닫기'],
+['❮','괄호 굵은화살 열기'],['❯','괄호 굵은화살 닫기'],['❰','괄호 굵은꺾쇠 열기'],['❱','괄호 굵은꺾쇠 닫기'],
+['❲','괄호 판자 열기'],['❳','괄호 판자 닫기'],['❴','괄호 중괄호 열기'],['❵','괄호 중괄호 닫기'],
+['❪','괄호 가운데굵은 열기'],['❫','괄호 가운데굵은 닫기'],['“','따옴표 큰따옴표 열기'],['”','따옴표 큰따옴표 닫기'],
+['‘','따옴표 작은따옴표 열기'],['’','따옴표 작은따옴표 닫기'],['„','따옴표 아래큰따옴표'],['‚','따옴표 아래작은따옴표'],
+['〃','따옴표 같은자리표시'],['＂','따옴표 전각따옴표']
+]},
+{id:'line',name:'구분선·도형',items:[
+['─','선 가로선 얇은'],['━','선 가로선 굵은'],['│','선 세로선 얇은'],['┃','선 세로선 굵은'],
+['┄','선 점선 가로'],['┅','선 굵은점선 가로'],['┈','선 잔점선 가로'],['╌','선 끊긴선'],
+['═','선 이중가로선'],['║','선 이중세로선'],['╭','선 둥근모서리 왼쪽위'],['╮','선 둥근모서리 오른쪽위'],
+['╯','선 둥근모서리 오른쪽아래'],['╰','선 둥근모서리 왼쪽아래'],['╱','선 대각선 오른쪽'],['╲','선 대각선 왼쪽'],
+['╳','선 엑스 대각선'],['‾','선 윗줄 오버라인'],['﹋','선 물결밑줄'],['﹍','선 점선밑줄'],
+['―','선 긴줄표 대시'],['—','선 줄표 엠대시'],['–','선 짧은줄표 엔대시'],['－','선 전각빼기'],
+['▬','도형 검은가로막대'],['▮','도형 검은세로막대'],['▯','도형 흰세로막대'],['■','도형 검은사각형'],
+['□','도형 흰사각형'],['▪','도형 작은검은사각'],['▫','도형 작은흰사각'],['▣','도형 겹사각형'],
+['▤','도형 가로줄사각'],['▥','도형 세로줄사각'],['▦','도형 격자사각'],['▩','도형 무늬사각'],
+['●','도형 검은원'],['○','도형 흰원'],['◎','도형 겹원 이중원'],['◉','도형 과녁원'],
+['◯','도형 큰원'],['◦','도형 흰작은원'],['•','도형 가운뎃점 불릿'],['‣','도형 삼각불릿'],
+['⁃','도형 하이픈불릿'],['∙','도형 점연산자'],['·','도형 가운데점'],['・','도형 일본어가운뎃점'],
+['⋯','도형 가운데말줄임'],['…','도형 말줄임표'],['▁','도형 아래블록1'],['▃','도형 아래블록3'],
+['▅','도형 아래블록5'],['▇','도형 아래블록7'],['█','도형 꽉찬블록'],['░','도형 옅은음영'],
+['▒','도형 중간음영'],['▓','도형 짙은음영'],['◆','도형 검은마름모'],['◇','도형 흰마름모'],
+['◈','도형 겹마름모'],['◊','도형 로젠지 마름모'],['△','도형 흰삼각형'],['▽','도형 흰역삼각형'],
+['⬛','도형 큰검은사각'],['⬜','도형 큰흰사각'],['\u{1F536}','도형 주황마름모'],['\u{1F537}','도형 파랑마름모']
+]},
+{id:'check',name:'체크·엑스·경고',items:[
+['✓','체크 체크표시'],['✔','체크 굵은체크'],['☑','체크 체크된상자'],['☐','체크 빈상자'],
+['☒','체크 엑스된상자'],['✅','체크 초록체크'],['✗','엑스 가위표'],['✘','엑스 굵은가위표'],
+['✕','엑스 곱하기표'],['✖','엑스 굵은곱하기'],['❌','엑스 빨간엑스'],['❎','엑스 초록엑스'],
+['➕','기호 더하기'],['➖','기호 빼기'],['➗','기호 나누기'],['✚','기호 굵은십자'],
+['✛','기호 열린십자'],['✜','기호 굵은열린십자'],['⊕','기호 원안더하기'],['⊗','기호 원안곱하기'],
+['⚠','경고 주의 느낌표삼각'],['⛔','경고 진입금지'],['\u{1F6AB}','경고 금지'],['❗','경고 느낌표'],
+['❓','경고 물음표'],['❕','경고 흰느낌표'],['❔','경고 흰물음표'],['‼','경고 이중느낌표'],
+['⁉','경고 물음느낌표'],['※','기호 참고표 코메지루시'],['⚡','기호 번개 전기'],['\u{1F4A1}','기호 전구 아이디어'],
+['\u{1F4CC}','기호 압정 고정'],['\u{1F4CD}','기호 위치핀 장소'],['\u{1F514}','기호 종 알림'],['\u{1F512}','기호 자물쇠'],
+['⚑','기호 깃발'],['⚐','기호 흰깃발']
+]},
+{id:'zodiac',name:'별자리·행성',items:[
+['♈','별자리 양자리'],['♉','별자리 황소자리'],['♊','별자리 쌍둥이자리'],['♋','별자리 게자리'],
+['♌','별자리 사자자리'],['♍','별자리 처녀자리'],['♎','별자리 천칭자리'],['♏','별자리 전갈자리'],
+['♐','별자리 사수자리 궁수자리'],['♑','별자리 염소자리'],['♒','별자리 물병자리'],['♓','별자리 물고기자리'],
+['⛎','별자리 뱀주인자리'],['☉','행성 태양'],['☽','행성 초승달 달'],['☾','행성 하현달'],
+['☿','행성 수성'],['♀','행성 금성 여성'],['♁','행성 지구'],['♂','행성 화성 남성'],
+['♃','행성 목성'],['♄','행성 토성'],['♅','행성 천왕성'],['♆','행성 해왕성'],
+['♇','행성 명왕성'],['☊','기호 상승교점'],['☋','기호 하강교점'],['⚕','기호 의료 지팡이'],
+['⚚','기호 지팡이'],['☸','기호 법륜 바퀴'],['☯','기호 음양 태극'],['⚜','기호 백합문장']
+]},
+{id:'weather',name:'날씨·자연',items:[
+['☀','날씨 해 태양'],['☁','날씨 구름'],['☂','날씨 우산'],['☃','날씨 눈사람'],
+['☄','날씨 혜성'],['⛄','날씨 눈사람 눈'],['⛅','날씨 구름해 부분흐림'],['☔','날씨 비 우산비'],
+['❄','날씨 눈송이'],['❅','날씨 눈송이 굵은'],['❆','날씨 눈송이 무거운'],['⛈','날씨 뇌우'],
+['☈','날씨 천둥'],['⛆','날씨 비'],['\u{1F324}','날씨 구름조금'],['\u{1F325}','날씨 구름많음'],
+['\u{1F326}','날씨 소나기해'],['\u{1F327}','날씨 비'],['\u{1F328}','날씨 눈'],['\u{1F329}','날씨 번개비'],
+['\u{1F32A}','날씨 회오리 토네이도'],['\u{1F32B}','날씨 안개'],['\u{1F32C}','날씨 바람'],['\u{1F308}','날씨 무지개'],
+['\u{1F321}','날씨 온도계'],['\u{1F525}','자연 불 불꽃'],['\u{1F4A7}','자연 물방울'],['\u{1F30A}','자연 파도 바다'],
+['\u{1F311}','달 삭 신월'],['\u{1F312}','달 초승달'],['\u{1F313}','달 상현달'],['\u{1F314}','달 상현망'],
+['\u{1F315}','달 보름달'],['\u{1F316}','달 하현망'],['\u{1F317}','달 하현달'],['\u{1F318}','달 그믐달'],
+['\u{1F319}','달 초승달 밤'],['\u{1F31B}','달 달얼굴'],['\u{1F30D}','자연 지구 세계'],['\u{1F30B}','자연 화산'],
+['⛰','자연 산'],['\u{1F30E}','자연 지구 아메리카']
+]},
+{id:'flower',name:'꽃·식물',items:[
+['✿','꽃 검은꽃'],['❀','꽃 흰꽃'],['❁','꽃 여덟잎꽃'],['❂','꽃 원안꽃'],
+['❃','꽃 굵은꽃'],['✾','꽃 여섯잎꽃'],['✽','꽃 굵은테두리꽃'],['✼','꽃 열린테두리꽃'],
+['✻','꽃 눈물꽃'],['⚘','꽃 꽃송이'],['☘','식물 세잎클로버'],['\u{1F340}','식물 네잎클로버 행운'],
+['\u{1F338}','꽃 벚꽃'],['\u{1F33C}','꽃 데이지'],['\u{1F33B}','꽃 해바라기'],['\u{1F33A}','꽃 히비스커스'],
+['\u{1F337}','꽃 튤립'],['\u{1F339}','꽃 장미'],['\u{1F490}','꽃 꽃다발'],['\u{1F335}','식물 선인장'],
+['\u{1F331}','식물 새싹'],['\u{1F33F}','식물 허브 잎'],['\u{1F343}','식물 나뭇잎 바람'],['\u{1F342}','식물 낙엽'],
+['\u{1F341}','식물 단풍잎'],['\u{1F33E}','식물 벼 이삭'],['\u{1F38B}','식물 대나무 장식'],['\u{1F38D}','식물 소나무 장식'],
+['\u{1F333}','식물 나무 활엽수'],['\u{1F332}','식물 침엽수'],['\u{1FAB4}','식물 화분'],['\u{1F344}','식물 버섯'],
+['\u{1F330}','식물 밤 열매'],['\u{1F33D}','식물 옥수수']
+]},
+{id:'music',name:'음악',items:[
+['♪','음악 8분음표'],['♫','음악 이어진8분음표'],['♬','음악 이어진16분음표'],['♩','음악 4분음표'],
+['♭','음악 플랫'],['♮','음악 내추럴'],['♯','음악 샤프'],['\u{1D11E}','음악 높은음자리표'],
+['\u{1D122}','음악 낮은음자리표'],['\u{1F3B5}','음악 음표'],['\u{1F3B6}','음악 음표들'],['\u{1F3BC}','음악 악보'],
+['\u{1F3A4}','음악 마이크'],['\u{1F3A7}','음악 헤드폰'],['\u{1F3B8}','음악 기타'],['\u{1F3B9}','음악 피아노'],
+['\u{1F3BA}','음악 트럼펫'],['\u{1F3BB}','음악 바이올린'],['\u{1F941}','음악 드럼'],['\u{1F4FB}','음악 라디오'],
+['\u{1F3B7}','음악 색소폰'],['\u{1F50A}','음악 스피커 소리']
+]},
+{id:'math',name:'수학·단위',items:[
+['±','수학 플러스마이너스'],['×','수학 곱하기'],['÷','수학 나누기'],['≠','수학 같지않음'],
+['≈','수학 근사값'],['≒','수학 대략같음'],['≡','수학 항등'],['≤','수학 작거나같음'],
+['≥','수학 크거나같음'],['∞','수학 무한대'],['√','수학 루트 제곱근'],['∛','수학 세제곱근'],
+['∑','수학 시그마 합'],['∏','수학 파이 곱'],['∫','수학 적분'],['∂','수학 편미분'],
+['∇','수학 나블라'],['∆','수학 델타 증분'],['π','수학 파이 원주율'],['θ','수학 세타'],
+['α','수학 알파'],['β','수학 베타'],['γ','수학 감마'],['δ','수학 델타'],
+['λ','수학 람다'],['μ','수학 뮤 마이크로'],['σ','수학 시그마'],['φ','수학 파이 피'],
+['ω','수학 오메가'],['Ω','수학 대문자오메가 옴'],['∈','수학 원소'],['∉','수학 원소아님'],
+['⊂','수학 부분집합'],['⊃','수학 포함집합'],['∪','수학 합집합'],['∩','수학 교집합'],
+['∀','수학 전칭 모든'],['∃','수학 존재'],['∴','수학 그러므로'],['∵','수학 왜냐하면'],
+['∠','수학 각'],['⊥','수학 수직'],['∥','수학 평행'],['°','단위 도 온도'],
+['′','단위 분 프라임'],['″','단위 초 이중프라임'],['‰','단위 퍼밀 천분율'],['½','분수 이분의일'],
+['⅓','분수 삼분의일'],['¼','분수 사분의일'],['¾','분수 사분의삼'],['⅔','분수 삼분의이'],
+['㎡','단위 제곱미터'],['㎥','단위 세제곱미터'],['℃','단위 섭씨'],['℉','단위 화씨'],
+['№','단위 넘버 번호'],['ℓ','단위 리터'],['K','단위 켈빈'],['㏄','단위 씨씨'],
+['Å','단위 옹스트롬'],['Ω','단위 옴']
+]},
+{id:'money',name:'화폐',items:[
+['₩','화폐 원 한국'],['$','화폐 달러'],['€','화폐 유로'],['¥','화폐 엔 위안'],
+['£','화폐 파운드'],['¢','화폐 센트'],['₽','화폐 루블 러시아'],['₹','화폐 루피 인도'],
+['₺','화폐 리라 튀르키예'],['₴','화폐 흐리브냐 우크라이나'],['₦','화폐 나이라'],['₱','화폐 페소 필리핀'],
+['₲','화폐 과라니'],['₪','화폐 세켈'],['₫','화폐 동 베트남'],['₭','화폐 킵 라오스'],
+['₮','화폐 투그릭 몽골'],['₳','화폐 아우스트랄'],['₵','화폐 세디'],['₸','화폐 텡게'],
+['₼','화폐 마나트'],['₾','화폐 라리'],['₿','화폐 비트코인'],['¤','화폐 통화기호'],
+['＄','화폐 전각달러'],['￦','화폐 전각원'],['￥','화폐 전각엔'],['￡','화폐 전각파운드'],
+['₡','화폐 콜론'],['₤','화폐 리라'],['\u{1F4B0}','화폐 돈주머니'],['\u{1F4B8}','화폐 날아가는돈']
+]},
+{id:'space',name:'특수 공백·투명문자',items:[
+['\u3000','공백 한자공백 전각공백 U+3000 인스타 줄바꿈','[한자 공백]'],
+['\u2800','공백 점자공백 U+2800 인스타 줄바꿈','[점자 공백]'],
+['\u200B','공백 제로폭공백 U+200B 투명','[제로폭 공백]'],
+['\u00A0','공백 줄바꿈없는공백 U+00A0 넌브레이킹','[안 나뉘는 공백]'],
+['\u2002','공백 엔공백 U+2002','[엔 공백]'],
+['\u2003','공백 엠공백 U+2003','[엠 공백]'],
+['\u2004','공백 삼분의일공백 U+2004','[1/3 공백]'],
+['\u2005','공백 사분의일공백 U+2005','[1/4 공백]'],
+['\u2006','공백 육분의일공백 U+2006','[1/6 공백]'],
+['\u2009','공백 얇은공백 U+2009','[얇은 공백]'],
+['\u200A','공백 머리카락공백 U+200A','[헤어 공백]'],
+['\u202F','공백 좁은공백 U+202F','[좁은 공백]'],
+['\u205F','공백 수학공백 U+205F','[수학 공백]'],
+['\u1680','공백 오검공백 U+1680','[오검 공백]'],
+['\u200C','투명 제로폭비접합 U+200C ZWNJ','[ZWNJ]'],
+['\u200D','투명 제로폭접합 U+200D ZWJ','[ZWJ]'],
+['\u2060','투명 단어결합자 U+2060','[단어 결합자]'],
+['\uFEFF','투명 제로폭공백 BOM U+FEFF','[BOM]'],
+['\u3164','공백 한글채움문자 U+3164','[한글 채움]'],
+['\u17B5','공백 크메르모음 U+17B5','[크메르 공백]']
+]},
+{id:'jp',name:'일본어·한자 장식',items:[
+['ツ','장식 츠 웃는얼굴 쯔'],['ッ','장식 작은츠'],['シ','장식 시'],['ジ','장식 지'],
+['ソ','장식 소'],['ゾ','장식 조'],['ノ','장식 노'],['ヽ','장식 반복 카타카나'],
+['ヾ','장식 탁점반복 카타카나'],['ゝ','장식 반복 히라가나'],['ゞ','장식 탁점반복 히라가나'],['々','장식 한자반복 노마'],
+['〆','장식 시메 마감'],['〇','장식 한자영 공'],['〜','장식 물결 물결표'],['ー','장식 장음부호'],
+['〒','장식 우편마크'],['〓','장식 게타기호'],['㊣','장식 원안 정'],['㊙','장식 원안 축하'],
+['㊘','장식 원안 노동'],['㊗','장식 원안 축하 슈쿠'],['㊤','장식 원안 상'],['㊥','장식 원안 중'],
+['㊦','장식 원안 하'],['㈱','장식 괄호주식 주'],['㈲','장식 괄호유한 유'],['℡','장식 전화 TEL'],
+['㏍','장식 KK'],['㍿','장식 주식회사'],['ㄚ','장식 주음부호'],['ㄱ','장식 한글자모 기역'],
+['囍','장식 쌍희 결혼'],['福','장식 복 한자'],['寿','장식 수 한자'],['龍','장식 용 한자'],
+['夢','장식 몽 꿈'],['愛','장식 애 사랑'],['心','장식 심 마음'],['天','장식 천 하늘'],
+['王','장식 왕'],['光','장식 광 빛']
+]},
+{id:'num',name:'원문자·번호',items:[
+['①','번호 원1'],['②','번호 원2'],['③','번호 원3'],['④','번호 원4'],
+['⑤','번호 원5'],['⑥','번호 원6'],['⑦','번호 원7'],['⑧','번호 원8'],
+['⑨','번호 원9'],['⑩','번호 원10'],['⑪','번호 원11'],['⑫','번호 원12'],
+['⓪','번호 원0'],['❶','번호 검은원1'],['❷','번호 검은원2'],['❸','번호 검은원3'],
+['❹','번호 검은원4'],['❺','번호 검은원5'],['❻','번호 검은원6'],['❼','번호 검은원7'],
+['❽','번호 검은원8'],['❾','번호 검은원9'],['❿','번호 검은원10'],['⑴','번호 괄호1'],
+['⑵','번호 괄호2'],['⑶','번호 괄호3'],['⒈','번호 점1'],['⒉','번호 점2'],
+['⒊','번호 점3'],['Ⅰ','번호 로마1'],['Ⅱ','번호 로마2'],['Ⅲ','번호 로마3'],
+['Ⅳ','번호 로마4'],['Ⅴ','번호 로마5'],['Ⅵ','번호 로마6'],['Ⅶ','번호 로마7'],
+['Ⅷ','번호 로마8'],['Ⅸ','번호 로마9'],['Ⅹ','번호 로마10'],['ⅰ','번호 소문자로마1'],
+['ⅱ','번호 소문자로마2'],['ⅲ','번호 소문자로마3'],['ⓐ','번호 원소문자a'],['ⓑ','번호 원소문자b'],
+['ⓒ','번호 원소문자c'],['Ⓐ','번호 원대문자A'],['Ⓑ','번호 원대문자B'],['Ⓒ','번호 원대문자C'],
+['㉠','번호 원한글 기역'],['㉡','번호 원한글 니은'],['㉢','번호 원한글 디귿'],['㉣','번호 원한글 리을'],
+['㉤','번호 원한글 미음'],['㈀','번호 괄호한글 기역'],['㈁','번호 괄호한글 니은'],['㈂','번호 괄호한글 디귿'],
+['©','기호 저작권 카피라이트'],['®','기호 등록상표'],['™','기호 상표 트레이드마크'],['℗','기호 녹음저작권'],
+['§','기호 절 섹션'],['¶','기호 문단 필크로']
+]},
+{id:'face',name:'표정·이모티콘',items:[
+['☺','표정 웃는얼굴'],['☻','표정 검은웃는얼굴'],['☹','표정 찡그린얼굴'],['☠','표정 해골'],
+['♡‿♡','표정 하트눈'],
+['¯\\_(ツ)_/¯','표정 어깨으쓱 슈러그 모르겠다'],
+['(╯°□°）╯︵ ┻━┻','표정 책상엎기 화남'],
+['┬─┬ ノ( ゜-゜ノ)','표정 책상되돌리기 진정'],
+['ʕ•ᴥ•ʔ','표정 곰 귀여움'],
+['ʕ˘ᴥ˘ʔ','표정 졸린곰'],
+['●ˆ▾ˆ●','표정 귀여운얼굴'],
+['(づ｡◕‿‿◕｡)づ','표정 안아주기 허그'],
+['٩(◕‿◕)۶','표정 만세 신남'],
+['(๑>◡<๑)','표정 부끄러움'],
+['(｡♥‿♥｡)','표정 하트눈 사랑'],
+['(◍•ᴗ•◍)','표정 동글얼굴'],
+['(๑˘◡˘๑)','표정 웃음 미소'],
+['(ᵔᴗᵔ)','표정 무표정 귀여움'],
+['˚˚ʕ•ᴥ•ʔ˚˚','표정 반짝곰'],
+['(ﾉ◕ヮ◕)ﾉ','표정 뿅 마법'],
+['(•̀ㅅ•́)','표정 시무룩'],
+['(╥﹏╥)','표정 우는얼굴 슬픔'],
+['(ﾉಥ益ಥ)ﾉ','표정 분노 화남'],
+['⊙‿⊙','표정 놀람 동그란눈'],
+['✧˖*°｡˖✧','표정 반짝 장식'],
+['ᵒᴜᵒ','표정 작은얼굴'],
+['⸰‿⸰','표정 조용한웃음'],
+['♥ˋ‐ˊ♥','표정 하트장식'],
+['ᵔᴥᵔ','표정 작은곰'],
+['(๑´͡◡͡｀๑)','표정 뾰로통'],
+['ヾ(´▽｀)ﾉ','표정 손흔들기 안녕'],
+['ʕ•ᴥ•ʔっ','표정 곰 인사'],
+['(⁄ ⁄•⁄ω⁄•⁄ ⁄)','표정 수줍음 볼빨강']
+]},
+{id:'hand',name:'손·사람',items:[
+['\u{1F44D}','손 따봉 좋아요'],['\u{1F44E}','손 싫어요'],['\u{1F44C}','손 오케이'],['✌','손 브이 승리'],
+['\u{1F91E}','손 손가락꼬기 행운'],['\u{1F91F}','손 사랑해 수화'],['\u{1F918}','손 록 뿔'],['\u{1F919}','손 전화 샤카'],
+['\u{1F448}','손 왼쪽가리킴'],['\u{1F449}','손 오른쪽가리킴'],['\u{1F446}','손 위쪽가리킴'],['\u{1F447}','손 아래쪽가리킴'],
+['☝','손 검지 위'],['✋','손 손바닥 정지'],['\u{1F91A}','손 든손'],['\u{1F590}','손 손가락벌린손'],
+['\u{1F596}','손 벌칸인사'],['\u{1F44B}','손 인사 안녕'],['\u{1F91D}','손 악수'],['\u{1F64F}','손 기도 부탁'],
+['\u{1F44F}','손 박수'],['\u{1F64C}','손 만세 축하'],['\u{1F932}','손 두손모음'],['✊','손 주먹'],
+['\u{1F44A}','손 주먹인사'],['\u{1FAF6}','손 하트손'],['\u{1FAF0}','손 손하트 작은'],['\u{1F90C}','손 꼬집기'],
+['✍','손 글쓰는손'],['\u{1F933}','손 셀카'],['\u{1F485}','손 네일 손톱'],['\u{1F464}','사람 사람실루엣'],
+['\u{1F465}','사람 사람둘'],['♟','사람 체스 폰']
+]},
+{id:'life',name:'동물·음식·생활',items:[
+['\u{1F436}','동물 강아지 개'],['\u{1F431}','동물 고양이'],['\u{1F42D}','동물 쥐'],['\u{1F439}','동물 햄스터'],
+['\u{1F430}','동물 토끼'],['\u{1F98A}','동물 여우'],['\u{1F43B}','동물 곰'],['\u{1F43C}','동물 판다'],
+['\u{1F428}','동물 코알라'],['\u{1F42F}','동물 호랑이'],['\u{1F981}','동물 사자'],['\u{1F42E}','동물 소'],
+['\u{1F437}','동물 돼지'],['\u{1F438}','동물 개구리'],['\u{1F435}','동물 원숭이'],['\u{1F414}','동물 닭'],
+['\u{1F427}','동물 펭귄'],['\u{1F426}','동물 새'],['\u{1F984}','동물 유니콘'],['\u{1F41D}','동물 벌'],
+['\u{1F98B}','동물 나비'],['\u{1F422}','동물 거북이'],['\u{1F419}','동물 문어'],['\u{1F433}','동물 고래'],
+['\u{1F34E}','음식 사과'],['\u{1F353}','음식 딸기'],['\u{1F352}','음식 체리'],['\u{1F351}','음식 복숭아'],
+['\u{1F370}','음식 케이크'],['\u{1F369}','음식 도넛'],['\u{1F36A}','음식 쿠키'],['☕','음식 커피'],
+['\u{1F37A}','음식 맥주'],['\u{1F355}','음식 피자'],['\u{1F354}','음식 햄버거'],['\u{1F35C}','음식 라면'],
+['\u{1F359}','음식 주먹밥'],['\u{1F361}','음식 경단'],['\u{1F382}','생활 생일케이크'],['\u{1F381}','생활 선물'],
+['\u{1F388}','생활 풍선'],['\u{1F389}','생활 축하 폭죽'],['\u{1F38A}','생활 컨페티볼'],['\u{1F4F7}','생활 카메라'],
+['\u{1F4DA}','생활 책'],['✏','생활 연필'],['\u{1F4CE}','생활 클립'],['✈','생활 비행기'],
+['\u{1F4CD}','생활 위치'],['✉','생활 편지봉투']
+]}
+];
+
+/* ───────── 탭 ───────── */
+var TABS=[['tab-break','pane-break'],['tab-font','pane-font'],['tab-sym','pane-sym']];
+var symBuilt=false;
+function showTab(id){
+  TABS.forEach(function(t){
+    var on=t[0]===id;
+    $(t[0]).setAttribute('aria-selected',on?'true':'false');
+    $(t[1]).hidden=!on;
+  });
+  if(id==='tab-sym'&&!symBuilt){ symBuilt=true; renderSymbols(); }
+}
+TABS.forEach(function(t){ $(t[0]).addEventListener('click',function(){ showTab(t[0]); }); });
+
+/* ───────── 바구니 ───────── */
+var basket=[], bkSpaced=false;
+function basketText(){ return basket.join(bkSpaced?' ':''); }
+function renderBasket(){
+  $('bkView').textContent=basketText();
+  $('bkCount').textContent=basket.length+'개';
+  $('bkSpace').textContent='띄어쓰기로 구분: '+(bkSpaced?'켬':'끔');
+}
+function addToBasket(ch){
+  if(basket.length>=200){ toast('바구니가 가득 찼습니다'); return; }
+  basket.push(ch); renderBasket();
+}
+
+/* ───────── 특수문자 렌더 ───────── */
+var symCat='all', symQ='';
+function catButtons(){
+  var bar=$('syCats');
+  var html='<button type="button" data-c="all" class="on">전체</button>';
+  SYMBOLS.forEach(function(c){
+    html+='<button type="button" data-c="'+c.id+'">'+esc(c.name)+'</button>';
+  });
+  bar.innerHTML=html;
+  Array.prototype.forEach.call(bar.querySelectorAll('button'),function(b){
+    b.addEventListener('click',function(){
+      symCat=b.getAttribute('data-c');
+      Array.prototype.forEach.call(bar.querySelectorAll('button'),function(x){ x.classList.remove('on'); });
+      b.classList.add('on');
+      renderSymbols();
+    });
+  });
+}
+function tileClass(disp,catId){
+  var n=Array.from(disp).length;
+  if(catId==='space') return 'tile inv w2';
+  if(n>=9) return 'tile w4';
+  if(n>=6) return 'tile w3';
+  if(n>=3) return 'tile w2';
+  return 'tile';
+}
+function renderSymbols(){
+  var host=$('syBody');
+  host.innerHTML='';
+  var q=symQ.trim().toLowerCase();
+  var total=0;
+  var frag=document.createDocumentFragment();
+  SYMBOLS.forEach(function(cat){
+    if(symCat!=='all'&&symCat!==cat.id) return;
+    var hits=cat.items.filter(function(it){
+      if(!q) return true;
+      return it[1].toLowerCase().indexOf(q)>=0 || it[0].indexOf(q)>=0 || cat.name.toLowerCase().indexOf(q)>=0;
+    });
+    if(!hits.length) return;
+    total+=hits.length;
+    var t=document.createElement('p');
+    t.className='gtitle'; t.textContent=cat.name+' · '+hits.length+'개';
+    var g=document.createElement('div');
+    g.className='grid';
+    hits.forEach(function(it){
+      var disp=it[2]||it[0];
+      var b=document.createElement('button');
+      b.type='button';
+      b.className=tileClass(disp,cat.id);
+      b.textContent=disp;
+      b.title=it[1];
+      b.setAttribute('aria-label',it[1]);
+      b.setAttribute('data-ch',it[0]);
+      b.addEventListener('click',function(){
+        addToBasket(it[0]);
+        copyText(it[0],'복사됨 · 바구니에 담김');
+      });
+      g.appendChild(b);
+    });
+    frag.appendChild(t); frag.appendChild(g);
+  });
+  if(!total){
+    var e=document.createElement('div');
+    e.className='msg m-warn';
+    e.textContent='"'+symQ+'" 로 찾은 문자가 없습니다. 하트 · 별 · 화살표 · 괄호 · 구분선 처럼 넓은 이름으로 찾아 보세요.';
+    host.appendChild(e);
+  }else{
+    host.appendChild(frag);
+  }
+}
+
+/* ───────── 이벤트 ───────── */
+$('brIn').addEventListener('input',renderBreak);
+Array.prototype.forEach.call(document.querySelectorAll('#brMode button'),function(b){
+  b.addEventListener('click',function(){
+    Array.prototype.forEach.call(document.querySelectorAll('#brMode button'),function(x){ x.classList.remove('on'); });
+    b.classList.add('on'); brMode=b.getAttribute('data-v'); renderBreak();
+  });
+});
+$('brCopy').addEventListener('click',function(){ copyText($('brOut').value,'변환 결과가 복사되었습니다'); });
+$('brClear').addEventListener('click',function(){ $('brIn').value=''; $('brIn').focus(); renderBreak(); });
+$('brSample').addEventListener('click',function(){ $('brIn').value=SAMPLE; renderBreak(); });
+
+$('fnIn').addEventListener('input',renderFonts);
+
+$('syQ').addEventListener('input',function(){ symQ=$('syQ').value; renderSymbols(); });
+$('bkCopy').addEventListener('click',function(){ copyText(basketText(),'바구니 '+basket.length+'개 복사됨'); });
+$('bkClear').addEventListener('click',function(){ basket=[]; renderBasket(); toast('바구니를 비웠습니다'); });
+$('bkUndo').addEventListener('click',function(){ if(basket.length){ basket.pop(); renderBasket(); } });
+$('bkSpace').addEventListener('click',function(){ bkSpaced=!bkSpaced; renderBasket(); });
+
+/* ───────── 훅 ───────── */
+window.INSTA={
+  convertBreaks:convertBreaks,
+  fancy:fancy,
+  STYLES:STYLES,
+  SYMBOLS:SYMBOLS,
+  FILLERS:FILLERS,
+  countChars:countChars,
+  countTags:countTags,
+  LIMITS:{caption:CAP_LIMIT,hashtag:TAG_LIMIT},
+  _basket:function(){ return basketText(); }
+};
+
+/* ───────── 시작 ───────── */
+catButtons();
+renderBreak();
+renderFonts();
+renderBasket();
+})();
+</script>
+</body>
+</html>

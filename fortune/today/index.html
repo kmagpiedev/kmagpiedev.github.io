@@ -126,6 +126,8 @@
   .zodiac{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:28px 0 14px}
   .zodiac h2{margin:0 0 4px;font-size:18px}
   .zodiac .zc{font-size:13.5px;color:var(--ink-3);margin:0 0 14px;word-break:keep-all}
+  .zodiac .zlink{color:var(--ink);text-decoration:none;font-weight:700}
+  .zodiac .zlink:hover{color:var(--accent)}
   .zgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
   .zr{border:1px solid var(--line-soft);border-radius:11px;padding:10px 12px;font-size:13.5px;word-break:keep-all}
   .zr .zn{display:flex;align-items:center;justify-content:space-between;gap:8px;font-weight:800;font-size:14.5px;margin:0 0 3px}
@@ -719,13 +721,14 @@ function zodiacYears(zi){
   var out=[]; for(var y=TODAY.y;y>=TODAY.y-72&&out.length<4;y--){ if(((y-4)%12+12)%12===zi) out.push(y); }
   return out.reverse().join('·');
 }
+var Z_SLUG=['rat','ox','tiger','rabbit','dragon','snake','horse','goat','monkey','rooster','dog','pig'];
 function renderZodiac(){
   var tj=TDP%12, h='';
   $('zTitle').textContent=koDate(TODAY)+' 띠별 오늘의 운세';
-  $('zCap').textContent='오늘의 지지 '+JI[tj]+'('+JIH[tj]+')와 열두 띠의 지지 관계로 본 한 줄 운세입니다. 입력 없이 누구나 볼 수 있지만, 띠는 열두 칸뿐이라 같은 띠는 같은 글을 받습니다.';
+  $('zCap').textContent='오늘의 지지 '+JI[tj]+'('+JIH[tj]+')와 열두 띠의 지지 관계로 본 한 줄 운세입니다. 입력 없이 누구나 볼 수 있지만, 띠는 열두 칸뿐이라 같은 띠는 같은 글을 받습니다. 띠 이름을 누르면 그 띠의 자세한 오늘 운세 페이지로 갑니다.';
   for(var i=0;i<12;i++){
     var r=jiRel(i,tj), Z=ZODIAC[i], tag=Z_TAG[r];
-    h+='<div class="zr"><div class="zn"><span>'+Z.emo+' '+Z.nm+'띠 <small>'+JI[i]+'('+JIH[i]+') · '+zodiacYears(i)+'년생</small></span></div>'+
+    h+='<div class="zr"><div class="zn"><span><a class="zlink" href="/fortune/today/zodiac/'+Z_SLUG[i]+'/">'+Z.emo+' '+Z.nm+'띠 →</a> <small>'+JI[i]+'('+JIH[i]+') · '+zodiacYears(i)+'년생</small></span></div>'+
        '<span class="zt '+tag[1]+'">'+tag[0]+' · '+JR_NM[r]+(r?'('+JR_H[r]+')':'')+'</span>'+
        '<p>'+Z_TX[r].replace('{띠}',Z.nm)+'</p></div>';
   }

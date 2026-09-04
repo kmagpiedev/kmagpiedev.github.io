@@ -496,6 +496,17 @@
     }
 
     .tool-grid { display: grid; gap: 12px; margin-bottom: 22px; }
+    .tool-search { display: flex; gap: 8px; margin: 0 0 18px; max-width: 560px; }
+    .tool-search input {
+        flex: 1; min-width: 0; padding: 11px 14px; border-radius: 12px; border: 1px solid var(--border);
+        background: var(--card-bg); color: var(--text); font: inherit; font-size: 0.95rem; outline: none;
+    }
+    .tool-search input:focus { border-color: var(--accent); }
+    .tool-search input::-webkit-search-cancel-button { -webkit-appearance: none; }
+    .tool-search button {
+        flex: none; padding: 11px 18px; border-radius: 12px; border: 1px solid var(--accent);
+        background: var(--accent); color: #141414; font: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer;
+    }
     .tool-chip {
         display: block; padding: 14px 16px; border-radius: 14px;
         background: var(--card-bg); border: 1px solid var(--border);
@@ -767,7 +778,14 @@
                 <h2 data-i18n="toolsTitle">까치툴 — 무료 온라인 도구</h2>
                 <p class="section-desc" data-i18n="toolsDesc">가입 없이 쓰는 무료 도구입니다. 파일은 서버로 전송되지 않고 전부 내 브라우저 안에서 처리되며, 사용 횟수 제한도 워터마크도 없습니다.</p>
 
+                <form class="tool-search" action="/tools/" method="get" role="search">
+                    <input type="search" name="q" placeholder="도구 45개 중에서 찾기 — 예: 누끼, 퇴직금, PDF, 사주" aria-label="까치툴 도구 검색" autocomplete="off" data-i18n-attr="placeholder:toolSearchPh,aria-label:toolSearchAria">
+                    <button type="submit" data-i18n="toolSearchBtn">검색</button>
+                </form>
+
                 <div class="tool-grid">
+                    <a class="tool-chip" href="/tools/ocr/">사진 글자 추출 (OCR)<span>한글 · 영문, 캡처 붙여넣기, 업로드 없음</span></a>
+                    <a class="tool-chip" href="/tools/typing/">한글 타자 속도 테스트<span>분당 타수 · 정확도, 결과 카드 공유</span></a>
                     <a class="tool-chip" href="/tools/manse/">만세력 (사주 뽑기)<span>절입 시각까지 반영한 원국</span></a>
                     <a class="tool-chip" href="/tools/fuel-cost/">유류비 계산기<span>거리 · 연비로 기름값, 출장 정산</span></a>
                     <a class="tool-chip" href="/tools/electricity/">전기요금 계산기<span>누진세 · 에어컨 요금 얼마나</span></a>
@@ -953,6 +971,9 @@
                 heroProof: "앱은 Google Play에서 설치하고, 웹 콘텐츠는 설치 없이 바로 즐길 수 있습니다.",
                 hqFortuneTitle: "오늘의 운세 🌙 — 사주 기반, 매일 바뀝니다",
                 hqPopular: "인기 도구",
+                toolSearchPh: "도구 45개 중에서 찾기 — 예: 누끼, 퇴직금, PDF, 사주",
+                toolSearchAria: "까치툴 도구 검색",
+                toolSearchBtn: "검색",
                 hqT1: "만세력 (사주 뽑기)", hqT1Href: "/tools/manse/",
                 hqT2: "유류비 계산기", hqT2Href: "/tools/fuel-cost/",
                 hqT3: "전기요금 계산기", hqT3Href: "/tools/electricity/",
@@ -1072,6 +1093,9 @@
                 heroProof: "Install apps from Google Play, or enjoy the web experiences instantly with no installation.",
                 hqFortuneTitle: "Today&#39;s Fortune 🌙 — saju-based daily reading (Korean)",
                 hqPopular: "Popular tools",
+                toolSearchPh: "Search 45 tools (Korean) — e.g. PDF, QR, salary",
+                toolSearchAria: "Search tools",
+                toolSearchBtn: "Search",
                 hqT1: "Net Salary Calculator", hqT1Href: "/en/tools/salary/",
                 hqT2: "Remove Background", hqT2Href: "/en/tools/remove-bg/",
                 hqT3: "PDF Editor", hqT3Href: "/en/tools/pdf/",
@@ -1191,6 +1215,9 @@
                 heroProof: "アプリはGoogle Playからインストールし、Webコンテンツはインストールなしですぐ楽しめます。",
                 hqFortuneTitle: "今日の運勢 🌙 — 四柱推命ベースの日運（韓国語）",
                 hqPopular: "人気ツール",
+                toolSearchPh: "45個のツールから探す（韓国語）— 例: PDF, QR",
+                toolSearchAria: "ツール検索",
+                toolSearchBtn: "検索",
                 hqT1: "万歳暦（四柱を出す）", hqT1Href: "/tools/manse/",
                 hqT2: "燃料費計算", hqT2Href: "/tools/fuel-cost/",
                 hqT3: "電気料金計算", hqT3Href: "/tools/electricity/",

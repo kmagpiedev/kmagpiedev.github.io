@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>사진 글자 추출 (OCR) — 이미지 속 한글·영문을 텍스트로, 서버 전송 없음 | 까치툴</title>
+<meta name="description" content="사진 글자 추출 — 이미지 속 한국어·영어 글자를 텍스트로 바꿔 줍니다. 화이트보드, 명함, 책 사진, 카톡 캡처를 복사·편집 가능한 글로. 브라우저 안에서만 인식하므로 사진이 서버로 전송되지 않습니다. 무료·무제한·가입 없음.">
+<link rel="canonical" href="https://www.kmagpie.com/tools/ocr/">
+<meta property="og:title" content="사진 글자 추출 (OCR) — 이미지 속 한글·영문을 텍스트로">
+<meta property="og:description" content="사진 속 글자를 브라우저 안에서 텍스트로 추출합니다. 서버 전송 없음, 무료·무제한, 가입 없음.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.kmagpie.com/tools/ocr/">
+<style>
+  :root{
+    --bg:#faf9f7; --surface:#fff; --line:#e6e2dc; --line-soft:#efece7;
+    --ink:#22201d; --ink-2:#57524b; --ink-3:#8a837a;
+    --accent:#b45309; --accent-soft:#fdf4e7;
+    --good:#15803d; --good-soft:#eef7f0;
+    --bad:#b91c1c; --bad-soft:#fdf1f0;
+    --warn:#a16207; --warn-soft:#fdf8e9;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#171614; --surface:#201f1c; --line:#33312d; --line-soft:#2a2926;
+      --ink:#ece9e4; --ink-2:#aca69d; --ink-3:#7d776e;
+      --accent:#e0a35a; --accent-soft:#2a2117;
+      --good:#6ee7a8; --good-soft:#16241c;
+      --bad:#f5928c; --bad-soft:#2a1a19;
+      --warn:#e3c266; --warn-soft:#26200f;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto;padding:44px 22px 90px}
+  .crumb{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .crumb a:hover{color:var(--accent)}
+  h1{font-size:28px;line-height:1.3;margin:0 0 10px;letter-spacing:-.02em;font-weight:700}
+  .sub{color:var(--ink-2);margin:0 0 26px;font-size:15.5px}
+  h2{font-size:19px;margin:46px 0 10px;letter-spacing:-.015em;font-weight:700}
+  h3{font-size:16px;margin:24px 0 6px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  #drop{border:2px dashed var(--line);border-radius:16px;padding:40px 24px;text-align:center;
+    background:var(--surface);cursor:pointer;transition:.15s}
+  #drop:hover,#drop.over{border-color:var(--accent);background:var(--accent-soft)}
+  #drop .big{font-size:17px;font-weight:600;margin-bottom:6px}
+  #drop .small{font-size:13.5px;color:var(--ink-3)}
+  #drop kbd{font:inherit;font-size:12.5px;font-weight:700;border:1px solid var(--line);
+    border-bottom-width:2px;border-radius:5px;padding:1px 6px;background:var(--line-soft);color:var(--ink-2)}
+  #file{display:none}
+
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:18px 0 14px}
+  .row{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start}
+  .col{flex:1;min-width:230px}
+  .fld{margin-bottom:12px}
+  .fld:last-child{margin-bottom:0}
+  .fld label.cap{display:block;font-size:12.5px;color:var(--ink-3);font-weight:600;margin-bottom:6px}
+  .seg3{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .seg3 button{flex:1;background:transparent;border:0;padding:9px 4px;font-size:13.5px;font-weight:600;
+    color:var(--ink-2);cursor:pointer;font-family:inherit;transition:.12s;line-height:1.4}
+  .seg3 button small{display:block;font-weight:500;font-size:11.5px;opacity:.75}
+  .seg3 button.on{background:var(--accent);color:#fff}
+  .chk{display:flex;gap:9px;align-items:flex-start;font-size:14px;margin-bottom:9px;cursor:pointer}
+  .chk:last-child{margin-bottom:0}
+  .chk input{margin:5px 0 0;flex:none;accent-color:var(--accent);width:16px;height:16px}
+  .chk span small{display:block;font-size:12.5px;color:var(--ink-3);line-height:1.55}
+
+  button.act{font-family:inherit;font-size:15px;font-weight:600;padding:12px 22px;border-radius:10px;border:1px solid transparent;cursor:pointer;transition:.12s}
+  .primary{background:var(--accent);color:#fff}
+  .primary:hover:not(:disabled){filter:brightness(1.08)}
+  .primary:disabled{opacity:.45;cursor:not-allowed}
+  .ghost{background:transparent;color:var(--ink-2);border-color:var(--line)}
+  .ghost:hover:not(:disabled){border-color:var(--ink-3);color:var(--ink)}
+  .ghost:disabled{opacity:.45;cursor:not-allowed}
+  .actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:14px 0}
+
+  .thumbs{display:flex;flex-wrap:wrap;gap:9px;margin-top:13px}
+  .th{position:relative;width:74px;height:74px;border-radius:9px;overflow:hidden;border:1px solid var(--line);background:var(--line-soft)}
+  .th img{width:100%;height:100%;object-fit:cover;display:block}
+  .th .x{position:absolute;top:2px;right:2px;width:19px;height:19px;border-radius:50%;border:0;cursor:pointer;
+    background:rgba(0,0,0,.6);color:#fff;font-size:11px;line-height:19px;padding:0;font-family:inherit}
+  .th .n{position:absolute;left:0;right:0;bottom:0;background:rgba(0,0,0,.62);color:#fff;font-size:10px;
+    padding:1px 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .th.doneth{border-color:var(--good)}
+  .th.errth{border-color:var(--bad)}
+
+  .bar{height:6px;background:var(--line-soft);border-radius:99px;overflow:hidden;margin-top:12px}
+  .bar>i{display:block;height:100%;width:0;background:var(--accent);transition:width .18s}
+  .bar.indet>i{width:35%;animation:indet 1.1s infinite ease-in-out}
+  @keyframes indet{0%{margin-left:-35%}100%{margin-left:100%}}
+  .pline{display:flex;justify-content:space-between;font-size:12.5px;color:var(--ink-3);margin-top:5px;
+    font-variant-numeric:tabular-nums;gap:10px;flex-wrap:wrap}
+
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}
+  .tabs button{font-family:inherit;font-size:12.5px;padding:6px 12px;border-radius:8px;border:1px solid var(--line);
+    background:transparent;color:var(--ink-2);cursor:pointer;max-width:210px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .tabs button.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft);font-weight:700}
+  .rmeta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:13px;color:var(--ink-3);margin:0 0 10px}
+  .pill{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:99px;border:1px solid var(--line);color:var(--ink-3)}
+  .pill.hi{border-color:var(--good);color:var(--good);background:var(--good-soft)}
+  .pill.mid{border-color:var(--warn);color:var(--warn);background:var(--warn-soft)}
+  .pill.lo{border-color:var(--bad);color:var(--bad);background:var(--bad-soft)}
+  textarea#out{width:100%;min-height:270px;resize:vertical;padding:14px 15px;border-radius:12px;
+    border:1px solid var(--line);background:var(--surface);color:var(--ink);
+    font-family:ui-monospace,SFMono-Regular,Menlo,"Noto Sans KR",monospace;font-size:14.5px;line-height:1.8;
+    white-space:pre-wrap}
+  textarea#out:focus{outline:2px solid var(--accent);outline-offset:1px}
+  .hl{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:14px 15px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,"Noto Sans KR",monospace;font-size:14.5px;line-height:1.8;
+    white-space:pre-wrap;word-break:break-word;min-height:270px;max-height:60vh;overflow:auto}
+  .hl mark{background:var(--warn-soft);color:var(--warn);border-bottom:2px solid var(--warn);
+    border-radius:3px;padding:0 1px}
+  .mini{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;align-items:center}
+  .mini button{font-family:inherit;font-size:12.5px;padding:7px 12px;border-radius:8px;border:1px solid var(--line);
+    background:transparent;color:var(--ink-2);cursor:pointer}
+  .mini button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+  .mini button.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+  .mini button:disabled{opacity:.45;cursor:not-allowed}
+  .mini .sp{flex:1}
+
+  .msg{font-size:14px;padding:11px 15px;border-radius:9px;border-left:3px solid;margin:14px 0}
+  .m-warn{background:var(--warn-soft);border-color:var(--warn)}
+  .m-bad{background:var(--bad-soft);border-color:var(--bad)}
+  .m-good{background:var(--good-soft);border-color:var(--good)}
+  .hidden{display:none}
+  code{background:var(--line-soft);padding:2px 6px;border-radius:5px;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .note{font-size:13.5px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:13px;margin:14px 0}
+  table{width:100%;border-collapse:collapse;margin:12px 0 16px;font-size:14px}
+  th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+  th{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-weight:600;border-bottom:1px solid var(--line)}
+  .tw{overflow-x:auto}
+  ul{margin:0 0 14px;padding-left:20px}
+  li{margin-bottom:6px}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+  footer a{color:var(--ink-3)}
+/*FOLD:S*/
+  .gist{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);
+    padding:2px 0 2px 14px;margin:30px 0 18px;line-height:1.75}
+  details.fold{border:1px solid var(--line);border-radius:13px;background:var(--surface);
+    margin:12px 0;overflow:hidden}
+  .fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:15px 19px;user-select:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{margin:0;font-size:16.5px;letter-spacing:-.015em}
+  .fold summary::after{content:"+";font-size:20px;color:var(--ink-3);font-weight:400;
+    flex:none;transition:transform .15s}
+  .fold[open] summary::after{transform:rotate(45deg)}
+  .fold summary:hover h2{color:var(--accent)}
+  .fold .fx{padding:0 19px 8px}
+  .fold .fx>:first-child{margin-top:4px}
+/*FOLD:E*/
+/*REL:S*/
+  .rel{display:grid;grid-template-columns:repeat(auto-fit,minmax(208px,1fr));gap:12px;margin:16px 0 14px}
+  .rel a{display:block;padding:15px 17px;border:1px solid var(--line);border-radius:13px;
+    background:var(--surface);text-decoration:none;color:inherit;transition:.14s}
+  .rel a:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .rel a strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+  .rel a span{display:block;font-size:13px;color:var(--ink-3);line-height:1.55}
+  .rel-srch{display:flex;gap:8px;margin:0 0 12px}
+  .rel-srch input{flex:1;min-width:0;padding:10px 14px;border:1px solid var(--line);border-radius:11px;
+    background:var(--surface);color:var(--ink);font:inherit;font-size:14.5px;outline:none}
+  .rel-srch input:focus{border-color:var(--accent)}
+  .rel-srch input::-webkit-search-cancel-button{-webkit-appearance:none}
+  .rel-srch button{flex:none;padding:10px 16px;border:1px solid var(--accent);border-radius:11px;
+    background:transparent;color:var(--accent);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+  .rel-srch button:hover{background:var(--accent-soft)}
+  .rel-all{font-size:14.5px;font-weight:600;margin:0}
+/*REL:E*/
+/*TESTS:S*/
+  .tbn{display:flex;align-items:center;gap:13px;margin:26px 0 24px;padding:13px 18px;
+    border:1px solid var(--line);border-radius:14px;background:var(--surface);
+    text-decoration:none;color:inherit;transition:.14s}
+  .tbn:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .tbn .ic{width:44px;height:44px;flex:none;border-radius:12px;background:#fff;
+    border:1px solid var(--line);object-fit:contain;padding:2px}
+  .tbn .tx{flex:1;min-width:0}
+  .tbn .tt{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em}
+  .tbn .ds{display:block;font-size:13px;color:var(--ink-3);line-height:1.55;margin-top:2px}
+  .tbn .ar{color:var(--ink-3);font-size:15px;flex:none}
+/*TESTS:E*/
+</style>
+<!--HEAD:S-->
+<link rel="icon" href="/images/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<meta property="og:image" content="https://www.kmagpie.com/images/kmagpie-og.png">
+<meta property="og:site_name" content="까치툴">
+<link rel="manifest" href="/tools/manifest.json">
+<meta name="theme-color" content="#faf9f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#171614" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="까치툴">
+<script>/*PWA*/(function(){var L=document.documentElement.lang==='en';
+if('serviceWorker' in navigator)addEventListener('load',function(){navigator.serviceWorker.register('/sw.js',{scope:'/'})['catch'](function(){})});
+var p=null,armed=false;addEventListener('beforeinstallprompt',function(e){e.preventDefault();p=e;arm()});
+function arm(){if(armed)return;armed=true;var h=function(){removeEventListener('pointerdown',h,true);removeEventListener('keydown',h,true);show()};
+addEventListener('pointerdown',h,true);addEventListener('keydown',h,true)}
+addEventListener('appinstalled',function(){p=null;var b=document.getElementById('pwaBtn');if(b)b.style.visibility='hidden'});
+function show(){if(document.getElementById('pwaBtn'))return;
+var a=document.querySelector('.sub')||document.querySelector('h1');if(!a)return;
+var b=document.createElement('button');b.id='pwaBtn';b.type='button';
+b.textContent=L?'⬇ Install as an app':'📲 앱으로 설치';
+b.style.cssText='display:inline-block;margin:0 0 22px;padding:8px 15px;border-radius:9px;font:600 13.5px/1.4 inherit;cursor:pointer;background:transparent;color:var(--accent,#b45309);border:1px solid var(--accent,#b45309)';
+b.title=L?'Works offline once installed':'설치하면 인터넷 없이도 쓸 수 있습니다';
+b.onclick=function(){if(!p)return;p.prompt();p.userChoice.then(function(){p=null;b.style.visibility='hidden'})};
+a.insertAdjacentElement('afterend',b)}})();</script>
+<!--HEAD:E-->
+<!--LD:S-->
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","@id":"https://www.kmagpie.com/tools/ocr/#app","name":"사진 글자 추출 (OCR)","url":"https://www.kmagpie.com/tools/ocr/","description":"사진이나 캡처 속 글자를 텍스트로 뽑아 복사합니다. 한국어·영어를 브라우저 안에서 인식하므로 사진이 서버로 나가지 않고, 스크린샷은 Ctrl+V로 바로 붙여넣으면 됩니다. 여러 장은 파일별로 나눠 보여줍니다.","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"inLanguage":"ko","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"publisher":{"@type":"Organization","name":"K-magpie","url":"https://www.kmagpie.com/"}},{"@type":"BreadcrumbList","@id":"https://www.kmagpie.com/tools/ocr/#crumb","itemListElement":[{"@type":"ListItem","position":1,"name":"K-magpie","item":"https://www.kmagpie.com/"},{"@type":"ListItem","position":2,"name":"까치툴","item":"https://www.kmagpie.com/tools/"},{"@type":"ListItem","position":3,"name":"사진 글자 추출 (OCR)","item":"https://www.kmagpie.com/tools/ocr/"}]}]}</script>
+<!--LD:E-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="wrap">
+
+<p class="crumb"><a href="/">K-magpie</a> &rsaquo; <a href="/tools/">까치툴</a> &rsaquo; 사진 글자 추출</p>
+
+<h1>사진 글자 추출 (OCR)</h1>
+<p class="sub">사진이나 캡처 속 <strong>한국어·영어 글자를 텍스트로</strong> 바꿔 줍니다. <strong>사진이 서버로 전송되지 않습니다 — 인식 엔진과 언어 데이터를 이 사이트에서 내려받아 당신의 브라우저 안에서만 계산합니다.</strong> 횟수 제한·워터마크·가입 없음.</p>
+
+<div id="drop">
+  <div class="big">사진을 끌어다 놓거나 클릭해서 선택하세요</div>
+  <div class="small">여러 장 가능 · JPG · PNG · WebP · 캡처는 <kbd>Ctrl</kbd>+<kbd>V</kbd>로 바로 붙여넣기</div>
+  <input type="file" id="file" accept="image/*" multiple>
+</div>
+
+<noscript><div class="msg m-bad">이 도구는 자바스크립트가 필요합니다. 브라우저 설정에서 자바스크립트를 켜 주세요.</div></noscript>
+<div id="warn" class="hidden"></div>
+
+<div id="editor" class="hidden">
+  <div class="panel">
+    <div class="row">
+      <div class="col">
+        <div class="fld">
+          <label class="cap">인식 언어</label>
+          <div class="seg3" id="langSeg">
+            <button data-l="kor+eng" class="on">한국어+영어 <small>기본 · 섞인 문서</small></button>
+            <button data-l="kor">한국어 <small>한글만 · 가벼움</small></button>
+            <button data-l="eng">영어 <small>영문만 · 빠름</small></button>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="fld">
+          <label class="cap">전처리</label>
+          <label class="chk"><input type="checkbox" id="optAuto" checked><span>자동 크기 조정<small>작은 이미지는 2배 확대, 아주 큰 이미지만 3000px로 축소합니다(2000px 밑으로는 줄이지 않음).</small></span></label>
+          <label class="chk"><input type="checkbox" id="optContrast"><span>흑백 대비 강화<small>회색조로 바꾸고 밝기 범위를 넓힙니다. 조명이 고르지 않거나 흐린 사진에 도움이 됩니다.</small></span></label>
+        </div>
+      </div>
+    </div>
+    <p class="note" style="margin:12px 0 0" id="dlNote"></p>
+    <div id="prog" class="hidden">
+      <div class="bar" id="bar"><i></i></div>
+      <div class="pline"><span id="pTxt">준비 중…</span><span id="pTime">0.0초</span></div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="act primary" id="go">글자 추출</button>
+    <button class="act ghost" id="stop" disabled>중단</button>
+    <button class="act ghost" id="reset">처음부터</button>
+  </div>
+
+  <div class="thumbs" id="thumbs"></div>
+
+  <div id="result" class="hidden">
+    <div class="tabs" id="tabs"></div>
+    <div class="rmeta" id="rmeta"></div>
+    <textarea id="out" spellcheck="false" aria-label="추출된 텍스트"></textarea>
+    <div class="hl hidden" id="hlbox" aria-hidden="true"></div>
+    <div class="mini">
+      <button id="copy">📋 복사</button>
+      <button id="save">⬇ .txt 저장</button>
+      <button id="copyAll" class="hidden">📋 전체 합쳐 복사</button>
+      <button id="saveAll" class="hidden">⬇ 전체 합쳐 저장</button>
+      <span class="sp"></span>
+      <button id="hlBtn">낮은 신뢰도 표시</button>
+    </div>
+    <p class="note" id="lowNote"></p>
+  </div>
+</div>
+
+<p class="gist">사진·캡처 속 한국어와 영어 글자를 읽어 편집할 수 있는 텍스트로 바꿔 줍니다. 오픈소스 OCR 엔진(Tesseract, Apache-2.0)과 언어 데이터를 이 사이트에서 내려받아 브라우저 안에서만 인식하므로 사진이 외부로 전송되지 않고, 횟수 제한이나 가입도 없습니다. 정면에서 찍은 고대비 인쇄 글자는 잘 읽지만 손글씨·기울어진 사진·저해상도 캡처는 오류가 많으니, 결과를 그대로 믿지 말고 창에서 직접 고쳐 쓰세요. 첫 실행에만 언어 데이터를 내려받고, 그 뒤로는 브라우저에 저장되어 바로 시작됩니다.</p>
+
+<!--TESTS:S-->
+<a class="tbn" href="/tests/">
+  <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
+  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 좀비 생존률부터 전생, 아이돌 포지션까지 — 결과는 친구와 비교해 보세요.</span></span>
+  <span class="ar">→</span>
+</a>
+<!--TESTS:E-->
+
+<details class="fold" open><summary><h2>사용법 — 30초면 끝납니다</h2></summary><div class="fx">
+<p>사진을 끌어다 놓거나 상자를 눌러 고르면 됩니다. 화면을 캡처한 직후라면 파일로 저장할 필요 없이 이 페이지에서 <strong>Ctrl+V</strong>(맥은 ⌘+V)로 바로 붙여넣을 수 있습니다. 윈도우 캡처 도구, 맥의 ⇧⌘4, 카카오톡 대화 캡처 모두 클립보드에 이미지로 들어오므로 그대로 붙여넣으면 됩니다. 여러 장을 한꺼번에 올리면 위에서부터 차례로 인식하고, 결과는 파일별 탭으로 나뉘어 나옵니다.</p>
+<p>언어는 <strong>한국어+영어</strong>가 기본입니다. 한국 문서는 대개 영문 단어와 숫자가 섞여 있어서 둘을 함께 켜 두는 편이 정확합니다. 다만 언어를 하나만 켜면 인식할 후보가 줄어 조금 더 빠르고, 순수 영문 자료라면 <strong>영어</strong>만 고르는 쪽이 정확도까지 올라갑니다. 처음 한 번은 고른 언어의 데이터를 내려받느라 몇 초가 걸리고, 상자 아래에 정확한 용량이 표시됩니다. 한 번 받은 데이터는 브라우저에 저장되어 다음부터는 즉시 시작합니다.</p>
+<p>결과는 편집할 수 있는 글 상자에 줄바꿈 그대로 들어옵니다. 잘못 읽은 글자를 그 자리에서 고친 뒤 <strong>복사</strong>하거나 <strong>.txt로 저장</strong>하세요. 여러 장을 처리했다면 파일 이름을 구분선으로 넣어 <strong>전체를 하나로 합쳐</strong> 복사·저장할 수도 있습니다. 오른쪽 아래 <strong>낮은 신뢰도 표시</strong>를 누르면 엔진이 자신 없어 한 단어에 표시가 붙으니, 그 부분만 원본 사진과 대조하면 검수 시간이 크게 줄어듭니다.</p>
+<p>인식이 오래 걸릴 때는 <strong>중단</strong>을 누르면 그때까지 끝난 장의 결과는 남고 나머지가 취소됩니다. 진행 막대 옆에는 지금 무엇을 하는 중인지(엔진 불러오기 / 언어 데이터 / 인식)와 경과 시간이 함께 표시됩니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>잘 읽히는 사진, 잘 안 읽히는 사진</h2></summary><div class="fx">
+<h3>잘 읽히는 조건 세 가지</h3>
+<p><strong>첫째, 정면입니다.</strong> 종이나 화면을 카메라 축과 나란히 두고 찍은 사진이 가장 잘 읽힙니다. OCR은 글자를 가로줄로 잘라 한 줄씩 읽는데, 비스듬히 찍으면 줄이 사다리꼴로 휘어 줄 자르기부터 어긋납니다. 책상에 놓인 종이를 앉은 자세로 찍으면 대개 위쪽이 좁아지는 사다리꼴이 되니, 폰을 종이 바로 위로 들어 화면 안에서 종이의 네 변이 직사각형에 가깝게 보이도록 맞춰 주세요.</p>
+<p><strong>둘째, 대비입니다.</strong> 흰 바탕에 검은 글자처럼 밝기 차가 큰 이미지가 유리합니다. 회색 배경에 연회색 글자, 사진 위에 얹힌 흰 글자, 형광펜으로 덧칠한 부분은 글자와 배경을 나누는 단계에서부터 실패하기 쉽습니다. 이럴 때 <strong>흑백 대비 강화</strong>를 켜면 회색조로 바꾼 뒤 가장 어두운 값과 밝은 값을 양 끝으로 늘려 주므로 눈에 띄게 좋아지는 경우가 많습니다.</p>
+<p><strong>셋째, 글자 크기입니다.</strong> 경험적으로 <strong>글자 높이가 화면 픽셀로 20px 이상</strong>이면 안정적이고, 30~40px이면 거의 완벽합니다. 10px 아래로 내려가면 획이 뭉개져 사람이 봐도 헷갈리는 수준이 됩니다. 원본이 작다면 이 도구가 자동으로 2배 확대해 주지만, 없는 정보를 만들어 내는 것은 아니므로 애초에 크게 찍는 편이 훨씬 낫습니다. A4 한 장을 통째로 담기보다 문단 단위로 나눠 찍으면 같은 해상도에서 글자가 두세 배 커집니다.</p>
+<h3>잘 안 되는 것들</h3>
+<ul>
+<li><strong>손글씨</strong> — 이 엔진의 한국어·영어 모델은 인쇄체로 학습되어 있습니다. 정자체로 또박또박 쓴 글씨가 운 좋게 몇 단어 맞을 수는 있어도, 흘림체나 필기체는 사실상 읽지 못합니다.</li>
+<li><strong>기울어지거나 휜 사진</strong> — 3도만 기울어도 인식률이 떨어지고, 10도를 넘으면 급격히 나빠집니다. 두꺼운 책의 안쪽처럼 지면이 곡면으로 휜 경우도 마찬가지입니다.</li>
+<li><strong>저해상도 캡처</strong> — 작은 창을 캡처했거나, 이미 축소·재압축된 이미지를 다시 저장한 것은 획 주변에 압축 잡티가 끼어 있어 오인식이 많습니다.</li>
+<li><strong>세로쓰기·복잡한 편집 디자인</strong> — 세로로 흐르는 글, 원형으로 배치된 글자, 여러 단이 얽힌 잡지 레이아웃은 읽는 순서 자체가 뒤섞입니다.</li>
+<li><strong>표와 도장·밑줄이 겹친 문서</strong> — 표의 선이 글자에 닿거나 도장·손글씨 서명이 활자 위에 겹치면 그 부분이 통째로 깨집니다.</li>
+<li><strong>디자인 폰트</strong> — 획이 지나치게 얇거나 굵은 제목용 서체, 손글씨풍 폰트, 자간이 극단적으로 좁은 캡션은 본문 서체보다 훨씬 어렵습니다.</li>
+</ul>
+</div></details>
+
+<details class="fold" open><summary><h2>더 잘 찍는 법 — 스캔 팁</h2></summary><div class="fx">
+<p><strong>그림자를 없애세요.</strong> 실내에서 종이를 찍을 때 가장 흔한 실패 원인은 자기 몸이나 폰이 만든 그림자입니다. 종이 한쪽만 어두워지면 그 부분의 글자와 배경 밝기가 다른 쪽 배경 밝기와 겹쳐 버려서, 화면 전체에 같은 기준을 적용하는 이진화가 무너집니다. 창가의 간접광이나 방 전체를 밝히는 조명 아래에서, 광원을 등지지 말고 옆에 두고 찍으세요. 형광등 바로 아래에서 광택지를 찍으면 반사광이 하얗게 뜨니 각도를 조금 틀어 주세요.</p>
+<p><strong>초점을 확인하세요.</strong> 폰 카메라는 가까이 다가가면 초점이 흔들립니다. 화면에서 글자 부분을 한 번 탭해 초점을 맞추고, 셔터를 누른 뒤 사진을 확대해 획이 또렷한지 보세요. 흔들려 흐린 사진은 어떤 전처리로도 되살릴 수 없습니다. 손이 떨린다면 폰을 책 위에 올려놓거나 팔꿈치를 책상에 붙이고 찍으면 훨씬 안정적입니다.</p>
+<p><strong>필요한 부분만 잘라 주세요.</strong> 책상 위 잡동사니, 손가락, 다른 종이가 함께 담기면 엔진이 그 영역에서도 글자를 찾으려다 이상한 기호를 뱉습니다. 미리 사진 앱에서 글이 있는 영역만 잘라내면 정확도와 속도가 함께 좋아집니다. 이 도구는 자른 이미지를 그대로 받으므로, 잘라낸 뒤 붙여넣기만 해도 됩니다.</p>
+<p><strong>기울기는 미리 펴 두세요.</strong> 이 도구에는 자동 기울기 보정이 없습니다. 대신 폰 사진 앱 대부분에 회전·수평 보정 기능이 있으니, 사진의 글줄이 화면 가로선과 나란해지도록 몇 도만 돌려 주면 결과가 눈에 띄게 달라집니다. 스캐너 앱으로 사각형 보정(원근 보정)을 한 뒤 저장한 이미지라면 더할 나위 없습니다.</p>
+<p><strong>화면 캡처는 배율을 키우고 찍으세요.</strong> PDF나 웹페이지의 글을 옮기려는 것이라면, 브라우저나 뷰어에서 <code>Ctrl</code>+<code>+</code>로 150~200%까지 키운 뒤 캡처하는 것이 가장 확실합니다. 글자 픽셀 자체가 커지므로 축소된 원본을 확대하는 것과는 품질이 다릅니다. 물론 그 문서에서 글자를 직접 복사할 수 있다면 OCR을 쓸 이유가 없으니, 먼저 마우스로 끌어 선택되는지부터 확인해 보세요.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>OCR은 어떻게 글자를 읽나요</h2></summary><div class="fx">
+<p>OCR(Optical Character Recognition, 광학 문자 인식)은 사진의 픽셀 배열을 글자 코드로 바꾸는 기술입니다. 이 도구가 쓰는 <strong>Tesseract</strong>는 1980년대 HP 연구소에서 시작해 2005년 오픈소스로 공개되고 이후 구글이 오래 지원한 엔진으로, 지금은 100개가 넘는 언어를 지원하는 사실상의 표준입니다. 브라우저에서 돌아가는 것은 이 C++ 엔진을 <strong>WebAssembly</strong>로 컴파일한 판으로, 계산 자체는 네이티브 프로그램과 같은 코드가 수행합니다.</p>
+<p>처리는 크게 네 단계를 거칩니다. <strong>첫째, 이진화</strong> — 회색조로 바꾼 뒤 픽셀을 글자(검정)와 배경(흰색)으로 나눕니다. 조명이 고르지 않으면 이 단계에서 이미 글자가 배경에 묻히므로, 앞에서 그림자를 없애라고 강조한 이유가 여기 있습니다. <strong>둘째, 레이아웃 분석</strong> — 검은 덩어리들의 위치와 간격을 보고 어디까지가 한 단, 한 문단, 한 줄, 한 단어인지 나눕니다. 표나 다단 편집에서 결과가 뒤섞이는 것은 이 단계의 판단이 어긋나기 때문입니다. <strong>셋째, 줄 인식</strong> — 잘라낸 한 줄을 왼쪽에서 오른쪽으로 훑으며 글자를 읽습니다. <strong>넷째, 후처리</strong> — 사전과 문자 조합 통계를 이용해 어색한 결과를 다듬습니다.</p>
+<p>셋째 단계가 핵심인데, 요즘 Tesseract는 글자를 하나씩 잘라 모양을 맞추는 옛 방식 대신 <strong>LSTM</strong>이라는 순환 신경망을 씁니다. 한 줄 이미지를 얇은 세로 띠로 잘라 왼쪽부터 차례로 넣으면, 신경망이 앞서 본 띠들의 문맥을 기억한 채 "지금 지나온 획들의 조합은 이 글자일 확률이 높다"고 판단합니다. 글자 경계를 미리 정하지 않아도 되기 때문에 자간이 붙거나 획이 이어진 글자에 강합니다. 한글처럼 <strong>초성·중성·종성이 한 칸에 모여 수천 자의 조합</strong>을 만드는 문자에는 특히 이 방식이 잘 맞습니다.</p>
+<p>각 단어에는 <strong>신뢰도(confidence)</strong>가 0~100으로 함께 나옵니다. 신경망이 후보 글자들에 매긴 확률에서 계산한 값으로, 90 이상이면 대체로 믿을 만하고 60 아래면 다시 봐야 합니다. 다만 이것은 "이 모델이 얼마나 확신하는가"이지 "정답인가"가 아닙니다. 비슷하게 생긴 글자를 자신 있게 잘못 읽는 경우(<code>ㅁ</code>과 <code>ㅇ</code>, <code>0</code>과 <code>O</code>, <code>1</code>과 <code>l</code>, <code>rn</code>과 <code>m</code>)도 있으므로, 숫자·계좌·주소처럼 틀리면 곤란한 정보는 반드시 눈으로 확인하세요.</p>
+<p>이 도구는 언어 데이터로 <strong>tessdata_fast</strong>를 씁니다. Tesseract 공식 데이터에는 정확도 우선의 <code>best</code>, 균형형 <code>standard</code>, 속도 우선의 <code>fast</code>가 있는데, 브라우저에서 몇 초 안에 끝내려면 용량과 연산량이 가장 작은 fast가 현실적입니다. 인쇄가 선명한 문서에서는 셋의 차이가 크지 않고, 조건이 나쁠수록 벌어집니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>이럴 때 씁니다</h2></summary><div class="fx">
+<p><strong>회의실 화이트보드</strong> — 회의가 끝나고 화이트보드를 찍어 두었지만 며칠 뒤에는 사진 속 글씨를 다시 옮겨 적어야 하는 상황, 흔합니다. 보드마카로 또박또박 쓴 인쇄체에 가까운 글씨라면 상당 부분 건집니다. 다만 손글씨라는 점을 감안해 결과를 초안으로만 쓰고, 항목 이름과 숫자는 사진과 대조하세요. 찍을 때 보드 전체를 한 장에 담기보다 좌·우 절반씩 두 장으로 나누면 글자가 커져 훨씬 잘 읽힙니다.</p>
+<p><strong>명함</strong> — 이름·회사·직함·전화·이메일이 인쇄체로 또렷하게 박혀 있어 OCR에 잘 맞는 대상입니다. 다만 명함은 디자인 요소가 많아 로고 옆의 장식이 이상한 기호로 나오거나 항목 순서가 뒤섞일 수 있으니, 추출한 텍스트를 연락처에 붙여넣기 전에 한 번 정리하세요. 이메일 주소의 <code>@</code> 앞뒤, 전화번호의 숫자는 특히 확인이 필요합니다.</p>
+<p><strong>책·논문 발췌</strong> — 인용하려는 문단을 찍어 텍스트로 옮기면 타이핑 시간을 크게 줄일 수 있습니다. 책은 안쪽이 휘기 쉬우니 페이지를 최대한 평평하게 눌러 찍고, 두 페이지가 아니라 한 페이지씩 찍으세요. 발췌한 글을 공개적으로 쓸 때는 저작권 범위(인용의 정당한 범위, 출처 표시)를 지키는 것은 이용자의 몫입니다.</p>
+<p><strong>메신저·앱 화면 캡처</strong> — 카카오톡 대화에서 주소나 계좌번호를 받았는데 이미지로 온 경우, 긴 안내문이 캡처로 공유된 경우처럼 "복사가 안 되는 글"을 옮길 때 유용합니다. 화면 캡처는 원래 픽셀이 또렷해서 사진보다 인식률이 좋습니다. 폰 캡처는 폭이 좁고 세로로 긴 편이라 자동 확대가 잘 듣는 편입니다.</p>
+<p><strong>영수증·서류 정리</strong> — 영수증의 감열지 인쇄는 흐리고 글자가 작아 어려운 편이지만, 상호와 금액 정도는 건지는 경우가 많습니다. 세금계산서나 계약서 같은 서식은 표 선이 글자와 겹쳐 깨지기 쉬우니, 필요한 항목만 잘라서 올리는 편이 낫습니다. 참고로 세무·법률 서류의 내용 판단이나 금액 계산은 이 도구가 하지 않으며, 추출한 텍스트의 정확성도 보장하지 않습니다.</p>
+</div></details>
+
+<details class="fold" open><summary><h2>개인정보·라이선스·자주 묻는 질문</h2></summary><div class="fx">
+<h3>사진이 정말 전송되지 않나요</h3>
+<p>네. 이 페이지는 이미지를 어디에도 보내지 않습니다. 브라우저 개발자 도구(F12)의 네트워크 탭을 켜고 실행해 보시면, 이 사이트에서 인식 엔진(<code>tesseract.min.js</code>, <code>worker.min.js</code>, <code>.wasm</code>)과 언어 데이터(<code>kor.traineddata.gz</code>, <code>eng.traineddata.gz</code>)를 내려받는 요청만 보이고 이미지가 나가는 요청은 없습니다. 외부 CDN도 쓰지 않아 이 도메인 밖으로 나가는 요청 자체가 없습니다. 신분증, 계약서, 의료 서류처럼 민감한 문서를 다룰 때 이 점이 중요합니다.</p>
+<h3>왜 처음에만 느린가요</h3>
+<p>첫 실행에서 언어 데이터(한국어 약 1.1MB, 영어 약 1.9MB, 둘 다면 약 2.9MB)와 WebAssembly 인식 엔진(약 2.9MB)을 내려받기 때문입니다. 받은 언어 데이터는 브라우저 저장소(IndexedDB)에 보관되어 다음 방문부터는 즉시 시작합니다. 또한 인식이 끝나도 작업 프로세스를 종료하지 않고 유지하므로, 같은 화면에서 두 번째 사진부터는 준비 과정 없이 바로 인식이 시작됩니다.</p>
+<h3>결과가 엉망이에요</h3>
+<p>대개 원인은 셋 중 하나입니다. 글자가 너무 작거나(높이 20px 미만), 사진이 기울었거나, 대비가 부족한 경우입니다. <strong>흑백 대비 강화</strong>를 켜서 다시 시도해 보고, 그래도 나아지지 않으면 사진을 더 크고 평평하게 다시 찍는 것이 가장 확실합니다. 문서 전체를 한 장에 담았다면 문단 단위로 나눠 여러 장으로 올려 보세요. 한글 문서인데 영어만 켜져 있거나 그 반대인 경우도 흔하니 언어 설정도 확인하세요.</p>
+<h3>왜 띄어쓰기나 줄바꿈이 이상한가요</h3>
+<p>OCR은 글자 사이의 물리적 간격으로 띄어쓰기를 추정합니다. 자간이 넓은 서체에서는 한 단어가 둘로 쪼개지고, 자간이 좁으면 두 단어가 붙습니다. 줄바꿈도 이미지에 보이는 줄 그대로 넣기 때문에, 문단 안에서 줄이 바뀐 곳마다 개행이 들어갑니다. 글 상자에서 직접 고치시면 되고, 문단을 하나로 잇고 싶다면 붙여넣은 뒤 편집기의 찾아 바꾸기로 정리하는 편이 빠릅니다.</p>
+<h3>PDF도 되나요</h3>
+<p>이 도구는 이미지 파일만 받습니다. PDF 안의 글자를 옮기려면 먼저 <a href="/tools/pdf-to-image/">PDF를 이미지로</a> 변환해 페이지를 PNG로 만든 뒤 여기에 올리세요. 다만 PDF가 스캔본이 아니라면 대개 글자 정보를 품고 있으므로, PDF 뷰어에서 그냥 복사되는지 먼저 확인하는 편이 빠르고 정확합니다.</p>
+<h3>HEIC(아이폰) 사진이 안 올라가요</h3>
+<p>아이폰 기본 형식인 HEIC/HEIF는 대부분의 브라우저가 읽지 못합니다. 아이폰이라면 설정 → 카메라 → 포맷에서 <strong>높은 호환성</strong>을 고르면 JPG로 저장되고, 이미 찍은 사진은 사진 앱에서 공유 → 사진 복사 후 이 페이지에 붙여넣으면 JPG로 들어옵니다.</p>
+<h3>라이선스</h3>
+<p>인식 엔진 <strong>tesseract.js</strong>와 WebAssembly 코어 <strong>tesseract.js-core</strong>는 <strong>Apache License 2.0</strong>, 언어 데이터 <strong>tessdata_fast</strong>(kor, eng)도 <strong>Apache License 2.0</strong>입니다. 세 가지 모두 상업적 이용이 허용되며, 라이선스 전문을 <a href="/tools/lib/README.txt">/tools/lib/README.txt</a>가 가리키는 폴더에 원본 그대로 함께 두었습니다.</p>
+</div></details>
+
+<!--REL:S-->
+<h2>함께 쓰면 좋은 도구</h2>
+<div class="rel">
+  <a href="/tools/pdf-to-image/"><strong>PDF를 이미지로</strong><span>JPG·PNG 300dpi, ZIP 저장</span></a>
+  <a href="/tools/img2pdf/"><strong>이미지를 PDF로</strong><span>JPG·PNG 여러 장을 한 파일로</span></a>
+  <a href="/tools/char-count/"><strong>글자수 세기</strong><span>공백 포함·제외, 바이트, 원고지</span></a>
+</div>
+<form class="rel-srch" action="/tools/" method="get" role="search"><input type="search" name="q" placeholder="도구 45개 중에서 찾기 — 예: 누끼, 퇴직금, PDF" aria-label="까치툴 도구 검색" autocomplete="off"><button type="submit">검색</button></form>
+<p class="rel-all"><a href="/tools/">까치툴 도구 45개 전체 보기 →</a></p>
+<!--REL:E-->
+
+<footer>
+  <p>까치툴 · 모든 처리는 브라우저에서 이루어지며 입력값(파일)은 전송·저장되지 않습니다.</p>
+  <p>인식 엔진: Tesseract.js / tesseract.js-core (Apache-2.0), 언어 데이터: tessdata_fast (Apache-2.0) — 원본과 라이선스는 <a href="/tools/lib/README.txt">/tools/lib/README.txt</a> 에 있습니다.</p>
+  <p><a href="/">홈</a> · <a href="/tools/">다른 도구</a> · <a href="/tools/about/">소개</a> · <a href="/disclaimer.html">면책조항</a> · <a href="/privacy-policy.html">개인정보처리방침</a></p>
+</footer>
+
+</div>
+
+<script>
+/* 오래된 브라우저 안내 (ES5) */
+(function(){
+  var ok=true;
+  try{
+    ok = !!(window.Promise && window.fetch && window.Worker && window.WebAssembly && window.URL && URL.createObjectURL);
+    if(ok) new Function('async()=>{};const {a,...b}={a:1};');
+  }catch(e){ok=false}
+  if(!ok){
+    var w=document.getElementById('warn');
+    w.className='msg m-bad';
+    w.innerHTML='이 브라우저는 너무 오래되어 글자 인식을 실행할 수 없습니다. 최신 Chrome·Edge·Safari·Firefox·삼성 인터넷으로 열어 주세요.';
+    var d=document.getElementById('drop'); if(d) d.style.display='none';
+    window.__oldBrowser=true;
+  }
+})();
+</script>
+<script>
+(function(){
+  if(window.__oldBrowser) return;
+  const $=id=>document.getElementById(id);
+  const warn=$('warn');
+  const msg=(k,h)=>{warn.className='msg m-'+k;warn.innerHTML=h;warn.classList.remove('hidden')};
+  const hideMsg=()=>warn.classList.add('hidden');
+
+  const LIB='/tools/lib/ocr/';
+  const LANG_MB={kor:1.06, eng:1.88};       // .gz 실제 용량 (MB)
+  const CORE_MB=2.9;                        // wasm 엔진 대략 용량
+  const MIN_LONG=1000, MAX_LONG=3000, FLOOR_LONG=2000;
+  const LOW_CONF=70;                        // 낮은 신뢰도 기준
+
+  let items=[];        // {id,name,url,img,state,text,conf,ms,words,err}
+  let lang='kor+eng';
+  let running=false, stopReq=false;
+  let worker=null, workerLang='', libReady=null;
+  let cur=0, showHl=false;
+
+  const drop=$('drop'), file=$('file');
+  drop.addEventListener('click',()=>file.click());
+  drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('over')});
+  drop.addEventListener('dragleave',()=>drop.classList.remove('over'));
+  drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('over');add(e.dataTransfer.files)});
+  file.addEventListener('change',e=>{add(e.target.files);file.value=''});
+
+  /* 클립보드 붙여넣기 */
+  document.addEventListener('paste',e=>{
+    if(!e.clipboardData) return;
+    const t=e.target, tag=t&&t.tagName;
+    if(tag==='TEXTAREA'||tag==='INPUT') return;   // 결과 편집 중에는 방해하지 않음
+    const fs=[];
+    for(const it of e.clipboardData.items){
+      if(it.kind==='file'&&/^image\//.test(it.type)){
+        const f=it.getAsFile(); if(f) fs.push(f);
+      }
+    }
+    if(fs.length){ e.preventDefault(); add(fs, true); }
+  });
+
+  /* ---------- 유틸 ---------- */
+  const fmtMs=ms=>ms<1000?Math.round(ms)+'ms':(ms/1000).toFixed(1)+'초';
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const isHeic=f=>/heic|heif/i.test(f.type||'')||/\.(heic|heif)$/i.test(f.name||'');
+  const langMB=l=>l.split('+').reduce((a,x)=>a+(LANG_MB[x]||0),0);
+
+  function loadScript(src){
+    return new Promise((res,rej)=>{
+      const s=document.createElement('script'); s.src=src; s.async=false;
+      s.onload=()=>res(); s.onerror=()=>rej(new Error(src.split('/').pop()+' 을(를) 불러오지 못했습니다'));
+      document.head.appendChild(s);
+    });
+  }
+
+  /* 단계적 축소(모아레 방지) */
+  function drawScaled(src,tw,th){
+    let cur=src, w=src.naturalWidth||src.width, h=src.naturalHeight||src.height;
+    while(w>=tw*2&&h>=th*2){
+      w=Math.max(tw,Math.floor(w/2)); h=Math.max(th,Math.floor(h/2));
+      const c=document.createElement('canvas'); c.width=w; c.height=h;
+      const x=c.getContext('2d'); x.imageSmoothingEnabled=true; x.imageSmoothingQuality='high';
+      x.drawImage(cur,0,0,w,h); cur=c;
+    }
+    const o=document.createElement('canvas'); o.width=tw; o.height=th;
+    const ox=o.getContext('2d',{willReadFrequently:true});
+    ox.imageSmoothingEnabled=true; ox.imageSmoothingQuality='high';
+    ox.drawImage(cur,0,0,tw,th); return o;
+  }
+
+  /* 회색조 + 대비 스트레치 (2~98 백분위) */
+  function enhance(canvas){
+    const w=canvas.width,h=canvas.height;
+    const ctx=canvas.getContext('2d',{willReadFrequently:true});
+    const im=ctx.getImageData(0,0,w,h), d=im.data;
+    const hist=new Uint32Array(256);
+    for(let i=0;i<d.length;i+=4){
+      const g=(d[i]*299+d[i+1]*587+d[i+2]*114)/1000|0;
+      d[i]=d[i+1]=d[i+2]=g; hist[g]++;
+    }
+    const n=w*h, loN=Math.round(n*0.02), hiN=Math.round(n*0.98);
+    let acc=0, lo=0, hi=255;
+    for(let v=0;v<256;v++){acc+=hist[v]; if(acc>=loN){lo=v;break}}
+    acc=0;
+    for(let v=0;v<256;v++){acc+=hist[v]; if(acc>=hiN){hi=v;break}}
+    if(hi-lo<24){lo=0;hi=255}                       // 이미 평평하면 건드리지 않음
+    const map=new Uint8ClampedArray(256), span=hi-lo;
+    for(let v=0;v<256;v++) map[v]=Math.max(0,Math.min(255,Math.round((v-lo)*255/span)));
+    for(let i=0;i<d.length;i+=4){const g=map[d[i]]; d[i]=d[i+1]=d[i+2]=g;}
+    ctx.putImageData(im,0,0);
+    return canvas;
+  }
+
+  /* 전처리: 크기 계획 + 그리기 (+ 선택적 대비 강화) — 테스트 훅으로 공개 */
+  function planSize(w0,h0,auto){
+    const long=Math.max(w0,h0);
+    let scale=1, why='';
+    if(auto){
+      if(long<MIN_LONG){ scale=2; why='작아서 2배 확대'; }
+      else if(long>MAX_LONG){ scale=Math.max(MAX_LONG,FLOOR_LONG)/long; why='커서 '+MAX_LONG+'px로 축소'; }
+    }
+    const w=Math.max(1,Math.round(w0*scale)), h=Math.max(1,Math.round(h0*scale));
+    return {w,h,scale,why};
+  }
+  function preprocess(src,opts){
+    opts=opts||{};
+    const auto=opts.auto!==false, contrast=!!opts.contrast;
+    const w0=src.naturalWidth||src.width, h0=src.naturalHeight||src.height;
+    const p=planSize(w0,h0,auto);
+    let canvas;
+    if(p.scale<1) canvas=drawScaled(src,p.w,p.h);
+    else{
+      canvas=document.createElement('canvas'); canvas.width=p.w; canvas.height=p.h;
+      const x=canvas.getContext('2d',{willReadFrequently:true});
+      x.imageSmoothingEnabled=true; x.imageSmoothingQuality='high';
+      x.fillStyle='#fff'; x.fillRect(0,0,p.w,p.h);
+      x.drawImage(src,0,0,p.w,p.h);
+    }
+    if(contrast) enhance(canvas);
+    return {canvas,w:p.w,h:p.h,w0,h0,scale:p.scale,why:p.why};
+  }
+
+  /* ---------- 파일 추가 ---------- */
+  let seq=0;
+  async function add(list,fromPaste){
+    const fs=[...list]; if(!fs.length) return;
+    hideMsg();
+    const bad=[];
+    for(const f of fs){
+      if(isHeic(f)){bad.push(`<strong>${esc(f.name||'붙여넣은 이미지')}</strong>: HEIC/HEIF는 브라우저가 읽지 못합니다. 아이폰 설정 → 카메라 → 포맷을 '높은 호환성'으로 바꾸거나 JPG로 변환해 주세요.`);continue}
+      if(!/^image\//.test(f.type||'')){bad.push(`<strong>${esc(f.name||'파일')}</strong>: 이미지 파일이 아닙니다.`);continue}
+      const url=URL.createObjectURL(f);
+      const img=await new Promise(res=>{const i=new Image();i.onload=()=>res(i);i.onerror=()=>res(null);i.src=url});
+      if(!img||!img.naturalWidth){URL.revokeObjectURL(url);bad.push(`<strong>${esc(f.name||'이미지')}</strong>: 이미지를 읽지 못했습니다. 손상되었거나 브라우저가 지원하지 않는 형식입니다.`);continue}
+      seq++;
+      const name=f.name||(fromPaste?`붙여넣기-${seq}.png`:`이미지-${seq}.png`);
+      items.push({id:seq,name,url,img,state:'pending',text:'',conf:null,ms:0,words:[],err:''});
+    }
+    if(bad.length) msg('bad',bad.join('<br>'));
+    if(items.length){ $('editor').classList.remove('hidden'); renderThumbs(); updateButtons(); updateNote(); }
+  }
+
+  function renderThumbs(){
+    const box=$('thumbs'); box.innerHTML='';
+    items.forEach((it,i)=>{
+      const d=document.createElement('div');
+      d.className='th'+(it.state==='done'?' doneth':it.state==='error'?' errth':'');
+      d.innerHTML=`<img src="${it.url}" alt=""><span class="n">${esc(it.name)}</span>`+
+        (running?'':`<button class="x" title="빼기" data-x="${it.id}">✕</button>`);
+      box.appendChild(d);
+    });
+    box.querySelectorAll('[data-x]').forEach(b=>b.addEventListener('click',()=>{
+      const id=+b.dataset.x, it=items.find(x=>x.id===id);
+      if(!it) return;
+      URL.revokeObjectURL(it.url);
+      items=items.filter(x=>x!==it);
+      if(cur>=items.length) cur=Math.max(0,items.length-1);
+      renderThumbs(); renderResult(); updateButtons(); updateNote();
+      if(!items.length){ $('editor').classList.add('hidden'); $('result').classList.add('hidden'); }
+    }));
+  }
+
+  function updateNote(){
+    const mb=langMB(lang).toFixed(1);
+    $('dlNote').innerHTML=`처음 실행할 때 <strong>언어 데이터 약 ${mb}MB</strong>와 <strong>인식 엔진 약 ${CORE_MB}MB</strong>를 이 사이트에서 내려받습니다. `+
+      `<strong>사진은 전송되지 않습니다</strong> — 인식은 전부 이 브라우저 안에서 이루어집니다. 한 번 받은 데이터는 브라우저에 저장되어 다음부터는 바로 시작합니다.`;
+  }
+
+  function updateButtons(){
+    const pending=items.filter(i=>i.state==='pending').length;
+    $('go').disabled=running||!pending;
+    $('go').textContent=running?'인식 중…':(pending>1?`글자 추출 (${pending}장)`:'글자 추출');
+    $('stop').disabled=!running;
+    $('reset').disabled=running;
+    document.querySelectorAll('#langSeg button').forEach(b=>b.disabled=running);
+    $('optAuto').disabled=running; $('optContrast').disabled=running;
+  }
+
+  /* ---------- 설정 ---------- */
+  document.querySelectorAll('#langSeg button').forEach(b=>b.addEventListener('click',()=>{
+    if(running) return;
+    document.querySelectorAll('#langSeg button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); lang=b.dataset.l; updateNote();
+    items.forEach(it=>{if(it.state!=='pending'){it.state='pending';it.text='';it.conf=null;it.words=[]}});
+    renderThumbs(); renderResult(); updateButtons();
+  }));
+  [$('optAuto'),$('optContrast')].forEach(c=>c.addEventListener('change',()=>{
+    items.forEach(it=>{if(it.state==='done'){it.state='pending';it.text='';it.conf=null;it.words=[]}});
+    renderThumbs(); renderResult(); updateButtons();
+  }));
+  $('reset').addEventListener('click',()=>{
+    if(running) return;
+    items.forEach(it=>URL.revokeObjectURL(it.url));
+    items=[]; cur=0; $('thumbs').innerHTML=''; $('result').classList.add('hidden');
+    $('editor').classList.add('hidden'); hideMsg(); $('prog').classList.add('hidden');
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+  $('stop').addEventListener('click',()=>{ stopReq=true; $('stop').disabled=true; setProg('중단하는 중… 지금 장이 끝나면 멈춥니다',null); });
+
+  /* ---------- 엔진 ---------- */
+  function setProg(txt,frac){
+    $('prog').classList.remove('hidden');
+    $('pTxt').textContent=txt;
+    const bar=$('bar');
+    if(frac==null){ bar.classList.add('indet'); bar.querySelector('i').style.width=''; }
+    else{ bar.classList.remove('indet'); bar.querySelector('i').style.width=Math.round(frac*100)+'%'; }
+  }
+
+  async function detectSimd(){
+    // WebAssembly SIMD 지원 여부 — 지원하면 SIMD 코어를 씁니다.
+    try{
+      return WebAssembly.validate(new Uint8Array([
+        0,97,115,109,1,0,0,0, 1,5,1,96,0,1,123, 3,2,1,0,
+        10,10,1,8,0,65,0,253,15,253,98,11]));
+    }catch(e){ return false; }
+  }
+
+  async function ensureLib(){
+    if(libReady) return libReady;
+    libReady=(async()=>{
+      setProg('인식 엔진을 불러오는 중…',null);
+      if(!window.Tesseract) await loadScript(LIB+'tesseract.min.js');
+      if(!window.Tesseract) throw new Error('인식 엔진을 불러오지 못했습니다');
+    })();
+    libReady.catch(()=>{libReady=null});
+    return libReady;
+  }
+
+  const STATUS_KO={
+    'loading tesseract core':'인식 엔진(WebAssembly) 불러오는 중',
+    'loading language traineddata':'언어 데이터 불러오는 중',
+    'initializing tesseract':'엔진 준비 중',
+    'initializing api':'엔진 준비 중',
+    'recognizing text':'글자 인식 중'
+  };
+
+  async function ensureWorker(){
+    await ensureLib();
+    if(worker&&workerLang===lang) return worker;
+    const simd=await detectSimd();
+    const base=simd?'tesseract-core-simd-lstm':'tesseract-core-lstm';
+    // 1순위: 작은 글루 .js + 별도 .wasm (약 2.9MB) / 2순위: wasm 을 품은 단일파일 .wasm.js (약 3.9MB)
+    const cores=[LIB+base+'.js', LIB+base+'.wasm.js'];
+    const logger=m=>{
+      const s=STATUS_KO[m.status]||m.status||'';
+      const p=(typeof m.progress==='number')?m.progress:null;
+      if(s) setProg(s+(p!=null?` ${Math.round(p*100)}%`:''), p);
+    };
+    if(worker){                                  // 언어만 바꿔 재초기화 (엔진은 재사용)
+      await worker.reinitialize(lang, 1);
+      workerLang=lang; return worker;
+    }
+    let lastErr=null;
+    for(const corePath of cores){
+      try{
+        worker=await Tesseract.createWorker(lang, 1, {
+          workerPath: LIB+'worker.min.js',
+          corePath,                 // 절대경로 — CDN 으로 새지 않게 명시
+          langPath:   LIB+'lang',
+          workerBlobURL: false,     // blob 대신 이 사이트의 worker.min.js 를 그대로 사용 → 외부 접근 0
+          gzip: true,               // lang/<코드>.traineddata.gz 를 찾음
+          logger,
+          errorHandler: e=>console.warn('[ocr]',e)
+        });
+        lastErr=null; break;
+      }catch(e){
+        lastErr=e; worker=null;
+        console.warn('[ocr] core 실패, 다음 후보로 재시도:',corePath,e);
+      }
+    }
+    if(!worker) throw lastErr||new Error('인식 엔진을 시작하지 못했습니다');
+    workerLang=lang;
+    await worker.setParameters({
+      user_defined_dpi:'300',            // DPI 미상 경고 방지
+      preserve_interword_spaces:'1',     // 한글 자간이 넓어도 한 단어로 유지
+      tessedit_pageseg_mode:'4'          // 세로로 흐르는 한 단(段) 가정 — 사진 문서에 가장 안정적
+    });
+    return worker;
+  }
+
+  /* ---------- 실행 ---------- */
+  $('go').addEventListener('click',run);
+  async function run(){
+    if(running) return;
+    running=true; stopReq=false; hideMsg(); updateButtons(); renderThumbs();
+    const t0=performance.now();
+    const tick=setInterval(()=>{$('pTime').textContent=fmtMs(performance.now()-t0)},200);
+    try{
+      const w=await ensureWorker();
+      const todo=items.filter(i=>i.state==='pending');
+      for(let k=0;k<todo.length;k++){
+        if(stopReq) break;
+        const it=todo[k];
+        const label=todo.length>1?` (${k+1}/${todo.length}장)`:'';
+        setProg('글자 인식 중'+label,null);
+        const t1=performance.now();
+        try{
+          const pre=preprocess(it.img,{auto:$('optAuto').checked, contrast:$('optContrast').checked});
+          const r=await w.recognize(pre.canvas,{},{text:true,blocks:true});
+          const d=r.data||{};
+          it.text=(d.text||'').replace(/[ \t]+$/gm,'').replace(/\n{3,}/g,'\n\n').replace(/^\n+|\n+$/g,'');
+          it.conf=(typeof d.confidence==='number')?d.confidence:null;
+          it.words=collectWords(d);
+          it.ms=performance.now()-t1;
+          it.state='done';
+          it.pre={w:pre.w,h:pre.h,scale:pre.scale};
+        }catch(e){
+          it.state='error'; it.err=(e&&e.message)||String(e);
+        }
+        renderThumbs();
+        const first=items.findIndex(x=>x.state==='done');
+        if(first>=0&&items[cur]&&items[cur].state!=='done') cur=first;
+        renderResult();
+        await new Promise(r=>setTimeout(r,10));
+      }
+      const done=items.filter(i=>i.state==='done').length;
+      const err=items.filter(i=>i.state==='error');
+      setProg(stopReq?`중단했습니다 · ${done}장 완료`:`완료 · ${done}장`,1);
+      if(err.length) msg('bad',err.map(e=>`<strong>${esc(e.name)}</strong>: ${esc(e.err)}`).join('<br>'));
+      else if(done) hideMsg();
+    }catch(e){
+      setProg('실패',0);
+      msg('bad','인식 엔진을 준비하지 못했습니다: '+esc((e&&e.message)||String(e))+' — 새로고침 후 다시 시도해 보세요.');
+    }finally{
+      clearInterval(tick);
+      $('pTime').textContent=fmtMs(performance.now()-t0);
+      running=false; stopReq=false;
+      updateButtons(); renderThumbs();
+    }
+  }
+
+  function collectWords(d){
+    const out=[];
+    const blocks=d.blocks||[];
+    for(const b of blocks) for(const p of (b.paragraphs||[])) for(const l of (p.lines||[])) for(const w of (l.words||[])){
+      if(w&&w.text) out.push({t:w.text,c:typeof w.confidence==='number'?w.confidence:100});
+    }
+    return out;
+  }
+
+  /* ---------- 결과 ---------- */
+  function renderResult(){
+    const done=items.filter(i=>i.state==='done');
+    if(!done.length){ $('result').classList.add('hidden'); return; }
+    $('result').classList.remove('hidden');
+    if(!items[cur]||items[cur].state!=='done') cur=items.indexOf(done[0]);
+    const it=items[cur];
+
+    // 탭
+    const tabs=$('tabs');
+    if(items.length>1){
+      tabs.classList.remove('hidden');
+      tabs.innerHTML=items.map((x,i)=>`<button data-t="${i}" class="${i===cur?'on':''}" ${x.state!=='done'?'disabled':''}>${esc(x.name)}${x.state==='done'?'':' · 대기'}</button>`).join('');
+      tabs.querySelectorAll('[data-t]').forEach(b=>b.addEventListener('click',()=>{cur=+b.dataset.t;renderResult()}));
+    }else{ tabs.classList.add('hidden'); tabs.innerHTML=''; }
+
+    // 메타
+    const c=it.conf;
+    const cls=c==null?'':c>=85?'hi':c>=65?'mid':'lo';
+    const cTxt=c==null?'신뢰도 —':`평균 신뢰도 ${Math.round(c)}%`;
+    const chars=it.text.replace(/\s/g,'').length;
+    const low=it.words.filter(w=>w.c<LOW_CONF).length;
+    $('rmeta').innerHTML=`<span class="pill ${cls}">${cTxt}</span>`+
+      `<span>글자 ${chars.toLocaleString()}자 · 줄 ${it.text.split('\n').length}줄 · ${fmtMs(it.ms)}</span>`+
+      (it.pre&&it.pre.scale!==1?`<span>· 전처리 ${it.pre.scale>1?'확대':'축소'} ${it.pre.w}×${it.pre.h}px</span>`:'');
+
+    $('out').value=it.text;
+    $('copyAll').classList.toggle('hidden',done.length<2);
+    $('saveAll').classList.toggle('hidden',done.length<2);
+
+    // 낮은 신뢰도 안내
+    const note=$('lowNote');
+    if(!it.words.length){ note.textContent='단어별 신뢰도 정보를 가져오지 못했습니다. 결과를 원본과 대조해 확인해 주세요.'; }
+    else if(low===0){ note.textContent=`신뢰도 ${LOW_CONF}% 미만인 단어는 없습니다. 그래도 숫자·계좌·주소는 원본과 한 번 대조해 보세요.`; }
+    else{ note.innerHTML=`신뢰도 ${LOW_CONF}% 미만으로 읽은 단어가 <strong>${low}개</strong> 있습니다(전체 ${it.words.length}개 중). 아래 <strong>낮은 신뢰도 표시</strong>를 누르면 어디인지 보여 드립니다 — 표시는 안내일 뿐, 표시가 없어도 틀릴 수 있습니다.`; }
+
+    renderHl();
+  }
+
+  function renderHl(){
+    const box=$('hlbox'), ta=$('out'), it=items[cur];
+    $('hlBtn').classList.toggle('on',showHl);
+    $('hlBtn').textContent=showHl?'표시 끄고 편집':'낮은 신뢰도 표시';
+    if(!showHl||!it){ box.classList.add('hidden'); ta.classList.remove('hidden'); return; }
+    ta.classList.add('hidden'); box.classList.remove('hidden');
+    const lowSet=new Set(it.words.filter(w=>w.c<LOW_CONF).map(w=>w.t));
+    const html=(ta.value||'').split('\n').map(line=>
+      line.split(/(\s+)/).map(tok=>{
+        if(/^\s*$/.test(tok)) return esc(tok);
+        return lowSet.has(tok)?`<mark title="신뢰도 낮음">${esc(tok)}</mark>`:esc(tok);
+      }).join('')
+    ).join('\n');
+    box.innerHTML=html||'<span style="color:var(--ink-3)">인식된 글자가 없습니다.</span>';
+  }
+  $('hlBtn').addEventListener('click',()=>{
+    if(!showHl && items[cur]) items[cur].text=$('out').value;   // 편집분 반영
+    showHl=!showHl; renderHl();
+  });
+  $('out').addEventListener('input',()=>{ if(items[cur]) items[cur].text=$('out').value; });
+
+  /* ---------- 복사 / 저장 ---------- */
+  function allText(){
+    return items.filter(i=>i.state==='done')
+      .map(i=>`===== ${i.name} =====\n${i.text}`).join('\n\n');
+  }
+  async function copyText(t,btn){
+    const old=btn.textContent;
+    try{ await navigator.clipboard.writeText(t); }
+    catch(e){
+      const ta=document.createElement('textarea'); ta.value=t;
+      ta.style.cssText='position:fixed;left:-9999px'; document.body.appendChild(ta);
+      ta.select(); try{document.execCommand('copy')}catch(_){ } ta.remove();
+    }
+    btn.textContent='✓ 복사됨'; setTimeout(()=>btn.textContent=old,1400);
+  }
+  function saveText(t,name){
+    const b=new Blob([t],{type:'text/plain;charset=utf-8'});
+    const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=name; a.click();
+    setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+  }
+  const baseName=n=>String(n).replace(/\.[^.]+$/,'')||'ocr';
+  $('copy').addEventListener('click',e=>copyText($('out').value,e.currentTarget));
+  $('save').addEventListener('click',()=>saveText($('out').value, baseName(items[cur]&&items[cur].name)+'.txt'));
+  $('copyAll').addEventListener('click',e=>copyText(allText(),e.currentTarget));
+  $('saveAll').addEventListener('click',()=>saveText(allText(),'추출된-텍스트.txt'));
+
+  updateNote();
+
+  /* ---------- 테스트/디버그 훅 ---------- */
+  window.OCR={
+    preprocess, planSize, enhance,
+    LOW_CONF, MIN_LONG, MAX_LONG, FLOOR_LONG,
+    setLang(l){const b=document.querySelector(`#langSeg button[data-l="${l}"]`); if(b) b.click();},
+    setOption(k,v){const el=$(k==='contrast'?'optContrast':'optAuto'); el.checked=!!v; el.dispatchEvent(new Event('change'));},
+    state(){return{
+      lang, running, count:items.length, current:cur,
+      items:items.map(i=>({name:i.name,state:i.state,conf:i.conf,ms:i.ms,
+        chars:i.text.length, words:i.words.length,
+        low:i.words.filter(w=>w.c<LOW_CONF).length, err:i.err||null, pre:i.pre||null}))
+    }},
+    text(i){const it=items[i==null?cur:i]; return it?it.text:''},
+    allText
+  };
+})();
+</script>
+</body>
+</html>
