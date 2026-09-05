@@ -111,7 +111,7 @@
 <h2>까치툴은 이런 곳입니다</h2>
 <p>까치툴은 일상에서 자주 필요한 작업 — 이미지 편집, PDF 처리, 급여·세금 계산, 날짜 변환 같은 일 —
 을 프로그램 설치나 회원가입 없이 웹 브라우저에서 바로 해결할 수 있게 만든 도구 모음입니다.
-현재 이미지, PDF·문서, 금융·급여, 생활 계산 분야의 도구 30여 종을 한국어로 제공하고 있고,
+현재 이미지, PDF·문서, 금융·급여, 생활 계산, 타자·반응 테스트 분야의 도구 45종을 한국어로 제공하고 있고,
 그중 일부는 <a href="/en/tools/">영어판</a>으로도 쓸 수 있습니다.</p>
 
 <h2>지키는 원칙</h2>
@@ -132,6 +132,21 @@
 기존 도구도 사용자 피드백을 받아 다듬고 있습니다. 만세력·운세 콘텐츠는 자매 사이트
 <a href="https://yaong.kmagpie.com/">야옹명리</a>에서 따로 운영합니다.</p>
 
+<h2>어떻게 만들고 검증하나</h2>
+<p>도구 하나를 올리기 전에 세 가지를 거칩니다. 첫째, 계산 도구는 근거가 되는 법령·고시·공식 산식을 페이지 본문에 그대로 적고, 그 산식으로 만든 기대값 표와 실제 출력을 자동 대조합니다. 연봉 실수령액 계산기는 국세청 간이세액표 588행을 전부 대조했고, 만세력은 1900년부터의 절입 시각을 분 단위로 검사했습니다. 둘째, 파일 도구는 브라우저 밖으로 나가는 요청이 하나도 없는지 네트워크 로그로 확인합니다. 배경 제거·화질 개선·글자 추출처럼 AI 모델을 쓰는 도구도 모델 파일을 이 사이트에서 내려받아 기기 안에서만 돌립니다. 셋째, 모바일 화면(390px)에서 가로 스크롤이 생기지 않는지, 다크 모드에서 글자가 묻히지 않는지 스크린샷으로 봅니다. 이 과정을 통과하지 못한 도구는 올리지 않고, 통과했더라도 근거가 흔들리는 영역(부동산 세금, 연말정산처럼 개인 사정에 따라 답이 갈리는 계산)은 아예 만들지 않거나 제공을 종료했습니다.</p>
+<h2>분야별로 무엇이 있나</h2>
+<p><strong>이미지</strong> — <a href="/tools/remove-bg/">배경 제거</a>, <a href="/tools/upscale/">AI 화질 개선</a>, <a href="/tools/id-photo/">증명사진</a>, <a href="/tools/resize/">크기 조절</a>, <a href="/tools/convert/">확장자 변환</a>, <a href="/tools/image-compress/">용량 줄이기</a>, <a href="/tools/image-merge/">이어붙이기</a>, <a href="/tools/exif-remove/">위치정보 지우기</a>, <a href="/tools/watermark/">워터마크</a>, <a href="/tools/gif-maker/">GIF</a>, <a href="/tools/meme/">짤 만들기</a>. 전부 업로드 없이 기기 안에서 처리됩니다.</p>
+<p><strong>PDF·문서</strong> — <a href="/tools/pdf/">합치기·나누기</a>, <a href="/tools/pdf-compress/">용량 줄이기</a>, <a href="/tools/pdf-sign/">서명·도장</a>, <a href="/tools/pdf-to-image/">PDF를 이미지로</a>, <a href="/tools/img2pdf/">이미지를 PDF로</a>, <a href="/tools/ocr/">사진 글자 추출</a>. 계약서나 신분증 사본처럼 밖으로 보내고 싶지 않은 문서를 위해 만들었습니다.</p>
+<p><strong>급여·노동·금융</strong> — <a href="/tools/salary/">연봉 실수령액</a>, <a href="/tools/severance/">퇴직금</a>, <a href="/tools/unemployment/">실업급여</a>, <a href="/tools/annual-leave/">연차</a>, <a href="/tools/holiday-pay/">주휴수당</a>, <a href="/tools/loan/">대출 이자</a>, <a href="/tools/deposit/">예금·적금</a>, <a href="/tools/average-down/">물타기 평단가</a>. 계산 과정과 근거 조문을 함께 보여주고, 결과는 참고용 추정치라는 점을 페이지마다 밝힙니다.</p>
+<p><strong>생활·학습·재미</strong> — <a href="/tools/electricity/">전기요금</a>, <a href="/tools/fuel-cost/">유류비</a>, <a href="/tools/pyeong/">평수</a>, <a href="/tools/percent/">퍼센트</a>, <a href="/tools/bmi/">BMI</a>, <a href="/tools/gpa/">학점</a>, <a href="/tools/date-calc/">날짜·만 나이</a>, <a href="/tools/lunar/">음력 변환</a>, <a href="/tools/manse/">만세력</a>, <a href="/tools/char-count/">글자수</a>, <a href="/tools/qr/">QR코드</a>, <a href="/tools/minutes/">회의록</a>, <a href="/tools/insta-text/">인스타 줄바꿈·글꼴</a>, <a href="/tools/typing/">타자 속도</a>, <a href="/tools/reaction/">반응속도</a>, <a href="/tools/audio-cut/">음악 자르기</a>, 그리고 앱 개발자용 <a href="/tools/app-icon/">아이콘</a>·<a href="/tools/screenshot/">스토어 스크린샷</a> 생성기.</p>
+<h2>정확도와 한계</h2>
+<p>까치툴의 계산은 공개된 규칙을 그대로 코드로 옮긴 것이지, 개인의 사정을 아는 전문가의 판단이 아닙니다. 같은 연봉이라도 비과세 항목이나 부양가족 수에 따라 실수령액이 달라지고, 같은 입사일이라도 회사의 회계연도 규정에 따라 연차가 달라집니다. 그래서 각 도구는 "무엇을 가정했는지"를 결과 옆에 적어 두고, 가정이 다르면 직접 바꿔 넣을 수 있게 입력란을 열어 두었습니다. 법령이 바뀌면 페이지 상단의 연도 표기와 산식을 같이 고치며, 바꾼 날짜는 본문에 남깁니다. 어떤 도구도 법률·세무·의료 자문을 대신하지 않으며, 금액이 걸린 결정은 반드시 해당 기관이나 전문가에게 확인하시기 바랍니다.</p>
+<h2>자주 묻는 질문</h2>
+<p><strong>정말 파일이 서버로 안 가나요?</strong> 네. 페이지를 연 뒤 인터넷을 끊어도 도구가 그대로 동작하는 것으로 확인할 수 있습니다. 브라우저 개발자 도구의 네트워크 탭을 열어 두고 써 보셔도 됩니다.</p>
+<p><strong>왜 무료인가요?</strong> 페이지에 붙는 광고가 유일한 수익입니다. 유료 플랜, 회원가입 유도, 워터마크 해제 결제 같은 것은 없고 앞으로도 두지 않을 생각입니다.</p>
+<p><strong>결과가 다른 사이트와 다릅니다.</strong> 대부분 가정의 차이입니다. 어떤 요율과 조건을 썼는지 페이지 하단의 계산 근거를 다른 사이트의 안내와 나란히 비교해 보세요. 우리 쪽 오류라면 아래 주소로 알려주시면 고칩니다.</p>
+<p><strong>영어·일본어 버전도 있나요?</strong> 한국에서 일하는 외국인을 위해 급여·노동 계산기와 이미지·PDF 도구 일부를 <a href="/en/tools/">영어</a>로 제공합니다. 까치테스트는 <a href="/en/tests/">영어</a>와 <a href="/ja/tests/">일본어</a>로도 볼 수 있습니다.</p>
+<p><strong>제공을 종료한 도구가 있나요?</strong> 있습니다. 부동산 취득세·중개수수료·전월세 전환율 계산기와 개인정보처리방침 생성기는 개인 사정이나 법적 책임에 따라 답이 갈리는 영역이라 제공을 종료했고, 해당 주소에는 안내만 남겨 두었습니다.</p>
 <h2>오류 제보와 제안</h2>
 <p>계산이 이상하거나 도구가 제대로 동작하지 않으면
 <a href="mailto:support@kmagpie.com">support@kmagpie.com</a>으로 알려주세요.
