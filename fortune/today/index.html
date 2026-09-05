@@ -126,6 +126,8 @@
   .zodiac{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:28px 0 14px}
   .zodiac h2{margin:0 0 4px;font-size:18px}
   .zodiac .zc{font-size:13.5px;color:var(--ink-3);margin:0 0 14px;word-break:keep-all}
+  .zodiac .zc a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--line);white-space:nowrap}
+  .zodiac .zc a:hover{color:var(--accent);border-color:var(--accent)}
   .zodiac .zlink{color:var(--ink);text-decoration:none;font-weight:700}
   .zodiac .zlink:hover{color:var(--accent)}
   .zgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -263,6 +265,7 @@
   <h2 id="zTitle">띠별 오늘의 운세</h2>
   <p class="zc" id="zCap"></p>
   <div class="zgrid" id="zGrid"></div>
+  <p class="zc" style="margin:14px 0 0"><strong>별자리 오늘의 운세</strong>도 있습니다 — <a href="/fortune/today/horoscope/aries/">♈ 양자리</a> <a href="/fortune/today/horoscope/taurus/">♉ 황소자리</a> <a href="/fortune/today/horoscope/gemini/">♊ 쌍둥이자리</a> <a href="/fortune/today/horoscope/cancer/">♋ 게자리</a> <a href="/fortune/today/horoscope/leo/">♌ 사자자리</a> <a href="/fortune/today/horoscope/virgo/">♍ 처녀자리</a> <a href="/fortune/today/horoscope/libra/">♎ 천칭자리</a> <a href="/fortune/today/horoscope/scorpio/">♏ 전갈자리</a> <a href="/fortune/today/horoscope/sagittarius/">♐ 사수자리</a> <a href="/fortune/today/horoscope/capricorn/">♑ 염소자리</a> <a href="/fortune/today/horoscope/aquarius/">♒ 물병자리</a> <a href="/fortune/today/horoscope/pisces/">♓ 물고기자리</a></p>
   <p class="zc" style="margin:12px 0 0">띠는 양력 1월 1일이 아니라 <strong>입춘</strong>에 바뀝니다. 1~2월 초 생이라면 위의 연도 예시보다 한 해 앞 띠일 수 있습니다. 생년월일을 넣으면 입춘 절입 시각까지 따진 정확한 띠와, 띠보다 훨씬 촘촘한 일주 기준 운세를 볼 수 있습니다.</p>
 </div>
 

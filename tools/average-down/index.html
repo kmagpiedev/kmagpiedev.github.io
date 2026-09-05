@@ -386,11 +386,11 @@ a.insertAdjacentElement('afterend',b)}})();</script>
     <div class="row" style="margin-top:14px">
       <div class="col">
         <label class="f" for="s_fee">수수료율 (매수·매도 각각)</label>
-        <div class="withu"><input type="text" id="s_fee" inputmode="decimal" value="0.015" aria-label="수수료율"><span class="u">%</span></div>
+        <div class="withu"><input type="text" id="s_fee" inputmode="decimal" value="0" placeholder="직접 입력" aria-label="수수료율"><span class="u">%</span></div>
       </div>
       <div class="col">
         <label class="f" for="s_tax">증권거래세율 (매도 시)</label>
-        <div class="withu"><input type="text" id="s_tax" inputmode="decimal" value="0.15" aria-label="증권거래세율"><span class="u">%</span></div>
+        <div class="withu"><input type="text" id="s_tax" inputmode="decimal" value="0" placeholder="직접 입력" aria-label="증권거래세율"><span class="u">%</span></div>
       </div>
     </div>
 
@@ -459,7 +459,7 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 
 <details class="fold" open><summary><h2>이 계산기가 하지 않는 것</h2></summary><div class="fx">
 <p>이 도구는 <strong>산술 계산기</strong>입니다. 입력한 수량과 가격으로 가중평균, 역산, 비율을 계산해 보여줄 뿐이고, 그 종목을 더 사야 하는지 팔아야 하는지에 대해서는 아무 의견도 갖고 있지 않습니다. 여기서 나온 숫자는 <strong>투자 권유나 자문이 아니며</strong>, 투자 판단과 그 결과에 대한 책임은 전적으로 이용자 본인에게 있습니다.</p>
-<p>세금과 비용도 마찬가지입니다. 매도 손익 탭의 수수료율·거래세율 기본값은 <strong>입력 예시일 뿐</strong>이며, 실제 요율은 증권사·계좌 종류·거래 채널·시장 구분(코스피·코스닥·코넥스 등)·시행 연도에 따라 달라집니다. 시장에 따라 별도 세목이 함께 부과되기도 하고, 해외 주식이라면 환전 수수료와 양도소득세처럼 이 계산에 전혀 들어가 있지 않은 항목들이 붙습니다. 이 계산기는 세액을 확정하지 않으며 법적·세무적 정확성을 주장하지 않습니다. 정확한 금액은 거래하는 증권사의 수수료 안내와 실제 거래내역서로 확인하세요.</p>
+<p>세금과 비용도 마찬가지입니다. 매도 손익 탭의 수수료율·거래세율은 <strong>기본값을 두지 않았습니다.</strong> 0으로 비워 두었으니 본인 계좌의 요율을 넣어야 하며, 실제 요율은 증권사·계좌 종류·거래 채널·시장 구분(코스피·코스닥·코넥스 등)·시행 연도에 따라 달라집니다. 시장에 따라 별도 세목이 함께 부과되기도 하고, 해외 주식이라면 환전 수수료와 양도소득세처럼 이 계산에 전혀 들어가 있지 않은 항목들이 붙습니다. 이 계산기는 세액을 확정하지 않으며 법적·세무적 정확성을 주장하지 않습니다. 정확한 금액은 거래하는 증권사의 수수료 안내와 실제 거래내역서로 확인하세요.</p>
 <p>계산 자체의 한계도 있습니다. 배당이나 분배금, 액면분할·병합, 무상증자, 주식 대체출고 같은 사건은 평단과 수량을 바꾸지만 여기에는 반영되지 않습니다. 여러 계좌에 나뉜 물량, 대차·신용 이자, 환율 변동 역시 계산에 들어가지 않습니다. 증권사 앱이 보여주는 평단과 이 계산 결과가 다르다면 대개 이런 항목들 또는 증권사별 반올림·비용 반영 방식의 차이 때문입니다.</p>
 <p>대신 확실하게 해 드리는 것도 있습니다. 입력한 숫자는 <strong>브라우저 밖으로 나가지 않습니다.</strong> 서버로 전송하지 않고, 브라우저에 저장하지도 않으며, 페이지를 새로 고치면 모두 사라집니다. 공유 링크나 저장 기능을 두지 않은 것도 같은 이유입니다. 보유 종목과 금액은 민감한 정보이니, 계산이 끝나면 창을 닫는 것으로 충분합니다.</p>
 </div></details>

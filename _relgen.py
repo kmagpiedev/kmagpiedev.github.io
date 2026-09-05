@@ -77,8 +77,6 @@ TOOLS = {
                    '이미지 하나로 안드로이드 mipmap 전 해상도, 적응형 아이콘, Play 스토어 512px, iOS AppIcon(Xcode 14 단일 아이콘 포함), 파비콘까지 한 번에 만들어 ZIP으로 받습니다.'),
  'screenshot':    ('📱','스토어 스크린샷 생성기','기기 프레임·피처 그래픽',
                    '앱 화면 캡처에 배경·기기 프레임·홍보 문구를 얹어 Play 스토어와 App Store 등록 규격에 맞는 이미지로 만들어 ZIP으로 받습니다. 알파 없는 24비트 PNG로 내보내고 피처 그래픽도 지원합니다.'),
- 'privacy-policy':('📄','개인정보처리방침 생성기','Play 스토어 심사용',
-                   '수집 항목과 사용 중인 SDK를 고르면 Play 스토어 심사용 개인정보처리방침을 한국어·영어로 만들어 HTML 파일로 받습니다.'),
  'bmi':           ('⚖️','BMI 계산기','기초대사량·하루 소비 칼로리까지',
                    '키와 몸무게로 BMI를 계산하고 대한비만학회 기준과 WHO 기준을 함께 보여줍니다. 나이·성별·활동량을 넣으면 기초대사량과 하루 총 에너지 소비량까지 계산합니다.'),
  'percent':       ('％','퍼센트 계산기','할인율·증감률·비율 역산',
@@ -101,6 +99,8 @@ TOOLS = {
                    '초록으로 바뀌는 순간 누르는 반응속도(5회 평균), 5초·10초 동안의 클릭 속도(CPS), 60초 에임 정확도를 잽니다. 등급과 상위 % 추정, 결과 카드 저장까지. 게이머 친구와 비교해 보세요.'),
  'insta-text':    ('✨','인스타 줄바꿈·글꼴 꾸미기','빈 줄 살리기, 유니코드 폰트 28종, 특수문자 750개',
                    '인스타·스레드에서 사라지는 빈 줄을 보이지 않는 문자로 살리고, 𝐛𝐨𝐥𝐝·𝒮𝒸𝓇𝒾𝓅𝓉 같은 유니코드 글꼴 28종과 하트·별·구분선 등 특수문자 750개를 한 번에 복사합니다. 캡션 글자수·해시태그 수도 세어 줍니다.'),
+ 'gpa':           ('🎓','학점 계산기','4.5·4.3·4.0 만점, 목표 학점 역산',
+                   '학기별 과목 성적을 넣으면 학기 평점과 누적 평점, 백분위 환산이 나옵니다. 4.5·4.3·4.0 만점 변환, 목표 학점까지 필요한 평균 역산, 재수강 시뮬레이션, 성적표 인쇄. 입력은 내 기기 안에만 저장됩니다.'),
 }
 
 # 목록 페이지 분류 (순서가 곧 노출 순서)
@@ -116,13 +116,13 @@ CATS = [
  ('자동차', '차를 사고 유지할 때 내는 세금입니다. 확인되지 않은 항목은 계산에 넣지 않고 어디서 확인해야 하는지 알려드립니다.',
   ['car-tax','car-acquisition','fuel-cost']),
  ('생활 편의', '집과 일상에서 자주 찾게 되는 계산입니다. 가입도 설치도 없이 바로 쓰고, 근거가 확인된 값만 계산합니다.',
-  ['electricity','pyeong','percent','bmi','lunar','manse','date-calc','char-count','insta-text','qr','minutes']),
+  ['electricity','pyeong','percent','bmi','lunar','manse','gpa','date-calc','char-count','insta-text','qr','minutes']),
  ('타자·반응 테스트', '키보드와 손이 얼마나 빠른지 재는 도구입니다. 결과 카드를 저장해 친구와 비교해 보세요. 측정값은 브라우저 안에만 있습니다.',
   ['typing','reaction']),
  ('오디오', '소리 파일을 다루는 도구입니다. 파형을 보며 브라우저 안에서 바로 자르고 저장합니다. 업로드가 없어서 개인 녹음 파일도 안심하고 쓸 수 있습니다.',
   ['audio-cut']),
  ('앱 개발',    '안드로이드 앱을 출시할 때 반복적으로 필요한 작업들입니다. 직접 앱을 만들며 필요해서 만든 도구예요.',
-  ['app-icon','screenshot','privacy-policy']),
+  ['app-icon','screenshot']),
 ]
 
 # 각 도구 페이지 하단에 노출할 관련 도구 (맥락 흐름 순)
@@ -133,6 +133,7 @@ REL = {
  'typing':        ['reaction','char-count','minutes'],
  'reaction':      ['typing','bmi','qr'],
  'insta-text':    ['char-count','image-merge','qr'],
+ 'gpa':           ['percent','date-calc','char-count'],
  'image-merge':   ['resize','insta-text','exif-remove'],
  'exif-remove':   ['image-compress','image-merge','convert'],
  'audio-cut':     ['gif-maker','image-compress','qr'],
@@ -168,10 +169,9 @@ REL = {
  'fuel-cost':     ['car-tax','electricity','salary'],
  'char-count':    ['insta-text','typing','ocr'],
  'pyeong':        ['electricity','date-calc','loan'],
- 'date-calc':     ['lunar','char-count','annual-leave'],
- 'app-icon':      ['screenshot','privacy-policy','image-compress'],
- 'screenshot':    ['app-icon','privacy-policy','image-compress'],
- 'privacy-policy':['app-icon','screenshot','pdf'],
+ 'date-calc':     ['lunar','gpa','annual-leave'],
+ 'app-icon':      ['screenshot','convert','image-compress'],
+ 'screenshot':    ['app-icon','resize','image-compress'],
 }
 
 CSS = """/*REL:S*/
