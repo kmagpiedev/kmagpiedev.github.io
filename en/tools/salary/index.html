@@ -178,7 +178,8 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 <!--LANG:E-->
 
 <h1>Korean Salary Calculator</h1>
-<p class="sub">Find your monthly take-home pay in Korea using the 2026 insurance rates and <strong>the National Tax Service's own withholding table</strong>. It is the real table rather than an approximation, so the numbers match what your employer actually takes out.</p>
+<noscript><style>.result{display:none}</style><p class="note">Live calculation requires JavaScript. The fixed example table below remains available; annual salaries are shown in units of 10,000 KRW.</p></noscript>
+<p class="sub">Find your monthly take-home pay in Korea using the 2026 insurance rates and <strong>the National Tax Service's own withholding table</strong>. The result is an estimate for the conditions you enter. Your actual payslip may differ.</p>
 
 <div class="panel">
   <div class="row">
@@ -249,13 +250,77 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 <p>These rows assume a single employee with no dependants besides themselves, a 200,000 won monthly meal allowance, and severance pay kept separate from salary. Tap any row to load that salary into the calculator above.</p>
 <table>
   <thead><tr><th>Annual salary</th><th class="n">Gross monthly</th><th class="n">Deductions</th><th class="n">Monthly net</th></tr></thead>
-  <tbody id="chart"></tbody>
+  <tbody id="chart"><tr data-y="2000" style="cursor:pointer">
+      <td><strong>2,000 man-won</strong></td>
+      <td class="n">1,666,667</td>
+      <td class="n">−151,420</td>
+      <td class="n" style="font-weight:700;color:var(--accent)">1,515,247</td></tr><tr data-y="2400" style="cursor:pointer">
+      <td><strong>2,400 man-won</strong></td>
+      <td class="n">2,000,000</td>
+      <td class="n">−191,530</td>
+      <td class="n" style="font-weight:700;color:var(--accent)">1,808,470</td></tr><tr data-y="2800" style="cursor:pointer">
+      <td><strong>2,800 man-won</strong></td>
+      <td class="n">2,333,333</td>
+      <td class="n">−233,330</td>
+      <td class="n" style="font-weight:700;color:var(--accent)">2,100,003</td></tr><tr data-y="3000" style="cursor:pointer">
+      <td><strong>3,000 man-won</strong></td>
+      <td class="n">2,500,000</td>
+      <td class="n">−255,560</td>
+      <td class="n" style="font-weight:700;color:var(--accent)">2,244,440</td></tr><tr data-y="3200" style="cursor:pointer">
+      <td><strong>3,200 man-won</strong></td>
+      <td class="n">2,666,667</td>
+      <td class="n">−277,380</td>
+      <td class="n" style="font-weight:700;color:var(--accent)">2,389,287</td></tr><tr data-y="3600" style="cursor:pointer">
+      <td><strong>3,600 man-won</strong></td>
+      <td class="n">3,000,000</td>
+      <td class="n">−334,560</td>
+      <td class="n" style="font-weight:700;color:var(--accent)">2,665,440</td></tr><tr data-y="4000" style="cursor:pointer">
+      <td><strong>4,000 man-won</strong></td>
+      <td class="n">3,333,333</td>
+      <td class="n">−397,520</td>
+      <td class="n" style="font-weight:700;color:var(--accent)">2,935,813</td></tr><tr data-y="4400" style="cursor:pointer">
+      <td><strong>4,400 man-won</strong></td>
+      <td class="n">3,666,667</td>
+      <td class="n">−471,380</td>
+      <td class="n" style="font-weight:700;color:var(--accent)">3,195,287</td></tr><tr data-y="4800" style="cursor:pointer">
+      <td><strong>4,800 man-won</strong></td>
+      <td class="n">4,000,000</td>
+      <td class="n">−555,440</td>
+      <td class="n" style="font-weight:700;color:var(--accent)">3,444,560</td></tr><tr data-y="5000" style="cursor:pointer">
+      <td><strong>5,000 man-won</strong></td>
+      <td class="n">4,166,667</td>
+      <td class="n">−595,090</td>
+      <td class="n" style="font-weight:700;color:var(--accent)">3,571,577</td></tr><tr data-y="5500" style="cursor:pointer">
+      <td><strong>5,500 man-won</strong></td>
+      <td class="n">4,583,333</td>
+      <td class="n">−697,260</td>
+      <td class="n" style="font-weight:700;color:var(--accent)">3,886,073</td></tr><tr data-y="6000" style="cursor:pointer">
+      <td><strong>6,000 man-won</strong></td>
+      <td class="n">5,000,000</td>
+      <td class="n">−804,590</td>
+      <td class="n" style="font-weight:700;color:var(--accent)">4,195,410</td></tr><tr data-y="7000" style="cursor:pointer">
+      <td><strong>7,000 man-won</strong></td>
+      <td class="n">5,833,333</td>
+      <td class="n">−1,012,030</td>
+      <td class="n" style="font-weight:700;color:var(--accent)">4,821,303</td></tr><tr data-y="8000" style="cursor:pointer">
+      <td><strong>8,000 man-won</strong></td>
+      <td class="n">6,666,667</td>
+      <td class="n">−1,299,590</td>
+      <td class="n" style="font-weight:700;color:var(--accent)">5,367,077</td></tr><tr data-y="9000" style="cursor:pointer">
+      <td><strong>9,000 man-won</strong></td>
+      <td class="n">7,500,000</td>
+      <td class="n">−1,556,440</td>
+      <td class="n" style="font-weight:700;color:var(--accent)">5,943,560</td></tr><tr data-y="10000" style="cursor:pointer">
+      <td><strong>10,000 man-won</strong></td>
+      <td class="n">8,333,333</td>
+      <td class="n">−1,802,410</td>
+      <td class="n" style="font-weight:700;color:var(--accent)">6,530,923</td></tr></tbody>
 </table>
 <p class="note">More dependants or a different tax-exempt amount will move these numbers. Put your own details into the calculator to see your figure.</p>
 
 <h2>How the calculation works</h2>
 <p>Your annual salary is divided by 12, or by 13 when severance pay is bundled into it, to get monthly pay. Tax-exempt items such as the meal allowance come off next, and what is left is your <strong>taxable monthly pay</strong>. Income tax and the four major insurances (4대보험) are all calculated on that figure, which is why entering the right tax-exempt amount changes the result more than people expect.</p>
-<p>Income tax is not derived from a formula. Your employer looks it up in a government table: the simplified withholding tax table (근로소득 간이세액표), Table 2 of the Income Tax Act Enforcement Decree, indexed by monthly pay and the number of dependants registered to you. This page carries that table in full, all 588 pay brackets across 11 dependant columns. Because it is the real table and not one of the approximate formulas floating around online, the figure here lines up with your company's payroll system.</p>
+<p>Income tax is not derived from a formula. Your employer looks it up in a government table: the simplified withholding tax table (근로소득 간이세액표), Table 2 of the Income Tax Act Enforcement Decree, indexed by monthly pay and the number of dependants registered to you. This page carries that table in full, all 588 pay brackets across 11 dependant columns. The table provides the withholding amount for the entered monthly pay and eligible dependants; it does not reproduce every employer payroll adjustment.</p>
 
 <h2>What changed in 2026</h2>
 <p>The headline change is the national pension (국민연금) rate rising from 9% to 9.5%. That is the first increase since 1998, and it will keep going up by 0.5 percentage points a year until it reaches 13% in 2033. Employer and employee split it evenly, so your share is 4.75%. On 3,000,000 won a month, that is roughly 7,500 won more leaving your pay each month.</p>
@@ -282,6 +347,7 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 <h2>What this calculator does not do</h2>
 <p>Every calculation happens inside your browser. The salary you type is never sent to a server, never stored, and disappears when you reload the page. Pay is private information, so the page was built to collect nothing at all. There is no sign-up and no login.</p>
 
+<section><h2>Scope and source checks</h2><p>Page reviewed: September 5, 2026 · Maintained by K-magpie. The examples use the July 2026 pension limits, one eligible family member (the employee), no children, a 200,000 KRW monthly exempt amount and 100% withholding. These are calculator outputs, not collected payslips.</p><p>The calculator uses one common base for tax and insurance. It does not accept separately reported pension or health insurance bases, eligibility exceptions or premium adjustments. Check your employer's calculation for an actual payment or a past pay period.</p><p><a href="https://g.nts.go.kr/nts/cm/cntnts/cntntsView.do?cntntsId=7862&amp;mi=6426">NTS withholding guidance (Korean)</a> · <a href="https://nps.or.kr/pnsinfo/ntpsklg/getOHAF0038M0.do?menuId=MN24001113&amp;tab=tab5">NPS income base guidance (Korean)</a></p></section>
 <!--REL:S-->
 <h2>Related tools</h2>
 <div class="rel">
@@ -291,14 +357,6 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 </div>
 <p class="rel-all"><a href="/en/tools/">See all 20 English tools →</a></p>
 <!--REL:E-->
-
-<!--TESTS:S-->
-<a class="tbn" href="/en/tests/">
-  <img class="ic" src="/images/kmagpie-test-icon.png" alt="Magpie Tests logo — a magpie giving a thumbs up" width="44" height="44" loading="lazy" decoding="async">
-  <span class="tx"><span class="tt">Try the Magpie Tests</span><span class="ds">Your birth date is the only input and it takes 30 seconds — zombie survival rate, past life, idol position, guardian spirit. Made to compare with friends.</span></span>
-  <span class="ar">&rarr;</span>
-</a>
-<!--TESTS:E-->
 
 <footer>
   <!--FOOTNOTE--><p>Results are estimates for reference only and carry no legal force. See the <a href="/en/disclaimer.html">disclaimer</a> for what they are based on and who to ask for a binding answer.</p>

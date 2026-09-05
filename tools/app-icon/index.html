@@ -262,14 +262,6 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 
 <p class="gist">1024px 정사각 PNG 한 장으로 안드로이드·iOS·파비콘 규격 아이콘을 폴더 구조가 갖춰진 ZIP으로 만듭니다. 적응형 아이콘의 세이프존 비율은 자동으로 적용됩니다. 출시 전 아이콘도 서버 전송 없이 브라우저 안에서만 처리되어 유출 걱정이 없습니다.</p>
 
-<!--TESTS:S-->
-<a class="tbn" href="/tests/">
-  <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
-  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 좀비 생존률부터 전생, 아이돌 포지션까지 — 결과는 친구와 비교해 보세요.</span></span>
-  <span class="ar">→</span>
-</a>
-<!--TESTS:E-->
-
 <details class="fold" open><summary><h2>사용법</h2></summary><div class="fx">
 <p>1024×1024 크기의 정사각형 PNG를 준비해 위에 올리세요. 원본이 클수록 축소 품질이 좋아지므로, 가능하면 벡터에서 1024px로 내보낸 파일을 쓰시는 게 가장 깔끔합니다. 생성할 규격을 고르고 내려받기를 누르면 폴더 구조가 갖춰진 ZIP이 만들어집니다. 안드로이드 파일은 압축을 풀어 <code>app/src/main/res/</code> 아래에 그대로 덮어쓰면 되고, iOS는 <code>AppIcon.appiconset</code> 폴더를 통째로 교체하면 됩니다. Xcode 14 이상을 쓰신다면 iOS 쪽은 1024px 파일 하나만 꺼내 쓰셔도 됩니다.</p>
 <p>이 도구는 이미지를 서버로 보내지 않습니다. 브라우저의 Canvas API로 처리하기 때문에 인터넷 연결이 끊겨도 동작하고, 출시 전 아이콘이 외부로 유출될 걱정이 없습니다.</p>
@@ -342,6 +334,7 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 <p>32px나 48px로 줄이면 세밀한 그림은 남지 않습니다. 작은 크기에서 알아보기 쉬운 아이콘은 큼직한 도형 몇 개로 이루어져 있고, 가는 선·그라데이션·작은 글자는 가장 먼저 사라집니다. 원본이 1024px보다 작다면 더 크게 다시 내보낸 뒤 생성하세요.</p>
 </div></details>
 
+<section class="panel" aria-labelledby="worked-example"><h2 id="worked-example" style="margin-top:0">MonBreak 아이콘 내보내기 예시</h2><p>512×512px 원본으로 Android 런처·적응형 아이콘과 Play 등록용 아이콘을 만든 ZIP을 확인하세요. 원본보다 큰 출력의 한계도 설명합니다.</p><a href="/guides/tool-workflows/#icon">입력 파일·설정·결과 보기 →</a></section>
 <!--REL:S-->
 <h2>함께 쓰면 좋은 도구</h2>
 <div class="rel">

@@ -243,25 +243,9 @@ TESTS_RE = re.compile(r'\r?\n[ \t]*<!--TESTS:S-->.*?<!--TESTS:E-->(\r?\n)*', re.
 
 
 def patch_tests(s, nl, tests_block=None):
-    """까치테스트 배너를 결과 바로 아래(첫 gist 문단 뒤)에 넣는다.
-    gist 가 없는 페이지(소개·목록)는 푸터 바로 위. 몇 번 돌려도 결과가 같다."""
-    if '/*TESTS:S*/' in s:
-        s = put(s, '/*TESTS:S*/', '/*TESTS:E*/', TESTS_CSS.replace('\n', nl).strip())
-    else:
-        i = s.find('</style>')
-        assert i > 0, 'TESTS: </style> 없음'
-        s = s[:i] + TESTS_CSS.replace('\n', nl) + s[i:]
-
-    blk = (tests_block or TESTS_BLOCK).replace('\n', nl)
-    s = TESTS_RE.sub(nl, s, count=1)          # 기존 배너는 위치와 무관하게 걷어낸다
-    body = s.find('<body')
-    g = s.find('<p class="gist"', body)
-    if g > 0:
-        j = s.find('</p>', g) + len('</p>')
-        return s[:j] + nl + nl + blk.strip() + s[j:]
-    i = s.find('<footer>')
-    assert i > 0, 'TESTS: <footer> 없음'
-    return s[:i] + blk + s[i:]
+    """Keep tool workflows focused; remove legacy unrelated test promotions."""
+    s = TESTS_RE.sub(nl, s)
+    return re.sub(r'/\*TESTS:S\*/.*?/\*TESTS:E\*/', '', s, flags=re.S)
 
 
 def put(text, start, end, new):

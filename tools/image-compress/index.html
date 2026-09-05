@@ -223,7 +223,7 @@ a.insertAdjacentElement('afterend',b)}})();</script>
         <div id="paneQ" style="margin-top:16px">
           <label class="f">품질 <span class="val" id="qv">80</span></label>
           <input type="range" id="q" min="30" max="95" value="80">
-          <p class="note" style="margin-top:6px">80 근처가 대부분의 사진에서 눈에 띄는 손실 없이 용량이 가장 많이 줄어드는 구간입니다.</p>
+          <p class="note" style="margin-top:6px">80부터 시험한 뒤 작은 글자와 윤곽을 원본과 비교하세요. 적절한 품질은 이미지마다 다릅니다.</p>
         </div>
 
         <div id="paneT" class="hidden" style="margin-top:16px">
@@ -243,7 +243,7 @@ a.insertAdjacentElement('afterend',b)}})();</script>
           <option value="png">PNG — 투명도 유지</option>
           <option value="keep">원본 형식 유지</option>
         </select>
-        <p class="note" style="margin-top:6px">WebP는 같은 화질에서 JPEG보다 25~35% 작습니다. 요즘 브라우저는 모두 지원해요. <strong>투명 배경이 필요하면 WebP나 PNG</strong>를 쓰세요.</p>
+        <p class="note" style="margin-top:6px">WebP는 사진 용량을 줄이는 데 유용하지만, 절감 폭은 이미지와 인코더에 따라 달라집니다. <strong>투명 배경이 필요하면 WebP나 PNG</strong>를 쓰세요.</p>
 
         <label class="f" style="margin-top:20px">크기 제한</label>
         <label class="opt"><input type="checkbox" id="resizeOn"><span>긴 변을 이 크기로 줄이기</span></label>
@@ -274,15 +274,7 @@ a.insertAdjacentElement('afterend',b)}})();</script>
   </table>
 </div>
 
-<p class="gist">목표 용량을 KB 단위로 정하면 품질을 자동으로 좁혀가며 그 아래에서 가장 좋은 화질을 찾아 줍니다. 여러 장을 한 번에 처리해 ZIP으로 받을 수 있고, 서버 전송 없이 브라우저에서만 처리됩니다. PNG는 품질 조절 효과가 작아 크기 축소나 WebP 변환이 더 효과적입니다.</p>
-
-<!--TESTS:S-->
-<a class="tbn" href="/tests/">
-  <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
-  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 좀비 생존률부터 전생, 아이돌 포지션까지 — 결과는 친구와 비교해 보세요.</span></span>
-  <span class="ar">→</span>
-</a>
-<!--TESTS:E-->
+<p class="gist">목표 용량을 KB 단위로 정하면 품질을 자동으로 좁혀가며 그 아래에 들어오는 품질 설정을 탐색합니다. 여러 장을 한 번에 처리해 ZIP으로 받을 수 있고, 서버 전송 없이 브라우저에서만 처리됩니다. PNG는 품질 조절 효과가 작아 크기 축소나 WebP 변환이 더 효과적입니다.</p>
 
 <details class="fold" open><summary><h2>사용법</h2></summary><div class="fx">
 <p>이미지를 여러 장 올린 뒤 압축 방식을 고르고 압축하기를 누르면 됩니다. 결과는 파일별로 이전·이후 용량과 절감률이 표시되고, 하나씩 받거나 ZIP으로 한 번에 받을 수 있습니다. 원본은 그대로 두고 새 파일이 만들어지므로 마음에 안 들면 설정을 바꿔 다시 누르면 됩니다.</p>
@@ -290,13 +282,13 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 </div></details>
 
 <details class="fold" open><summary><h2>목표 용량 맞추기는 어떻게 동작하나요</h2></summary><div class="fx">
-<p>"500KB 이하"처럼 상한이 정해진 경우가 많습니다. 게시판 첨부 제한, 이메일 용량, 스토어 등록 규격 같은 것들이죠. 품질을 손으로 바꿔가며 여러 번 시도하는 대신, 이 도구는 <strong>이진 탐색으로 품질을 8단계까지 좁혀가며</strong> 목표 용량 아래에서 가능한 가장 높은 품질을 찾아냅니다.</p>
+<p>"500KB 이하"처럼 상한이 정해진 경우가 많습니다. 게시판 첨부 제한, 이메일 용량, 스토어 등록 규격 같은 것들이죠. 품질을 손으로 바꿔가며 여러 번 시도하는 대신, 이 도구는 <strong>이진 탐색으로 품질을 8단계까지 좁혀가며</strong> 목표 용량 이하로 저장되는 후보를 찾습니다. 제한된 횟수로 탐색하므로 최적의 화질을 보장하지는 않습니다.</p>
 <p>목표가 지나치게 작으면 최저 품질로도 맞추지 못할 수 있습니다. 그럴 때는 크기 제한을 함께 켜세요. 해상도를 줄이는 쪽이 품질을 낮추는 것보다 훨씬 효율적이고, 결과물도 덜 뭉개집니다. 여기서는 긴 변만 지정할 수 있는데, <strong>가로·세로를 정확한 px로 지정</strong>하거나 1:1, 16:9 같은 비율로 잘라내야 한다면 <a href="/tools/resize/">이미지 크기 조절</a>을 쓰세요.</p>
 </div></details>
 
 <details class="fold" open><summary><h2>어떤 형식을 골라야 하나요</h2></summary><div class="fx">
 <h3>WebP</h3>
-<p>같은 화질 기준으로 JPEG보다 25~35% 작습니다. 투명도도 지원하고 주요 브라우저가 모두 읽을 수 있어서, 웹에 올릴 이미지라면 대부분 이게 정답입니다. 다만 오래된 프로그램이나 일부 문서 편집기에서는 열리지 않을 수 있어요.</p>
+<p>사진 용량을 줄이면서 투명도도 유지해야 할 때 시험해 보세요. 같은 설정 숫자라도 JPEG와 화질이 같다는 뜻은 아니므로 결과를 직접 비교해야 합니다. 다만 오래된 프로그램이나 일부 문서 편집기에서는 열리지 않을 수 있어요.</p>
 <h3>JPEG</h3>
 <p>어디서나 열립니다. 첨부 파일로 보내거나 상대방 환경을 모를 때 안전한 선택이에요. 대신 투명 배경을 지원하지 않아서, 투명한 PNG를 JPEG로 바꾸면 투명한 부분이 흰색으로 채워집니다.</p>
 <h3>PNG</h3>
@@ -312,6 +304,7 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 <p>JPEG로 변환하셨을 가능성이 높습니다. JPEG는 투명도를 지원하지 않아요. WebP나 PNG로 다시 시도하세요.</p>
 </div></details>
 
+<section class="panel" aria-labelledby="worked-example"><h2 id="worked-example" style="margin-top:0">실제 게임 화면으로 압축 결과 비교</h2><p>MonBreak 화면 1080×2400px을 WebP 품질 80으로 바꾼 결과와 10KB 목표에 실패한 경우를 확인하세요. 같은 원본으로 직접 비교할 수 있습니다.</p><a href="/guides/tool-workflows/#compress">입력 파일·설정·결과 보기 →</a></section>
 <!--REL:S-->
 <h2>함께 쓰면 좋은 도구</h2>
 <div class="rel">

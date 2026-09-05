@@ -264,14 +264,6 @@ a.insertAdjacentElement('afterend',b)}})();</script>
 
 <p class="gist">스캔한 PDF를 2·5·10MB 같은 목표 용량에 맞춰 해상도와 품질을 자동으로 찾아 압축합니다. 파일은 서버로 전송되지 않고 브라우저 안에서 처리되며, 압축 전후 화질을 눈으로 비교할 수 있습니다. 재렌더링 방식이라 글자 선택·검색이 사라지므로 원본은 따로 보관하세요.</p>
 
-<!--TESTS:S-->
-<a class="tbn" href="/tests/">
-  <img class="ic" src="/images/kmagpie-test-icon.png" alt="까치테스트 로고 — 따봉 하는 까치" width="44" height="44" loading="lazy" decoding="async">
-  <span class="tx"><span class="tt">재밌는 까치테스트 보기</span><span class="ds">생년월일만 넣으면 30초. 좀비 생존률부터 전생, 아이돌 포지션까지 — 결과는 친구와 비교해 보세요.</span></span>
-  <span class="ar">→</span>
-</a>
-<!--TESTS:E-->
-
 <details class="fold" open><summary><h2>왜 "목표 용량"으로 줄이나</h2></summary><div class="fx">
 <p>PDF 용량을 줄이려는 이유는 대부분 어딘가에 내야 하기 때문입니다. 이메일 첨부 한도, 정부 민원 사이트의 "10MB 이하", 입사 지원 포털의 "5MB 이하" 같은 규정이죠. 이럴 때 중요한 건 몇 퍼센트 줄었느냐가 아니라 <strong>한도 아래로 들어갔느냐</strong>입니다. 그래서 이 도구는 압축 강도를 고르게 하는 대신 목표 용량을 먼저 정하게 하고, 그 안에서 화질이 가장 덜 상하는 해상도와 품질 조합을 이진 탐색으로 찾아냅니다. 페이지가 많으면 대표 페이지 몇 장으로 먼저 근사한 뒤 전체를 한 번에 인코딩하기 때문에 반복 횟수도 줄어듭니다.</p>
 </div></details>
