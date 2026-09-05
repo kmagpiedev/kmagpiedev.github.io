@@ -3,12 +3,12 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8" />
-    <title>K-magpie | 무료 이미지·PDF 도구와 게임·앱</title>
+    <title>K-magpie | 직접 만든 게임·앱과 웹 도구</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="naver-site-verification" content="bd00db17c88ce5c025640b030216930443e78df6" />
-    <meta name="description" content="사진 압축, PDF 편집, 앱 아이콘과 스토어 이미지 만들기. 파일을 서버로 보내지 않는 까치툴과 실제 작업 예시, K-magpie의 게임·앱을 만나보세요." />
-    <meta property="og:title" content="K-magpie | 무료 이미지·PDF 도구와 게임·앱" />
-    <meta property="og:description" content="사진 압축, PDF 편집, 앱 아이콘과 스토어 이미지 만들기. 파일을 서버로 보내지 않는 까치툴과 실제 작업 예시, K-magpie의 게임·앱을 만나보세요." />
+    <meta name="description" content="짧게 즐기는 게임부터 생활 앱, 한국사 학습, 이미지·PDF 도구까지. K-magpie가 만들고 운영하는 서비스를 사용법과 실제 작업 예시와 함께 만나보세요." />
+    <meta property="og:title" content="K-magpie | 직접 만든 게임·앱과 웹 도구" />
+    <meta property="og:description" content="짧게 즐기는 게임부터 생활 앱, 한국사 학습, 이미지·PDF 도구까지. K-magpie가 만들고 운영하는 서비스를 사용법과 실제 작업 예시와 함께 만나보세요." />
     <meta property="og:image" content="https://www.kmagpie.com/images/icon_monbreak.png" />
     <meta property="og:url" content="https://www.kmagpie.com/" />
     <meta name="twitter:card" content="summary" />
@@ -520,6 +520,12 @@
     .tool-chip span { display: block; margin-top: 4px; font-size: 0.8rem; font-weight: 400; color: var(--muted); }
     .tool-chip:hover { border-color: var(--accent); transform: translateY(-2px); }
     .tool-chip:hover span { color: var(--muted); }
+        .hero h1{word-break:keep-all}
+    .service-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .service-card{color:var(--text);text-decoration:none}
+    .service-card:hover,.service-card:focus-visible{border-color:var(--accent)}
+    @media(max-width:800px){.service-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:480px){.service-grid{grid-template-columns:1fr}.hero h1{font-size:clamp(25px,7.2vw,34px)}}
     </style>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3632022254909828" crossorigin="anonymous"></script>
 <link rel="canonical" href="https://www.kmagpie.com/" />
@@ -554,38 +560,17 @@
         <section class="hero" id="top">
             <div class="container hero-inner">
                 <div class="hero-text">
-                    <p class="hero-kicker" data-i18n="heroKicker">직접 만든 도구와 실제 사용 기록, K-magpie</p>
-                    <h1 data-i18n="heroTitle">사진·PDF 작업을<br>브라우저에서 끝내세요</h1>
-                    <p data-i18n="heroDesc">
-                        사진 용량 줄이기, PDF 편집, 앱 출시용 이미지 만들기까지.
-                        파일을 서버로 보내지 않는 까치툴과 실제 작업 예시를 확인하세요. 게임과 생활 앱도 함께 제공합니다.
-                    </p>
+                    <p class="hero-kicker" data-i18n="heroKicker">게임은 재미있게, 일상은 편리하게 · K-magpie</p>
+                    <h1 data-i18n="heroTitle">즐겁게 쓰는 게임과 앱,<br>일상에 쓸모 있는 웹 도구</h1>
+                    <p data-i18n="heroDesc">짧게 즐기는 게임부터 생활 앱, 한국사 학습, 이미지·PDF 도구까지. K-magpie가 만들고 운영하는 서비스를 사용법과 실제 작업 예시와 함께 만나보세요.</p>
 
                     <div class="hero-buttons">
-                        <a class="btn primary" href="/tools/" data-i18n="browseToolsCta">
-                            까치툴 바로 사용하기
-                        </a>
-                        <a class="btn gallery" href="/guides/tool-workflows/" data-i18n="workflowCta">실제 작업 예시 보기</a>
-                        <a class="btn secondary" href="https://play.google.com/store/apps/details?id=com.kmagpie.MonBreak" target="_blank" rel="noopener noreferrer" data-i18n="heroMonBreakCta">
-                            MonBreak 설치하기
-                        </a>
-                        <a class="btn secondary" href="#web" data-i18n="webBrowseCta">
-                            웹에서 바로 즐기기
-                        </a>
+                        <a class="btn primary" href="#services" data-i18n="browseServicesCta">서비스 둘러보기</a>
+                        <a class="btn secondary" href="#workflows" data-i18n="heroGuidesCta">사용법과 작업 예시</a>
                     </div>
                     <p class="hero-proof" data-i18n="heroProof">앱은 Google Play에서 설치하고, 웹 콘텐츠는 설치 없이 바로 즐길 수 있습니다.</p>
 
-                    <div class="hero-quick" id="heroQuick">
 
-                        <div class="hq-tools">
-                            <span class="hq-lbl" data-i18n="hqPopular">바로 쓰는 도구</span>
-                            <a href="/tools/image-compress/" data-i18n="hqT1" data-i18n-attr="href:hqT1Href">이미지 압축</a>
-                            <a href="/tools/pdf/" data-i18n="hqT2" data-i18n-attr="href:hqT2Href">PDF 편집</a>
-                            <a href="/tools/app-icon/" data-i18n="hqT3" data-i18n-attr="href:hqT3Href">앱 아이콘</a>
-                            <a href="/tools/screenshot/" data-i18n="hqT4" data-i18n-attr="href:hqT4Href">스토어 이미지</a>
-                            <a href="/tools/upscale/" data-i18n="hqT5" data-i18n-attr="href:hqT5Href">AI 확대</a>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="hero-apps" aria-label="K-magpie Google Play apps" data-i18n-attr="aria-label:heroAppsAria">
@@ -613,11 +598,8 @@
             </div>
         </section>
 
-        <section class="section" id="workflows"><div class="container">
-<h2 data-i18n="workflowTitle">설정부터 결과 확인까지</h2>
-<p class="section-desc" data-i18n="workflowDesc">직접 만든 게임 이미지를 까치툴에 넣어 압축하고, 아이콘과 스토어 이미지를 내보냈습니다. 입력 파일·설정·결과를 공개하니 같은 작업을 따라 해보세요.</p>
-<div class="card-grid"><article class="card"><h3 data-i18n="workflowCard">이미지·PDF·앱 출시 도구 작업 예시</h3><p class="card-text" data-i18n="workflowCardDesc">대표 도구 5개의 입력과 출력, 저장 후 확인할 항목을 한곳에 정리했습니다.</p><a class="card-detail-link" href="/guides/tool-workflows/" data-i18n="workflowCta">실제 작업 예시 보기</a></article>
-<article class="card"><h3 data-i18n="journalCard">만든 사람의 사용 기록</h3><p class="card-text" data-i18n="journalCardDesc">AI 업스케일 사용법과 처리 한계, 파일 처리와 접속 정보의 차이를 실제 화면과 함께 설명합니다.</p><a class="card-detail-link" href="https://blog.kmagpie.com/ko" data-i18n="journalCta" data-i18n-attr="href:journalHref">블로그 사용 기록 읽기</a></article></div></div></section>
+
+<section class="section" id="services"><div class="container"><h2 data-i18n="servicesTitle">어떤 서비스를 찾으세요?</h2><div class="card-grid service-grid"><a class="card service-card" href="#games"><h3 data-i18n="serviceGames">게임·앱</h3><p class="card-text" data-i18n="serviceGamesDesc">직접 만든 모바일 게임과 생활 앱을 만나보세요.</p></a><a class="card service-card" href="#tools"><h3 data-i18n="serviceTools">까치툴</h3><p class="card-text" data-i18n="serviceToolsDesc">이미지·PDF 편집과 일상에 필요한 계산을 브라우저에서.</p></a><a class="card service-card" href="#study"><h3 data-i18n="serviceStudy">공부·학습</h3><p class="card-text" data-i18n="serviceStudyDesc">한국사 문제를 풀고, 해설과 오답 복습으로 익혀보세요.</p></a><a class="card service-card" href="#web"><h3 data-i18n="serviceFun">재미 콘텐츠</h3><p class="card-text" data-i18n="serviceFunDesc">까치테스트와 운세 등 설치 없이 즐기는 웹 콘텐츠.</p></a></div></div></section>
 <section id="games" class="section">
             <div class="container">
                 <h2 data-i18n="gamesTitle">모바일 게임 & 앱</h2>
@@ -784,7 +766,18 @@
         <section id="tools" class="section section-alt">
             <div class="container">
                 <h2 data-i18n="toolsTitle">까치툴 — 무료 온라인 도구</h2>
-                <p class="section-desc" data-i18n="toolsDesc">가입 없이 쓰는 무료 도구입니다. 파일은 서버로 전송되지 않고 전부 내 브라우저 안에서 처리되며, 사용 횟수 제한도 워터마크도 없습니다.</p>
+                <p class="section-desc" data-i18n="toolsDesc">사진·PDF 작업을 브라우저에서 끝내세요. 사진 용량 줄이기, PDF 편집, 앱 출시용 이미지 만들기까지. 파일을 서버로 보내지 않는 도구와 실제 작업 예시를 확인하세요.</p>
+<div class="hero-quick" id="heroQuick">
+
+                        <div class="hq-tools">
+                            <span class="hq-lbl" data-i18n="hqPopular">바로 쓰는 도구</span>
+                            <a href="/tools/image-compress/" data-i18n="hqT1" data-i18n-attr="href:hqT1Href">이미지 압축</a>
+                            <a href="/tools/pdf/" data-i18n="hqT2" data-i18n-attr="href:hqT2Href">PDF 편집</a>
+                            <a href="/tools/app-icon/" data-i18n="hqT3" data-i18n-attr="href:hqT3Href">앱 아이콘</a>
+                            <a href="/tools/screenshot/" data-i18n="hqT4" data-i18n-attr="href:hqT4Href">스토어 이미지</a>
+                            <a href="/tools/upscale/" data-i18n="hqT5" data-i18n-attr="href:hqT5Href">AI 확대</a>
+                        </div>
+                    </div>
 
                 <form class="tool-search" action="/tools/" method="get" role="search">
                     <input type="search" name="q" placeholder="도구 45개 중에서 찾기 — 예: 누끼, 퇴직금, PDF, 사주" aria-label="까치툴 도구 검색" autocomplete="off" data-i18n-attr="placeholder:toolSearchPh,aria-label:toolSearchAria">
@@ -821,6 +814,12 @@
         </section>
 
 
+
+        <section class="section" id="workflows"><div class="container">
+<h2 data-i18n="workflowTitle">설정부터 결과 확인까지</h2>
+<p class="section-desc" data-i18n="workflowDesc">직접 만든 게임 이미지를 까치툴에 넣어 압축하고, 아이콘과 스토어 이미지를 내보냈습니다. 입력 파일·설정·결과를 공개하니 같은 작업을 따라 해보세요.</p>
+<div class="card-grid"><article class="card"><h3 data-i18n="workflowCard">이미지·PDF·앱 출시 도구 작업 예시</h3><p class="card-text" data-i18n="workflowCardDesc">대표 도구 5개의 입력과 출력, 저장 후 확인할 항목을 한곳에 정리했습니다.</p><a class="card-detail-link" href="/guides/tool-workflows/" data-i18n="workflowCta">실제 작업 예시 보기</a></article>
+<article class="card"><h3 data-i18n="journalCard">만든 사람의 사용 기록</h3><p class="card-text" data-i18n="journalCardDesc">AI 업스케일 사용법과 처리 한계, 파일 처리와 접속 정보의 차이를 실제 화면과 함께 설명합니다.</p><a class="card-detail-link" href="https://blog.kmagpie.com/ko" data-i18n="journalCta" data-i18n-attr="href:journalHref">블로그 사용 기록 읽기</a></article></div></div></section>
 
         <section id="about" class="section">
             <div class="container">
@@ -892,6 +891,17 @@
     <script>
         const translations = {
             ko: {
+                serviceFunDesc: "까치테스트와 운세 등 설치 없이 즐기는 웹 콘텐츠.",
+                serviceFun: "재미 콘텐츠",
+                serviceStudyDesc: "한국사 문제를 풀고, 해설과 오답 복습으로 익혀보세요.",
+                serviceStudy: "공부·학습",
+                serviceToolsDesc: "이미지·PDF 편집과 일상에 필요한 계산을 브라우저에서.",
+                serviceTools: "까치툴",
+                serviceGamesDesc: "직접 만든 모바일 게임과 생활 앱을 만나보세요.",
+                serviceGames: "게임·앱",
+                servicesTitle: "어떤 서비스를 찾으세요?",
+                heroGuidesCta: "사용법과 작업 예시",
+                browseServicesCta: "서비스 둘러보기",
                 browseToolsCta: "까치툴 바로 사용하기",
                 workflowCta: "실제 작업 예시 보기",
                 workflowTitle: "설정부터 결과 확인까지",
@@ -902,9 +912,8 @@
                 journalCardDesc: "AI 업스케일 사용법과 처리 한계, 파일 처리와 접속 정보의 차이를 실제 화면과 함께 설명합니다.",
                 journalCta: "블로그 사용 기록 읽기",
                 journalHref: "https://blog.kmagpie.com/ko",
-
-                title: "K-magpie | 무료 이미지·PDF 도구와 게임·앱",
-                description: "사진 압축, PDF 편집, 앱 아이콘과 스토어 이미지 만들기. 파일을 서버로 보내지 않는 까치툴과 실제 작업 예시, K-magpie의 게임·앱을 만나보세요.",
+                title: "K-magpie | 직접 만든 게임·앱과 웹 도구",
+                description: "짧게 즐기는 게임부터 생활 앱, 한국사 학습, 이미지·PDF 도구까지. K-magpie가 만들고 운영하는 서비스를 사용법과 실제 작업 예시와 함께 만나보세요.",
                 logoAria: "K-magpie 홈으로 이동",
                 logoAlt: "K-magpie 아이콘",
                 navAria: "주요 메뉴",
@@ -917,7 +926,7 @@
                 navAbout: "소개",
                 navContact: "문의",
                 toolsTitle: "까치툴 — 무료 온라인 도구",
-                toolsDesc: "가입 없이 쓰는 무료 도구입니다. 파일은 서버로 전송되지 않고 전부 내 브라우저 안에서 처리되며, 사용 횟수 제한도 워터마크도 없습니다.",
+                toolsDesc: "사진·PDF 작업을 브라우저에서 끝내세요. 사진 용량 줄이기, PDF 편집, 앱 출시용 이미지 만들기까지. 파일을 서버로 보내지 않는 도구와 실제 작업 예시를 확인하세요.",
                 toolsAll: "까치툴 전체 보기 →",
                 studyTitle: "공부·학습",
                 studyDesc: "시험 준비와 반복 학습을 돕는 K-magpie의 학습 서비스입니다.",
@@ -954,9 +963,9 @@
                 webTarotTitle: "무료 고양이 타로",
                 webTarotMeta: "세 장 타로 · 무료",
                 webTarotText: "질문 분야를 고르고 고양이 메이저 타로 세 장을 직접 뽑아 현재의 흐름과 다음 행동을 살펴보세요.",
-                heroKicker: "직접 만든 도구와 실제 사용 기록, K-magpie",
-                heroTitle: "사진·PDF 작업을<br>브라우저에서 끝내세요",
-                heroDesc: "사진 용량 줄이기, PDF 편집, 앱 출시용 이미지 만들기까지. 파일을 서버로 보내지 않는 까치툴과 실제 작업 예시를 확인하세요. 게임과 생활 앱도 함께 제공합니다.",
+                heroKicker: "게임은 재미있게, 일상은 편리하게 · K-magpie",
+                heroTitle: "즐겁게 쓰는 게임과 앱,<br>일상에 쓸모 있는 웹 도구",
+                heroDesc: "짧게 즐기는 게임부터 생활 앱, 한국사 학습, 이미지·PDF 도구까지. K-magpie가 만들고 운영하는 서비스를 사용법과 실제 작업 예시와 함께 만나보세요.",
                 browseAppsCta: "앱 둘러보고 설치하기",
                 galleryCta: "3D 갤러리 입장하기",
                 heroMonBreakCta: "MonBreak 설치하기",
@@ -1027,6 +1036,17 @@
                 copyrightNote: "이 사이트에 게시된 모든 콘텐츠의 저작권은 K-magpie에 있으며, 사전 동의 없는 무단 복제·배포를 금지합니다."
             },
             en: {
+                serviceFunDesc: "Try Magpie Tests and fortune readings without installing an app.",
+                serviceFun: "Just for fun",
+                serviceStudyDesc: "Practice Korean history with explanations and review of missed questions.",
+                serviceStudy: "Study and learning",
+                serviceToolsDesc: "Edit images and PDFs and run everyday calculations in your browser.",
+                serviceTools: "Magpie Tools",
+                serviceGamesDesc: "Discover our mobile games and everyday apps.",
+                serviceGames: "Games and apps",
+                servicesTitle: "What would you like to explore?",
+                heroGuidesCta: "Guides and worked examples",
+                browseServicesCta: "Explore services",
                 browseToolsCta: "Open free tools",
                 workflowCta: "See worked examples (Korean)",
                 workflowTitle: "From settings to checking the result",
@@ -1037,9 +1057,8 @@
                 journalCardDesc: "Explore illustrated guides, AI upscaling limits and the difference between file processing and access logs.",
                 journalCta: "Read the journal",
                 journalHref: "https://blog.kmagpie.com/en",
-
-                title: "K-magpie | Free image and PDF tools, games and apps",
-                description: "Compress images, edit PDFs and prepare app artwork in your browser. Explore worked examples and games and apps made by K-magpie.",
+                title: "K-magpie | Original games, apps and useful web tools",
+                description: "Explore games, everyday apps, Korean history learning and image and PDF tools made by K-magpie, with guides and worked examples.",
                 logoAria: "Go to K-magpie home",
                 logoAlt: "K-magpie icon",
                 navAria: "Main navigation",
@@ -1052,7 +1071,7 @@
                 navAbout: "About",
                 navContact: "Contact",
                 toolsTitle: "Tools — free browser utilities",
-                toolsDesc: "Korean-language tools that run entirely in your browser. No sign-up, your files never leave your device, no usage limits.",
+                toolsDesc: "Finish image and PDF tasks in your browser. Compress photos, edit PDFs and create app artwork without uploading your files. See the tools and worked examples.",
                 toolsAll: "See all tools →",
                 studyTitle: "Study & Learning",
                 studyDesc: "K-magpie learning services for focused practice, review, and exam preparation. Linked learning services are currently available in Korean.",
@@ -1089,9 +1108,9 @@
                 webTarotTitle: "Free Cat Tarot",
                 webTarotMeta: "Three-card tarot · Free",
                 webTarotText: "Choose a topic and draw three cat Major Arcana cards to reflect on the current flow and your next move.",
-                heroKicker: "Tools and worked examples by K-magpie",
-                heroTitle: "Finish image & PDF tasks<br>in your browser",
-                heroDesc: "Compress photos, edit PDFs and prepare app artwork without uploading your files. Explore worked examples, plus our games and everyday apps.",
+                heroKicker: "Fun games, useful everyday tools · K-magpie",
+                heroTitle: "Games and apps we make,<br>web tools for everyday tasks",
+                heroDesc: "From quick games and everyday apps to Korean history learning and image and PDF tools. Explore the services K-magpie builds and runs, with guides and worked examples.",
                 browseAppsCta: "Browse apps and install",
                 galleryCta: "Enter the 3D Gallery",
                 heroMonBreakCta: "Install MonBreak",
@@ -1162,6 +1181,17 @@
                 copyrightNote: "All content on this website is owned by K-magpie. Unauthorized copying or distribution without prior consent is prohibited."
             },
             ja: {
+                serviceFunDesc: "インストール不要の診断や占いを楽しめます。",
+                serviceFun: "楽しむコンテンツ",
+                serviceStudyDesc: "解説と間違えた問題の復習で韓国史を学べます。",
+                serviceStudy: "勉強・学習",
+                serviceToolsDesc: "画像・PDFの編集や日常の計算をブラウザで。",
+                serviceTools: "カササギツール",
+                serviceGamesDesc: "自作のモバイルゲームと生活アプリを紹介します。",
+                serviceGames: "ゲーム・アプリ",
+                servicesTitle: "どんなサービスをお探しですか？",
+                heroGuidesCta: "使い方と作業例",
+                browseServicesCta: "サービスを見る",
                 browseToolsCta: "無料ツールを使う",
                 workflowCta: "作業例を見る（韓国語）",
                 workflowTitle: "設定から出力の確認まで",
@@ -1172,9 +1202,8 @@
                 journalCardDesc: "AI拡大の限界やファイル処理とアクセス情報の違いを、画面とともに説明します。",
                 journalCta: "ブログを読む",
                 journalHref: "https://blog.kmagpie.com/ja",
-
-                title: "K-magpie | 無料の画像・PDFツールとゲーム・アプリ",
-                description: "画像圧縮、PDF編集、アプリ素材の作成をブラウザで。K-magpieの作業例とゲーム・アプリを紹介します。",
+                title: "K-magpie | 自作ゲーム・アプリと便利なWebツール",
+                description: "ゲームや生活アプリ、韓国史学習、画像・PDFツールまで。K-magpieが制作・運営するサービスを使い方や作業例とともに紹介します。",
                 logoAria: "K-magpie ホームへ移動",
                 logoAlt: "K-magpie アイコン",
                 navAria: "メインメニュー",
@@ -1187,7 +1216,7 @@
                 navAbout: "紹介",
                 navContact: "お問い合わせ",
                 toolsTitle: "ツール — 無料オンラインツール",
-                toolsDesc: "韓国語のブラウザ完結型ツールです。登録不要、ファイルはサーバーに送信されず、利用回数の制限もありません。",
+                toolsDesc: "画像・PDFの作業をブラウザで完結。画像圧縮、PDF編集、アプリ素材の作成まで。ファイルをアップロードしないツールと実際の作業例をご覧ください。",
                 toolsAll: "すべてのツールを見る →",
                 studyTitle: "勉強・学習",
                 studyDesc: "試験対策と反復学習を支えるK-magpieの学習サービスです。リンク先の学習サービスは現在、韓国語で提供しています。",
@@ -1224,9 +1253,9 @@
                 webTarotTitle: "無料 猫タロット",
                 webTarotMeta: "3枚タロット · 無料",
                 webTarotText: "質問のテーマを選び、猫の大アルカナを3枚引いて、今の流れと次の行動を見つめてみましょう。",
-                heroKicker: "K-magpieのツールと実際の作業例",
-                heroTitle: "画像・PDFの作業を<br>ブラウザで完結",
-                heroDesc: "画像圧縮、PDF編集、アプリ素材の作成をファイルのアップロードなしで。作業例とともに、ゲームや生活アプリも紹介します。",
+                heroKicker: "ゲームは楽しく、毎日は便利に · K-magpie",
+                heroTitle: "自分たちで作るゲームとアプリ、<br>日常に役立つWebツール",
+                heroDesc: "短く遊べるゲームから生活アプリ、韓国史学習、画像・PDFツールまで。K-magpieが制作・運営するサービスを、使い方や実際の作業例とともにご覧ください。",
                 browseAppsCta: "アプリを見てインストール",
                 galleryCta: "3Dギャラリーに入る",
                 heroMonBreakCta: "MonBreakをインストール",
